@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cv": "node scripts/generate-cv.mjs"
+    "cv": "node scripts/generate-cv.mjs",
+    "design:scene": "node scripts/build-design-scene.mjs"
   },
   "dependencies": {
     "motion": "^12.40.0",

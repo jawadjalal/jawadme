@@ -1,0 +1,257 @@
+/* jawadOS — scene stylesheet.
+   Everything the generated scene markup references by name lives here: the
+   keyframe library the inline styles animate, plus the motion layer added on
+   top of the exported design (boot sequence, per-zone content reveals, dock
+   liveliness). */
+
+.jos {
+  --acc: #7ac274;
+}
+
+.jos,
+.jos input,
+.jos textarea {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.jos a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── keyframe library (referenced from the scene's inline styles) ─────────── */
+
+@keyframes drift { from { transform: translateX(-30px); } to { transform: translateX(30px); } }
+@keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+@keyframes load { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes stamp {
+  0% { transform: scale(1.4); opacity: 0; }
+  55% { transform: scale(.96); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes crtOn {
+  0% { transform: scaleY(.004) scaleX(1.25); filter: brightness(3.2); }
+  45% { transform: scaleY(.05) scaleX(1.04); filter: brightness(1.9); }
+  100% { transform: scaleY(1) scaleX(1); filter: brightness(1); }
+}
+@keyframes wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes sweep {
+  0% { transform: translateY(-14px); opacity: 0; }
+  12% { opacity: .85; }
+  88% { opacity: .85; }
+  100% { transform: translateY(158px); opacity: 0; }
+}
+@keyframes cue {
+  0% { opacity: 0; transform: translateY(3px); }
+  14%, 72% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-3px); }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hum { 0%, 100% { opacity: .5; } 47% { opacity: .34; } 62% { opacity: .62; } }
+@keyframes breathe {
+  0%, 100% { transform: scale(1) rotate(-3deg); }
+  50% { transform: scale(1.035) rotate(-2deg); }
+}
+@keyframes hit {
+  0% { transform: scale(1.5); opacity: 0; }
+  58% { transform: scale(.965); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes squish {
+  0% { transform: translateY(0) scale(1, 1); }
+  26% { transform: translateY(1px) scale(1.16, .84); }
+  54% { transform: translateY(-12px) scale(.9, 1.14); }
+  76% { transform: translateY(-6px) scale(1.05, .96); }
+  100% { transform: translateY(-8px) scale(1, 1); }
+}
+@keyframes bootScan {
+  0% { transform: translateY(-180px); opacity: 0; }
+  12% { opacity: 1; }
+  86% { opacity: 1; }
+  100% { transform: translateY(960px); opacity: 0; }
+}
+@keyframes ring {
+  0% { transform: scale(.5); opacity: .55; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes bootBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes bootFlash { 0% { opacity: 0; } 70% { opacity: 0; } 88% { opacity: .9; } 100% { opacity: 0; } }
+@keyframes markPop {
+  0% { transform: scale(.2) rotate(-24deg); opacity: 0; }
+  58% { transform: scale(1.06) rotate(3deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes lift {
+  from { opacity: 0; transform: translateY(22px) scale(.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── boot sequence ───────────────────────────────────────────────────────── */
+
+.jos-boot {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(120% 110% at 50% 42%, #14131c 0%, #08070c 62%, #050408 100%);
+  transition: opacity .5s ease .12s, visibility 0s linear .62s;
+}
+
+.jos-booted .jos-boot {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.jos-boot-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(180deg, rgba(122, 194, 116, 0) 0%, rgba(122, 194, 116, .13) 50%, rgba(122, 194, 116, 0) 100%);
+  animation: bootScan 1.5s linear;
+}
+
+.jos-boot-flash {
+  position: absolute;
+  inset: 0;
+  background: #f4f1e6;
+  animation: bootFlash 1.5s ease-out;
+  pointer-events: none;
+}
+
+.jos-boot-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.jos-boot-mark {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: #f4f1e6;
+  box-shadow: 5px 6px 0 #141311;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: markPop .62s cubic-bezier(.2, 1.4, .35, 1) both;
+}
+
+.jos-boot-diamond {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: var(--acc, #7ac274);
+  transform: rotate(45deg);
+  box-shadow: 0 0 20px rgba(122, 194, 116, .85);
+}
+
+.jos-boot-label {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: #f4f1e6;
+  animation: rise .4s ease .3s both;
+}
+
+.jos-boot-bar {
+  width: 148px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(244, 241, 230, .14);
+  overflow: hidden;
+}
+
+.jos-boot-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--acc, #7ac274);
+  transform-origin: left center;
+  animation: bootBar 1.25s cubic-bezier(.35, .1, .2, 1) .1s both;
+}
+
+.jos-boot-hint {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #6f6a61;
+  animation: cue 1.5s ease both;
+}
+
+/* ── the display strikes as the overlay clears ───────────────────────────── */
+
+.jos-crt {
+  animation: crtOn .78s cubic-bezier(.2, .9, .3, 1) .52s both;
+  transform-origin: 50% 50%;
+}
+
+/* A single scanline keeps travelling down the panel after boot — the tell that
+   this is a screen and not a flat page. */
+.jos-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 90px;
+  z-index: 40;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .045) 50%, rgba(255, 255, 255, 0) 100%);
+  animation: sweep 7s linear infinite;
+}
+
+/* ── per-zone content reveal ─────────────────────────────────────────────────
+   readScroll() stamps data-zone on the room as you travel. Arriving in a zone
+   flips these rules from `animation: none` to a real animation, which restarts
+   it — so each window's content staggers in on arrival, every time, without a
+   scroll observer per element. */
+
+.jos [data-zone="0"] .jos-z0 .jos-zr,
+.jos [data-zone="1"] .jos-z1 .jos-zr,
+.jos [data-zone="2"] .jos-z2 .jos-zr,
+.jos [data-zone="3"] .jos-z3 .jos-zr,
+.jos [data-zone="4"] .jos-z4 .jos-zr {
+  animation: lift .58s cubic-bezier(.2, .9, .3, 1) var(--zd, 0s) both;
+}
+
+/* Headline text wipes in behind its own edge rather than lifting. */
+.jos [data-zone="0"] .jos-z0 .jos-zw,
+.jos [data-zone="1"] .jos-z1 .jos-zw,
+.jos [data-zone="2"] .jos-z2 .jos-zw,
+.jos [data-zone="3"] .jos-z3 .jos-zw,
+.jos [data-zone="4"] .jos-z4 .jos-zw {
+  animation: wipe .66s cubic-bezier(.55, 0, .3, 1) var(--zd, 0s) both;
+}
+
+/* ── dock ────────────────────────────────────────────────────────────────── */
+
+/* A slow pulse under the hire-me tile, so the one thing worth clicking says so. */
+.jos-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 2px var(--acc, #7ac274);
+  animation: ring 2.6s cubic-bezier(.2, .6, .3, 1) infinite;
+  pointer-events: none;
+}
+
+/* ── reduced motion ──────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .jos *,
+  .jos *::before,
+  .jos *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
