@@ -7,6 +7,7 @@ import { Component } from "react";
 import { SceneMobile } from "./scene/SceneMobile";
 import { BootOverlay } from "./BootOverlay";
 import { submitBrief } from "./useBrief";
+import { ROLES, SOCIALS, PROFILE } from "@/lib/content";
 
 type Props = { accent?: string };
 type State = {
@@ -330,6 +331,17 @@ export default class RoomMobile extends Component<Props, State> {
     };
   }
 
+  // Site content (roles, socials, CV) rendered by the About and Work windows.
+  contentVals() {
+    return {
+      roles: ROLES,
+      roleCount: ROLES.length + " roles",
+      socials: SOCIALS,
+      cvHref: PROFILE.cv,
+      cvFilename: PROFILE.cvFilename,
+    };
+  }
+
   renderVals() {
     return {
       refRoom: (el: HTMLElement | null) => {
@@ -360,6 +372,7 @@ export default class RoomMobile extends Component<Props, State> {
       jPrices: () => this.jump(0.7),
       jMail: () => { if (this.state.sent) this.unsend(); this.jump(0.93); },
       ...this.machine(),
+      ...this.contentVals(),
     };
   }
 

@@ -16,6 +16,7 @@ import { Component } from "react";
 import { SceneDesktop } from "./scene/SceneDesktop";
 import { BootOverlay } from "./BootOverlay";
 import { submitBrief } from "./useBrief";
+import { ROLES, SOCIALS, PROFILE } from "@/lib/content";
 
 type Props = { accent?: string };
 type State = {
@@ -117,6 +118,11 @@ export default class RoomDesktop extends Component<Props, State> {
   private looping = false;
   private raf = 0;
   private zone: number | null = null;
+  // Read once on mount. The camera tilt and the self-walking cursor are driven
+  // from a rAF loop writing transforms, which no CSS media query can reach — so
+  // honouring prefers-reduced-motion has to happen here. Matters more now that
+  // this is the homepage than it did on a side route.
+  private reduced = false;
   private nav: number | null = null;
   private clockTimer?: ReturnType<typeof setInterval>;
   private phTimer?: ReturnType<typeof setInterval>;
@@ -133,6 +139,13 @@ export default class RoomDesktop extends Component<Props, State> {
   componentDidMount() {
     this.cx = 720;
     this.cy = 700;
+    this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (this.reduced && this.room) {
+      // No self-walking sprite to stand in for the pointer, so give the real
+      // one back rather than leaving the room with no cursor at all.
+      this.room.style.cursor = "auto";
+      this.room.style.setProperty("--sprite", "0");
+    }
     this.applyTheme();
     this.tickClock();
     this.clockTimer = setInterval(() => this.tickClock(), 20000);
@@ -303,6 +316,14 @@ export default class RoomDesktop extends Component<Props, State> {
   // Self-healing: hot reloads and remounts can cancel the frame, so anything
   // that touches the scene re-arms it instead of assuming it is alive.
   ensureLoop() {
+    // Reduced motion gets no continuous animation at all: paint once for
+    // whatever just changed and stay idle. Callers already invoke this after
+    // every scroll and pointer move, so the scene still tracks — it just stops
+    // easing between frames.
+    if (this.reduced) {
+      this.paint();
+      return;
+    }
     if (this.looping) return;
     this.looping = true;
     this.loop();
@@ -338,20 +359,38 @@ export default class RoomDesktop extends Component<Props, State> {
         this.cx = tx;
         this.cy = ty;
       }
-      this.vx = this.vx * 0.74 + (tx - this.cx) * 0.15;
-      this.vy = this.vy * 0.74 + (ty - this.cy) * 0.15;
-      this.cx += this.vx;
-      this.cy += this.vy;
+      if (this.reduced) {
+        // Snap rather than glide: the walk is the animation.
+        this.cx = tx;
+        this.cy = ty;
+        this.vx = 0;
+        this.vy = 0;
+      } else {
+        this.vx = this.vx * 0.74 + (tx - this.cx) * 0.15;
+        this.vy = this.vy * 0.74 + (ty - this.cy) * 0.15;
+        this.cx += this.vx;
+        this.cy += this.vy;
+      }
     }
-    st.style.setProperty("--sprite", this.overText || this.typing ? "0" : "1");
+    st.style.setProperty(
+      "--sprite",
+      this.reduced || this.overText || this.typing ? "0" : "1",
+    );
     st.style.setProperty("--cx", this.cx.toFixed(1) + "px");
     st.style.setProperty("--cy", this.cy.toFixed(1) + "px");
     st.style.setProperty("--tip", tip ? "1" : "0");
     if (tip !== this.state.tip) this.setState({ tip });
 
-    // eased tilt, so the display leans rather than snaps
-    this.rx += (-this.ty * 5.5 - this.rx) * 0.07;
-    this.ry += (this.tx * 7.5 - this.ry) * 0.07;
+    // eased tilt, so the display leans rather than snaps. Reduced motion holds
+    // the display square on instead — this is the parallax that actually makes
+    // people queasy, so it is the first thing to go.
+    if (this.reduced) {
+      this.rx = 0;
+      this.ry = 0;
+    } else {
+      this.rx += (-this.ty * 5.5 - this.rx) * 0.07;
+      this.ry += (this.tx * 7.5 - this.ry) * 0.07;
+    }
     st.style.setProperty("--rx", this.rx.toFixed(2) + "deg");
     st.style.setProperty("--ry", this.ry.toFixed(2) + "deg");
   }
@@ -371,7 +410,7 @@ export default class RoomDesktop extends Component<Props, State> {
     const to = Math.round(max * frac);
     this.mouseOwned = false;
     const far = Math.abs(to - window.scrollY) > window.innerHeight * 0.4;
-    window.scrollTo({ top: to, behavior: far ? "smooth" : "auto" });
+    window.scrollTo({ top: to, behavior: far && !this.reduced ? "smooth" : "auto" });
     clearTimeout(this.settleTimer);
     this.settleTimer = setTimeout(() => {
       this.readScroll();
@@ -584,6 +623,17 @@ export default class RoomDesktop extends Component<Props, State> {
     };
   }
 
+  // Site content (roles, socials, CV) rendered by the About and Work windows.
+  contentVals() {
+    return {
+      roles: ROLES,
+      roleCount: ROLES.length + " roles",
+      socials: SOCIALS,
+      cvHref: PROFILE.cv,
+      cvFilename: PROFILE.cvFilename,
+    };
+  }
+
   renderVals() {
     const t = this.state.tab;
     return {
@@ -647,6 +697,7 @@ export default class RoomDesktop extends Component<Props, State> {
       close3: () => this.closeWin(3), close4: () => this.closeWin(4),
       close5: () => this.closeWin(5),
       ...this.machine(),
+      ...this.contentVals(),
     };
   }
 

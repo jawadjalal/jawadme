@@ -121,7 +121,8 @@
                 <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:40px;font-weight:700;letter-spacing:-.045em;line-height:1;color:#141311" class="jos-zw">Jawad Jalal</span>
                 <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:16px;font-weight:600;color:#5c5850">Designer and developer. London.</span>
               </div>
-              <div style="padding:20px;display:flex;flex-direction:column;gap:18px">
+              <div style="height:424px;overflow:hidden;position:relative">
+                <div style="padding:20px;display:flex;flex-direction:column;gap:18px;transform:translateY(calc(-1 * clamp(0px, (var(--p,0) - .20) * 3400px, 268px)))">
                 <p style="margin:0;font-family:'Space Grotesk',system-ui,sans-serif;font-size:16px;line-height:1.45;color:#3a3630;text-wrap:pretty">
                   <span style="float:left;font-size:54px;font-weight:700;line-height:.78;color:#141311;margin:2px 8px 0 0">M</span>ost designers hand you a Figma file and wish you luck. I design it, build it and ship it, so nothing gets lost in a handoff that never happens.
                 </p>
@@ -173,6 +174,21 @@
                   </div>
                   <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:16px;line-height:1.35;color:#3a3630">Two build slots open from August.</span>
                 </div>
+                <div style="height:2.5px;background:#141311;opacity:.14"></div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#5c5850">Elsewhere</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <sc-for list="{{ socials }}" as="social">
+                      <a href="{{ social.href }}" target="_blank" rel="noreferrer" style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;font-weight:600;color:#141311;padding:7px 13px;border-radius:999px;box-shadow:inset 0 0 0 2.5px #141311;transition:background .16s,color .16s" style-hover="background:#141311;color:#f4f1e6">{{ social.label }}</a>
+                    </sc-for>
+                  </div>
+                  <a href="{{ cvHref }}" download="{{ cvFilename }}" style="display:flex;align-items:center;gap:12px;background:#7ac274;border-radius:18px;padding:13px 13px 13px 17px;box-shadow:5px 6px 0 #141311;transition:transform .16s cubic-bezier(.2,.9,.3,1)" style-hover="transform:translate(-2px,-3px)">
+                    <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;font-weight:700;letter-spacing:-.02em;color:#12300f">Download CV</span>
+                    <span style="width:32px;height:32px;border-radius:999px;background:#141311;color:#f4f1e6;font-family:'Space Grotesk',system-ui,sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-left:auto">↓</span>
+                  </a>
+                </div>
+                </div>
+                <div style="position:absolute;left:0;right:0;bottom:0;height:34px;background:linear-gradient(180deg,rgba(244,241,230,0) 0%,#f4f1e6 78%);pointer-events:none"></div>
               </div>
             </div>
           </div>
@@ -186,10 +202,10 @@
               </div>
               <div style="display:flex;align-items:baseline;gap:10px;padding:18px 20px 12px">
                 <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:32px;font-weight:700;letter-spacing:-.04em;color:#141311" class="jos-zw">Selected work</span>
-                <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;font-weight:600;color:#5c5850;margin-left:auto">7 total</span>
+                <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;font-weight:600;color:#5c5850;margin-left:auto">{{ roleCount }}</span>
               </div>
               <div style="height:498px;overflow:hidden;position:relative">
-                <div style="display:flex;flex-direction:column;gap:16px;padding:2px 20px 0;transform:translateY(calc(-1 * clamp(0px, (var(--p,0) - .42) * 5200px, 470px)))">
+                <div style="display:flex;flex-direction:column;gap:16px;padding:2px 20px 0;transform:translateY(calc(-1 * clamp(0px, (var(--p,0) - .42) * 9200px, 1380px)))">
                   <a href="https://splittingpoint.com" target="_blank" style="display:flex;flex-direction:column;gap:9px;transition:transform .2s cubic-bezier(.2,.9,.3,1)" style-hover="transform:translateY(-4px)">
                     <div style="height:168px;border-radius:14px;overflow:hidden;background:#e6e1d3;box-shadow:5px 6px 0 #141311">
                       <img src="/design/splittingpoint.webp" alt="splittingpoint" style="width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block">
@@ -230,12 +246,28 @@
                     </div>
                     <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:16px;line-height:1.25;color:#3a3630">Landing page. It converts, allegedly.</span>
                   </a>
+                  <div style="display:flex;align-items:center;gap:10px;padding-top:4px">
+                    <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6f6a61">Work history</span>
+                    <div style="flex:1;height:2.5px;background:#141311;opacity:.14"></div>
+                    <div style="width:9px;height:9px;border-radius:999px;background:#7ac274"></div>
+                  </div>
+                  <sc-for list="{{ roles }}" as="role">
+                    <a href="{{ role.url }}" target="_blank" rel="noreferrer" style="display:flex;flex-direction:column;gap:4px;transition:transform .18s cubic-bezier(.2,.9,.3,1)" style-hover="transform:translateX(4px)">
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <img src="{{ role.icon }}" alt="" style="width:16px;height:16px;flex:none;border-radius:4px;object-fit:contain;display:block">
+                        <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6f6a61">{{ role.year }}</span>
+                      </div>
+                      <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:19px;font-weight:700;letter-spacing:-.03em;line-height:1.1;color:#141311">{{ role.org }}</span>
+                      <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;font-weight:600;color:#5c5850">{{ role.role }}</span>
+                      <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;line-height:1.3;color:#3a3630;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ role.detail }}</span>
+                    </a>
+                  </sc-for>
                 </div>
                 <div style="position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(180deg,rgba(244,241,230,0),#f4f1e6);pointer-events:none"></div>
               </div>
               <div style="padding:10px 20px 14px">
                 <div style="height:8px;border-radius:4px;background:#e6e1d3">
-                  <div style="height:8px;width:42%;border-radius:4px;background:#141311;margin-left:calc(clamp(0, (var(--p,0) - .42) * 5200 / 470, 1) * 58%)"></div>
+                  <div style="height:8px;width:42%;border-radius:4px;background:#141311;margin-left:calc(clamp(0, (var(--p,0) - .42) * 9200 / 1380, 1) * 58%)"></div>
                 </div>
               </div>
             </div>

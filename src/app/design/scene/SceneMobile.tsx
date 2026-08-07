@@ -8,7 +8,7 @@ import { Fragment, type CSSProperties } from "react";
 // reject on principle. One cast at the boundary beats 1200 of them.
 const s = (o: Record<string, string | number>) => o as CSSProperties;
 
-export const SceneMobileHover = ".jmh0:hover{transform:translate(-2px,-3px)}\n.jmh1:hover{transform:translateY(-4px)}\n.jmh2:hover{transform:translateY(-4px)}\n.jmh3:hover{transform:translateY(-4px)}\n.jmh4:hover{transform:translateY(-4px)}\n.jmh5:hover{color:#141311}\n.jmh6:hover{background:#f0ece0}\n.jmh7:hover{background:rgba(122,194,116,.52)}\n.jmh8:hover{transform:translateX(3px)}\n.jmh9:hover{transform:translateX(3px)}\n.jmh10:hover{transform:translateX(3px)}\n.jmh11:hover{transform:translateX(3px)}\n.jmh12:hover{transform:translate(-2px,-2px)}\n.jmh13:hover{color:#141311}\n.jmh14:hover{opacity:1;transform:translateY(-4px)}\n.jmh15:hover{opacity:1;transform:translateY(-4px)}\n.jmh16:hover{opacity:1;transform:translateY(-4px)}\n.jmh17:hover{opacity:1;transform:translateY(-4px)}\n.jmh18:hover{opacity:1;transform:translateY(-4px)}\n.jmh19:hover{transform:translate(-2px,-3px)}\n.jmh20:hover{transform:translateY(-3px)}\n.jmh21:hover{transform:translateY(-3px)}\n.jmh22:hover{transform:translateY(-3px)}\n.jmh23:hover{transform:translateY(-3px)}\n.jmh24:hover{transform:translateY(-3px)}\n.jmh25:hover{transform:translateX(-50%) scale(1.06);background:#8ad183;box-shadow:inset 0 0 0 1px rgba(255,255,255,.34),0 5px 0 #4b8546,0 12px 26px -4px rgba(122,194,116,.85)}";
+export const SceneMobileHover = ".jmh0:hover{transform:translate(-2px,-3px)}\n.jmh1:hover{background:#141311;color:#f4f1e6}\n.jmh2:hover{transform:translate(-2px,-3px)}\n.jmh3:hover{transform:translateY(-4px)}\n.jmh4:hover{transform:translateY(-4px)}\n.jmh5:hover{transform:translateY(-4px)}\n.jmh6:hover{transform:translateY(-4px)}\n.jmh7:hover{transform:translateX(4px)}\n.jmh8:hover{color:#141311}\n.jmh9:hover{background:#f0ece0}\n.jmh10:hover{background:rgba(122,194,116,.52)}\n.jmh11:hover{transform:translateX(3px)}\n.jmh12:hover{transform:translateX(3px)}\n.jmh13:hover{transform:translateX(3px)}\n.jmh14:hover{transform:translateX(3px)}\n.jmh15:hover{transform:translate(-2px,-2px)}\n.jmh16:hover{color:#141311}\n.jmh17:hover{opacity:1;transform:translateY(-4px)}\n.jmh18:hover{opacity:1;transform:translateY(-4px)}\n.jmh19:hover{opacity:1;transform:translateY(-4px)}\n.jmh20:hover{opacity:1;transform:translateY(-4px)}\n.jmh21:hover{opacity:1;transform:translateY(-4px)}\n.jmh22:hover{transform:translate(-2px,-3px)}\n.jmh23:hover{transform:translateY(-3px)}\n.jmh24:hover{transform:translateY(-3px)}\n.jmh25:hover{transform:translateY(-3px)}\n.jmh26:hover{transform:translateY(-3px)}\n.jmh27:hover{transform:translateY(-3px)}\n.jmh28:hover{transform:translateX(-50%) scale(1.06);background:#8ad183;box-shadow:inset 0 0 0 1px rgba(255,255,255,.34),0 5px 0 #4b8546,0 12px 26px -4px rgba(122,194,116,.85)}";
 
 export function SceneMobile({ V }: { V: any }) {
   return (
@@ -153,89 +153,115 @@ export function SceneMobile({ V }: { V: any }) {
                         {"Designer and developer. London."}
                       </span>
                     </div>
-                    <div style={s({ "padding": "20px", "display": "flex", "flexDirection": "column", "gap": "18px" })}>
-                      <p style={s({ "margin": "0", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "lineHeight": "1.45", "color": "#3a3630", "textWrap": "pretty" })}>
-                        <span style={s({ "float": "left", "fontSize": "54px", "fontWeight": "700", "lineHeight": ".78", "color": "#141311", "margin": "2px 8px 0 0" })}>
-                          {"M"}
-                        </span>
-                        {"ost designers hand you a Figma file and wish you luck. I design it, build it and ship it, so nothing gets lost in a handoff that never happens. "}
-                      </p>
-                      <div style={s({ "display": "flex", "alignItems": "center", "gap": "0" })}>
-                        <div style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "7px", "flex": "none" })}>
-                          <div style={s({ "width": "36px", "height": "36px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311" })}></div>
-                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "600", "color": "#141311" })}>
-                            {"Design"}
+                    <div style={s({ "height": "424px", "overflow": "hidden", "position": "relative" })}>
+                      <div style={s({ "padding": "20px", "display": "flex", "flexDirection": "column", "gap": "18px", "transform": "translateY(calc(-1 * clamp(0px, (var(--p,0) - .20) * 3400px, 268px)))" })}>
+                        <p style={s({ "margin": "0", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "lineHeight": "1.45", "color": "#3a3630", "textWrap": "pretty" })}>
+                          <span style={s({ "float": "left", "fontSize": "54px", "fontWeight": "700", "lineHeight": ".78", "color": "#141311", "margin": "2px 8px 0 0" })}>
+                            {"M"}
                           </span>
-                        </div>
-                        <div style={s({ "flex": "1", "height": "2.5px", "background": "#141311", "marginBottom": "22px" })}></div>
-                        <div style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "7px", "flex": "none" })}>
-                          <div style={s({ "width": "36px", "height": "36px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311" })}></div>
-                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "600", "color": "#141311" })}>
-                            {"Build"}
-                          </span>
-                        </div>
-                        <div style={s({ "flex": "1", "height": "2.5px", "background": "#141311", "marginBottom": "22px" })}></div>
-                        <div style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "7px", "flex": "none" })}>
-                          <div style={s({ "width": "36px", "height": "36px", "borderRadius": "999px", "background": "#7ac274", "boxShadow": "inset 0 0 0 2.5px #141311" })}></div>
-                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "600", "color": "#141311" })}>
-                            {"Ship"}
-                          </span>
-                        </div>
-                      </div>
-                      <div style={s({ "height": "2.5px", "background": "#141311", "opacity": ".14" })}></div>
-                      <div style={s({ "display": "flex", "flexDirection": "column", "gap": "13px" })}>
-                        <div style={s({ "display": "flex", "flexDirection": "column", "gap": "5px" })}>
-                          <div style={s({ "display": "flex", "alignItems": "baseline" })}>
-                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#141311" })}>
+                          {"ost designers hand you a Figma file and wish you luck. I design it, build it and ship it, so nothing gets lost in a handoff that never happens. "}
+                        </p>
+                        <div style={s({ "display": "flex", "alignItems": "center", "gap": "0" })}>
+                          <div style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "7px", "flex": "none" })}>
+                            <div style={s({ "width": "36px", "height": "36px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311" })}></div>
+                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "600", "color": "#141311" })}>
                               {"Design"}
                             </span>
-                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "color": "#6f6a61", "marginLeft": "auto" })}>
-                              {"Figma"}
-                            </span>
                           </div>
-                          <div style={s({ "height": "9px", "borderRadius": "5px", "background": "#e6e1d3" })}>
-                            <div style={s({ "height": "9px", "width": "92%", "borderRadius": "5px", "background": "#141311" })}></div>
-                          </div>
-                        </div>
-                        <div style={s({ "display": "flex", "flexDirection": "column", "gap": "5px" })}>
-                          <div style={s({ "display": "flex", "alignItems": "baseline" })}>
-                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#141311" })}>
+                          <div style={s({ "flex": "1", "height": "2.5px", "background": "#141311", "marginBottom": "22px" })}></div>
+                          <div style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "7px", "flex": "none" })}>
+                            <div style={s({ "width": "36px", "height": "36px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311" })}></div>
+                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "600", "color": "#141311" })}>
                               {"Build"}
                             </span>
-                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "color": "#6f6a61", "marginLeft": "auto" })}>
-                              {"React, Next, Tailwind"}
-                            </span>
                           </div>
-                          <div style={s({ "height": "9px", "borderRadius": "5px", "background": "#e6e1d3" })}>
-                            <div style={s({ "height": "9px", "width": "88%", "borderRadius": "5px", "background": "#141311" })}></div>
+                          <div style={s({ "flex": "1", "height": "2.5px", "background": "#141311", "marginBottom": "22px" })}></div>
+                          <div style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "7px", "flex": "none" })}>
+                            <div style={s({ "width": "36px", "height": "36px", "borderRadius": "999px", "background": "#7ac274", "boxShadow": "inset 0 0 0 2.5px #141311" })}></div>
+                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "600", "color": "#141311" })}>
+                              {"Ship"}
+                            </span>
                           </div>
                         </div>
-                        <div style={s({ "display": "flex", "flexDirection": "column", "gap": "5px" })}>
-                          <div style={s({ "display": "flex", "alignItems": "baseline" })}>
-                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#141311" })}>
-                              {"Motion"}
-                            </span>
-                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "color": "#6f6a61", "marginLeft": "auto" })}>
-                              {"GSAP, Three"}
-                            </span>
+                        <div style={s({ "height": "2.5px", "background": "#141311", "opacity": ".14" })}></div>
+                        <div style={s({ "display": "flex", "flexDirection": "column", "gap": "13px" })}>
+                          <div style={s({ "display": "flex", "flexDirection": "column", "gap": "5px" })}>
+                            <div style={s({ "display": "flex", "alignItems": "baseline" })}>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#141311" })}>
+                                {"Design"}
+                              </span>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "color": "#6f6a61", "marginLeft": "auto" })}>
+                                {"Figma"}
+                              </span>
+                            </div>
+                            <div style={s({ "height": "9px", "borderRadius": "5px", "background": "#e6e1d3" })}>
+                              <div style={s({ "height": "9px", "width": "92%", "borderRadius": "5px", "background": "#141311" })}></div>
+                            </div>
                           </div>
-                          <div style={s({ "height": "9px", "borderRadius": "5px", "background": "#e6e1d3" })}>
-                            <div style={s({ "height": "9px", "width": "74%", "borderRadius": "5px", "background": "#7ac274" })}></div>
+                          <div style={s({ "display": "flex", "flexDirection": "column", "gap": "5px" })}>
+                            <div style={s({ "display": "flex", "alignItems": "baseline" })}>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#141311" })}>
+                                {"Build"}
+                              </span>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "color": "#6f6a61", "marginLeft": "auto" })}>
+                                {"React, Next, Tailwind"}
+                              </span>
+                            </div>
+                            <div style={s({ "height": "9px", "borderRadius": "5px", "background": "#e6e1d3" })}>
+                              <div style={s({ "height": "9px", "width": "88%", "borderRadius": "5px", "background": "#141311" })}></div>
+                            </div>
                           </div>
+                          <div style={s({ "display": "flex", "flexDirection": "column", "gap": "5px" })}>
+                            <div style={s({ "display": "flex", "alignItems": "baseline" })}>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#141311" })}>
+                                {"Motion"}
+                              </span>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "color": "#6f6a61", "marginLeft": "auto" })}>
+                                {"GSAP, Three"}
+                              </span>
+                            </div>
+                            <div style={s({ "height": "9px", "borderRadius": "5px", "background": "#e6e1d3" })}>
+                              <div style={s({ "height": "9px", "width": "74%", "borderRadius": "5px", "background": "#7ac274" })}></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div style={s({ "display": "flex", "alignItems": "center", "gap": "14px", "background": "#fbf9f1", "borderRadius": "18px", "padding": "14px 16px", "boxShadow": "5px 6px 0 #141311" })}>
+                          <div style={s({ "position": "relative", "width": "64px", "height": "64px", "borderRadius": "999px", "background": "conic-gradient(#7ac274 0 50%, #e6e1d3 50% 100%)", "flex": "none" })}>
+                            <div style={s({ "position": "absolute", "inset": "9px", "borderRadius": "999px", "background": "#fbf9f1", "display": "flex", "alignItems": "center", "justifyContent": "center" })}>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "24px", "fontWeight": "700", "letterSpacing": "-.04em", "color": "#141311" })}>
+                                {"2"}
+                              </span>
+                            </div>
+                          </div>
+                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "lineHeight": "1.35", "color": "#3a3630" })}>
+                            {"Two build slots open from August."}
+                          </span>
+                        </div>
+                        <div style={s({ "height": "2.5px", "background": "#141311", "opacity": ".14" })}></div>
+                        <div style={s({ "display": "flex", "flexDirection": "column", "gap": "12px" })}>
+                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "12px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850" })}>
+                            {"Elsewhere"}
+                          </span>
+                          <div style={s({ "display": "flex", "flexWrap": "wrap", "gap": "8px" })}>
+                            {(V.socials ?? []).map((social: any, socialIndex: number) => (
+                              <Fragment key={socialIndex}>
+                                <a href={social.href} target="_blank" rel="noreferrer" style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#141311", "padding": "7px 13px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311", "transition": "background .16s,color .16s" })} className="jmh1">
+                                  {social.label}
+                                </a>
+                              </Fragment>
+                            ))}
+                          </div>
+                          <a href={V.cvHref} download={V.cvFilename} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "background": "#7ac274", "borderRadius": "18px", "padding": "13px 13px 13px 17px", "boxShadow": "5px 6px 0 #141311", "transition": "transform .16s cubic-bezier(.2,.9,.3,1)" })} className="jmh2">
+                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "18px", "fontWeight": "700", "letterSpacing": "-.02em", "color": "#12300f" })}>
+                              {"Download CV"}
+                            </span>
+                            <span style={s({ "width": "32px", "height": "32px", "borderRadius": "999px", "background": "#141311", "color": "#f4f1e6", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "fontWeight": "700", "display": "flex", "alignItems": "center", "justifyContent": "center", "flex": "none", "marginLeft": "auto" })}>
+                              {"↓"}
+                            </span>
+                          </a>
                         </div>
                       </div>
-                      <div style={s({ "display": "flex", "alignItems": "center", "gap": "14px", "background": "#fbf9f1", "borderRadius": "18px", "padding": "14px 16px", "boxShadow": "5px 6px 0 #141311" })}>
-                        <div style={s({ "position": "relative", "width": "64px", "height": "64px", "borderRadius": "999px", "background": "conic-gradient(#7ac274 0 50%, #e6e1d3 50% 100%)", "flex": "none" })}>
-                          <div style={s({ "position": "absolute", "inset": "9px", "borderRadius": "999px", "background": "#fbf9f1", "display": "flex", "alignItems": "center", "justifyContent": "center" })}>
-                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "24px", "fontWeight": "700", "letterSpacing": "-.04em", "color": "#141311" })}>
-                              {"2"}
-                            </span>
-                          </div>
-                        </div>
-                        <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "lineHeight": "1.35", "color": "#3a3630" })}>
-                          {"Two build slots open from August."}
-                        </span>
-                      </div>
+                      <div style={s({ "position": "absolute", "left": "0", "right": "0", "bottom": "0", "height": "34px", "background": "linear-gradient(180deg,rgba(244,241,230,0) 0%,#f4f1e6 78%)", "pointerEvents": "none" })}></div>
                     </div>
                   </div>
                 </div>
@@ -255,12 +281,12 @@ export function SceneMobile({ V }: { V: any }) {
                         {"Selected work"}
                       </span>
                       <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#5c5850", "marginLeft": "auto" })}>
-                        {"7 total"}
+                        {V.roleCount}
                       </span>
                     </div>
                     <div style={s({ "height": "498px", "overflow": "hidden", "position": "relative" })}>
-                      <div style={s({ "display": "flex", "flexDirection": "column", "gap": "16px", "padding": "2px 20px 0", "transform": "translateY(calc(-1 * clamp(0px, (var(--p,0) - .42) * 5200px, 470px)))" })}>
-                        <a href="https://splittingpoint.com" target="_blank" style={s({ "display": "flex", "flexDirection": "column", "gap": "9px", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jmh1">
+                      <div style={s({ "display": "flex", "flexDirection": "column", "gap": "16px", "padding": "2px 20px 0", "transform": "translateY(calc(-1 * clamp(0px, (var(--p,0) - .42) * 9200px, 1380px)))" })}>
+                        <a href="https://splittingpoint.com" target="_blank" style={s({ "display": "flex", "flexDirection": "column", "gap": "9px", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jmh3">
                           <div style={s({ "height": "168px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "5px 6px 0 #141311" })}>
                             <img src="/design/splittingpoint.webp" alt="splittingpoint" style={s({ "width": "100%", "height": "100%", "objectFit": "cover", "objectPosition": "50% 12%", "display": "block" })} />
                           </div>
@@ -276,7 +302,7 @@ export function SceneMobile({ V }: { V: any }) {
                             {"Games their mums are proud of. Mostly."}
                           </span>
                         </a>
-                        <a href="https://skribbl.dev" target="_blank" style={s({ "display": "flex", "flexDirection": "column", "gap": "9px", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jmh2">
+                        <a href="https://skribbl.dev" target="_blank" style={s({ "display": "flex", "flexDirection": "column", "gap": "9px", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jmh4">
                           <div style={s({ "height": "168px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "5px 6px 0 #141311" })}>
                             <img src="/design/skribbl-dev.webp" alt="skribbl.dev" style={s({ "width": "100%", "height": "100%", "objectFit": "cover", "objectPosition": "50% 6%", "display": "block" })} />
                           </div>
@@ -292,7 +318,7 @@ export function SceneMobile({ V }: { V: any }) {
                             {"Agents, running loose but supervised."}
                           </span>
                         </a>
-                        <a href="https://bevel.team" target="_blank" style={s({ "display": "flex", "flexDirection": "column", "gap": "9px", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jmh3">
+                        <a href="https://bevel.team" target="_blank" style={s({ "display": "flex", "flexDirection": "column", "gap": "9px", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jmh5">
                           <div style={s({ "height": "168px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "5px 6px 0 #141311" })}>
                             <img src="/design/bevel-team.webp" alt="bevel.team" style={s({ "width": "100%", "height": "100%", "objectFit": "cover", "objectPosition": "50% 10%", "display": "block" })} />
                           </div>
@@ -308,7 +334,7 @@ export function SceneMobile({ V }: { V: any }) {
                             {"Three dee, game ready, edges softened."}
                           </span>
                         </a>
-                        <a href="https://bidframe.org" target="_blank" style={s({ "display": "flex", "flexDirection": "column", "gap": "9px", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jmh4">
+                        <a href="https://bidframe.org" target="_blank" style={s({ "display": "flex", "flexDirection": "column", "gap": "9px", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jmh6">
                           <div style={s({ "height": "168px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "5px 6px 0 #141311" })}>
                             <img src="/design/bidframe-org.webp" alt="bidframe.org" style={s({ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" })} />
                           </div>
@@ -324,12 +350,40 @@ export function SceneMobile({ V }: { V: any }) {
                             {"Landing page. It converts, allegedly."}
                           </span>
                         </a>
+                        <div style={s({ "display": "flex", "alignItems": "center", "gap": "10px", "paddingTop": "4px" })}>
+                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "12px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#6f6a61" })}>
+                            {"Work history"}
+                          </span>
+                          <div style={s({ "flex": "1", "height": "2.5px", "background": "#141311", "opacity": ".14" })}></div>
+                          <div style={s({ "width": "9px", "height": "9px", "borderRadius": "999px", "background": "#7ac274" })}></div>
+                        </div>
+                        {(V.roles ?? []).map((role: any, roleIndex: number) => (
+                          <Fragment key={roleIndex}>
+                            <a href={role.url} target="_blank" rel="noreferrer" style={s({ "display": "flex", "flexDirection": "column", "gap": "4px", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jmh7">
+                              <div style={s({ "display": "flex", "alignItems": "center", "gap": "9px" })}>
+                                <img src={role.icon} alt="" style={s({ "width": "16px", "height": "16px", "flex": "none", "borderRadius": "4px", "objectFit": "contain", "display": "block" })} />
+                                <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "11px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#6f6a61" })}>
+                                  {role.year}
+                                </span>
+                              </div>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "19px", "fontWeight": "700", "letterSpacing": "-.03em", "lineHeight": "1.1", "color": "#141311" })}>
+                                {role.org}
+                              </span>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#5c5850" })}>
+                                {role.role}
+                              </span>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "lineHeight": "1.3", "color": "#3a3630", "display": "-webkit-box", "WebkitLineClamp": "2", "WebkitBoxOrient": "vertical", "overflow": "hidden" })}>
+                                {role.detail}
+                              </span>
+                            </a>
+                          </Fragment>
+                        ))}
                       </div>
                       <div style={s({ "position": "absolute", "left": "0", "right": "0", "bottom": "0", "height": "44px", "background": "linear-gradient(180deg,rgba(244,241,230,0),#f4f1e6)", "pointerEvents": "none" })}></div>
                     </div>
                     <div style={s({ "padding": "10px 20px 14px" })}>
                       <div style={s({ "height": "8px", "borderRadius": "4px", "background": "#e6e1d3" })}>
-                        <div style={s({ "height": "8px", "width": "42%", "borderRadius": "4px", "background": "#141311", "marginLeft": "calc(clamp(0, (var(--p,0) - .42) * 5200 / 470, 1) * 58%)" })}></div>
+                        <div style={s({ "height": "8px", "width": "42%", "borderRadius": "4px", "background": "#141311", "marginLeft": "calc(clamp(0, (var(--p,0) - .42) * 9200 / 1380, 1) * 58%)" })}></div>
                       </div>
                     </div>
                   </div>
@@ -341,12 +395,12 @@ export function SceneMobile({ V }: { V: any }) {
                       <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "fontWeight": "700", "letterSpacing": "-.015em", "color": "#141311" })}>
                         {"Prices"}
                       </span>
-                      <span onClick={V.resetMachine} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#5c5850", "marginLeft": "auto", "cursor": "pointer" })} className="jmh5">
+                      <span onClick={V.resetMachine} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#5c5850", "marginLeft": "auto", "cursor": "pointer" })} className="jmh8">
                         {"Clear"}
                       </span>
                     </div>
                     <div style={s({ "display": "flex", "alignItems": "stretch", "boxShadow": "inset 0 -2.5px 0 #141311" })}>
-                      <div onClick={V.pickSingle} style={s({ "flex": "1", "position": "relative", "background": "#fbf9f1", "padding": "18px 16px 20px", "display": "flex", "flexDirection": "column", "gap": "4px", "cursor": "pointer", "boxShadow": "inset -2.5px 0 0 #141311", "transition": "background .2s" })} className="jmh6">
+                      <div onClick={V.pickSingle} style={s({ "flex": "1", "position": "relative", "background": "#fbf9f1", "padding": "18px 16px 20px", "display": "flex", "flexDirection": "column", "gap": "4px", "cursor": "pointer", "boxShadow": "inset -2.5px 0 0 #141311", "transition": "background .2s" })} className="jmh9">
                         <div style={s({ "display": "flex", "alignItems": "center", "gap": "8px", "minHeight": "22px" })}>
                           <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "700", "color": "#141311" })}>
                             {"The Single"}
@@ -374,7 +428,7 @@ export function SceneMobile({ V }: { V: any }) {
                           </>
                         ) : null}
                       </div>
-                      <div onClick={V.pickEdition} style={s({ "flex": "1", "position": "relative", "background": "rgba(122,194,116,.4)", "padding": "18px 16px 20px", "display": "flex", "flexDirection": "column", "gap": "4px", "cursor": "pointer", "transition": "background .2s" })} className="jmh7">
+                      <div onClick={V.pickEdition} style={s({ "flex": "1", "position": "relative", "background": "rgba(122,194,116,.4)", "padding": "18px 16px 20px", "display": "flex", "flexDirection": "column", "gap": "4px", "cursor": "pointer", "transition": "background .2s" })} className="jmh10">
                         <div style={s({ "display": "flex", "alignItems": "center", "gap": "8px", "minHeight": "22px" })}>
                           <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "700", "color": "#141311" })}>
                             {"The Edition"}
@@ -407,7 +461,7 @@ export function SceneMobile({ V }: { V: any }) {
                       <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "12px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850", "marginBottom": "6px" })}>
                         {"Add ons"}
                       </span>
-                      <div onClick={V.toggleCms} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "9px 0", "cursor": "pointer", "transition": "transform .14s" })} className="jmh8">
+                      <div onClick={V.toggleCms} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "9px 0", "cursor": "pointer", "transition": "transform .14s" })} className="jmh11">
                         <span style={s({ "position": "relative", "width": "20px", "height": "20px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311" })}>
                           {V.pCms ? (
                             <>
@@ -424,7 +478,7 @@ export function SceneMobile({ V }: { V: any }) {
                           {"+$1,600"}
                         </span>
                       </div>
-                      <div onClick={V.togglePages} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "9px 0", "cursor": "pointer", "transition": "transform .14s" })} className="jmh9">
+                      <div onClick={V.togglePages} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "9px 0", "cursor": "pointer", "transition": "transform .14s" })} className="jmh12">
                         <span style={s({ "position": "relative", "width": "20px", "height": "20px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311" })}>
                           {V.pPages ? (
                             <>
@@ -441,7 +495,7 @@ export function SceneMobile({ V }: { V: any }) {
                           {"+$900"}
                         </span>
                       </div>
-                      <div onClick={V.toggleMotion} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "9px 0", "cursor": "pointer", "transition": "transform .14s" })} className="jmh10">
+                      <div onClick={V.toggleMotion} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "9px 0", "cursor": "pointer", "transition": "transform .14s" })} className="jmh13">
                         <span style={s({ "position": "relative", "width": "20px", "height": "20px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311" })}>
                           {V.pMotion ? (
                             <>
@@ -458,7 +512,7 @@ export function SceneMobile({ V }: { V: any }) {
                           {"+$2,400"}
                         </span>
                       </div>
-                      <div onClick={V.toggleCopy} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "9px 0", "cursor": "pointer", "transition": "transform .14s" })} className="jmh11">
+                      <div onClick={V.toggleCopy} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "9px 0", "cursor": "pointer", "transition": "transform .14s" })} className="jmh14">
                         <span style={s({ "position": "relative", "width": "20px", "height": "20px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311" })}>
                           {V.pCopy ? (
                             <>
@@ -504,7 +558,7 @@ export function SceneMobile({ V }: { V: any }) {
                           </>
                         ) : null}
                       </div>
-                      <a href="https://cal.com/jawad-jalal-hesqbk/15min" target="_blank" style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "14px", "padding": "16px", "textAlign": "center", "boxShadow": "4px 5px 0 #f4f1e6", "transition": "transform .16s" })} className="jmh12">
+                      <a href="https://cal.com/jawad-jalal-hesqbk/15min" target="_blank" style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "14px", "padding": "16px", "textAlign": "center", "boxShadow": "4px 5px 0 #f4f1e6", "transition": "transform .16s" })} className="jmh15">
                         {"Book 15 minutes"}
                       </a>
                     </div>
@@ -518,7 +572,7 @@ export function SceneMobile({ V }: { V: any }) {
                         <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "fontWeight": "700", "letterSpacing": "-.015em", "color": "#141311" })}>
                           {"New brief"}
                         </span>
-                        <span onClick={V.sendMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#5c5850", "marginLeft": "auto", "cursor": "pointer" })} className="jmh13">
+                        <span onClick={V.sendMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#5c5850", "marginLeft": "auto", "cursor": "pointer" })} className="jmh16">
                           {"Send"}
                         </span>
                       </div>
@@ -544,27 +598,27 @@ export function SceneMobile({ V }: { V: any }) {
                       </div>
                       <textarea ref={V.refMsg} onKeyDown={V.onKey} onInput={V.onBody} rows={4} placeholder={V.bodyPlaceholder} style={s({ "width": "100%", "boxSizing": "border-box", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "border": "none", "background": "transparent", "padding": "16px 20px 4px", "fontSize": "19px", "lineHeight": "1.4", "color": "#141311", "outline": "none", "resize": "none", "caretColor": "#7ac274" })}></textarea>
                       <div style={s({ "display": "flex", "alignItems": "center", "gap": "6px", "padding": "2px 16px 12px" })}>
-                        <a href="https://x.com/jawadmakes" target="_blank" rel="noreferrer" title="X" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.340s backwards" })} className="jmh14">
+                        <a href="https://x.com/jawadmakes" target="_blank" rel="noreferrer" title="X" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.340s backwards" })} className="jmh17">
                           <svg viewBox="0 0 24 24" width="17" height="17" fill="#141311" aria-hidden="true">
                             <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path>
                           </svg>
                         </a>
-                        <a href="https://www.tiktok.com/@jawadmakes" target="_blank" rel="noreferrer" title="TikTok" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.395s backwards" })} className="jmh15">
+                        <a href="https://www.tiktok.com/@jawadmakes" target="_blank" rel="noreferrer" title="TikTok" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.395s backwards" })} className="jmh18">
                           <svg viewBox="0 0 24 24" width="17" height="17" fill="#141311" aria-hidden="true">
                             <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path>
                           </svg>
                         </a>
-                        <a href="https://www.linkedin.com/in/jawad-jalal-designs" target="_blank" rel="noreferrer" title="LinkedIn" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.450s backwards" })} className="jmh16">
+                        <a href="https://www.linkedin.com/in/jawad-jalal-designs" target="_blank" rel="noreferrer" title="LinkedIn" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.450s backwards" })} className="jmh19">
                           <svg viewBox="0 0 24 24" width="17" height="17" fill="#141311" aria-hidden="true">
                             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"></path>
                           </svg>
                         </a>
-                        <a href="https://www.instagram.com/j.awadjalal/" target="_blank" rel="noreferrer" title="Instagram" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.505s backwards" })} className="jmh17">
+                        <a href="https://www.instagram.com/j.awadjalal/" target="_blank" rel="noreferrer" title="Instagram" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.505s backwards" })} className="jmh20">
                           <svg viewBox="0 0 24 24" width="17" height="17" fill="#141311" aria-hidden="true">
                             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path>
                           </svg>
                         </a>
-                        <a href="https://www.youtube.com/@jawadmake" target="_blank" rel="noreferrer" title="YouTube" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.560s backwards" })} className="jmh18">
+                        <a href="https://www.youtube.com/@jawadmake" target="_blank" rel="noreferrer" title="YouTube" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.560s backwards" })} className="jmh21">
                           <svg viewBox="0 0 24 24" width="17" height="17" fill="#141311" aria-hidden="true">
                             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path>
                           </svg>
@@ -573,7 +627,7 @@ export function SceneMobile({ V }: { V: any }) {
                           {V.judge}
                         </span>
                       </div>
-                      <div onClick={V.sendMail} style={s({ "margin": "0 20px 20px", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "18px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "16px", "padding": "18px", "textAlign": "center", "cursor": "pointer", "boxShadow": "5px 6px 0 #141311", "transition": "transform .16s" })} className="jmh19">
+                      <div onClick={V.sendMail} style={s({ "margin": "0 20px 20px", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "18px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "16px", "padding": "18px", "textAlign": "center", "cursor": "pointer", "boxShadow": "5px 6px 0 #141311", "transition": "transform .16s" })} className="jmh22">
                         {"Send brief"}
                       </div>
                       <div style={s({ "position": "absolute", "inset": "0", "background": "rgba(13,11,20,.42)", "display": "flex", "alignItems": "flex-start", "justifyContent": "center", "paddingTop": "120px", "opacity": "var(--alert-o,0)", "pointerEvents": "var(--alert-pe,none)" })}>
@@ -594,7 +648,7 @@ export function SceneMobile({ V }: { V: any }) {
                 </div>
                 <div style={s({ "position": "absolute", "left": "16px", "right": "16px", "bottom": "22px", "zIndex": "20", "display": "flex", "alignItems": "flex-end", "justifyContent": "space-between", "background": "linear-gradient(180deg,#fbf9f1 0%,#efeadb 100%)", "boxShadow": "7px 8px 0 #141311,inset 0 2px 0 rgba(255,255,255,.9),0 26px 46px -14px rgba(4,3,8,.8)", "padding": "12px 14px 10px", "borderRadius": "24px" })}>
                   <div onClick={V.jHome} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "6px", "cursor": "pointer", "flex": "1" })}>
-                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh20">
+                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh23">
                       <div style={s({ "position": "relative", "width": "24px", "height": "21px" })}>
                         <div style={s({ "position": "absolute", "left": "0", "top": "0", "width": "24px", "height": "11px", "background": "#141311", "clipPath": "polygon(50% 0,100% 100%,0 100%)" })}></div>
                         <div style={s({ "position": "absolute", "left": "4px", "top": "9px", "width": "16px", "height": "12px", "borderRadius": "0 0 3px 3px", "background": "#141311" })}></div>
@@ -603,7 +657,7 @@ export function SceneMobile({ V }: { V: any }) {
                     <div style={s({ "width": "16px", "height": "4px", "borderRadius": "2px", "background": "#141311", "opacity": "var(--nav0,0)", "transition": "opacity .3s" })}></div>
                   </div>
                   <div onClick={V.jAbout} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "6px", "cursor": "pointer", "flex": "1" })}>
-                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh21">
+                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh24">
                       <div style={s({ "position": "relative", "width": "24px", "height": "18px", "borderRadius": "5px", "background": "#141311" })}>
                         <div style={s({ "position": "absolute", "left": "6px", "top": "-4px", "width": "10px", "height": "4px", "borderRadius": "2px 2px 0 0", "background": "#141311" })}></div>
                         <div style={s({ "position": "absolute", "left": "7px", "top": "4px", "width": "10px", "height": "10px", "borderRadius": "999px", "background": "#fbf9f1" })}></div>
@@ -612,7 +666,7 @@ export function SceneMobile({ V }: { V: any }) {
                     <div style={s({ "width": "16px", "height": "4px", "borderRadius": "2px", "background": "#141311", "opacity": "var(--nav1,0)", "transition": "opacity .3s" })}></div>
                   </div>
                   <div onClick={V.jWork} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "6px", "cursor": "pointer", "flex": "1" })}>
-                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh22">
+                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh25">
                       <div style={s({ "position": "relative", "width": "24px", "height": "19px" })}>
                         <div style={s({ "position": "absolute", "left": "0", "top": "0", "width": "11px", "height": "5px", "borderRadius": "2px 4px 0 0", "background": "#141311" })}></div>
                         <div style={s({ "position": "absolute", "left": "0", "top": "4px", "width": "24px", "height": "15px", "borderRadius": "3px", "background": "#141311" })}></div>
@@ -621,7 +675,7 @@ export function SceneMobile({ V }: { V: any }) {
                     <div style={s({ "width": "16px", "height": "4px", "borderRadius": "2px", "background": "#141311", "opacity": "var(--nav2,0)", "transition": "opacity .3s" })}></div>
                   </div>
                   <div onClick={V.jPrices} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "6px", "cursor": "pointer", "flex": "1" })}>
-                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh23">
+                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh26">
                       <div style={s({ "position": "relative", "width": "22px", "height": "22px" })}>
                         <div style={s({ "position": "absolute", "inset": "0", "background": "#141311", "clipPath": "polygon(0 0,58% 0,100% 42%,42% 100%,0 58%)", "borderRadius": "3px" })}></div>
                         <div style={s({ "position": "absolute", "left": "5px", "top": "5px", "width": "6px", "height": "6px", "borderRadius": "999px", "background": "#fbf9f1" })}></div>
@@ -633,7 +687,7 @@ export function SceneMobile({ V }: { V: any }) {
                     <div style={s({ "position": "absolute", "right": "8px", "top": "-7px", "zIndex": "3", "minWidth": "20px", "height": "20px", "borderRadius": "999px", "background": "#7ac274", "color": "#12300f", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "12px", "fontWeight": "700", "display": "flex", "alignItems": "center", "justifyContent": "center", "opacity": "var(--badge,0)", "transition": "opacity .2s .3s" })}>
                       {"1"}
                     </div>
-                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh24">
+                    <div style={s({ "width": "46px", "height": "46px", "borderRadius": "14px", "background": "#fbf9f1", "boxShadow": "4px 5px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "transform .16s" })} className="jmh27">
                       <div style={s({ "position": "relative", "width": "24px", "height": "17px", "borderRadius": "3px", "background": "#141311", "overflow": "hidden" })}>
                         <div style={s({ "position": "absolute", "left": "1px", "top": "1px", "width": "22px", "height": "11px", "background": "#fbf9f1", "clipPath": "polygon(0 0,100% 0,50% 100%)" })}></div>
                       </div>
@@ -652,7 +706,7 @@ export function SceneMobile({ V }: { V: any }) {
                     {V.clock}
                   </span>
                 </div>
-                <div onClick={V.jMail} style={s({ "position": "absolute", "left": "50%", "top": "8px", "transform": "translateX(-50%)", "height": "34px", "background": "#7ac274", "borderRadius": "999px", "zIndex": "24", "display": "flex", "alignItems": "center", "gap": "9px", "padding": "0 13px 0 14px", "cursor": "pointer", "boxShadow": "inset 0 0 0 1px rgba(255,255,255,.28),0 3px 0 #4b8546,0 8px 20px -4px rgba(122,194,116,.7)", "transition": "transform .2s cubic-bezier(.3,1.3,.4,1),box-shadow .2s,background .2s" })} className="jmh25">
+                <div onClick={V.jMail} style={s({ "position": "absolute", "left": "50%", "top": "8px", "transform": "translateX(-50%)", "height": "34px", "background": "#7ac274", "borderRadius": "999px", "zIndex": "24", "display": "flex", "alignItems": "center", "gap": "9px", "padding": "0 13px 0 14px", "cursor": "pointer", "boxShadow": "inset 0 0 0 1px rgba(255,255,255,.28),0 3px 0 #4b8546,0 8px 20px -4px rgba(122,194,116,.7)", "transition": "transform .2s cubic-bezier(.3,1.3,.4,1),box-shadow .2s,background .2s" })} className="jmh28">
                   <div style={s({ "width": "8px", "height": "8px", "borderRadius": "999px", "background": "#12300f", "flex": "none", "animation": "hum 2.6s ease-in-out infinite" })}></div>
                   <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "700", "letterSpacing": "-.01em", "color": "#12300f", "whiteSpace": "nowrap" })}>
                     {"Hire me"}

@@ -8,7 +8,7 @@ import { Fragment, type CSSProperties } from "react";
 // reject on principle. One cast at the boundary beats 1200 of them.
 const s = (o: Record<string, string | number>) => o as CSSProperties;
 
-export const SceneDesktopHover = ".jdh0:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh1:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh2:hover{transform:scale(1.35)}\n.jdh3:hover{color:#141311}\n.jdh4:hover{color:#141311}\n.jdh5:hover{transform:translate(-3px,-4px)}\n.jdh6:hover{color:#141311}\n.jdh7:hover{transform:scale(1.35)}\n.jdh8:hover{color:#141311}\n.jdh9:hover{color:#141311}\n.jdh10:hover{transform:scale(1.35)}\n.jdh11:hover{color:#141311}\n.jdh12:hover{color:#141311}\n.jdh13:hover{opacity:.6}\n.jdh14:hover{opacity:.6}\n.jdh15:hover{opacity:.6}\n.jdh16:hover{opacity:.6}\n.jdh17:hover{transform:translateY(-5px)}\n.jdh18:hover{transform:translateY(-5px)}\n.jdh19:hover{transform:translateY(-5px)}\n.jdh20:hover{transform:translateY(-5px)}\n.jdh21:hover{transform:scale(1.35)}\n.jdh22:hover{color:#141311}\n.jdh23:hover{color:#141311}\n.jdh24:hover{color:#141311}\n.jdh25:hover{transform:translateX(3px)}\n.jdh26:hover{transform:translateX(3px)}\n.jdh27:hover{transform:translateX(3px)}\n.jdh28:hover{transform:translateX(3px)}\n.jdh29:hover{background:#f0ece0}\n.jdh30:hover{background:rgba(122,194,116,.52)}\n.jdh31:hover{transform:translate(-2px,-2px)}\n.jdh32:hover{transform:scale(1.35)}\n.jdh33:hover{color:#141311}\n.jdh34:hover{color:#141311}\n.jdh35:hover{transform:translate(-3px,-4px)}\n.jdh36:hover{opacity:1;transform:translateY(-4px)}\n.jdh37:hover{opacity:1;transform:translateY(-4px)}\n.jdh38:hover{opacity:1;transform:translateY(-4px)}\n.jdh39:hover{opacity:1;transform:translateY(-4px)}\n.jdh40:hover{opacity:1;transform:translateY(-4px)}\n.jdh41:hover{transform:translateX(3px)}\n.jdh42:hover{transform:translateX(3px)}\n.jdh43:hover{transform:translateX(3px)}\n.jdh44:hover{transform:translateX(3px)}\n.jdh45:hover{transform:translateX(3px)}\n.jdh46:hover{transform:translateX(3px)}\n.jdh47:hover{transform:translateX(3px)}\n.jdh48:hover{transform:translate(-2px,-3px)}\n.jdh49:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh50:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh51:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh52:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh53:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh54:hover{background:rgba(244,241,230,.1)}\n.jdh55:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh56:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh57:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh58:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh59:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh60:hover{color:#f4f1e6;background:rgba(244,241,230,.1)}\n.jdh61:hover{transform:translateY(-2px);box-shadow:0 5px 0 #4b8546,0 14px 26px -6px rgba(122,194,116,.8)}";
+export const SceneDesktopHover = ".jdh0:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh1:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh2:hover{transform:scale(1.35)}\n.jdh3:hover{color:#141311}\n.jdh4:hover{color:#141311}\n.jdh5:hover{transform:translate(-3px,-4px)}\n.jdh6:hover{color:#141311}\n.jdh7:hover{transform:scale(1.35)}\n.jdh8:hover{color:#141311}\n.jdh9:hover{color:#141311}\n.jdh10:hover{color:#141311}\n.jdh11:hover{transform:translate(-2px,-3px)}\n.jdh12:hover{transform:scale(1.35)}\n.jdh13:hover{color:#141311}\n.jdh14:hover{color:#141311}\n.jdh15:hover{transform:translateX(5px)}\n.jdh16:hover{transform:translateY(-5px)}\n.jdh17:hover{transform:translateY(-5px)}\n.jdh18:hover{transform:translateY(-5px)}\n.jdh19:hover{transform:translateY(-5px)}\n.jdh20:hover{transform:scale(1.35)}\n.jdh21:hover{color:#141311}\n.jdh22:hover{color:#141311}\n.jdh23:hover{color:#141311}\n.jdh24:hover{transform:translateX(3px)}\n.jdh25:hover{transform:translateX(3px)}\n.jdh26:hover{transform:translateX(3px)}\n.jdh27:hover{transform:translateX(3px)}\n.jdh28:hover{background:#f0ece0}\n.jdh29:hover{background:rgba(122,194,116,.52)}\n.jdh30:hover{transform:translate(-2px,-2px)}\n.jdh31:hover{transform:scale(1.35)}\n.jdh32:hover{color:#141311}\n.jdh33:hover{color:#141311}\n.jdh34:hover{transform:translate(-3px,-4px)}\n.jdh35:hover{opacity:1;transform:translateY(-4px)}\n.jdh36:hover{opacity:1;transform:translateY(-4px)}\n.jdh37:hover{opacity:1;transform:translateY(-4px)}\n.jdh38:hover{opacity:1;transform:translateY(-4px)}\n.jdh39:hover{opacity:1;transform:translateY(-4px)}\n.jdh40:hover{transform:translateX(3px)}\n.jdh41:hover{transform:translateX(3px)}\n.jdh42:hover{transform:translateX(3px)}\n.jdh43:hover{transform:translateX(3px)}\n.jdh44:hover{transform:translateX(3px)}\n.jdh45:hover{transform:translateX(3px)}\n.jdh46:hover{transform:translateX(3px)}\n.jdh47:hover{transform:translate(-2px,-3px)}\n.jdh48:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh49:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh50:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh51:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh52:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jdh53:hover{background:rgba(244,241,230,.1)}\n.jdh54:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh55:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh56:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh57:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh58:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jdh59:hover{color:#f4f1e6;background:rgba(244,241,230,.1)}\n.jdh60:hover{transform:translateY(-2px);box-shadow:0 5px 0 #4b8546,0 14px 26px -6px rgba(122,194,116,.8)}";
 
 export function SceneDesktop({ V }: { V: any }) {
   return (
@@ -434,6 +434,31 @@ export function SceneDesktop({ V }: { V: any }) {
                               </span>
                             </div>
                           </div>
+                          <div style={s({ "display": "flex", "flexDirection": "column", "gap": "12px", "marginTop": "24px" })}>
+                            <div style={s({ "display": "flex", "alignItems": "center", "gap": "12px" })}>
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850" })}>
+                                {"Elsewhere"}
+                              </span>
+                              <div style={s({ "flex": "1", "height": "2.5px", "background": "#141311", "opacity": ".14" })}></div>
+                            </div>
+                            <div style={s({ "display": "flex", "flexWrap": "wrap", "alignItems": "center", "gap": "4px 15px" })}>
+                              {(V.socials ?? []).map((social: any, socialIndex: number) => (
+                                <Fragment key={socialIndex}>
+                                  <a href={social.href} target="_blank" rel="noreferrer" style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "fontWeight": "600", "color": "#5c5850", "cursor": "none", "transition": "color .16s" })} className="jdh10">
+                                    {social.label}
+                                  </a>
+                                </Fragment>
+                              ))}
+                            </div>
+                            <a href={V.cvHref} download={V.cvFilename} style={s({ "alignSelf": "flex-start", "display": "flex", "alignItems": "center", "gap": "12px", "background": "#7ac274", "borderRadius": "999px", "padding": "9px 9px 9px 19px", "boxShadow": "5px 6px 0 #141311", "cursor": "none", "transition": "transform .16s cubic-bezier(.2,.9,.3,1)" })} className="jdh11">
+                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "700", "color": "#12300f" })}>
+                                {"Download CV"}
+                              </span>
+                              <span style={s({ "width": "28px", "height": "28px", "borderRadius": "999px", "background": "#141311", "color": "#f4f1e6", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "700", "display": "flex", "alignItems": "center", "justifyContent": "center", "flex": "none" })}>
+                                {"↓"}
+                              </span>
+                            </a>
+                          </div>
                         </div>
                       </div>
                       <div style={s({ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "12px 22px", "boxShadow": "inset 0 2.5px 0 #141311" })}>
@@ -449,92 +474,60 @@ export function SceneDesktop({ V }: { V: any }) {
                   <div style={s({ "position": "absolute", "left": "100px", "top": "104px", "width": "1240px", "zIndex": "11", "pointerEvents": "var(--pe2,none)", "transformOrigin": "633px 700px", "opacity": "calc(clamp(0, (var(--p,0) - .38) * 12, 1) - clamp(0, (var(--p,0) - .57) * 12, 1))", "transform": "scale(calc(.04 + 1.04 * clamp(0, (var(--p,0) - .38) * 12, 1) - 1.04 * clamp(0, (var(--p,0) - .57) * 12, 1)))" })} className="jos-z2">
                     <div style={s({ "borderRadius": "26px", "background": "#f4f1e6", "overflow": "hidden", "boxShadow": "16px 18px 0 #141311,0 36px 74px -28px rgba(13,11,20,.55)", "opacity": "var(--w2,1)", "transform": "scale(calc(.72 + .28 * var(--w2,1)))", "transition": "opacity .3s ease,transform .3s cubic-bezier(.3,0,.6,1)" })}>
                       <div style={s({ "height": "56px", "display": "flex", "alignItems": "center", "gap": "22px", "padding": "0 20px", "boxShadow": "inset 0 -2.5px 0 #141311" })}>
-                        <div onClick={V.close2} style={s({ "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#141311", "cursor": "none", "flex": "none", "transition": "transform .14s" })} className="jdh10"></div>
+                        <div onClick={V.close2} style={s({ "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#141311", "cursor": "none", "flex": "none", "transition": "transform .14s" })} className="jdh12"></div>
                         <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "18px", "fontWeight": "700", "letterSpacing": "-.015em", "color": "#141311" })}>
                           {"Work"}
                         </span>
                         <div style={s({ "display": "flex", "alignItems": "center", "gap": "22px", "marginLeft": "auto" })}>
-                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh11">
+                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh13">
                             {"File"}
                           </span>
-                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh12">
+                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh14">
                             {"Sort"}
                           </span>
                         </div>
                       </div>
                       <div style={s({ "display": "flex", "alignItems": "stretch" })}>
-                        <div style={s({ "width": "224px", "flex": "none", "padding": "26px 24px 24px", "display": "flex", "flexDirection": "column", "gap": "16px", "boxShadow": "inset -2.5px 0 0 #141311" })}>
-                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850" })}>
-                            {"Folders"}
-                          </span>
-                          <div style={s({ "display": "flex", "flexDirection": "column", "gap": "12px" })}>
-                            <div style={s({ "display": "flex", "alignItems": "center", "gap": "11px", "cursor": "none" })} className="jdh13">
-                              <div style={s({ "position": "relative", "width": "20px", "height": "17px", "flex": "none" })}>
-                                <div style={s({ "position": "absolute", "left": "0", "top": "0", "width": "9px", "height": "4px", "borderRadius": "2px 3px 0 0", "background": "#141311" })}></div>
-                                <div style={s({ "position": "absolute", "left": "0", "top": "3px", "width": "20px", "height": "14px", "borderRadius": "3px", "background": "#141311" })}></div>
-                              </div>
-                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "700", "color": "#141311" })}>
-                                {"All work"}
-                              </span>
-                            </div>
-                            <div style={s({ "display": "flex", "alignItems": "center", "gap": "11px", "cursor": "none" })} className="jdh14">
-                              <div style={s({ "position": "relative", "width": "20px", "height": "17px", "flex": "none" })}>
-                                <div style={s({ "position": "absolute", "left": "0", "top": "0", "width": "9px", "height": "4px", "borderRadius": "2px 3px 0 0", "background": "#b8b3a6" })}></div>
-                                <div style={s({ "position": "absolute", "left": "0", "top": "3px", "width": "20px", "height": "14px", "borderRadius": "3px", "background": "#b8b3a6" })}></div>
-                              </div>
-                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#5c5850" })}>
-                                {"Clients"}
-                              </span>
-                            </div>
-                            <div style={s({ "display": "flex", "alignItems": "center", "gap": "11px", "cursor": "none" })} className="jdh15">
-                              <div style={s({ "position": "relative", "width": "20px", "height": "17px", "flex": "none" })}>
-                                <div style={s({ "position": "absolute", "left": "0", "top": "0", "width": "9px", "height": "4px", "borderRadius": "2px 3px 0 0", "background": "#b8b3a6" })}></div>
-                                <div style={s({ "position": "absolute", "left": "0", "top": "3px", "width": "20px", "height": "14px", "borderRadius": "3px", "background": "#b8b3a6" })}></div>
-                              </div>
-                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#5c5850" })}>
-                                {"Experiments"}
-                              </span>
-                            </div>
-                            <div style={s({ "display": "flex", "alignItems": "center", "gap": "11px", "cursor": "none" })} className="jdh16">
-                              <div style={s({ "position": "relative", "width": "20px", "height": "17px", "flex": "none" })}>
-                                <div style={s({ "position": "absolute", "left": "0", "top": "0", "width": "9px", "height": "4px", "borderRadius": "2px 3px 0 0", "background": "#b8b3a6" })}></div>
-                                <div style={s({ "position": "absolute", "left": "0", "top": "3px", "width": "20px", "height": "14px", "borderRadius": "3px", "background": "#b8b3a6" })}></div>
-                              </div>
-                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#5c5850" })}>
-                                {"Archive"}
-                              </span>
-                            </div>
-                          </div>
-                          <div style={s({ "height": "2.5px", "background": "#141311", "margin": "4px 0" })}></div>
-                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850" })}>
-                            {"Tags"}
-                          </span>
-                          <div style={s({ "display": "flex", "flexDirection": "column", "gap": "11px" })}>
-                            <div style={s({ "display": "flex", "alignItems": "center", "gap": "11px" })}>
-                              <div style={s({ "width": "11px", "height": "11px", "borderRadius": "999px", "background": "#7ac274", "flex": "none" })}></div>
-                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "color": "#5c5850" })}>
-                                {"Shipped"}
-                              </span>
-                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "color": "#6f6a61", "marginLeft": "auto" })}>
-                                {"5"}
-                              </span>
-                            </div>
-                            <div style={s({ "display": "flex", "alignItems": "center", "gap": "11px" })}>
-                              <div style={s({ "width": "11px", "height": "11px", "borderRadius": "999px", "background": "#141311", "flex": "none" })}></div>
-                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "color": "#5c5850" })}>
-                                {"Mine"}
-                              </span>
-                              <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "color": "#6f6a61", "marginLeft": "auto" })}>
-                                {"2"}
-                              </span>
-                            </div>
-                          </div>
-                          <div style={s({ "marginTop": "auto", "display": "flex", "flexDirection": "column", "gap": "3px" })}>
-                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "46px", "fontWeight": "700", "letterSpacing": "-.045em", "lineHeight": "1", "color": "#141311" })}>
-                              {"7"}
+                        <div style={s({ "width": "400px", "flex": "none", "display": "flex", "flexDirection": "column", "boxShadow": "inset -2.5px 0 0 #141311" })}>
+                          <div style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "26px 26px 14px" })}>
+                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850" })}>
+                              {"Work history"}
                             </span>
+                            <div style={s({ "flex": "1", "height": "2.5px", "background": "#141311", "opacity": ".14" })}></div>
                             <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#6f6a61" })}>
-                              {"projects, 3 this year"}
+                              {V.roleCount}
+                            </span>
+                          </div>
+                          <div style={s({ "height": "414px", "overflow": "hidden", "position": "relative" })}>
+                            <div style={s({ "display": "flex", "flexDirection": "column", "gap": "14px", "padding": "2px 26px 0", "transform": "translateY(calc(-1 * clamp(0px, (var(--p,0) - .40) * 3400px, 520px)))" })}>
+                              {(V.roles ?? []).map((role: any, roleIndex: number) => (
+                                <Fragment key={roleIndex}>
+                                  <a href={role.url} target="_blank" rel="noreferrer" style={s({ "display": "flex", "flexDirection": "column", "gap": "4px", "cursor": "none", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jdh15">
+                                    <div style={s({ "display": "flex", "alignItems": "center", "gap": "9px" })}>
+                                      <img src={role.icon} alt="" style={s({ "width": "17px", "height": "17px", "flex": "none", "borderRadius": "4px", "objectFit": "contain", "display": "block" })} />
+                                      <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "12px", "fontWeight": "700", "letterSpacing": ".13em", "textTransform": "uppercase", "color": "#6f6a61" })}>
+                                        {role.year}
+                                      </span>
+                                    </div>
+                                    <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "20px", "fontWeight": "700", "letterSpacing": "-.03em", "lineHeight": "1.1", "color": "#141311" })}>
+                                      {role.org}
+                                    </span>
+                                    <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#5c5850" })}>
+                                      {role.role}
+                                    </span>
+                                    <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "lineHeight": "1.3", "color": "#3a3630", "display": "-webkit-box", "WebkitLineClamp": "3", "WebkitBoxOrient": "vertical", "overflow": "hidden" })}>
+                                      {role.detail}
+                                    </span>
+                                  </a>
+                                </Fragment>
+                              ))}
+                            </div>
+                            <div style={s({ "position": "absolute", "left": "0", "right": "0", "bottom": "0", "height": "46px", "background": "linear-gradient(180deg,rgba(244,241,230,0),#f4f1e6)", "pointerEvents": "none" })}></div>
+                          </div>
+                          <div style={s({ "marginTop": "auto", "display": "flex", "alignItems": "center", "gap": "10px", "padding": "14px 26px 22px" })}>
+                            <div style={s({ "width": "11px", "height": "11px", "borderRadius": "999px", "background": "#7ac274", "flex": "none" })}></div>
+                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#6f6a61" })}>
+                              {"Seven roles, all current. Scroll the list."}
                             </span>
                           </div>
                         </div>
@@ -549,7 +542,7 @@ export function SceneDesktop({ V }: { V: any }) {
                           </div>
                           <div style={s({ "height": "414px", "overflow": "hidden", "position": "relative" })}>
                             <div style={s({ "display": "flex", "gap": "24px", "padding": "6px 0 0 30px", "width": "max-content", "transform": "translateX(calc(-1 * clamp(0px, (var(--p,0) - .40) * 8600px, 1330px)))" })}>
-                              <a href="https://splittingpoint.com" target="_blank" style={s({ "width": "300px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "12px", "cursor": "none", "transform": "rotate(calc(-1.4deg - var(--p,0) * -1.4deg))", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jdh17">
+                              <a href="https://splittingpoint.com" target="_blank" style={s({ "width": "300px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "12px", "cursor": "none", "transform": "rotate(calc(-1.4deg - var(--p,0) * -1.4deg))", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jdh16">
                                 <div style={s({ "height": "196px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "6px 7px 0 #141311" })}>
                                   <img src="/design/splittingpoint.webp" alt="splittingpoint" style={s({ "width": "100%", "height": "100%", "objectFit": "cover", "objectPosition": "50% 12%", "display": "block" })} />
                                 </div>
@@ -565,7 +558,7 @@ export function SceneDesktop({ V }: { V: any }) {
                                   {"Games their mums are proud of. Mostly."}
                                 </span>
                               </a>
-                              <a href="https://skribbl.dev" target="_blank" style={s({ "width": "300px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "12px", "cursor": "none", "transform": "rotate(calc(1.4deg - var(--p,0) * 1.4deg))", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jdh18">
+                              <a href="https://skribbl.dev" target="_blank" style={s({ "width": "300px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "12px", "cursor": "none", "transform": "rotate(calc(1.4deg - var(--p,0) * 1.4deg))", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jdh17">
                                 <div style={s({ "height": "196px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "6px 7px 0 #141311" })}>
                                   <img src="/design/skribbl-dev.webp" alt="skribbl.dev" style={s({ "width": "100%", "height": "100%", "objectFit": "cover", "objectPosition": "50% 6%", "display": "block" })} />
                                 </div>
@@ -581,7 +574,7 @@ export function SceneDesktop({ V }: { V: any }) {
                                   {"Agents, running loose but supervised."}
                                 </span>
                               </a>
-                              <a href="https://bevel.team" target="_blank" style={s({ "width": "300px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "12px", "cursor": "none", "transform": "rotate(calc(-1deg - var(--p,0) * -1deg))", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jdh19">
+                              <a href="https://bevel.team" target="_blank" style={s({ "width": "300px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "12px", "cursor": "none", "transform": "rotate(calc(-1deg - var(--p,0) * -1deg))", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jdh18">
                                 <div style={s({ "height": "196px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "6px 7px 0 #141311" })}>
                                   <img src="/design/bevel-team.webp" alt="bevel.team" style={s({ "width": "100%", "height": "100%", "objectFit": "cover", "objectPosition": "50% 10%", "display": "block" })} />
                                 </div>
@@ -645,7 +638,7 @@ export function SceneDesktop({ V }: { V: any }) {
                                   {"Mobile product. Claws included."}
                                 </span>
                               </div>
-                              <a href="https://bidframe.org" target="_blank" style={s({ "width": "300px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "12px", "cursor": "none", "transform": "rotate(calc(-.8deg - var(--p,0) * -.8deg))", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jdh20">
+                              <a href="https://bidframe.org" target="_blank" style={s({ "width": "300px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "12px", "cursor": "none", "transform": "rotate(calc(-.8deg - var(--p,0) * -.8deg))", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)" })} className="jdh19">
                                 <div style={s({ "height": "196px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "6px 7px 0 #141311" })}>
                                   <img src="/design/bidframe-org.webp" alt="bidframe.org" style={s({ "width": "100%", "height": "100%", "objectFit": "cover", "objectPosition": "50% 50%", "display": "block" })} />
                                 </div>
@@ -672,7 +665,7 @@ export function SceneDesktop({ V }: { V: any }) {
                       </div>
                       <div style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "12px 22px", "boxShadow": "inset 0 2.5px 0 #141311" })}>
                         <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#5c5850" })}>
-                          {"Click a card to open the live site"}
+                          {"Click a role or a card to open the live site"}
                         </span>
                         <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#5c5850", "marginLeft": "auto" })}>
                           {"3 of 5 windows"}
@@ -683,18 +676,18 @@ export function SceneDesktop({ V }: { V: any }) {
                   <div style={s({ "position": "absolute", "left": "100px", "top": "104px", "width": "1240px", "zIndex": "12", "pointerEvents": "var(--pe3,none)", "transformOrigin": "633px 698px", "opacity": "calc(clamp(0, (var(--p,0) - .59) * 12, 1) - clamp(0, (var(--p,0) - .78) * 12, 1))", "transform": "scale(calc(.04 + 1.06 * clamp(0, (var(--p,0) - .59) * 12, 1) - 1.06 * clamp(0, (var(--p,0) - .78) * 12, 1)))" })} className="jos-z3">
                     <div style={s({ "borderRadius": "26px", "background": "#f4f1e6", "overflow": "hidden", "boxShadow": "16px 18px 0 #141311,0 36px 74px -28px rgba(13,11,20,.55)", "opacity": "var(--w3,1)", "transform": "scale(calc(.72 + .28 * var(--w3,1)))", "transition": "opacity .3s ease,transform .3s cubic-bezier(.3,0,.6,1)" })}>
                       <div style={s({ "height": "56px", "display": "flex", "alignItems": "center", "gap": "22px", "padding": "0 22px", "boxShadow": "inset 0 -2.5px 0 #141311" })}>
-                        <div onClick={V.close3} style={s({ "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#141311", "cursor": "none", "flex": "none", "transition": "transform .14s" })} className="jdh21"></div>
+                        <div onClick={V.close3} style={s({ "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#141311", "cursor": "none", "flex": "none", "transition": "transform .14s" })} className="jdh20"></div>
                         <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "18px", "fontWeight": "700", "letterSpacing": "-.015em", "color": "#141311" })}>
                           {"Prices"}
                         </span>
                         <div style={s({ "display": "flex", "alignItems": "center", "gap": "22px", "marginLeft": "auto" })}>
-                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh22">
+                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh21">
                             {"File"}
                           </span>
-                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh23">
+                          <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh22">
                             {"Help"}
                           </span>
-                          <span onClick={V.resetMachine} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh24">
+                          <span onClick={V.resetMachine} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh23">
                             {"Clear"}
                           </span>
                         </div>
@@ -704,7 +697,7 @@ export function SceneDesktop({ V }: { V: any }) {
                           <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850", "marginBottom": "8px" })}>
                             {"Add ons"}
                           </span>
-                          <div onClick={V.toggleCms} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "10px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh25">
+                          <div onClick={V.toggleCms} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "10px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh24">
                             <span style={s({ "position": "relative", "width": "20px", "height": "20px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311" })}>
                               {V.pCms ? (
                                 <>
@@ -721,7 +714,7 @@ export function SceneDesktop({ V }: { V: any }) {
                               {"+$1,600"}
                             </span>
                           </div>
-                          <div onClick={V.togglePages} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "10px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh26">
+                          <div onClick={V.togglePages} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "10px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh25">
                             <span style={s({ "position": "relative", "width": "20px", "height": "20px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311" })}>
                               {V.pPages ? (
                                 <>
@@ -738,7 +731,7 @@ export function SceneDesktop({ V }: { V: any }) {
                               {"+$900"}
                             </span>
                           </div>
-                          <div onClick={V.toggleMotion} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "10px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh27">
+                          <div onClick={V.toggleMotion} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "10px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh26">
                             <span style={s({ "position": "relative", "width": "20px", "height": "20px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311" })}>
                               {V.pMotion ? (
                                 <>
@@ -755,7 +748,7 @@ export function SceneDesktop({ V }: { V: any }) {
                               {"+$2,400"}
                             </span>
                           </div>
-                          <div onClick={V.toggleCopy} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "10px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh28">
+                          <div onClick={V.toggleCopy} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "10px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh27">
                             <span style={s({ "position": "relative", "width": "20px", "height": "20px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311" })}>
                               {V.pCopy ? (
                                 <>
@@ -781,7 +774,7 @@ export function SceneDesktop({ V }: { V: any }) {
                           </span>
                         </div>
                         <div style={s({ "flex": "1", "display": "flex", "alignItems": "stretch", "minHeight": "300px" })}>
-                          <div onClick={V.pickSingle} style={s({ "flex": "1", "position": "relative", "background": "#fbf9f1", "padding": "30px 30px 32px", "display": "flex", "flexDirection": "column", "cursor": "none", "transition": "background .2s", "boxShadow": "inset -2.5px 0 0 #141311" })} className="jdh29">
+                          <div onClick={V.pickSingle} style={s({ "flex": "1", "position": "relative", "background": "#fbf9f1", "padding": "30px 30px 32px", "display": "flex", "flexDirection": "column", "cursor": "none", "transition": "background .2s", "boxShadow": "inset -2.5px 0 0 #141311" })} className="jdh28">
                             <div style={s({ "display": "flex", "alignItems": "center", "gap": "12px" })}>
                               <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "fontWeight": "700", "letterSpacing": ".02em", "color": "#141311" })}>
                                 {"The Single"}
@@ -809,7 +802,7 @@ export function SceneDesktop({ V }: { V: any }) {
                               </>
                             ) : null}
                           </div>
-                          <div onClick={V.pickEdition} style={s({ "flex": "1", "position": "relative", "background": "rgba(122,194,116,.4)", "padding": "30px 30px 32px", "display": "flex", "flexDirection": "column", "cursor": "none", "transition": "background .2s" })} className="jdh30">
+                          <div onClick={V.pickEdition} style={s({ "flex": "1", "position": "relative", "background": "rgba(122,194,116,.4)", "padding": "30px 30px 32px", "display": "flex", "flexDirection": "column", "cursor": "none", "transition": "background .2s" })} className="jdh29">
                             <div style={s({ "display": "flex", "alignItems": "center", "gap": "12px" })}>
                               <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "fontWeight": "700", "letterSpacing": ".02em", "color": "#141311" })}>
                                 {"The Edition"}
@@ -881,7 +874,7 @@ export function SceneDesktop({ V }: { V: any }) {
                             {V.daysText}
                           </span>
                         </div>
-                        <a href="https://cal.com/jawad-jalal-hesqbk/15min" target="_blank" style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "14px", "padding": "17px 24px", "textAlign": "center", "cursor": "none", "transition": "transform .16s", "boxShadow": "5px 6px 0 #f4f1e6" })} className="jdh31">
+                        <a href="https://cal.com/jawad-jalal-hesqbk/15min" target="_blank" style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "14px", "padding": "17px 24px", "textAlign": "center", "cursor": "none", "transition": "transform .16s", "boxShadow": "5px 6px 0 #f4f1e6" })} className="jdh30">
                           {"Book 15 minutes"}
                         </a>
                       </div>
@@ -899,15 +892,15 @@ export function SceneDesktop({ V }: { V: any }) {
                     <div style={s({ "transformOrigin": "590px 700px", "transform": "scale(var(--sent-s,1))", "opacity": "var(--sent-o,1)", "transition": "transform .52s cubic-bezier(.5,0,.7,.2),opacity .52s ease-in" })}>
                       <div style={s({ "borderRadius": "26px", "background": "#f4f1e6", "overflow": "hidden", "boxShadow": "16px 18px 0 #141311,0 36px 74px -28px rgba(13,11,20,.55)", "opacity": "var(--w4,1)", "transform": "scale(calc(.72 + .28 * var(--w4,1)))", "transition": "opacity .3s ease,transform .3s cubic-bezier(.3,0,.6,1)", "position": "relative" })}>
                         <div style={s({ "height": "56px", "display": "flex", "alignItems": "center", "gap": "22px", "padding": "0 20px", "boxShadow": "inset 0 -2.5px 0 #141311" })}>
-                          <div onClick={V.close4} style={s({ "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#141311", "cursor": "none", "flex": "none", "transition": "transform .14s" })} className="jdh32"></div>
+                          <div onClick={V.close4} style={s({ "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#141311", "cursor": "none", "flex": "none", "transition": "transform .14s" })} className="jdh31"></div>
                           <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "18px", "fontWeight": "700", "letterSpacing": "-.015em", "color": "#141311" })}>
                             {"New brief"}
                           </span>
                           <div style={s({ "display": "flex", "alignItems": "center", "gap": "22px", "marginLeft": "auto" })}>
-                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh33">
+                            <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh32">
                               {"File"}
                             </span>
-                            <span onClick={V.sendMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh34">
+                            <span onClick={V.sendMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jdh33">
                               {"Send"}
                             </span>
                           </div>
@@ -923,7 +916,7 @@ export function SceneDesktop({ V }: { V: any }) {
                                   {"Fifteen minutes beats a long email."}
                                 </span>
                               </div>
-                              <a href="https://cal.com/jawad-jalal-hesqbk/15min" target="_blank" style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "16px", "padding": "16px 22px", "boxShadow": "6px 7px 0 #141311", "cursor": "none", "whiteSpace": "nowrap", "marginLeft": "auto", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jdh35">
+                              <a href="https://cal.com/jawad-jalal-hesqbk/15min" target="_blank" style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "16px", "padding": "16px 22px", "boxShadow": "6px 7px 0 #141311", "cursor": "none", "whiteSpace": "nowrap", "marginLeft": "auto", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jdh34">
                                 {"Book a call"}
                               </a>
                             </div>
@@ -947,27 +940,27 @@ export function SceneDesktop({ V }: { V: any }) {
                             </div>
                             <textarea ref={V.refMsg} onKeyDown={V.onKey} onInput={V.onBody} onFocus={V.onFieldFocus} onBlur={V.onFieldBlur} rows={4} placeholder={V.bodyPlaceholder} style={s({ "width": "100%", "boxSizing": "border-box", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "border": "none", "background": "transparent", "padding": "20px 30px 8px", "fontSize": "21px", "lineHeight": "1.4", "color": "#141311", "outline": "none", "resize": "none", "cursor": "text", "caretColor": "#7ac274" })}></textarea>
                             <div style={s({ "display": "flex", "alignItems": "center", "gap": "6px", "padding": "4px 26px 16px", "marginTop": "auto" })}>
-                              <a href="https://x.com/jawadmakes" target="_blank" rel="noreferrer" title="X" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.340s backwards" })} className="jdh36">
+                              <a href="https://x.com/jawadmakes" target="_blank" rel="noreferrer" title="X" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.340s backwards" })} className="jdh35">
                                 <svg viewBox="0 0 24 24" width="19" height="19" fill="#141311" aria-hidden="true">
                                   <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path>
                                 </svg>
                               </a>
-                              <a href="https://www.tiktok.com/@jawadmakes" target="_blank" rel="noreferrer" title="TikTok" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.395s backwards" })} className="jdh37">
+                              <a href="https://www.tiktok.com/@jawadmakes" target="_blank" rel="noreferrer" title="TikTok" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.395s backwards" })} className="jdh36">
                                 <svg viewBox="0 0 24 24" width="19" height="19" fill="#141311" aria-hidden="true">
                                   <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path>
                                 </svg>
                               </a>
-                              <a href="https://www.linkedin.com/in/jawad-jalal-designs" target="_blank" rel="noreferrer" title="LinkedIn" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.450s backwards" })} className="jdh38">
+                              <a href="https://www.linkedin.com/in/jawad-jalal-designs" target="_blank" rel="noreferrer" title="LinkedIn" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.450s backwards" })} className="jdh37">
                                 <svg viewBox="0 0 24 24" width="19" height="19" fill="#141311" aria-hidden="true">
                                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"></path>
                                 </svg>
                               </a>
-                              <a href="https://www.instagram.com/j.awadjalal/" target="_blank" rel="noreferrer" title="Instagram" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.505s backwards" })} className="jdh39">
+                              <a href="https://www.instagram.com/j.awadjalal/" target="_blank" rel="noreferrer" title="Instagram" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.505s backwards" })} className="jdh38">
                                 <svg viewBox="0 0 24 24" width="19" height="19" fill="#141311" aria-hidden="true">
                                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path>
                                 </svg>
                               </a>
-                              <a href="https://www.youtube.com/@jawadmake" target="_blank" rel="noreferrer" title="YouTube" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.560s backwards" })} className="jdh40">
+                              <a href="https://www.youtube.com/@jawadmake" target="_blank" rel="noreferrer" title="YouTube" style={s({ "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "34px", "height": "34px", "opacity": ".48", "cursor": "none", "transition": "opacity .18s ease,transform .24s cubic-bezier(.2,.9,.3,1)", "animation": "rise .5s cubic-bezier(.2,.9,.3,1) 0.560s backwards" })} className="jdh39">
                                 <svg viewBox="0 0 24 24" width="19" height="19" fill="#141311" aria-hidden="true">
                                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path>
                                 </svg>
@@ -982,7 +975,7 @@ export function SceneDesktop({ V }: { V: any }) {
                               <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850", "marginBottom": "6px" })}>
                                 {"Shape of it"}
                               </span>
-                              <div onClick={V.setScope0} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh41">
+                              <div onClick={V.setScope0} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh40">
                                 <span style={s({ "position": "relative", "width": "19px", "height": "19px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311", "background": "var(--sc0,transparent)" })}></span>
                                 <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#141311" })}>
                                   {"One page"}
@@ -991,7 +984,7 @@ export function SceneDesktop({ V }: { V: any }) {
                                   {"landing"}
                                 </span>
                               </div>
-                              <div onClick={V.setScope1} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh42">
+                              <div onClick={V.setScope1} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh41">
                                 <span style={s({ "position": "relative", "width": "19px", "height": "19px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311", "background": "var(--sc1,transparent)" })}></span>
                                 <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#141311" })}>
                                   {"A small site"}
@@ -1000,7 +993,7 @@ export function SceneDesktop({ V }: { V: any }) {
                                   {"3 to 5"}
                                 </span>
                               </div>
-                              <div onClick={V.setScope2} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh43">
+                              <div onClick={V.setScope2} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh42">
                                 <span style={s({ "position": "relative", "width": "19px", "height": "19px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311", "background": "var(--sc2,transparent)" })}></span>
                                 <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#141311" })}>
                                   {"A full site"}
@@ -1009,7 +1002,7 @@ export function SceneDesktop({ V }: { V: any }) {
                                   {"the lot"}
                                 </span>
                               </div>
-                              <div onClick={V.setScope3} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh44">
+                              <div onClick={V.setScope3} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh43">
                                 <span style={s({ "position": "relative", "width": "19px", "height": "19px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311", "background": "var(--sc3,transparent)" })}></span>
                                 <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#141311" })}>
                                   {"A product"}
@@ -1023,21 +1016,21 @@ export function SceneDesktop({ V }: { V: any }) {
                               <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850", "marginBottom": "6px" })}>
                                 {"When"}
                               </span>
-                              <div onClick={V.setSpeed0} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh45">
+                              <div onClick={V.setSpeed0} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh44">
                                 <span style={s({ "position": "relative", "width": "19px", "height": "19px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311", "background": "var(--tl0,transparent)" })}></span>
                                 <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#141311" })}>
                                   {"No rush"}
                                 </span>
                                 <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "color": "#6f6a61", "marginLeft": "auto" })}></span>
                               </div>
-                              <div onClick={V.setSpeed1} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh46">
+                              <div onClick={V.setSpeed1} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh45">
                                 <span style={s({ "position": "relative", "width": "19px", "height": "19px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311", "background": "var(--tl1,transparent)" })}></span>
                                 <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#141311" })}>
                                   {"A few weeks"}
                                 </span>
                                 <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "color": "#6f6a61", "marginLeft": "auto" })}></span>
                               </div>
-                              <div onClick={V.setSpeed2} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh47">
+                              <div onClick={V.setSpeed2} style={s({ "display": "flex", "alignItems": "center", "gap": "12px", "padding": "7px 0", "cursor": "none", "transition": "transform .14s" })} className="jdh46">
                                 <span style={s({ "position": "relative", "width": "19px", "height": "19px", "flex": "none", "borderRadius": "6px", "boxShadow": "inset 0 0 0 2.5px #141311", "background": "var(--tl2,transparent)" })}></span>
                                 <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "17px", "fontWeight": "500", "color": "#141311" })}>
                                   {"Yesterday"}
@@ -1079,7 +1072,7 @@ export function SceneDesktop({ V }: { V: any }) {
                               <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "lineHeight": "1.3", "color": "#a8a29a" })}>
                                 {V.estimateNote}
                               </span>
-                              <div onClick={V.sendMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "18px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "14px", "padding": "16px", "textAlign": "center", "cursor": "none", "boxShadow": "5px 6px 0 #f4f1e6", "transition": "transform .16s" })} className="jdh48">
+                              <div onClick={V.sendMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "18px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "14px", "padding": "16px", "textAlign": "center", "cursor": "none", "boxShadow": "5px 6px 0 #f4f1e6", "transition": "transform .16s" })} className="jdh47">
                                 {"Send brief"}
                               </div>
                             </div>
@@ -1118,7 +1111,7 @@ export function SceneDesktop({ V }: { V: any }) {
                   </div>
                   <div style={s({ "position": "absolute", "left": "50%", "bottom": "22px", "transform": "translateX(-50%)", "zIndex": "20", "display": "flex", "alignItems": "flex-end", "gap": "22px", "background": "linear-gradient(180deg,#fbf9f1 0%,#efeadb 100%)", "boxShadow": "9px 10px 0 #141311,inset 0 2px 0 rgba(255,255,255,.9),0 30px 54px -16px rgba(4,3,8,.75),0 60px 90px -30px rgba(4,3,8,.6)", "padding": "16px 22px 14px", "borderRadius": "26px" })}>
                     <div onClick={V.jHello} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "9px", "cursor": "none" })}>
-                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jdh49">
+                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jdh48">
                         <div style={s({ "position": "relative", "width": "34px", "height": "30px" })}>
                           <div style={s({ "position": "absolute", "left": "0", "top": "0", "width": "34px", "height": "15px", "background": "#141311", "clipPath": "polygon(50% 0,100% 100%,0 100%)" })}></div>
                           <div style={s({ "position": "absolute", "left": "5px", "top": "13px", "width": "24px", "height": "17px", "borderRadius": "0 0 4px 4px", "background": "#141311" })}></div>
@@ -1133,7 +1126,7 @@ export function SceneDesktop({ V }: { V: any }) {
                       </div>
                     </div>
                     <div onClick={V.jAbout} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "9px", "cursor": "none" })}>
-                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jdh50">
+                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jdh49">
                         <div style={s({ "position": "relative", "width": "34px", "height": "25px", "borderRadius": "6px", "background": "#141311" })}>
                           <div style={s({ "position": "absolute", "left": "9px", "top": "-5px", "width": "13px", "height": "5px", "borderRadius": "3px 3px 0 0", "background": "#141311" })}></div>
                           <div style={s({ "position": "absolute", "left": "10px", "top": "6px", "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#fbf9f1" })}></div>
@@ -1149,7 +1142,7 @@ export function SceneDesktop({ V }: { V: any }) {
                       </div>
                     </div>
                     <div onClick={V.jWork} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "9px", "cursor": "none" })}>
-                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jdh51">
+                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jdh50">
                         <div style={s({ "position": "relative", "width": "34px", "height": "27px" })}>
                           <div style={s({ "position": "absolute", "left": "0", "top": "0", "width": "16px", "height": "7px", "borderRadius": "3px 5px 0 0", "background": "#141311" })}></div>
                           <div style={s({ "position": "absolute", "left": "0", "top": "5px", "width": "34px", "height": "22px", "borderRadius": "4px", "background": "#141311" })}></div>
@@ -1164,7 +1157,7 @@ export function SceneDesktop({ V }: { V: any }) {
                       </div>
                     </div>
                     <div onClick={V.jPrices} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "9px", "cursor": "none" })}>
-                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jdh52">
+                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jdh51">
                         <div style={s({ "position": "relative", "width": "31px", "height": "31px" })}>
                           <div style={s({ "position": "absolute", "inset": "0", "background": "#141311", "clipPath": "polygon(0 0,58% 0,100% 42%,42% 100%,0 58%)", "borderRadius": "4px" })}></div>
                           <div style={s({ "position": "absolute", "left": "7px", "top": "7px", "width": "8px", "height": "8px", "borderRadius": "999px", "background": "#fbf9f1" })}></div>
@@ -1181,7 +1174,7 @@ export function SceneDesktop({ V }: { V: any }) {
                       <div style={s({ "position": "absolute", "right": "-6px", "top": "-8px", "zIndex": "3", "minWidth": "24px", "height": "24px", "borderRadius": "999px", "background": "#7ac274", "color": "#12300f", "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "13px", "fontWeight": "700", "display": "flex", "alignItems": "center", "justifyContent": "center", "opacity": "var(--badge,0)", "transition": "opacity .2s .35s" })}>
                         {"1"}
                       </div>
-                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jos-pulse jdh53">
+                      <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jos-pulse jdh52">
                         <div style={s({ "position": "relative", "width": "34px", "height": "24px", "borderRadius": "4px", "background": "#141311", "overflow": "hidden" })}>
                           <div style={s({ "position": "absolute", "left": "2px", "top": "1px", "width": "30px", "height": "15px", "background": "#fbf9f1", "clipPath": "polygon(0 0,100% 0,50% 100%)" })}></div>
                         </div>
@@ -1197,36 +1190,36 @@ export function SceneDesktop({ V }: { V: any }) {
                 </div>
                 <div style={s({ "position": "absolute", "left": "0", "right": "0", "top": "0", "height": "52px", "background": "linear-gradient(180deg,#211e1a 0%,#151412 58%,#0d0c0a 100%)", "zIndex": "22", "display": "flex", "alignItems": "center", "justifyContent": "space-between", "padding": "0 20px", "boxShadow": "inset 0 1.5px 0 rgba(244,241,230,.1),inset 0 -1px 0 rgba(0,0,0,.9),0 16px 30px -12px rgba(0,0,0,.85)" })}>
                   <div style={s({ "display": "flex", "alignItems": "center", "gap": "4px" })}>
-                    <div onClick={V.jTop} style={s({ "display": "flex", "alignItems": "center", "gap": "10px", "cursor": "none", "marginRight": "10px", "padding": "6px 13px 6px 6px", "borderRadius": "999px", "transition": "background .18s" })} className="jdh54">
+                    <div onClick={V.jTop} style={s({ "display": "flex", "alignItems": "center", "gap": "10px", "cursor": "none", "marginRight": "10px", "padding": "6px 13px 6px 6px", "borderRadius": "999px", "transition": "background .18s" })} className="jdh53">
                       <div style={s({ "width": "13px", "height": "13px", "background": "#7ac274", "borderRadius": "3px", "transform": "rotate(45deg)", "boxShadow": "0 0 14px rgba(122,194,116,.75)" })}></div>
                       <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "16px", "fontWeight": "700", "letterSpacing": "-.01em", "color": "#f4f1e6" })}>
                         {"jawadOS"}
                       </span>
                     </div>
-                    <span onClick={V.jHello} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav0,0))", "background": "rgba(244,241,230,calc(var(--nav0,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav0,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh55">
+                    <span onClick={V.jHello} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav0,0))", "background": "rgba(244,241,230,calc(var(--nav0,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav0,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh54">
                       {"Home"}
                     </span>
-                    <span onClick={V.jAbout} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav1,0))", "background": "rgba(244,241,230,calc(var(--nav1,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav1,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh56">
+                    <span onClick={V.jAbout} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav1,0))", "background": "rgba(244,241,230,calc(var(--nav1,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav1,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh55">
                       {"About"}
                     </span>
-                    <span onClick={V.jWork} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav2,0))", "background": "rgba(244,241,230,calc(var(--nav2,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav2,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh57">
+                    <span onClick={V.jWork} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav2,0))", "background": "rgba(244,241,230,calc(var(--nav2,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav2,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh56">
                       {"Work"}
                     </span>
-                    <span onClick={V.jPrices} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav3,0))", "background": "rgba(244,241,230,calc(var(--nav3,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav3,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh58">
+                    <span onClick={V.jPrices} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav3,0))", "background": "rgba(244,241,230,calc(var(--nav3,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav3,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh57">
                       {"Prices"}
                     </span>
-                    <span onClick={V.jMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav4,0))", "background": "rgba(244,241,230,calc(var(--nav4,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav4,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh59">
+                    <span onClick={V.jMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav4,0))", "background": "rgba(244,241,230,calc(var(--nav4,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav4,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jdh58">
                       {"Contact"}
                     </span>
                   </div>
                   <div style={s({ "display": "flex", "alignItems": "center", "gap": "12px" })}>
-                    <span onClick={V.toggleSound} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#8d887d", "padding": "7px 13px", "borderRadius": "999px", "cursor": "none", "transition": "color .18s,background .18s" })} className="jdh60">
+                    <span onClick={V.toggleSound} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "14px", "fontWeight": "600", "color": "#8d887d", "padding": "7px 13px", "borderRadius": "999px", "cursor": "none", "transition": "color .18s,background .18s" })} className="jdh59">
                       {V.soundLabel}
                     </span>
                     <span style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "600", "color": "#8d887d", "fontVariantNumeric": "tabular-nums", "paddingRight": "4px" })}>
                       {V.clock}
                     </span>
-                    <span onClick={V.jMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "999px", "padding": "8px 17px", "cursor": "none", "boxShadow": "0 3px 0 #4b8546,0 10px 20px -6px rgba(122,194,116,.6)", "transition": "transform .16s,box-shadow .16s" })} className="jdh61">
+                    <span onClick={V.jMail} style={s({ "fontFamily": "'Space Grotesk',system-ui,sans-serif", "fontSize": "15px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "999px", "padding": "8px 17px", "cursor": "none", "boxShadow": "0 3px 0 #4b8546,0 10px 20px -6px rgba(122,194,116,.6)", "transition": "transform .16s,box-shadow .16s" })} className="jdh60">
                       {"Hire me"}
                     </span>
                   </div>
