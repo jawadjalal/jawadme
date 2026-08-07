@@ -14,7 +14,6 @@
 
 import { Component } from "react";
 import { SceneDesktop } from "./scene/SceneDesktop";
-import { BootOverlay } from "./BootOverlay";
 import { submitBrief } from "./useBrief";
 import { ROLES, SOCIALS, PROFILE } from "@/lib/content";
 
@@ -34,7 +33,6 @@ type State = {
   poke: number;
   tier: "single" | "edition" | null;
   picks: string[];
-  booted: boolean;
 };
 
 const SCOPES = [
@@ -88,7 +86,7 @@ const ADD: Record<string, { code: string; label: string; p: number; d: number }>
 export default class RoomDesktop extends Component<Props, State> {
   state: State = {
     sound: false, clock: "", tip: "", sent: false, scope: 1, speed: 1, band: 1,
-    words: 0, ph: 0, alert: "", tab: 0, poke: 0, tier: null, picks: [], booted: false,
+    words: 0, ph: 0, alert: "", tab: 0, poke: 0, tier: null, picks: [],
   };
 
   room: HTMLElement | null = null;
@@ -126,7 +124,6 @@ export default class RoomDesktop extends Component<Props, State> {
   private nav: number | null = null;
   private clockTimer?: ReturnType<typeof setInterval>;
   private phTimer?: ReturnType<typeof setInterval>;
-  private bootTimer?: ReturnType<typeof setTimeout>;
   private settleTimer?: ReturnType<typeof setTimeout>;
   private ac?: AudioContext;
   private onScroll?: () => void;
@@ -152,9 +149,6 @@ export default class RoomDesktop extends Component<Props, State> {
     this.phTimer = setInterval(() => {
       if (this.state.words === 0 && !this.typing) this.setState((s) => ({ ph: s.ph + 1 }));
     }, 4200);
-
-    // The CRT warms up before the desktop is interactive.
-    this.bootTimer = setTimeout(() => this.setState({ booted: true }), 1500);
 
     this.onScroll = () => {
       this.ensureLoop();
@@ -202,7 +196,6 @@ export default class RoomDesktop extends Component<Props, State> {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.bootTimer);
     clearTimeout(this.settleTimer);
     clearInterval(this.clockTimer);
     clearInterval(this.phTimer);
@@ -703,9 +696,8 @@ export default class RoomDesktop extends Component<Props, State> {
 
   render() {
     return (
-      <div className={this.state.booted ? "jos jos-booted" : "jos"}>
+      <div className="jos">
         <SceneDesktop V={this.renderVals()} />
-        <BootOverlay label="jawadOS 1.0" hint="desktop" />
       </div>
     );
   }

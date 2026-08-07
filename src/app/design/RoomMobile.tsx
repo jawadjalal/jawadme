@@ -5,7 +5,6 @@
 
 import { Component } from "react";
 import { SceneMobile } from "./scene/SceneMobile";
-import { BootOverlay } from "./BootOverlay";
 import { submitBrief } from "./useBrief";
 import { ROLES, SOCIALS, PROFILE } from "@/lib/content";
 
@@ -18,7 +17,6 @@ type State = {
   alert: string;
   tier: "single" | "edition" | null;
   picks: string[];
-  booted: boolean;
 };
 
 const PLACEHOLDERS = [
@@ -55,7 +53,7 @@ const ADD: Record<string, { label: string; p: number; d: number }> = {
 export default class RoomMobile extends Component<Props, State> {
   state: State = {
     clock: "", sent: false, words: 0, ph: 0, alert: "",
-    tier: null, picks: [], booted: false,
+    tier: null, picks: [],
   };
 
   room: HTMLElement | null = null;
@@ -75,7 +73,6 @@ export default class RoomMobile extends Component<Props, State> {
   private typing = false;
   private clockTimer?: ReturnType<typeof setInterval>;
   private phTimer?: ReturnType<typeof setInterval>;
-  private bootTimer?: ReturnType<typeof setTimeout>;
   private settleTimer?: ReturnType<typeof setTimeout>;
   private onScroll?: () => void;
   private onResize?: () => void;
@@ -87,7 +84,6 @@ export default class RoomMobile extends Component<Props, State> {
     this.phTimer = setInterval(() => {
       if (this.state.words === 0 && !this.typing) this.setState((s) => ({ ph: s.ph + 1 }));
     }, 4200);
-    this.bootTimer = setTimeout(() => this.setState({ booted: true }), 1350);
 
     this.onScroll = () => {
       this.readScroll();
@@ -121,7 +117,6 @@ export default class RoomMobile extends Component<Props, State> {
   componentWillUnmount() {
     clearInterval(this.clockTimer);
     clearInterval(this.phTimer);
-    clearTimeout(this.bootTimer);
     clearTimeout(this.settleTimer);
     this.looping = false;
     cancelAnimationFrame(this.raf);
@@ -378,9 +373,8 @@ export default class RoomMobile extends Component<Props, State> {
 
   render() {
     return (
-      <div className={this.state.booted ? "jos jos-booted" : "jos"}>
+      <div className="jos">
         <SceneMobile V={this.renderVals()} />
-        <BootOverlay label="jawadOS 1.0" hint="mobile" />
       </div>
     );
   }

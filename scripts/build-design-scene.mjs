@@ -20,11 +20,20 @@
 // component drops into a <style> tag, so hover states survive the port without
 // a class-name-per-element hand pass.
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+// Hover-class prefixes, one per emitted scene component. Distinct by
+// construction so two templates can never emit the same class name.
+const PREFIXES = {
+  SceneDesktop: "jd",
+  SceneMobile: "jm",
+  SceneHomeDesktop: "jhd",
+  SceneHomeMobile: "jhm",
+};
 
 const VOID = new Set([
   "area", "base", "br", "col", "embed", "hr", "img", "input",
@@ -240,7 +249,12 @@ function build(html, componentName) {
   const root = parse(html);
   const hover = [];
   let hoverSeq = 0;
-  const prefix = componentName.toLowerCase().includes("mobile") ? "jm" : "jd";
+  // Hover classes are numbered per template, so every template needs its own
+  // prefix or two scenes would define the same class names differently. Derived
+  // from the component name rather than a mobile/desktop guess, so adding a
+  // template cannot silently collide with an existing one.
+  const prefix = PREFIXES[componentName];
+  if (!prefix) throw new Error(`no hover-class prefix registered for ${componentName}`);
 
   function emitAttrs(attrs, scope) {
     const out = [];
@@ -352,9 +366,24 @@ function attr(node, name) {
 
 // ── run ──────────────────────────────────────────────────────────────────────
 
+// template basename → [component name, hover-class prefix]
+const TEMPLATES = [
+  ["desktop", "SceneDesktop"],
+  ["mobile", "SceneMobile"],
+  ["home-desktop", "SceneHomeDesktop"],
+  ["home-mobile", "SceneHomeMobile"],
+];
+
 mkdirSync(resolve(ROOT, "src/app/design/scene"), { recursive: true });
-for (const [tpl, name] of [["desktop", "SceneDesktop"], ["mobile", "SceneMobile"]]) {
-  const html = readFileSync(resolve(ROOT, `design/templates/${tpl}.html`), "utf8");
+for (const [tpl, name] of TEMPLATES) {
+  const src = resolve(ROOT, `design/templates/${tpl}.html`);
+  // A registered template that has not been authored yet is skipped rather than
+  // fatal, so the task stays runnable while a scene is being built.
+  if (!existsSync(src)) {
+    console.log(`skip ${tpl}.html (not present)`);
+    continue;
+  }
+  const html = readFileSync(src, "utf8");
   const out = resolve(ROOT, `src/app/design/scene/${name}.tsx`);
   writeFileSync(out, build(html, name));
   console.log(`wrote ${out}`);
