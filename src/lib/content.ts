@@ -82,6 +82,66 @@ export const ROLES: Role[] = [
   },
 ];
 
+// The ventures, which lead the homepage. These rank above the client web work:
+// the sites are a service, these are the things being built.
+//
+// Taglines are lifted verbatim from the /design work cards so the voice is his,
+// not invented — but those cards labelled these three "Client", which is wrong.
+// They are his own. Worth a pass to expand the one-liners.
+export type Venture = {
+  name: string;
+  href: string;
+  shot: string;
+  tagline: string;
+  role: string;
+  status: string;
+};
+
+export const VENTURES: Venture[] = [
+  {
+    name: "skribbl.dev",
+    href: "https://skribbl.dev",
+    shot: "/design/skribbl-dev.webp",
+    tagline: "Agents, running loose but supervised.",
+    role: "Founder",
+    status: "Shipping",
+  },
+  {
+    name: "bevel.team",
+    href: "https://bevel.team",
+    shot: "/design/bevel-team.webp",
+    tagline: "Three dee, game ready, edges softened.",
+    role: "Founder",
+    status: "Live",
+  },
+  {
+    name: "bidframe.org",
+    href: "https://bidframe.org",
+    shot: "/design/bidframe-org.webp",
+    tagline: "It converts, allegedly.",
+    role: "Founder",
+    status: "Live",
+  },
+  {
+    name: "weld.",
+    href: "https://weldroblox.com",
+    shot: "/design/weld.webp",
+    tagline: "Shipped solo, slept afterwards.",
+    role: "Founder & PM",
+    status: "Waitlist",
+  },
+];
+
+// Client site work. Deliberately last on the homepage — it is the least
+// interesting thing he does, even though it is the most visible.
+export type WebWork = { name: string; href: string; shot: string; note: string };
+
+export const WEB_WORK: WebWork[] = [
+  { name: "VizzBees", href: "https://vizzbees.com", shot: "/design/vizzbees.webp", note: "SaaS site. Bees were optional." },
+  { name: "KleoKlaw", href: "https://kleoklaw.com", shot: "/design/kleoklaw.webp", note: "Mobile product. Claws included." },
+  { name: "Splitting Point", href: "https://splittingpoint.com", shot: "/design/splittingpoint.webp", note: "Landing page, built to convert." },
+];
+
 export type Social = { label: string; href: string };
 
 export const SOCIALS: Social[] = [

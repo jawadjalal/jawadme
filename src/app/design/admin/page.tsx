@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { adminConfigured, isSignedIn } from "@/lib/adminAuth";
 import { briefStoreReady, listBriefs, type Brief } from "@/lib/briefs";
+import { listSubscribers, newsletterStoreReady, type Subscriber } from "@/lib/newsletter";
 import { SignIn } from "./SignIn";
-import { signOut, updateStatus } from "./actions";
+import { removeSubscriber, signOut, updateStatus } from "./actions";
 import "./admin.css";
 
 export const metadata: Metadata = {
@@ -21,6 +22,8 @@ function when(iso: string) {
     hour: "2-digit", minute: "2-digit",
   });
 }
+
+const message = (err: unknown) => (err instanceof Error ? err.message : "unknown error");
 
 function money(n: number) {
   return "$" + n.toLocaleString("en-US");
@@ -59,18 +62,27 @@ export default async function AdminPage() {
     );
   }
 
-  const ready = briefStoreReady();
+  // Both stores read the same two env vars, so in practice `ready` covers the
+  // whole page — but each query gets its own error slot so a broken table on one
+  // side does not blank the other.
+  const ready = briefStoreReady() && newsletterStoreReady();
   let briefs: Brief[] = [];
+  let subscribers: Subscriber[] = [];
   let loadError: string | null = null;
+  let subsError: string | null = null;
   if (ready) {
-    try {
-      briefs = await listBriefs();
-    } catch (err) {
-      loadError = err instanceof Error ? err.message : "unknown error";
-    }
+    const [briefsResult, subsResult] = await Promise.allSettled([
+      listBriefs(),
+      listSubscribers(),
+    ]);
+    if (briefsResult.status === "fulfilled") briefs = briefsResult.value;
+    else loadError = message(briefsResult.reason);
+    if (subsResult.status === "fulfilled") subscribers = subsResult.value;
+    else subsError = message(subsResult.reason);
   }
 
   const open = briefs.filter((b) => b.status === "new").length;
+  const active = subscribers.filter((s) => !s.unsubscribed_at).length;
 
   return (
     <main className="cms">
@@ -147,6 +159,47 @@ export default async function AdminPage() {
                       ))}
                     </div>
                   </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="cms-lede cms-lede-section">
+              <h2>Newsletter.</h2>
+              <span className="cms-count">
+                {subscribers.length} total · {active} subscribed
+              </span>
+            </div>
+
+            {subsError ? (
+              <p className="cms-note">
+                <strong>Could not read the subscribers.</strong> {subsError}
+              </p>
+            ) : null}
+
+            {ready && !subsError && subscribers.length === 0 ? (
+              <p className="cms-empty">No signups yet.</p>
+            ) : null}
+
+            <div className="cms-list">
+              {subscribers.map((s) => (
+                <article
+                  key={s.id}
+                  className={s.unsubscribed_at ? "cms-sub cms-sub-out" : "cms-sub"}
+                >
+                  <a className="cms-sub-email" href={`mailto:${s.email}`}>
+                    {s.email}
+                  </a>
+                  {s.source ? <span className="cms-tag">{s.source}</span> : null}
+                  {s.unsubscribed_at ? <span className="cms-tag">unsubscribed</span> : null}
+                  <span className="cms-when">{when(s.created_at)}</span>
+                  {s.unsubscribed_at ? null : (
+                    <form action={removeSubscriber}>
+                      <input type="hidden" name="id" value={s.id} />
+                      <button className="cms-sub-remove" type="submit">
+                        unsubscribe
+                      </button>
+                    </form>
+                  )}
                 </article>
               ))}
             </div>
