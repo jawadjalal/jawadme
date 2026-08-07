@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  // This repo deploys to the `jawadme` Vercel project. The old value pointed at
-  // jawad-portfolio-kohl.vercel.app — a different project entirely — which made
-  // every OG/Twitter image URL resolve to a host that does not serve this site.
-  metadataBase: new URL("https://jawadme.vercel.app"),
+  // The canonical host. This repo deploys to the `jawadme` Vercel project, whose
+  // production aliases are jawadjalal.com, www.jawadjalal.com and
+  // jawadme.vercel.app — the custom domain is the one to advertise, so share
+  // cards and canonical URLs resolve there rather than to the vercel.app alias.
+  metadataBase: new URL("https://jawadjalal.com"),
   title: "Jawad Jalal — designer, running jawadOS",
   description:
     "Jawad Jalal is a designer and founder. This site is jawadOS: a desktop you scroll through — the work, the CV, the prices, and a brief you can send in one sitting.",
