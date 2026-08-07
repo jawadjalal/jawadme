@@ -2,21 +2,26 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jawad-portfolio-kohl.vercel.app"),
-  title: "Jawad Jalal — Designer & Founder",
+  // This repo deploys to the `jawadme` Vercel project. The old value pointed at
+  // jawad-portfolio-kohl.vercel.app — a different project entirely — which made
+  // every OG/Twitter image URL resolve to a host that does not serve this site.
+  metadataBase: new URL("https://jawadme.vercel.app"),
+  title: "Jawad Jalal — designer, running jawadOS",
   description:
-    "Jawad Jalal. Designer and founder building the good-looking. 3D artist, marketer, and founder making things that look good and actually work.",
+    "Jawad Jalal is a designer and founder. This site is jawadOS: a desktop you scroll through — the work, the CV, the prices, and a brief you can send in one sitting.",
   openGraph: {
-    title: "Jawad Jalal — Designer & Founder",
+    title: "Jawad Jalal — designer, running jawadOS",
     description:
-      "Designer and founder building the good-looking. 3D artist, marketer, and founder making things that look good and actually work.",
+      "Design, build and ship. A desktop you scroll through — the work, the CV, the prices, and a brief you can send in one sitting.",
+    url: "/",
+    siteName: "jawadOS",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jawad Jalal — Designer & Founder",
+    title: "Jawad Jalal — designer, running jawadOS",
     description:
-      "Designer and founder building the good-looking. 3D artist, marketer, and founder making things that look good and actually work.",
+      "Design, build and ship. A desktop you scroll through — the work, the CV, the prices, and a brief you can send in one sitting.",
   },
 };
 

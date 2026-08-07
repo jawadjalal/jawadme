@@ -1,94 +1,228 @@
 import { ImageResponse } from "next/og";
 
-// Branded OG card, generated to match the site's radial-gradient + glass panel.
-export const alt = "Jawad Jalal — Designer & Founder";
+// Social card for the homepage: the jawadOS window on a CRT, name first.
+// Pure CSS/flex only — no fetched fonts or images, per next/og's limits.
+export const alt = "Jawad Jalal — designer, running jawadOS";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+const ACC = "#7ac274";
+const INK = "#0a0d0a";
+
+// Faux CRT scanlines, built from stacked divs (safer than repeating gradients).
+const SCANLINES = Array.from({ length: 105 });
 
 export default function OpengraphImage() {
   return new ImageResponse(
     (
       <div
         style={{
+          position: "relative",
           width: "100%",
           height: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           background:
-            "radial-gradient(125% 125% at 14% 8%, #eef1f5 0%, #e9e6df 46%, #e6e9ee 76%, #ecebe5 100%)",
-          padding: 64,
+            "radial-gradient(105% 105% at 22% 0%, #16241a 0%, #0d1410 48%, #070a08 100%)",
+          padding: 56,
         }}
       >
+        {/* the OS window */}
         <div
           style={{
+            position: "relative",
             width: "100%",
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
-            borderRadius: 36,
-            padding: "64px 72px",
-            background: "rgba(255,255,255,0.55)",
-            border: "1px solid rgba(255,255,255,0.7)",
-            boxShadow: "0 40px 90px -40px rgba(26,30,44,0.45)",
+            borderRadius: 18,
+            border: "2px solid rgba(122,194,116,0.55)",
+            background: "rgba(8,13,10,0.86)",
+            boxShadow: "0 0 120px -30px rgba(122,194,116,0.35)",
+            overflow: "hidden",
           }}
         >
+          {/* title bar */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              width: 96,
-              height: 96,
-              borderRadius: 24,
-              background: "linear-gradient(135deg, #3257cc 0%, #1f3a99 100%)",
-              color: "#ffffff",
-              fontSize: 60,
-              fontWeight: 700,
-              letterSpacing: "-0.04em",
+              justifyContent: "space-between",
+              padding: "18px 24px",
+              background: ACC,
+              color: INK,
             }}
           >
-            J
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  display: "flex",
+                  width: 16,
+                  height: 16,
+                  background: INK,
+                  marginRight: 8,
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  width: 16,
+                  height: 16,
+                  background: INK,
+                  marginRight: 8,
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  width: 16,
+                  height: 16,
+                  background: INK,
+                  marginRight: 20,
+                }}
+              />
+              <div
+                style={{
+                  fontSize: 26,
+                  fontWeight: 700,
+                  letterSpacing: "0.02em",
+                }}
+              >
+                jawadOS 1.0
+              </div>
+            </div>
             <div
               style={{
-                fontSize: 92,
+                fontSize: 22,
+                fontWeight: 600,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+              }}
+            >
+              Ready
+            </div>
+          </div>
+
+          {/* body */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flexGrow: 1,
+              justifyContent: "center",
+              padding: "0 56px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                fontSize: 22,
+                fontWeight: 600,
+                letterSpacing: "0.24em",
+                textTransform: "uppercase",
+                color: ACC,
+              }}
+            >
+              Designer · Founder · 3D
+            </div>
+            <div
+              style={{
+                marginTop: 18,
+                fontSize: 116,
                 fontWeight: 700,
-                letterSpacing: "-0.03em",
-                color: "#0d0c08",
+                letterSpacing: "-0.035em",
                 lineHeight: 1,
+                color: "#f2f6f1",
               }}
             >
               Jawad Jalal
             </div>
             <div
               style={{
-                marginTop: 20,
-                fontSize: 36,
-                color: "#16150f",
                 display: "flex",
+                alignItems: "center",
+                marginTop: 26,
+                fontSize: 36,
+                color: "#c3cfc2",
               }}
             >
-              <span style={{ fontWeight: 600 }}>Designer &amp; Founder.</span>
-              <span style={{ color: "#3257cc", fontWeight: 600, marginLeft: 12 }}>
-                Building the good-looking.
+              <span style={{ color: "#f2f6f1", fontWeight: 600 }}>
+                Design, build and ship.
               </span>
+              <span style={{ marginLeft: 12 }}>This site is an OS.</span>
+              <div
+                style={{
+                  display: "flex",
+                  width: 18,
+                  height: 34,
+                  marginLeft: 14,
+                  background: ACC,
+                }}
+              />
             </div>
           </div>
 
+          {/* dock / status bar */}
           <div
             style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "20px 56px",
+              borderTop: "2px solid rgba(122,194,116,0.35)",
               fontSize: 24,
-              color: "#6a6961",
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              color: "#9fb39d",
             }}
           >
-            3D Artist · Marketer · Founder
+            {["Work", "CV", "Prices", "Brief"].map((item) => (
+              <div
+                key={item}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight: 34,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    width: 10,
+                    height: 10,
+                    marginRight: 12,
+                    background: ACC,
+                  }}
+                />
+                {item}
+              </div>
+            ))}
           </div>
+        </div>
+
+        {/* scanline overlay */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {SCANLINES.map((_, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                width: "100%",
+                height: 2,
+                marginBottom: 4,
+                background: "rgba(122,194,116,0.055)",
+              }}
+            />
+          ))}
         </div>
       </div>
     ),

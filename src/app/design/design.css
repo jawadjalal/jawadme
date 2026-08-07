@@ -244,6 +244,19 @@
   pointer-events: none;
 }
 
+/* ── cursor ──────────────────────────────────────────────────────────────── */
+
+/* The room sets cursor:none and draws its own sprite instead. Over a real text
+   field the sprite is deliberately suppressed (see --sprite in RoomDesktop), so
+   without this rule the field would have no cursor at all — you would be typing
+   blind. Give those two elements the native caret back.
+   Links and dock tiles are left alone on purpose: the sprite still draws over
+   them, and restoring the native cursor there would show two at once. */
+.jos input,
+.jos textarea {
+  cursor: text;
+}
+
 /* ── reduced motion ──────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

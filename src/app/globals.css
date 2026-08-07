@@ -1,3 +1,7 @@
+/* Global reset. Everything visual now belongs to the OS scene, whose styles are
+   scoped under .jos in src/app/design/design.css — the panel-era .jj-* rules
+   went out with the panel. */
+
 * {
   box-sizing: border-box;
 }
@@ -8,47 +12,20 @@ body {
   padding: 0;
 }
 
+/* The scene is a 700vh scroll container and the camera reads scrollY, so the
+   browser must not try to restore or smooth-scroll on top of it. */
+html {
+  background: #0f0e0c;
+  scroll-behavior: auto;
+}
+
 ::selection {
-  background: var(--accent-sel, #d4ddf6);
+  background: var(--accent-sel, rgba(122, 194, 116, 0.32));
 }
 
 a {
   text-decoration: none;
   color: inherit;
-}
-
-/* ---- Responsive: stack the panel on narrow viewports ---- */
-@media (max-width: 1020px) {
-  .jj-wrap {
-    flex-direction: column !important;
-    gap: 40px !important;
-    padding: 44px !important;
-  }
-  .jj-left,
-  .jj-mid {
-    width: 100% !important;
-    flex: none !important;
-  }
-  .jj-mid {
-    border-left: none !important;
-    padding-left: 0 !important;
-    border-top: 1px solid var(--rule);
-    padding-top: 32px !important;
-  }
-}
-
-/* Kinetic name lift, social float + tap feedback are handled by Framer Motion
-   (whileHover/whileTap) in page.tsx so they don't fight motion's inline
-   transforms. The link gap/label tint stays in CSS since it animates flex-gap
-   and a child, which CSS does more cheaply. */
-
-/* ---- Text links: widen gap + tint label on hover ---- */
-.jj-link:hover {
-  gap: 15px;
-}
-.jj-link:hover .jj-link-label {
-  color: var(--accent);
-  border-color: var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
