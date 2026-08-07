@@ -235,6 +235,63 @@
   color: var(--paper);
 }
 
+/* ── newsletter ──────────────────────────────────────────────────────────── */
+
+/* Second section header, same rule as .cms-lede but spaced off the list above. */
+.cms-lede-section {
+  margin-top: 40px;
+}
+
+.cms-sub {
+  border-radius: 16px;
+  background: #fbf9f1;
+  box-shadow: 5px 6px 0 var(--ink);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cms-sub-email {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.cms-sub-email:hover {
+  color: var(--muted);
+}
+
+.cms-sub-out {
+  opacity: .55;
+}
+
+.cms-sub .cms-when {
+  margin-left: auto;
+}
+
+.cms-sub-remove {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--ink);
+  color: var(--muted);
+  cursor: pointer;
+  transition: transform .14s cubic-bezier(.2, .9, .3, 1), color .14s;
+}
+
+.cms-sub-remove:hover {
+  transform: translateY(-2px);
+  color: var(--ink);
+}
+
 .cms-empty {
   padding: 44px 0;
   text-align: center;
