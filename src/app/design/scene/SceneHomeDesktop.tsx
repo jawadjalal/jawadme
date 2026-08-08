@@ -8,7 +8,7 @@ import { Fragment, type CSSProperties } from "react";
 // reject on principle. One cast at the boundary beats 1200 of them.
 const s = (o: Record<string, string | number>) => o as CSSProperties;
 
-export const SceneHomeDesktopHover = ".jhdh0:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh1:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh2:hover{transform:scale(1.35)}\n.jhdh3:hover{color:#141311}\n.jhdh4:hover{color:#141311}\n.jhdh5:hover{transform:translate(-3px,-4px)}\n.jhdh6:hover{transform:translate(-2px,-3px)}\n.jhdh7:hover{transform:scale(1.35)}\n.jhdh8:hover{color:#141311}\n.jhdh9:hover{color:#141311}\n.jhdh10:hover{transform:translateY(-5px)}\n.jhdh11:hover{transform:translateX(5px)}\n.jhdh12:hover{transform:translateY(-2px)}\n.jhdh13:hover{transform:scale(1.35)}\n.jhdh14:hover{color:#141311}\n.jhdh15:hover{color:#141311}\n.jhdh16:hover{transform:translateX(5px)}\n.jhdh17:hover{transform:translate(-3px,-4px)}\n.jhdh18:hover{transform:translate(-2px,-3px)}\n.jhdh19:hover{transform:scale(1.35)}\n.jhdh20:hover{color:#141311}\n.jhdh21:hover{color:#141311}\n.jhdh22:hover{transform:translateX(4px)}\n.jhdh23:hover{transform:translate(-3px,-4px)}\n.jhdh24:hover{background:#141311;color:#f4f1e6}\n.jhdh25:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh26:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh27:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh28:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh29:hover{background:rgba(244,241,230,.1)}\n.jhdh30:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh31:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh32:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh33:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh34:hover{color:#f4f1e6;background:rgba(244,241,230,.1)}\n.jhdh35:hover{transform:translateY(-2px);box-shadow:0 5px 0 #4b8546,0 14px 26px -6px rgba(122,194,116,.8)}";
+export const SceneHomeDesktopHover = ".jhdh0:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh1:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh2:hover{transform:scale(1.35)}\n.jhdh3:hover{color:#141311}\n.jhdh4:hover{color:#141311}\n.jhdh5:hover{transform:translate(-3px,-4px)}\n.jhdh6:hover{transform:translate(-2px,-3px)}\n.jhdh7:hover{transform:scale(1.35)}\n.jhdh8:hover{color:#141311}\n.jhdh9:hover{color:#141311}\n.jhdh10:hover{transform:translateY(-5px)}\n.jhdh11:hover{transform:translateX(5px)}\n.jhdh12:hover{transform:translateY(-2px)}\n.jhdh13:hover{transform:scale(1.35)}\n.jhdh14:hover{color:#141311}\n.jhdh15:hover{color:#141311}\n.jhdh16:hover{transform:translateX(5px)}\n.jhdh17:hover{transform:translate(-3px,-4px)}\n.jhdh18:hover{transform:translate(-2px,-3px)}\n.jhdh19:hover{transform:scale(1.35)}\n.jhdh20:hover{color:#141311}\n.jhdh21:hover{color:#141311}\n.jhdh22:hover{transform:translateX(4px)}\n.jhdh23:hover{transform:translate(-3px,-4px)}\n.jhdh24:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 2.5px #141311,0 4px 0 #141311}\n.jhdh25:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh26:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh27:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh28:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh29:hover{background:rgba(244,241,230,.1)}\n.jhdh30:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh31:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh32:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh33:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh34:hover{color:#f4f1e6;background:rgba(244,241,230,.1)}\n.jhdh35:hover{transform:translateY(-2px);box-shadow:0 5px 0 #4b8546,0 14px 26px -6px rgba(122,194,116,.8)}";
 
 export function SceneHomeDesktop({ V }: { V: any }) {
   return (
@@ -251,7 +251,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                                 {"Where"}
                               </span>
                               <span style={s({ "fontSize": "18px", "fontWeight": "600", "color": "#141311" })}>
-                                {"Just outside London"}
+                                {"London, England"}
                               </span>
                             </div>
                           </div>
@@ -299,7 +299,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                             {(V.ventures ?? []).map((v: any, vIndex: number) => (
                               <Fragment key={vIndex}>
                                 <a href={v.href} target="_blank" rel="noreferrer" style={s({ "width": "277px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "9px", "cursor": "none", "transition": "transform .2s cubic-bezier(.2,.9,.3,1)", "--zd": ".05s" })} className="jos-zr jhdh10">
-                                  <div style={s({ "height": "116px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "6px 7px 0 #141311" })}>
+                                  <div style={s({ "height": "84px", "borderRadius": "14px", "overflow": "hidden", "background": "#e6e1d3", "boxShadow": "6px 7px 0 #141311" })}>
                                     <img src={v.shot} alt={v.name} style={s({ "width": "100%", "height": "100%", "objectFit": "cover", "objectPosition": "50% 8%", "display": "block" })} />
                                   </div>
                                   <div style={s({ "display": "flex", "alignItems": "baseline", "gap": "10px" })}>
@@ -313,7 +313,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                                   <span style={s({ "fontSize": "16px", "lineHeight": "1.25", "color": "#3a3630" })}>
                                     {v.tagline}
                                   </span>
-                                  <span style={s({ "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".12em", "textTransform": "uppercase", "color": "#6f6a61" })}>
+                                  <span style={s({ "marginTop": "auto", "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".12em", "textTransform": "uppercase", "color": "#6f6a61" })}>
                                     {v.role}
                                   </span>
                                 </a>
@@ -337,7 +337,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                           <div style={s({ "display": "flex", "flexWrap": "wrap", "gap": "14px 18px" })}>
                             {(V.roles ?? []).map((role: any, roleIndex: number) => (
                               <Fragment key={roleIndex}>
-                                <a href={role.url} target="_blank" rel="noreferrer" style={s({ "width": "264px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "2px", "cursor": "none", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jhdh11">
+                                <a href={role.url} target="_blank" rel="noreferrer" style={s({ "width": "210px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "2px", "cursor": "none", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jhdh11">
                                   <div style={s({ "display": "flex", "alignItems": "center", "gap": "8px" })}>
                                     <img src={role.icon} alt="" style={s({ "width": "15px", "height": "15px", "flex": "none", "borderRadius": "4px", "objectFit": "contain", "display": "block" })} />
                                     <span style={s({ "fontSize": "11px", "fontWeight": "700", "letterSpacing": ".13em", "textTransform": "uppercase", "color": "#6f6a61" })}>
@@ -588,7 +588,10 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                             <div style={s({ "display": "flex", "flexWrap": "wrap", "gap": "10px" })}>
                               {(V.socials ?? []).map((social: any, socialIndex: number) => (
                                 <Fragment key={socialIndex}>
-                                  <a href={social.href} target="_blank" rel="noreferrer" style={s({ "fontSize": "16px", "fontWeight": "600", "color": "#141311", "padding": "9px 16px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311", "cursor": "none", "transition": "background .16s,color .16s" })} className="jhdh24">
+                                  <a href={social.href} target="_blank" rel="noreferrer" aria-label={social.label} style={s({ "display": "flex", "alignItems": "center", "gap": "9px", "fontSize": "16px", "fontWeight": "600", "color": "#141311", "padding": "9px 16px 9px 12px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311", "cursor": "none", "transition": "transform .16s cubic-bezier(.2,.9,.3,1),box-shadow .16s" })} className="jhdh24">
+                                    <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" style={s({ "flex": "none", "display": "block" })}>
+                                      <path d={social.path} fill={social.brand}></path>
+                                    </svg>
                                     {social.label}
                                   </a>
                                 </Fragment>

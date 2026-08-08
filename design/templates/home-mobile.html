@@ -255,7 +255,7 @@
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:8px">
                   <sc-for list="{{ socials }}" as="social">
-                    <a href="{{ social.href }}" target="_blank" rel="noreferrer" style="font-size:14px;font-weight:600;color:#141311;padding:7px 13px;border-radius:999px;box-shadow:inset 0 0 0 2.5px #141311;transition:background .16s,color .16s" style-hover="background:#141311;color:#f4f1e6">{{ social.label }}</a>
+                    <a href="{{ social.href }}" target="_blank" rel="noreferrer" aria-label="{{ social.label }}" style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:#141311;padding:7px 13px 7px 10px;border-radius:999px;box-shadow:inset 0 0 0 2.5px #141311;cursor:none;transition:transform .16s cubic-bezier(.2,.9,.3,1),box-shadow .16s" style-hover="transform:translateY(-2px);box-shadow:inset 0 0 0 2.5px #141311,0 3px 0 #141311"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" style="flex:none;display:block"><path d="{{ social.path }}" fill="{{ social.brand }}"></path></svg>{{ social.label }}</a>
                   </sc-for>
                 </div>
                 <a href="/design" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding-top:2px">

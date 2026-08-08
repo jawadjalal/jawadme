@@ -8,7 +8,7 @@ import { Fragment, type CSSProperties } from "react";
 // reject on principle. One cast at the boundary beats 1200 of them.
 const s = (o: Record<string, string | number>) => o as CSSProperties;
 
-export const SceneHomeMobileHover = ".jhmh0:hover{transform:translateY(-4px)}\n.jhmh1:hover{transform:translateX(4px)}\n.jhmh2:hover{background:#141311;color:#f4f1e6}\n.jhmh3:hover{transform:translateY(-3px)}\n.jhmh4:hover{transform:translateY(-3px)}\n.jhmh5:hover{transform:translateY(-3px)}\n.jhmh6:hover{transform:translateY(-3px)}\n.jhmh7:hover{transform:translateX(-50%) scale(1.06);background:#8ad183}";
+export const SceneHomeMobileHover = ".jhmh0:hover{transform:translateY(-4px)}\n.jhmh1:hover{transform:translateX(4px)}\n.jhmh2:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 2.5px #141311,0 3px 0 #141311}\n.jhmh3:hover{transform:translateY(-3px)}\n.jhmh4:hover{transform:translateY(-3px)}\n.jhmh5:hover{transform:translateY(-3px)}\n.jhmh6:hover{transform:translateY(-3px)}\n.jhmh7:hover{transform:translateX(-50%) scale(1.06);background:#8ad183}";
 
 export function SceneHomeMobile({ V }: { V: any }) {
   return (
@@ -365,7 +365,10 @@ export function SceneHomeMobile({ V }: { V: any }) {
                       <div style={s({ "display": "flex", "flexWrap": "wrap", "gap": "8px" })}>
                         {(V.socials ?? []).map((social: any, socialIndex: number) => (
                           <Fragment key={socialIndex}>
-                            <a href={social.href} target="_blank" rel="noreferrer" style={s({ "fontSize": "14px", "fontWeight": "600", "color": "#141311", "padding": "7px 13px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311", "transition": "background .16s,color .16s" })} className="jhmh2">
+                            <a href={social.href} target="_blank" rel="noreferrer" aria-label={social.label} style={s({ "display": "flex", "alignItems": "center", "gap": "9px", "fontSize": "14px", "fontWeight": "600", "color": "#141311", "padding": "7px 13px 7px 10px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311", "cursor": "none", "transition": "transform .16s cubic-bezier(.2,.9,.3,1),box-shadow .16s" })} className="jhmh2">
+                              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" style={s({ "flex": "none", "display": "block" })}>
+                                <path d={social.path} fill={social.brand}></path>
+                              </svg>
                               {social.label}
                             </a>
                           </Fragment>
