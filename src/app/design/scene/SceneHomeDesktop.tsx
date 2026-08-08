@@ -8,7 +8,7 @@ import { Fragment, type CSSProperties } from "react";
 // reject on principle. One cast at the boundary beats 1200 of them.
 const s = (o: Record<string, string | number>) => o as CSSProperties;
 
-export const SceneHomeDesktopHover = ".jhdh0:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh1:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh2:hover{transform:scale(1.35)}\n.jhdh3:hover{color:#141311}\n.jhdh4:hover{color:#141311}\n.jhdh5:hover{transform:translate(-3px,-4px)}\n.jhdh6:hover{transform:translate(-2px,-3px)}\n.jhdh7:hover{transform:scale(1.35)}\n.jhdh8:hover{color:#141311}\n.jhdh9:hover{color:#141311}\n.jhdh10:hover{transform:translateY(-5px)}\n.jhdh11:hover{transform:translateX(5px)}\n.jhdh12:hover{transform:translateY(-2px)}\n.jhdh13:hover{transform:scale(1.35)}\n.jhdh14:hover{color:#141311}\n.jhdh15:hover{color:#141311}\n.jhdh16:hover{transform:translate(-3px,-4px)}\n.jhdh17:hover{transform:translate(-2px,-3px)}\n.jhdh18:hover{transform:scale(1.35)}\n.jhdh19:hover{color:#141311}\n.jhdh20:hover{color:#141311}\n.jhdh21:hover{transform:translateX(4px)}\n.jhdh22:hover{transform:translate(-3px,-4px)}\n.jhdh23:hover{background:#141311;color:#f4f1e6}\n.jhdh24:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh25:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh26:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh27:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh28:hover{background:rgba(244,241,230,.1)}\n.jhdh29:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh30:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh31:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh32:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh33:hover{color:#f4f1e6;background:rgba(244,241,230,.1)}\n.jhdh34:hover{transform:translateY(-2px);box-shadow:0 5px 0 #4b8546,0 14px 26px -6px rgba(122,194,116,.8)}";
+export const SceneHomeDesktopHover = ".jhdh0:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh1:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh2:hover{transform:scale(1.35)}\n.jhdh3:hover{color:#141311}\n.jhdh4:hover{color:#141311}\n.jhdh5:hover{transform:translate(-3px,-4px)}\n.jhdh6:hover{transform:translate(-2px,-3px)}\n.jhdh7:hover{transform:scale(1.35)}\n.jhdh8:hover{color:#141311}\n.jhdh9:hover{color:#141311}\n.jhdh10:hover{transform:translateY(-5px)}\n.jhdh11:hover{transform:translateX(5px)}\n.jhdh12:hover{transform:translateY(-2px)}\n.jhdh13:hover{transform:scale(1.35)}\n.jhdh14:hover{color:#141311}\n.jhdh15:hover{color:#141311}\n.jhdh16:hover{transform:translateX(5px)}\n.jhdh17:hover{transform:translate(-3px,-4px)}\n.jhdh18:hover{transform:translate(-2px,-3px)}\n.jhdh19:hover{transform:scale(1.35)}\n.jhdh20:hover{color:#141311}\n.jhdh21:hover{color:#141311}\n.jhdh22:hover{transform:translateX(4px)}\n.jhdh23:hover{transform:translate(-3px,-4px)}\n.jhdh24:hover{background:#141311;color:#f4f1e6}\n.jhdh25:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh26:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh27:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh28:hover{animation:squish .5s cubic-bezier(.3,1.3,.4,1) forwards}\n.jhdh29:hover{background:rgba(244,241,230,.1)}\n.jhdh30:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh31:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh32:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh33:hover{opacity:1;background:rgba(244,241,230,.17)}\n.jhdh34:hover{color:#f4f1e6;background:rgba(244,241,230,.1)}\n.jhdh35:hover{transform:translateY(-2px);box-shadow:0 5px 0 #4b8546,0 14px 26px -6px rgba(122,194,116,.8)}";
 
 export function SceneHomeDesktop({ V }: { V: any }) {
   return (
@@ -418,7 +418,25 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                             <p style={s({ "margin": "0", "maxWidth": "520px", "fontSize": "19px", "lineHeight": "1.5", "color": "#3a3630", "textWrap": "pretty" })}>
                               {" Notes on the things on this page: designing them, building them, and getting them out of the door. It all lives at /writing. "}
                             </p>
-                            <a href="/writing" style={s({ "alignSelf": "flex-start", "display": "flex", "alignItems": "center", "gap": "22px", "background": "#141311", "borderRadius": "22px", "padding": "18px 20px 18px 26px", "cursor": "none", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jhdh16">
+                            {V.hasPosts ? (
+                              <>
+                                <div style={s({ "display": "flex", "flexDirection": "column", "gap": "2px", "boxShadow": "inset 0 2.5px 0 #141311" })}>
+                                  {(V.posts ?? []).map((post: any, postIndex: number) => (
+                                    <Fragment key={postIndex}>
+                                      <a href={`/writing/${post.slug}`} style={s({ "display": "flex", "alignItems": "baseline", "gap": "14px", "padding": "11px 2px 10px", "boxShadow": "inset 0 -2.5px 0 rgba(20,19,17,.14)", "cursor": "none", "transition": "transform .16s cubic-bezier(.2,.9,.3,1)" })} className="jhdh16">
+                                        <span style={s({ "fontSize": "12px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#6f6a61", "flex": "none", "width": "104px" })}>
+                                          {post.date}
+                                        </span>
+                                        <span style={s({ "fontSize": "19px", "fontWeight": "600", "letterSpacing": "-.02em", "color": "#141311" })}>
+                                          {post.title}
+                                        </span>
+                                      </a>
+                                    </Fragment>
+                                  ))}
+                                </div>
+                              </>
+                            ) : null}
+                            <a href="/writing" style={s({ "alignSelf": "flex-start", "display": "flex", "alignItems": "center", "gap": "22px", "background": "#141311", "borderRadius": "22px", "padding": "18px 20px 18px 26px", "cursor": "none", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jhdh17">
                               <span style={s({ "fontSize": "28px", "fontWeight": "700", "letterSpacing": "-.035em", "color": "#f4f1e6" })}>
                                 {"Read the writing"}
                               </span>
@@ -429,7 +447,16 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                             <div style={s({ "marginTop": "auto", "display": "flex", "alignItems": "center", "gap": "12px" })}>
                               <div style={s({ "width": "10px", "height": "10px", "borderRadius": "999px", "background": "#7ac274", "flex": "none" })}></div>
                               <span style={s({ "fontSize": "16px", "color": "#3a3630" })}>
-                                {"A new route on this site. Worth a bookmark."}
+                                {V.hasPosts ? (
+                                  <>
+                                    {"Also available as RSS."}
+                                  </>
+                                ) : null}
+                                {V.noPosts ? (
+                                  <>
+                                    {"Nothing published yet. Worth a bookmark."}
+                                  </>
+                                ) : null}
                               </span>
                             </div>
                           </div>
@@ -454,7 +481,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                               <input ref={V.refSub} onKeyDown={V.onSubKey} onFocus={V.onFieldFocus} onBlur={V.onFieldBlur} type="email" autoComplete="email" placeholder="you@somewhere.com" style={s({ "flex": "1", "minWidth": "0", "border": "none", "background": "transparent", "padding": "20px 0", "fontSize": "22px", "color": "#141311", "outline": "none", "cursor": "text", "caretColor": "#7ac274" })} />
                             </div>
                             <div style={s({ "padding": "22px 34px 0", "display": "flex", "flexDirection": "column", "gap": "14px" })}>
-                              <div onClick={V.subscribe} style={s({ "fontSize": "20px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "16px", "padding": "19px", "textAlign": "center", "cursor": "none", "boxShadow": "6px 7px 0 #141311", "transition": "transform .16s" })} className="jhdh17">
+                              <div onClick={V.subscribe} style={s({ "fontSize": "20px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "16px", "padding": "19px", "textAlign": "center", "cursor": "none", "boxShadow": "6px 7px 0 #141311", "transition": "transform .16s" })} className="jhdh18">
                                 {V.subLabel}
                               </div>
                               {V.subOk ? (
@@ -502,15 +529,15 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                     <div style={s({ "position": "absolute", "left": "100px", "top": "104px", "width": "1240px", "zIndex": "13", "pointerEvents": "var(--pe3,none)", "transformOrigin": "633px 700px", "opacity": "clamp(0, calc((var(--p,0) - .71) * 12), 1)", "transform": "scale(calc(.04 + 1.06 * clamp(0, (var(--p,0) - .71) * 12, 1)))" })} className="jos-z3">
                       <div style={s({ "borderRadius": "26px", "background": "#f4f1e6", "overflow": "hidden", "boxShadow": "16px 18px 0 #141311,0 36px 74px -28px rgba(13,11,20,.55)", "opacity": "var(--w3,1)", "transform": "scale(calc(.72 + .28 * var(--w3,1)))", "transition": "opacity .3s ease,transform .3s cubic-bezier(.3,0,.6,1)" })}>
                         <div style={s({ "height": "56px", "display": "flex", "alignItems": "center", "gap": "22px", "padding": "0 20px", "boxShadow": "inset 0 -2.5px 0 #141311" })}>
-                          <div onClick={V.close3} style={s({ "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#141311", "cursor": "none", "flex": "none", "transition": "transform .14s" })} className="jhdh18"></div>
+                          <div onClick={V.close3} style={s({ "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#141311", "cursor": "none", "flex": "none", "transition": "transform .14s" })} className="jhdh19"></div>
                           <span style={s({ "fontSize": "18px", "fontWeight": "700", "letterSpacing": "-.015em", "color": "#141311" })}>
                             {"Contact"}
                           </span>
                           <div style={s({ "display": "flex", "alignItems": "center", "gap": "22px", "marginLeft": "auto" })}>
-                            <span style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jhdh19">
+                            <span style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jhdh20">
                               {"File"}
                             </span>
-                            <a href="/design" style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jhdh20">
+                            <a href="/design" style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#5c5850", "cursor": "none" })} className="jhdh21">
                               {"Studio"}
                             </a>
                           </div>
@@ -520,7 +547,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                             <span style={s({ "fontSize": "56px", "fontWeight": "700", "letterSpacing": "-.045em", "lineHeight": "1", "color": "#141311" })} className="jos-zw">
                               {"Say hello."}
                             </span>
-                            <a href={V.mailto} style={s({ "alignSelf": "flex-start", "display": "flex", "flexDirection": "column", "gap": "4px", "cursor": "none", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jhdh21">
+                            <a href={V.mailto} style={s({ "alignSelf": "flex-start", "display": "flex", "flexDirection": "column", "gap": "4px", "cursor": "none", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jhdh22">
                               <span style={s({ "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#6f6a61" })}>
                                 {"Email"}
                               </span>
@@ -528,7 +555,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                                 {V.email}
                               </span>
                             </a>
-                            <a href={V.cvHref} download={V.cvFilename} style={s({ "alignSelf": "flex-start", "display": "flex", "alignItems": "center", "gap": "22px", "background": "#7ac274", "borderRadius": "22px", "padding": "18px 18px 18px 26px", "boxShadow": "8px 9px 0 #141311", "cursor": "none", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jhdh22">
+                            <a href={V.cvHref} download={V.cvFilename} style={s({ "alignSelf": "flex-start", "display": "flex", "alignItems": "center", "gap": "22px", "background": "#7ac274", "borderRadius": "22px", "padding": "18px 18px 18px 26px", "boxShadow": "8px 9px 0 #141311", "cursor": "none", "transition": "transform .18s cubic-bezier(.2,.9,.3,1)" })} className="jhdh23">
                               <div style={s({ "display": "flex", "flexDirection": "column", "gap": "2px" })}>
                                 <span style={s({ "fontSize": "30px", "fontWeight": "700", "letterSpacing": "-.035em", "lineHeight": "1", "color": "#12300f" })}>
                                   {"Download CV"}
@@ -551,7 +578,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                             </div>
                           </div>
                           <div style={s({ "width": "470px", "flex": "none", "display": "flex", "flexDirection": "column", "gap": "18px", "padding": "28px 34px 30px" })}>
-                            <img src="/design/jawad.webp" alt="Jawad" style={s({ "alignSelf": "center", "width": "190px", "height": "190px", "objectFit": "contain", "mixBlendMode": "multiply", "animation": "breathe 5.5s ease-in-out infinite" })} />
+                            <img src="/design/jawad-cut.webp" alt="Jawad" style={s({ "alignSelf": "center", "width": "190px", "height": "190px", "objectFit": "contain", "animation": "breathe 5.5s ease-in-out infinite" })} />
                             <div style={s({ "display": "flex", "alignItems": "center", "gap": "12px" })}>
                               <span style={s({ "fontSize": "13px", "fontWeight": "700", "letterSpacing": ".14em", "textTransform": "uppercase", "color": "#5c5850" })}>
                                 {"Elsewhere"}
@@ -561,7 +588,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                             <div style={s({ "display": "flex", "flexWrap": "wrap", "gap": "10px" })}>
                               {(V.socials ?? []).map((social: any, socialIndex: number) => (
                                 <Fragment key={socialIndex}>
-                                  <a href={social.href} target="_blank" rel="noreferrer" style={s({ "fontSize": "16px", "fontWeight": "600", "color": "#141311", "padding": "9px 16px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311", "cursor": "none", "transition": "background .16s,color .16s" })} className="jhdh23">
+                                  <a href={social.href} target="_blank" rel="noreferrer" style={s({ "fontSize": "16px", "fontWeight": "600", "color": "#141311", "padding": "9px 16px", "borderRadius": "999px", "boxShadow": "inset 0 0 0 2.5px #141311", "cursor": "none", "transition": "background .16s,color .16s" })} className="jhdh24">
                                     {social.label}
                                   </a>
                                 </Fragment>
@@ -588,7 +615,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                     </div>
                     <div style={s({ "position": "absolute", "left": "50%", "bottom": "22px", "transform": "translateX(-50%)", "zIndex": "20", "display": "flex", "alignItems": "flex-end", "gap": "22px", "background": "linear-gradient(180deg,#fbf9f1 0%,#efeadb 100%)", "boxShadow": "9px 10px 0 #141311,inset 0 2px 0 rgba(255,255,255,.9),0 30px 54px -16px rgba(4,3,8,.75),0 60px 90px -30px rgba(4,3,8,.6)", "padding": "16px 22px 14px", "borderRadius": "26px" })}>
                       <div onClick={V.jMe} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "9px", "cursor": "none" })}>
-                        <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jhdh24">
+                        <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jhdh25">
                           <div style={s({ "position": "relative", "width": "34px", "height": "25px", "borderRadius": "6px", "background": "#141311" })}>
                             <div style={s({ "position": "absolute", "left": "9px", "top": "-5px", "width": "13px", "height": "5px", "borderRadius": "3px 3px 0 0", "background": "#141311" })}></div>
                             <div style={s({ "position": "absolute", "left": "10px", "top": "6px", "width": "14px", "height": "14px", "borderRadius": "999px", "background": "#fbf9f1" })}></div>
@@ -604,7 +631,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                         </div>
                       </div>
                       <div onClick={V.jWork} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "9px", "cursor": "none" })}>
-                        <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jhdh25">
+                        <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jhdh26">
                           <div style={s({ "position": "relative", "width": "34px", "height": "27px" })}>
                             <div style={s({ "position": "absolute", "left": "0", "top": "0", "width": "16px", "height": "7px", "borderRadius": "3px 5px 0 0", "background": "#141311" })}></div>
                             <div style={s({ "position": "absolute", "left": "0", "top": "5px", "width": "34px", "height": "22px", "borderRadius": "4px", "background": "#141311" })}></div>
@@ -619,7 +646,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                         </div>
                       </div>
                       <div onClick={V.jWrite} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "9px", "cursor": "none" })}>
-                        <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jhdh26">
+                        <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jhdh27">
                           <div style={s({ "position": "relative", "width": "30px", "height": "30px" })}>
                             <div style={s({ "position": "absolute", "left": "0", "bottom": "0", "width": "30px", "height": "5px", "borderRadius": "2px", "background": "#141311" })}></div>
                             <div style={s({ "position": "absolute", "left": "4px", "bottom": "8px", "width": "20px", "height": "6px", "background": "#141311", "transform": "rotate(-42deg)", "transformOrigin": "left center" })}></div>
@@ -634,7 +661,7 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                         </div>
                       </div>
                       <div onClick={V.jMail} style={s({ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "9px", "cursor": "none", "position": "relative" })}>
-                        <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jos-pulse jhdh27">
+                        <div style={s({ "position": "relative", "width": "66px", "height": "66px", "borderRadius": "19px", "background": "#fbf9f1", "boxShadow": "5px 6px 0 #141311", "display": "flex", "alignItems": "center", "justifyContent": "center", "transformOrigin": "50% 100%" })} className="jos-pulse jhdh28">
                           <div style={s({ "position": "relative", "width": "34px", "height": "24px", "borderRadius": "4px", "background": "#141311", "overflow": "hidden" })}>
                             <div style={s({ "position": "absolute", "left": "2px", "top": "1px", "width": "30px", "height": "15px", "background": "#fbf9f1", "clipPath": "polygon(0 0,100% 0,50% 100%)" })}></div>
                           </div>
@@ -650,33 +677,33 @@ export function SceneHomeDesktop({ V }: { V: any }) {
                   </div>
                   <div style={s({ "position": "absolute", "left": "0", "right": "0", "top": "0", "height": "52px", "background": "linear-gradient(180deg,#211e1a 0%,#151412 58%,#0d0c0a 100%)", "zIndex": "22", "display": "flex", "alignItems": "center", "justifyContent": "space-between", "padding": "0 20px", "boxShadow": "inset 0 1.5px 0 rgba(244,241,230,.1),inset 0 -1px 0 rgba(0,0,0,.9),0 16px 30px -12px rgba(0,0,0,.85)" })}>
                     <div style={s({ "display": "flex", "alignItems": "center", "gap": "4px" })}>
-                      <div onClick={V.jTop} style={s({ "display": "flex", "alignItems": "center", "gap": "10px", "cursor": "none", "marginRight": "10px", "padding": "6px 13px 6px 6px", "borderRadius": "999px", "transition": "background .18s" })} className="jhdh28">
+                      <div onClick={V.jTop} style={s({ "display": "flex", "alignItems": "center", "gap": "10px", "cursor": "none", "marginRight": "10px", "padding": "6px 13px 6px 6px", "borderRadius": "999px", "transition": "background .18s" })} className="jhdh29">
                         <div style={s({ "width": "13px", "height": "13px", "background": "#7ac274", "borderRadius": "3px", "transform": "rotate(45deg)", "boxShadow": "0 0 14px rgba(122,194,116,.75)" })}></div>
                         <span style={s({ "fontSize": "16px", "fontWeight": "700", "letterSpacing": "-.01em", "color": "#f4f1e6" })}>
                           {"jawadOS"}
                         </span>
                       </div>
-                      <span onClick={V.jMe} style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav0,0))", "background": "rgba(244,241,230,calc(var(--nav0,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav0,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jhdh29">
+                      <span onClick={V.jMe} style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav0,0))", "background": "rgba(244,241,230,calc(var(--nav0,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav0,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jhdh30">
                         {"Me"}
                       </span>
-                      <span onClick={V.jWork} style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav1,0))", "background": "rgba(244,241,230,calc(var(--nav1,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav1,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jhdh30">
+                      <span onClick={V.jWork} style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav1,0))", "background": "rgba(244,241,230,calc(var(--nav1,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav1,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jhdh31">
                         {"Experience"}
                       </span>
-                      <span onClick={V.jWrite} style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav2,0))", "background": "rgba(244,241,230,calc(var(--nav2,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav2,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jhdh31">
+                      <span onClick={V.jWrite} style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav2,0))", "background": "rgba(244,241,230,calc(var(--nav2,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav2,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jhdh32">
                         {"Writing"}
                       </span>
-                      <span onClick={V.jMail} style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav3,0))", "background": "rgba(244,241,230,calc(var(--nav3,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav3,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jhdh32">
+                      <span onClick={V.jMail} style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#f4f1e6", "padding": "7px 14px", "borderRadius": "999px", "cursor": "none", "opacity": "calc(.5 + .5 * var(--nav3,0))", "background": "rgba(244,241,230,calc(var(--nav3,0) * .14))", "boxShadow": "inset 0 0 0 1.5px rgba(244,241,230,calc(var(--nav3,0) * .16))", "transition": "opacity .28s,background .28s,box-shadow .28s" })} className="jhdh33">
                         {"Contact"}
                       </span>
                     </div>
                     <div style={s({ "display": "flex", "alignItems": "center", "gap": "12px" })}>
-                      <span onClick={V.toggleSound} style={s({ "fontSize": "14px", "fontWeight": "600", "color": "#8d887d", "padding": "7px 13px", "borderRadius": "999px", "cursor": "none", "transition": "color .18s,background .18s" })} className="jhdh33">
+                      <span onClick={V.toggleSound} style={s({ "fontSize": "14px", "fontWeight": "600", "color": "#8d887d", "padding": "7px 13px", "borderRadius": "999px", "cursor": "none", "transition": "color .18s,background .18s" })} className="jhdh34">
                         {V.soundLabel}
                       </span>
                       <span style={s({ "fontSize": "15px", "fontWeight": "600", "color": "#8d887d", "fontVariantNumeric": "tabular-nums", "paddingRight": "4px" })}>
                         {V.clock}
                       </span>
-                      <a href="/design" style={s({ "fontSize": "15px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "999px", "padding": "8px 17px", "cursor": "none", "boxShadow": "0 3px 0 #4b8546,0 10px 20px -6px rgba(122,194,116,.6)", "transition": "transform .16s,box-shadow .16s" })} className="jhdh34">
+                      <a href="/design" style={s({ "fontSize": "15px", "fontWeight": "700", "background": "#7ac274", "color": "#12300f", "borderRadius": "999px", "padding": "8px 17px", "cursor": "none", "boxShadow": "0 3px 0 #4b8546,0 10px 20px -6px rgba(122,194,116,.6)", "transition": "transform .16s,box-shadow .16s" })} className="jhdh35">
                         {"The studio"}
                       </a>
                     </div>
