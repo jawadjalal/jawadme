@@ -8,7 +8,7 @@ import { Component } from "react";
 import { SceneHomeMobile } from "./scene/SceneHomeMobile";
 import { contentVals } from "./RoomHome";
 
-type Props = { accent?: string };
+type Props = { accent?: string; posts?: { slug: string; title: string; date: string }[] };
 type SubState = "idle" | "pending" | "ok" | "error";
 type State = { clock: string; sub: SubState; subError: string };
 
@@ -230,8 +230,12 @@ export default class RoomHomeMobile extends Component<Props, State> {
   };
 
   renderVals() {
+    const posts = this.props.posts ?? [];
     const sub = this.state.sub;
     return {
+      posts,
+      hasPosts: posts.length > 0,
+      noPosts: posts.length === 0,
       refRoom: (el: HTMLElement | null) => {
         if (el && el !== this.room) {
           this.room = el;

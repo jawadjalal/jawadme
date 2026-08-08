@@ -24,7 +24,14 @@ const RoomHomeMobile = dynamic(() => import("./design/RoomHomeMobile"), { ssr: f
 
 const QUERY = "(max-width: 1023px), (pointer: coarse) and (max-width: 1180px)";
 
-export default function HomeClient() {
+// Posts are read and date-formatted on the server (see src/app/page.tsx) and
+// passed down as plain data. Formatting there rather than here is deliberate:
+// toLocaleDateString resolves against the runtime's locale, so doing it in the
+// client would risk a different string on hydration than the one that was
+// server-rendered.
+export type HomePost = { slug: string; title: string; date: string };
+
+export default function HomeClient({ posts }: { posts: HomePost[] }) {
   const [mobile, setMobile] = useState(false);
 
   useEffect(() => {
@@ -35,5 +42,5 @@ export default function HomeClient() {
     return () => mq.removeEventListener("change", sync);
   }, []);
 
-  return mobile ? <RoomHomeMobile /> : <RoomHome />;
+  return mobile ? <RoomHomeMobile posts={posts} /> : <RoomHome posts={posts} />;
 }

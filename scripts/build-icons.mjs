@@ -23,6 +23,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = path.join(ROOT, "public/design/jawad.webp");
 const OUT_ICON = path.join(ROOT, "src/app/icon.png");
 const OUT_APPLE = path.join(ROOT, "src/app/apple-icon.png");
+const OUT_CUTOUT = path.join(ROOT, "public/design/jawad-cut.webp");
 
 // jawadOS palette.
 const GREEN = { r: 0x7a, g: 0xc2, b: 0x74 };
@@ -167,7 +168,26 @@ async function main() {
     .flatten({ background: { ...INK, alpha: 1 } })
     .toFile(OUT_APPLE);
 
-  console.log("wrote", path.relative(ROOT, OUT_ICON), "and", path.relative(ROOT, OUT_APPLE));
+  // Same knockout, no badge: the head on transparency, for use inside the cream
+  // scene windows. The source webp carries a cool near-white field, which read as
+  // a visible grey rectangle sitting on the warm cream panel — the head has to
+  // float on the paper, not on its own tile.
+  const cut = await cutout(SRC);
+  await sharp(await cut.image.toBuffer())
+    .extract({
+      left: cut.box.minX,
+      top: cut.box.minY,
+      width: cut.box.maxX - cut.box.minX + 1,
+      height: cut.box.maxY - cut.box.minY + 1,
+    })
+    .resize({ width: 640, withoutEnlargement: true })
+    .webp({ quality: 92, alphaQuality: 100 })
+    .toFile(OUT_CUTOUT);
+
+  console.log(
+    "wrote",
+    [OUT_ICON, OUT_APPLE, OUT_CUTOUT].map((f) => path.relative(ROOT, f)).join(", "),
+  );
 }
 
 main().catch((err) => {

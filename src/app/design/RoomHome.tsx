@@ -22,7 +22,7 @@ import { Component } from "react";
 import { SceneHomeDesktop } from "./scene/SceneHomeDesktop";
 import { ROLES, VENTURES, WEB_WORK, SOCIALS, PROFILE } from "@/lib/content";
 
-type Props = { accent?: string };
+type Props = { accent?: string; posts?: { slug: string; title: string; date: string }[] };
 type SubState = "idle" | "pending" | "ok" | "error";
 type State = {
   sound: boolean;
@@ -440,7 +440,11 @@ export default class RoomHome extends Component<Props, State> {
 
   renderVals() {
     const sub = this.state.sub;
+    const posts = this.props.posts ?? [];
     return {
+      posts,
+      hasPosts: posts.length > 0,
+      noPosts: posts.length === 0,
       refRoom: (el: HTMLElement | null) => {
         if (el && el !== this.room) {
           this.room = el;
