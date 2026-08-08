@@ -118,7 +118,7 @@ export default function OpengraphImage() {
               Jawad Jalal
             </div>
             <div style={{ display: "flex", color: MUTED }}>
-              Just outside London
+              London, England
             </div>
           </div>
 
