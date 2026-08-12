@@ -1,143 +1,372 @@
-/* jawadOS — scene stylesheet.
-   Everything the generated scene markup references by name lives here: the
-   keyframe library the inline styles animate, plus the motion layer added on
-   top of the exported design (per-zone content reveals, dock liveliness). */
+/* /design — the studio page.
+ *
+ * It shares the homepage's stylesheet rather than restating it: same column,
+ * same ink, same links, same motion tokens. Everything here is the part the
+ * homepage has no use for — headings, the estimator, and the brief form.
+ *
+ * What this replaced was 143 lines of CRT scanlines and per-zone keyframes for
+ * a scene that no longer exists. */
 
-.jos {
-  --acc: #7ac274;
+/* home.css zeroes paragraph margins with `.hm-main p`, which outranks the bare
+   `.hm-mt-*` helpers it also defines — on the homepage those sit on wrapper
+   divs, so it never came up. Restated here with a class-on-class selector so
+   the spacing actually lands on this page's paragraphs. */
+.hm-main .hm-mt-4 {
+  margin-top: 1rem;
 }
 
-.jos,
-.jos input,
-.jos textarea {
-  font-family: "Space Grotesk", system-ui, sans-serif;
+.hm-main .hm-mt-8 {
+  margin-top: 2rem;
 }
 
-.jos a {
+.hm-main .hm-mt-10 {
+  margin-top: 2.5rem;
+}
+
+.st-est .st-quiet,
+.hm-main .st-terms {
+  margin-top: 0.75rem;
+}
+
+.st-back {
+  font-size: 0.875rem;
+  color: #6b6b66;
+  margin-bottom: 2rem !important;
+}
+
+.st-title {
+  min-height: 0;
+}
+
+.st-avail {
+  margin-top: 0.5rem !important;
+  font-size: 0.875rem;
+  color: #6b6b66;
+}
+
+.st-quiet {
+  color: #6b6b66;
+  font-size: 0.9375rem;
+}
+
+.st-nowrap {
+  white-space: nowrap;
+}
+
+/* Section headings. Set close to body size — this is a column of prose with
+   markers in it, not a brochure with decks. */
+.st-h2 {
+  margin: 3.5rem 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b6b66;
+}
+
+/* ── call to action ─────────────────────────────────────────────────────── */
+
+.st-cta {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  border-radius: 9999px;
+  background: #0a0a0a;
+  color: #fdfdfc;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.st-cta:hover {
+  opacity: 0.8;
+}
+
+.st-cta-note {
+  margin-left: 0.75rem;
+}
+
+/* ── stack ──────────────────────────────────────────────────────────────── */
+
+.st-stack {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.st-stack > div {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.st-stack dt {
+  width: 5rem;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.st-stack dd {
+  margin: 0;
+  color: #6b6b66;
+}
+
+/* ── work ───────────────────────────────────────────────────────────────── */
+
+.st-work .st-kind {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  color: #6b6b66;
+  border: 1px solid rgba(10, 10, 10, 0.12);
+  border-radius: 9999px;
+  padding: 0.05rem 0.45rem;
+}
+
+/* ── the estimator ──────────────────────────────────────────────────────── */
+
+.st-est {
+  margin-top: 1.25rem;
+}
+
+.st-tiers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+/* A tier is a button, not a card with a button in it: the whole thing is the
+   target, and the pressed state is the only thing that changes. */
+.st-tier {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(10, 10, 10, 0.12);
+  border-radius: 0.75rem;
+  background: none;
+  font: inherit;
   color: inherit;
-  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── keyframe library (referenced from the scene's inline styles) ─────────── */
-
-@keyframes drift { from { transform: translateX(-30px); } to { transform: translateX(30px); } }
-@keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
-@keyframes load { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes stamp {
-  0% { transform: scale(1.4); opacity: 0; }
-  55% { transform: scale(.96); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
-}
-@keyframes wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-@keyframes sweep {
-  0% { transform: translateY(-14px); opacity: 0; }
-  12% { opacity: .85; }
-  88% { opacity: .85; }
-  100% { transform: translateY(158px); opacity: 0; }
-}
-@keyframes cue {
-  0% { opacity: 0; transform: translateY(3px); }
-  14%, 72% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-3px); }
-}
-@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes hum { 0%, 100% { opacity: .5; } 47% { opacity: .34; } 62% { opacity: .62; } }
-@keyframes breathe {
-  0%, 100% { transform: scale(1) rotate(-3deg); }
-  50% { transform: scale(1.035) rotate(-2deg); }
-}
-@keyframes hit {
-  0% { transform: scale(1.5); opacity: 0; }
-  58% { transform: scale(.965); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
-}
-@keyframes squish {
-  0% { transform: translateY(0) scale(1, 1); }
-  26% { transform: translateY(1px) scale(1.16, .84); }
-  54% { transform: translateY(-12px) scale(.9, 1.14); }
-  76% { transform: translateY(-6px) scale(1.05, .96); }
-  100% { transform: translateY(-8px) scale(1, 1); }
-}
-@keyframes ring {
-  0% { transform: scale(.5); opacity: .55; }
-  100% { transform: scale(2.6); opacity: 0; }
-}
-@keyframes lift {
-  from { opacity: 0; transform: translateY(22px) scale(.94); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+.st-tier:hover {
+  border-color: rgba(10, 10, 10, 0.28);
 }
 
-
-/* A single scanline travels down the panel forever — the tell that this is a
-   screen and not a flat page. */
-.jos-scanline {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 90px;
-  z-index: 40;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .045) 50%, rgba(255, 255, 255, 0) 100%);
-  animation: sweep 7s linear infinite;
+.st-tier.is-on {
+  border-color: #0a0a0a;
+  background: #f4f4f2;
 }
 
-/* ── per-zone content reveal ─────────────────────────────────────────────────
-   readScroll() stamps data-zone on the room as you travel. Arriving in a zone
-   flips these rules from `animation: none` to a real animation, which restarts
-   it — so each window's content staggers in on arrival, every time, without a
-   scroll observer per element. */
-
-.jos [data-zone="0"] .jos-z0 .jos-zr,
-.jos [data-zone="1"] .jos-z1 .jos-zr,
-.jos [data-zone="2"] .jos-z2 .jos-zr,
-.jos [data-zone="3"] .jos-z3 .jos-zr,
-.jos [data-zone="4"] .jos-z4 .jos-zr {
-  animation: lift .58s cubic-bezier(.2, .9, .3, 1) var(--zd, 0s) both;
+.st-tier-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 1rem;
 }
 
-/* Headline text wipes in behind its own edge rather than lifting. */
-.jos [data-zone="0"] .jos-z0 .jos-zw,
-.jos [data-zone="1"] .jos-z1 .jos-zw,
-.jos [data-zone="2"] .jos-z2 .jos-zw,
-.jos [data-zone="3"] .jos-z3 .jos-zw,
-.jos [data-zone="4"] .jos-z4 .jos-zw {
-  animation: wipe .66s cubic-bezier(.55, 0, .3, 1) var(--zd, 0s) both;
+.st-tier-note {
+  font-size: 0.8125rem;
+  color: #6b6b66;
 }
 
-/* ── dock ────────────────────────────────────────────────────────────────── */
-
-/* A slow pulse under the hire-me tile, so the one thing worth clicking says so. */
-.jos-pulse::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: 0 0 0 2px var(--acc, #7ac274);
-  animation: ring 2.6s cubic-bezier(.2, .6, .3, 1) infinite;
-  pointer-events: none;
+.st-addons,
+.st-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-/* ── cursor ──────────────────────────────────────────────────────────────── */
-
-/* The room sets cursor:none and draws its own sprite instead. Over a real text
-   field the sprite is deliberately suppressed (see --sprite in RoomDesktop), so
-   without this rule the field would have no cursor at all — you would be typing
-   blind. Give those two elements the native caret back.
-   Links and dock tiles are left alone on purpose: the sprite still draws over
-   them, and restoring the native cursor there would show two at once. */
-.jos input,
-.jos textarea {
-  cursor: text;
+.st-addons {
+  margin-top: 0.75rem;
 }
 
-/* ── reduced motion ──────────────────────────────────────────────────────── */
+.st-chip {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid rgba(10, 10, 10, 0.12);
+  border-radius: 9999px;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-@media (prefers-reduced-motion: reduce) {
-  .jos *,
-  .jos *::before,
-  .jos *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
+.st-chip span {
+  color: #6b6b66;
+}
+
+.st-chip:hover {
+  border-color: rgba(10, 10, 10, 0.28);
+}
+
+.st-chip.is-on {
+  border-color: #0a0a0a;
+  background: #0a0a0a;
+  color: #fdfdfc;
+}
+
+.st-chip.is-on span {
+  color: rgba(253, 253, 252, 0.7);
+}
+
+.st-readout {
+  display: flex;
+  gap: 2.5rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.st-readout dt {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b6b66;
+}
+
+.st-readout dd {
+  margin: 0.25rem 0 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  /* Tabular figures so the number does not jitter sideways as it changes. */
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── quote ──────────────────────────────────────────────────────────────── */
+
+.st-quote {
+  margin: 3.5rem 0 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid rgba(10, 10, 10, 0.12);
+}
+
+.st-quote blockquote {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.st-quote figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b6b66;
+}
+
+/* ── the brief ──────────────────────────────────────────────────────────── */
+
+.st-form {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.st-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.st-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.st-form label > span {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b6b66;
+}
+
+.st-form input,
+.st-form textarea {
+  font: inherit;
+  font-size: 0.9375rem;
+  color: inherit;
+  background: none;
+  border: 1px solid rgba(10, 10, 10, 0.14);
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  width: 100%;
+  resize: vertical;
+  transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.st-form input:focus,
+.st-form textarea:focus {
+  outline: none;
+  border-color: #0a0a0a;
+}
+
+.st-form ::placeholder {
+  color: #a3a39d;
+}
+
+.st-count {
+  margin-top: -0.5rem !important;
+  min-height: 1lh;
+}
+
+.st-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.st-picker-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b6b66;
+}
+
+.st-error {
+  color: #c0392b;
+  font-size: 0.9375rem;
+}
+
+.st-send {
+  align-self: flex-start;
+  padding: 0.65rem 1.3rem;
+  border: 0;
+  border-radius: 9999px;
+  background: #0a0a0a;
+  color: #fdfdfc;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.st-send:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.st-send:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.st-sent {
+  margin-top: 1.5rem !important;
+  font-size: 1.0625rem;
+}
+
+@media (max-width: 560px) {
+  .st-tiers,
+  .st-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .st-readout {
+    gap: 1.75rem;
   }
 }
