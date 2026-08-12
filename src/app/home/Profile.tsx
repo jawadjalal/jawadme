@@ -593,9 +593,13 @@ export default function Profile() {
       <Resize className="hm-mt-4">
         <p>
           {type("p4a")}
-          <Link href="https://games.worldent.online">{type("worldent")}</Link>
+          <Preview previewKey="world ent" inline>
+            <Link href="https://games.worldent.online">{type("worldent")}</Link>
+          </Preview>
           {type("p4b")}
-          <Link href="https://basketent.com">{type("basket")}</Link>
+          <Preview previewKey="basket ent" inline>
+            <Link href="https://basketent.com">{type("basket")}</Link>
+          </Preview>
           {type("p4c")}
         </p>
       </Resize>

@@ -12,7 +12,18 @@
 
 import { useState, type ReactNode } from "react";
 
-export function Preview({ previewKey, children }: { previewKey: string; children: ReactNode }) {
+export function Preview({
+  previewKey,
+  children,
+  inline,
+}: {
+  previewKey: string;
+  children: ReactNode;
+  // Set for links sitting inside a sentence. An inline-block cannot be broken
+  // across lines, which shunts whatever follows it — in one case leaving a full
+  // stop stranded on a line of its own.
+  inline?: boolean;
+}) {
   const [armed, setArmed] = useState(false);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -22,7 +33,7 @@ export function Preview({ previewKey, children }: { previewKey: string; children
   const arm = () => setArmed(true);
 
   return (
-    <span className="hm-hover" onMouseEnter={arm} onFocus={arm}>
+    <span className={`hm-hover ${inline ? "is-inline" : ""}`} onMouseEnter={arm} onFocus={arm}>
       {children}
       {armed && !failed && (
         <span className={`hm-preview ${ready ? "is-ready" : ""}`} aria-hidden="true">
