@@ -36,17 +36,19 @@ const EMOJI_CDN = "https://cdn.jsdelivr.net/npm/emoji-datasource-apple@15.1.2/im
 const PROJECTS = [
   {
     key: "skribbl",
-    name: "skribbl.dev",
+    name: "skribbl",
     href: "https://skribbl.dev",
     icon: "https://www.google.com/s2/favicons?domain=skribbl.dev&sz=128",
     blurb: "mac app for running a few coding agents at once",
+    bevel: false,
   },
   {
     key: "bevel",
-    name: "bevel.team",
+    name: "bevel",
     href: "https://bevel.team",
     icon: "https://www.google.com/s2/favicons?domain=bevel.team&sz=128",
     blurb: "3d art team you can hire by the job",
+    bevel: true,
   },
 ] as const;
 
@@ -60,18 +62,37 @@ const PROJECTS = [
 const ARCHIVE = [
   {
     key: "bidframe",
-    name: "bidframe.org",
+    name: "bidframe",
     href: "https://bidframe.org",
     icon: "https://www.google.com/s2/favicons?domain=bidframe.org&sz=128",
     blurb: "reads public tenders and flags what would sink a bid",
+    bevel: false,
   },
   {
     key: "weld",
-    name: "weld.",
+    name: "weld",
     href: "https://weldroblox.com",
     icon: "https://www.google.com/s2/favicons?domain=weldroblox.com&sz=128",
     blurb: "marketplace for how roblox studios hire developers",
+    bevel: true,
   },
+] as const;
+
+// The rest of the history, under the same toggle but as plain rows rather than
+// tiles. These are real and current — cosmos models and sof agency are not
+// "old" — they are simply not the headline, and giving each one a tile would
+// turn a profile into a portfolio. Name, then one short line.
+//
+// Same reasoning as ARCHIVE: outside SCRIPT, so the typing cursor never waits
+// on characters hidden behind a collapsed panel.
+const ELSEWHERE = [
+  { name: "jawadj.design", href: "https://jawad-portfolio-kohl.vercel.app", note: "brand identity, ui/ux and full site builds" },
+  { name: "acquiblox", href: "https://acquiblox.com", note: "cmo, marketing and community growth" },
+  { name: "cosmos models", href: "https://cosmosmodels.lovable.app", note: "3d commissions in zbrush, blender and substance" },
+  { name: "sof agency", href: "https://sof.agency", note: "pr, partnerships and crowdfunding for game studios" },
+  { name: "vizzbees", href: "https://vizzbees.com", note: "saas site build" },
+  { name: "kleoklaw", href: "https://kleoklaw.com", note: "mobile product site build" },
+  { name: "splitting point", href: "https://splittingpoint.com", note: "landing page build" },
 ] as const;
 
 // The script, in the order it types. Splitting the prose into fragments around
@@ -90,7 +111,7 @@ const SCRIPT = [
         [`${p.key}Desc`, p.blurb],
       ] as [string, string][],
   ),
-  ["older", "older things"],
+  ["older", "everything else"],
   ["p3", "i also do a bit of 3d art and logo design on the side."],
   ["p4a", "i'm a 3d artist at "],
   ["worldent", "world ent"],
@@ -200,7 +221,17 @@ function Link({ href, children }: { href: string; children: ReactNode }) {
 // A project icon on its tile. The beam runs until the icon has both loaded and
 // served its minimum hold, so a cached image still gets a moment of light
 // rather than flashing the effect for one frame.
-function Tile({ src, alt, instant }: { src: string; alt: string; instant: boolean }) {
+function Tile({
+  src,
+  alt,
+  instant,
+  bevel,
+}: {
+  src: string;
+  alt: string;
+  instant: boolean;
+  bevel: boolean;
+}) {
   const [loaded, setLoaded] = useState(false);
   const [held, setHeld] = useState(instant);
 
@@ -212,6 +243,19 @@ function Tile({ src, alt, instant }: { src: string; alt: string; instant: boolea
 
   const ready = loaded && held;
 
+  const icon = (
+    <img
+      src={src}
+      alt={alt}
+      draggable={false}
+      className={ready ? "t-image" : "t-hidden"}
+      onLoad={() => setLoaded(true)}
+      ref={(el) => {
+        if (el?.complete && el.naturalWidth) setLoaded(true);
+      }}
+    />
+  );
+
   return (
     <div className="t-slot-in">
       <Beam active={!instant && !ready} radius={12}>
@@ -219,22 +263,18 @@ function Tile({ src, alt, instant }: { src: string; alt: string; instant: boolea
           className="hm-tile"
           style={{ background: ready ? "transparent" : TILE }}
         >
-          {/* Bevelled to match the tile it sits in. These are favicons, which
-              arrive as hard-edged squares — against a rounded tile that reads
-              as a mistake, so the icon gets the same continuous curve as the
-              avatar, at the radius its own size calls for. */}
-          <Squircle radius={10} smoothing={0.8} className="hm-tile-icon">
-            <img
-              src={src}
-              alt={alt}
-              draggable={false}
-              className={ready ? "t-image" : "t-hidden"}
-              onLoad={() => setLoaded(true)}
-              ref={(el) => {
-                if (el?.complete && el.naturalWidth) setLoaded(true);
-              }}
-            />
-          </Squircle>
+          {/* Opt-in per project. A favicon that is a hard-edged square looks
+              wrong inside a rounded tile, so it gets the same continuous curve
+              as the avatar. But several of these marks already carry their own
+              rounding, or sit on a transparent ground — clipping those either
+              does nothing or shaves the artwork, so they are left alone. */}
+          {bevel ? (
+            <Squircle radius={10} smoothing={0.8} className="hm-tile-icon">
+              {icon}
+            </Squircle>
+          ) : (
+            icon
+          )}
         </div>
       </Beam>
     </div>
@@ -252,6 +292,7 @@ function Project({
   blurb,
   arrow,
   instant,
+  bevel,
 }: {
   href: string;
   icon: string;
@@ -260,10 +301,11 @@ function Project({
   blurb: ReactNode;
   arrow: boolean;
   instant: boolean;
+  bevel: boolean;
 }) {
   return (
     <a href={href} target="_blank" rel="noreferrer" className="hm-project">
-      <Tile src={icon} alt={alt} instant={instant} />
+      <Tile src={icon} alt={alt} instant={instant} bevel={bevel} />
       <div className="hm-id">
         <span className="hm-project-name">
           <span>{name}</span>
@@ -467,6 +509,7 @@ export default function Profile() {
                 blurb={type(`${p.key}Desc`)}
                 arrow={finished(`${p.key}Title`)}
                 instant={instant}
+                bevel={p.bevel}
               />
             ) : null,
           )}
@@ -487,9 +530,21 @@ export default function Profile() {
                   blurb={p.blurb}
                   arrow
                   instant
+                  bevel={p.bevel}
                 />
               ))}
             </div>
+
+            <ul className="hm-list">
+              {ELSEWHERE.map((e) => (
+                <li key={e.name}>
+                  <a href={e.href} target="_blank" rel="noreferrer" className="hm-link">
+                    {e.name}
+                  </a>
+                  <span className="hm-list-note">{e.note}</span>
+                </li>
+              ))}
+            </ul>
           </Disclosure>
         </div>
       )}
