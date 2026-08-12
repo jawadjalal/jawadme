@@ -203,6 +203,62 @@ button.hm-link {
   line-height: 1.375;
 }
 
+.hm-arrow {
+  display: inline-flex;
+}
+
+/* ── older things ───────────────────────────────────────────────────────── */
+
+/* Sits at the same size as the project blurbs and in a lighter ink, so it
+   reads as a footnote to the two projects above rather than a third one. */
+.hm-disclosure {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  color: #6b6b66;
+  cursor: pointer;
+  transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hm-disclosure:hover {
+  color: #0a0a0a;
+}
+
+.hm-chevron {
+  display: inline-flex;
+  transition: transform var(--resize-dur) var(--resize-ease);
+}
+
+.hm-chevron.is-open {
+  transform: rotate(90deg);
+}
+
+.hm-panel {
+  overflow: hidden;
+  transition: height var(--resize-dur) var(--resize-ease);
+}
+
+/* The contents stay mounted while collapsed so the archive's icons are already
+   decoded on first open; they are faded and lifted rather than removed. */
+.hm-panel-inner {
+  padding-top: 1.5rem;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--resize-dur) var(--resize-ease),
+    transform var(--resize-dur) var(--resize-ease);
+}
+
+.hm-panel-inner.is-open {
+  opacity: 1;
+  transform: none;
+}
+
 /* ── spacing between blocks ─────────────────────────────────────────────── */
 
 .hm-mt-4 {

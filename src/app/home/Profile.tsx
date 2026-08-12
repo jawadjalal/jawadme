@@ -30,34 +30,46 @@ const EMAIL = "hijawadjalal@gmail.com";
 // does on a Mac. The system font would otherwise fall back to letters.
 const EMOJI_CDN = "https://cdn.jsdelivr.net/npm/emoji-datasource-apple@15.1.2/img/apple/64";
 
+// What he is actually working on. Two, so they sit side by side without the
+// blurbs wrapping to four lines each.
 const PROJECTS = [
   {
     key: "skribbl",
     name: "skribbl.dev",
     href: "https://skribbl.dev",
     icon: "https://www.google.com/s2/favicons?domain=skribbl.dev&sz=128",
-    blurb: "Mac app that runs several coding agents at once",
+    blurb: "mac app for running a few coding agents at once",
   },
   {
     key: "bevel",
     name: "bevel.team",
     href: "https://bevel.team",
     icon: "https://www.google.com/s2/favicons?domain=bevel.team&sz=128",
-    blurb: "3D art team you can hire by the job",
+    blurb: "3d art team you can hire by the job",
   },
+] as const;
+
+// Older things, folded away behind a toggle. They are still live and still his,
+// they are just not what he is spending the week on — putting them in the same
+// row as the current two would say otherwise.
+//
+// Deliberately not part of SCRIPT: the typing cursor runs over one flat string,
+// so copy that starts collapsed would stall it behind characters nobody can
+// see. These fade in on open instead.
+const ARCHIVE = [
   {
     key: "bidframe",
     name: "bidframe.org",
     href: "https://bidframe.org",
     icon: "https://www.google.com/s2/favicons?domain=bidframe.org&sz=128",
-    blurb: "Reads public tenders and flags what would sink a bid",
+    blurb: "reads public tenders and flags what would sink a bid",
   },
   {
     key: "weld",
     name: "weld.",
     href: "https://weldroblox.com",
     icon: "https://www.google.com/s2/favicons?domain=weldroblox.com&sz=128",
-    blurb: "Fixing how Roblox studios hire developers",
+    blurb: "marketplace for how roblox studios hire developers",
   },
 ] as const;
 
@@ -65,11 +77,11 @@ const PROJECTS = [
 // each link is what lets a link underline appear mid-sentence rather than the
 // whole sentence waiting for its anchor.
 const SCRIPT = [
-  ["name", "Jawad Jalal"],
-  ["role", "Designer & founder"],
-  ["loc", "London"],
-  ["p1", "I'm a designer and founder, working on my own things."],
-  ["p2", "Currently focused on four projects:"],
+  ["name", "jawad jalal"],
+  ["role", "designer & founder"],
+  ["loc", "london"],
+  ["p1", "i'm a designer and founder, mostly working on my own stuff."],
+  ["p2", "right now it's two things:"],
   ...PROJECTS.flatMap(
     (p) =>
       [
@@ -77,26 +89,27 @@ const SCRIPT = [
         [`${p.key}Desc`, p.blurb],
       ] as [string, string][],
   ),
-  ["p3", "I also do a fair bit of 3D art and brand design on the side."],
-  ["p4a", "I'm a 3D artist at "],
-  ["worldent", "World Ent"],
-  ["p4b", " and on the acquisitions team at "],
-  ["basket", "Basket Ent"],
+  ["older", "older things"],
+  ["p3", "i also do a bit of 3d art and logo design on the side."],
+  ["p4a", "i'm a 3d artist at "],
+  ["worldent", "world ent"],
+  ["p4b", " and help out on acquisitions at "],
+  ["basket", "basket ent"],
   ["p4c", "."],
-  ["p5", "I love working with the web and shipping things that actually look good."],
-  ["p6a", "You can find me on "],
-  ["x", "X"],
+  ["p5", "i like the web, and making things that feel good to use."],
+  ["p6a", "you can find me on "],
+  ["x", "x"],
   ["p6b", ", "],
-  ["li", "LinkedIn"],
+  ["li", "linkedin"],
   ["p6c", ", "],
-  ["ig", "Instagram"],
+  ["ig", "instagram"],
   ["p6d", ", "],
-  ["yt", "YouTube"],
+  ["yt", "youtube"],
   ["p6e", " or via "],
   ["email", "email"],
-  ["p6f", ". You can also read my "],
-  ["cv", "CV"],
-  ["p6g", "."],
+  ["p6f", ". my "],
+  ["cv", "cv"],
+  ["p6g", " is here too."],
 ] as [string, string][];
 
 // Flattened once at module scope: the text of each key, and the offset at which
@@ -190,6 +203,90 @@ function Tile({ src, alt, instant }: { src: string; alt: string; instant: boolea
           />
         </div>
       </Beam>
+    </div>
+  );
+}
+
+// One project row: tile, name with its outward arrow, one line of blurb.
+// `name` and `blurb` are nodes rather than strings so the same card serves both
+// the typed projects up top and the static ones inside the disclosure.
+function Project({
+  href,
+  icon,
+  alt,
+  name,
+  blurb,
+  arrow,
+  instant,
+}: {
+  href: string;
+  icon: string;
+  alt: string;
+  name: ReactNode;
+  blurb: ReactNode;
+  arrow: boolean;
+  instant: boolean;
+}) {
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className="hm-project">
+      <Tile src={icon} alt={alt} instant={instant} />
+      <div className="hm-id">
+        <span className="hm-project-name">
+          <span>{name}</span>
+          {arrow && (
+            <span className="t-char hm-arrow">
+              <ArrowUpRight />
+            </span>
+          )}
+        </span>
+        <p className="hm-project-blurb">{blurb}</p>
+      </div>
+    </a>
+  );
+}
+
+// The older-things toggle. Height is measured rather than transitioned from
+// `auto`, which browsers will not animate, and the panel keeps its content
+// mounted so the archive's icons are already decoded the first time it opens.
+function Disclosure({ label, children }: { label: ReactNode; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const inner = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = inner.current;
+    if (!el) return;
+    const measure = () => setHeight(el.offsetHeight);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="hm-disclosure"
+      >
+        <span className={`hm-chevron ${open ? "is-open" : ""}`} aria-hidden="true">
+          <Chevron />
+        </span>
+        {/* The label arrives as one span per character from the typewriter, so
+            it needs its own box — as direct children of the flex button they
+            would each become a flex item and inherit the gap as letterspacing. */}
+        <span>{label}</span>
+      </button>
+
+      {/* `inert` rather than aria-hidden: the panel keeps its links mounted
+          while collapsed, and they must not be tabbable or read out. */}
+      <div className="hm-panel" style={{ height: open ? height : 0 }} inert={!open}>
+        <div ref={inner} className={`hm-panel-inner ${open ? "is-open" : ""}`}>
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
@@ -327,32 +424,41 @@ export default function Profile() {
         <div className="hm-projects">
           {PROJECTS.map((p) =>
             started(`${p.key}Title`) ? (
-              <a
+              <Project
                 key={p.key}
                 href={p.href}
-                target="_blank"
-                rel="noreferrer"
-                className="hm-project"
-              >
-                <Tile src={p.icon} alt={p.name} instant={instant} />
-                <div className="hm-id">
-                  <span className="hm-project-name">
-                    <span>{type(`${p.key}Title`)}</span>
-                    {finished(`${p.key}Title`) && (
-                      <span className="t-char inline-flex">
-                        <ArrowUpRight />
-                      </span>
-                    )}
-                  </span>
-                  <p className="hm-project-blurb">
-                    {type(`${p.key}Desc`)}
-                  </p>
-                </div>
-              </a>
+                icon={p.icon}
+                alt={p.name}
+                name={type(`${p.key}Title`)}
+                blurb={type(`${p.key}Desc`)}
+                arrow={finished(`${p.key}Title`)}
+                instant={instant}
+              />
             ) : null,
           )}
         </div>
       </Resize>
+
+      {started("older") && (
+        <div className="hm-mt-8">
+          <Disclosure label={type("older")}>
+            <div className="hm-projects hm-archive">
+              {ARCHIVE.map((p) => (
+                <Project
+                  key={p.key}
+                  href={p.href}
+                  icon={p.icon}
+                  alt={p.name}
+                  name={p.name}
+                  blurb={p.blurb}
+                  arrow
+                  instant
+                />
+              ))}
+            </div>
+          </Disclosure>
+        </div>
+      )}
 
       <Resize className="hm-mt-10">
         <p>{type("p3")}</p>
@@ -406,6 +512,25 @@ export default function Profile() {
         <Emoji code="1f4cb" label="clipboard" /> Copied {EMAIL}
       </div>
     </main>
+  );
+}
+
+function Chevron() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={16}
+      height={16}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M9 6l6 6-6 6" />
+    </svg>
   );
 }
 

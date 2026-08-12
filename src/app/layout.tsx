@@ -7,19 +7,19 @@ export const metadata: Metadata = {
   // jawadme.vercel.app — the custom domain is the one to advertise, so share
   // cards and canonical URLs resolve there rather than to the vercel.app alias.
   metadataBase: new URL("https://jawadjalal.com"),
-  title: "Jawad Jalal",
-  description: "Designer & founder",
+  title: "jawad jalal",
+  description: "designer & founder",
   openGraph: {
-    title: "Jawad Jalal",
-    description: "Designer and founder in London, working on his own things.",
+    title: "jawad jalal",
+    description: "designer and founder in london, mostly working on his own stuff.",
     url: "/",
-    siteName: "Jawad Jalal",
+    siteName: "jawad jalal",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jawad Jalal",
-    description: "Designer and founder in London, working on his own things.",
+    title: "jawad jalal",
+    description: "designer and founder in london, mostly working on his own stuff.",
   },
 };
 
