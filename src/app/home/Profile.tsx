@@ -14,6 +14,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { SOCIALS } from "@/lib/content";
 import { Beam } from "./Beam";
+import { Preview } from "./Preview";
 import { Squircle } from "./Squircle";
 
 const INK = "#0A0A0A";
@@ -293,6 +294,7 @@ function Project({
   arrow,
   instant,
   bevel,
+  previewKey,
 }: {
   href: string;
   icon: string;
@@ -302,10 +304,13 @@ function Project({
   arrow: boolean;
   instant: boolean;
   bevel: boolean;
+  previewKey: string;
 }) {
   return (
     <a href={href} target="_blank" rel="noreferrer" className="hm-project">
-      <Tile src={icon} alt={alt} instant={instant} bevel={bevel} />
+      <Preview previewKey={previewKey}>
+        <Tile src={icon} alt={alt} instant={instant} bevel={bevel} />
+      </Preview>
       <div className="hm-id">
         <span className="hm-project-name">
           <span>{name}</span>
@@ -328,6 +333,23 @@ function Disclosure({ label, children }: { label: ReactNode; children: ReactNode
   const [open, setOpen] = useState(false);
   const inner = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
+
+  // The panel has to clip while its height animates, or the contents spill past
+  // the edge on the way open. But clipping also cuts off the hover previews,
+  // which deliberately float above their row — so the clip is released once the
+  // panel has finished opening, and reinstated the instant it starts to close.
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    if (!open) {
+      setSettled(false);
+      return;
+    }
+    const ms =
+      (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--resize-dur")) ||
+        0.3) * 1000;
+    const t = window.setTimeout(() => setSettled(true), ms + 30);
+    return () => clearTimeout(t);
+  }, [open]);
 
   useLayoutEffect(() => {
     const el = inner.current;
@@ -358,7 +380,11 @@ function Disclosure({ label, children }: { label: ReactNode; children: ReactNode
 
       {/* `inert` rather than aria-hidden: the panel keeps its links mounted
           while collapsed, and they must not be tabbable or read out. */}
-      <div className="hm-panel" style={{ height: open ? height : 0 }} inert={!open}>
+      <div
+        className={`hm-panel ${settled ? "is-settled" : ""}`}
+        style={{ height: open ? height : 0 }}
+        inert={!open}
+      >
         <div ref={inner} className={`hm-panel-inner ${open ? "is-open" : ""}`}>
           {children}
         </div>
@@ -510,6 +536,7 @@ export default function Profile() {
                 arrow={finished(`${p.key}Title`)}
                 instant={instant}
                 bevel={p.bevel}
+                previewKey={p.key}
               />
             ) : null,
           )}
@@ -531,6 +558,7 @@ export default function Profile() {
                   arrow
                   instant
                   bevel={p.bevel}
+                  previewKey={p.key}
                 />
               ))}
             </div>
@@ -538,9 +566,11 @@ export default function Profile() {
             <ul className="hm-list">
               {ELSEWHERE.map((e) => (
                 <li key={e.name}>
-                  <a href={e.href} target="_blank" rel="noreferrer" className="hm-link">
-                    {e.name}
-                  </a>
+                  <Preview previewKey={e.name}>
+                    <a href={e.href} target="_blank" rel="noreferrer" className="hm-link">
+                      {e.name}
+                    </a>
+                  </Preview>
                   <span className="hm-list-note">{e.note}</span>
                 </li>
               ))}
