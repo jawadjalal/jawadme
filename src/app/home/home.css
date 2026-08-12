@@ -21,6 +21,19 @@ html:has(.hm) body {
   color: #0a0a0a;
 }
 
+/* The server sends the finished page so it is in the HTML for crawlers, agents
+   and anyone without JavaScript. When scripting is on, an inline script in the
+   head sets data-js before first paint and this hides that finished state, so
+   the intro is the first thing seen rather than a flash of the whole page.
+   Without the script the attribute never appears and nothing is ever hidden. */
+html[data-js] .hm {
+  visibility: hidden;
+}
+
+html[data-js] .hm.is-live {
+  visibility: visible;
+}
+
 /* Motion vocabulary. Everything on the page reaches for these rather than
    inventing its own timing, so the typing, the tiles and the toast all decay at
    the same rate and read as one system. */

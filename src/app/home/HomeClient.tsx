@@ -5,22 +5,40 @@
 // the swap happens on the frame after they have shrunk away, so the handoff
 // looks like one continuous move rather than a cut.
 //
-// Anyone who has asked for reduced motion skips straight to the page.
+// The server renders the finished page, fully typed. That is what a crawler,
+// an agent, or anyone with JavaScript off receives — the words have to be in
+// the HTML, not drawn into it afterwards. The animation is then a progressive
+// enhancement: on mount this component rewinds to the intro and replays.
+//
+// The rewind would otherwise flash the finished page first, since the browser
+// paints the server HTML before React hydrates. An inline script in the head
+// sets data-js before that paint, and the stylesheet hides the column while it
+// is set; `is-live` below puts it back the moment this component is mounted and
+// has decided which phase to show. No script, no attribute, nothing hidden.
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import Intro from "./Intro";
 import Profile from "./Profile";
 
 export default function HomeClient() {
-  const [phase, setPhase] = useState<"intro" | "profile">("intro");
+  const [phase, setPhase] = useState<"intro" | "profile">("profile");
+  const [live, setLive] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPhase("profile");
+  useLayoutEffect(() => {
+    setLive(true);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setAnimate(true);
+    setPhase("intro");
   }, []);
 
   return (
-    <div className="hm">
-      {phase === "intro" ? <Intro onDone={() => setPhase("profile")} /> : <Profile />}
+    <div className={`hm ${live ? "is-live" : ""}`}>
+      {phase === "intro" ? (
+        <Intro onDone={() => setPhase("profile")} />
+      ) : (
+        <Profile animate={animate} />
+      )}
     </div>
   );
 }

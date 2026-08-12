@@ -13,6 +13,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { SOCIALS } from "@/lib/content";
+import { ARCHIVE, ELSEWHERE, IDENTITY, PROJECTS, PROSE, WORK_LINKS } from "@/lib/profile";
 import { Beam } from "./Beam";
 import { Preview } from "./Preview";
 import { Squircle } from "./Squircle";
@@ -26,85 +27,21 @@ const BEAM_AT = 0.5; // seconds before the avatar's beam lights up
 const TYPE_AT = 0.6; // seconds before the first character lands
 const TILE_HOLD = 700; // ms a project tile keeps its beam after the icon loads
 
-const EMAIL = "hijawadjalal@gmail.com";
+const EMAIL = IDENTITY.email;
 
 // Apple's emoji set, so the flag renders the same on Windows and Linux as it
 // does on a Mac. The system font would otherwise fall back to letters.
 const EMOJI_CDN = "https://cdn.jsdelivr.net/npm/emoji-datasource-apple@15.1.2/img/apple/64";
 
-// What he is actually working on. Two, so they sit side by side without the
-// blurbs wrapping to four lines each.
-const PROJECTS = [
-  {
-    key: "skribbl",
-    name: "skribbl",
-    href: "https://skribbl.dev",
-    icon: "https://www.google.com/s2/favicons?domain=skribbl.dev&sz=128",
-    blurb: "mac app for running a few coding agents at once",
-    bevel: false,
-  },
-  {
-    key: "bevel",
-    name: "bevel",
-    href: "https://bevel.team",
-    icon: "https://www.google.com/s2/favicons?domain=bevel.team&sz=128",
-    blurb: "3d art team you can hire by the job",
-    bevel: true,
-  },
-] as const;
-
-// Older things, folded away behind a toggle. They are still live and still his,
-// they are just not what he is spending the week on — putting them in the same
-// row as the current two would say otherwise.
-//
-// Deliberately not part of SCRIPT: the typing cursor runs over one flat string,
-// so copy that starts collapsed would stall it behind characters nobody can
-// see. These fade in on open instead.
-const ARCHIVE = [
-  {
-    key: "bidframe",
-    name: "bidframe",
-    href: "https://bidframe.org",
-    icon: "https://www.google.com/s2/favicons?domain=bidframe.org&sz=128",
-    blurb: "reads public tenders and flags what would sink a bid",
-    bevel: false,
-  },
-  {
-    key: "weld",
-    name: "weld",
-    href: "https://weldroblox.com",
-    icon: "https://www.google.com/s2/favicons?domain=weldroblox.com&sz=128",
-    blurb: "marketplace for how roblox studios hire developers",
-    bevel: true,
-  },
-] as const;
-
-// The rest of the history, under the same toggle but as plain rows rather than
-// tiles. These are real and current — cosmos models and sof agency are not
-// "old" — they are simply not the headline, and giving each one a tile would
-// turn a profile into a portfolio. Name, then one short line.
-//
-// Same reasoning as ARCHIVE: outside SCRIPT, so the typing cursor never waits
-// on characters hidden behind a collapsed panel.
-const ELSEWHERE = [
-  { name: "jawadj.design", href: "https://jawad-portfolio-kohl.vercel.app", note: "brand identity, ui/ux and full site builds" },
-  { name: "acquiblox", href: "https://acquiblox.com", note: "cmo, marketing and community growth" },
-  { name: "cosmos models", href: "https://cosmosmodels.lovable.app", note: "3d commissions in zbrush, blender and substance" },
-  { name: "sof agency", href: "https://sof.agency", note: "pr, partnerships and crowdfunding for game studios" },
-  { name: "vizzbees", href: "https://vizzbees.com", note: "saas site build" },
-  { name: "kleoklaw", href: "https://kleoklaw.com", note: "mobile product site build" },
-  { name: "splitting point", href: "https://splittingpoint.com", note: "landing page build" },
-] as const;
-
 // The script, in the order it types. Splitting the prose into fragments around
 // each link is what lets a link underline appear mid-sentence rather than the
 // whole sentence waiting for its anchor.
 const SCRIPT = [
-  ["name", "jawad jalal"],
-  ["role", "designer & founder"],
-  ["loc", "london"],
-  ["p1", "i'm a designer and founder, mostly working on my own stuff."],
-  ["p2", "right now it's two things:"],
+  ["name", IDENTITY.name],
+  ["role", IDENTITY.role],
+  ["loc", IDENTITY.location],
+  ["p1", PROSE.p1],
+  ["p2", PROSE.p2],
   ...PROJECTS.flatMap(
     (p) =>
       [
@@ -113,13 +50,13 @@ const SCRIPT = [
       ] as [string, string][],
   ),
   ["older", "everything else"],
-  ["p3", "i also do a bit of 3d art and logo design on the side."],
-  ["p4a", "i'm a 3d artist at "],
-  ["worldent", "world ent"],
-  ["p4b", " and help out on acquisitions at "],
-  ["basket", "basket ent"],
-  ["p4c", "."],
-  ["p5", "i like the web, and making things that feel good to use."],
+  ["p3", PROSE.p3],
+  ["p4a", PROSE.p4a],
+  ["worldent", PROSE.worldent],
+  ["p4b", PROSE.p4b],
+  ["basket", PROSE.basket],
+  ["p4c", PROSE.p4c],
+  ["p5", PROSE.p5],
   ["p6a", "you can find me on "],
   ["x", "twitter/x"],
   ["p6b", ", "],
@@ -393,32 +330,28 @@ function Disclosure({ label, children }: { label: ReactNode; children: ReactNode
   );
 }
 
-export default function Profile() {
-  // `instant` short-circuits every animation: it is set when the visitor has
-  // asked for reduced motion, and the page renders fully typed.
-  const [instant, setInstant] = useState(false);
+export default function Profile({ animate }: { animate: boolean }) {
+  // `animate` is false on the server, on the first client render, and for
+  // anyone who has asked for reduced motion — in all three cases the page
+  // renders finished, with every character already in the markup. It only goes
+  // true once the intro has played, which is when there is something to type.
+  const [instant] = useState(!animate);
   const [typing, setTyping] = useState(false);
-  const [cursor, setCursor] = useState(0);
-  const [beamOn, setBeamOn] = useState(false);
-  const [avatarLoaded, setAvatarLoaded] = useState(false);
+  const [cursor, setCursor] = useState(animate ? 0 : TOTAL);
+  const [beamOn, setBeamOn] = useState(!animate);
+  const [avatarLoaded, setAvatarLoaded] = useState(!animate);
   const [copied, setCopied] = useState(false);
   const toastTimer = useRef(0);
 
   useLayoutEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setInstant(true);
-      setTyping(true);
-      setCursor(TOTAL);
-      setBeamOn(true);
-      return;
-    }
+    if (!animate) return;
     const beam = window.setTimeout(() => setBeamOn(true), BEAM_AT * 1000);
     const type = window.setTimeout(() => setTyping(true), TYPE_AT * 1000);
     return () => {
       clearTimeout(beam);
       clearTimeout(type);
     };
-  }, []);
+  }, [animate]);
 
   // The cursor advances on wall-clock time rather than per frame, so the rate
   // is the same on a 60Hz and a 120Hz display. The per-frame delta is capped at
@@ -441,7 +374,14 @@ export default function Profile() {
 
   // The slice of `key` typed so far, one <span> per character so each can blur
   // in on its own.
+  //
+  // When there is no animation — the server render, and reduced motion — the
+  // text goes out as a plain string instead. A browser joins adjacent inline
+  // spans without a word break, but plenty of HTML-to-text extractors put a
+  // space between every element, and "j a w a d  j a l a l" is not what should
+  // reach a crawler or an agent.
   const type = (key: string) => {
+    if (instant) return TEXT[key];
     const n = Math.max(0, Math.min(TEXT[key].length, cursor - OFFSET[key]));
     if (n === 0) return null;
     return TEXT[key]
@@ -486,8 +426,8 @@ export default function Profile() {
               className="hm-avatar"
             >
               <img
-                src="/design/jawad.webp"
-                alt="Jawad Jalal"
+                src={IDENTITY.avatar}
+                alt={IDENTITY.properName}
                 className={avatarReady ? "t-image" : "t-hidden"}
                 onLoad={() => setAvatarLoaded(true)}
                 ref={(el) => {
@@ -594,11 +534,11 @@ export default function Profile() {
         <p>
           {type("p4a")}
           <Preview previewKey="world ent" inline>
-            <Link href="https://games.worldent.online">{type("worldent")}</Link>
+            <Link href={WORK_LINKS.worldent}>{type("worldent")}</Link>
           </Preview>
           {type("p4b")}
           <Preview previewKey="basket ent" inline>
-            <Link href="https://basketent.com">{type("basket")}</Link>
+            <Link href={WORK_LINKS.basket}>{type("basket")}</Link>
           </Preview>
           {type("p4c")}
         </p>
@@ -633,7 +573,7 @@ export default function Profile() {
             </button>
           )}
           {type("p6f")}
-          <a href="/jawad-jalal-cv.pdf" className="hm-social">
+          <a href={IDENTITY.cv} className="hm-social">
             <DocIcon />
             <span className="hm-social-name">{type("cv")}</span>
           </a>
