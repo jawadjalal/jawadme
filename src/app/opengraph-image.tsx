@@ -99,7 +99,7 @@ export default function Image() {
 
         {/* the two current projects, as the same pills the page shows as tiles */}
         <div style={{ display: "flex", gap: 20, marginTop: 32 }}>
-          {["skribbl.dev", "bevel.team"].map((name) => (
+          {["skribbl", "bevel"].map((name) => (
             <div
               key={name}
               style={{

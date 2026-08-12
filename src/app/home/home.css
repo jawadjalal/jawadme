@@ -297,6 +297,28 @@ button.hm-social {
   transition: height var(--resize-dur) var(--resize-ease);
 }
 
+/* The long tail, under the two archived tiles. Rows rather than cards: this is
+   a list you scan, not a set of things being pitched. */
+.hm-list {
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.375;
+}
+
+/* The note sits in lighter ink so the eye can run down the names alone. */
+.hm-list-note {
+  color: #6b6b66;
+}
+
+.hm-list-note::before {
+  content: " — ";
+}
+
 /* The contents stay mounted while collapsed so the archive's icons are already
    decoded on first open; they are faded and lifted rather than removed. */
 .hm-panel-inner {
