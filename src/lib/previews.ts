@@ -7,17 +7,28 @@
 // map server-side means the set of things this route can ever fetch is the set
 // written down here.
 //
-// `fallback` is a local screenshot to serve when a site exposes no og:image, or
-// is slow, or is down. Not every site has one; entries without it simply show
-// no preview rather than an empty card.
+// Three shapes:
+//   image     — serve this file and never leave the origin. For sites whose own
+//               share card is worse than the screenshot sitting in this repo.
+//   url       — fetch the page and use its og:image.
+//   fallback  — a local file to serve when that fetch fails or finds nothing.
+//
+// An entry with neither image nor a working fetch shows no card at all, rather
+// than opening onto an empty rectangle.
 
-export type Preview = { url: string; fallback?: string };
+export type Preview = { url?: string; image?: string; fallback?: string };
 
 export const PREVIEWS: Record<string, Preview> = {
+  // The screenshots read better than these three sites' share cards, so they
+  // are used directly — no fetch, nothing to fail.
+  bevel: { image: "/design/bevel-team.webp" },
+  bidframe: { image: "/design/bidframe-org.webp" },
+  weld: { image: "/design/weld.webp" },
+
   skribbl: { url: "https://skribbl.dev", fallback: "/design/skribbl-dev.webp" },
-  bevel: { url: "https://bevel.team", fallback: "/design/bevel-team.webp" },
-  bidframe: { url: "https://bidframe.org", fallback: "/design/bidframe-org.webp" },
-  weld: { url: "https://weldroblox.com", fallback: "/design/weld.webp" },
+
+  "world ent": { url: "https://games.worldent.online" },
+  "basket ent": { url: "https://basketent.com" },
 
   "jawadj.design": { url: "https://jawad-portfolio-kohl.vercel.app" },
   acquiblox: { url: "https://acquiblox.com" },

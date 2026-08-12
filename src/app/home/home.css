@@ -354,6 +354,12 @@ button.hm-social {
   display: inline-block;
 }
 
+/* Links in running prose stay inline so the sentence breaks normally; an
+   inline box still anchors the absolutely positioned card. */
+.hm-hover.is-inline {
+  display: inline;
+}
+
 /* 260px keeps the card inside the 640 column from either grid cell, so it never
    pushes the page sideways. The 1.91:1 box is the share-image aspect, held with
    aspect-ratio so the card is the right size before the image has decoded and

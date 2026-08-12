@@ -54,12 +54,17 @@ export async function GET(request: Request) {
   // interesting hosts — every reachable URL is in the map.
   if (!entry) return new Response("unknown preview", { status: 404 });
 
+  const local = (path: string) => Response.redirect(new URL(path, request.url), 307);
+
+  // A pinned local image: nothing to fetch, nothing to fail.
+  if (entry.image) return local(entry.image);
+
   // The local screenshot, when there is one. Used for every failure below, so a
   // site being slow or down degrades to a still image rather than a blank card.
   const fallback = () =>
-    entry.fallback
-      ? Response.redirect(new URL(entry.fallback, request.url), 307)
-      : new Response("no preview", { status: 404 });
+    entry.fallback ? local(entry.fallback) : new Response("no preview", { status: 404 });
+
+  if (!entry.url) return fallback();
 
   try {
     const page = await fetch(entry.url, {
