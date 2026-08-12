@@ -177,6 +177,11 @@ button.hm-link {
   transition: background 400ms ease;
 }
 
+.hm-tile-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
 .hm-tile img {
   width: 2.25rem;
   height: 2.25rem;
@@ -205,6 +210,55 @@ button.hm-link {
 
 .hm-arrow {
   display: inline-flex;
+}
+
+/* ── brand marks in the prose ───────────────────────────────────────────── */
+
+/* The socials line is the one place the page carries real colour: each mark in
+   its own platform's ink, sitting on the text baseline. */
+.hm-social {
+  display: inline;
+  white-space: nowrap;
+}
+
+button.hm-social {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.hm-brand {
+  width: 0.95em;
+  height: 0.95em;
+  display: inline-block;
+  vertical-align: -0.13em;
+  margin-right: 0.28em;
+}
+
+/* Underline the name, never the glyph — a rule through a logo reads as a
+   strikethrough. The whole link still dims together on hover. */
+.hm-social-name {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.hm-social,
+.hm-social * {
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hm-social:hover {
+  opacity: 0.6;
+}
+
+/* Trailing emoji get a little air so they read as a beat after the sentence
+   rather than punctuation attached to the full stop. */
+.hm-accent {
+  margin-left: 0.3em;
 }
 
 /* ── older things ───────────────────────────────────────────────────────── */

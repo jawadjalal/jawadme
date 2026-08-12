@@ -12,6 +12,7 @@
 // otherwise shove everything below it down a whole line-height in one frame.
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { SOCIALS } from "@/lib/content";
 import { Beam } from "./Beam";
 import { Squircle } from "./Squircle";
 
@@ -98,7 +99,7 @@ const SCRIPT = [
   ["p4c", "."],
   ["p5", "i like the web, and making things that feel good to use."],
   ["p6a", "you can find me on "],
-  ["x", "x"],
+  ["x", "twitter/x"],
   ["p6b", ", "],
   ["li", "linkedin"],
   ["p6c", ", "],
@@ -121,6 +122,33 @@ for (const [key, value] of SCRIPT) {
   TEXT[key] = value;
   OFFSET[key] = TOTAL;
   TOTAL += value.length;
+}
+
+// The real brand marks, keyed by the label they carry in src/lib/content.ts, so
+// the glyph and its colour live in one place rather than being redrawn here.
+const BRAND = Object.fromEntries(SOCIALS.map((s) => [s.label, s]));
+
+function Brand({ label }: { label: string }) {
+  const mark = BRAND[label];
+  if (!mark) return null;
+  return (
+    <svg viewBox="0 0 24 24" fill={mark.brand} className="hm-brand" aria-hidden="true">
+      <path d={mark.path} />
+    </svg>
+  );
+}
+
+// A social link: brand mark in the platform's own colour, then the name. The
+// underline belongs to the name alone — running it under the glyph and the gap
+// makes the mark look struck through.
+function Social({ label, children }: { label: string; children: ReactNode }) {
+  const mark = BRAND[label];
+  return (
+    <a href={mark.href} target="_blank" rel="noreferrer" className="hm-social">
+      <Brand label={label} />
+      <span className="hm-social-name">{children}</span>
+    </a>
+  );
 }
 
 function Emoji({ code, label }: { code: string; label: string }) {
@@ -191,16 +219,22 @@ function Tile({ src, alt, instant }: { src: string; alt: string; instant: boolea
           className="hm-tile"
           style={{ background: ready ? "transparent" : TILE }}
         >
-          <img
-            src={src}
-            alt={alt}
-            draggable={false}
-            className={ready ? "t-image" : "t-hidden"}
-            onLoad={() => setLoaded(true)}
-            ref={(el) => {
-              if (el?.complete && el.naturalWidth) setLoaded(true);
-            }}
-          />
+          {/* Bevelled to match the tile it sits in. These are favicons, which
+              arrive as hard-edged squares — against a rounded tile that reads
+              as a mistake, so the icon gets the same continuous curve as the
+              avatar, at the radius its own size calls for. */}
+          <Squircle radius={10} smoothing={0.8} className="hm-tile-icon">
+            <img
+              src={src}
+              alt={alt}
+              draggable={false}
+              className={ready ? "t-image" : "t-hidden"}
+              onLoad={() => setLoaded(true)}
+              ref={(el) => {
+                if (el?.complete && el.naturalWidth) setLoaded(true);
+              }}
+            />
+          </Squircle>
         </div>
       </Beam>
     </div>
@@ -461,7 +495,14 @@ export default function Profile() {
       )}
 
       <Resize className="hm-mt-10">
-        <p>{type("p3")}</p>
+        <p>
+          {type("p3")}
+          {finished("p3") && (
+            <span className="t-char hm-accent">
+              <Emoji code="1f3a8" label="palette" />
+            </span>
+          )}
+        </p>
       </Resize>
 
       <Resize className="hm-mt-4">
@@ -475,31 +516,38 @@ export default function Profile() {
       </Resize>
 
       <Resize className="hm-mt-4">
-        <p>{type("p5")}</p>
+        <p>
+          {type("p5")}
+          {finished("p5") && (
+            <span className="t-char hm-accent">
+              <Emoji code="1f310" label="globe" />
+            </span>
+          )}
+        </p>
       </Resize>
 
       <Resize className="hm-mt-4">
         <p>
           {type("p6a")}
-          <Link href="https://x.com/jawadmakes">{type("x")}</Link>
+          <Social label="X">{type("x")}</Social>
           {type("p6b")}
-          <Link href="https://www.linkedin.com/in/jawad-jalal-designs">{type("li")}</Link>
+          <Social label="LinkedIn">{type("li")}</Social>
           {type("p6c")}
-          <Link href="https://www.instagram.com/j.awadjalal/">{type("ig")}</Link>
+          <Social label="Instagram">{type("ig")}</Social>
           {type("p6d")}
-          <Link href="https://www.youtube.com/@jawadmake">{type("yt")}</Link>
+          <Social label="YouTube">{type("yt")}</Social>
           {type("p6e")}
           {started("email") && (
-            <button
-              type="button"
-              onClick={copyEmail}
-              className="hm-link"
-            >
-              {type("email")}
+            <button type="button" onClick={copyEmail} className="hm-social">
+              <MailIcon />
+              <span className="hm-social-name">{type("email")}</span>
             </button>
           )}
           {type("p6f")}
-          <Link href="/jawad-jalal-cv.pdf">{type("cv")}</Link>
+          <a href="/jawad-jalal-cv.pdf" className="hm-social">
+            <DocIcon />
+            <span className="hm-social-name">{type("cv")}</span>
+          </a>
           {type("p6g")}
         </p>
       </Resize>
@@ -512,6 +560,28 @@ export default function Profile() {
         <Emoji code="1f4cb" label="clipboard" /> Copied {EMAIL}
       </div>
     </main>
+  );
+}
+
+// The email and CV are not platforms, so they get drawn marks rather than logos
+// — same size and same slot as the brand glyphs so the line reads as one row.
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="hm-brand" aria-hidden="true" fill="none"
+      stroke="#0f9d76" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
+      <path d="M3 7l9 6 9-6" />
+    </svg>
+  );
+}
+
+function DocIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="hm-brand" aria-hidden="true" fill="none"
+      stroke="#e07a2f" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5z" />
+      <path d="M14 2.5V8h5" />
+    </svg>
   );
 }
 
