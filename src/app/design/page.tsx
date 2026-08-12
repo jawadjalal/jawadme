@@ -1,33 +1,63 @@
+// /design — the studio pitch.
+//
+// Was jawadOS: a scroll-driven CRT on a desk, five windows, a fake cursor, and
+// roughly four thousand lines of scene markup generated from HTML templates.
+// The offer, the prices, the work and the brief form all survived the move; the
+// desk did not. It now reads as the same person as the homepage, because it is.
+
 import type { Metadata } from "next";
-import DesignClient from "./DesignClient";
+import { IDENTITY } from "@/lib/profile";
+import { STUDIO } from "@/lib/studio";
+import Studio from "./Studio";
+import "../home/home.css";
 import "./design.css";
 
+const DESCRIPTION =
+  "design, build and ship — brand identity, ui/ux and full site builds, by one " +
+  "person, start to live. prices are on the page and the brief takes a minute.";
+
 export const metadata: Metadata = {
-  title: "jawadOS — design by Jawad Jalal",
-  description:
-    "Design, build and ship. jawadOS is a working desktop you scroll through: the work, the prices, and a brief you can send in one sitting.",
+  title: `${STUDIO.title} — ${IDENTITY.name}`,
+  description: DESCRIPTION,
+  alternates: { canonical: "/design" },
   openGraph: {
-    title: "jawadOS — design by Jawad Jalal",
-    description:
-      "Design, build and ship. A working desktop you scroll through: the work, the prices, and a brief you can send in one sitting.",
+    title: `${STUDIO.title} — ${IDENTITY.name}`,
+    description: DESCRIPTION,
+    url: "/design",
+    siteName: IDENTITY.name,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "jawadOS — design by Jawad Jalal",
-    description:
-      "Design, build and ship. A working desktop you scroll through: the work, the prices, and a brief you can send in one sitting.",
+    title: `${STUDIO.title} — ${IDENTITY.name}`,
+    description: DESCRIPTION,
   },
 };
+
+// Priced services, stated in a form a search engine can read as an offer rather
+// than as decoration.
+function structuredData() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: STUDIO.title,
+    provider: { "@id": `${IDENTITY.site}/#person` },
+    areaServed: "Worldwide",
+    description: DESCRIPTION,
+    url: `${IDENTITY.site}/design`,
+  };
+}
 
 export default function DesignPage() {
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
       />
-      <DesignClient />
+      <div className="hm">
+        <Studio />
+      </div>
     </>
   );
 }

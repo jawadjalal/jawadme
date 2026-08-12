@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cv": "node scripts/generate-cv.mjs",
-    "design:scene": "node scripts/build-design-scene.mjs"
+    "cv": "node scripts/generate-cv.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
