@@ -7,22 +7,19 @@ export const metadata: Metadata = {
   // jawadme.vercel.app — the custom domain is the one to advertise, so share
   // cards and canonical URLs resolve there rather than to the vercel.app alias.
   metadataBase: new URL("https://jawadjalal.com"),
-  title: "Jawad Jalal — designer, running jawadOS",
-  description:
-    "Jawad Jalal is a designer and founder. This site is jawadOS: a desktop you scroll through — the work, the CV, the prices, and a brief you can send in one sitting.",
+  title: "jawad jalal",
+  description: "designer & founder",
   openGraph: {
-    title: "Jawad Jalal — designer, running jawadOS",
-    description:
-      "Design, build and ship. A desktop you scroll through — the work, the CV, the prices, and a brief you can send in one sitting.",
+    title: "jawad jalal",
+    description: "designer and founder in london, mostly working on his own stuff.",
     url: "/",
-    siteName: "jawadOS",
+    siteName: "jawad jalal",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jawad Jalal — designer, running jawadOS",
-    description:
-      "Design, build and ship. A desktop you scroll through — the work, the CV, the prices, and a brief you can send in one sitting.",
+    title: "jawad jalal",
+    description: "designer and founder in london, mostly working on his own stuff.",
   },
 };
 
@@ -32,6 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Inter, from the source. The variable build is what the homepage
+            sets its type in; the Google-hosted families below are still what
+            /design and /writing use. */}
+        <link rel="preconnect" href="https://rsms.me/" />
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

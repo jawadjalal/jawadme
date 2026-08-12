@@ -1,0 +1,393 @@
+/* The homepage. A single 640px column of ink on near-white — no scene, no
+   chrome, no window frames.
+
+   Written as plain CSS rather than utilities on purpose: this repo has Tailwind
+   installed but never enabled (globals.css carries no @tailwind directives, and
+   /design and /writing are hand-written stylesheets). Turning preflight on for
+   one page would reset the other two.
+
+   The site's other routes are dark and paint their own backgrounds, and the
+   global html background in globals.css is set for them. Rather than flip that
+   global and leave the dark pages with a white overscroll gutter, the light
+   ground is scoped to documents that actually contain this page. */
+
+html:has(.hm),
+html:has(.hm) body {
+  background: #fdfdfc;
+}
+
+.hm {
+  font-family: "InterVariable", "Inter", system-ui, -apple-system, sans-serif;
+  color: #0a0a0a;
+}
+
+/* Motion vocabulary. Everything on the page reaches for these rather than
+   inventing its own timing, so the typing, the tiles and the toast all decay at
+   the same rate and read as one system. */
+:root {
+  --resize-dur: 0.3s;
+  --resize-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --text-swap-dur: 0.2s;
+  --text-swap-translate-y: 8px;
+  --text-swap-blur: 2px;
+  --text-swap-ease: ease-out;
+
+  --badge-pop-dur: 0.5s;
+  --badge-pop-close-dur: 0.18s;
+  --badge-fade-dur: 0.4s;
+  --badge-fade-close-dur: 0.18s;
+  --badge-pop-ease: cubic-bezier(0.34, 1.36, 0.64, 1);
+  --badge-close-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --page-fade-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── the column ─────────────────────────────────────────────────────────── */
+
+.hm-main {
+  margin-inline: auto;
+  max-width: 640px;
+  padding: 6rem 1.5rem 5rem;
+  font-size: 17px;
+  line-height: 1.625;
+}
+
+.hm-main p,
+.hm-main h1 {
+  margin: 0;
+}
+
+/* globals.css strips underlines site-wide for the OS scene, so the ones this
+   page wants have to be asked for by name. */
+.hm-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hm-link:hover {
+  opacity: 0.6;
+}
+
+/* The email is a button, not a link — it copies rather than navigates — but it
+   has to be indistinguishable from its neighbours in the same sentence. */
+button.hm-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ── header ─────────────────────────────────────────────────────────────── */
+
+.hm-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.75rem;
+}
+
+.hm-avatar-slot {
+  flex-shrink: 0;
+}
+
+.hm-avatar {
+  width: 7rem;
+  height: 7rem;
+  overflow: hidden;
+  background: #f4f4f2;
+}
+
+.hm-avatar img {
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  display: block;
+}
+
+.hm-id {
+  min-width: 0;
+}
+
+/* min-height is a whole line so the header does not grow as the name types in
+   and shove the paragraphs below it down three times. */
+.hm-name {
+  min-height: 1lh;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.hm-role {
+  margin-top: 0.5rem !important;
+  min-height: 1lh;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+.hm-loc {
+  margin-top: 0.375rem !important;
+  min-height: 1lh;
+  font-size: 1.125rem;
+  line-height: 1.25;
+  font-weight: 500;
+}
+
+/* Apple's emoji set, served as images so the flag renders the same everywhere
+   instead of falling back to two letters on Windows and Linux. */
+.hm-emoji {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.2em;
+}
+
+/* ── projects ───────────────────────────────────────────────────────────── */
+
+.hm-projects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 3rem;
+  row-gap: 2rem;
+}
+
+.hm-project {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+  gap: 0.75rem;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hm-project:hover {
+  opacity: 0.7;
+}
+
+.hm-tile {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  transition: background 400ms ease;
+}
+
+.hm-tile img {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: block;
+}
+
+.hm-project-name {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1.125rem;
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+.hm-project-name svg {
+  display: block;
+}
+
+.hm-project-blurb {
+  margin-top: 0.125rem !important;
+  max-width: 180px;
+  font-size: 0.875rem;
+  line-height: 1.375;
+}
+
+.hm-arrow {
+  display: inline-flex;
+}
+
+/* ── older things ───────────────────────────────────────────────────────── */
+
+/* Sits at the same size as the project blurbs and in a lighter ink, so it
+   reads as a footnote to the two projects above rather than a third one. */
+.hm-disclosure {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  color: #6b6b66;
+  cursor: pointer;
+  transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hm-disclosure:hover {
+  color: #0a0a0a;
+}
+
+.hm-chevron {
+  display: inline-flex;
+  transition: transform var(--resize-dur) var(--resize-ease);
+}
+
+.hm-chevron.is-open {
+  transform: rotate(90deg);
+}
+
+.hm-panel {
+  overflow: hidden;
+  transition: height var(--resize-dur) var(--resize-ease);
+}
+
+/* The contents stay mounted while collapsed so the archive's icons are already
+   decoded on first open; they are faded and lifted rather than removed. */
+.hm-panel-inner {
+  padding-top: 1.5rem;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--resize-dur) var(--resize-ease),
+    transform var(--resize-dur) var(--resize-ease);
+}
+
+.hm-panel-inner.is-open {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── spacing between blocks ─────────────────────────────────────────────── */
+
+.hm-mt-4 {
+  margin-top: 1rem;
+}
+.hm-mt-8 {
+  margin-top: 2rem;
+}
+.hm-mt-10 {
+  margin-top: 2.5rem;
+}
+
+/* ── the animation vocabulary ───────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* One character of typed text. The blur is what stops the reveal reading as a
+     hard terminal cursor. */
+  .t-char {
+    animation: t-char-in 0.3s var(--page-fade-ease) both;
+  }
+
+  @keyframes t-char-in {
+    0% {
+      opacity: 0;
+      filter: blur(2px);
+    }
+    to {
+      opacity: 1;
+      filter: none;
+    }
+  }
+
+  /* Height easing for a block that grows a line mid-sentence. */
+  .t-resize {
+    transition: height var(--resize-dur) var(--resize-ease);
+  }
+
+  /* A tile arriving in the layout. */
+  .t-slot-in {
+    animation: t-slot-in 0.45s var(--resize-ease) both;
+  }
+
+  @keyframes t-slot-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* An image resolving out of its own blur once it has decoded. */
+  .t-image {
+    animation: t-image-in 0.6s var(--badge-pop-ease) both;
+  }
+
+  @keyframes t-image-in {
+    0% {
+      opacity: 0;
+      filter: blur(8px);
+      transform: scale(0.82) translateY(4px);
+    }
+    55% {
+      filter: blur(2px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1) translateY(0);
+    }
+  }
+}
+
+.t-hidden {
+  opacity: 0;
+}
+
+/* The copied-to-clipboard pill. It lives in the DOM from first paint and is
+   moved in and out on opacity/transform, so there is nothing to mount at the
+   moment of the click. */
+.t-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  z-index: 50;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateX(-50%) translateY(calc(var(--text-swap-translate-y) * 2));
+  filter: blur(var(--text-swap-blur));
+  pointer-events: none;
+  transition:
+    opacity var(--badge-fade-close-dur) var(--badge-close-ease),
+    transform var(--badge-pop-close-dur) var(--badge-close-ease),
+    filter var(--badge-fade-close-dur) var(--badge-close-ease);
+}
+
+.t-toast.is-open {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateX(-50%) translateY(0);
+  transition:
+    opacity var(--badge-fade-dur) var(--badge-pop-ease),
+    transform var(--badge-pop-dur) var(--badge-pop-ease),
+    filter var(--badge-fade-dur) var(--badge-pop-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-toast {
+    filter: none;
+    transform: translateX(-50%);
+    transition: opacity var(--badge-fade-close-dur) var(--badge-close-ease);
+  }
+}
+
+/* On a narrow screen the two project columns stop fitting long before the
+   column itself does — the blurbs are capped at 180px and would wrap to four
+   lines each. One per row instead. */
+@media (max-width: 560px) {
+  .hm-projects {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hm-name {
+    font-size: 2.25rem;
+  }
+}
