@@ -161,10 +161,16 @@ button.hm-link {
   min-height: 3rem;
   align-items: center;
   gap: 0.75rem;
+}
+
+/* The dim lands on the text alone, not the whole link. Fading the anchor also
+   fades the hover preview nested inside it — and an opacity below 1 opens a
+   stacking context, which trapped the card behind the paragraphs above it. */
+.hm-project .hm-id {
   transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.hm-project:hover {
+.hm-project:hover .hm-id {
   opacity: 0.7;
 }
 
@@ -297,6 +303,12 @@ button.hm-social {
   transition: height var(--resize-dur) var(--resize-ease);
 }
 
+/* Set once the open transition has finished, so the hover previews inside can
+   float past the panel edge instead of being clipped by the height animation. */
+.hm-panel.is-settled {
+  overflow: visible;
+}
+
 /* The long tail, under the two archived tiles. Rows rather than cards: this is
    a list you scan, not a set of things being pitched. */
 .hm-list {
@@ -333,6 +345,76 @@ button.hm-social {
 .hm-panel-inner.is-open {
   opacity: 1;
   transform: none;
+}
+
+/* ── hover previews ─────────────────────────────────────────────────────── */
+
+.hm-hover {
+  position: relative;
+  display: inline-block;
+}
+
+/* 260px keeps the card inside the 640 column from either grid cell, so it never
+   pushes the page sideways. The 1.91:1 box is the share-image aspect, held with
+   aspect-ratio so the card is the right size before the image has decoded and
+   does not snap open a second time when it arrives. */
+.hm-preview {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 0;
+  z-index: 30;
+  display: block;
+  width: 260px;
+  aspect-ratio: 1.91 / 1;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #f4f4f2;
+  border: 1px solid rgba(10, 10, 10, 0.07);
+  box-shadow:
+    0 14px 34px rgba(10, 10, 10, 0.13),
+    0 3px 8px rgba(10, 10, 10, 0.07);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px) scale(0.97);
+  filter: blur(2px);
+  transition:
+    opacity var(--text-swap-dur) var(--badge-close-ease),
+    transform var(--badge-pop-close-dur) var(--badge-close-ease),
+    filter var(--text-swap-dur) var(--badge-close-ease);
+}
+
+.hm-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Hover only — on touch there is no hover to leave, so the card would stick.
+   `is-ready` means the image has actually decoded: opening onto a grey box and
+   filling it in a moment later looks broken. */
+@media (hover: hover) {
+  .hm-hover:hover .hm-preview.is-ready {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    transition:
+      opacity var(--badge-fade-dur) var(--badge-pop-ease),
+      transform var(--badge-pop-dur) var(--badge-pop-ease),
+      filter var(--badge-fade-dur) var(--badge-pop-ease);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-preview {
+    transform: none;
+    filter: none;
+  }
+
+  .hm-hover:hover .hm-preview.is-ready {
+    transform: none;
+    filter: none;
+  }
 }
 
 /* ── spacing between blocks ─────────────────────────────────────────────── */
