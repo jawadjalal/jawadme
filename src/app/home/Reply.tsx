@@ -86,23 +86,32 @@ export function Reply() {
     } catch {
       // Offline, blocked, or the request never landed. The message is still in
       // the box, so a retry costs nothing but the click.
-      setError("No connection. Your message is still here — try again.");
+      setError("No connection. Your message is still here, so try again.");
       setState("idle");
     }
   };
 
-  // ⌘/Ctrl+Enter sends, as it does in every other box that looks like this one.
-  // A bare Enter has to keep making a new line: this is a message, not a search.
+  // Enter sends. Shift+Enter makes a new line, and ⌘/Ctrl+Enter sends too, so
+  // the habit anyone arrives with also works.
+  //
+  // The one case Enter must not send is mid-composition: typing Japanese, Korean
+  // or Chinese, Enter commits the candidate the IME is offering and the browser
+  // reports keyCode 229 while that is happening. Sending there would fire the
+  // message on the first character of a word.
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-      e.preventDefault();
-      void send();
-    }
+    if (e.key !== "Enter") return;
+    if (e.nativeEvent.isComposing || e.nativeEvent.keyCode === 229) return;
+    if (e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    void send();
   };
+
+  const left = MAX - message.length;
+  const ready = message.trim().length > 0;
 
   return (
     <div ref={root} className="hm-reply">
-      <p className="hm-reply-label">or just say something here — it lands in my inbox.</p>
+      <p className="hm-reply-label">or just say something here. it lands in my inbox.</p>
 
       <div className="hm-reply-card">
         {state === "sent" ? (
@@ -137,6 +146,11 @@ export function Reply() {
               onKeyDown={onKeyDown}
             />
 
+            {/* A hairline under the message, so the address and the button read
+                as the controls for what is written above them rather than as
+                two more things to fill in. */}
+            <div className="hm-reply-rule" aria-hidden="true" />
+
             <div className="hm-reply-row">
               <label className="hm-sr-only" htmlFor="hm-reply-email">
                 Your email, if you want a reply
@@ -153,9 +167,23 @@ export function Reply() {
                 onChange={(e) => setEmail(e.target.value)}
               />
 
+              {/* Only worth showing once the ceiling is close enough to matter.
+                  aria-live is off: a number ticking down on every keystroke is
+                  noise in a screen reader, and maxLength already stops the
+                  overflow. */}
+              {left <= 200 ? (
+                <span className={`hm-reply-count ${left <= 20 ? "is-low" : ""}`}>{left}</span>
+              ) : null}
+
               <button
                 type="submit"
-                className={`hm-reply-send ${state === "sending" ? "is-sending" : ""}`}
+                className={[
+                  "hm-reply-send",
+                  state === "sending" ? "is-sending" : "",
+                  ready ? "is-ready" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 disabled={state === "sending"}
                 aria-label={state === "sending" ? "Sending" : "Send"}
               >
@@ -167,10 +195,18 @@ export function Reply() {
       </div>
 
       {/* Holds its line height whether or not there is anything in it, so the
-          page does not shift when an error appears. */}
-      <p className={`hm-reply-foot ${error ? "is-error" : ""}`}>
-        {error ?? (state === "sent" ? "" : "no address needed unless you want an answer.")}
-      </p>
+          page does not shift when an error appears. The keys sit on the same
+          line, on the right, and drop out once there is an error to read or a
+          message already gone. */}
+      <div className={`hm-reply-foot ${error ? "is-error" : ""}`}>
+        <p>{error ?? (state === "sent" ? "" : "no address needed unless you want an answer.")}</p>
+        {!error && state !== "sent" ? (
+          <p className="hm-reply-keys" aria-hidden="true">
+            <kbd>Enter</kbd> sends, <kbd>Shift</kbd>
+            <kbd>Enter</kbd> new line
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }
