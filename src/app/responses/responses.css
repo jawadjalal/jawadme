@@ -1,8 +1,11 @@
-/* The inbox for the homepage reply box.
+/* The inbox for the homepage reply box, kept as a log rather than a feed: every
+ * response in one table, each row with the text to paste into Slack behind a
+ * copy button. Nothing here is sent anywhere on its own.
  *
  * Deliberately the homepage's clothes rather than the jawadOS window chrome the
- * /design admin wears: same Inter, same column, same tokens out of theme.css, so
- * the two pages read as one site and the light/dark toggle works on both.
+ * /design admin wears: same Inter, same tokens out of theme.css, so the two
+ * pages read as one site and the light/dark toggle works on both. The column is
+ * wider than the homepage's because a table needs the room.
  */
 
 html:has(.rp),
@@ -20,7 +23,7 @@ html:has(.rp) body {
 
 .rp-shell {
   margin-inline: auto;
-  max-width: 720px;
+  max-width: 1080px;
   padding: 5rem 1.5rem 6rem;
 }
 
@@ -70,39 +73,102 @@ html:has(.rp) body {
   border-color: var(--line-strong);
 }
 
-/* ── the list ───────────────────────────────────────────────────────────── */
+/* ── the lede and the bulk actions ──────────────────────────────────────── */
 
-.rp-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
+.rp-lede {
+  margin: 1.5rem 0 0;
+  max-width: 62ch;
+  font-size: 0.9375rem;
+  color: var(--muted);
 }
 
-.rp-item {
-  padding: 1.25rem 1.375rem;
+.rp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+/* ── the table ──────────────────────────────────────────────────────────── */
+
+/* The scroll box, so a narrow screen moves the table sideways instead of the
+   whole page. Rounded and ruled, which also gives the table its outer edge. */
+.rp-table-wrap {
+  margin-top: 1.5rem;
+  overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--field);
   box-shadow: var(--lift-soft);
 }
 
-/* Unread messages carry a rule down their left edge — enough to find them
-   scrolling, not so much that the list turns into two designs. */
-.rp-item.is-new {
-  border-left: 3px solid var(--ink);
+.rp-table {
+  width: 100%;
+  min-width: 56rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+  text-align: left;
 }
 
-.rp-item-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
+.rp-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--field);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
-.rp-from {
-  font-size: 0.9375rem;
+.rp-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.rp-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.rp-table tbody tr:hover td {
+  background: var(--tile);
+}
+
+/* Unread rows carry a rule down their left edge — enough to find them
+   scrolling, not so much that the table turns into two designs. It is an inset
+   shadow rather than a border so the cell keeps its width and the column stays
+   aligned with the ones above and below it. */
+.rp-table tbody tr.is-new td:first-child {
+  box-shadow: inset 3px 0 0 var(--ink);
+}
+
+/* ── the cells ──────────────────────────────────────────────────────────── */
+
+.rp-c-when {
+  width: 1%;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Held open by a floor and capped by a ceiling. Without the floor the browser
+   takes `width: 1%` at its word and squeezes the column down to one character
+   per line; without the ceiling one long address widens the whole table. */
+.rp-c-from {
+  width: 1%;
+  min-width: 12rem;
+  max-width: 18rem;
+  overflow-wrap: anywhere;
+}
+
+.rp-c-from a {
   font-weight: 600;
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
@@ -111,35 +177,87 @@ html:has(.rp) body {
 
 .rp-anon {
   color: var(--muted);
-  font-weight: 500;
   text-decoration: none;
 }
 
-.rp-when {
-  font-size: 0.8125rem;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
+.rp-c-message {
+  min-width: 22rem;
 }
 
 /* Whatever they typed, laid out the way they typed it — line breaks included. */
 .rp-message {
-  margin: 0.75rem 0 0;
+  margin: 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  line-height: 1.55;
 }
 
-.rp-item-foot {
+/* Anything past the preview length collapses into a disclosure, so one long
+   message cannot set the height of the whole table. No JavaScript involved:
+   <details> already does this.
+
+   The column ordering is what makes one control do both jobs. Closed, the
+   summary is the preview and its cue reads "show all". Open, the preview is
+   hidden and the summary is sent below the full message, where the cue now
+   reads "show less" — so the way out sits where you finished reading rather
+   than back at the top. */
+.rp-long {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 1rem;
+  flex-direction: column;
+}
+
+.rp-long summary {
+  display: block;
+  cursor: pointer;
+  list-style: none;
+}
+
+.rp-long summary::-webkit-details-marker {
+  display: none;
+}
+
+.rp-long[open] summary {
+  order: 2;
+}
+
+.rp-long[open] .rp-long-preview {
+  display: none;
+}
+
+.rp-long-cue {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rp-long summary:hover .rp-long-cue {
+  color: var(--ink);
+}
+
+.rp-long-less {
+  display: none;
+}
+
+.rp-long[open] .rp-long-more {
+  display: none;
+}
+
+.rp-long[open] .rp-long-less {
+  display: inline;
+}
+
+.rp-c-status,
+.rp-c-copy {
+  width: 1%;
+  white-space: nowrap;
 }
 
 .rp-status {
   display: flex;
-  gap: 0.375rem;
+  gap: 0.25rem;
 }
 
 .rp-status button {
@@ -170,15 +288,65 @@ html:has(.rp) body {
   color: var(--paper);
 }
 
-.rp-reply {
-  font-size: 0.875rem;
-  font-weight: 500;
+/* ── copy buttons ───────────────────────────────────────────────────────────
+
+   Two sizes of the same button: .rp-copy in a row, .rp-button (shared with the
+   sign-out control above) for the bulk actions over the table. Both confirm in
+   place by relabelling themselves, which is why they must not resize when the
+   label changes — a button that jumps out from under the cursor as it is
+   clicked reads as a miss. min-width holds the box. */
+
+.rp-copy {
+  min-width: 5.25rem;
+  padding: 0.3125rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  background: none;
   color: var(--muted);
-  transition: color 0.2s var(--theme-ease);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--theme-ease),
+    border-color 0.2s var(--theme-ease),
+    color 0.2s var(--theme-ease);
 }
 
-.rp-reply:hover {
+.rp-copy:hover {
   color: var(--ink);
+  border-color: var(--line-strong);
+  background: var(--tile);
+}
+
+/* Copied. Filled for a moment, the same way the current status pill is filled,
+   then it drops back on its own. */
+.rp-copy.is-copied,
+.rp-button.is-copied {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* The clipboard was refused — no secure context, or the permission was denied.
+   Saying so is better than a button that appears to have worked. */
+.rp-copy.is-failed,
+.rp-button.is-failed {
+  border-color: #d1453b;
+  color: #d1453b;
+}
+
+:root[data-theme="dark"] .rp-copy.is-failed,
+:root[data-theme="dark"] .rp-button.is-failed {
+  border-color: #ff8b80;
+  color: #ff8b80;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .rp-copy.is-failed,
+  :root:not([data-theme="light"]) .rp-button.is-failed {
+    border-color: #ff8b80;
+    color: #ff8b80;
+  }
 }
 
 /* ── notes and the gate ─────────────────────────────────────────────────── */
