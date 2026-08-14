@@ -1,0 +1,296 @@
+/* The inbox for the homepage reply box.
+ *
+ * Deliberately the homepage's clothes rather than the jawadOS window chrome the
+ * /design admin wears: same Inter, same column, same tokens out of theme.css, so
+ * the two pages read as one site and the light/dark toggle works on both.
+ */
+
+html:has(.rp),
+html:has(.rp) body {
+  background: var(--paper);
+}
+
+.rp {
+  min-height: 100vh;
+  font-family: "InterVariable", "Inter", system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.rp-shell {
+  margin-inline: auto;
+  max-width: 720px;
+  padding: 5rem 1.5rem 6rem;
+}
+
+/* ── heading ────────────────────────────────────────────────────────────── */
+
+.rp-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.rp-head h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.rp-sub {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.rp-signout,
+.rp-button {
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--theme-ease),
+    border-color 0.2s var(--theme-ease);
+}
+
+.rp-signout:hover,
+.rp-button:hover {
+  background: var(--tile);
+  border-color: var(--line-strong);
+}
+
+/* ── the list ───────────────────────────────────────────────────────────── */
+
+.rp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.rp-item {
+  padding: 1.25rem 1.375rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--field);
+  box-shadow: var(--lift-soft);
+}
+
+/* Unread messages carry a rule down their left edge — enough to find them
+   scrolling, not so much that the list turns into two designs. */
+.rp-item.is-new {
+  border-left: 3px solid var(--ink);
+}
+
+.rp-item-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rp-from {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.rp-anon {
+  color: var(--muted);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.rp-when {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Whatever they typed, laid out the way they typed it — line breaks included. */
+.rp-message {
+  margin: 0.75rem 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.rp-item-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.rp-status {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.rp-status button {
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--theme-ease),
+    color 0.2s var(--theme-ease),
+    border-color 0.2s var(--theme-ease);
+}
+
+.rp-status button:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+/* The current status is the filled one. aria-pressed carries the same fact to a
+   screen reader, so the styling is hung off it rather than a second class. */
+.rp-status button[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.rp-reply {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color 0.2s var(--theme-ease);
+}
+
+.rp-reply:hover {
+  color: var(--ink);
+}
+
+/* ── notes and the gate ─────────────────────────────────────────────────── */
+
+.rp-note,
+.rp-empty {
+  margin: 2rem 0 0;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.rp-note code {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125em;
+  color: var(--ink);
+}
+
+.rp-note strong {
+  color: var(--ink);
+}
+
+.rp-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.rp-gate-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--field);
+  box-shadow: var(--lift-soft);
+}
+
+.rp-gate-card h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.rp-gate-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.rp-gate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.rp-gate-form label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.rp-gate-form input {
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  transition: border-color 0.2s var(--theme-ease);
+}
+
+.rp-gate-form input:focus {
+  outline: none;
+  border-color: var(--line-strong);
+}
+
+.rp-gate-form .rp-button {
+  margin-top: 0.375rem;
+}
+
+.rp-error {
+  font-size: 0.8125rem;
+  color: #d1453b;
+}
+
+:root[data-theme="dark"] .rp-error {
+  color: #ff8b80;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .rp-error {
+    color: #ff8b80;
+  }
+}
+
+.rp-back {
+  font-size: 0.875rem;
+  color: var(--muted);
+  transition: color 0.2s var(--theme-ease);
+}
+
+.rp-back:hover {
+  color: var(--ink);
+}

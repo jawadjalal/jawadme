@@ -13,12 +13,12 @@
 
 html:has(.hm),
 html:has(.hm) body {
-  background: #fdfdfc;
+  background: var(--paper);
 }
 
 .hm {
   font-family: "InterVariable", "Inter", system-ui, -apple-system, sans-serif;
-  color: #0a0a0a;
+  color: var(--ink);
 }
 
 /* The server sends the finished page so it is in the HTML for crawlers, agents
@@ -111,7 +111,7 @@ button.hm-link {
   width: 7rem;
   height: 7rem;
   overflow: hidden;
-  background: #f4f4f2;
+  background: var(--tile);
 }
 
 .hm-avatar img {
@@ -293,13 +293,13 @@ button.hm-social {
   background: none;
   font: inherit;
   font-size: 0.875rem;
-  color: #6b6b66;
+  color: var(--muted);
   cursor: pointer;
   transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hm-disclosure:hover {
-  color: #0a0a0a;
+  color: var(--ink);
 }
 
 .hm-chevron {
@@ -337,7 +337,7 @@ button.hm-social {
 
 /* The note sits in lighter ink so the eye can run down the names alone. */
 .hm-list-note {
-  color: #6b6b66;
+  color: var(--muted);
 }
 
 .hm-list-note::before {
@@ -387,11 +387,9 @@ button.hm-social {
   aspect-ratio: 1.91 / 1;
   overflow: hidden;
   border-radius: 12px;
-  background: #f4f4f2;
+  background: var(--tile);
   border: 1px solid rgba(10, 10, 10, 0.07);
-  box-shadow:
-    0 14px 34px rgba(10, 10, 10, 0.13),
-    0 3px 8px rgba(10, 10, 10, 0.07);
+  box-shadow: var(--lift);
   pointer-events: none;
   opacity: 0;
   transform: translateY(6px) scale(0.97);
@@ -566,5 +564,275 @@ button.hm-social {
 
   .hm-name {
     font-size: 2.25rem;
+  }
+}
+
+/* ── the reply box ──────────────────────────────────────────────────────────
+
+   The last thing on the page, after the socials: one card holding a message, an
+   address to reply to, and a send button.
+
+   It arrives on scroll rather than on load. Everything above it is typed in, so
+   a box that faded in at the same time would be competing with the cursor; this
+   way it is still, and then lifts into place at the moment you reach it. */
+
+.hm-reply {
+  margin-top: 3.5rem;
+}
+
+/* `is-in` is set by an IntersectionObserver the first time the card is on
+   screen, and never unset — leaving and re-entering the viewport must not
+   replay it. The hidden starting state is gated on data-js, which only exists
+   when scripting is on, so without JavaScript there is no observer to wait for
+   and nothing is ever hidden. */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-js] .hm-reply {
+    opacity: 0;
+  }
+
+  html[data-js] .hm-reply.is-in {
+    animation: hm-reply-in 0.85s var(--resize-ease) both;
+  }
+
+  /* The label, the card and the footnote come in on the same curve a beat
+     apart, so the group resolves rather than arriving as one slab. */
+  html[data-js] .hm-reply.is-in .hm-reply-label {
+    animation: hm-reply-in 0.7s var(--resize-ease) 0.06s both;
+  }
+
+  html[data-js] .hm-reply.is-in .hm-reply-card {
+    animation: hm-reply-card-in 0.9s var(--resize-ease) 0.14s both;
+  }
+
+  html[data-js] .hm-reply.is-in .hm-reply-foot {
+    animation: hm-reply-in 0.7s var(--resize-ease) 0.3s both;
+  }
+
+  @keyframes hm-reply-in {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(3px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+  }
+
+  /* The card also loses a little of its lift and scale, so it settles onto the
+     page instead of sliding up it. */
+  @keyframes hm-reply-card-in {
+    0% {
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+      filter: blur(4px);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+      box-shadow: var(--lift-soft);
+    }
+  }
+}
+
+.hm-reply-label {
+  font-size: 0.875rem;
+  line-height: 1.375;
+  color: var(--muted);
+}
+
+.hm-reply-card {
+  margin-top: 0.75rem;
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--field);
+  box-shadow: var(--lift-soft);
+  transition:
+    border-color 0.25s var(--badge-close-ease),
+    box-shadow 0.35s var(--badge-close-ease);
+}
+
+/* Focus lands on the card, not on the individual field — the whole thing is one
+   control as far as the eye is concerned. */
+.hm-reply-card:focus-within {
+  border-color: var(--line-strong);
+  box-shadow: var(--lift);
+}
+
+.hm-reply-form {
+  display: block;
+  padding: 1.125rem 1.25rem 0.875rem;
+}
+
+.hm-reply-text,
+.hm-reply-email {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.hm-reply-text::placeholder,
+.hm-reply-email::placeholder {
+  color: var(--muted);
+}
+
+/* The card carries the focus ring for both fields, so the fields themselves must
+   not draw their own on top of it. */
+.hm-reply-text:focus,
+.hm-reply-email:focus {
+  outline: none;
+}
+
+.hm-reply-text {
+  min-height: 2.5rem;
+  max-height: 12rem;
+  resize: none;
+  overflow-y: auto;
+}
+
+.hm-reply-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.625rem;
+  min-height: 3rem;
+}
+
+.hm-reply-email {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9375rem;
+}
+
+/* The send button. Ink-filled circle, arrow up — the one solid mass on an
+   otherwise hairline card, which is what makes it read as the action. */
+.hm-reply-send {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    opacity 0.2s var(--badge-close-ease),
+    transform 0.25s var(--badge-pop-ease),
+    background-color 0.2s var(--badge-close-ease);
+}
+
+.hm-reply-send svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  display: block;
+}
+
+.hm-reply-send:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.hm-reply-send:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.hm-reply-send:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* Only ever set while a send is in flight — an empty box leaves the button live
+   and puts the cursor back instead. Dimmed rather than hidden, so the target
+   does not move under a second click. */
+.hm-reply-send:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Spins while the request is out. */
+.hm-reply-send.is-sending svg {
+  animation: hm-spin 0.8s linear infinite;
+}
+
+@keyframes hm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hm-reply-foot {
+  margin-top: 0.625rem;
+  min-height: 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  color: var(--muted);
+}
+
+.hm-reply-foot.is-error {
+  color: #d1453b;
+}
+
+:root[data-theme="dark"] .hm-reply-foot.is-error {
+  color: #ff8b80;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hm-reply-foot.is-error {
+    color: #ff8b80;
+  }
+}
+
+/* ── sent ───────────────────────────────────────────────────────────────────
+
+   The form is replaced in place by its own confirmation, at the same height, so
+   the page below does not jump when the message goes. */
+
+.hm-reply-done {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 1.5rem 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.hm-reply-check {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.hm-reply-check svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hm-reply-done {
+    animation: hm-reply-in 0.5s var(--resize-ease) both;
+  }
+
+  .hm-reply-check {
+    animation: t-slot-in 0.45s var(--badge-pop-ease) 0.1s both;
   }
 }
