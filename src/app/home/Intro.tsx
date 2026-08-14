@@ -16,8 +16,10 @@
 
 import { useEffect, useRef } from "react";
 
-const INK = "#0A0A0A";
-const SHIMMER = "#b1b1ad";
+// Tokens, not literals — the intro plays on whichever ground the theme has
+// painted, so its dots and their shimmer have to follow it. See home.css.
+const INK = "var(--ink)";
+const SHIMMER = "var(--shimmer)";
 
 const COUNT = 8;
 

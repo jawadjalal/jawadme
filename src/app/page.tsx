@@ -11,6 +11,8 @@ import type { Metadata } from "next";
 import { SOCIALS } from "@/lib/content";
 import { ARCHIVE, IDENTITY, PROJECTS, SKILLS, SUMMARY } from "@/lib/profile";
 import HomeClient from "./home/HomeClient";
+import { THEME_SCRIPT, ThemeToggle } from "./home/Theme";
+import "./theme.css";
 import "./home/home.css";
 
 export const metadata: Metadata = {
@@ -91,10 +93,14 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
       />
-      {/* Runs before the column is painted, so the finished page in the HTML is
-          hidden from anyone whose browser is about to animate it. Inline and
-          synchronous on purpose: a deferred script would paint first. */}
+      {/* Both run before the column is painted, and both have to. The first
+          hides the finished page in the HTML from anyone whose browser is about
+          to animate it; the second puts the remembered theme on the document
+          before there is a ground colour to see. Inline and synchronous on
+          purpose: a deferred script would paint first. */}
       <script dangerouslySetInnerHTML={{ __html: `document.documentElement.dataset.js="1"` }} />
+      <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      <ThemeToggle />
       <HomeClient />
     </>
   );

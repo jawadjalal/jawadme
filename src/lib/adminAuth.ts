@@ -7,6 +7,13 @@ import { cookies } from "next/headers";
 // not an account system.
 
 export const COOKIE = "jos_admin";
+
+// The homepage reply inbox at /responses. Same password and same signature —
+// one gate, two rooms — but its own cookie, scoped to its own path, so signing
+// out of one does not sign you out of the other and neither cookie is sent to
+// the route that cannot use it.
+export const REPLIES_COOKIE = "jj_replies";
+
 const MAX_AGE = 60 * 60 * 12;
 
 const password = () => process.env.DESIGN_ADMIN_PASSWORD;
@@ -44,7 +51,7 @@ export function verifyToken(token: string | undefined) {
   return equal(mac ?? "", sign(expires));
 }
 
-export async function isSignedIn() {
+export async function isSignedIn(cookie: string = COOKIE) {
   const jar = await cookies();
-  return verifyToken(jar.get(COOKIE)?.value);
+  return verifyToken(jar.get(cookie)?.value);
 }

@@ -16,11 +16,15 @@ import { SOCIALS } from "@/lib/content";
 import { ARCHIVE, ELSEWHERE, IDENTITY, PROJECTS, PROSE, WORK_LINKS } from "@/lib/profile";
 import { Beam } from "./Beam";
 import { Preview } from "./Preview";
+import { Reply } from "./Reply";
 import { Squircle } from "./Squircle";
 
-const INK = "#0A0A0A";
-const PAPER = "#fdfdfc";
-const TILE = "#f4f4f2";
+// The page's three grounds, as tokens rather than literals, so the dark scheme
+// reaches the handful of colours that are set from here rather than in the
+// stylesheet. Definitions are in the palette block at the top of home.css.
+const INK = "var(--ink)";
+const PAPER = "var(--paper)";
+const TILE = "var(--tile)";
 
 const CHARS_PER_SECOND = 150;
 const BEAM_AT = 0.5; // seconds before the avatar's beam lights up
@@ -580,6 +584,11 @@ export default function Profile({ animate }: { animate: boolean }) {
           {type("p6g")}
         </p>
       </Resize>
+
+      {/* The last thing on the page, after the socials — a box to answer any of
+          it in. Held back until the typing has finished so it is not sliding in
+          underneath a cursor that is still running. */}
+      {finished("p6g") && <Reply />}
 
       <div
         role="status"
