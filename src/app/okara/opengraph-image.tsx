@@ -13,7 +13,7 @@ import { CHANGES } from "./data";
 //
 // Fonts: the page is DM Sans and JetBrains Mono, and neither is on disk. next/og
 // cannot fetch while rendering, and satori decodes ttf/otf/woff but not the woff2
-// Google serves any modern user agent — see src/app/opengraph-image.tsx for why
+// Google serves any modern user agent. See src/app/opengraph-image.tsx for why
 // the one face this repo does use is vendored. The only vendored file is
 // GochiHand-Regular.ttf, and passing it here would set the whole card in a
 // handwriting face: satori has no system fallback, so whatever you pass becomes
@@ -26,7 +26,7 @@ import { CHANGES } from "./data";
 // Tokens are duplicated from okara.css rather than shared: next/og convention
 // files own their art, and this one has to match .ok if the palette moves.
 
-export const alt = "3 changes to the Okara dashboard — Jawad Jalal";
+export const alt = "3 changes to the Okara dashboard, by Jawad Jalal";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
