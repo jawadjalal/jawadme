@@ -520,10 +520,10 @@ function DrawerBody({ onClose }: { onClose?: () => void }) {
         style={{
           flex: "1 1 auto",
           overflowY: "auto",
-          padding: "14px 24px 12px",
+          padding: "10px 24px 8px",
           display: "flex",
           flexDirection: "column",
-          gap: 13,
+          gap: 9,
           boxSizing: "border-box",
         }}
       >
@@ -534,8 +534,8 @@ function DrawerBody({ onClose }: { onClose?: () => void }) {
             <span
               style={{
                 ...NUM,
-                fontSize: 44,
-                lineHeight: "42px",
+                fontSize: 38,
+                lineHeight: "36px",
                 letterSpacing: "-2px",
                 color: INK,
               }}
@@ -561,7 +561,7 @@ function DrawerBody({ onClose }: { onClose?: () => void }) {
         <section>
           <BlockHead icon={<TagIcon size={12} color={SAND_700} />} title="What things cost" credits />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 5, marginTop: 9 }}>
             {PRICES.map((row) => {
               const over = row.value > BALANCE;
               const tone = over ? OVER_TEXT : INK;
@@ -602,7 +602,7 @@ function DrawerBody({ onClose }: { onClose?: () => void }) {
             })}
           </div>
 
-          <p style={{ ...noteStyle, marginTop: 14 }}>
+          <p style={{ ...noteStyle, marginTop: 10 }}>
             Derived from your monthly task estimates in Settings. Okara never puts a price on an
             action.
           </p>
@@ -636,7 +636,7 @@ function DrawerBody({ onClose }: { onClose?: () => void }) {
         <section>
           <BlockHead icon={<ReceiptIcon size={12} color={SAND_700} />} title="What you spent" credits />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 5, marginTop: 9 }}>
             {SPEND.map((row) => {
               const tone = row.muted ? SAND_400 : INK_700;
               return (
@@ -711,11 +711,55 @@ function DrawerBody({ onClose }: { onClose?: () => void }) {
             </div>
           </div>
 
-          <p style={{ ...noteStyle, marginTop: 14 }}>
+          <p style={{ ...noteStyle, marginTop: 10 }}>
             Okara’s activity log accounts for 5.63 of the 7.37 spent. The other 1.74 is not itemised
             anywhere. Every credit it can account for went on chat, and none went on shipping.
           </p>
         </section>
+      </div>
+
+      {/* The ask sits at the end, after the reader has seen what a credit buys
+          and what is left, rather than interrupting to sell before either. */}
+      <div
+        style={{
+          flex: "0 0 auto",
+          borderTop: `1px solid ${HAIR_WARM}`,
+          background: "#fdfcfa",
+          padding: "12px 24px",
+          display: "flex",
+          alignItems: "center",
+          gap: 16,
+        }}
+      >
+        <span style={{ flex: 1, fontFamily: SANS, fontSize: 12.5, lineHeight: "18px", color: "#726a5a" }}>
+          A paid plan is 2,000 credits a month.
+        </span>
+        <button
+          type="button"
+          style={{
+            flex: "0 0 auto",
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            border: 0,
+            background: INK,
+            color: "#ffffff",
+            fontFamily: SANS,
+            fontSize: 12.5,
+            fontWeight: 600,
+            lineHeight: "18px",
+            whiteSpace: "nowrap",
+            borderRadius: 9999,
+            padding: "7px 15px",
+            cursor: "pointer",
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={AMBER} strokeWidth={2.8} strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 14px", display: "block" }}>
+            <path d="M12 19V6.5" />
+            <path d="M6 12.5l6-6 6 6" />
+          </svg>
+          Upgrade to unlock
+        </button>
       </div>
     </div>
   );
@@ -1229,17 +1273,50 @@ function TopBar({
         {"✓"} Documents loaded and CMO initialized. Chat with your CMO.
       </span>
 
-      {/* the account button opens Okara's own profile menu. Credits live one
-          click deeper, on the number inside it. */}
+      {/* Two targets, because they do 2 different jobs. The yellow pill is the
+          credits dropdown and goes straight to the drawer. The avatar opens
+          Okara's own profile menu, which is what an account button should do. */}
+      <button
+        type="button"
+        onClick={onOpenCredits}
+        style={{
+          marginLeft: "auto",
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          background: "rgba(232,181,60,.14)",
+          border: `1px solid rgba(232,181,60,.42)`,
+          borderRadius: 9999,
+          padding: "5px 10px 5px 12px",
+          cursor: "pointer",
+          flex: "0 0 auto",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: MONO,
+            fontSize: 11.5,
+            fontWeight: 500,
+            lineHeight: "14px",
+            color: AMBER,
+            fontVariantNumeric: "tabular-nums",
+            whiteSpace: "nowrap",
+          }}
+        >
+          7.00 credits
+        </span>
+        <ChevronDown size={12} color={AMBER} />
+      </button>
+
       <button
         type="button"
         onClick={onToggleMenu}
         aria-expanded={menuOpen}
         style={{
-          marginLeft: "auto",
+          marginLeft: 14,
           display: "flex",
           alignItems: "center",
-          gap: 9,
+          gap: 8,
           background: "transparent",
           border: 0,
           padding: 0,
@@ -1266,22 +1343,17 @@ function TopBar({
         >
           JJ
         </span>
-        <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <span
-            style={{
-              fontFamily: SANS,
-              fontSize: 12,
-              fontWeight: 500,
-              lineHeight: "13px",
-              color: "#fafaf9",
-            }}
-          >
-            Jawad Jalal
-          </span>
-          {/* the only amber on the screen */}
-          <span style={{ fontFamily: SANS, fontSize: 11, lineHeight: "12px", color: AMBER }}>
-            7.00 credits · one LinkedIn post, and that is it
-          </span>
+        <span
+          style={{
+            fontFamily: SANS,
+            fontSize: 12,
+            fontWeight: 500,
+            lineHeight: "13px",
+            color: "#fafaf9",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Jawad Jalal
         </span>
         <ChevronDown
           size={14}

@@ -194,7 +194,7 @@ function buildRows(campaignDone: boolean): Row[] {
       mark: "influencer",
       snippet: campaignDone
         ? "1000 briefed, waiting on replies"
-        : "1000 creators matched, none contacted yet",
+        : "Launch your first campaign (1000 influencers are waiting)",
       kind: "locked",
       pri: "High",
       time: "6:40am",
@@ -282,10 +282,10 @@ const CSS = `
 @keyframes afdDrop { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
 
 .afd-press:active { transform:scale(.97); }
-.afd-blur { filter:blur(3.6px); transition:filter 280ms ease; cursor:pointer; }
-.afd-blur:hover { filter:blur(0px); }
-.afd-blur-sm { filter:blur(3.2px); transition:filter 280ms ease; cursor:pointer; }
-.afd-blur-sm:hover { filter:blur(0px); }
+.afd-blur { filter:blur(3.6px); }
+
+.afd-blur-sm { filter:blur(3.2px); }
+
 .afd-ink { transition:color 160ms ease; }
 .afd-ink:hover { color:#1a1919; }
 
@@ -412,10 +412,13 @@ function AgentMark({ which, size = 22 }: { which: MarkKind; size?: number }) {
     );
   }
 
+  // Okara gives the influencer agent a green mark with a white glyph rather than
+  // the neutral one the other unbranded agents get. Verified in the live app.
+  const isInfluencer = which === "influencer";
   return (
-    <span style={{ ...box, background: SAND }}>
+    <span style={{ ...box, background: isInfluencer ? "#16a349" : SAND }}>
       <svg
-        style={stroke}
+        style={isInfluencer ? { ...stroke, stroke: "#ffffff" } : stroke}
         width={g}
         height={g}
         viewBox="0 0 24 24"
@@ -1510,12 +1513,11 @@ export default function AgentsFeed({
               borderTop: "1px solid #e4ddcd",
               padding: "10px 12px",
               display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              gap: 9,
+              alignItems: "center",
+              gap: 12,
             }}
           >
-            <span style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }}>
               {lock(13, "#1a1919", 2)}
               <span style={{ fontSize: 12.5, lineHeight: "18px", color: "#726a5a" }}>
                 {lockedRows.length} drafts you cannot approve yet
@@ -1524,6 +1526,8 @@ export default function AgentsFeed({
             <button
               type="button"
               style={{
+                marginLeft: "auto",
+                flex: "0 0 auto",
                 display: "flex",
                 alignItems: "center",
                 gap: 6,

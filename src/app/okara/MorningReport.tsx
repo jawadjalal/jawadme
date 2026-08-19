@@ -560,7 +560,8 @@ export default function MorningReport({
           }}
         >
           {background ?? (
-            // Their real dashboard, captured 17 August. The note's whole claim is
+            // Their real dashboard, captured 17 August, with the mascot painted out of
+            // the terminal bar so the live one has somewhere to land. The note's whole claim is
             // that it appears once and then gets out of the way, so dismissing it
             // has to reveal the thing it was covering rather than an empty page.
             // The capture is 2880 wide, which is exactly 2x this 1440 screen.
@@ -568,7 +569,7 @@ export default function MorningReport({
               style={{
                 position: "absolute",
                 inset: 0,
-                backgroundImage: "url('/okara/shots/dashboard.png')",
+                backgroundImage: "url('/okara/shots/dashboard-bare.png')",
                 backgroundSize: "1440px 900px",
                 backgroundPosition: "top left",
                 backgroundRepeat: "no-repeat",

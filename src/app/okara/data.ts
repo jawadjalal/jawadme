@@ -99,9 +99,9 @@ export const INTRO = {
   body:
     "You asked me to take a stab at it. I signed in on the free tier with one agent on skribbl.dev and used it for a week. Every number on this page came off that account.",
   lines: [
-    "The free tier sells with placeholder text while the finished drafts are already in the response.",
-    "Nothing on the dashboard carries a date, so a returning user cannot tell what changed.",
-    "My credit balance went from 14 to 7 with nothing saying when, or on what.",
+    "The agents feed never quite sold me on paying.",
+    "Opening Okara drops me straight into the dashboard.",
+    "Managing what I spend is buried in settings.",
   ],
 };
 
