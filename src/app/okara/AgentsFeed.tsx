@@ -486,6 +486,24 @@ const X_ACTIONS: ActionSpec[] = [
 ];
 
 function XActions() {
+  // X spreads the first 4 evenly and groups bookmark and share as a pair at the
+  // right edge, rather than spacing all 6 alike. Measured off a live post.
+  const spread = X_ACTIONS.slice(0, 4);
+  const pair = X_ACTIONS.slice(4);
+  const btn = (a: ActionSpec) => (
+    <button
+      key={a.key}
+      type="button"
+      className="afd-act"
+      aria-label={a.label}
+      style={{ ["--afd-c" as string]: a.hover } as CSSProperties}
+    >
+      <span className="afd-disc" />
+      <svg width="18.5" height="18.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d={a.path} />
+      </svg>
+    </button>
+  );
   return (
     <div
       style={{
@@ -496,20 +514,8 @@ function XActions() {
         maxWidth: 425,
       }}
     >
-      {X_ACTIONS.map((a) => (
-        <button
-          key={a.key}
-          type="button"
-          className="afd-act"
-          aria-label={a.label}
-          style={{ ["--afd-c" as string]: a.hover } as CSSProperties}
-        >
-          <span className="afd-disc" />
-          <svg width="18.5" height="18.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d={a.path} />
-          </svg>
-        </button>
-      ))}
+      {spread.map(btn)}
+      <span style={{ display: "flex", alignItems: "center", gap: 2 }}>{pair.map(btn)}</span>
     </div>
   );
 }

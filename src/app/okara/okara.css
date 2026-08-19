@@ -34,16 +34,18 @@
 .ok-js .ok-rise:not(.is-in) { opacity: 0; transform: translateY(14px); }
 
 /* ---------- intro ---------- */
-.ok-intro { min-height: 100svh; display: flex; align-items: center; padding: 96px 56px; box-sizing: border-box; }
+/* Deliberately short of a full screen, so the first screenshot shows above the
+   fold and the page reads as work rather than as a title card. */
+.ok-intro { display: flex; align-items: flex-start; padding: 74px 56px 52px; box-sizing: border-box; }
 .ok-intro-in { width: 100%; max-width: 900px; margin: 0 auto; }
 .ok-kicker { font-size: 15px; font-weight: 500; color: var(--muted); }
-.ok-h1 { margin: 18px 0 0; font-size: 58px; line-height: 62px; font-weight: 600; letter-spacing: -1.8px; }
-.ok-lede { margin: 22px 0 0; font-size: 19px; line-height: 30px; color: var(--ink-2); max-width: 68ch; text-wrap: pretty; }
-.ok-three { margin: 44px 0 0; display: flex; flex-direction: column; gap: 0; }
-.ok-three div { display: flex; gap: 22px; align-items: baseline; border-top: 1px solid var(--hair); padding: 18px 0; }
+.ok-h1 { margin: 14px 0 0; font-size: 52px; line-height: 56px; font-weight: 600; letter-spacing: -1.8px; }
+.ok-lede { margin: 16px 0 0; font-size: 19px; line-height: 30px; color: var(--ink-2); max-width: 68ch; text-wrap: pretty; }
+.ok-three { margin: 26px 0 0; display: flex; flex-direction: column; gap: 0; }
+.ok-three div { display: flex; gap: 22px; align-items: baseline; border-top: 1px solid var(--hair); padding: 13px 0; }
 .ok-three b { flex: 0 0 34px; font-family: "JetBrains Mono", monospace; font-size: 14px; font-weight: 500; color: var(--muted); }
 .ok-three span { flex: 1; font-size: 18px; line-height: 28px; color: var(--ink-2); text-wrap: pretty; }
-.ok-scrollcue { margin-top: 44px; font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+.ok-scrollcue { margin-top: 22px; font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
 
 /* ---------- rail ---------- */
 .ok-rail { position: fixed; left: 26px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; gap: 14px; }
@@ -95,8 +97,8 @@
 /* ---------- narrow ---------- */
 @media (max-width: 1149px) {
   .ok-rail { display: none; }
-  .ok-intro { min-height: 0; padding: 72px 20px 44px; }
-  .ok-h1 { font-size: 34px; line-height: 40px; letter-spacing: -1px; }
+  .ok-intro { min-height: 0; padding: 44px 20px 30px; }
+  .ok-h1 { font-size: 31px; line-height: 37px; letter-spacing: -.9px; }
   .ok-lede { font-size: 17px; line-height: 27px; }
   .ok-three span { font-size: 16px; line-height: 25px; }
   .ok-sticky { position: relative; height: auto; padding: 44px 16px 36px; display: block; overflow: visible; }
