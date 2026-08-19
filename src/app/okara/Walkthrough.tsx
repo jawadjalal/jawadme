@@ -70,6 +70,35 @@ function useActive(ids: string[]) {
   return active;
 }
 
+/* Mount a mock only once it is nearly in view, and keep it mounted after that.
+   All 3 run timers, drawer slides and CSS animations, so mounting the 2 that are
+   still far off screen costs battery and drops frames on a phone. */
+function useNearViewport(ref: React.RefObject<HTMLElement | null>) {
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    if (near) return;
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) {
+      setNear(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      // Generous, so the screen has mounted and settled before it is seen.
+      { rootMargin: "800px 0px 800px 0px", threshold: 0 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, near]);
+  return near;
+}
+
 function useViewport() {
   const [vp, setVp] = useState({ w: 1440, h: 900, narrow: false });
   useEffect(() => {
@@ -119,13 +148,20 @@ function BeforeStage({ c, narrow, vw }: { c: Change; narrow: boolean; vw: number
       }}
     >
       <div className="ok-crop" style={crop} />
-      {!narrow &&
-        c.beforeAnns.map((a) => {
-          const x = Math.round((a.ix - c.crop.sx) * c.crop.s);
-          const y = Math.round((a.iy - c.crop.sy) * c.crop.s);
-          const right = a.side === "right";
-          return (
-            <span key={a.n}>
+      {c.beforeAnns.map((a) => {
+        // Unscaled position on the crop, then the same point after the narrow
+        // screen shrinks it, so a dot lands on the same pixel at either width.
+        const ux = (a.ix - c.crop.sx) * c.crop.s;
+        const uy = (a.iy - c.crop.sy) * c.crop.s;
+        const x = Math.round(ux * mobScale);
+        const y = Math.round(uy * mobScale);
+        const right = a.side === "right";
+        // The dot keeps a readable size on narrow rather than following mobScale,
+        // which on the widest crop would shrink the digit past reading.
+        const d = narrow ? 21 : DOT;
+        return (
+          <span key={a.n}>
+            {!narrow && (
               <span
                 style={{
                   position: "absolute",
@@ -136,9 +172,20 @@ function BeforeStage({ c, narrow, vw }: { c: Change; narrow: boolean; vw: number
                   width: right ? fw - x - 14 + GAP : x - 14 + GAP,
                 }}
               />
-              <span className="ok-dot" style={{ left: x - DOT / 2, top: y - DOT / 2 }}>
-                {a.n}
-              </span>
+            )}
+            <span
+              className="ok-dot"
+              style={{
+                left: x - d / 2,
+                top: y - d / 2,
+                width: d,
+                height: d,
+                fontSize: narrow ? 12 : undefined,
+              }}
+            >
+              {a.n}
+            </span>
+            {!narrow && (
               <span
                 style={{
                   position: "absolute",
@@ -154,26 +201,45 @@ function BeforeStage({ c, narrow, vw }: { c: Change; narrow: boolean; vw: number
               >
                 {a.label}
               </span>
-            </span>
-          );
-        })}
+            )}
+          </span>
+        );
+      })}
     </div>
   );
 }
 
 function AfterMock({ c, narrow, vw, vh }: { c: Change; narrow: boolean; vw: number; vh: number }) {
   const [hovered, setHovered] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const mounted = useNearViewport(wrapRef);
+  // The cue has done its job the moment she touches the mock, so it never returns.
+  const [used, setUsed] = useState(false);
+  const showCue = c.kind === "feed" && !used;
   const avail = Math.max(280, vw - (narrow ? 32 : 64));
   const maxH = vh * (narrow ? 0.78 : 0.82);
   const k = Math.min(1, avail / c.mock.nw, maxH / c.mock.nh);
 
   return (
     <div
+      ref={wrapRef}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       style={{ position: "relative", width: Math.round(c.mock.nw * k), maxWidth: "100%", margin: "0 auto" }}
     >
-      <div className="ok-frame" style={{ width: "100%", height: Math.round(c.mock.nh * k) }}>
+      {showCue && (
+        <p className="ok-cue">
+          <span>
+            Press <b>Approve</b> below. Every screen here runs.
+          </span>
+          <i aria-hidden="true" />
+        </p>
+      )}
+      <div
+        className="ok-frame"
+        onPointerDownCapture={() => setUsed(true)}
+        style={{ width: "100%", height: Math.round(c.mock.nh * k) }}
+      >
         <div
           style={{
             width: c.mock.nw,
@@ -181,11 +247,13 @@ function AfterMock({ c, narrow, vw, vh }: { c: Change; narrow: boolean; vw: numb
             flex: "0 0 auto",
             transform: `scale(${k})`,
             transformOrigin: "top left",
+            // Same box before and after mount, so nothing on the page shifts.
+            background: "#fff",
           }}
         >
-          {c.kind === "feed" && <AgentsFeed width={600} />}
-          {c.kind === "note" && <MorningReport />}
-          {c.kind === "credits" && <CreditsPanel />}
+          {mounted && c.kind === "feed" && <AgentsFeed width={600} />}
+          {mounted && c.kind === "note" && <MorningReport />}
+          {mounted && c.kind === "credits" && <CreditsPanel />}
         </div>
       </div>
       <div
@@ -200,7 +268,8 @@ function AfterMock({ c, narrow, vw, vh }: { c: Change; narrow: boolean; vw: numb
           transformOrigin: "top left",
         }}
       >
-        {c.afterAnns.map((a) => (
+        {mounted &&
+          c.afterAnns.map((a) => (
           <span
             key={a.n}
             className="ok-dot"
@@ -208,7 +277,7 @@ function AfterMock({ c, narrow, vw, vh }: { c: Change; narrow: boolean; vw: numb
           >
             {a.n}
           </span>
-        ))}
+          ))}
       </div>
     </div>
   );
@@ -237,6 +306,7 @@ export default function Walkthrough() {
             <button key={id} data-on={active === id} onClick={() => go(id)} aria-label={c.title}>
               <i />
               <em>{String(i + 1).padStart(2, "0")}</em>
+              <span>{c.title}</span>
             </button>
           );
         })}
