@@ -64,9 +64,9 @@ export const CHANGES: Change[] = [
       { n: "3", ix: 300, iy: 620, side: "left", label: "Nothing here says what happened while you were asleep." },
     ],
     afterAnns: [
-      { n: "1", x: 700, y: 142, label: "The date sits in the greeting." },
-      { n: "2", x: 960, y: 208, label: "One number, in a sentence." },
-      { n: "3", x: 492, y: 785, label: "Each overnight item listed, dated, with one waiting on you." },
+      { n: "1", x: 640, y: 182, label: "The whole morning in one sentence." },
+      { n: "2", x: 524, y: 379, label: "Struck through at 160, where Google stops reading." },
+      { n: "3", x: 1227, y: 765, label: "One item waiting, and approving it is one click." },
     ],
   },
   {
@@ -106,17 +106,17 @@ export const INTRO = {
 };
 
 export const EVIDENCE_LINE =
-  "I pointed AI agents at the product and had them capture everything. 65 screens at desktop and phone widths, every modal and empty state, the network traffic on a cold load, and your design tokens pulled straight out of the running app. That is why the screens above are set in your fonts and your colours. It also let me read what your API returns beside what your interface draws, and all 3 changes live in that gap.";
+  "I pointed AI agents at the product and had them capture everything: 65 screens, every modal and empty state, the network traffic on a cold load, and your design tokens. All 3 changes came from reading what your API returns beside what your interface draws.";
 
 export const UNTOUCHED = [
-  { title: "Pricing", why: "All 3 tiers list the same 12 features, Free included. Someone has to decide what Lite withholds before anyone can design it." },
-  { title: "Onboarding", why: "I only ever saw it as a returning user, so I have no evidence about it." },
-  { title: "The chat", why: "It answers well, and it is the one place the product explains itself." },
-  { title: "Analytics", why: "The numbers are formatted wrong, not measured wrong. That is a fix, and it does not need me." },
+  { title: "Pricing", why: "All 3 tiers list the same 12 features, Free included. That needs a decision before it needs a designer." },
+  { title: "Onboarding", why: "I only ever saw it as a returning user." },
+  { title: "The chat", why: "The one place the product explains itself." },
+  { title: "Analytics", why: "Formatted wrong, not measured wrong. That is a fix." },
 ];
 
 export const CLOSE = {
   title: "I would build these, fast.",
   body:
-    "Every screen above runs. Press Approve on the feed and it approves. They already use your tokens and your stack, so the first one is close to a pull request. Start with credits if it were my call. It is the plainest of the 3 and the one a paying customer feels first.",
+    "Every screen above runs, on your tokens and your stack, so the first one is close to a pull request. Start with credits if it were my call. It is the plainest of the 3 and the one a paying customer feels.",
 };

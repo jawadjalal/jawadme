@@ -559,7 +559,23 @@ export default function MorningReport({
             opacity: onReport ? 0 : 1,
           }}
         >
-          {background ?? <div style={{ position: "absolute", inset: 0, background: "var(--bg)" }} />}
+          {background ?? (
+            // Their real dashboard, captured 17 August. The note's whole claim is
+            // that it appears once and then gets out of the way, so dismissing it
+            // has to reveal the thing it was covering rather than an empty page.
+            // The capture is 2880 wide, which is exactly 2x this 1440 screen.
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundImage: "url('/okara/shots/dashboard.png')",
+                backgroundSize: "1440px 900px",
+                backgroundPosition: "top left",
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "var(--bg)",
+              }}
+            />
+          )}
         </div>
 
         {/* 2. report layer */}
