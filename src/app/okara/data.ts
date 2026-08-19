@@ -116,7 +116,7 @@ export const UNTOUCHED = [
 ];
 
 export const CLOSE = {
-  title: "I would build any of these in a week.",
+  title: "I would build these, fast.",
   body:
     "Every screen above runs. Press Approve on the feed and it approves. They already use your tokens and your stack, so the first one is close to a pull request. Start with credits if it were my call. It is the plainest of the 3 and the one a paying customer feels first.",
 };

@@ -95,6 +95,44 @@ const ChevronRight = (p: IconProps) => (
     <path d="M9 6l6 6-6 6" />
   </svg>
 );
+const Plug = (p: IconProps) => (
+  <svg {...svgProps(p)}>
+    <path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 0 1-10 0Z" />
+    <path d="M12 16v5" />
+  </svg>
+);
+const Gear = (p: IconProps) => (
+  <svg {...svgProps(p)}>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z" />
+  </svg>
+);
+const Globe = (p: IconProps) => (
+  <svg {...svgProps(p)}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18M12 3c2.6 3 2.6 15 0 18M12 3c-2.6 3-2.6 15 0 18" />
+  </svg>
+);
+const Gift = (p: IconProps) => (
+  <svg {...svgProps(p)}>
+    <path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z" />
+  </svg>
+);
+const FileDoc = (p: IconProps) => (
+  <svg {...svgProps(p)}>
+    <path d="M14 3v5h5M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8Z" />
+  </svg>
+);
+const LogOut = (p: IconProps) => (
+  <svg {...svgProps(p)}>
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+  </svg>
+);
+const Moon = (p: IconProps) => (
+  <svg {...svgProps(p)}>
+    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+  </svg>
+);
 const FileIcon = (p: IconProps) => (
   <svg {...svgProps(p)}>
     <path d="M14 3H7a1.6 1.6 0 0 0-1.6 1.6v14.8A1.6 1.6 0 0 0 7 21h10a1.6 1.6 0 0 0 1.6-1.6V7.6z" />
@@ -933,7 +971,198 @@ function ChatColumn() {
   );
 }
 
-function TopBar({ open, onToggle }: { open: boolean; onToggle: () => void }) {
+/* ------------------------------------------------------------------ */
+/* account menu, rebuilt from Okara's own popover                      */
+/* ------------------------------------------------------------------ */
+
+function MenuRow({
+  icon,
+  label,
+  dot,
+  chevron,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  dot?: boolean;
+  chevron?: boolean;
+}) {
+  return (
+    <span
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "9px 18px",
+        fontFamily: SANS,
+        fontSize: 15,
+        color: INK,
+        whiteSpace: "nowrap",
+      }}
+    >
+      {icon}
+      {label}
+      {dot && (
+        <span
+          style={{ width: 7, height: 7, borderRadius: 9999, background: "#00b398", flex: "0 0 auto" }}
+        />
+      )}
+      {chevron && (
+        <span style={{ marginLeft: "auto", display: "flex" }}>
+          <ChevronRight size={14} color="#9ca3af" />
+        </span>
+      )}
+    </span>
+  );
+}
+
+function AccountMenu({ onOpenCredits }: { onOpenCredits: () => void }) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 50,
+        right: 10,
+        width: 322,
+        zIndex: 20,
+        background: "#ffffff",
+        border: `1px solid ${HAIR_SOFT}`,
+        borderRadius: 14,
+        boxShadow: "0 18px 44px -18px rgba(26,25,25,.42), 0 2px 6px rgba(26,25,25,.08)",
+        overflow: "hidden",
+        textAlign: "left",
+      }}
+    >
+      <div style={{ padding: "16px 18px 14px", position: "relative" }}>
+        <span style={{ position: "absolute", top: 16, right: 18, display: "flex" }}>
+          <Moon size={17} color={INK_600} />
+        </span>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+          <span
+            style={{
+              width: 46,
+              height: 46,
+              flex: "0 0 46px",
+              borderRadius: 9999,
+              background: "#8a8272",
+              color: "#ffffff",
+              fontFamily: SANS,
+              fontSize: 15,
+              fontWeight: 600,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            JJ
+          </span>
+          <span style={{ display: "flex", flexDirection: "column", gap: 3, minWidth: 0 }}>
+            <span style={{ fontFamily: SANS, fontSize: 16, fontWeight: 600, color: INK }}>
+              Jawad Jalal
+            </span>
+            <span style={{ fontFamily: SANS, fontSize: 13.5, color: "#8c8578" }}>
+              hijawadjalal@gmail.com
+            </span>
+          </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 9, marginTop: 14, paddingLeft: 60 }}>
+          {/* the one click to credits: the number is the trigger */}
+          <button
+            type="button"
+            onClick={onOpenCredits}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 7,
+              border: `1px solid ${HAIR_SOFT}`,
+              background: "#faf8f4",
+              borderRadius: 9999,
+              padding: "6px 12px",
+              fontFamily: SANS,
+              fontSize: 13,
+              fontWeight: 500,
+              color: INK_600,
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <span style={{ fontFamily: MONO, fontVariantNumeric: "tabular-nums" }}>7.00</span>
+            Credits
+            <ChevronDown size={13} color="#9ca3af" />
+          </button>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              background: "#000000",
+              color: "#ffffff",
+              borderRadius: 9999,
+              padding: "6px 15px",
+              fontFamily: SANS,
+              fontSize: 13,
+              fontWeight: 600,
+              whiteSpace: "nowrap",
+            }}
+          >
+            Upgrade
+          </span>
+        </div>
+      </div>
+
+      <div style={{ height: 1, background: HAIR_SOFT }} />
+      <div style={{ padding: "6px 0" }}>
+        <MenuRow icon={<Plug size={18} color={INK_600} />} label="Integrations" />
+        <MenuRow icon={<Gear size={18} color={INK_600} />} label="Settings" dot />
+        <MenuRow icon={<Globe size={18} color={INK_600} />} label="Language" chevron />
+        <MenuRow icon={<Gift size={18} color={INK_600} />} label="Invite Friends & Earn Money" />
+      </div>
+      <div style={{ height: 1, background: HAIR_SOFT }} />
+
+      <div style={{ display: "flex", alignItems: "center", padding: "11px 18px" }}>
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            flex: 1,
+            justifyContent: "center",
+            fontFamily: SANS,
+            fontSize: 14.5,
+            color: INK,
+          }}
+        >
+          <FileDoc size={17} color={INK_600} />
+          Docs
+        </span>
+        <span style={{ width: 1, height: 20, background: HAIR_SOFT }} />
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            flex: 1,
+            justifyContent: "center",
+            fontFamily: SANS,
+            fontSize: 14.5,
+            color: "#d94a3d",
+          }}
+        >
+          <LogOut size={17} color="#d94a3d" />
+          Log out
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function TopBar({
+  menuOpen,
+  onToggleMenu,
+  onOpenCredits,
+}: {
+  menuOpen: boolean;
+  onToggleMenu: () => void;
+  onOpenCredits: () => void;
+}) {
   return (
     <div
       style={{
@@ -1000,11 +1229,12 @@ function TopBar({ open, onToggle }: { open: boolean; onToggle: () => void }) {
         {"✓"} Documents loaded and CMO initialized. Chat with your CMO.
       </span>
 
-      {/* account button, the drawer trigger */}
+      {/* the account button opens Okara's own profile menu. Credits live one
+          click deeper, on the number inside it. */}
       <button
         type="button"
-        onClick={onToggle}
-        aria-expanded={open}
+        onClick={onToggleMenu}
+        aria-expanded={menuOpen}
         style={{
           marginLeft: "auto",
           display: "flex",
@@ -1057,11 +1287,13 @@ function TopBar({ open, onToggle }: { open: boolean; onToggle: () => void }) {
           size={14}
           color={SAND_300}
           style={{
-            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            transform: menuOpen ? "rotate(180deg)" : "rotate(0deg)",
             transition: `transform 260ms ${EASE_CHEVRON}`,
           }}
         />
       </button>
+
+      {menuOpen && <AccountMenu onOpenCredits={onOpenCredits} />}
     </div>
   );
 }
@@ -1078,6 +1310,7 @@ export default function CreditsPanel({
   feedSlot?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [replay, setReplay] = useState(0);
 
   useEffect(() => {
@@ -1117,7 +1350,19 @@ export default function CreditsPanel({
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-        <TopBar open={open} onToggle={() => setOpen((v) => !v)} />
+        <TopBar
+          menuOpen={menuOpen}
+          onToggleMenu={() => {
+            const next = !menuOpen;
+            setMenuOpen(next);
+            // the menu and the drawer never share the screen
+            if (next) setOpen(false);
+          }}
+          onOpenCredits={() => {
+            setMenuOpen(false);
+            setOpen(true);
+          }}
+        />
         <div style={{ flex: "1 1 auto", display: "flex", minHeight: 0 }}>
           <CompanyColumn />
           <AnalyticsRail />

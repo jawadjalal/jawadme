@@ -343,7 +343,7 @@ export default function Walkthrough() {
             <div className="ok-sign">
               <span>Jawad Jalal</span>
               <a href="https://jawadjalal.com">jawadjalal.com</a>
-              <a href="mailto:hi@jawadjalal.com">hi@jawadjalal.com</a>
+              <a href="mailto:hijawadjalal@gmail.com">hijawadjalal@gmail.com</a>
             </div>
           </div>
         </div>
