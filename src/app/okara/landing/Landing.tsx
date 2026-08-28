@@ -17,6 +17,53 @@ import { MARKUP } from "./markup";
 const PARA =
   "Publish where founders already decide what to try. Build in public on X, answer real questions on Reddit, ship launches to Hacker News. Every post goes out only once you approve it.";
 
+/* The two sets the icon clusters rotate through. `stack` is the integrations
+   the page already lists further down; `logos` is every customer logo the page
+   has, so the avatars stop implying the customer list is five names long.
+   Order is deliberate: the first entries are the ones the markup ships with, so
+   the first paint matches the design and the rotation starts from there. */
+const POOLS: Record<string, string[]> = {
+  stack: [
+    "wordpress-28x28.svg",
+    "webflow-28x28.svg",
+    "framer-28x28.svg",
+    "wix.svg",
+    "sanity-28x28.svg",
+    "github-28x28.svg",
+    "gsc.png",
+    "ga.png",
+    "linkedin-agent-28x28.svg",
+    "x-twitter-agent-28x28.svg",
+    "whatsapp-28x28.svg",
+    "telegram-28x28.svg",
+  ].map((f) => `/okara/landing/assets/${f}`),
+  logos: [
+    "konghq-com",
+    "razer-com",
+    "photoroom-com",
+    "bitpanda-com",
+    "stickermule-com",
+    "vwo-com",
+    "freightpop-com",
+    "planhat-com",
+    "slite-com",
+    "locket-camera",
+    "flocksafety-com",
+    "seekingalpha-com",
+    "kinguin-net",
+    "eightify-app",
+    "metadata-io",
+    "cloud66-com",
+    "locus-sh",
+    "crowdcow-com",
+  ].map((f) => `/okara/landing/assets/logos/${f}-128.png`),
+};
+
+/* One swap every this many ms, per cluster. Slow enough to read as a change
+   rather than a flicker. */
+const CYCLE_MS = 2200;
+const FADE_MS = 260;
+
 const BILL_BASE =
   "display:inline-flex;align-items:center;height:42px;padding:0 30px;border-radius:12px;cursor:pointer;font-size:15px;font-weight:600;transition:background .2s ease, color .2s ease;";
 const BILL_ON = BILL_BASE + "background:#0a0a0a;color:#ffffff";
@@ -162,7 +209,52 @@ export default function Landing() {
       marquee?.addEventListener("mouseleave", () => (want = 1));
     }
 
-    /* 7. The two email-capture forms are decoration on a page with no backend.
+    /* 7. The icon clusters rotate. One image at a time, round robin, never
+       showing a logo the cluster is already displaying, so the group always
+       reads as a set of different companies. Clusters are offset from each
+       other so they do not tick in unison. */
+    if (!reduced) {
+      root.querySelectorAll<HTMLElement>("[data-cycle]").forEach((group, gi) => {
+        const pool = POOLS[group.dataset.cycle ?? ""];
+        const imgs = [...group.querySelectorAll<HTMLImageElement>("img")];
+        if (!pool || !imgs.length || pool.length <= imgs.length) return;
+        /* The markup ships two sizes of the same logo, so match on the company
+           rather than the file, or a cluster can show one brand twice. */
+        const key = (src: string | null) =>
+          (src ?? "").split("/").pop()?.replace(/-(?:64|128)\.png$/, "") ?? "";
+        imgs.forEach((img) => {
+          img.style.transition = `opacity ${FADE_MS}ms ease, transform ${FADE_MS}ms ease`;
+        });
+        let slot = 0;
+        let next = imgs.length;
+        const tick = () => {
+          const img = imgs[slot % imgs.length];
+          const shown = new Set(imgs.map((i) => key(i.getAttribute("src"))));
+          let tries = 0;
+          while (shown.has(key(pool[next % pool.length])) && tries++ < pool.length) next += 1;
+          const src = pool[next % pool.length];
+          next += 1;
+          slot += 1;
+          img.style.opacity = "0";
+          img.style.transform = "scale(0.82)";
+          timers.push(
+            window.setTimeout(() => {
+              img.src = src;
+              img.style.opacity = "1";
+              img.style.transform = "scale(1)";
+            }, FADE_MS),
+          );
+        };
+        timers.push(
+          window.setTimeout(
+            () => timers.push(window.setInterval(tick, CYCLE_MS)),
+            gi * 550,
+          ),
+        );
+      });
+    }
+
+    /* 8. The two email-capture forms are decoration on a page with no backend.
        Swallow the submit rather than reloading the route. */
     const onSubmit = (e: Event) => e.preventDefault();
     const forms = [...root.querySelectorAll("form")];
