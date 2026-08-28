@@ -271,3 +271,33 @@ body {
     text-align: center;
   }
 }
+
+/* The closing CTA runs dark, so the page ends on ink rather than fading out on
+   the same cream it started with. The section keeps its grid and its watermark;
+   only the values flip. */
+.okara-cta-section {
+  background-color: #14100c !important;
+  background-image:
+    linear-gradient(rgba(246, 242, 233, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246, 242, 233, 0.05) 1px, transparent 1px) !important;
+  border-top-color: #2b2620 !important;
+}
+/* The decorative blocks and the big mascot are direct children. The icons
+   inside the chip and the form are not, and stay dark on their white grounds. */
+.okara-cta-section > svg path,
+.okara-cta-section > svg rect {
+  fill: #f6f2e9 !important;
+}
+.okara-cta-section h2 {
+  color: #f6f2e9 !important;
+}
+.okara-cta-section p {
+  color: #a49b8c !important;
+}
+.okara-cta-section p span[style*="color:#1a1919"] {
+  color: #f6f2e9 !important;
+}
+/* The customer avatars are ringed in the old cream. */
+.okara-cta-section img[style*="border:2px solid #f6f2e9"] {
+  border-color: #14100c !important;
+}

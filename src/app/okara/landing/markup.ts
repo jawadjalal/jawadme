@@ -327,7 +327,7 @@ export const MARKUP = `<section style="display:flex;flex-direction:column;width:
           </div>
         </div>
 
-        <div style="grid-column:span 5;grid-row:span 3;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #dcead9;border-radius:22px;background:#eef6ec;overflow:hidden;box-shadow:0 12px 26px -20px rgba(26,25,25,0.32), 0 1px 2px rgba(26,25,25,0.04);transition:transform .3s ease, box-shadow .3s ease" class="okh-82">
+        <div style="grid-column:span 5;grid-row:span 3;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #cfc7b6;border-radius:22px;background:#ffffff;overflow:hidden;box-shadow:0 12px 26px -20px rgba(26,25,25,0.32), 0 1px 2px rgba(26,25,25,0.04);transition:transform .3s ease, box-shadow .3s ease" class="okh-82">
           <div style="position:relative;padding:24px 26px 22px;display:flex;flex-direction:column;height:100%">
           <img src="/okara/landing/assets/agent-icons/reddit.svg" alt="" aria-hidden="true" style="position:absolute;top:22px;right:24px;width:26px;height:26px;object-fit:contain;transform:rotate(13deg);opacity:.42;pointer-events:none" />
           <img src="/okara/landing/assets/agent-icons/x-logo-black.png" alt="" aria-hidden="true" style="position:absolute;top:56px;right:62px;width:18px;height:18px;object-fit:contain;transform:rotate(-9deg);opacity:.26;pointer-events:none" />
@@ -377,7 +377,7 @@ export const MARKUP = `<section style="display:flex;flex-direction:column;width:
           </div>
         </div>
 
-        <div style="grid-column:span 5;grid-row:span 3;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #f2ddc8;border-radius:22px;background:#fdf3e8;overflow:hidden;box-shadow:0 12px 26px -20px rgba(26,25,25,0.32), 0 1px 2px rgba(26,25,25,0.04);transition:transform .3s ease, box-shadow .3s ease" class="okh-89">
+        <div style="grid-column:span 5;grid-row:span 3;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #cfc7b6;border-radius:22px;background:#ffffff;overflow:hidden;box-shadow:0 12px 26px -20px rgba(26,25,25,0.32), 0 1px 2px rgba(26,25,25,0.04);transition:transform .3s ease, box-shadow .3s ease" class="okh-89">
           <div style="padding:24px 26px 26px;display:flex;flex-direction:column;height:100%">
             <p style="margin:0;font-family:'Chillax','Sora',sans-serif;font-size:25px;font-weight:600;letter-spacing:-0.5px;color:#1a1919">Straight into your stack</p>
             <p style="margin:9px 0 0;font-size:14px;line-height:28px;color:#726a5a">Connect <span style="display:inline-flex;align-items:baseline;gap:6px;padding:1px 9px 2px;margin:0 3px 0 2px;border-radius:8px;background:#faf8f3;white-space:nowrap"><span style="display:inline-flex;align-self:center;flex-shrink:0"><img src="/okara/landing/assets/wordpress-28x28.svg" alt="" style="width:17px;height:17px;object-fit:contain" /></span>your stack</span> once and approved work publishes itself.</p>
@@ -398,7 +398,7 @@ export const MARKUP = `<section style="display:flex;flex-direction:column;width:
           </div>
         </div>
 
-        <div style="grid-column:span 4;grid-row:span 3;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #d9e4f5;border-radius:22px;background:#eef3fd;overflow:hidden;box-shadow:0 12px 26px -20px rgba(26,25,25,0.32), 0 1px 2px rgba(26,25,25,0.04);transition:transform .3s ease, box-shadow .3s ease" class="okh-102">
+        <div style="grid-column:span 4;grid-row:span 3;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #cfc7b6;border-radius:22px;background:#ffffff;overflow:hidden;box-shadow:0 12px 26px -20px rgba(26,25,25,0.32), 0 1px 2px rgba(26,25,25,0.04);transition:transform .3s ease, box-shadow .3s ease" class="okh-102">
           <div style="padding:24px 26px 26px;display:flex;flex-direction:column;height:100%">
             <p style="margin:0;font-family:'Chillax','Sora',sans-serif;font-size:20px;font-weight:600;letter-spacing:-0.3px;color:#1a1919">Nothing publishes without you</p>
             <p style="margin:10px 0 0;font-size:14px;line-height:28px;color:#726a5a">Every draft waits in the feed until you <span style="display:inline-flex;align-items:baseline;gap:6px;padding:1px 9px 2px;margin:0 3px 0 2px;border-radius:8px;background:#eef8f1;color:#15803d;white-space:nowrap"><span style="display:inline-flex;align-self:center;flex-shrink:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>approve</span><span class="okara-tight"> it.</span></p>
@@ -725,7 +725,7 @@ export const MARKUP = `<section style="display:flex;flex-direction:column;width:
       <div style="height:76px"></div>
     </div>
 
-    <div style="width:100%;box-sizing:border-box;background:#f6f2e9;background-image:linear-gradient(rgba(26,25,25,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(26,25,25,0.045) 1px, transparent 1px);background-size:44px 44px;background-position:-1px -1px;border:0;border-top:1px solid #e4ddcd;overflow:hidden;position:relative">
+    <div class="okara-cta-section" style="width:100%;box-sizing:border-box;background:#f6f2e9;background-image:linear-gradient(rgba(26,25,25,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(26,25,25,0.045) 1px, transparent 1px);background-size:44px 44px;background-position:-1px -1px;border:0;border-top:1px solid #e4ddcd;overflow:hidden;position:relative">
       <svg width="264" height="176" viewBox="0 0 264 176" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;top:87px;left:-1px;pointer-events:none;fill:#1a1919"><rect x="0" y="0" width="88" height="88" opacity=".05"></rect><rect x="176" y="0" width="88" height="88" opacity=".035"></rect><rect x="88" y="88" width="88" height="88" opacity=".045"></rect></svg>
       <svg width="264" height="176" viewBox="0 0 264 176" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;bottom:88px;right:-1px;pointer-events:none;fill:#1a1919"><rect x="176" y="88" width="88" height="88" opacity=".05"></rect><rect x="0" y="88" width="88" height="88" opacity=".035"></rect><rect x="88" y="0" width="88" height="88" opacity=".045"></rect></svg>
 
