@@ -131,22 +131,38 @@ export default function Home() {
           </div>
         </Section>
 
-        <div className="screen-line-top px-4 py-8 sm:px-6">
-          <p className="text-[15px]">
-            Still reading? That means something clicked. Let&rsquo;s talk.
-          </p>
-          <p className="mt-1 text-[13px] text-muted-foreground">
-            {IDENTITY.email}
-          </p>
-        </div>
-
         <Section title="Where it overlaps" id="overlaps">
           <div className="px-4 py-8 sm:px-10">
             <Venn />
           </div>
         </Section>
 
-        <footer className="screen-line-top overflow-hidden px-4 pb-0 pt-10 sm:px-6">
+        {/* The ask, last. It sits under the diagram rather than above it
+            because the diagram is the argument and this is what to do about
+            it: a reader who has got this far has already been told what he
+            does. His own face on the button, because the thing being offered
+            is a conversation with a person, not a form. */}
+        <div className="screen-line-top px-4 py-10 text-center sm:px-6">
+          <p className="text-[15px] sm:text-lg">
+            Still reading? That means something clicked. Let&rsquo;s talk.
+          </p>
+          <a
+            href={`mailto:${IDENTITY.email}`}
+            data-cur="say hi"
+            className="cta-pill mt-4 inline-flex items-center gap-2.5 rounded-full border border-border bg-background py-2 pl-2 pr-4 text-[15px] font-semibold transition-transform hover:-translate-y-px focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+          >
+            <Image
+              src={IDENTITY.avatar}
+              alt=""
+              width={64}
+              height={64}
+              className="size-7 rounded-full border border-border object-cover"
+            />
+            Send an email
+          </a>
+        </div>
+
+        <footer className="footer-grid screen-line-top overflow-hidden px-4 pb-0 pt-10 sm:px-6">
           {/* The wordmark, set large and dissolving downward. A flat tint at
               this size still reads as a heading you are meant to start; the
               fade says it is the end of the page rather than the top of

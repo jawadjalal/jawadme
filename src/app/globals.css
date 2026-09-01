@@ -780,3 +780,36 @@ html.has-cursor * { cursor: none !important; }
      not leave a band of empty page below the fade. */
   margin-bottom: -0.12em;
 }
+
+/* The footer shows the ruled ground the rest of the column sits on. Every
+   other section paints itself solid so the grid does not run through the
+   text; there is no text down here to protect, so the paper shows. */
+.footer-grid {
+  background-color: transparent;
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center top;
+}
+
+/* The closing button. A soft lift rather than a flat fill: it is the last
+   thing on the page and the only control down here, so it can afford to sit
+   slightly off the surface. */
+.cta-pill {
+  box-shadow:
+    inset 0 1px 0 oklch(from var(--foreground) l c h / 6%),
+    0 1px 2px oklch(from var(--base) l c h / 6%),
+    0 10px 24px -10px oklch(from var(--base) l c h / 22%);
+}
+.cta-pill:hover {
+  box-shadow:
+    inset 0 1px 0 oklch(from var(--foreground) l c h / 8%),
+    0 2px 4px oklch(from var(--base) l c h / 7%),
+    0 16px 32px -12px oklch(from var(--base) l c h / 26%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-pill { transition: none; }
+  .cta-pill:hover { transform: none; }
+}
