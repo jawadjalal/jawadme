@@ -786,10 +786,16 @@ html.has-cursor * { cursor: none !important; }
    text; there is no text down here to protect, so the paper shows. */
 .footer-grid {
   background-color: transparent;
-  background-image:
-    linear-gradient(to right, var(--grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
-  background-size: 44px 44px;
+  /* The same dot field the page opens with, at the same 22px pitch, so the
+     two ends of the page rhyme. Drawn in CSS rather than on a canvas: the
+     one at the top responds to the pointer and this one does not need to,
+     and a second canvas would cost a raf loop to sit still. */
+  background-image: radial-gradient(
+    circle at center,
+    color-mix(in oklch, var(--foreground) 16%, transparent) 1.1px,
+    transparent 1.2px
+  );
+  background-size: 22px 22px;
   background-position: center top;
 }
 

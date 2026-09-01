@@ -1,34 +1,26 @@
 "use client";
 
-// The closing button, with the label leaning toward the pointer.
+// The closing button.
 //
-// The pull is small on purpose: a few pixels, eased, and capped well before
-// the text could leave the button. A magnetic control that visibly chases the
-// cursor turns a link into a toy and makes it harder to click, which is the
-// opposite of what the last control on the page should do. This is meant to
-// be felt rather than noticed.
-//
-// The whole effect is decoration over a button that already reads and already
-// works, so it simply does not run under reduced motion or on a coarse
-// pointer, where there is no cursor to lean toward.
+// Deliberately not magnetic, unlike the three in the hero. This is the last
+// control on the page and the one a reader arrives at having decided to use
+// it, rather than one they discover on the way past; a label that slides
+// under the cursor at that moment is friction, not delight. The hover reveal
+// is enough.
 
 import Image from "next/image";
 import { IDENTITY } from "@/lib/profile";
-import { useMagnetic } from "./magnetic";
 
 export function Cta() {
-  const { host, inner } = useMagnetic<HTMLAnchorElement, HTMLSpanElement>();
 
 
   return (
     <a
-      ref={host}
       href={`mailto:${IDENTITY.email}`}
       data-cur="say hi"
       className="cta-btn group inline-flex cursor-pointer items-center self-center rounded-md border px-2 py-1 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
     >
       <span
-        ref={inner}
         className="relative z-20 flex items-center gap-2 transition-[gap] duration-300 group-hover:gap-8"
       >
         <span className="size-5 shrink-0 overflow-hidden rounded-full">

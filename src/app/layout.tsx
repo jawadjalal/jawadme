@@ -23,8 +23,16 @@ export const metadata: Metadata = {
     url: IDENTITY.site,
     siteName: IDENTITY.properName,
     type: "profile",
+    // Built by scripts/og.mjs from the site's own screenshots, so the card
+    // shows the work rather than describing it. Rebuild with `npm run og`
+    // after changing which projects lead.
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: SUMMARY }],
   },
-  twitter: { card: "summary_large_image", creator: "@jawadmakes" },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@jawadmakes",
+    images: ["/og.png"],
+  },
   alternates: { canonical: IDENTITY.site },
 };
 
