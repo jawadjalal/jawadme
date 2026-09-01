@@ -793,23 +793,32 @@ html.has-cursor * { cursor: none !important; }
   background-position: center top;
 }
 
-/* The closing button. A soft lift rather than a flat fill: it is the last
-   thing on the page and the only control down here, so it can afford to sit
-   slightly off the surface. */
-.cta-pill {
+/* The closing button, to the reference's own recipe: a barely-there tint on
+   the page ink, a 10% border, and Tailwind's shadow-md over an inset
+   highlight. Not a solid fill: it sits under a diagram and over a footer,
+   and a black button there would outweigh both. */
+.cta-btn {
+  border-color: oklch(from var(--foreground) l c h / 10%);
+  background: oklch(from var(--foreground) l c h / 3%);
+  color: var(--foreground);
   box-shadow:
-    inset 0 1px 0 oklch(from var(--foreground) l c h / 6%),
-    0 1px 2px oklch(from var(--base) l c h / 6%),
-    0 10px 24px -10px oklch(from var(--base) l c h / 22%);
+    inset 0 1px 2px oklch(from var(--background) l c h / 5%),
+    0 4px 6px -1px oklch(from var(--base) l c h / 10%),
+    0 2px 4px -2px oklch(from var(--base) l c h / 10%);
 }
-.cta-pill:hover {
-  box-shadow:
-    inset 0 1px 0 oklch(from var(--foreground) l c h / 8%),
-    0 2px 4px oklch(from var(--base) l c h / 7%),
-    0 16px 32px -12px oklch(from var(--base) l c h / 26%);
+[data-theme="dark"] .cta-btn {
+  border-color: oklch(from var(--foreground) l c h / 15%);
+  background: oklch(from var(--foreground) l c h / 15%);
+  box-shadow: 0 0 5px oklch(from var(--foreground) l c h / 10%);
 }
+.cta-you { background: oklch(from var(--foreground) l c h / 10%); }
 
+/* The reveal is decoration over a button that already reads and already
+   works, so under reduced motion it simply does not move. */
 @media (prefers-reduced-motion: reduce) {
-  .cta-pill { transition: none; }
-  .cta-pill:hover { transform: none; }
+  .cta-btn .transition-\[gap\],
+  .cta-btn .transition-\[transform\,opacity\],
+  .cta-btn .transition-\[margin-left\] {
+    transition: none;
+  }
 }

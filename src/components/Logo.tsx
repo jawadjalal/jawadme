@@ -12,21 +12,28 @@ export function Logo({
   src,
   emoji,
   size = 40,
+  tile,
   className = "",
 }: {
   src?: string;
   /** Stands in where there is no file yet. */
   emoji?: string;
   size?: number;
+  /** Overrides the white tile, for a mark that is drawn to sit on its own
+   *  colour and loses its figure without it. */
+  tile?: string;
   className?: string;
 }) {
-  const box = `shrink-0 overflow-hidden rounded-[10px] border border-border bg-white ${className}`;
+  const box = `shrink-0 overflow-hidden rounded-[10px] border border-border ${
+    tile ? "" : "bg-white"
+  } ${className}`;
+  const tileStyle = tile ? { background: tile } : undefined;
 
   if (emoji) {
     return (
       <span
         className={`grid place-items-center ${box}`}
-        style={{ width: size, height: size, fontSize: size * 0.5 }}
+        style={{ width: size, height: size, fontSize: size * 0.5, ...tileStyle }}
         aria-hidden="true"
       >
         {emoji}
@@ -35,7 +42,7 @@ export function Logo({
   }
 
   return (
-    <span className={`grid place-items-center ${box}`} style={{ width: size, height: size }}>
+    <span className={`grid place-items-center ${box}`} style={{ width: size, height: size, ...tileStyle }}>
       <Image
         src={src!}
         alt=""
@@ -47,7 +54,7 @@ export function Logo({
         unoptimized={src!.endsWith(".svg")}
         // Inset, so a mark drawn to the edge of its own canvas is not welded
         // to the tile's border.
-        className="size-[78%] object-contain"
+        className={tile ? "size-full object-cover" : "size-[78%] object-contain"}
       />
     </span>
   );

@@ -60,6 +60,8 @@ export const ABOUT_ROLES: {
   /** The product's own mark, so the row is identified by its logo rather
    *  than by a house glyph standing in for it. */
   logo?: string;
+  /** For a mark that only reads on its own colour, like Weld. */
+  logoTile?: string;
   emoji?: string;
   href?: string;
 }[] = [
@@ -82,6 +84,9 @@ export type Item = {
   /** The brand mark, 40px square, under /public/logos. Nooli has no file yet,
    *  so it carries an emoji instead and `logo` is left off. */
   logo?: string;
+  /** For a mark that only reads on its own colour, like Weld: forcing it
+   *  onto the white tile would lose the figure entirely. */
+  logoTile?: string;
   emoji?: string;
   /** Screenshot for the hover card and the project grid, under /public. */
   shot?: string;
@@ -219,6 +224,7 @@ export const ARCHIVE: Item[] = [
     name: "weld",
     href: "https://weldroblox.com",
     logo: "/logos/weldroblox.png",
+    logoTile: "#eb3c17",
     shot: "/design/weld.webp",
     domain: "weldroblox.com",
     role: "Founder & PM",

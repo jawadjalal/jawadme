@@ -139,26 +139,60 @@ export default function Home() {
 
         {/* The ask, last. It sits under the diagram rather than above it
             because the diagram is the argument and this is what to do about
-            it: a reader who has got this far has already been told what he
-            does. His own face on the button, because the thing being offered
-            is a conversation with a person, not a form. */}
-        <div className="screen-line-top px-4 py-10 text-center sm:px-6">
-          <p className="text-[15px] sm:text-lg">
+            it.
+
+            The button is the reference's, rebuilt: on hover the gap opens
+            from 0.5rem to 2rem, a hidden "+ You" slides in from behind his
+            avatar and fades up, and the label steps right to make room. Two
+            faces and a plus says "a conversation" in less space than a
+            sentence would, and the whole thing is one transition on three
+            properties rather than a keyframe. */}
+        <div
+          id="contact-cta"
+          className="screen-line-top flex w-full flex-col items-center px-5 py-10 sm:px-10"
+        >
+          <p className="mb-5 text-balance text-center text-sm opacity-70 md:text-lg">
             Still reading? That means something clicked. Let&rsquo;s talk.
           </p>
           <a
             href={`mailto:${IDENTITY.email}`}
             data-cur="say hi"
-            className="cta-pill mt-4 inline-flex items-center gap-2.5 rounded-full border border-border bg-background py-2 pl-2 pr-4 text-[15px] font-semibold transition-transform hover:-translate-y-px focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+            className="cta-btn group inline-flex cursor-pointer items-center self-center rounded-md border px-2 py-1 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
           >
-            <Image
-              src={IDENTITY.avatar}
-              alt=""
-              width={64}
-              height={64}
-              className="size-7 rounded-full border border-border object-cover"
-            />
-            Send an email
+            <span className="relative z-20 flex items-center gap-2 transition-[gap] duration-300 group-hover:gap-8">
+              <span className="size-5 shrink-0 overflow-hidden rounded-full">
+                <Image
+                  src={IDENTITY.avatar}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="size-full object-cover"
+                />
+              </span>
+              <span
+                aria-hidden="true"
+                className="absolute left-6 flex -translate-x-full items-center opacity-0 transition-[transform,opacity] duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                >
+                  <path d="M5 12h14" />
+                  <path d="M12 5v14" />
+                </svg>
+                <span className="cta-you ml-1 mr-2 flex size-5 items-center justify-center rounded-full text-[8px]">
+                  You
+                </span>
+              </span>
+              <span className="relative ml-0 block whitespace-nowrap text-sm font-bold transition-[margin-left] duration-300 group-hover:ml-4">
+                Send an email
+              </span>
+            </span>
           </a>
         </div>
 
