@@ -85,7 +85,11 @@ export default function Home() {
                       {row.tools.map((t) => (
                         <li key={t.label} className="text-muted-foreground">
                           <span className="cell-mark">
-                            {t.brand ? <Brand name={t.brand} size={13} /> : null}
+                            {t.brand ? (
+                              <Brand name={t.brand} size={13} />
+                            ) : t.icon ? (
+                              <Icon name={t.icon} size={13} />
+                            ) : null}
                           </span>
                           <span className="cell-label">{t.label}</span>
                         </li>

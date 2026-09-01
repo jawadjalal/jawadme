@@ -297,7 +297,12 @@ export const SKILLS_TABLE: {
   area: string;
   icon: "pen" | "code" | "cube" | "sparkle";
   what: string;
-  tools: { brand?: import("@/components/Brand").BrandKey; label: string }[];
+  tools: {
+    brand?: import("@/components/Brand").BrandKey;
+    /** For tools with no published mark to borrow. */
+    icon?: import("@/components/Icon").IconName;
+    label: string;
+  }[];
 }[] = [
   {
     area: "Design",
@@ -306,7 +311,7 @@ export const SKILLS_TABLE: {
     tools: [
       { brand: "figmacolour", label: "Figma" },
       { brand: "framer", label: "Framer" },
-      { label: "Logo design" },
+      { icon: "shapes", label: "Logo design" },
     ],
   },
   {
@@ -333,6 +338,8 @@ export const SKILLS_TABLE: {
       { brand: "openai", label: "Codex" },
       { brand: "openrouter", label: "OpenRouter" },
       { brand: "grok", label: "Grok" },
+      { label: "Grok Bot" },
+      { label: "Hermes Agent" },
       { brand: "wayari", label: "Wayari" },
     ],
   },

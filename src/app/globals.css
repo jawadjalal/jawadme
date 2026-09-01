@@ -740,8 +740,14 @@ html.has-cursor * { cursor: none !important; }
   line-height: 1.2;
   transition: background-color 0.18s var(--ease);
 }
-.grid-table > a:hover,
-.grid-table > button:hover { background: var(--muted); }
+/* Every cell answers the pointer, not just the ones that are links. A table
+   where half the cells light up and half do nothing reads as broken rather
+   than as a distinction between clickable and not; the cursor already says
+   which is which. */
+.grid-table > *:hover { background: var(--muted); }
+.grid-table > *:hover .cell-label { color: var(--foreground); }
+.grid-table > * { transition: background-color 0.18s var(--ease), color 0.18s var(--ease); }
+.grid-table .cell-label { transition: color 0.18s var(--ease); }
 
 /* The mark keeps a fixed slot so every label in the table starts at the same
    x, whatever width its logo happens to be. */

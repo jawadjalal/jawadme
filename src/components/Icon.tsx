@@ -20,7 +20,7 @@
 export type IconName =
   | "sparkle" | "code" | "game" | "check" | "send" | "gem" | "bolt"
   | "trend" | "team" | "list" | "quote" | "clock" | "target"
-  | "pen" | "cube" | "block" | "globe" | "mail" | "doc" | "chev" | "play" | "rocket";
+  | "pen" | "cube" | "block" | "globe" | "mail" | "doc" | "chev" | "play" | "rocket" | "shapes";
 
 const PATHS: Record<IconName, React.ReactElement> = {
   // Verbatim from the ripwebsite set: these already measure correctly on this
@@ -156,6 +156,17 @@ const PATHS: Record<IconName, React.ReactElement> = {
       <circle cx="8" cy="6.6" r="1.3" />
       <path d="M4.9 9.4 3.2 11l.5 2.3 2.2-.9" />
       <path d="M11.1 9.4 12.8 11l-.5 2.3-2.2-.9" />
+    </>
+  ),
+  // Logo design. A circle, a triangle and a square, which is the shortest
+  // way to say "marks" without drawing a specific one. Overlapped rather
+  // than lined up: three shapes in a row reads as a toolbar, three that sit
+  // over each other reads as something being composed.
+  shapes: (
+    <>
+      <circle cx="5.9" cy="6.1" r="3.4" />
+      <rect x="7.1" y="7.3" width="6.4" height="6.4" rx="1.1" />
+      <path d="M10.9 2.3 13.7 6.7H8.1z" />
     </>
   ),
   doc: (
