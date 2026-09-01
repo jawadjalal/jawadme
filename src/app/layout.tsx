@@ -64,9 +64,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             paragraph is not drawn twice. */}
         <link rel="preconnect" href="https://api.fontshare.com" />
         <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="" />
+        {/* Two requests, not one. Fontshare's API silently drops the second
+            family when both are asked for in a single call: the combined URL
+            returned Satoshi's four faces and no Chillax at all, so every
+            heading fell back to Satoshi and the display face was never once
+            on the page. Asked for separately, both arrive. */}
         <link
           rel="stylesheet"
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=chillax@400,500,600,700&display=swap"
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap"
+        />
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=chillax@400,500,600,700&display=swap"
         />
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <script

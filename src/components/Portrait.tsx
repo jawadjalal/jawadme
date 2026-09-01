@@ -49,7 +49,11 @@ export function Portrait() {
         aria-label="Show the other portrait"
         data-cur={alt ? "back" : "swap"}
         onClick={() => setAlt((v) => !v)}
-        className="tap relative h-[18px] w-8 shrink-0 rounded-full border border-border bg-muted outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring"
+        className={`tap relative h-[18px] w-8 shrink-0 rounded-full border outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring ${
+          // Reads as on. A switch whose two states differ only by where the
+          // knob sits is a switch you have to look at twice.
+          alt ? "border-foreground bg-foreground" : "border-border bg-muted"
+        }`}
       >
         <span
           aria-hidden="true"

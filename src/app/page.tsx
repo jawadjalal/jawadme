@@ -219,7 +219,9 @@ function Hero() {
             rel="noopener noreferrer"
             className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-border px-3 py-1 text-[13px] font-medium leading-4 transition-colors sm:gap-[5px] sm:text-xs hover:border-foreground/20 hover:bg-muted sm:min-h-0 sm:px-2"
           >
-            <Icon name="send" size={14} />
+            {/* X's own mark. The house arrow was standing in for a logo
+                everyone already knows by sight. */}
+            <Brand name="x" size={13} />
             DM on X
           </a>
           <a
