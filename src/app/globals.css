@@ -768,3 +768,15 @@ html.has-cursor * { cursor: none !important; }
   color: var(--muted-foreground);
   white-space: nowrap;
 }
+
+/* The footer wordmark. The colour is faint to begin with and the mask takes
+   it the rest of the way, so the letters are gone before they reach the
+   bottom edge rather than being cut off by it. */
+.footer-mark {
+  color: color-mix(in oklch, var(--foreground) 9%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000 18%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 18%, transparent 92%);
+  /* Cropped at the baseline, so the descender space under the letters does
+     not leave a band of empty page below the fade. */
+  margin-bottom: -0.12em;
+}

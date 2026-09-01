@@ -137,7 +137,12 @@ export const NOW: Item[] = [
     period: "Since 2026",
     status: "Building",
     blurb: "Lessons for three to five year olds that adapt to the child, on iOS.",
-    tags: [{ label: "Product" }, { label: "iOS" }, { brand: "figmacolour", label: "Design system" }],
+    tags: [
+      { label: "Product" },
+      { label: "iOS" },
+      { brand: "figmacolour", label: "Design system" },
+      { label: "SwiftUI" },
+    ],
   },
   {
     key: "okara",
@@ -155,6 +160,7 @@ export const NOW: Item[] = [
       { brand: "figmacolour", label: "Product design" },
       { brand: "nextdotjs", label: "Next.js" },
       { brand: "tailwindcss", label: "Tailwind" },
+      { label: "Design system" },
     ],
     // The launch film, which did 14 million views on X in a day.
     video: {
@@ -185,6 +191,7 @@ export const NOW: Item[] = [
       { brand: "blender", label: "Blender" },
       { brand: "zbrush", label: "ZBrush" },
       { brand: "adobe", label: "Substance" },
+      { label: "Game ready" },
     ],
   },
 ];

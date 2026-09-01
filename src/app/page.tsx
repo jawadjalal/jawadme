@@ -146,19 +146,19 @@ export default function Home() {
           </div>
         </Section>
 
-        <footer className="screen-line-top overflow-hidden px-4 pb-2 pt-8 sm:px-6">
-          {/* The name, set large and nearly gone. A footer that repeats the
-              location and a build note is two more things to read at the
-              point where the reader has finished reading. */}
+        <footer className="screen-line-top overflow-hidden px-4 pb-0 pt-10 sm:px-6">
+          {/* The wordmark, set large and dissolving downward. A flat tint at
+              this size still reads as a heading you are meant to start; the
+              fade says it is the end of the page rather than the top of
+              something else. Aria-hidden because the name is already in the
+              document title and the JSON-LD, and a screen reader does not
+              need it a third time as decoration. */}
           <p
             aria-hidden="true"
-            className="select-none text-center font-display font-semibold leading-[0.85] tracking-tight"
-            style={{
-              fontSize: "clamp(3.25rem, 17vw, 9rem)",
-              color: "color-mix(in oklch, var(--foreground) 7%, transparent)",
-            }}
+            className="footer-mark select-none text-center font-display font-semibold uppercase leading-[0.8] tracking-tight"
+            style={{ fontSize: "clamp(4rem, 22vw, 12rem)" }}
           >
-            {IDENTITY.properName}
+            {IDENTITY.wordmark}
           </p>
         </footer>
       </main>
