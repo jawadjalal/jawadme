@@ -388,6 +388,7 @@ function Role({ item }: { item: Item }) {
         <Logo
           src={item.logo}
           emoji={item.emoji}
+          tile={item.logoTile}
           size={56}
           className="role-logo self-start"
         />
