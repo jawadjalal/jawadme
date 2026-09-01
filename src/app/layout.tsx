@@ -1,55 +1,80 @@
 import type { Metadata } from "next";
+import { GeistMono } from "geist/font/mono";
+import { Pixelify_Sans } from "next/font/google";
+import { IDENTITY, SUMMARY, SKILLS } from "@/lib/profile";
 import "./globals.css";
 
+// The wordmark only. A pixel face is a signature, not a text face, so it is
+// scoped to one element rather than exposed as a body option.
+const pixel = Pixelify_Sans({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-pixel",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  // The canonical host. This repo deploys to the `jawadme` Vercel project, whose
-  // production aliases are jawadjalal.com, www.jawadjalal.com and
-  // jawadme.vercel.app — the custom domain is the one to advertise, so share
-  // cards and canonical URLs resolve there rather than to the vercel.app alias.
-  metadataBase: new URL("https://jawadjalal.com"),
-  title: "jawad jalal",
-  description: "designer & founder",
+  metadataBase: new URL(IDENTITY.site),
+  title: `${IDENTITY.properName} · ${IDENTITY.role}`,
+  description: SUMMARY,
   openGraph: {
-    title: "jawad jalal",
-    description: "designer and founder in london, mostly working on his own stuff.",
-    url: "/",
-    siteName: "jawad jalal",
-    type: "website",
+    title: `${IDENTITY.properName} · ${IDENTITY.role}`,
+    description: SUMMARY,
+    url: IDENTITY.site,
+    siteName: IDENTITY.properName,
+    type: "profile",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "jawad jalal",
-    description: "designer and founder in london, mostly working on his own stuff.",
+  twitter: { card: "summary_large_image", creator: "@jawadmakes" },
+  alternates: { canonical: IDENTITY.site },
+};
+
+// Applied before first paint. Running this in an effect instead would give
+// every dark-mode reader a white flash on load, which is the one thing a
+// theme toggle exists to prevent.
+const THEME_SCRIPT = `
+try {
+  var s = localStorage.getItem('theme');
+  var d = s ? s === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  if (d) document.documentElement.dataset.theme = 'dark';
+} catch (e) {}
+`;
+
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: IDENTITY.properName,
+  url: IDENTITY.site,
+  email: `mailto:${IDENTITY.email}`,
+  jobTitle: IDENTITY.role,
+  description: SUMMARY,
+  knowsAbout: SKILLS,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: IDENTITY.locality,
+    addressRegion: IDENTITY.region,
+    addressCountry: IDENTITY.country,
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning className={`${GeistMono.variable} ${pixel.variable}`}>
       <head>
-        {/* Inter, from the source. The variable build is what the homepage
-            sets its type in; the Google-hosted families below are still what
-            /design and /writing use. */}
-        <link rel="preconnect" href="https://rsms.me/" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        {/* Satoshi, the reference site's face. Preconnected so the first
+            paragraph is not drawn twice. */}
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="" />
         <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=chillax@400,500,600,700&display=swap"
         />
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=chillax@400,500,600&display=swap"
-          rel="stylesheet"
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
       </head>
-      <body>{children}</body>
+      <body className="min-h-dvh font-sans antialiased">{children}</body>
     </html>
   );
 }

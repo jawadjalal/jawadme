@@ -1,35 +1,764 @@
-/* Global reset. Everything visual now belongs to the OS scene, whose styles are
-   scoped under .jos in src/app/design/design.css — the panel-era .jj-* rules
-   went out with the panel. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-  box-sizing: border-box;
+/* ── Tokens ───────────────────────────────────────────────────────────────
+   The palette is a single neutral pair plus a hairline. Everything on the
+   page is that pair; colour appears only inside a highlight or a status dot,
+   which is what makes those two things read as emphasis rather than as more
+   decoration. Light is the default and dark is the same values swapped, so
+   there is one set of numbers to keep honest instead of two. */
+:root {
+  /* Warm, not neutral. A pure #fff ground under near-black text is the
+     default that makes a page look untouched; pulling both a few degrees warm
+     and softening the ink is most of what separates the two. */
+  --base: oklch(19.5% 0.004 95);
+  --base-foreground: oklch(99.2% 0.002 95);
+
+  --background: var(--base-foreground);
+  --foreground: var(--base);
+  --muted: oklch(from var(--base) l c h / 4%);
+  /* Secondary text is a light warm grey, not dimmed ink. At 55% alpha it was
+     still dark enough to compete with the headings for attention; this reads
+     as the second layer it actually is. */
+  --muted-foreground: oklch(72% 0.006 95);
+  --border: oklch(from var(--base) l c h / 10%);
+  --ring: oklch(from var(--base) l c h / 25%);
+
+  --radius: 0.625rem;
+
+  /* Status. Two only: a thing is live or it is being built. */
+  --live: oklch(72% 0.19 149);
+  --building: oklch(77% 0.16 78);
+
+  /* Highlight hues, one per icon (see prose.tsx). Kept as raw oklch so the
+     tint can be taken at 14% and the glyph at full strength from one value. */
+  --hue-violet: oklch(58% 0.19 288);
+  --hue-amber: oklch(70% 0.16 68);
+  --hue-olive: oklch(60% 0.13 145);
+  --hue-slate: oklch(55% 0.04 250);
+  --hue-ember: oklch(63% 0.18 32);
+  --hue-orange: oklch(68% 0.17 52);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --hatch: oklch(from var(--base) l c h / 5%);
+  /* Read by the dot-field canvas, which cannot use oklch(from ...) because it
+     paints through 2D context fillStyle rather than through CSS. */
+  --dot-ink: 10 10 10;
+  --grid: oklch(from var(--base) l c h / 3.5%);
+  /* What the dot field warms to under the pointer. */
+  --dot-hot: 232 125 13;
 }
 
-html,
+[data-theme="dark"] {
+  --background: var(--base);
+  --foreground: var(--base-foreground);
+  --muted: oklch(from var(--base-foreground) l c h / 6%);
+  --muted-foreground: oklch(58% 0.006 95);
+  --border: oklch(from var(--base-foreground) l c h / 10%);
+  --ring: oklch(from var(--base-foreground) l c h / 25%);
+  --hatch: oklch(from var(--base-foreground) l c h / 5%);
+  --dot-ink: 250 250 250;
+  --grid: oklch(from var(--base-foreground) l c h / 4%);
+  --dot-hot: 255 173 84;
+
+  --hue-violet: oklch(72% 0.16 288);
+  --hue-amber: oklch(80% 0.14 68);
+  --hue-olive: oklch(75% 0.14 145);
+  --hue-slate: oklch(72% 0.04 250);
+  --hue-ember: oklch(74% 0.15 32);
+  --hue-orange: oklch(78% 0.15 52);
+}
+
+@layer base {
+  * { border-color: var(--border); }
+  /* Smooth is safe to set globally because the reduced-motion block at the
+     bottom of this file already turns it back off. Every link that moves the
+     page is an in-page anchor, and a jump-cut between two sections of one
+     ruled sheet loses the reader's place. */
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "ss01", "cv01";
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: oklch(from var(--foreground) l c h / 14%); }
+}
+
+/* ── The ruled column ─────────────────────────────────────────────────────
+   Every section is separated by a hairline that runs the full width of the
+   column rather than being inset to the text. Taken from the reference: it
+   is what makes a long single-column page read as a ruled sheet instead of
+   as a stack of unrelated cards. */
+.column-ground { background: var(--background); }
+
+.screen-line-top { position: relative; }
+.screen-line-top::before {
+  content: ""; position: absolute; inset-inline: 0; top: 0; height: 1px;
+  background: var(--border); z-index: 1; pointer-events: none;
+}
+.screen-line-bottom { position: relative; }
+.screen-line-bottom::after {
+  content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px;
+  background: var(--border); z-index: 1; pointer-events: none;
+}
+
+/* The diagonal hatch that fills the dead space either side of the column and
+   the gaps between sections. It is what stops the empty margin reading as an
+   unfinished page. */
+.hatch {
+  background-image: repeating-linear-gradient(
+    -45deg, var(--hatch) 0 1px, transparent 1px 7px
+  );
+}
+
+/* A faint square grid behind everything, like ruled paper under the column.
+   Two hairline gradients rather than an image, so it costs nothing and takes
+   the theme with it. Kept very low contrast: it should be something you
+   notice on the second look, not the first. */
 body {
-  margin: 0;
-  padding: 0;
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center top;
 }
 
-/* The scene is a 700vh scroll container and the camera reads scrollY, so the
-   browser must not try to restore or smooth-scroll on top of it. */
-html {
-  background: #0f0e0c;
-  scroll-behavior: auto;
+/* ── Streaming text ───────────────────────────────────────────────────────
+   Carried over from ripwebsite. Each character blurs in as the cursor
+   reaches it; the words are already in the server HTML, so this is a replay
+   over finished text, never the thing that puts it there. */
+.t-char {
+  animation: t-char-in 0.3s var(--ease) both;
+  display: inline;
+  white-space: pre-wrap;
 }
 
-::selection {
-  background: var(--accent-sel, rgba(122, 194, 116, 0.32));
+/* Ahead of the cursor. `visibility` rather than `display` or a slice: the
+   character keeps its box, so the paragraph holds its finished height from
+   the first frame and the page never reflows as the words land. */
+.t-char.is-pending,
+.rp-ink.is-pending {
+  visibility: hidden;
+  animation: none;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+@keyframes t-char-in {
+  from { opacity: 0; filter: blur(2px); }
+  to { opacity: 1; filter: none; }
+}
+
+/* A block that grows a line mid-sentence eases its height rather than
+   snapping, so the page below it does not jump under the reader. */
+.t-resize { transition: height 0.28s var(--ease); }
+
+/* ── Inline iconography ───────────────────────────────────────────────────
+   Two shapes: a bare glyph sitting on the baseline, and a MARK — a tinted
+   phrase with its glyph in front. The words inside a mark stay in the page's
+   ordinary ink; only the ground behind them is tinted. Colouring the words
+   would either fail contrast or turn every paragraph into a link farm. */
+.rp-ink {
+  display: inline-block;
+  width: 1.1em; height: 1.1em;
+  vertical-align: -0.22em;
+  margin-inline: 0.2em;
+  color: var(--muted-foreground);
+}
+/* Hard against punctuation. Zeroing the margin is not enough on its own:
+   every glyph is drawn covering about 11 of its 16 units, so the box carries
+   roughly an eighth of an em of built-in padding on each side, and the comma
+   still floats. The negative margin pays that back. */
+.rp-ink.is-tight { margin-right: -0.14em; }
+.rp-ink-mark { width: 100%; height: 100%; }
+
+.rp-hl {
+  --hl: var(--hue-slate);
+  display: inline;
+  padding: 0.08em 0.34em 0.1em 0.28em;
+  margin-inline: -0.06em;
+  border-radius: 0.34em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  background: transparent;
+  transition: background-color 0.4s var(--ease);
+}
+.rp-hl.is-violet { --hl: var(--hue-violet); }
+.rp-hl.is-amber  { --hl: var(--hue-amber); }
+.rp-hl.is-olive  { --hl: var(--hue-olive); }
+.rp-hl.is-slate  { --hl: var(--hue-slate); }
+.rp-hl.is-ember  { --hl: var(--hue-ember); }
+.rp-hl.is-orange { --hl: var(--hue-orange); }
+
+.rp-hl.is-lit {
+  background-color: oklch(from var(--hl) l c h / 15%);
+  /* Underlined in the mark's own hue, under the tint. The tint alone says
+     "this phrase is a unit"; the rule says "and it is a thing you can point
+     at", which is true here because most of these open a preview. */
+  text-decoration: underline;
+  text-decoration-color: oklch(from var(--hl) l c h / 45%);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+/* Hard against a comma or a full stop: the tint stops at the last letter so
+   the punctuation is not left floating a third of an em away. */
+.rp-hl.is-tight { padding-right: 0.1em; margin-right: -0.04em; }
+
+.rp-hl-glyph {
+  display: inline-block;
+  width: 0.95em; height: 0.95em;
+  vertical-align: -0.13em;
+  margin-right: 0.28em;
+  color: var(--hl);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.rp-hl.is-lit .rp-hl-glyph { opacity: 1; transform: none; }
+.rp-hl-glyph > svg { width: 100%; height: 100%; }
+
+/* A run of supporting text. The About block is mostly connective tissue
+   between the four or five phrases that carry the point; dimming it is what
+   lets those phrases read as the thing being said rather than as decoration
+   scattered through an evenly-weighted paragraph. */
+.rp-dim { color: var(--muted-foreground); }
+
+/* Coloured words, no chip. The tinted mark is the loud option and is
+   rationed to phrases that name a thing; this is for everything else that
+   wants to stand slightly forward of the sentence. */
+.rp-tint { color: var(--hl); font-weight: 500; }
+.rp-tint.is-violet { --hl: var(--hue-violet); }
+.rp-tint.is-amber  { --hl: var(--hue-amber); }
+.rp-tint.is-olive  { --hl: var(--hue-olive); }
+.rp-tint.is-slate  { --hl: var(--hue-slate); }
+.rp-tint.is-ember  { --hl: var(--hue-ember); }
+.rp-tint.is-orange { --hl: var(--hue-orange); }
+.rp-tint-link {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--hl) 40%, transparent);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s var(--ease);
+}
+.rp-tint-link:hover { text-decoration-color: var(--hl); }
+
+/* The roles table. A leader rules the gap between a name and its role, so
+   the eye tracks across a wide row without the two columns drifting apart.
+   Dashed rather than dotted: at this size a dotted rule renders as a grey
+   smear on a non-retina screen, and dashes stay legible. */
+.lead {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  border-bottom: 1px dashed var(--border);
+  transform: translateY(-0.28em);
+}
+
+/* An inline link that carries a brand mark. Underlined in the page ink, not
+   the brand colour: the mark is already doing the colouring, and a coloured
+   rule under a coloured glyph turns the sentence into a link farm. */
+.rp-link {
+  display: inline;
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s var(--ease);
+}
+.rp-link:hover { text-decoration-color: var(--foreground); }
+.rp-link-glyph {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  vertical-align: -0.13em;
+  margin-right: 0.26em;
+}
+
+/* ── Hover preview card ─────────────────────────────────────────────────
+   Centred on the link, then pulled back inside the viewport by --pv-shift
+   when centring alone would overhang. It scales up from 96% with a little
+   lift, which reads as the card belonging to the word rather than as a
+   tooltip that happened to appear nearby. */
+.pv-anchor { position: relative; display: inline-block; }
+
+.pv-card {
+  --pv-shift: 0px;
+  position: absolute;
+  bottom: calc(100% + 0.6rem);
+  left: 50%;
+  z-index: 60;
+  width: 18.5rem;
+  max-width: calc(100vw - 1.5rem);
+  padding: 0.3rem;
+  border-radius: 14px;
+  /* The bevel: a hairline, a bright inner edge catching light from above,
+     and two shadows at different softnesses. One flat border and one blurry
+     shadow is what made the old card read as a grey pill stuck to the page. */
+  border: 1px solid var(--border);
+  background: var(--background);
+  box-shadow:
+    inset 0 1px 0 oklch(from var(--foreground) l c h / 6%),
+    0 1px 2px oklch(from var(--base) l c h / 7%),
+    0 16px 40px -12px oklch(from var(--base) l c h / 22%);
+  transform-origin: bottom center;
+  opacity: 0;
+  transform: translateX(calc(-50% + var(--pv-shift))) translateY(8px) scale(0.96);
+  pointer-events: none;
+  transition:
+    opacity 0.18s var(--ease),
+    transform 0.26s var(--ease);
+}
+.pv-card.is-open {
+  opacity: 1;
+  transform: translateX(calc(-50% + var(--pv-shift))) translateY(0) scale(1);
+}
+
+/* The art sits in its own rounded well, one step tighter than the card, so
+   the padding around it reads as a mount rather than as a gap. */
+.pv-frame {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--muted);
+}
+.pv-shot {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+}
+.pv-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 10;
+  background: #fff;
+  font-size: 3.25rem;
+  line-height: 1;
+}
+.pv-foot {
+  display: block;
+  padding: 0.4rem 0.2rem 0.15rem;
+  font-size: 0.7rem;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+/* Cards are noise on a touch screen, where there is no hover to reveal them
+   and a tap would only cover the thing being tapped. */
+@media (hover: none), (pointer: coarse) {
+  .pv-card { display: none; }
+}
+
+/* ── Loader ───────────────────────────────────────────────────────────────
+   A shot that has not arrived yet is a hairline sweep across the empty
+   frame, not a spinner. A spinner in a 19rem card is a bigger event than the
+   image it is standing in for. */
+.pv-load {
+  position: absolute; inset: 0;
+  background: var(--muted);
+}
+.pv-load::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(from var(--foreground) l c h / 7%) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: pv-sweep 1.15s var(--ease) infinite;
+}
+@keyframes pv-sweep { to { transform: translateX(100%); } }
+
+/* The page-level loader: the same sweep, one hairline wide, pinned to the
+   top of the column. */
+.page-load {
+  position: fixed; inset-inline: 0; top: 0; height: 2px; z-index: 90;
+  overflow: hidden;
+  background: transparent;
+}
+.page-load::after {
+  content: "";
+  position: absolute; inset-block: 0; left: 0; width: 40%;
+  background: linear-gradient(90deg, transparent, var(--foreground), transparent);
+  animation: pv-sweep 0.9s var(--ease) infinite;
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────
+   Everything above is decoration over content that is already there. Under
+   reduced motion it all resolves to its finished state at once. */
+@media (prefers-reduced-motion: reduce) {
+  .t-char { animation: none; }
+  .pv-card, .rp-hl, .rp-hl-glyph { transition: none; }
+  .pv-load::after, .page-load::after { animation: none; }
+  * { scroll-behavior: auto !important; }
+}
+
+
+/* ── Custom cursor ────────────────────────────────────────────────────────
+   The native pointer is hidden only once the replacement is actually
+   mounted. `has-cursor` is set by the component, so a device that never
+   qualifies (or a page where the script failed) keeps its real cursor rather
+   than losing it to a rule that fired regardless. */
+.cur-root { position: fixed; inset: 0; pointer-events: none; z-index: 10000; }
+
+html.has-cursor,
+html.has-cursor * { cursor: none !important; }
+
+.cur-arrow,
+.cur-pill {
+  position: absolute; top: 0; left: 0;
+  opacity: 0;
+  transition: opacity 140ms ease;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+.cur-arrow {
+  width: 28px; height: 28px;
+  transform-origin: 0 0;
+  /* Above the pill, so the arrow is never covered by the word it carries. */
+  z-index: 1;
+}
+.cur-pill {
+  background: var(--foreground);
+  color: var(--background);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 13px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  user-select: none;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 8%);
+}
+
+/* ── Rotating title ───────────────────────────────────────────────────────
+   A window one line tall with the titles stacked inside it. The ghost copy
+   sets the box so the line never resizes as the words change. */
+.rot {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.rot-ghost { display: block; visibility: hidden; white-space: nowrap; }
+.rot-line {
+  position: absolute; inset: 0;
+  display: flex; align-items: center;
+  white-space: nowrap;
+  transition: transform 0.55s var(--ease), opacity 0.4s var(--ease);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
+  .rot-line { transition: none; }
+  .cur-arrow, .cur-pill { transition: none; }
+}
+
+/* ── Project card ─────────────────────────────────────────────────────────
+   The whole tile is the hover target, not just the image. It settles onto a
+   faint grey and the shot lifts a little, so the card reads as one object
+   rather than as a picture with some text underneath it. */
+.proj {
+  transition: background-color 0.25s var(--ease);
+}
+.proj:hover {
+  background-color: var(--muted);
+}
+.proj:hover .proj-shot {
+  transform: scale(1.03);
+}
+
+/* The role, marked rather than greyed. It is the one fact in a row that is
+   about him rather than about the product, so it should not be set in the
+   same quiet grey as the description. */
+.rp-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-weight: 500;
+  padding: 0.1em 0.42em 0.14em 0.36em;
+  border-radius: 0.4em;
+  background: color-mix(in oklch, var(--hue-violet) 13%, transparent);
+  color: var(--foreground);
+}
+.rp-role-icon { color: var(--hue-violet); flex: none; }
+
+/* A row in Now. It lifts onto a faint ground and its logo grows a touch, so
+   the whole row answers the pointer rather than only the link inside it. */
+.role-row {
+  transition: background-color 0.22s var(--ease);
+}
+.role-row:hover { background-color: var(--muted); }
+.role-row .role-logo { transition: transform 0.28s var(--ease); }
+.role-row:hover .role-logo { transform: scale(1.06); }
+
+/* The badge beside the title. Small caps, in the live green, because "soon"
+   is a status and this is the page's colour for one. */
+.yc {
+  font-size: 0.7em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--live);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-row, .role-row .role-logo { transition: none; }
+  .role-row:hover .role-logo { transform: none; }
+}
+
+/* ── Project media ────────────────────────────────────────────────────────
+   The shot lifts very slightly on hover. Anything more and a grid of four
+   becomes a page that will not sit still. */
+.proj-shot {
+  transition: transform 0.5s var(--ease);
+}
+.group\/media:hover .proj-shot { transform: scale(1.03); }
+
+@media (prefers-reduced-motion: reduce) {
+  .proj-shot, .group\/media:hover .proj-shot { transition: none; transform: none; }
+}
+
+/* ── Header menus ─────────────────────────────────────────────────────────
+   Built on <details>, so they open before any script runs. The marker is
+   removed because Safari draws its own triangle otherwise. */
+.nav-menu { position: relative; }
+.nav-menu > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.18s var(--ease), background-color 0.18s var(--ease);
+}
+.nav-menu > summary::-webkit-details-marker { display: none; }
+.nav-menu > summary:hover,
+.nav-menu[open] > summary {
+  color: var(--foreground);
+  background: var(--muted);
+}
+.nav-chev { transition: transform 0.2s var(--ease); }
+.nav-menu[open] .nav-chev { transform: rotate(180deg); }
+
+.nav-pop {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  z-index: 70;
+  min-width: 15rem;
+  padding: 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--background);
+  box-shadow:
+    inset 0 1px 0 oklch(from var(--foreground) l c h / 6%),
+    0 1px 2px oklch(from var(--base) l c h / 7%),
+    0 14px 36px -12px oklch(from var(--base) l c h / 22%);
+  animation: nav-in 0.16s var(--ease) both;
+}
+@keyframes nav-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.nav-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0.55rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  transition: background-color 0.15s var(--ease);
+}
+.nav-item:hover { background: var(--muted); }
+.nav-item-note {
+  flex: none;
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 640px) {
+  .nav-pop { right: auto; left: 0; min-width: 12rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-pop { animation: none; }
+  .nav-chev { transition: none; }
+}
+
+/* ── The header CTA ───────────────────────────────────────────────────────
+   Collapses to nothing when the hero still has its own copy of the button,
+   so the header does not reserve a gap for something that is not there. */
+.cta-slot {
+  opacity: 0;
+  max-width: 0;
+  padding-inline: 0;
+  overflow: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+  transition:
+    opacity 0.22s var(--ease),
+    max-width 0.34s var(--ease),
+    padding 0.34s var(--ease);
+}
+.cta-slot.is-in {
+  opacity: 1;
+  max-width: 12rem;
+  padding-inline: 0.625rem;
+  pointer-events: auto;
+}
+
+/* ── Theme change ─────────────────────────────────────────────────────────
+   The wipe is handled by the View Transition API in Theme.tsx. This is the
+   fallback for browsers without it: a short cross-fade of the themed
+   properties only, added for the length of the change and then removed, so
+   the page is not carrying a transition on every element forever. */
+.theme-shift,
+.theme-shift *,
+.theme-shift *::before,
+.theme-shift *::after {
+  transition:
+    background-color 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    color 0.3s var(--ease) !important;
+}
+
+/* The wipe replaces the default cross-fade, which would otherwise run
+   underneath it and muddy the edge. */
+::view-transition-old(root) { animation: none; }
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-slot { transition: none; }
+}
+
+/* ── Touch targets ────────────────────────────────────────────────────────
+   A 26px chip is the right size for the layout and the wrong size for a
+   thumb. Rather than growing the chip on phones, which would give the page a
+   second set of proportions to keep honest, the pressable area is grown
+   underneath it. Coarse pointers only: on a mouse the visible edge is the
+   target and an invisible one that overlaps its neighbours is a liability. */
+@media (pointer: coarse) {
+  .tap { position: relative; }
+  .tap::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
   }
+}
+
+/* ── The section rail ─────────────────────────────────────────────────────
+   Wide screens leave two hundred-odd pixels of empty ground either side of
+   the column. This puts the page's own table of contents in the left of it:
+   a tick per section that lengthens and inks up as you reach it, so the
+   margin says where you are rather than sitting there being empty.
+
+   It is anchored to the column rather than to the viewport edge, so the gap
+   between rail and text is the same at 1280 as at 2560 and the reading
+   column stays the thing the eye lands on. */
+.rail-item {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.28rem 0;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: color 0.25s var(--ease);
+}
+.rail-tick {
+  flex: none;
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s var(--ease);
+}
+.rail-item:hover,
+.rail-item[aria-current="true"] {
+  color: var(--foreground);
+}
+.rail-item[aria-current="true"] .rail-tick { width: 30px; }
+.rail-item:focus-visible {
+  outline: none;
+  color: var(--foreground);
+}
+.rail-item:focus-visible .rail-tick { width: 30px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-item, .rail-tick { transition: none; }
+}
+
+/* ── Grid tables ──────────────────────────────────────────────────────────
+   One idiom for the three places that were rows of loose pills: the tags on
+   a project, the tools in a skills row, and the contact links.
+   
+   The hairlines are the 1px gap showing through from the container's own
+   background, rather than a border on each cell. Borders on cells double up
+   where two meet and, once the row wraps, leave the last cell in a row with
+   a stray edge; a gap cannot do either, and it wraps for free.
+   
+   Loose pills were the problem: a dozen of them in a paragraph read as a
+   word cloud, and each one drew its own box for a label two words long. */
+.grid-table {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+/* Each cell draws its own hairline as a ring, and the rings of two
+   neighbours meet inside the 1px gap. The first version painted the
+   container's background instead and let it show through the gaps, which
+   works until a row is short: seven tools in three columns left two grey
+   blocks sitting where the eighth and ninth would have been. A ring belongs
+   to a cell, so a row that ends early simply ends. */
+.grid-table > * {
+  box-shadow: 0 0 0 1px var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.5rem 0.625rem;
+  background: var(--background);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+  transition: background-color 0.18s var(--ease);
+}
+.grid-table > a:hover,
+.grid-table > button:hover { background: var(--muted); }
+
+/* The mark keeps a fixed slot so every label in the table starts at the same
+   x, whatever width its logo happens to be. */
+.grid-table .cell-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+.grid-table .cell-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* The bracketed note beside a role. Outside the chip on purpose: it
+   qualifies the role rather than naming it, so giving it the same tint would
+   say the two are the same kind of fact. */
+.role-note {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  white-space: nowrap;
 }
