@@ -17,7 +17,7 @@ export type BrandKey =
   | "figma" | "framer" | "react" | "nextdotjs" | "typescript" | "tailwindcss" | "nodedotjs" | "supabase" | "vercel" | "git" | "html5" | "blender" | "adobe" | "claude" | "openai" | "cursor" | "openrouter" | "x" | "linkedin" | "instagram" | "youtube" | "electron"
   // Marks that are not one path: Figma is five, and three of these ship as
   // their own file because their published logo is a gradient or a raster.
-  | "figmacolour" | "grok" | "zbrush" | "wayari";
+  | "figmacolour" | "grok" | "zbrush" | "wayari" | "grokbot" | "hermes";
 
 type Mark = { label: string; hex: string; d: string };
 
@@ -141,6 +141,10 @@ const FILES: Partial<Record<BrandKey, { src: string; label: string }>> = {
   grok: { src: "/logos/grok.png", label: "Grok" },
   zbrush: { src: "/logos/zbrush.svg", label: "ZBrush" },
   wayari: { src: "/logos/wayari.svg", label: "Wayari" },
+  // xAI's own mark. Grok Bot is an xAI product and does not publish a
+  // separate one, the same way Claude Code and Claude Design share Claude's.
+  grokbot: { src: "/logos/grokbot.png", label: "Grok Bot" },
+  hermes: { src: "/logos/hermes.png", label: "Hermes Agent" },
 };
 
 // Figma publishes a five-colour mark. The single-path version reads as a
