@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Brand } from "@/components/Brand";
+import { Cta } from "@/components/Cta";
+import { HeroCtas } from "@/components/HeroCtas";
 import { Cursor } from "@/components/Cursor";
 import { Elsewhere } from "@/components/Elsewhere";
 import { Logo } from "@/components/Logo";
@@ -154,46 +156,7 @@ export default function Home() {
           <p className="mb-5 text-balance text-center text-sm opacity-70 md:text-lg">
             Still reading? That means something clicked. Let&rsquo;s talk.
           </p>
-          <a
-            href={`mailto:${IDENTITY.email}`}
-            data-cur="say hi"
-            className="cta-btn group inline-flex cursor-pointer items-center self-center rounded-md border px-2 py-1 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
-          >
-            <span className="relative z-20 flex items-center gap-2 transition-[gap] duration-300 group-hover:gap-8">
-              <span className="size-5 shrink-0 overflow-hidden rounded-full">
-                <Image
-                  src={IDENTITY.avatar}
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="size-full object-cover"
-                />
-              </span>
-              <span
-                aria-hidden="true"
-                className="absolute left-6 flex -translate-x-full items-center opacity-0 transition-[transform,opacity] duration-300 group-hover:translate-x-0 group-hover:opacity-100"
-              >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                >
-                  <path d="M5 12h14" />
-                  <path d="M12 5v14" />
-                </svg>
-                <span className="cta-you ml-1 mr-2 flex size-5 items-center justify-center rounded-full text-[8px]">
-                  You
-                </span>
-              </span>
-              <span className="relative ml-0 block whitespace-nowrap text-sm font-bold transition-[margin-left] duration-300 group-hover:ml-4">
-                Send an email
-              </span>
-            </span>
-          </a>
+          <Cta />
         </div>
 
         <footer className="footer-grid screen-line-top overflow-hidden px-4 pb-0 pt-10 sm:px-6">
@@ -253,36 +216,7 @@ function Hero() {
         <p className="flex min-h-6 items-center text-sm font-medium text-muted-foreground md:text-base">
           <Rotator items={ROLES} />
         </p>
-        <div id="hero-cta" className="mt-2 flex flex-wrap items-center gap-2">
-          <a
-            href={`mailto:${IDENTITY.email}`}
-            data-cur="say hi"
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-foreground px-3 py-1 text-[13px] font-medium leading-4 text-background sm:gap-[5px] sm:text-xs transition-opacity hover:opacity-90 sm:min-h-0 sm:px-2"
-          >
-            <Icon name="mail" size={14} />
-            Send an email
-          </a>
-          <a
-            href="https://x.com/jawadmakes"
-            data-cur="dm"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-border px-3 py-1 text-[13px] font-medium leading-4 transition-colors sm:gap-[5px] sm:text-xs hover:border-foreground/20 hover:bg-muted sm:min-h-0 sm:px-2"
-          >
-            {/* X's own mark. The house arrow was standing in for a logo
-                everyone already knows by sight. */}
-            <Brand name="x" size={13} />
-            DM on X
-          </a>
-          <a
-            href={IDENTITY.cv}
-            data-cur="read"
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-border px-3 py-1 text-[13px] font-medium leading-4 transition-colors sm:gap-[5px] sm:text-xs hover:border-foreground/20 hover:bg-muted sm:min-h-0 sm:px-2"
-          >
-            <Icon name="doc" size={14} />
-            Read the CV
-          </a>
-        </div>
+        <HeroCtas />
       </div>
     </header>
   );

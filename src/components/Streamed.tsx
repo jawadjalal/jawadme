@@ -119,7 +119,7 @@ export function Segments({ parsed, shown }: { parsed: Parsed; shown: number }) {
           // it sweeps in behind finished words rather than growing with them.
           const lit = shown >= segment.at + segment.value.length;
           return (
-            <Mark key={i} name={segment.name} hue={segment.hue} lit={lit} tight={segment.tight}>
+            <Mark key={i} name={segment.name} hue={segment.hue} lit={lit} tight={segment.tight} href={segment.href}>
               {complete ? (
                 segment.value
               ) : (

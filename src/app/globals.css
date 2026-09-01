@@ -822,3 +822,13 @@ html.has-cursor * { cursor: none !important; }
     transition: none;
   }
 }
+
+/* A chip that is also a link. It keeps the chip's look at rest so the
+   sentence does not gain a second kind of emphasis, and deepens its own tint
+   on hover rather than growing an underline, which would fight the rule the
+   lit state already draws. */
+.rp-hl-link { cursor: pointer; }
+.rp-hl-link.is-lit:hover {
+  background-color: oklch(from var(--hl) l c h / 26%);
+  text-decoration-color: var(--hl);
+}

@@ -37,7 +37,7 @@ export type Segment =
   | { kind: "icon"; name: string; at: number; tight: boolean }
   // A highlighted phrase. `value` is its text and counts toward the cursor,
   // so words inside a mark type at the same rate as words outside it.
-  | { kind: "mark"; name: string; hue: Hue; value: string; at: number; tight: boolean }
+  | { kind: "mark"; name: string; hue: Hue; value: string; href?: string; at: number; tight: boolean }
   // An inline link carrying a brand mark, for the socials in the About block.
   | { kind: "link"; brand?: BrandKey; icon?: string; value: string; href: string; at: number }
   // Coloured text, no chip and no glyph. The tinted mark is loud, so it is
@@ -93,7 +93,7 @@ const DIM = /~([^~]{1,400})~/g;
 type Raw =
   | { kind: "text"; value: string; dim: boolean }
   | { kind: "icon"; name: string }
-  | { kind: "mark"; name: string; hue: Hue; value: string }
+  | { kind: "mark"; name: string; hue: Hue; value: string; href?: string }
   | { kind: "link"; brand?: BrandKey; icon?: string; value: string; href: string }
   | { kind: "tint"; hue: Hue; value: string; href?: string }
   | { kind: "ink"; name: string; value: string };
@@ -140,14 +140,10 @@ export function parseProse(text: string): Parsed {
       raw.push({ kind: "ink", name, value: inked });
     } else if (tinted && icon) {
       raw.push({ kind: "tint", hue: hueFor(name), value: tinted, href: tintHref });
-    } else if (href && phrase) {
-      raw.push(
-        isBrandKey(name)
-          ? { kind: "link", brand: name as BrandKey, value: phrase, href }
-          : { kind: "link", icon: name, value: phrase, href },
-      );
+    } else if (href && phrase && isBrandKey(name)) {
+      raw.push({ kind: "link", brand: name as BrandKey, value: phrase, href });
     } else if (phrase && icon) {
-      raw.push({ kind: "mark", name, hue: hueFor(name), value: phrase });
+      raw.push({ kind: "mark", name, hue: hueFor(name), value: phrase, href });
     } else if (icon) {
       raw.push({ kind: "icon", name });
     }
@@ -304,6 +300,7 @@ export function Mark({
   hue,
   lit,
   tight = false,
+  href,
   children,
 }: {
   name: string;
@@ -311,17 +308,36 @@ export function Mark({
   lit: boolean;
   /** Followed immediately by punctuation: drop the trailing padding. */
   tight?: boolean;
+  /** Turns the chip into a link without changing how it looks at rest. */
+  href?: string;
   children: React.ReactNode;
 }) {
   const hero = typeof children === "string" ? heroFor(children) : null;
 
-  const mark = (
-    <span className={`rp-hl is-${hue} ${lit ? "is-lit" : ""} ${tight ? "is-tight" : ""}`}>
+  const body = (
+    <>
       <span className="rp-hl-glyph" aria-hidden="true">
         <Icon name={name as IconName} size={15} />
       </span>
       {children}
-    </span>
+    </>
+  );
+  const cls = `rp-hl is-${hue} ${lit ? "is-lit" : ""} ${tight ? "is-tight" : ""}`;
+
+  const mark = href ? (
+    <a
+      href={href}
+      // A mailto opens the reader's own client, so it must not be forced
+      // into a new tab: that leaves an orphan blank window behind.
+      target={/^https?:/i.test(href) ? "_blank" : undefined}
+      rel={/^https?:/i.test(href) ? "noopener noreferrer" : undefined}
+      data-cur={href.startsWith("mailto:") ? "say hi" : "open"}
+      className={`${cls} rp-hl-link`}
+    >
+      {body}
+    </a>
+  ) : (
+    <span className={cls}>{body}</span>
   );
 
   // Only once the phrase has finished typing. A card that opened over a
