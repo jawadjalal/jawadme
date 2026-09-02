@@ -784,20 +784,6 @@ html.has-cursor * { cursor: none !important; }
 /* The footer shows the ruled ground the rest of the column sits on. Every
    other section paints itself solid so the grid does not run through the
    text; there is no text down here to protect, so the paper shows. */
-.footer-grid {
-  background-color: transparent;
-  /* The same dot field the page opens with, at the same 22px pitch, so the
-     two ends of the page rhyme. Drawn in CSS rather than on a canvas: the
-     one at the top responds to the pointer and this one does not need to,
-     and a second canvas would cost a raf loop to sit still. */
-  background-image: radial-gradient(
-    circle at center,
-    color-mix(in oklch, var(--foreground) 16%, transparent) 1.1px,
-    transparent 1.2px
-  );
-  background-size: 22px 22px;
-  background-position: center top;
-}
 
 /* The closing button, to the reference's own recipe: a barely-there tint on
    the page ink, a 10% border, and Tailwind's shadow-md over an inset
@@ -837,4 +823,89 @@ html.has-cursor * { cursor: none !important; }
 .rp-hl-link.is-lit:hover {
   background-color: oklch(from var(--hl) l c h / 26%);
   text-decoration-color: var(--hl);
+}
+
+/* ── Reveal ───────────────────────────────────────────────────────────────
+   The non-prose counterpart to the typing animation: rows, cards and cells
+   lift a few pixels out of a blur, staggered along the reading order.
+
+   The blur is what ties it to the text, which blurs each character in as the
+   cursor reaches it. Without it this is a generic fade-up and the two halves
+   of the page stop looking like one idea.
+
+   `will-change` is deliberately absent: these are one-shot and there can be
+   forty of them on screen, so promoting every one to its own layer for an
+   animation that runs once costs more than it saves. */
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(4px);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition:
+    opacity 0.5s var(--ease) var(--reveal-delay, 0s),
+    transform 0.55s var(--ease) var(--reveal-delay, 0s),
+    filter 0.5s var(--ease) var(--reveal-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.is-in { opacity: 1; transform: none; filter: none; transition: none; }
+}
+
+/* ── Folding sections ─────────────────────────────────────────────────────
+   0fr to 1fr rather than max-height: max-height needs a guessed ceiling, and
+   the guess is either too small, so the section clips, or too large, so most
+   of the close is spent travelling through empty space at the wrong speed. A
+   grid row animates to the content's real height. */
+.sec-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.42s var(--ease);
+}
+.sec-body.is-open,
+details[open] > .sec-body { grid-template-rows: 1fr; }
+
+.sec-body-inner {
+  overflow: hidden;
+  /* Kept out of the tab order and out of find-in-page while folded, without
+     being unmounted: the header menus still link to the section, and opening
+     it does not have to rebuild anything. */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease), visibility 0s linear 0.42s;
+}
+.sec-body.is-open .sec-body-inner,
+details[open] > .sec-body .sec-body-inner {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.34s var(--ease) 0.08s, visibility 0s;
+}
+
+.sec-chev { transition: transform 0.34s var(--ease); }
+.sec-chev.is-closed { transform: rotate(-90deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sec-body, .sec-body-inner, .sec-chev { transition: none; }
+}
+
+/* ── Elsewhere ────────────────────────────────────────────────────────────
+   Its rows arrive in sequence once opened, which is the one place a stagger
+   is doing real work: nine near-identical lines appearing at once is a wall,
+   and appearing in order is a list. The fold itself is the section fold
+   above, driven by the details element instead of a button. */
+
+details[open] .else-row {
+  animation: else-in 0.42s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 0.045s);
+}
+@keyframes else-in {
+  from { opacity: 0; transform: translateY(6px); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details[open] .else-row { animation: none; }
 }

@@ -25,9 +25,19 @@ export function Elsewhere() {
           {ELSEWHERE.length} more
         </span>
       </summary>
-      <ul className="divide-y divide-border border-t border-border">
-        {ELSEWHERE.map((e) => (
-          <li key={e.name} className="flex items-center gap-3 px-4 py-2.5 sm:px-6">
+      <div className="sec-body">
+        {/* The overflow lives on this wrapper rather than on the list. A grid
+            item that clips its own overflow reports a minimum contribution of
+            zero, so the 1fr row resolved to the list's top border and nothing
+            else: the section opened one pixel tall. */}
+        <div className="sec-body-inner">
+          <ul className="divide-y divide-border border-t border-border">
+        {ELSEWHERE.map((e, i) => (
+          <li
+            key={e.name}
+            className="else-row flex items-center gap-3 px-4 py-2.5 sm:px-6"
+            style={{ ["--i" as string]: i }}
+          >
             {e.logo ? (
               <Image
                 src={e.logo}
@@ -61,7 +71,9 @@ export function Elsewhere() {
             </div>
           </li>
         ))}
-      </ul>
+          </ul>
+        </div>
+      </div>
     </details>
   );
 }

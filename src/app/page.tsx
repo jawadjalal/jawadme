@@ -7,7 +7,9 @@ import { Elsewhere } from "@/components/Elsewhere";
 import { Logo } from "@/components/Logo";
 import { Portrait } from "@/components/Portrait";
 import { Rail } from "@/components/Rail";
+import { Reveal } from "@/components/Reveal";
 import { ScrollCta } from "@/components/ScrollCta";
+import { Section } from "@/components/Section";
 import { NavMenu } from "@/components/NavMenu";
 import { DotField } from "@/components/DotField";
 import { Icon, type IconName } from "@/components/Icon";
@@ -51,7 +53,11 @@ export default function Home() {
 
         <Section title="Now" id="now" aside={`${NOW.length} things`}>
           <ul className="space-y-5 px-4 py-5 sm:px-6">
-            {NOW.map((item) => <Role key={item.key} item={item} />)}
+            {NOW.map((item, i) => (
+              <Reveal key={item.key} as="li" index={i}>
+                <Role item={item} />
+              </Reveal>
+            ))}
           </ul>
         </Section>
 
@@ -61,15 +67,25 @@ export default function Home() {
 
         <Section title="Also mine" aside="still live">
           <ul className="space-y-5 px-4 py-5 sm:px-6">
-            {ARCHIVE.map((item) => <Role key={item.key} item={item} />)}
+            {ARCHIVE.map((item, i) => (
+              <Reveal key={item.key} as="li" index={i}>
+                <Role item={item} />
+              </Reveal>
+            ))}
           </ul>
         </Section>
 
         <Section title="Skills" id="skills">
           <table className="w-full border-collapse text-left">
             <tbody className="block sm:table-row-group">
-              {SKILLS_TABLE.map((row) => (
-                <tr key={row.area} className="block border-b border-border last:border-0 sm:table-row">
+              {SKILLS_TABLE.map((row, i) => (
+                <Reveal
+                  key={row.area}
+                  as="tr"
+                  index={i}
+                  step={0.07}
+                  className="block border-b border-border last:border-0 sm:table-row"
+                >
                   <th
                     scope="row"
                     className="block whitespace-nowrap px-4 pb-1 pt-3 align-top text-[15px] font-semibold sm:table-cell sm:w-28 sm:px-6 sm:py-3"
@@ -98,7 +114,7 @@ export default function Home() {
                       ))}
                     </ul>
                   </td>
-                </tr>
+                </Reveal>
               ))}
             </tbody>
           </table>
@@ -114,7 +130,7 @@ export default function Home() {
               these are one set of ways to reach the same person. */}
           <div className="px-4 py-5 sm:px-6">
             <div className="grid-table grid-cols-2 sm:grid-cols-3">
-              {SOCIALS.map((so) => (
+              {SOCIALS.map((so, i) => (
                 <a
                   key={so.label}
                   href={so.href}
@@ -159,7 +175,13 @@ export default function Home() {
           <Cta />
         </div>
 
-        <footer className="footer-grid screen-line-top overflow-hidden px-4 pb-0 pt-10 sm:px-6">
+        <footer className="screen-line-top relative overflow-hidden px-4 pb-0 pt-10 sm:px-6">
+          {/* The same field the page opens with, and it pushes back the same
+              way. A static pattern down here read as wallpaper next to a top
+              that moves; making both respond is what closes the loop. */}
+          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+            <DotField />
+          </div>
           {/* The wordmark, set large and dissolving downward. A flat tint at
               this size still reads as a heading you are meant to start; the
               fade says it is the end of the page rather than the top of
@@ -168,7 +190,7 @@ export default function Home() {
               need it a third time as decoration. */}
           <p
             aria-hidden="true"
-            className="footer-mark select-none text-center font-display font-semibold uppercase leading-[0.8] tracking-tight"
+            className="footer-mark relative select-none text-center font-display font-semibold uppercase leading-[0.8] tracking-tight"
             style={{ fontSize: "clamp(4rem, 22vw, 12rem)" }}
           >
             {IDENTITY.wordmark}
@@ -282,22 +304,6 @@ function About() {
   );
 }
 
-function Section({
-  title, id, aside, children,
-}: {
-  title: string; id?: string; aside?: React.ReactNode; children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="screen-line-top scroll-mt-14">
-      <div className="screen-line-bottom flex w-full items-center justify-between gap-4 px-4 py-1">
-        <h2 className="scroll-mt-20 font-display text-xl font-medium tracking-tight sm:text-2xl">{title}</h2>
-        {aside && <span className="font-mono text-xs text-muted-foreground">{aside}</span>}
-      </div>
-      {children}
-    </section>
-  );
-}
-
 /** One thing he works on, as a row in a ruled table. */
 function Role({ item }: { item: Item }) {
   const name = item.href ? (
@@ -314,7 +320,7 @@ function Role({ item }: { item: Item }) {
   );
 
   return (
-    <li className="role-row -mx-2 rounded-lg px-2 py-2">
+    <div className="role-row -mx-2 rounded-lg px-2 py-2">
       <div className="flex items-stretch gap-3">
         {/* Sized to the two lines beside it rather than to one. At 40px it
             sat against a 60px stack and read as a bullet that had come
@@ -353,7 +359,7 @@ function Role({ item }: { item: Item }) {
       <p className="mt-1.5 pl-[68px] text-[13px] leading-relaxed text-muted-foreground">
         {item.blurb}
       </p>
-    </li>
+    </div>
   );
 }
 
@@ -367,8 +373,13 @@ function Grid({ items }: { items: Item[] }) {
         className="pointer-events-none absolute bottom-0 left-1/2 top-0 z-0 hidden w-px bg-border sm:block"
       />
       <div className="relative grid grid-cols-1 sm:grid-cols-2">
-        {items.map((item) => (
-          <div key={item.key} className="proj group/card flex flex-col gap-2 border-t border-border p-4 first:border-t-0 sm:border-t-0">
+        {items.map((item, i) => (
+          <Reveal
+            key={item.key}
+            index={i}
+            step={0.08}
+            className="proj group/card flex flex-col gap-2 border-t border-border p-4 first:border-t-0 sm:border-t-0"
+          >
             <div className="group/media relative block overflow-hidden rounded-md border border-border">
               {item.video ? (
                 <Film video={item.video} />
@@ -418,7 +429,7 @@ function Grid({ items }: { items: Item[] }) {
                 ))}
               </ul>
             )}
-          </div>
+          </Reveal>
         ))}
       </div>
     </div>
