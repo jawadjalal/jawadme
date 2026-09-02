@@ -306,12 +306,18 @@ function About() {
 
 /** One thing he works on, as a row in a ruled table. */
 function Role({ item }: { item: Item }) {
+  const dead = item.status === "Discontinued";
   const name = item.href ? (
     <a
       href={item.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="tap underline decoration-border underline-offset-[3px] transition-colors hover:decoration-foreground"
+      // Struck through, not greyed. Grey would say "less important"; the rule
+      // says "this is over", which is the actual fact, and the site is still
+      // standing so the link stays live.
+      className={`tap underline-offset-[3px] transition-colors ${
+        dead ? "line-through decoration-muted-foreground" : "underline decoration-border hover:decoration-foreground"
+      }`}
     >
       {item.name}
     </a>
@@ -320,46 +326,49 @@ function Role({ item }: { item: Item }) {
   );
 
   return (
-    <div className="role-row -mx-2 rounded-lg px-2 py-2">
-      <div className="flex items-stretch gap-3">
-        {/* Sized to the two lines beside it rather than to one. At 40px it
-            sat against a 60px stack and read as a bullet that had come
-            loose from its row. */}
-        <Logo
-          src={item.logo}
-          emoji={item.emoji}
-          tile={item.logoTile}
-          size={56}
-          className="role-logo self-start"
-        />
-        <div className="min-w-0 flex-1">
-          <div className="flex items-baseline gap-2">
-            <h3 className="shrink-0 font-display text-[15px] font-semibold leading-snug">
-              <Preview shot={item.shot} label={item.domain ?? "no site yet"}>
+    // The card opens from anywhere on the line. Hung on the name alone it was
+    // a 36px target for "weld", so it read as broken rather than as subtle:
+    // you had to land on the word itself.
+    <Preview block shot={item.shot} label={item.domain ?? "no site yet"}>
+      <div className="role-row -mx-2 rounded-lg px-2 py-2">
+        <div className="flex items-stretch gap-3">
+          {/* Sized to the two lines beside it rather than to one. At 40px it
+              sat against a 60px stack and read as a bullet that had come
+              loose from its row. */}
+          <Logo
+            src={item.logo}
+            emoji={item.emoji}
+            tile={item.logoTile}
+            size={56}
+            className="role-logo self-start"
+          />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-baseline gap-2">
+              <h3 className="shrink-0 font-display text-[15px] font-semibold leading-snug">
                 {name}
-              </Preview>
-            </h3>
-            <span className="lead" aria-hidden="true" />
-            <p className="shrink-0 text-xs tabular-nums text-muted-foreground">
-              {item.period}
+              </h3>
+              <span className="lead" aria-hidden="true" />
+              <p className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                {item.period}
+              </p>
+            </div>
+            <p className="mt-1 flex items-center gap-1 text-[13px] leading-snug">
+              <span className="rp-role">
+                <Icon name={item.roleIcon} size={12} className="rp-role-icon" />
+                {item.role}
+              </span>
+              {item.roleNote && <span className="role-note">({item.roleNote})</span>}
+              {/* Only the ones that are over say so. A live row does not need
+                  a badge telling it that it is live. */}
+              {dead && <Status status={item.status} />}
             </p>
           </div>
-          <p className="mt-1 flex items-center text-[13px] leading-snug">
-            {/* The role, and nothing else. A status glyph here was a second
-                mark on a row that already says what the thing is, and the
-                grid below carries the live/building state anyway. */}
-            <span className="rp-role">
-              <Icon name={item.roleIcon} size={12} className="rp-role-icon" />
-              {item.role}
-            </span>
-            {item.roleNote && <span className="role-note">({item.roleNote})</span>}
-          </p>
         </div>
+        <p className="mt-1.5 pl-[68px] text-[13px] leading-relaxed text-muted-foreground">
+          {item.blurb}
+        </p>
       </div>
-      <p className="mt-1.5 pl-[68px] text-[13px] leading-relaxed text-muted-foreground">
-        {item.blurb}
-      </p>
-    </div>
+    </Preview>
   );
 }
 
@@ -490,6 +499,7 @@ const STATUS: Record<string, { icon: IconName; hue: string; say: string }> = {
   Live: { icon: "check", hue: "var(--live)", say: "Live" },
   Building: { icon: "bolt", hue: "var(--building)", say: "Being built" },
   Waitlist: { icon: "clock", hue: "var(--building)", say: "Waitlist open" },
+  Discontinued: { icon: "target", hue: "var(--muted-foreground)", say: "Not worked on any more" },
 };
 
 function Status({ status }: { status: string }) {

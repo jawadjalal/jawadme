@@ -101,7 +101,7 @@ export type Item = {
   roleNote?: string;
   period: string;
   blurb: string;
-  status: "Live" | "Building" | "Waitlist";
+  status: "Live" | "Building" | "Waitlist" | "Discontinued";
   /** The stack, as tags under a project card. */
   tags?: { brand?: import("@/components/Brand").BrandKey; label: string }[];
   /** A film that says more than a screenshot can. */
@@ -213,8 +213,8 @@ export const ARCHIVE: Item[] = [
     shot: "/design/bidframe.webp",
     domain: "bidframe.org",
     role: "Founder",
-    period: "Since 2026",
-    status: "Live",
+    period: "2026",
+    status: "Discontinued",
     blurb: "Reads a tender and flags what would disqualify your bid, each linked to its clause.",
     tags: [{ brand: "nextdotjs", label: "Next.js" }, { label: "Postgres" }],
   },
@@ -228,8 +228,8 @@ export const ARCHIVE: Item[] = [
     shot: "/design/weld.webp",
     domain: "weldroblox.com",
     role: "Founder & PM",
-    period: "Since 2026",
-    status: "Waitlist",
+    period: "2026",
+    status: "Discontinued",
     blurb: "A marketplace fixing how Roblox studios hire developers. Waitlist is live.",
     tags: [{ brand: "nextdotjs", label: "Next.js" }, { brand: "supabase", label: "Supabase" }],
   },

@@ -30,13 +30,17 @@ export type PreviewProps = {
   emoji?: string;
   /** Named under the art, so the card says where the link goes. */
   label?: string;
+  /** Lets the anchor wrap a whole row rather than a single word. A word is a
+   *  36px target, which is why these felt broken: you had to land on the text
+   *  itself rather than anywhere on the line it sits in. */
+  block?: boolean;
   children: React.ReactNode;
 };
 
 /** Kept clear of the viewport edge by this much. */
 const MARGIN = 12;
 
-export function Preview({ shot, emoji, label, children }: PreviewProps) {
+export function Preview({ shot, emoji, label, block, children }: PreviewProps) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -84,9 +88,11 @@ export function Preview({ shot, emoji, label, children }: PreviewProps) {
     setOpen(false);
   };
 
+  const Host = block ? "div" : "span";
+
   return (
-    <span
-      className="pv-anchor"
+    <Host
+      className={`pv-anchor ${block ? "is-block" : ""}`}
       onPointerEnter={show}
       onPointerLeave={hide}
       onFocus={show}
@@ -127,6 +133,6 @@ export function Preview({ shot, emoji, label, children }: PreviewProps) {
           {label && <span className="pv-foot font-mono">{label}</span>}
         </span>
       )}
-    </span>
+    </Host>
   );
 }

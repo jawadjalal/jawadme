@@ -278,6 +278,9 @@ body {
    lift, which reads as the card belonging to the word rather than as a
    tooltip that happened to appear nearby. */
 .pv-anchor { position: relative; display: inline-block; }
+/* Wrapping a whole row rather than one word. The card still anchors to this
+   box, so it centres on the row and the entire line is the hover target. */
+.pv-anchor.is-block { display: block; }
 
 .pv-card {
   --pv-shift: 0px;
