@@ -60,7 +60,7 @@ export function Elsewhere() {
                   href={e.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="tap text-[15px] underline decoration-border underline-offset-[3px] transition-colors hover:decoration-foreground"
+                  className="tap font-display text-[15px] font-medium underline decoration-border underline-offset-[3px] transition-colors hover:decoration-foreground"
                 >
                   {e.name}
                 </a>

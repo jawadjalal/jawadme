@@ -88,7 +88,7 @@ export default function Home() {
                 >
                   <th
                     scope="row"
-                    className="block whitespace-nowrap px-4 pb-1 pt-3 align-top text-[15px] font-semibold sm:table-cell sm:w-28 sm:px-6 sm:py-3"
+                    className="block whitespace-nowrap px-4 pb-1 pt-3 align-top font-display text-[15px] font-semibold sm:table-cell sm:w-28 sm:px-6 sm:py-3"
                   >
                     <span className="inline-flex items-center gap-1.5">
                       <span style={{ color: `var(--hue-${row.icon === "pen" ? "ember" : row.icon === "code" ? "violet" : "slate"})` }}>
@@ -282,12 +282,12 @@ function About() {
                     href={r.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="tap font-medium underline decoration-border underline-offset-[3px] transition-colors hover:decoration-foreground"
+                    className="tap font-display font-semibold underline decoration-border underline-offset-[3px] transition-colors hover:decoration-foreground"
                   >
                     {r.name}
                   </a>
                 ) : (
-                  <span className="font-medium">{r.name}</span>
+                  <span className="font-display font-semibold">{r.name}</span>
                 )}
               </Preview>
               <span className="lead" aria-hidden="true" />
@@ -334,7 +334,7 @@ function Role({ item }: { item: Item }) {
         />
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-2">
-            <h3 className="shrink-0 text-[15px] font-semibold leading-snug">
+            <h3 className="shrink-0 font-display text-[15px] font-semibold leading-snug">
               <Preview shot={item.shot} label={item.domain ?? "no site yet"}>
                 {name}
               </Preview>
@@ -378,9 +378,23 @@ function Grid({ items }: { items: Item[] }) {
             key={item.key}
             index={i}
             step={0.08}
-            className="proj group/card flex flex-col gap-2 border-t border-border p-4 first:border-t-0 sm:border-t-0"
+            className="proj group/card relative flex flex-col gap-2 border-t border-border p-4 first:border-t-0 sm:border-t-0"
           >
-            <div className="group/media relative block overflow-hidden rounded-md border border-border">
+            {item.href && (
+              // Sits under the media and the chips, so the video keeps its
+              // controls and the tag table keeps its own hovers; everywhere
+              // else on the card, this is what the pointer lands on.
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cur="open"
+                className="absolute inset-0 z-[1] rounded-md focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+              >
+                <span className="sr-only">{`Open ${item.name}`}</span>
+              </a>
+            )}
+            <div className="group/media relative z-[2] block overflow-hidden rounded-md border border-border">
               {item.video ? (
                 <Film video={item.video} />
               ) : item.emoji ? (
@@ -403,14 +417,8 @@ function Grid({ items }: { items: Item[] }) {
               )}
             </div>
             <div className="flex items-center justify-between gap-3">
-              <h3 className="min-w-0 text-[15px] font-semibold leading-snug">
-                {item.href ? (
-                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="tap transition-colors hover:opacity-70">
-                    {item.name}
-                  </a>
-                ) : (
-                  item.name
-                )}
+              <h3 className="min-w-0 font-display text-[15px] font-semibold leading-snug transition-opacity group-hover/card:opacity-70">
+                {item.name}
               </h3>
               <div className="flex shrink-0 items-center gap-1.5">
                 <Status status={item.status} />
@@ -418,7 +426,7 @@ function Grid({ items }: { items: Item[] }) {
             </div>
             <p className="text-[13px] leading-relaxed text-muted-foreground">{item.blurb}</p>
             {item.tags && (
-              <ul className="grid-table mt-0.5 grid-cols-2">
+              <ul className="grid-table relative z-[2] mt-0.5 grid-cols-2">
                 {item.tags.map((t) => (
                   <li key={t.label} className="text-muted-foreground">
                     <span className="cell-mark">

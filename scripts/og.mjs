@@ -1,9 +1,14 @@
 // Builds public/og.png, the card that shows when the site is shared.
 //
-// Rendered rather than hand-drawn so it reads as the site: the same warm
-// ground, the same dot field, the same faces. His portrait sits in the middle
-// with real screenshots of the work fanned behind it, which says what he does
-// before a single word is read.
+// Deliberately almost empty. The first version fanned four screenshots behind
+// a portrait with a domain pill under it, which at the size a card actually
+// appears (a few hundred pixels wide in a timeline) collapsed into visual
+// noise: nothing was legible except the face. A share card is read at a
+// glance and at a distance, so it gets one thing to read.
+//
+// The wordmark is set in Excalifont, Excalidraw's hand-drawn face. It is the
+// one place on the site that is not the Chillax and Satoshi pairing, which is
+// the point: it looks written rather than typeset.
 //
 //   npm run og
 
@@ -16,86 +21,46 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "..");
 const { IDENTITY } = await import(pathToFileURL(resolve(root, "src/lib/profile.ts")).href);
 
-const b64 = (p) => {
-  const ext = p.split(".").pop();
-  const mime = ext === "svg" ? "image/svg+xml" : ext === "webp" ? "image/webp" : "image/png";
-  return `data:${mime};base64,${readFileSync(resolve(root, "public", p)).toString("base64")}`;
-};
-
-// Four shots, fanned. Angles alternate so the stack reads as something set
-// down by hand rather than as a grid that failed to line up.
-const CARDS = [
-  { src: "design/wayari.png", x: -430, y: -120, rot: -9 },
-  { src: "design/okara-poster.webp", x: 430, y: -120, rot: 9 },
-  { src: "design/bevel-team.webp", x: -430, y: 150, rot: 7 },
-  { src: "design/bidframe.webp", x: 430, y: 150, rot: -7 },
-];
+// Inlined rather than linked: the renderer loads this page from a string, so
+// there is no origin for a relative font URL to resolve against.
+const excalifont = readFileSync(
+  resolve(root, "public/fonts/Excalifont-Regular.woff2"),
+).toString("base64");
 
 const html = `<!doctype html><meta charset="utf-8">
-<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=chillax@400,500,600,700&display=swap">
 <style>
+  @font-face{
+    font-family:Excalifont;
+    src:url(data:font/woff2;base64,${excalifont}) format("woff2");
+    font-display:block;
+  }
   *{box-sizing:border-box;margin:0}
   body{
     width:1200px;height:630px;overflow:hidden;position:relative;
     background:#fdfdfc;
-    font-family:Chillax,system-ui,sans-serif;color:#1b1b19;
-    display:flex;align-items:center;justify-content:center;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:Excalifont,system-ui,sans-serif;color:#1b1b19;
   }
-  /* The page's own dot field, same pitch. */
+  /* The page's own dot field, at the page's own pitch, scaled up so it still
+     reads as a field rather than as grain when the card is shown small. */
   .dots{
     position:absolute;inset:0;
-    background-image:radial-gradient(circle at center, rgba(27,27,25,.13) 1.2px, transparent 1.3px);
-    background-size:22px 22px;
+    background-image:radial-gradient(circle at center, rgba(27,27,25,.10) 1.6px, transparent 1.7px);
+    background-size:34px 34px;
   }
-  /* Pulls the eye to the middle and stops the fanned cards competing with
-     the face for attention at the edges. */
-  .vig{
-    position:absolute;inset:0;
-    background:radial-gradient(ellipse 58% 62% at 50% 50%, rgba(253,253,252,.94) 38%, rgba(253,253,252,.55) 70%, rgba(253,253,252,0) 100%);
-  }
-  .card{
-    position:absolute;left:50%;top:50%;
-    width:420px;height:262px;border-radius:16px;overflow:hidden;
-    border:1px solid rgba(27,27,25,.10);
-    box-shadow:0 18px 44px -18px rgba(27,27,25,.30), 0 2px 6px rgba(27,27,25,.06);
-    background:#fff;
-  }
-  .card img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
-  .mid{position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;text-align:center}
-  .face{
-    width:180px;height:180px;border-radius:999px;object-fit:cover;
-    border:6px solid #fdfdfc;
-    box-shadow:0 20px 50px -18px rgba(27,27,25,.38);
-    background:#fdfdfc;
-  }
-  h1{margin-top:26px;font-size:62px;font-weight:600;letter-spacing:-.02em;line-height:1}
-  p{margin-top:12px;font-size:25px;color:rgba(27,27,25,.55)}
-  .dom{
-    margin-top:22px;display:inline-flex;align-items:center;gap:9px;
-    padding:9px 18px;border-radius:999px;
-    border:1px solid rgba(27,27,25,.12);background:rgba(27,27,25,.03);
-    font-size:19px;font-weight:600;
-  }
-  .dot{width:9px;height:9px;border-radius:999px;background:oklch(72% .19 149)}
+  .mark{position:relative;font-size:184px;line-height:1;letter-spacing:.01em}
+  .role{position:relative;margin-top:34px;font-size:34px;color:rgba(27,27,25,.5)}
 </style>
 <div class="dots"></div>
-${CARDS.map(
-  (c) => `<div class="card" style="transform:translate(-50%,-50%) translate(${c.x}px,${c.y}px) rotate(${c.rot}deg)">
-    <img src="${b64(c.src)}">
-  </div>`,
-).join("")}
-<div class="vig"></div>
-<div class="mid">
-  <img class="face" src="${b64(IDENTITY.avatar.replace(/^\//, ""))}">
-  <h1>${IDENTITY.properName}</h1>
-  <p>designer &amp; founder &middot; london</p>
-  <span class="dom"><span class="dot"></span>jawadjalal.com</span>
-</div>`;
+<div class="mark">${IDENTITY.wordmark.toLowerCase()}</div>
+<div class="role">${IDENTITY.role} &middot; ${IDENTITY.location}</div>`;
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
 await page.setContent(html, { waitUntil: "networkidle" });
-await page.waitForTimeout(600);
+// The face is inlined, so this waits on decode rather than on a download.
+await page.evaluate(() => document.fonts.ready);
+await page.waitForTimeout(300);
 await page.screenshot({ path: resolve(root, "public/og.png") });
 await browser.close();
 console.log("og → public/og.png");

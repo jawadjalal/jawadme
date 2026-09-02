@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Chillax", "Satoshi", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Satoshi", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
         pixel: ["var(--font-pixel)", "ui-monospace", "monospace"],
         display: ["Chillax", "Satoshi", "ui-sans-serif", "system-ui", "sans-serif"],
