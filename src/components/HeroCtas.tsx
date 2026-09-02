@@ -19,11 +19,14 @@ type Cta = {
   icon?: IconName;
   brand?: "x";
   solid?: boolean;
+  /** Warms the glyph. Only the primary button gets it: a second yellow icon
+   *  and neither one is the one you are meant to press. */
+  warm?: boolean;
   external?: boolean;
 };
 
 const CTAS: Cta[] = [
-  { label: "Send an email", href: `mailto:${IDENTITY.email}`, cur: "say hi", icon: "mail", solid: true },
+  { label: "Send an email", href: `mailto:${IDENTITY.email}`, cur: "say hi", icon: "mail", solid: true, warm: true },
   { label: "DM on X", href: "https://x.com/jawadmakes", cur: "dm", brand: "x", external: true },
   { label: "Read the CV", href: IDENTITY.cv, cur: "read", icon: "doc" },
 ];
@@ -45,7 +48,11 @@ function HeroCta({ cta }: { cta: Cta }) {
       }`}
     >
       <span ref={inner} className="inline-flex items-center gap-1.5 sm:gap-[5px]">
-        {cta.brand ? <Brand name={cta.brand} size={13} /> : <Icon name={cta.icon!} size={14} />}
+        {cta.brand ? (
+          <Brand name={cta.brand} size={13} />
+        ) : (
+          <Icon name={cta.icon!} size={14} className={cta.warm ? "cta-mark" : undefined} />
+        )}
         {cta.label}
       </span>
     </a>

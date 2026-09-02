@@ -912,3 +912,15 @@ details[open] .else-row {
 @media (prefers-reduced-motion: reduce) {
   details[open] .else-row { animation: none; }
 }
+
+/* The one warm thing in the hero: the mail glyph on the solid button, from
+   the reference's own Book-a-call treatment.
+   
+   Two values rather than one, because the button inverts with the theme. In
+   light the button is dark ink and the icon sits on it at yellow-400; in dark
+   the button is pale and the same yellow would glare, so it steps down to
+   yellow-600. Written against [data-theme] rather than Tailwind's `dark:`
+   variant: this config has no darkMode set, so `dark:` follows the operating
+   system and would ignore the toggle in the header. */
+.cta-mark { color: #facc15; }
+[data-theme="dark"] .cta-mark { color: #ca8a04; }
