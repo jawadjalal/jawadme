@@ -314,6 +314,19 @@ body {
   transform: translateX(calc(-50% + var(--pv-shift))) translateY(0) scale(1);
 }
 
+/* Flipped under its row, for a row sitting too close to the top of the window
+   for the card to fit above it. It grows from the top edge in that case, so
+   the motion still starts at the thing being pointed at. */
+.pv-card.is-below {
+  bottom: auto;
+  top: calc(100% + 0.6rem);
+  transform-origin: top center;
+  transform: translateX(calc(-50% + var(--pv-shift))) translateY(-8px) scale(0.96);
+}
+.pv-card.is-below.is-open {
+  transform: translateX(calc(-50% + var(--pv-shift))) translateY(0) scale(1);
+}
+
 /* The art sits in its own rounded well, one step tighter than the card, so
    the padding around it reads as a mount rather than as a gap. */
 .pv-frame {
@@ -887,6 +900,11 @@ details[open] > .sec-body .sec-body-inner {
   transition: opacity 0.34s var(--ease) 0.08s, visibility 0s;
 }
 
+/* Once the height has finished moving there is nothing left to clip, and
+   leaving the clip on is what cut the hover cards off at the heading rule.
+   A card belongs to its row but is drawn outside the section box. */
+.sec-body.is-settled .sec-body-inner { overflow: visible; }
+
 .sec-chev { transition: transform 0.34s var(--ease); }
 .sec-chev.is-closed { transform: rotate(-90deg); }
 
@@ -924,3 +942,38 @@ details[open] .else-row {
    system and would ignore the toggle in the header. */
 .cta-mark { color: #facc15; }
 [data-theme="dark"] .cta-mark { color: #ca8a04; }
+
+/* ── Crossed off ──────────────────────────────────────────────────────────
+   Two overlapping strokes, drawn to stretch across whatever word they sit
+   on. `preserveAspectRatio="none"` is what lets one path serve a four-letter
+   name and a nine-letter one without the wobble changing shape.
+
+   Masked rather than used as a background image, so the ink is
+   `currentColor` and the scribble follows the text through both themes
+   instead of being a hardcoded grey that goes invisible in one of them. */
+.scribble {
+  position: relative;
+  text-decoration: none;
+}
+.scribble::after {
+  content: "";
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  top: 50%;
+  height: 0.78em;
+  transform: translateY(-52%);
+  pointer-events: none;
+  background-color: currentColor;
+  opacity: 0.7;
+  -webkit-mask-image: var(--scribble);
+  mask-image: var(--scribble);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+:root {
+  --scribble: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath d='M2 8.6c8.4-3.1 16.8 2.4 25.2-.6s16.8 3 25.2.4 16.8-3.2 25.2-.8c6 1.7 14 .2 20.4-1.1' stroke-width='2.1'/%3E%3Cpath d='M4.5 5.7c10.6 3.6 20.2-2.2 30.8.9s20.4 2.2 30.6-1.2c6.8-2.2 14.6-.4 21.6 1.4' stroke-width='1.35' opacity='.72'/%3E%3C/g%3E%3C/svg%3E");
+}

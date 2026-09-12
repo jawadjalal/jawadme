@@ -17,7 +17,7 @@
 // than unmounted, so the anchors in the header menus still resolve and the
 // browser's own in-page search still finds the words.
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "./Icon";
 
 export function Section({
@@ -35,7 +35,26 @@ export function Section({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(defaultOpen);
+  // `overflow: hidden` is what makes the fold animate, and it is also what was
+  // clipping the hover cards: a card that reaches above its own row is outside
+  // the section box, so the section was cutting it off at the heading rule.
+  // The clip is only needed while the height is actually moving, so it comes
+  // off once the section has finished opening and goes back on the instant a
+  // close begins.
+  const [settled, setSettled] = useState(defaultOpen);
+  const timer = useRef(0);
   const bodyId = useId();
+
+  useEffect(() => {
+    window.clearTimeout(timer.current);
+    if (!open) {
+      setSettled(false);
+      return;
+    }
+    // Matches the grid-template-rows duration in globals.css.
+    timer.current = window.setTimeout(() => setSettled(true), 460);
+    return () => window.clearTimeout(timer.current);
+  }, [open]);
 
   return (
     <section id={id} className="screen-line-top">
@@ -62,7 +81,7 @@ export function Section({
           </button>
         </div>
       </div>
-      <div id={bodyId} className={`sec-body ${open ? "is-open" : ""}`}>
+      <div id={bodyId} className={`sec-body ${open ? "is-open" : ""} ${settled ? "is-settled" : ""}`}>
         <div className="sec-body-inner">{children}</div>
       </div>
     </section>

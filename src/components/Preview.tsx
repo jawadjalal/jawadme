@@ -45,6 +45,7 @@ export function Preview({ shot, emoji, label, block, children }: PreviewProps) {
   const [mounted, setMounted] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [shift, setShift] = useState(0);
+  const [below, setBelow] = useState(false);
   const card = useRef<HTMLSpanElement>(null);
   const timer = useRef(0);
   const id = useId();
@@ -54,12 +55,25 @@ export function Preview({ shot, emoji, label, block, children }: PreviewProps) {
   const clamp = useCallback(() => {
     const el = card.current;
     if (!el) return;
+
+    // Measured with the shift removed, so each pass starts from the card's
+    // natural position rather than compounding the last correction.
     const prev = el.style.getPropertyValue("--pv-shift");
     el.style.setProperty("--pv-shift", "0px");
     const r = el.getBoundingClientRect();
+
     let dx = 0;
     if (r.left < MARGIN) dx = MARGIN - r.left;
     else if (r.right > window.innerWidth - MARGIN) dx = window.innerWidth - MARGIN - r.right;
+
+    // Above by default, because a card that covers the rows under the one you
+    // are pointing at hides the thing you were about to read next. When the
+    // row sits too near the top of the window there is no room for that, and
+    // the card would be cut off by the viewport instead, so it flips under.
+    const anchor = el.parentElement?.getBoundingClientRect();
+    const room = (anchor?.top ?? r.bottom) - MARGIN;
+    setBelow(room < r.height);
+
     el.style.setProperty("--pv-shift", prev);
     setShift(dx);
   }, []);
@@ -105,7 +119,7 @@ export function Preview({ shot, emoji, label, block, children }: PreviewProps) {
           ref={card}
           id={id}
           role="tooltip"
-          className={`pv-card ${open ? "is-open" : ""}`}
+          className={`pv-card ${open ? "is-open" : ""} ${below ? "is-below" : ""}`}
           style={{ ["--pv-shift" as string]: `${shift}px` }}
         >
           <span className="pv-frame">

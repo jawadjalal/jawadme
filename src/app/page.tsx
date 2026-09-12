@@ -312,11 +312,13 @@ function Role({ item }: { item: Item }) {
       href={item.href}
       target="_blank"
       rel="noopener noreferrer"
-      // Struck through, not greyed. Grey would say "less important"; the rule
+      // Scribbled out, not greyed. Grey would say "less important"; the mark
       // says "this is over", which is the actual fact, and the site is still
-      // standing so the link stays live.
+      // standing so the link stays live. A drawn scribble rather than a rule
+      // because a rule reads as a typographic effect and a scribble reads as
+      // somebody having crossed it off.
       className={`tap underline-offset-[3px] transition-colors ${
-        dead ? "line-through decoration-muted-foreground" : "underline decoration-border hover:decoration-foreground"
+        dead ? "scribble" : "underline decoration-border hover:decoration-foreground"
       }`}
     >
       {item.name}
