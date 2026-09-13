@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 const EASE = 0.18;
 
 export function Cursor({ label = "hi" }: { label?: string }) {
+  const root = useRef<HTMLDivElement>(null);
   const arrow = useRef<HTMLDivElement>(null);
   const pill = useRef<HTMLDivElement>(null);
   const [on, setOn] = useState(false);
@@ -87,10 +88,68 @@ export function Cursor({ label = "hi" }: { label?: string }) {
     };
   }, [label]);
 
+  // The custom cursor and the top layer.
+  //
+  // A <dialog> opened with showModal() is promoted to the browser's top
+  // layer, which paints above the whole normal stacking context whatever
+  // z-index anything in it carries. Inside the modal the overlay was
+  // underneath while `cursor: none` was still in force, so the pointer
+  // vanished entirely.
+  //
+  // The overlay is a manual popover, which puts it in the top layer too.
+  // Top-layer elements stack in promotion order, so it is re-shown whenever a
+  // dialog opens, which lifts it back above.
+  //
+  // This is its own effect rather than part of the one above because the
+  // overlay is not rendered until `on` flips: the pointer handlers get away
+  // with it by reading their refs lazily inside the callback, but showing a
+  // popover happens now, and now is too early.
+  useEffect(() => {
+    if (!on) return;
+
+    const promote = () => {
+      const el = root.current;
+      if (!el?.showPopover) return false;
+      try {
+        if (!el.matches(":popover-open")) el.showPopover();
+        else {
+          el.hidePopover();
+          el.showPopover();
+        }
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    const supported = promote();
+
+    // Any dialog, not just this site's one modal: the attribute is what marks
+    // a dialog as showing.
+    const watch = new MutationObserver(() => {
+      const openDialog = document.querySelector("dialog[open]");
+      if (supported) {
+        if (openDialog) promote();
+      } else {
+        // Without popover support the overlay cannot reach the top layer, and
+        // a hidden custom cursor over a modal is worse than the real one.
+        document.documentElement.classList.toggle("has-cursor", !openDialog);
+      }
+    });
+    watch.observe(document.documentElement, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ["open"],
+    });
+
+    return () => watch.disconnect();
+  }, [on]);
+
   if (!on) return null;
 
   return (
-    <div aria-hidden="true" className="cur-root">
+    <div ref={root} aria-hidden="true" className="cur-root" popover="manual">
       <div ref={arrow} className="cur-arrow">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
           <path

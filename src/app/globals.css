@@ -418,7 +418,25 @@ body {
    mounted. `has-cursor` is set by the component, so a device that never
    qualifies (or a page where the script failed) keeps its real cursor rather
    than losing it to a rule that fired regardless. */
-.cur-root { position: fixed; inset: 0; pointer-events: none; z-index: 10000; }
+/* A manual popover, so it sits in the top layer alongside an open <dialog>
+   rather than underneath it. The UA sheet gives every [popover] a border, a
+   background, padding and auto margins, all of which have to come back off. */
+.cur-root {
+  position: fixed;
+  inset: 0;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 10000;
+}
+/* A popover is display:none until shown, and the overlay is shown from the
+   effect on mount. */
+.cur-root:popover-open { display: block; }
 
 html.has-cursor,
 html.has-cursor * { cursor: none !important; }
