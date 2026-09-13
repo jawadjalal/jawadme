@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Brand } from "@/components/Brand";
+import { ContactModal } from "@/components/ContactModal";
 import { Cta } from "@/components/Cta";
 import { HeroCtas } from "@/components/HeroCtas";
 import { Cursor } from "@/components/Cursor";
@@ -31,6 +32,7 @@ export default function Home() {
   return (
     <div className="min-h-dvh">
       <Cursor label="hi" />
+      <ContactModal />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:border focus:bg-background focus:px-3 focus:py-2 focus:text-sm"

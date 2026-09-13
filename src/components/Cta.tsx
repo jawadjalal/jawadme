@@ -10,13 +10,16 @@
 
 import Image from "next/image";
 import { IDENTITY } from "@/lib/profile";
+import { openContact } from "./contact";
 
 export function Cta() {
-
-
   return (
     <a
       href={`mailto:${IDENTITY.email}`}
+      onClick={(e) => {
+        e.preventDefault();
+        openContact();
+      }}
       data-cur="say hi"
       className="cta-btn group inline-flex cursor-pointer items-center self-center rounded-md border px-2 py-1 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
     >

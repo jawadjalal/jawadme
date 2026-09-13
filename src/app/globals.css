@@ -977,3 +977,158 @@ details[open] .else-row {
 :root {
   --scribble: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath d='M2 8.6c8.4-3.1 16.8 2.4 25.2-.6s16.8 3 25.2.4 16.8-3.2 25.2-.8c6 1.7 14 .2 20.4-1.1' stroke-width='2.1'/%3E%3Cpath d='M4.5 5.7c10.6 3.6 20.2-2.2 30.8.9s20.4 2.2 30.6-1.2c6.8-2.2 14.6-.4 21.6 1.4' stroke-width='1.35' opacity='.72'/%3E%3C/g%3E%3C/svg%3E");
 }
+
+/* ── Contact modal ────────────────────────────────────────────────────────
+   A native <dialog>, so the focus trap, Escape, the inert background and the
+   top layer come from the browser rather than from us. The styling below is
+   the page's own bevel at a larger size: hairline, inner highlight, two
+   shadows at different softnesses. */
+.cm {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  color: var(--foreground);
+}
+.cm::backdrop {
+  background: oklch(from var(--base) l c h / 42%);
+  backdrop-filter: blur(3px);
+  animation: cm-veil 0.22s var(--ease) both;
+}
+@keyframes cm-veil { from { opacity: 0; } to { opacity: 1; } }
+
+.cm-shell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 1rem;
+}
+
+.cm-card {
+  position: relative;
+  width: 100%;
+  max-width: 30rem;
+  padding: 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--background);
+  box-shadow:
+    inset 0 1px 0 oklch(from var(--foreground) l c h / 6%),
+    0 1px 2px oklch(from var(--base) l c h / 7%),
+    0 28px 60px -20px oklch(from var(--base) l c h / 32%);
+  animation: cm-in 0.26s var(--ease) both;
+}
+@keyframes cm-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+/* The chevron points up everywhere else on the page, so it is turned to read
+   as a dismissal rather than as a collapse. */
+.cm-x {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 8px;
+  color: var(--muted-foreground);
+  transform: rotate(180deg);
+  transition: background-color 0.18s var(--ease), color 0.18s var(--ease);
+}
+.cm-x:hover { background: var(--muted); color: var(--foreground); }
+
+.cm-field { display: block; }
+.cm-field > span {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+.cm-field input,
+.cm-field textarea {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--muted);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.cm-field textarea { resize: vertical; min-height: 6.5rem; }
+.cm-field input:focus,
+.cm-field textarea:focus {
+  border-color: oklch(from var(--foreground) l c h / 30%);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* Off-screen rather than display:none. A bot reading the DOM fills what it
+   can see in the markup; a field that is display:none is the one thing many
+   of them know to skip. */
+.cm-pot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cm-send {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 9px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: opacity 0.18s var(--ease);
+}
+.cm-send:hover { opacity: 0.9; }
+.cm-send:disabled { opacity: 0.55; cursor: default; }
+
+.cm-alt {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+}
+.cm-alt:hover { text-decoration-color: var(--foreground); }
+
+.cm-problem {
+  font-size: 0.78rem;
+  color: var(--hue-ember);
+}
+
+.cm-done { padding: 0.75rem 0 0.25rem; text-align: center; }
+.cm-done-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 0.6rem;
+  border-radius: 999px;
+  color: var(--live);
+  background: color-mix(in oklch, var(--live) 14%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm::backdrop, .cm-card { animation: none; }
+}

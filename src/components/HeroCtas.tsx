@@ -9,6 +9,7 @@
 
 import { Brand } from "./Brand";
 import { Icon, type IconName } from "./Icon";
+import { openContact } from "./contact";
 import { useMagnetic } from "./magnetic";
 import { IDENTITY } from "@/lib/profile";
 
@@ -39,6 +40,13 @@ function HeroCta({ cta }: { cta: Cta }) {
       ref={host}
       href={cta.href}
       data-cur={cta.cur}
+      onClick={(e) => {
+        // Kept as a real mailto in the markup, so with no JavaScript this is
+        // still a working way to reach him rather than a dead button.
+        if (!cta.href.startsWith("mailto:")) return;
+        e.preventDefault();
+        openContact();
+      }}
       target={cta.external ? "_blank" : undefined}
       rel={cta.external ? "noopener noreferrer" : undefined}
       className={`inline-flex min-h-11 items-center rounded-md px-3 py-1 text-[13px] font-medium leading-4 sm:min-h-0 sm:px-2 sm:text-xs ${

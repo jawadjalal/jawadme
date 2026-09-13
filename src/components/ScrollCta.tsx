@@ -10,6 +10,7 @@
 
 import { useEffect, useState } from "react";
 import { Icon } from "./Icon";
+import { openContact } from "./contact";
 import { IDENTITY } from "@/lib/profile";
 
 export function ScrollCta() {
@@ -32,6 +33,10 @@ export function ScrollCta() {
   return (
     <a
       href={`mailto:${IDENTITY.email}`}
+      onClick={(e) => {
+        e.preventDefault();
+        openContact();
+      }}
       data-cur="say hi"
       aria-hidden={!show}
       tabIndex={show ? 0 : -1}
