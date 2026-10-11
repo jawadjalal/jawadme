@@ -23,7 +23,7 @@ export const POSTS: Post[] = [
     slug: "why-i-started-ignura",
     title: "Why I started Ignura, a launch studio for apps",
     description:
-      "I started Ignura because I kept watching great apps launch to silence. Here's why I built a launch studio of designers who also ship.",
+      "Why I started Ignura after watching great apps launch to silence. Ignura is a launch studio for consumer apps, prosumer tools and B2B.",
     date: "2026-10-11",
     body: (
       <>
