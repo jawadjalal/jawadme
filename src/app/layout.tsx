@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { GeistMono } from "geist/font/mono";
 import { Pixelify_Sans } from "next/font/google";
-import { IDENTITY, SUMMARY, SKILLS } from "@/lib/profile";
+import { IDENTITY, SUMMARY, SKILLS, SOCIALS } from "@/lib/profile";
+
+const TITLE = `${IDENTITY.properName}, designer and founder of Ignura`;
+const DESCRIPTION =
+  "Designer in London. I run Ignura (ignura.com), the launch studio that makes launch films, App Store screenshots and landing pages for apps.";
 import "./globals.css";
 
 // The wordmark only. A pixel face is a signature, not a text face, so it is
@@ -15,11 +19,11 @@ const pixel = Pixelify_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(IDENTITY.site),
-  title: `${IDENTITY.properName} · ${IDENTITY.role}`,
-  description: SUMMARY,
+  title: TITLE,
+  description: DESCRIPTION,
   openGraph: {
-    title: `${IDENTITY.properName} · ${IDENTITY.role}`,
-    description: SUMMARY,
+    title: TITLE,
+    description: DESCRIPTION,
     url: IDENTITY.site,
     siteName: IDENTITY.properName,
     type: "profile",
@@ -56,6 +60,8 @@ const JSON_LD = {
   jobTitle: IDENTITY.role,
   description: SUMMARY,
   knowsAbout: SKILLS,
+  worksFor: { "@type": "Organization", name: "Ignura", url: "https://ignura.com" },
+  sameAs: SOCIALS.filter((s) => /^https:/.test(s.href)).map((s) => s.href),
   address: {
     "@type": "PostalAddress",
     addressLocality: IDENTITY.locality,
