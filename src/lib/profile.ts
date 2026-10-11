@@ -33,6 +33,7 @@ export const IDENTITY = {
 
 /** The titles that cycle under the name, one line at a time. */
 export const ROLES = [
+  "Founder of Ignura",
   "Designer & Founder",
   "Head of Product at Nooli",
   "Design at Okara",
@@ -41,6 +42,7 @@ export const ROLES = [
 /** The About list. Each string is one bullet, and may carry icon tokens. */
 export const ABOUT = [
   "i'm jawad :sparkle:, a :pen:{designer} and founder in london :globe: :rocket:[(yc soon)|https://www.ycombinator.com/]. ~i started making things for money at thirteen and never really stopped. i'm fifteen now.~",
+  "~i run~ :rocket:{ignura|https://ignura.com}~, the launch studio that makes launch films, app store screenshots and landing pages for apps.~",
   "~i build my own products~ :cube:<end to end>~: the brand, the interface, and the thing that actually ships.~",
 ];
 
@@ -399,7 +401,8 @@ export const VENN = [
  *  a description of someone, so the sentence they should lift is written once,
  *  here, rather than stitched together from the page's copy. */
 export const SUMMARY =
-  "Jawad Jalal is a designer and founder based in London, England. He builds wayari, a Mac app " +
+  "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
+  "the launch studio that makes launch films, App Store screenshots and landing pages for apps. He builds wayari, a Mac app " +
   "for running several coding agents at once, and runs bevel, a 3D art team available for hire. " +
   "He is also on design at Okara and head of product at Nooli.";
 
