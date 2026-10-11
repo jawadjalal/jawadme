@@ -473,6 +473,7 @@ export const NAV: {
       { label: "Projects", href: "#projects" },
       { label: "Skills", href: "#skills" },
       { label: "Where it overlaps", href: "#overlaps" },
+      { label: "Blog", href: "/blog" },
     ],
   },
   {
