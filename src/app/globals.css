@@ -1150,3 +1150,23 @@ details[open] .else-row {
 @media (prefers-reduced-motion: reduce) {
   .cm::backdrop, .cm-card { animation: none; }
 }
+
+/* ── Blog post body ───────────────────────────────────────────────────────
+   The About block's measure and leading, so a post reads as more of the same
+   page. Links take the house underline: page ink, hairline until hovered. */
+.post { font-size: 15px; line-height: 1.65; }
+.post > * + * { margin-top: 0.9rem; }
+.post h2 {
+  margin-top: 2rem;
+  font-family: Chillax, Satoshi, ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.25rem; font-weight: 500; letter-spacing: -0.015em;
+}
+.post h3 { margin-top: 1.25rem; font-weight: 700; }
+.post h3 + p { margin-top: 0.25rem; }
+.post a {
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s var(--ease);
+}
+.post a:hover { text-decoration-color: var(--foreground); }
