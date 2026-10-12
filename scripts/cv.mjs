@@ -32,18 +32,9 @@ const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const SUMMARY =
-  "Designer and founder in London. I started making things for money at thirteen and never stopped. " +
-  "Today I run Ignura and Bevel, both at six figure ARR, do design at MenuFit (two million users, seven figure ARR) " +
-  "and Okara. Before that I was head of product at Nooli. I like owning a product end to end: the brand, the interface and the code that ships it.";
-
-// The headline numbers, each with who it belongs to so none of them reads as
-// a personal claim it is not.
-const STATS = [
-  ["7 figure", "MenuFit ARR"],
-  ["2M", "MenuFit users"],
-  ["6 figure", "Ignura ARR"],
-  ["6 figure", "Bevel ARR"],
-];
+  "Designer and founder in London. I'm fifteen and have been making things for money since thirteen. " +
+  "I run two small companies, Ignura, a launch studio for apps, and Bevel, a 3D art team, and I design for MenuFit and Okara. " +
+  "I like owning a product end to end: the brand, the interface and the code that ships it.";
 
 // What each role involved, beyond the one line the page carries. Only things
 // the site or the founder has stated, nothing rounded up.
@@ -64,7 +55,7 @@ const HIGHLIGHTS = {
     title: "Designer",
     line: "The app for eating out healthy · iOS and Android",
     points: [
-      "Design the product for an app with two million users and seven figure ARR.",
+      "Product designer on an app used by two million people.",
       "Work on the core experience: a personalised healthy menu for every restaurant, with calories, protein, carbs and fats on each dish and a score for how well it fits your macros.",
       "Design for both iOS and Android, where the app is live.",
     ],
@@ -154,11 +145,6 @@ const html = `<!doctype html><meta charset="utf-8">
   .contact { text-align: right; font-size: 8.8pt; color: #6b6b64; line-height: 1.65; }
   .contact a { color: #1b1b19; text-decoration: none; }
   .summary { margin: 14pt 0 0; font-size: 10pt; line-height: 1.6; color: #2c2c29; }
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 14pt; border: 0.7pt solid #e4e4e0; border-radius: 6pt; }
-  .stat { padding: 8pt 10pt; border-left: 0.7pt solid #e4e4e0; }
-  .stat:first-child { border-left: 0; }
-  .stat b { display: block; font-family: Chillax, Satoshi, sans-serif; font-size: 14pt; font-weight: 600; line-height: 1.2; }
-  .stat span { font-size: 8.4pt; color: #6b6b64; }
   section { margin-top: 18pt; }
   ul { list-style: none; margin: 0; padding: 0; }
   .row { display: flex; align-items: baseline; gap: 6pt; }
@@ -198,7 +184,6 @@ const html = `<!doctype html><meta charset="utf-8">
 </header>
 
 <p class="summary">${esc(SUMMARY)}</p>
-<div class="stats">${STATS.map(([n, l]) => `<div class="stat"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join("")}</div>
 
 <section>
   <h2>Experience</h2>
