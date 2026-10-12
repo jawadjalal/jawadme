@@ -188,9 +188,6 @@ const html = `<!doctype html><meta charset="utf-8">
   .skill-list { color: #4a4a45; font-size: 9pt; }
   .kw { margin: 3pt 0 0 11pt; font-size: 8.2pt; color: #8a8a82; letter-spacing: 0.01em; }
   .core { margin: 10pt 0 0; font-size: 9pt; color: #4a4a45; }
-  .edu li { display: flex; align-items: baseline; gap: 6pt; margin-bottom: 4pt; }
-  .edu b { font-weight: 700; font-size: 9.6pt; }
-  .edu span { color: #4a4a45; font-size: 9.2pt; }
   .page2 { break-before: page; }
   .online { margin: 0 0 6pt; font-size: 9.2pt; color: #4a4a45; }
   .links { display: flex; flex-wrap: wrap; gap: 4pt 16pt; font-size: 9.4pt; }
@@ -220,9 +217,15 @@ const html = `<!doctype html><meta charset="utf-8">
 <div class="page2">
   <section style="margin-top:0">
     <h2>Education &amp; achievements</h2>
-    <ul class="edu">
-      <li><b>GCSEs</b><span>9, 9, 9, 9, 9, 9, 9, 8, 8, 8</span></li>
-      <li><b>The Duke of Edinburgh's Award</b><span>Bronze</span></li>
+    <div class="row">
+      <span class="name">Queen Elizabeth's School, Barnet</span>
+      <span class="lead"></span>
+      <span class="meta">2022 – 2027</span>
+    </div>
+    <ul class="points">
+      <li>GCSEs, sitting 2027. Predicted grades: 9, 9, 9, 9, 9, 9, 9, 9, 8, 8.</li>
+      <li>Subjects: Production Design, Economics, History, German, Triple Science (Higher), English (Higher), Maths (Higher).</li>
+      <li>The Duke of Edinburgh's Award: Bronze.</li>
     </ul>
   </section>
 
