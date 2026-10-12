@@ -34,7 +34,7 @@ const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const SUMMARY =
   "Designer and founder in London. I started making things for money at thirteen and never stopped. " +
   "Today I run Ignura and Bevel, both at six figure ARR, do design at MenuFit (two million users, seven figure ARR) " +
-  "and lead product at Nooli. I like owning a product end to end: the brand, the interface and the code that ships it.";
+  "and Okara, and lead product at Nooli. I like owning a product end to end: the brand, the interface and the code that ships it.";
 
 // The headline numbers, each with who it belongs to so none of them reads as
 // a personal claim it is not.
@@ -82,6 +82,14 @@ const HIGHLIGHTS = {
       "Lessons for three to five year olds that adapt to the child.",
     ],
   },
+  okara: {
+    title: "Designer",
+    line: "AI CMO that drafts and ships marketing work",
+    points: [
+      "Design the product for an AI CMO that drafts and ships marketing work.",
+      "Its launch film reached 14M views on X in a day.",
+    ],
+  },
   wayari: {
     title: "Founder",
     line: "Side project · Mac app",
@@ -91,6 +99,9 @@ const HIGHLIGHTS = {
     ],
   },
 };
+
+const OKARA = { key: "okara", name: "okara", period: "Since 2026" };
+const WAYARI = NOW.find((i) => i.key === "wayari");
 
 const job = (item) => {
   const h = HIGHLIGHTS[item.key];
@@ -186,21 +197,18 @@ const html = `<!doctype html><meta charset="utf-8">
 
 <section>
   <h2>Experience</h2>
-  ${NOW.map(job).join("")}
+  ${[...NOW.filter((i) => i.key !== "wayari"), OKARA].map(job).join("")}
 </section>
 
 <div class="page2">
   <section style="margin-top:0">
+    <h2>Side project</h2>
+    ${job(WAYARI)}
+  </section>
+
+  <section>
     <h2>Earlier work</h2>
     <ul class="earlier">
-      <li>
-        <div class="row">
-          <span class="name">Okara</span>
-          <span class="lead"></span>
-          <span class="meta">Design · 2026</span>
-        </div>
-        <p>Designed the product for an AI CMO that drafts and ships marketing work. Its launch film reached 14M views on X in a day.</p>
-      </li>
       ${ARCHIVE.map(earlier).join("")}
     </ul>
   </section>

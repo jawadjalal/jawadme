@@ -37,6 +37,7 @@ export const ROLES = [
   "Designer & Founder",
   "Head of Product at Nooli",
   "Design at MenuFit",
+  "Design at Okara",
 ];
 
 /** The About list. Each string is one bullet, and may carry icon tokens. */
@@ -414,7 +415,7 @@ export const VENN = [
 export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
   "the launch studio that makes launch films, App Store screenshots and landing pages for apps, and bevel, " +
-  "a 3D art team available for hire. Both are at 6 figure ARR. He does design at MenuFit (menufit.com), " +
+  "a 3D art team available for hire. Both are at 6 figure ARR. He does design at Okara and at MenuFit (menufit.com), " +
   "an app for eating out healthy with 2 million users and 7 figure ARR, and is head of product at Nooli. " +
   "As a side project he builds wayari, a Mac app for running several coding agents at once.";
 
