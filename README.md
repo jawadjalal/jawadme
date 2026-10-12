@@ -40,9 +40,3 @@ and no way for those three to disagree.
 ## House style
 
 No em dashes. A comma, a full stop or a colon does the job.
-
-## Outstanding
-
-`public/logos/nooli.png` and `public/design/nooli.png` are placeholders.
-Drop the real Nooli logo in at both paths (40px square is enough for the
-logo; the design one is the hover card, so 1200x630 reads best).
