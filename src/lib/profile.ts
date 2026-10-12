@@ -35,7 +35,6 @@ export const IDENTITY = {
 export const ROLES = [
   "Founder of Ignura",
   "Designer & Founder",
-  "Head of Product at Nooli",
   "Design at MenuFit",
   "Design at Okara",
 ];
@@ -73,7 +72,7 @@ export const ABOUT_ROLES: {
   { key: "ignura", name: "ignura", role: "founder", stat: "6 figure arr", logo: "/logos/ignura.png", href: "https://ignura.com" },
   { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 2m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
   { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
-  { key: "nooli", name: "nooli", role: "head of product", emoji: "\u{1F92B}" },
+  { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
   { key: "wayari", name: "wayari", role: "founder", stat: "side project", logo: "/logos/wayari.svg", href: "https://wayari.com" },
 ];
 
@@ -87,8 +86,7 @@ export type Item = {
   key: string;
   name: string;
   href?: string;
-  /** The brand mark, 40px square, under /public/logos. Nooli has no file yet,
-   *  so it carries an emoji instead and `logo` is left off. */
+  /** The brand mark, 40px square, under /public/logos. */
   logo?: string;
   /** For a mark that only reads on its own colour, like Weld: forcing it
    *  onto the white tile would lose the figure entirely. */
@@ -174,23 +172,22 @@ export const NOW: Item[] = [
     ],
   },
   {
-    key: "nooli",
-    roleIcon: "block",
-    name: "nooli",
-    // No site yet, so the name is not a link. A link that 404s is worse than
-    // a name that waits.
-    emoji: "\u{1F92B}",
-    shot: "/design/nooli.webp",
-    role: "Head of Product",
-    roleNote: "first hire",
+    key: "okara",
+    roleIcon: "pen",
+    name: "okara",
+    href: "https://okara.ai",
+    logo: "/logos/okara.png",
+    shot: "/design/okara.png",
+    domain: "okara.ai",
+    role: "Design",
     period: "Since 2026",
-    status: "Building",
-    blurb: "Lessons for three to five year olds that adapt to the child, on iOS.",
+    status: "Live",
+    blurb: "An AI CMO that drafts and ships marketing work. I design the product. Its launch film did 14M views on X in a day.",
     tags: [
-      { label: "Product" },
-      { label: "iOS" },
-      { brand: "figmacolour", label: "Design system" },
-      { label: "SwiftUI" },
+      { brand: "figmacolour", label: "Product design" },
+      { brand: "nextdotjs", label: "Next.js" },
+      { brand: "tailwindcss", label: "Tailwind" },
+      { label: "Design system" },
     ],
   },
   {
@@ -416,7 +413,7 @@ export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
   "the launch studio that makes launch films, App Store screenshots and landing pages for apps, and bevel, " +
   "a 3D art team available for hire. Both are at 6 figure ARR. He does design at Okara and at MenuFit (menufit.com), " +
-  "an app for eating out healthy with 2 million users and 7 figure ARR, and is head of product at Nooli. " +
+  "an app for eating out healthy with 2 million users and 7 figure ARR. " +
   "As a side project he builds wayari, a Mac app for running several coding agents at once.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
@@ -444,7 +441,6 @@ const PHRASE_TO_KEY: Record<string, string> = {
   wayari: "wayari",
   bevel: "bevel",
   "design at menufit": "menufit",
-  "head of product at nooli": "nooli",
 };
 
 export function heroFor(phrase: string) {

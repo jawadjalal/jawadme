@@ -32,18 +32,9 @@ const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const SUMMARY =
-  "Designer and founder in London. I started making things for money at thirteen and never stopped. " +
-  "Today I run Ignura and Bevel, both at six figure ARR, do design at MenuFit (two million users, seven figure ARR) " +
-  "and Okara, and lead product at Nooli. I like owning a product end to end: the brand, the interface and the code that ships it.";
-
-// The headline numbers, each with who it belongs to so none of them reads as
-// a personal claim it is not.
-const STATS = [
-  ["7 figure", "MenuFit ARR"],
-  ["2M", "MenuFit users"],
-  ["6 figure", "Ignura ARR"],
-  ["6 figure", "Bevel ARR"],
-];
+  "Designer and founder in London. I'm fifteen and have been making things for money since thirteen. " +
+  "I run two small companies, Ignura, a launch studio for apps, and Bevel, a 3D art team, and I design for MenuFit and Okara. " +
+  "I like owning a product end to end: the brand, the interface and the code that ships it.";
 
 // What each role involved, beyond the one line the page carries. Only things
 // the site or the founder has stated, nothing rounded up.
@@ -53,9 +44,10 @@ const HIGHLIGHTS = {
     line: "Launch studio for apps · London",
     points: [
       "Started the studio and run it day to day with a team of four: design, launch films, UGC and launch day, so an app team gets one crew instead of five freelancers.",
-      "Grew it to six figure ARR on fixed scope packages, from a single App Store screenshot set up to a full four week launch.",
-      "Backed our UGC with a guarantee: 10k views in two weeks or the money back.",
-      "Shipped work for Okara, Splitting Point, Yummers and hypjam, and made Ignura's own brand, launch film and site.",
+      "Grew it to six figure ARR on fixed scope packages, from a one week App Store screenshot set to a four week launch that covers the landing page, polish on key screens, a launch film, UGC and launch day.",
+      "Open every engagement with a free teardown: a written review within a week, with two or three mockups of the fixes we would make first. Burn, a monthly retainer, keeps campaigns and design going after launch.",
+      "Run a UGC arm with a roster of 21 creators, backed by a guarantee: 10k views in two weeks or the money back.",
+      "Delivered work for Okara, Splitting Point, Yummers and hypjam, and made Ignura's own brand, launch film and site, plus an internal ops dashboard and a site assistant.",
     ],
   },
   menufit: {
@@ -63,31 +55,35 @@ const HIGHLIGHTS = {
     title: "Designer",
     line: "The app for eating out healthy · iOS and Android",
     points: [
-      "Design the product for an app with two million users and seven figure ARR.",
+      "Product designer on an app used by two million people.",
+      "Work on the core experience: a personalised healthy menu for every restaurant, with calories, protein, carbs and fats on each dish and a score for how well it fits your macros.",
+      "Design for both iOS and Android, where the app is live.",
     ],
   },
   bevel: {
     title: "Founder",
     line: "3D art team for hire · Blender, ZBrush, Substance",
     points: [
-      "Built a 3D art team that studios hire by the job, at published rates.",
+      "Built a 3D art team that studios hire by the job, at published rates, so clients know the price before they ask.",
       "Reached six figure ARR delivering game ready models, textures and commissions.",
-    ],
-  },
-  nooli: {
-    title: "Head of Product",
-    line: "Adaptive lessons for ages three to five · iOS",
-    points: [
-      "First hire. Own the product and its design system, built in SwiftUI.",
-      "Lessons for three to five year olds that adapt to the child.",
+      "Cover the full pipeline in Blender, ZBrush and Substance, from sculpt to textured asset, and run the studio's brand, site and client work.",
     ],
   },
   okara: {
     title: "Designer",
     line: "AI CMO that drafts and ships marketing work",
     points: [
-      "Design the product for an AI CMO that drafts and ships marketing work.",
+      "Design the product for an AI CMO that drafts and ships marketing work, including the dashboard.",
       "Its launch film reached 14M views on X in a day.",
+      "Work in Figma and ship in Next.js and Tailwind, and maintain the design system.",
+    ],
+  },
+  nooli: {
+    title: "Head of Product",
+    line: "Adaptive lessons for ages three to five · iOS",
+    points: [
+      "First hire. Owned the product and its design system, built in SwiftUI.",
+      "Shaped lessons for three to five year olds that adapt to the child.",
     ],
   },
   wayari: {
@@ -95,12 +91,12 @@ const HIGHLIGHTS = {
     line: "Side project · Mac app",
     points: [
       "A desktop app for running several coding agents at once: ship PRs while you sleep, merge them with your eyes open.",
-      "Designed and built end to end in Electron, TypeScript, React and Next.js.",
+      "Designed and built end to end in Electron, TypeScript, React and Next.js, including a desktop dock that shows every job, review and merge.",
     ],
   },
 };
 
-const OKARA = { key: "okara", name: "okara", period: "Since 2026" };
+const NOOLI = { key: "nooli", name: "nooli", period: "2026" };
 const WAYARI = NOW.find((i) => i.key === "wayari");
 
 const job = (item) => {
@@ -134,7 +130,7 @@ const html = `<!doctype html><meta charset="utf-8">
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font: 10.4pt/1.55 Satoshi, system-ui, sans-serif;
+    font: 9.6pt/1.5 Satoshi, system-ui, sans-serif;
     color: #1b1b19;
     -webkit-print-color-adjust: exact;
   }
@@ -148,30 +144,25 @@ const html = `<!doctype html><meta charset="utf-8">
   .tag { font-size: 10pt; color: #6b6b64; margin-top: 3pt; }
   .contact { text-align: right; font-size: 8.8pt; color: #6b6b64; line-height: 1.65; }
   .contact a { color: #1b1b19; text-decoration: none; }
-  .summary { margin: 14pt 0 0; font-size: 10.6pt; line-height: 1.6; color: #2c2c29; }
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 14pt; border: 0.7pt solid #e4e4e0; border-radius: 6pt; }
-  .stat { padding: 8pt 10pt; border-left: 0.7pt solid #e4e4e0; }
-  .stat:first-child { border-left: 0; }
-  .stat b { display: block; font-family: Chillax, Satoshi, sans-serif; font-size: 14pt; font-weight: 600; line-height: 1.2; }
-  .stat span { font-size: 8.4pt; color: #6b6b64; }
-  section { margin-top: 20pt; }
+  .summary { margin: 14pt 0 0; font-size: 10pt; line-height: 1.6; color: #2c2c29; }
+  section { margin-top: 18pt; }
   ul { list-style: none; margin: 0; padding: 0; }
   .row { display: flex; align-items: baseline; gap: 6pt; }
-  .name { font-weight: 700; font-size: 11pt; }
+  .name { font-weight: 700; font-size: 10.2pt; }
   .lead { flex: 1; border-bottom: 0.7pt dashed #d8d8d2; transform: translateY(-2pt); }
-  .meta { font-size: 9pt; color: #6b6b64; white-space: nowrap; }
-  .job { margin-bottom: 17pt; break-inside: avoid; }
+  .meta { font-size: 8.6pt; color: #6b6b64; white-space: nowrap; }
+  .job { margin-bottom: 14pt; break-inside: avoid; }
   .job:last-child { margin-bottom: 0; }
-  .sub { font-size: 9pt; color: #6b6b64; margin-top: 1pt; }
+  .sub { font-size: 8.6pt; color: #6b6b64; margin-top: 1pt; }
   .points { margin-top: 4pt; }
-  .points li { position: relative; padding-left: 11pt; margin-bottom: 3.5pt; color: #3a3a36; font-size: 10pt; }
-  .points li::before { content: ""; position: absolute; left: 1pt; top: 6.6pt; width: 3pt; height: 3pt; border-radius: 50%; background: #b9b9b1; }
+  .points li { position: relative; padding-left: 11pt; margin-bottom: 3pt; color: #3a3a36; font-size: 9.2pt; }
+  .points li::before { content: ""; position: absolute; left: 1pt; top: 6.1pt; width: 3pt; height: 3pt; border-radius: 50%; background: #b9b9b1; }
   .earlier li { margin-bottom: 12pt; break-inside: avoid; }
-  .earlier li p { margin: 2pt 0 0; color: #4a4a45; font-size: 10pt; }
+  .earlier li p { margin: 2pt 0 0; color: #4a4a45; font-size: 9.2pt; }
   .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt 18pt; }
-  .skill-area { font-weight: 700; font-size: 9.8pt; }
-  .skill-list { color: #4a4a45; font-size: 9.4pt; }
-  .else { display: grid; grid-template-columns: 1fr 1fr; gap: 7pt 18pt; font-size: 9.8pt; }
+  .skill-area { font-weight: 700; font-size: 9.4pt; }
+  .skill-list { color: #4a4a45; font-size: 9pt; }
+  .else { display: grid; grid-template-columns: 1fr 1fr; gap: 7pt 18pt; font-size: 9.2pt; }
   .else b { font-weight: 600; }
   .else span { color: #6b6b64; }
   .page2 { break-before: page; }
@@ -193,11 +184,10 @@ const html = `<!doctype html><meta charset="utf-8">
 </header>
 
 <p class="summary">${esc(SUMMARY)}</p>
-<div class="stats">${STATS.map(([n, l]) => `<div class="stat"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join("")}</div>
 
 <section>
   <h2>Experience</h2>
-  ${[...NOW.filter((i) => i.key !== "wayari"), OKARA].map(job).join("")}
+  ${NOW.filter((i) => i.key !== "wayari").map(job).join("")}
 </section>
 
 <div class="page2">
@@ -208,6 +198,7 @@ const html = `<!doctype html><meta charset="utf-8">
 
   <section>
     <h2>Earlier work</h2>
+    ${job(NOOLI)}
     <ul class="earlier">
       ${ARCHIVE.map(earlier).join("")}
     </ul>
