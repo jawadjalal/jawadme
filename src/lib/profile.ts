@@ -8,7 +8,7 @@
 // Prose strings may carry the two tokens `prose.tsx` understands:
 //
 //   :pen:                  a bare icon on the baseline
-//   :pen:{design at okara} that phrase highlighted, icon in front
+//   :pen:{design at menufit} that phrase highlighted, icon in front
 //
 // House style: no em dashes. A comma, a full stop or a colon does the job,
 // and the dash is the one punctuation mark that makes written-by-a-machine
@@ -36,7 +36,7 @@ export const ROLES = [
   "Founder of Ignura",
   "Designer & Founder",
   "Head of Product at Nooli",
-  "Design at Okara",
+  "Design at MenuFit",
 ];
 
 /** The About list. Each string is one bullet, and may carry icon tokens. */
@@ -47,7 +47,7 @@ export const ABOUT = [
 ];
 
 /**
- * The four roles, as a compact table rather than a sentence.
+ * The five roles, as a compact table rather than a sentence.
  *
  * They were a run-on line with six highlights in it, which is where the
  * chips stopped meaning anything: a phrase reads as emphasised only while
@@ -59,6 +59,8 @@ export const ABOUT_ROLES: {
   key: string;
   name: string;
   role: string;
+  /** What the row is worth, in a few words, after the role. */
+  stat?: string;
   /** The product's own mark, so the row is identified by its logo rather
    *  than by a house glyph standing in for it. */
   logo?: string;
@@ -67,10 +69,11 @@ export const ABOUT_ROLES: {
   emoji?: string;
   href?: string;
 }[] = [
-  { key: "wayari", name: "wayari", role: "founder", logo: "/logos/wayari.svg", href: "https://wayari.com" },
-  { key: "bevel", name: "bevel", role: "founder", logo: "/logos/bevel.png", href: "https://bevel.team" },
-  { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
+  { key: "ignura", name: "ignura", role: "founder", stat: "6 figure arr", logo: "/logos/ignura.png", href: "https://ignura.com" },
+  { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 2m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
+  { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
   { key: "nooli", name: "nooli", role: "head of product", emoji: "\u{1F92B}" },
+  { key: "wayari", name: "wayari", role: "founder", stat: "side project", logo: "/logos/wayari.svg", href: "https://wayari.com" },
 ];
 
 export const ABOUT_TAIL = [
@@ -106,29 +109,67 @@ export type Item = {
   status: "Live" | "Building" | "Waitlist" | "Discontinued";
   /** The stack, as tags under a project card. */
   tags?: { brand?: import("@/components/Brand").BrandKey; label: string }[];
-  /** A film that says more than a screenshot can. */
-  video?: { mp4: string; poster: string; note: string; full?: string };
 };
 
-/** What he is actually spending the week on. */
+/** What he is actually spending the week on, in the order the grid shows it:
+ *  the first is drawn wide, the rest in pairs. */
 export const NOW: Item[] = [
   {
-    key: "wayari",
-    roleIcon: "code",
-    name: "wayari",
-    href: "https://wayari.com",
-    logo: "/logos/wayari.svg",
-    shot: "/design/wayari.png",
-    domain: "wayari.com",
+    key: "ignura",
+    roleIcon: "rocket",
+    name: "ignura",
+    href: "https://ignura.com",
+    logo: "/logos/ignura.png",
+    shot: "/design/ignura.webp",
+    domain: "ignura.com",
     role: "Founder",
     period: "Since 2026",
-    status: "Building",
-    blurb: "A self improving way to code. Ship PRs while you sleep, merge them with your eyes open.",
+    status: "Live",
+    blurb:
+      "The launch studio for apps. Launch films, App Store screenshots, landing pages and UGC from a team of four. 6 figure ARR.",
     tags: [
-      { brand: "electron", label: "Electron" },
-      { brand: "typescript", label: "TypeScript" },
-      { brand: "react", label: "React" },
-      { brand: "nextdotjs", label: "Next.js" },
+      { label: "Launch films" },
+      { label: "App Store screenshots" },
+      { label: "Landing pages" },
+      { label: "UGC" },
+    ],
+  },
+  {
+    key: "menufit",
+    roleIcon: "pen",
+    name: "menufit",
+    href: "https://menufit.com",
+    logo: "/logos/menufit.png",
+    shot: "/design/menufit.webp",
+    domain: "menufit.com",
+    role: "Design",
+    period: "Since 2026",
+    status: "Live",
+    blurb: "The app for eating out healthy. 7 figure ARR and 2 million users. I design the product.",
+    tags: [
+      { brand: "figmacolour", label: "Product design" },
+      { label: "iOS" },
+      { label: "Android" },
+      { label: "Design system" },
+    ],
+  },
+  {
+    key: "bevel",
+    roleIcon: "cube",
+    name: "bevel",
+    href: "https://bevel.team",
+    logo: "/logos/bevel.png",
+    shot: "/design/bevel-team.webp",
+    domain: "bevel.team",
+    role: "Founder",
+    period: "Since 2026",
+    status: "Live",
+    blurb: "A 3D art team you can hire by the job, at published rates. 6 figure ARR.",
+    tags: [
+      { brand: "blender", label: "Blender" },
+      { brand: "zbrush", label: "ZBrush" },
+      { brand: "adobe", label: "Substance" },
+      { label: "Game ready" },
     ],
   },
   {
@@ -152,53 +193,23 @@ export const NOW: Item[] = [
     ],
   },
   {
-    key: "okara",
-    roleIcon: "pen",
-    name: "okara",
-    href: "https://okara.ai",
-    logo: "/logos/okara.png",
-    shot: "/design/okara.png",
-    domain: "okara.ai",
-    role: "Design",
-    period: "Since 2026",
-    status: "Live",
-    blurb: "An AI CMO that drafts and ships marketing work. I design the product.",
-    tags: [
-      { brand: "figmacolour", label: "Product design" },
-      { brand: "nextdotjs", label: "Next.js" },
-      { brand: "tailwindcss", label: "Tailwind" },
-      { label: "Design system" },
-    ],
-    // The launch film, which did 14 million views on X in a day.
-    video: {
-      // A 14-second cut, not the full 74. The whole film was 61MB across two
-      // formats and would have been 97% of the site's weight; at ~25MB a play
-      // it was the one asset that could actually run up a bandwidth bill.
-      // H.264 only: every browser plays it, and the VP9 encode came out
-      // larger, so a second format would have cost more and bought nothing.
-      mp4: "/video/okara-clip.mp4",
-      poster: "/design/okara-poster.webp",
-      note: "14M views",
-      full: "https://okara.ai",
-    },
-  },
-  {
-    key: "bevel",
-    roleIcon: "cube",
-    name: "bevel",
-    href: "https://bevel.team",
-    logo: "/logos/bevel.png",
-    shot: "/design/bevel-team.webp",
-    domain: "bevel.team",
+    key: "wayari",
+    roleIcon: "code",
+    name: "wayari",
+    href: "https://wayari.com",
+    logo: "/logos/wayari.svg",
+    shot: "/design/wayari.png",
+    domain: "wayari.com",
     role: "Founder",
+    roleNote: "side project",
     period: "Since 2026",
-    status: "Live",
-    blurb: "A 3D art team you can hire by the job, at published rates.",
+    status: "Building",
+    blurb: "A self improving way to code. Ship PRs while you sleep, merge them with your eyes open.",
     tags: [
-      { brand: "blender", label: "Blender" },
-      { brand: "zbrush", label: "ZBrush" },
-      { brand: "adobe", label: "Substance" },
-      { label: "Game ready" },
+      { brand: "electron", label: "Electron" },
+      { brand: "typescript", label: "TypeScript" },
+      { brand: "react", label: "React" },
+      { brand: "nextdotjs", label: "Next.js" },
     ],
   },
 ];
@@ -402,9 +413,10 @@ export const VENN = [
  *  here, rather than stitched together from the page's copy. */
 export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
-  "the launch studio that makes launch films, App Store screenshots and landing pages for apps. He builds wayari, a Mac app " +
-  "for running several coding agents at once, and runs bevel, a 3D art team available for hire. " +
-  "He is also on design at Okara and head of product at Nooli.";
+  "the launch studio that makes launch films, App Store screenshots and landing pages for apps, and bevel, " +
+  "a 3D art team available for hire. Both are at 6 figure ARR. He does design at MenuFit (menufit.com), " +
+  "an app for eating out healthy with 2 million users and 7 figure ARR, and is head of product at Nooli. " +
+  "As a side project he builds wayari, a Mac app for running several coding agents at once.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [
@@ -426,9 +438,11 @@ export const SKILLS = [
  * there is one screenshot per product and no way for the two to disagree.
  */
 const PHRASE_TO_KEY: Record<string, string> = {
+  ignura: "ignura",
+  menufit: "menufit",
   wayari: "wayari",
   bevel: "bevel",
-  "design at okara": "okara",
+  "design at menufit": "menufit",
   "head of product at nooli": "nooli",
 };
 

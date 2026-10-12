@@ -64,7 +64,7 @@ export default function Home() {
         </Section>
 
         <Section title="Projects" id="projects" aside="live work">
-          <Grid items={NOW.filter((i) => i.shot || i.video || i.emoji)} />
+          <Grid items={NOW.filter((i) => i.shot || i.emoji)} />
         </Section>
 
         <Section title="Also mine" aside="still live">
@@ -272,10 +272,10 @@ function About() {
             six chips in it, which is where the chips stopped meaning
             anything: a phrase reads as emphasised only while most of the
             phrases around it are not. */}
-        <ul className="grid gap-x-8 gap-y-2 py-1.5 sm:grid-cols-2">
+        <ul className="space-y-2.5 py-1.5">
           {ABOUT_ROLES.map((r) => (
-            <li key={r.key} className="flex items-baseline gap-2 text-[14px]">
-              <Logo src={r.logo} emoji={r.emoji} size={18} className="translate-y-[3px]" />
+            <li key={r.key} className="flex items-baseline gap-2.5 text-[14px]">
+              <Logo src={r.logo} emoji={r.emoji} size={22} className="translate-y-[5px]" />
               {/* Same hover card as the project grid, read off the same
                   item, so the two can never show different screenshots. */}
               <Preview {...(heroFor(r.name) ?? {})}>
@@ -293,7 +293,10 @@ function About() {
                 )}
               </Preview>
               <span className="lead" aria-hidden="true" />
-              <span className="shrink-0 text-[13px] text-muted-foreground">{r.role}</span>
+              <span className="shrink-0 text-right text-[13px] text-muted-foreground">
+                {r.role}
+                {r.stat && <span className="text-foreground/80"> · {r.stat}</span>}
+              </span>
             </li>
           ))}
         </ul>
@@ -376,121 +379,100 @@ function Role({ item }: { item: Item }) {
   );
 }
 
-/** The project grid: two columns with a rule down the middle, matching the
- *  column's own hairlines rather than boxing each card in its own border. */
+/** The project grid. With an odd count the first project is drawn across the
+ *  full width and the rest sit in pairs under it, so five reads as one
+ *  headline and two rows of two rather than four and an orphan. Rules match
+ *  the column's own hairlines instead of boxing each card. */
 function Grid({ items }: { items: Item[] }) {
+  const lead = items.length % 2 === 1 ? items[0] : null;
+  const pairs = lead ? items.slice(1) : items;
+
   return (
-    <div className="relative">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-1/2 top-0 z-0 hidden w-px bg-border sm:block"
-      />
-      <div className="relative grid grid-cols-1 sm:grid-cols-2">
-        {items.map((item, i) => (
-          <Reveal
-            key={item.key}
-            index={i}
-            step={0.08}
-            className="proj group/card relative flex flex-col gap-2 border-t border-border p-4 first:border-t-0 sm:border-t-0"
-          >
-            {item.href && (
-              // Sits under the media and the chips, so the video keeps its
-              // controls and the tag table keeps its own hovers; everywhere
-              // else on the card, this is what the pointer lands on.
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-cur="open"
-                className="absolute inset-0 z-[1] rounded-md focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
-              >
-                <span className="sr-only">{`Open ${item.name}`}</span>
-              </a>
-            )}
-            <div className="group/media relative z-[2] block overflow-hidden rounded-md border border-border">
-              {item.video ? (
-                <Film video={item.video} />
-              ) : item.emoji ? (
-                // Nothing to screenshot yet. A white panel carrying the mark
-                // itself, drawn as text so it stays crisp at any size, rather
-                // than a blank rectangle that reads as a failed image.
-                <div className="proj-shot flex h-44 w-full items-center justify-center bg-white sm:h-48">
-                  <span className="text-6xl leading-none" aria-hidden="true">
-                    {item.emoji}
-                  </span>
-                </div>
-              ) : (
-                <Image
-                  src={item.shot!}
-                  alt=""
-                  width={1200}
-                  height={630}
-                  className="proj-shot h-44 w-full object-cover object-top sm:h-48"
-                />
-              )}
-            </div>
-            <div className="flex items-center justify-between gap-3">
-              <h3 className="min-w-0 font-display text-[15px] font-semibold leading-snug transition-opacity group-hover/card:opacity-70">
-                {item.name}
-              </h3>
-              <div className="flex shrink-0 items-center gap-1.5">
-                <Status status={item.status} />
-              </div>
-            </div>
-            <p className="text-[13px] leading-relaxed text-muted-foreground">{item.blurb}</p>
-            {item.tags && (
-              <ul className="grid-table relative z-[2] mt-0.5 grid-cols-2">
-                {item.tags.map((t) => (
-                  <li key={t.label} className="text-muted-foreground">
-                    <span className="cell-mark">
-                      {t.brand ? <Brand name={t.brand} size={13} /> : null}
-                    </span>
-                    <span className="cell-label">{t.label}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Reveal>
-        ))}
+    <div>
+      {lead && <Card item={lead} index={0} wide />}
+      <div className={`relative ${lead ? "border-t border-border" : ""}`}>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-1/2 top-0 z-0 hidden w-px bg-border sm:block"
+        />
+        <div className="relative grid grid-cols-1 sm:grid-cols-2">
+          {pairs.map((item, i) => (
+            <Card key={item.key} item={item} index={i + (lead ? 1 : 0)} />
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-/** The Okara launch film. Muted, looping and `preload="none"`, so nothing
- *  downloads until someone actually asks for it: the file is 22MB. */
-function Film({
-  video,
-}: {
-  video: { mp4: string; poster: string; note: string; full?: string };
-}) {
+function Card({ item, index, wide = false }: { item: Item; index: number; wide?: boolean }) {
   return (
-    <div className="proj-shot relative overflow-hidden rounded-md border border-border">
-      <video
-        preload="none"
-        controls
-        playsInline
-        poster={video.poster}
-        className="h-44 w-full bg-black object-cover object-top sm:h-48"
-      >
-        <source src={video.mp4} type="video/mp4" />
-      </video>
-      <span className="pointer-events-none absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-black/70 px-2 py-0.5 text-[11px] font-medium text-white">
-        <Icon name="play" size={11} />
-        {video.note}
-      </span>
-      {video.full && (
+    <Reveal
+      index={index}
+      step={0.08}
+      className="proj group/card relative flex flex-col gap-2 border-t border-border p-4 first:border-t-0 sm:border-t-0"
+    >
+      {item.href && (
+        // Sits under the media and the chips, so the tag table keeps its own
+        // hovers; everywhere else on the card, this is what the pointer
+        // lands on.
         <a
-          href={video.full}
+          href={item.href}
           target="_blank"
           rel="noopener noreferrer"
-          data-cur="watch"
-          className="tap absolute bottom-2 right-2 rounded-full bg-black/70 px-2 py-0.5 text-[11px] font-medium text-white transition-opacity hover:opacity-80"
+          data-cur="open"
+          className="absolute inset-0 z-[1] rounded-md focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
         >
-          full film
+          <span className="sr-only">{`Open ${item.name}`}</span>
         </a>
       )}
-    </div>
+      <div className="group/media relative z-[2] block overflow-hidden rounded-md border border-border">
+        {item.emoji ? (
+          // Nothing to screenshot yet. A white panel carrying the mark
+          // itself, drawn as text so it stays crisp at any size, rather
+          // than a blank rectangle that reads as a failed image.
+          <div className={`proj-shot flex h-44 w-full items-center justify-center bg-white ${wide ? "sm:h-64" : "sm:h-48"}`}>
+            <span className="text-6xl leading-none" aria-hidden="true">
+              {item.emoji}
+            </span>
+          </div>
+        ) : (
+          <Image
+            src={item.shot!}
+            alt=""
+            width={1200}
+            height={630}
+            className={`proj-shot h-44 w-full object-cover object-top ${wide ? "sm:h-64" : "sm:h-48"}`}
+          />
+        )}
+      </div>
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="flex min-w-0 items-center gap-2 font-display text-[15px] font-semibold leading-snug transition-opacity group-hover/card:opacity-70">
+          {item.name}
+          {item.roleNote && (
+            <span className="text-xs font-normal text-muted-foreground">({item.roleNote})</span>
+          )}
+        </h3>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <Status status={item.status} />
+        </div>
+      </div>
+      <p className="text-[13px] leading-relaxed text-muted-foreground">{item.blurb}</p>
+      {item.tags && (
+        <ul
+          className={`grid-table relative z-[2] mt-0.5 grid-cols-2 ${wide ? "sm:grid-cols-4" : ""}`}
+        >
+          {item.tags.map((t) => (
+            <li key={t.label} className="text-muted-foreground">
+              <span className="cell-mark">
+                {t.brand ? <Brand name={t.brand} size={13} /> : null}
+              </span>
+              <span className="cell-label">{t.label}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Reveal>
   );
 }
 
