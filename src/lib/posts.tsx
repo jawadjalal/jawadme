@@ -34,7 +34,7 @@ export const POSTS: Post[] = [
 
         <h2>Great apps, quiet launches</h2>
         <p>
-          I design products and build my own, like wayari and bevel. Around them I kept seeing
+          I design products and build my own, like ignaru and bevel. Around them I kept seeing
           the same pattern. The app was rarely the problem. The launch was. All the craft went
           into the build, and the moment people actually met the product got whatever time was
           left: a post, a few screenshots, and a hope.
@@ -61,7 +61,7 @@ export const POSTS: Post[] = [
         <p>
           Ignura is a launch studio for consumer apps, prosumer tools and B2B. Consumer apps are
           the core. We do design, launch films, App Store screenshots, landing pages, UGC and
-          launch-day runs. Past work includes wayari, Okara and bevel, plus UGC for hypjam.
+          launch-day runs. Past work includes ignaru, Okara and bevel, plus UGC for hypjam.
         </p>
         <p>
           Prices are on the table from the start. UGC starts from £3,000. Ignite, the whole

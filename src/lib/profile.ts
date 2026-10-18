@@ -43,6 +43,7 @@ export const ROLES = [
 export const ABOUT = [
   "i'm jawad :sparkle:, a :pen:{designer} and founder in london :globe: :rocket:[(yc soon)|https://www.ycombinator.com/]. ~i started making things for money at thirteen and never really stopped. i'm fifteen now.~",
   "~i run~ :rocket:{ignura|https://ignura.com}~, the launch studio that makes launch films, app store screenshots and landing pages for apps.~",
+  "~i build~ :rocket:{ignaru|https://ignaru.com}~, a growth engine in a box.~",
   "~i build my own products~ :cube:<end to end>~: the brand, the interface, and the thing that actually ships.~",
 ];
 
@@ -73,7 +74,7 @@ export const ABOUT_ROLES: {
   { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 2m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
   { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
   { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
-  { key: "wayari", name: "wayari", role: "founder", stat: "side project", logo: "/logos/wayari.svg", href: "https://wayari.com" },
+  { key: "ignaru", name: "ignaru", role: "founder", stat: "side project", logo: "/logos/ignaru.png", href: "https://ignaru.com" },
 ];
 
 export const ABOUT_TAIL = [
@@ -191,23 +192,22 @@ export const NOW: Item[] = [
     ],
   },
   {
-    key: "wayari",
-    roleIcon: "code",
-    name: "wayari",
-    href: "https://wayari.com",
-    logo: "/logos/wayari.svg",
-    shot: "/design/wayari.png",
-    domain: "wayari.com",
+    key: "ignaru",
+    roleIcon: "trend",
+    name: "ignaru",
+    href: "https://ignaru.com",
+    logo: "/logos/ignaru.png",
+    shot: "/design/ignaru.webp",
+    domain: "ignaru.com",
     role: "Founder",
     roleNote: "side project",
     period: "Since 2026",
     status: "Building",
-    blurb: "A self improving way to code. Ship PRs while you sleep, merge them with your eyes open.",
+    blurb: "A growth engine in a box. Leads in, calls out, you approve everything in between.",
     tags: [
-      { brand: "electron", label: "Electron" },
-      { brand: "typescript", label: "TypeScript" },
-      { brand: "react", label: "React" },
-      { brand: "nextdotjs", label: "Next.js" },
+      { label: "B2B" },
+      { label: "Growth" },
+      { label: "GTM" },
     ],
   },
 ];
@@ -364,7 +364,6 @@ export const SKILLS_TABLE: {
       { brand: "grok", label: "Grok" },
       { brand: "grokbot", label: "Grok Bot" },
       { brand: "hermes", label: "Hermes Agent" },
-      { brand: "wayari", label: "Wayari" },
     ],
   },
   {
@@ -414,7 +413,7 @@ export const SUMMARY =
   "the launch studio that makes launch films, App Store screenshots and landing pages for apps, and bevel, " +
   "a 3D art team available for hire. Both are at 6 figure ARR. He does design at Okara and at MenuFit (menufit.com), " +
   "an app for eating out healthy with 2 million users and 7 figure ARR. " +
-  "As a side project he builds wayari, a Mac app for running several coding agents at once.";
+  "As a side project he builds ignaru, a growth engine in a box.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [
@@ -431,14 +430,14 @@ export const SKILLS = [
  *
  * Derived from the entries above rather than written out again. The first
  * version of this was a second hardcoded map in prose.tsx, and it went stale
- * the moment Wayari's screenshot was replaced: the card kept serving the old
+ * the moment a project's screenshot was replaced: the card kept serving the old
  * file while the project grid served the new one. Reading the item means
  * there is one screenshot per product and no way for the two to disagree.
  */
 const PHRASE_TO_KEY: Record<string, string> = {
   ignura: "ignura",
   menufit: "menufit",
-  wayari: "wayari",
+  ignaru: "ignaru",
   bevel: "bevel",
   "design at menufit": "menufit",
 };
