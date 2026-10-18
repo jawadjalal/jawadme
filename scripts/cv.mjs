@@ -108,19 +108,18 @@ const HIGHLIGHTS = {
     ],
     skills: "Product management · Product strategy · EdTech · iOS · Design systems · SwiftUI",
   },
-  wayari: {
+  ignaru: {
     title: "Founder",
-    line: "Side project · Mac app",
+    line: "Side project · a growth engine in a box",
     points: [
-      "A desktop app for running several coding agents at once: ship PRs while you sleep, merge them with your eyes open.",
-      "Designed and built end to end in Electron, TypeScript, React and Next.js, including a desktop dock that shows every job, review and merge.",
+      "B2B growth software. Leads in, calls out, and you approve everything in between.",
     ],
-    skills: "Product design · Front-end · Electron · TypeScript · React · AI agents · Developer tools",
+    skills: "Product design · B2B · Go-to-market",
   },
 };
 
 const NOOLI = { key: "nooli", name: "nooli", period: "2026" };
-const WAYARI = NOW.find((i) => i.key === "wayari");
+const IGNARU = NOW.find((i) => i.key === "ignaru");
 
 const job = (item) => {
   const h = HIGHLIGHTS[item.key];
@@ -211,7 +210,7 @@ const html = `<!doctype html><meta charset="utf-8">
 
 <section>
   <h2>Experience</h2>
-  ${NOW.filter((i) => i.key !== "wayari").map(job).join("")}
+  ${NOW.filter((i) => i.key !== "ignaru").map(job).join("")}
 </section>
 
 <div class="page2">
@@ -231,7 +230,7 @@ const html = `<!doctype html><meta charset="utf-8">
 
   <section>
     <h2>Side project</h2>
-    ${job(WAYARI)}
+    ${job(IGNARU)}
   </section>
 
   <section>
