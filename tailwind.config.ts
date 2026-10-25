@@ -5,10 +5,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Satoshi", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
-        pixel: ["var(--font-pixel)", "ui-monospace", "monospace"],
-        display: ["Chillax", "Satoshi", "ui-sans-serif", "system-ui", "sans-serif"],
+        // One face, as on ignura.com. `display` and `mono` are kept as names so
+        // older markup still resolves, and both land on Satoshi.
+        sans: ["Satoshi", "Satoshi Fallback", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Satoshi", "Satoshi Fallback", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["Satoshi", "Satoshi Fallback", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
         background: "var(--background)",
@@ -18,8 +19,8 @@ export default {
         border: "var(--border)",
         ring: "var(--ring)",
       },
-      borderRadius: { DEFAULT: "var(--radius)", md: "calc(var(--radius) - 2px)" },
-      maxWidth: { column: "715px" },
+      borderRadius: { DEFAULT: "var(--radius)", md: "var(--radius)", lg: "var(--radius)" },
+      maxWidth: { column: "760px" },
     },
   },
   plugins: [],

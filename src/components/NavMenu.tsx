@@ -10,6 +10,10 @@
 
 import { useEffect, useRef } from "react";
 import { Icon, type IconName } from "./Icon";
+import { Obj, type ObjName } from "./Obj";
+
+// Each menu is led by one glossy object, as ignura.com's links are.
+const OBJ: Partial<Record<IconName, ObjName>> = { block: "work", sparkle: "now", mail: "contact" };
 
 export type NavGroup = {
   label: string;
@@ -48,6 +52,7 @@ export function NavMenu({ groups }: { groups: NavGroup[] }) {
       {groups.map((g) => (
         <details key={g.label} className="nav-menu">
           <summary data-cur="open">
+            {OBJ[g.icon] && <Obj name={OBJ[g.icon]!} size={22} />}
             {g.label}
             <Icon name="chev" size={11} className="nav-chev" />
           </summary>

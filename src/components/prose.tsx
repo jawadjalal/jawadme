@@ -62,8 +62,8 @@ const HUES: Partial<Record<string, Hue>> = {
   code: "violet", list: "violet", target: "violet", block: "violet",
   team: "ember", quote: "ember", pen: "ember",
   game: "slate", cube: "slate", mail: "slate", doc: "slate",
-  // The one orange thing on the page, which is what makes it read as news.
-  rocket: "orange",
+  // Ink like the rest. The page's one orange word is in the hero now.
+  rocket: "slate",
 };
 
 export const hueFor = (name: string): Hue => HUES[name] ?? "slate";

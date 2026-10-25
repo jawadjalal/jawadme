@@ -6,27 +6,26 @@ import { HeroCtas } from "@/components/HeroCtas";
 import { Cursor } from "@/components/Cursor";
 import { Elsewhere } from "@/components/Elsewhere";
 import { Logo } from "@/components/Logo";
+import { Mark, Obj } from "@/components/Obj";
 import { Portrait } from "@/components/Portrait";
 import { Rail } from "@/components/Rail";
 import { Reveal } from "@/components/Reveal";
-import { ScrollCta } from "@/components/ScrollCta";
 import { Section } from "@/components/Section";
-import { NavMenu } from "@/components/NavMenu";
+import { SiteNav } from "@/components/SiteNav";
 import { DotField } from "@/components/DotField";
 import { Icon, type IconName } from "@/components/Icon";
 import { Preview } from "@/components/Preview";
 import { Rotator } from "@/components/Rotator";
 import { Streamed } from "@/components/Streamed";
-import { Theme } from "@/components/Theme";
 import { parseProse } from "@/components/prose";
 import {
-  ABOUT, ABOUT_ROLES, ABOUT_TAIL, ARCHIVE, heroFor, NAV, IDENTITY, NOW, ROLES, SKILLS_TABLE, SOCIALS, VENN, type Item,
+  ABOUT, ABOUT_ROLES, ABOUT_TAIL, ARCHIVE, heroFor, HERO, NAV, IDENTITY, NOW, ROLES, SKILLS_TABLE, SOCIALS, VENN, type Item,
 } from "@/lib/profile";
 
-// One ruled column, 715px wide, on a hatched ground. Every section is
-// separated by a hairline that runs the column's full width rather than being
-// inset to the text, which is what makes a long page read as one ruled sheet
-// instead of a stack of unrelated cards.
+// One reading column on white paper, in ignura.com's black and white: Satoshi
+// alone, a soft grey step for anything that sits on the page, the 12px radius,
+// glossy black objects leading each heading, and one orange word. Sections are
+// told apart by space and by that grey step, never by a rule.
 
 export default function Home() {
   return (
@@ -35,40 +34,30 @@ export default function Home() {
       <ContactModal />
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:border focus:bg-background focus:px-3 focus:py-2 focus:text-sm"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm"
       >
         Skip to content
       </a>
 
-      <Header />
+      <SiteNav groups={NAV} />
       <Rail />
 
-      <main id="main" className="column-ground mx-auto w-full max-w-column border-border md:border-x">
-        {/* The band of dots the pointer pushes around. Decorative, and the
-            first thing on the page that responds to you at all. */}
-        <div className="screen-line-bottom h-24 w-full sm:h-32" aria-label="Interactive dot field">
-          <DotField />
-        </div>
+      {/* The halftone the bar hangs over. The pointer pushes the dots and they
+          warm to the orange, the page's one moving texture. */}
+      <div className="dot-band h-28 w-full sm:h-36" aria-hidden="true">
+        <DotField />
+      </div>
 
+      <main id="main" className="mx-auto w-full max-w-column px-4 sm:px-6">
         <Hero />
         <About />
 
-        <Section title="Now" id="now" aside={`${NOW.length} things`}>
-          <ul className="space-y-5 px-4 py-5 sm:px-6">
-            {NOW.map((item, i) => (
-              <Reveal key={item.key} as="li" index={i}>
-                <Role item={item} />
-              </Reveal>
-            ))}
-          </ul>
-        </Section>
-
-        <Section title="Projects" id="projects" aside="live work">
+        <Section title="Projects" id="projects" obj="work" aside="live work">
           <Grid items={NOW.filter((i) => i.shot || i.emoji)} />
         </Section>
 
-        <Section title="Also mine" aside="still live">
-          <ul className="space-y-5 px-4 py-5 sm:px-6">
+        <Section title="Also mine" obj="previously" aside="still live">
+          <ul className="space-y-1">
             {ARCHIVE.map((item, i) => (
               <Reveal key={item.key} as="li" index={i}>
                 <Role item={item} />
@@ -77,171 +66,60 @@ export default function Home() {
           </ul>
         </Section>
 
-        <Section title="Skills" id="skills">
-          <table className="w-full border-collapse text-left">
-            <tbody className="block sm:table-row-group">
-              {SKILLS_TABLE.map((row, i) => (
-                <Reveal
-                  key={row.area}
-                  as="tr"
-                  index={i}
-                  step={0.07}
-                  className="block border-b border-border last:border-0 sm:table-row"
-                >
-                  <th
-                    scope="row"
-                    className="block whitespace-nowrap px-4 pb-1 pt-3 align-top font-display text-[15px] font-semibold sm:table-cell sm:w-28 sm:px-6 sm:py-3"
-                  >
-                    <span className="inline-flex items-center gap-1.5">
-                      <span style={{ color: `var(--hue-${row.icon === "pen" ? "ember" : row.icon === "code" ? "violet" : "slate"})` }}>
-                        <Icon name={row.icon} size={15} />
-                      </span>
-                      {row.area}
-                    </span>
-                  </th>
-                  <td className="block px-4 pb-3 align-top sm:table-cell sm:px-6 sm:py-3">
-                    <p className="text-[13px] text-muted-foreground">{row.what}</p>
-                    <ul className="grid-table mt-2 grid-cols-2 sm:grid-cols-3">
-                      {row.tools.map((t) => (
-                        <li key={t.label} className="text-muted-foreground">
-                          <span className="cell-mark">
-                            {t.brand ? (
-                              <Brand name={t.brand} size={13} />
-                            ) : t.icon ? (
-                              <Icon name={t.icon} size={13} />
-                            ) : null}
-                          </span>
-                          <span className="cell-label">{t.label}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </td>
-                </Reveal>
-              ))}
-            </tbody>
-          </table>
+        <Section title="Skills" id="skills" obj="skills">
+          <ul className="space-y-6">
+            {SKILLS_TABLE.map((row, i) => (
+              <Reveal key={row.area} as="li" index={i} step={0.07} className="sm:grid sm:grid-cols-[8rem_1fr] sm:gap-6">
+                <h3 className="text-[17px] font-bold tracking-[-0.01em]">{row.area}</h3>
+                <div>
+                  <p className="text-[15px] text-[var(--ink-read)]">{row.what}</p>
+                  <ul className="mt-2.5 flex flex-wrap gap-1.5">
+                    {row.tools.map((t) => (
+                      <li key={t.label} className="tool">
+                        {t.brand ? <Brand name={t.brand} size={14} /> : t.icon ? <Icon name={t.icon} size={14} /> : null}
+                        {t.label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </ul>
         </Section>
 
-        <section id="elsewhere" className="screen-line-top scroll-mt-14">
+        <section id="elsewhere" className="sec scroll-mt-20">
           <Elsewhere />
         </section>
 
-        <Section title="Contact" id="contact">
-          {/* One table, not six floating boxes. Six separately bordered
-              tiles read as six unrelated things; sharing the rules says
-              these are one set of ways to reach the same person. */}
-          <div className="px-4 py-5 sm:px-6">
-            <div className="grid-table grid-cols-2 sm:grid-cols-3">
-              {SOCIALS.map((so, i) => (
-                <a
-                  key={so.label}
-                  href={so.href}
-                  target={so.href.startsWith("http") ? "_blank" : undefined}
-                  rel="noopener noreferrer"
-                  data-cur={so.label === "Email" ? "say hi" : "open"}
-                  className="tap min-h-11 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
-                >
-                  <span className="cell-mark">
-                    {so.brand ? <Brand name={so.brand} size={14} /> : <Icon name={so.icon!} size={14} />}
-                  </span>
-                  <span className="cell-label">{so.label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </Section>
-
-        <Section title="Where it overlaps" id="overlaps">
-          <div className="px-4 py-8 sm:px-10">
+        <Section title="Where it overlaps" id="overlaps" obj="overlaps">
+          <div className="py-4 sm:px-8">
             <Venn />
           </div>
         </Section>
-
-        {/* The ask, last. It sits under the diagram rather than above it
-            because the diagram is the argument and this is what to do about
-            it.
-
-            The button is the reference's, rebuilt: on hover the gap opens
-            from 0.5rem to 2rem, a hidden "+ You" slides in from behind his
-            avatar and fades up, and the label steps right to make room. Two
-            faces and a plus says "a conversation" in less space than a
-            sentence would, and the whole thing is one transition on three
-            properties rather than a keyframe. */}
-        <div
-          id="contact-cta"
-          className="screen-line-top flex w-full flex-col items-center px-5 py-10 sm:px-10"
-        >
-          <p className="mb-5 text-balance text-center text-sm opacity-70 md:text-lg">
-            Still reading? That means something clicked. Let&rsquo;s talk.
-          </p>
-          <Cta />
-        </div>
-
-        <footer className="screen-line-top relative overflow-hidden px-4 pb-0 pt-10 sm:px-6">
-          {/* The same field the page opens with, and it pushes back the same
-              way. A static pattern down here read as wallpaper next to a top
-              that moves; making both respond is what closes the loop. */}
-          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-            <DotField />
-          </div>
-          {/* The wordmark, set large and dissolving downward. A flat tint at
-              this size still reads as a heading you are meant to start; the
-              fade says it is the end of the page rather than the top of
-              something else. Aria-hidden because the name is already in the
-              document title and the JSON-LD, and a screen reader does not
-              need it a third time as decoration. */}
-          <p
-            aria-hidden="true"
-            className="footer-mark relative select-none text-center font-display font-semibold uppercase leading-[0.8] tracking-tight"
-            style={{ fontSize: "clamp(4rem, 22vw, 12rem)" }}
-          >
-            {IDENTITY.wordmark}
-          </p>
-        </footer>
       </main>
-    </div>
-  );
-}
 
-function Header() {
-  return (
-    <div className="sticky top-0 isolate z-50 w-full bg-background/85 pt-1 backdrop-blur">
-      <div className="mx-auto w-full max-w-column">
-        <div className="screen-line-top screen-line-bottom mt-1 flex w-full items-center justify-between gap-2 px-4 py-1.5">
-          <a href="#main" className="tap rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring">
-            <span className="font-pixel text-2xl uppercase leading-none tracking-wide">
-              {IDENTITY.wordmark}
-            </span>
-          </a>
-          <div className="flex items-center gap-2 md:gap-4">
-            <nav aria-label="Main" className="hidden md:block">
-              <NavMenu groups={NAV} />
-            </nav>
-            <span className="hidden h-4 w-px bg-border md:block" aria-hidden="true" />
-            <ScrollCta />
-            <Theme />
-          </div>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }
 
 function Hero() {
   return (
-    <header className="flex w-full items-start">
-      <div className="p-4">
+    <header className="pt-10 sm:pt-14">
+      <div className="flex items-end gap-5 sm:gap-6">
         <Portrait />
+        <div className="min-w-0 pb-7 sm:pb-8">
+          <h1 className="hero-name">{IDENTITY.properName}</h1>
+          <p className="mt-1 flex min-h-7 items-center text-[17px] font-medium text-muted-foreground sm:text-[20px]">
+            <Rotator items={ROLES} />
+          </p>
+        </div>
       </div>
-      <div className="flex min-w-0 flex-1 flex-col pt-4">
-        <h1 className="font-display text-xl font-semibold tracking-tight md:text-2xl">
-          {IDENTITY.properName}
-        </h1>
-        <p className="flex min-h-6 items-center text-sm font-medium text-muted-foreground md:text-base">
-          <Rotator items={ROLES} />
-        </p>
-        <HeroCtas />
-      </div>
+      <p className="hero-say mt-7">
+        {HERO.before} <span className="pop">{HERO.pop}</span>
+        {HERO.after}
+      </p>
+      <HeroCtas />
     </header>
   );
 }
@@ -254,48 +132,36 @@ function About() {
   const tail = ABOUT_TAIL.map(parseProse);
 
   return (
-    <section aria-labelledby="about" className="screen-line-top">
-      <div className="screen-line-bottom flex w-full items-center justify-between gap-4 px-4 py-1">
-        <h2 id="about" className="scroll-mt-20 font-display text-xl font-medium tracking-tight sm:text-2xl">
-          About
-        </h2>
-      </div>
-
-      <div className="space-y-3 px-4 py-5 text-[15px] leading-relaxed sm:px-6">
+    <Section title="About" id="about" obj="about">
+      <div className="space-y-3 text-[17px] leading-relaxed">
         {intro.map((parsed, i) => (
           <Streamed key={i} parsed={parsed} animate delay={i * 0.3} />
         ))}
 
-        {/* The roles, as a ruled table. The product's own logo identifies
-            each row, a dashed leader carries the eye across, and the role
-            sits in the right column. This replaced a run-on sentence with
-            six chips in it, which is where the chips stopped meaning
-            anything: a phrase reads as emphasised only while most of the
-            phrases around it are not. */}
-        <ul className="space-y-2.5 py-1.5">
+        {/* The roles, on one soft slab: the product's own logo, its name, and
+            what he does there on the right. One surface rather than a box per
+            row, so it reads as one list. */}
+        <ul className="roles my-5">
           {ABOUT_ROLES.map((r) => (
-            <li key={r.key} className="flex items-baseline gap-2.5 text-[14px]">
-              <Logo src={r.logo} emoji={r.emoji} size={22} className="translate-y-[5px]" />
-              {/* Same hover card as the project grid, read off the same
-                  item, so the two can never show different screenshots. */}
+            <li key={r.key}>
+              <Logo src={r.logo} emoji={r.emoji} size={28} />
               <Preview {...(heroFor(r.name) ?? {})}>
                 {r.href ? (
                   <a
                     href={r.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="tap font-display font-semibold underline decoration-border underline-offset-[3px] transition-colors hover:decoration-foreground"
+                    className="tap font-bold underline decoration-transparent underline-offset-[3px] transition-colors hover:decoration-foreground"
                   >
                     {r.name}
                   </a>
                 ) : (
-                  <span className="font-display font-semibold">{r.name}</span>
+                  <span className="font-bold">{r.name}</span>
                 )}
               </Preview>
-              <span className="lead" aria-hidden="true" />
-              <span className="shrink-0 text-right text-[13px] text-muted-foreground">
+              <span className="ml-auto text-right text-[15px] text-muted-foreground">
                 {r.role}
-                {r.stat && <span className="text-foreground/80"> · {r.stat}</span>}
+                {r.stat && <span className="text-foreground"> · {r.stat}</span>}
               </span>
             </li>
           ))}
@@ -305,11 +171,11 @@ function About() {
           <Streamed key={i} parsed={parsed} animate delay={0.8 + i * 0.3} />
         ))}
       </div>
-    </section>
+    </Section>
   );
 }
 
-/** One thing he works on, as a row in a ruled table. */
+/** One thing he works on, as a row that lifts onto the soft grey. */
 function Role({ item }: { item: Item }) {
   const dead = item.status === "Discontinued";
   const name = item.href ? (
@@ -319,11 +185,9 @@ function Role({ item }: { item: Item }) {
       rel="noopener noreferrer"
       // Scribbled out, not greyed. Grey would say "less important"; the mark
       // says "this is over", which is the actual fact, and the site is still
-      // standing so the link stays live. A drawn scribble rather than a rule
-      // because a rule reads as a typographic effect and a scribble reads as
-      // somebody having crossed it off.
+      // standing so the link stays live.
       className={`tap underline-offset-[3px] transition-colors ${
-        dead ? "scribble" : "underline decoration-border hover:decoration-foreground"
+        dead ? "scribble" : "underline decoration-transparent hover:decoration-foreground"
       }`}
     >
       {item.name}
@@ -333,47 +197,31 @@ function Role({ item }: { item: Item }) {
   );
 
   return (
-    // The card opens from anywhere on the line. Hung on the name alone it was
-    // a 36px target for "weld", so it read as broken rather than as subtle:
-    // you had to land on the word itself.
+    // The card opens from anywhere on the line, not only from the name.
     <Preview block shot={item.shot} label={item.domain ?? "no site yet"}>
-      <div className="role-row -mx-2 rounded-lg px-2 py-2">
-        <div className="flex items-stretch gap-3">
-          {/* Sized to the two lines beside it rather than to one. At 40px it
-              sat against a 60px stack and read as a bullet that had come
-              loose from its row. */}
-          <Logo
-            src={item.logo}
-            emoji={item.emoji}
-            tile={item.logoTile}
-            size={56}
-            className="role-logo self-start"
-          />
-          <div className="min-w-0 flex-1">
-            <div className="flex items-baseline gap-2">
-              <h3 className="shrink-0 font-display text-[15px] font-semibold leading-snug">
-                {name}
-              </h3>
-              <span className="lead" aria-hidden="true" />
-              <p className="shrink-0 text-xs tabular-nums text-muted-foreground">
-                {item.period}
-              </p>
-            </div>
-            <p className="mt-1 flex items-center gap-1 text-[13px] leading-snug">
-              <span className="rp-role">
-                <Icon name={item.roleIcon} size={12} className="rp-role-icon" />
-                {item.role}
-              </span>
-              {item.roleNote && <span className="role-note">({item.roleNote})</span>}
-              {/* Only the ones that are over say so. A live row does not need
-                  a badge telling it that it is live. */}
-              {dead && <Status status={item.status} />}
-            </p>
+      <div className="role-row">
+        <Logo
+          src={item.logo}
+          emoji={item.emoji}
+          tile={item.logoTile}
+          size={52}
+          className="role-logo"
+        />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline justify-between gap-3">
+            <h3 className="text-[17px] font-bold leading-snug tracking-[-0.01em]">{name}</h3>
+            <p className="shrink-0 text-[13px] tabular-nums text-muted-foreground">{item.period}</p>
           </div>
+          <p className="mt-0.5 flex items-center gap-1.5 text-[14px] leading-snug">
+            <span className="rp-role">
+              <Icon name={item.roleIcon} size={13} className="rp-role-icon" />
+              {item.role}
+            </span>
+            {item.roleNote && <span className="role-note">{item.roleNote}</span>}
+            {dead && <Status status={item.status} />}
+          </p>
+          <p className="mt-1.5 text-[15px] leading-relaxed text-[var(--ink-read)]">{item.blurb}</p>
         </div>
-        <p className="mt-1.5 pl-[68px] text-[13px] leading-relaxed text-muted-foreground">
-          {item.blurb}
-        </p>
       </div>
     </Preview>
   );
@@ -381,26 +229,17 @@ function Role({ item }: { item: Item }) {
 
 /** The project grid. With an odd count the first project is drawn across the
  *  full width and the rest sit in pairs under it, so five reads as one
- *  headline and two rows of two rather than four and an orphan. Rules match
- *  the column's own hairlines instead of boxing each card. */
+ *  headline and two rows of two rather than four and an orphan. */
 function Grid({ items }: { items: Item[] }) {
   const lead = items.length % 2 === 1 ? items[0] : null;
   const pairs = lead ? items.slice(1) : items;
 
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
       {lead && <Card item={lead} index={0} wide />}
-      <div className={`relative ${lead ? "border-t border-border" : ""}`}>
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 left-1/2 top-0 z-0 hidden w-px bg-border sm:block"
-        />
-        <div className="relative grid grid-cols-1 sm:grid-cols-2">
-          {pairs.map((item, i) => (
-            <Card key={item.key} item={item} index={i + (lead ? 1 : 0)} />
-          ))}
-        </div>
-      </div>
+      {pairs.map((item, i) => (
+        <Card key={item.key} item={item} index={i + (lead ? 1 : 0)} />
+      ))}
     </div>
   );
 }
@@ -410,28 +249,24 @@ function Card({ item, index, wide = false }: { item: Item; index: number; wide?:
     <Reveal
       index={index}
       step={0.08}
-      className="proj group/card relative flex flex-col gap-2 border-t border-border p-4 first:border-t-0 sm:border-t-0"
+      className={`proj group/card relative flex flex-col ${wide ? "sm:col-span-2" : ""}`}
     >
       {item.href && (
-        // Sits under the media and the chips, so the tag table keeps its own
-        // hovers; everywhere else on the card, this is what the pointer
-        // lands on.
         <a
           href={item.href}
           target="_blank"
           rel="noopener noreferrer"
           data-cur="open"
-          className="absolute inset-0 z-[1] rounded-md focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+          className="absolute inset-0 z-[1] rounded-[12px] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
         >
           <span className="sr-only">{`Open ${item.name}`}</span>
         </a>
       )}
-      <div className="group/media relative z-[2] block overflow-hidden rounded-md border border-border">
+      {/* The shot sits on a soft grey slab, inset at the top and sides and
+          running off the bottom edge, like a screen standing in a tray. */}
+      <div className="proj-slab">
         {item.emoji ? (
-          // Nothing to screenshot yet. A white panel carrying the mark
-          // itself, drawn as text so it stays crisp at any size, rather
-          // than a blank rectangle that reads as a failed image.
-          <div className={`proj-shot flex h-44 w-full items-center justify-center bg-white ${wide ? "sm:h-64" : "sm:h-48"}`}>
+          <div className={`proj-shot flex w-full items-center justify-center bg-white ${wide ? "h-52 sm:h-72" : "h-48 sm:h-52"}`}>
             <span className="text-6xl leading-none" aria-hidden="true">
               {item.emoji}
             </span>
@@ -442,45 +277,29 @@ function Card({ item, index, wide = false }: { item: Item; index: number; wide?:
             alt=""
             width={1200}
             height={630}
-            className={`proj-shot h-44 w-full object-cover object-top ${wide ? "sm:h-64" : "sm:h-48"}`}
+            className={`proj-shot w-full object-cover object-top ${wide ? "h-52 sm:h-72" : "h-48 sm:h-52"}`}
           />
         )}
       </div>
-      <div className="flex items-center justify-between gap-3">
-        <h3 className="flex min-w-0 items-center gap-2 font-display text-[15px] font-semibold leading-snug transition-opacity group-hover/card:opacity-70">
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <h3 className="flex min-w-0 items-center gap-2 text-[17px] font-bold leading-snug tracking-[-0.01em]">
           {item.name}
           {item.roleNote && (
-            <span className="text-xs font-normal text-muted-foreground">({item.roleNote})</span>
+            <span className="text-[13px] font-normal text-muted-foreground">{item.roleNote}</span>
           )}
         </h3>
-        <div className="flex shrink-0 items-center gap-1.5">
+        <span className="proj-go" aria-hidden="true">
           <Status status={item.status} />
-        </div>
+          <Icon name="chev" size={14} className="proj-arrow" />
+        </span>
       </div>
-      <p className="text-[13px] leading-relaxed text-muted-foreground">{item.blurb}</p>
-      {item.tags && (
-        <ul
-          className={`grid-table relative z-[2] mt-0.5 grid-cols-2 ${wide ? "sm:grid-cols-4" : ""}`}
-        >
-          {item.tags.map((t) => (
-            <li key={t.label} className="text-muted-foreground">
-              <span className="cell-mark">
-                {t.brand ? <Brand name={t.brand} size={13} /> : null}
-              </span>
-              <span className="cell-label">{t.label}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+      <p className="mt-1 text-[15px] leading-relaxed text-[var(--ink-read)]">{item.blurb}</p>
     </Reveal>
   );
 }
 
-// Status, as a glyph rather than a pill.
-//
-// Three pills in a row all saying "Building" is three pieces of furniture
-// carrying one bit of information. A glyph in the status colour says the same
-// thing at a glance and leaves the row to the words that matter.
+// Status, as a glyph rather than a pill. A live thing gets a small green tick;
+// a thing being built gets the orange bolt; a thing that is over is greyed.
 const STATUS: Record<string, { icon: IconName; hue: string; say: string }> = {
   Live: { icon: "check", hue: "var(--live)", say: "Live" },
   Building: { icon: "bolt", hue: "var(--building)", say: "Being built" },
@@ -492,31 +311,26 @@ function Status({ status }: { status: string }) {
   const s = STATUS[status] ?? STATUS.Building;
   return (
     <span
-      className="inline-flex items-center gap-1 text-[11px] font-medium"
+      className="inline-flex items-center gap-1 text-[12px] font-medium"
       style={{ color: s.hue }}
       title={s.say}
     >
-      <Icon name={s.icon} size={13} />
+      <Icon name={s.icon} size={14} />
       <span className="sr-only">{s.say}</span>
     </span>
   );
 }
 
 /**
- * Four overlapping circles with him in the middle.
+ * Four overlapping discs with him in the middle.
  *
  * Positions are percentages of a square box, so the whole thing scales from a
- * phone to a desktop without a media query and without a label drifting off
- * its circle. The circles are 55% of the box, the largest they can be while
- * still leaving a clear centre for the portrait.
- *
- * Each ring takes one of the page's five hues at low alpha. This is the only
- * place all of them appear together, which is what makes the diagram read as
- * a summary of the page rather than as another section of it.
+ * phone to a desktop without a media query. In black and white the discs are
+ * one faint ink each, so where two cross the grey deepens on its own and the
+ * centre, where all four meet, is the darkest place on the figure.
  */
 function Venn() {
   const [top, left, right, bottom] = VENN;
-  const hues = ["violet", "ember", "olive", "amber"];
   const spots = [
     "top-0 left-1/2 -translate-x-1/2",
     "top-[22%] left-[2%]",
@@ -525,47 +339,100 @@ function Venn() {
   ];
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[540px]">
-      {/* Plain rings, one hue each. A pass with pattern fills in them looked
-          like graph paper and buried the labels: the overlaps already do the
-          work, and the whole point of the figure is what happens where they
-          cross. Nothing else on the page uses all four hues at once. */}
+    <div className="relative mx-auto aspect-square w-full max-w-[520px]">
       {spots.map((pos, i) => (
-        <div
-          key={i}
-          aria-hidden="true"
-          className={`absolute size-[58%] rounded-full border ${pos}`}
-          style={{
-            borderColor: `color-mix(in oklch, var(--hue-${hues[i]}) 55%, transparent)`,
-            background: `color-mix(in oklch, var(--hue-${hues[i]}) 7%, transparent)`,
-          }}
-        />
+        <div key={i} aria-hidden="true" className={`venn-disc absolute size-[58%] rounded-full ${pos}`} />
       ))}
 
-      {/* The two side labels are pulled further in on a phone and set a
-          shade smaller. The positions are percentages, but the words are not:
-          at 375 "Frontend & Build" is a quarter of the box wide at 13% inset
-          and lands on top of its own ring. */}
-      <span className="absolute left-1/2 top-[12%] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[10px] text-muted-foreground sm:text-sm">
-        {top}
-      </span>
-      <span className="absolute left-[16%] top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[10px] text-muted-foreground sm:left-[13%] sm:text-sm">
-        {left}
-      </span>
-      <span className="absolute right-[16%] top-1/2 -translate-y-1/2 translate-x-1/2 whitespace-nowrap text-[10px] text-muted-foreground sm:right-[13%] sm:text-sm">
-        {right}
-      </span>
-      <span className="absolute bottom-[12%] left-1/2 -translate-x-1/2 translate-y-1/2 whitespace-nowrap text-[10px] text-muted-foreground sm:text-sm">
-        {bottom}
-      </span>
+      <span className="venn-label left-1/2 top-[12%] -translate-x-1/2 -translate-y-1/2">{top}</span>
+      <span className="venn-label left-[16%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[13%]">{left}</span>
+      <span className="venn-label right-[16%] top-1/2 -translate-y-1/2 translate-x-1/2 sm:right-[13%]">{right}</span>
+      <span className="venn-label bottom-[12%] left-1/2 -translate-x-1/2 translate-y-1/2">{bottom}</span>
 
       <Image
         src={IDENTITY.avatar}
         alt=""
         width={160}
         height={160}
-        className="absolute left-1/2 top-1/2 size-16 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-background bg-background object-cover shadow-md sm:size-24"
+        className="absolute left-1/2 top-1/2 size-16 -translate-x-1/2 -translate-y-1/2 rounded-[18px] bg-background object-cover p-1 sm:size-24"
       />
+    </div>
+  );
+}
+
+/**
+ * The close, after ignura.com's: a field of dots the pointer pushes around,
+ * and a soft card rising out of it with curved top corners. The card carries
+ * the ask, the page's links, and the name set large with its mark, so the last
+ * screen is a designed end rather than a sitemap.
+ */
+function Footer() {
+  const PAGE = [
+    { label: "About", href: "#about" },
+    { label: "Projects", href: "#projects" },
+    { label: "Skills", href: "#skills" },
+    { label: "Blog", href: "/blog" },
+  ];
+  const ELSE = SOCIALS.filter((s) => s.label !== "Email");
+
+  return (
+    <footer id="contact" className="foot scroll-mt-10">
+      <div className="foot-field" aria-hidden="true">
+        <DotField />
+      </div>
+      <div className="foot-card">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <h2 className="foot-ask">Still reading? Let&rsquo;s talk.</h2>
+            <p className="mt-3 max-w-sm text-[17px] text-[var(--ink-read)]">
+              Something clicked, then. Send a line about what you are making.
+            </p>
+            <div className="mt-6">
+              <Cta />
+            </div>
+          </div>
+          <FootList title="The page" items={PAGE} />
+          <FootList title="Elsewhere" items={ELSE.map((s) => ({ label: s.label, href: s.href, brand: s.brand, icon: s.icon }))} />
+        </div>
+        <div className="mt-16 flex flex-wrap items-end justify-between gap-6 sm:mt-24">
+          <p aria-hidden="true" className="foot-mark">
+            <Mark className="foot-mark-box" />
+            {IDENTITY.wordmark.charAt(0) + IDENTITY.wordmark.slice(1).toLowerCase()}
+          </p>
+          <p className="pb-3 text-[15px] text-muted-foreground">
+            Designer and founder in London. &copy; {IDENTITY.properName} 2026
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function FootList({
+  title,
+  items,
+}: {
+  title: string;
+  items: { label: string; href: string; brand?: import("@/components/Brand").BrandKey; icon?: IconName }[];
+}) {
+  return (
+    <div>
+      <h3 className="text-[15px] font-medium text-muted-foreground">{title}</h3>
+      <ul className="mt-3 space-y-2">
+        {items.map((it) => (
+          <li key={it.label}>
+            <a
+              href={it.href}
+              target={it.href.startsWith("http") ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              className="foot-link"
+            >
+              {it.brand ? <Brand name={it.brand} size={14} /> : it.icon ? <Icon name={it.icon} size={14} /> : null}
+              {it.label}
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

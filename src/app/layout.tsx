@@ -1,21 +1,10 @@
 import type { Metadata } from "next";
-import { GeistMono } from "geist/font/mono";
-import { Pixelify_Sans } from "next/font/google";
 import { IDENTITY, SUMMARY, SKILLS, SOCIALS } from "@/lib/profile";
 
 const TITLE = `${IDENTITY.properName}, designer and founder of Ignura`;
 const DESCRIPTION =
-  "Designer in London. I run Ignura (ignura.com), the launch studio that makes launch films, App Store screenshots and landing pages for apps.";
+  "Designer and founder in London. I run Ignura (ignura.com), an agency that builds growth solutions for startups, and design at MenuFit and Okara.";
 import "./globals.css";
-
-// The wordmark only. A pixel face is a signature, not a text face, so it is
-// scoped to one element rather than exposed as a body option.
-const pixel = Pixelify_Sans({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-pixel",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(IDENTITY.site),
@@ -72,25 +61,10 @@ const JSON_LD = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${GeistMono.variable} ${pixel.variable}`}>
+    <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Satoshi, the reference site's face. Preconnected so the first
-            paragraph is not drawn twice. */}
-        <link rel="preconnect" href="https://api.fontshare.com" />
-        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="" />
-        {/* Two requests, not one. Fontshare's API silently drops the second
-            family when both are asked for in a single call: the combined URL
-            returned Satoshi's four faces and no Chillax at all, so every
-            heading fell back to Satoshi and the display face was never once
-            on the page. Asked for separately, both arrive. */}
-        <link
-          rel="stylesheet"
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://api.fontshare.com/v2/css?f[]=chillax@400,500,600,700&display=swap"
-        />
+        <link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossOrigin="" />
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <script
           type="application/ld+json"

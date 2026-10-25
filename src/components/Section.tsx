@@ -19,11 +19,14 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "./Icon";
+import { Obj, type ObjName } from "./Obj";
 
 export function Section({
   title,
   id,
   aside,
+  /** The glossy object that leads the heading. */
+  obj,
   /** Sections that carry the argument open by default; the long tail does not. */
   defaultOpen = true,
   children,
@@ -31,6 +34,7 @@ export function Section({
   title: string;
   id?: string;
   aside?: React.ReactNode;
+  obj?: ObjName;
   defaultOpen?: boolean;
   children: React.ReactNode;
 }) {
@@ -57,13 +61,14 @@ export function Section({
   }, [open]);
 
   return (
-    <section id={id} className="screen-line-top">
-      <div className="screen-line-bottom flex w-full items-center justify-between gap-4 px-4 py-1">
-        <h2 className="scroll-mt-20 font-display text-xl font-medium tracking-tight sm:text-2xl">
+    <section id={id} className="sec scroll-mt-20">
+      <div className="sec-head">
+        <h2 className="sec-title">
+          {obj && <Obj name={obj} size={34} className="sec-obj" />}
           {title}
         </h2>
         <div className="flex items-center gap-2">
-          {aside && <span className="font-mono text-xs text-muted-foreground">{aside}</span>}
+          {aside && <span className="text-[14px] text-muted-foreground">{aside}</span>}
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -71,7 +76,7 @@ export function Section({
             aria-controls={bodyId}
             aria-label={`${open ? "Hide" : "Show"} ${title}`}
             data-cur={open ? "hide" : "show"}
-            className="tap -mr-1 inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+            className="tap inline-flex size-8 items-center justify-center rounded-[10px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
           >
             <Icon
               name="chev"

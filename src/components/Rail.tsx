@@ -18,12 +18,11 @@ import { useEffect, useState } from "react";
 
 const SECTIONS = [
   { id: "about", label: "About" },
-  { id: "now", label: "Now" },
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
   { id: "elsewhere", label: "Elsewhere" },
-  { id: "contact", label: "Contact" },
   { id: "overlaps", label: "Where it overlaps" },
+  { id: "contact", label: "Contact" },
 ];
 
 export function Rail() {
@@ -62,7 +61,7 @@ export function Rail() {
     <nav
       aria-label="Sections"
       className="fixed top-1/2 z-40 hidden -translate-y-1/2 xl:block"
-      style={{ insetInlineStart: "calc(50% - 357.5px - 12.5rem)", width: "10.5rem" }}
+      style={{ insetInlineStart: "calc(50% - 380px - 12.5rem)", width: "10.5rem" }}
     >
       {SECTIONS.map((s) => (
         <a
