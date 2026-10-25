@@ -24,7 +24,7 @@ export function Logo({
   tile?: string;
   className?: string;
 }) {
-  const box = `shrink-0 overflow-hidden rounded-[10px] border border-border ${
+  const box = `logo-tile shrink-0 overflow-hidden rounded-[12px] ${
     tile ? "" : "bg-white"
   } ${className}`;
   const tileStyle = tile ? { background: tile } : undefined;

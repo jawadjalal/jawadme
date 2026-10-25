@@ -81,10 +81,10 @@ export function Theme() {
       onClick={toggle}
       data-cur={dark ? "lights on" : "lights off"}
       aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
-      className="tap inline-flex size-8 items-center justify-center rounded-lg border border-border bg-muted text-muted-foreground transition-colors hover:border-foreground/20 hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring sm:size-7"
+      className="tap inline-flex size-9 items-center justify-center rounded-[10px] text-muted-foreground transition-colors hover:bg-[var(--soft-hover)] hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
     >
       <svg
-        width="14" height="14" viewBox="0 0 16 16" fill="none"
+        width="16" height="16" viewBox="0 0 16 16" fill="none"
         stroke="currentColor" strokeWidth={1.5}
         strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
       >

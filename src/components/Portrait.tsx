@@ -20,15 +20,15 @@ export function Portrait() {
 
   return (
     <div className="flex w-fit flex-col items-center gap-2">
-      <div className="w-fit rounded-[10px] border border-border p-[3px]">
-        <div className="relative box-border size-16 select-none overflow-hidden rounded-[8px] border border-border bg-muted sm:size-20 md:size-[88px]">
+      <div className="w-fit rounded-[20px] bg-muted p-1.5">
+        <div className="relative box-border size-20 select-none overflow-hidden rounded-[14px] bg-background sm:size-28">
           <Image
             src={IDENTITY.avatar}
             alt={`${IDENTITY.properName}, designer and founder`}
             width={160}
             height={160}
             priority
-            className="absolute inset-0 size-full rounded-[6px] object-cover transition-opacity duration-300"
+            className="absolute inset-0 size-full rounded-[14px] object-cover transition-opacity duration-300"
             style={{ opacity: alt ? 0 : 1 }}
           />
           <Image
@@ -37,7 +37,7 @@ export function Portrait() {
             aria-hidden="true"
             width={160}
             height={160}
-            className="absolute inset-0 size-full rounded-[6px] object-cover transition-opacity duration-300"
+            className="absolute inset-0 size-full rounded-[14px] object-cover transition-opacity duration-300"
             style={{ opacity: alt ? 1 : 0 }}
           />
         </div>
@@ -49,16 +49,16 @@ export function Portrait() {
         aria-label="Show the other portrait"
         data-cur={alt ? "back" : "swap"}
         onClick={() => setAlt((v) => !v)}
-        className={`tap relative h-[18px] w-8 shrink-0 rounded-full border outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring ${
+        className={`tap relative h-5 w-9 shrink-0 rounded-full outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring ${
           // Reads as on. A switch whose two states differ only by where the
           // knob sits is a switch you have to look at twice.
-          alt ? "border-foreground bg-foreground" : "border-border bg-muted"
+          alt ? "bg-foreground" : "bg-muted"
         }`}
       >
         <span
           aria-hidden="true"
-          className="absolute top-1/2 size-3 -translate-y-1/2 rounded-full bg-background shadow-sm transition-[left] duration-200"
-          style={{ left: alt ? "calc(100% - 14px)" : "2px" }}
+          className="absolute top-1/2 size-4 -translate-y-1/2 rounded-full bg-background shadow-sm transition-[left] duration-200"
+          style={{ left: alt ? "calc(100% - 18px)" : "2px" }}
         />
       </button>
     </div>

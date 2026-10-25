@@ -2,72 +2,86 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Fonts ────────────────────────────────────────────────────────────────
+   Satoshi, self-hosted: the one face, as on ignura.com. Three weights do all
+   the work (400 text, 500 links and labels, 700 every heading). */
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-700.woff2") format("woff2"); font-weight: 600 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi Fallback"; src: local("Arial"), local("Helvetica Neue"), local("Helvetica"); size-adjust: 98%; }
+
 /* ── Tokens ───────────────────────────────────────────────────────────────
-   The palette is a single neutral pair plus a hairline. Everything on the
-   page is that pair; colour appears only inside a highlight or a status dot,
-   which is what makes those two things read as emphasis rather than as more
-   decoration. Light is the default and dark is the same values swapped, so
-   there is one set of numbers to keep honest instead of two. */
+   Ignura's black and white: a white paper, one soft grey step for anything
+   that sits on it, one ink, and one orange that only ever lands on a single
+   word. Surfaces are told apart by that grey step, not by lines. Dark is the
+   same roles at night. The old names (background, muted, border) still exist
+   so every component keeps reading them. */
 :root {
-  /* Warm, not neutral. A pure #fff ground under near-black text is the
-     default that makes a page look untouched; pulling both a few degrees warm
-     and softening the ink is most of what separates the two. */
-  --base: oklch(19.5% 0.004 95);
-  --base-foreground: oklch(99.2% 0.002 95);
+  --paper: #ffffff;
+  --soft: #efefef;
+  --soft-hover: #e5e5e5;
+  --ink: #111111;
+  --ink-2: #6b6b6b;
+  --ink-read: #4f4f4f;
+  --ink-hover: #2b2b2b;
+  --pop: #f05a00;
+  --sheet: #ffffff;
+  --lift: 0 1px 2px rgb(0 0 0 / 0.05), 0 8px 20px -6px rgb(0 0 0 / 0.1), 0 28px 56px -16px rgb(0 0 0 / 0.16);
+  --rim: 0 0 0 1px color-mix(in srgb, var(--ink) 7%, transparent);
+  --contact: 0 2px 6px -2px rgb(0 0 0 / 0.08);
+  --ico-lift: none;
 
-  --background: var(--base-foreground);
-  --foreground: var(--base);
-  --muted: oklch(from var(--base) l c h / 4%);
-  /* Secondary text is a light warm grey, not dimmed ink. At 55% alpha it was
-     still dark enough to compete with the headings for attention; this reads
-     as the second layer it actually is. */
-  --muted-foreground: oklch(72% 0.006 95);
-  --border: oklch(from var(--base) l c h / 10%);
-  --ring: oklch(from var(--base) l c h / 25%);
+  --base: #111111;
+  --base-foreground: #ffffff;
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --muted: var(--soft);
+  --muted-foreground: var(--ink-2);
+  --border: color-mix(in srgb, var(--ink) 9%, transparent);
+  --ring: color-mix(in srgb, var(--ink) 30%, transparent);
 
-  --radius: 0.625rem;
+  --radius: 12px;
+  --r: 12px;
 
-  /* Status. Two only: a thing is live or it is being built. */
-  --live: oklch(72% 0.19 149);
-  --building: oklch(77% 0.16 78);
+  --live: #1f9d55;
+  --building: var(--pop);
 
-  /* Highlight hues, one per icon (see prose.tsx). Kept as raw oklch so the
-     tint can be taken at 14% and the glyph at full strength from one value. */
-  --hue-violet: oklch(58% 0.19 288);
-  --hue-amber: oklch(70% 0.16 68);
-  --hue-olive: oklch(60% 0.13 145);
-  --hue-slate: oklch(55% 0.04 250);
-  --hue-ember: oklch(63% 0.18 32);
-  --hue-orange: oklch(68% 0.17 52);
+  /* The prose marks were five hues; they are one ink now. The tint behind a
+     marked phrase is the soft grey, the same highlighter ignura.com uses. */
+  --hue-violet: var(--ink);
+  --hue-amber: var(--ink);
+  --hue-olive: var(--ink);
+  --hue-slate: var(--ink);
+  --hue-ember: var(--ink);
+  --hue-orange: var(--pop);
 
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --hatch: oklch(from var(--base) l c h / 5%);
-  /* Read by the dot-field canvas, which cannot use oklch(from ...) because it
-     paints through 2D context fillStyle rather than through CSS. */
-  --dot-ink: 10 10 10;
-  --grid: oklch(from var(--base) l c h / 3.5%);
-  /* What the dot field warms to under the pointer. */
-  --dot-hot: 232 125 13;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --hatch: transparent;
+  --grid: transparent;
+  /* Read by the dot-field canvas, which paints through 2D context fillStyle. */
+  --dot-ink: 17 17 17;
+  --dot-hot: 240 90 0;
+
+  --font: "Satoshi", "Satoshi Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 [data-theme="dark"] {
-  --background: var(--base);
-  --foreground: var(--base-foreground);
-  --muted: oklch(from var(--base-foreground) l c h / 6%);
-  --muted-foreground: oklch(58% 0.006 95);
-  --border: oklch(from var(--base-foreground) l c h / 10%);
-  --ring: oklch(from var(--base-foreground) l c h / 25%);
-  --hatch: oklch(from var(--base-foreground) l c h / 5%);
-  --dot-ink: 250 250 250;
-  --grid: oklch(from var(--base-foreground) l c h / 4%);
-  --dot-hot: 255 173 84;
-
-  --hue-violet: oklch(72% 0.16 288);
-  --hue-amber: oklch(80% 0.14 68);
-  --hue-olive: oklch(75% 0.14 145);
-  --hue-slate: oklch(72% 0.04 250);
-  --hue-ember: oklch(74% 0.15 32);
-  --hue-orange: oklch(78% 0.15 52);
+  --paper: #0d0d0d;
+  --soft: #1a1a1a;
+  --soft-hover: #222222;
+  --ink: #f2f2f2;
+  --ink-2: #a3a3a3;
+  --ink-read: #c8c8c8;
+  --ink-hover: #d6d6d6;
+  --pop: #ff7a2e;
+  --sheet: #161616;
+  --rim: 0 0 0 1px rgb(255 255 255 / 0.07);
+  --contact: 0 2px 8px -2px rgb(0 0 0 / 0.6);
+  --lift: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -8px rgb(0 0 0 / 0.6);
+  --ico-lift: drop-shadow(0 0 0.5px rgb(255 255 255 / 0.55)) drop-shadow(0 0 1px rgb(255 255 255 / 0.2));
+  --live: #3ccf7a;
+  --dot-ink: 242 242 242;
+  --dot-hot: 255 122 46;
 }
 
 @layer base {
@@ -113,17 +127,6 @@
   );
 }
 
-/* A faint square grid behind everything, like ruled paper under the column.
-   Two hairline gradients rather than an image, so it costs nothing and takes
-   the theme with it. Kept very low contrast: it should be something you
-   notice on the second look, not the first. */
-body {
-  background-image:
-    linear-gradient(to right, var(--grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
-  background-size: 44px 44px;
-  background-position: center top;
-}
 
 /* ── Streaming text ───────────────────────────────────────────────────────
    Carried over from ripwebsite. Each character blurs in as the cursor
@@ -1154,12 +1157,12 @@ details[open] .else-row {
 /* ── Blog post body ───────────────────────────────────────────────────────
    The About block's measure and leading, so a post reads as more of the same
    page. Links take the house underline: page ink, hairline until hovered. */
-.post { font-size: 15px; line-height: 1.65; }
+.post { font-size: 17px; line-height: 1.65; color: var(--ink-read); }
 .post > * + * { margin-top: 0.9rem; }
 .post h2 {
   margin-top: 2rem;
-  font-family: Chillax, Satoshi, ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.25rem; font-weight: 500; letter-spacing: -0.015em;
+  font-family: var(--font);
+  font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em;
 }
 .post h3 { margin-top: 1.25rem; font-weight: 700; }
 .post h3 + p { margin-top: 0.25rem; }
@@ -1170,3 +1173,360 @@ details[open] .else-row {
   transition: text-decoration-color 0.2s var(--ease);
 }
 .post a:hover { text-decoration-color: var(--foreground); }
+
+/* ── The ignura look ──────────────────────────────────────────────────────
+   Everything below is the black-and-white skin from ignura.com: the hanging
+   bar, the keys, soft slabs, glossy objects, the type ladder and the close.
+   It sits last so it wins over the older rules above it where they meet. */
+
+body { font-family: var(--font); background: var(--paper); color: var(--ink); }
+
+/* The old hairlines are gone everywhere, the blog included: surfaces are told
+   apart by the soft grey step, and sections by space. */
+.screen-line-top::before,
+.screen-line-bottom::after { content: none; }
+
+/* The mark: J in a black box at 22% radius, inverted at night. */
+.mark {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  border-radius: 22%;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.mark { font-size: inherit; }
+
+.obj { filter: var(--ico-lift); }
+
+/* ── The hanging bar ── */
+.nv {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 50;
+  width: min(calc(100% - 2 * clamp(0.75rem, 3vw, 2.75rem)), 64rem);
+  transform: translateX(-50%);
+}
+.nv-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  background: var(--soft);
+  border-radius: 0 0 var(--r) var(--r);
+  box-shadow: var(--rim), var(--contact);
+}
+.nv-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.25rem;
+  padding: 0 0.7rem;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color var(--t-ui, 240ms) var(--ease);
+}
+.nv-link:hover { background: var(--soft-hover); }
+
+.nav-menu > summary {
+  gap: 0.4rem;
+  height: 2.25rem;
+  padding: 0 0.6rem 0 0.45rem;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.nav-menu > summary:hover,
+.nav-menu[open] > summary { background: var(--soft-hover); color: var(--ink); }
+.nav-pop {
+  top: calc(100% + 0.75rem);
+  border: 0;
+  border-radius: calc(var(--r) + 4px);
+  background: var(--sheet);
+  box-shadow: var(--rim), var(--lift);
+  padding: 0.4rem;
+}
+.nav-item { border-radius: 10px; font-size: 15px; padding: 0.55rem 0.7rem; }
+.nav-item-note { font-size: 13px; }
+
+/* ── Keys: one radius, two fills ── */
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color 160ms var(--ease), transform 120ms var(--ease);
+}
+.key:active { transform: scale(0.97); }
+.key-ink { background: var(--ink); color: var(--paper); font-weight: 700; }
+.key-ink:hover { background: var(--ink-hover); }
+.key-soft { background: var(--soft); color: var(--ink); }
+.key-soft:hover { background: var(--soft-hover); }
+/* The object inside an ink key sits on a small paper tile, so its colour reads. */
+.key-tile {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9px;
+  background: #fff;
+}
+.nv .key-tile { width: 1.65rem; height: 1.65rem; border-radius: 7px; }
+.key-tile .obj { filter: none; }
+
+/* ── The dot band the bar hangs over ── */
+.dot-band { position: relative; }
+.dot-band::after {
+  /* fades the field into the paper, so the hero starts on clean white */
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 60%;
+  background: linear-gradient(to bottom, transparent, var(--paper));
+  pointer-events: none;
+}
+
+/* ── Type ladder ── */
+.hero-name {
+  font-size: clamp(2.5rem, 1.4rem + 4.6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.hero-say {
+  max-width: 34rem;
+  font-size: clamp(1.375rem, 1.15rem + 0.9vw, 1.875rem);
+  font-weight: 500;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+.pop {
+  color: var(--pop);
+  font-weight: 700;
+}
+
+.sec { margin-top: clamp(4rem, 8vw, 6.5rem); }
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.sec-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.sec-obj { transition: transform 0.5s var(--ease); }
+.sec-head:hover .sec-obj { transform: rotate(-8deg) scale(1.08); }
+
+/* ── Prose marks, in one ink ── */
+.rp-hl.is-lit {
+  background-color: var(--soft);
+  text-decoration: none;
+}
+.rp-hl { border-radius: 0.3em; }
+.rp-hl-glyph { color: var(--ink); }
+.rp-dim { color: var(--ink-2); }
+.rp-ink { color: var(--ink-2); }
+.rp-link { text-decoration-color: color-mix(in srgb, var(--ink) 25%, transparent); }
+
+/* ── The roles slab in About ── */
+.roles {
+  padding: 0.375rem;
+  border-radius: calc(var(--r) + 6px);
+  background: var(--soft);
+}
+.roles > li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem 0.55rem 0.55rem;
+  border-radius: var(--r);
+  font-size: 16px;
+  transition: background-color 160ms var(--ease);
+}
+.roles > li:hover { background: var(--paper); }
+.logo-tile { background-color: #fff; box-shadow: var(--rim); }
+
+/* ── Rows in Now and Also mine ── */
+.role-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-inline: -0.75rem;
+  padding: 0.875rem 0.75rem;
+  border-radius: calc(var(--r) + 4px);
+}
+.rp-role {
+  gap: 0.35em;
+  padding: 0;
+  background: none;
+  font-weight: 500;
+  color: var(--ink);
+}
+.rp-role-icon { color: var(--ink-2); }
+.role-note { color: var(--ink-2); font-size: 14px; }
+.role-note::before { content: "· "; }
+
+/* ── Project cards ── */
+.proj:hover { background: none; }
+.proj-slab {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  padding: 0.75rem 0.75rem 0;
+  border-radius: calc(var(--r) + 4px);
+  background: var(--soft);
+  pointer-events: none;
+  transition: background-color 240ms var(--ease);
+}
+.proj-slab .proj-shot {
+  border-radius: 8px 8px 0 0;
+  box-shadow: var(--rim);
+  transform-origin: 50% 100%;
+}
+.proj:hover .proj-slab { background: var(--soft-hover); }
+.proj:hover .proj-shot { transform: translateY(-4px) scale(1.015); }
+.proj-go { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--ink-2); }
+.proj-arrow { transition: transform 240ms var(--ease); }
+.proj:hover .proj-arrow { transform: translateX(3px); color: var(--ink); }
+
+/* ── Skills: tools as small soft keys ── */
+.tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2rem;
+  padding: 0 0.7rem;
+  border-radius: 10px;
+  background: var(--soft);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── Elsewhere ── */
+.else-sum {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  border-radius: calc(var(--r) + 4px);
+  background: var(--soft);
+  cursor: pointer;
+  list-style: none;
+  transition: background-color 160ms var(--ease);
+}
+.else-sum::-webkit-details-marker { display: none; }
+.else-sum:hover { background: var(--soft-hover); }
+
+/* ── Venn, in one faint ink ── */
+.venn-disc { background: color-mix(in srgb, var(--ink) 5%, transparent); }
+.venn-label {
+  position: absolute;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-read);
+}
+@media (min-width: 640px) { .venn-label { font-size: 15px; } }
+
+/* ── Hover card and the contact dialog take the same slab ── */
+.pv-card { border: 0 !important; border-radius: calc(var(--r) + 4px) !important; box-shadow: var(--rim), var(--lift) !important; background: var(--sheet) !important; }
+.pv-frame { border-radius: 10px !important; border: 0 !important; }
+.pv-foot { font-family: var(--font); }
+.cm-card { border: 0 !important; border-radius: calc(var(--r) + 8px) !important; box-shadow: var(--rim), var(--lift) !important; background: var(--sheet) !important; }
+.cm-field input, .cm-field textarea { border-radius: var(--r) !important; background: var(--soft) !important; border-color: transparent !important; }
+.cm-field input:focus, .cm-field textarea:focus { background: var(--paper) !important; border-color: color-mix(in srgb, var(--ink) 22%, transparent) !important; }
+.cm-send { border-radius: var(--r) !important; background: var(--ink) !important; color: var(--paper) !important; font-weight: 700; }
+.cm-send:hover { background: var(--ink-hover) !important; opacity: 1; }
+
+/* ── The cursor: ignura's glossy arrow, with his word trailing it ── */
+.cur-arrow { width: 32px; height: 32px; transform-origin: 5px 5px; margin: -5px 0 0 -5px; }
+.cur-arrow img { width: 32px; height: 32px; }
+.cur-pill { border-radius: 10px; padding: 6px 10px; font-weight: 700; box-shadow: var(--lift); }
+.cta-you { background: color-mix(in srgb, var(--paper) 18%, transparent); color: var(--paper); }
+
+/* ── The close ── */
+.foot { position: relative; margin-top: clamp(3rem, 6vw, 5rem); }
+.foot-field { position: relative; height: clamp(10rem, 20vw, 16rem); }
+.foot-field::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 50%;
+  background: linear-gradient(to bottom, var(--paper), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+.foot-card {
+  position: relative;
+  z-index: 2;
+  width: min(calc(100% - 2 * clamp(0.75rem, 3vw, 2.75rem)), 76rem);
+  margin: calc(-1 * clamp(5rem, 9vw, 8rem)) auto 0;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem) clamp(1.25rem, 3vw, 2rem);
+  border-radius: clamp(28px, 4vw, 48px) clamp(28px, 4vw, 48px) 0 0;
+  background: var(--soft);
+  box-shadow: var(--rim);
+}
+.foot-ask {
+  font-size: clamp(2rem, 1.3rem + 2.6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.foot-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 17px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 160ms var(--ease);
+}
+.foot-link:hover { text-decoration-color: var(--ink); }
+.foot-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.12em;
+  font-size: clamp(4.5rem, 2rem + 11vw, 11rem);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  user-select: none;
+}
+.foot-mark-box { font-size: 0.78em; margin-right: 0.06em; }
+
+/* the section rail sits beside the wider column */
+.rail-item { font-size: 14px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sec-obj, .proj-slab, .proj-shot, .proj-arrow, .key { transition: none; }
+  .sec-head:hover .sec-obj, .proj:hover .proj-shot { transform: none; }
+}
+.nav-chev { transform: rotate(90deg); opacity: 0.6; }
+.nav-menu[open] .nav-chev { transform: rotate(-90deg); }

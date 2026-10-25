@@ -9,6 +9,7 @@
 
 import { Brand } from "./Brand";
 import { Icon, type IconName } from "./Icon";
+import { Obj } from "./Obj";
 import { openContact } from "./contact";
 import { useMagnetic } from "./magnetic";
 import { IDENTITY } from "@/lib/profile";
@@ -49,17 +50,17 @@ function HeroCta({ cta }: { cta: Cta }) {
       }}
       target={cta.external ? "_blank" : undefined}
       rel={cta.external ? "noopener noreferrer" : undefined}
-      className={`inline-flex min-h-11 items-center rounded-md px-3 py-1 text-[13px] font-medium leading-4 sm:min-h-0 sm:px-2 sm:text-xs ${
-        cta.solid
-          ? "bg-foreground text-background transition-opacity hover:opacity-90"
-          : "border border-border transition-colors hover:border-foreground/20 hover:bg-muted"
-      }`}
+      className={`key h-12 text-[16px] ${cta.solid ? "key-ink pl-2 pr-4" : "key-soft px-4"}`}
     >
-      <span ref={inner} className="inline-flex items-center gap-1.5 sm:gap-[5px]">
-        {cta.brand ? (
-          <Brand name={cta.brand} size={13} />
+      <span ref={inner} className="inline-flex items-center gap-2">
+        {cta.solid ? (
+          <span className="key-tile">
+            <Obj name="contact" size={24} />
+          </span>
+        ) : cta.brand ? (
+          <Brand name={cta.brand} size={15} />
         ) : (
-          <Icon name={cta.icon!} size={14} className={cta.warm ? "cta-mark" : undefined} />
+          <Icon name={cta.icon!} size={16} />
         )}
         {cta.label}
       </span>
@@ -69,7 +70,7 @@ function HeroCta({ cta }: { cta: Cta }) {
 
 export function HeroCtas() {
   return (
-    <div id="hero-cta" className="mt-2 flex flex-wrap items-center gap-2">
+    <div id="hero-cta" className="mt-7 flex flex-wrap items-center gap-2">
       {CTAS.map((c) => (
         <HeroCta key={c.label} cta={c} />
       ))}

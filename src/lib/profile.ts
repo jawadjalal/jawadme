@@ -39,11 +39,19 @@ export const ROLES = [
   "Design at Okara",
 ];
 
+/** The hero's one statement, under the name. `pop` is the only orange word on
+ *  the page, as "revenue" is on ignura.com. */
+export const HERO = {
+  before: "Designer and founder in London. I make products people use, and the growth that turns them into",
+  pop: "revenue",
+  after: ".",
+};
+
 /** The About list. Each string is one bullet, and may carry icon tokens. */
 export const ABOUT = [
   "i'm jawad :sparkle:, a :pen:{designer} and founder in london :globe: :rocket:[(yc soon)|https://www.ycombinator.com/]. ~i started making things for money at thirteen and never really stopped. i'm fifteen now.~",
-  "~i run~ :rocket:{ignura|https://ignura.com}~, the launch studio that makes launch films, app store screenshots and landing pages for apps.~",
-  "~i build~ :rocket:{ignaru|https://ignaru.com}~, a growth engine in a box.~",
+  "~i run~ :rocket:{ignura|https://ignura.com}~, an agency that finds a startup's growth problem, builds the engine that fixes it, and runs it.~",
+  "~i build~ :rocket:{ignaru|https://ignaru.com}~, the product for teams that build their own growth systems.~",
   "~i build my own products~ :cube:<end to end>~: the brand, the interface, and the thing that actually ships.~",
 ];
 
@@ -126,7 +134,7 @@ export const NOW: Item[] = [
     period: "Since 2026",
     status: "Live",
     blurb:
-      "The launch studio for apps. Launch films, App Store screenshots, landing pages and UGC from a team of four. 6 figure ARR.",
+      "An agency that builds growth solutions for startups: we find what leaks, build the engine that fixes it, and run it. 6 figure ARR.",
     tags: [
       { label: "Launch films" },
       { label: "App Store screenshots" },
@@ -203,7 +211,7 @@ export const NOW: Item[] = [
     roleNote: "side project",
     period: "Since 2026",
     status: "Building",
-    blurb: "A growth engine in a box. Leads in, calls out, you approve everything in between.",
+    blurb: "Build your own growth systems. A product for teams that run their own growth, from signals to revenue.",
     tags: [
       { label: "B2B" },
       { label: "Growth" },
@@ -410,10 +418,10 @@ export const VENN = [
  *  here, rather than stitched together from the page's copy. */
 export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
-  "the launch studio that makes launch films, App Store screenshots and landing pages for apps, and bevel, " +
+  "an agency that builds growth solutions for startups, and bevel, " +
   "a 3D art team available for hire. Both are at 6 figure ARR. He does design at Okara and at MenuFit (menufit.com), " +
   "an app for eating out healthy with 2 million users and 7 figure ARR. " +
-  "As a side project he builds ignaru, a growth engine in a box.";
+  "As a side project he builds ignaru (ignaru.com), a product for teams that build their own growth systems.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [
@@ -467,7 +475,7 @@ export const NAV: {
     items: [
       ...NOW.map((i) => ({
         label: i.name,
-        href: i.href ?? "#now",
+        href: i.href ?? "#projects",
         note: i.role,
         external: Boolean(i.href),
       })),
@@ -479,10 +487,10 @@ export const NAV: {
     icon: "sparkle",
     items: [
       { label: "About", href: "#about" },
-      { label: "Now", href: "#now", note: `${NOW.length} things` },
-      { label: "Projects", href: "#projects" },
+      { label: "Projects", href: "#projects", note: `${NOW.length} live` },
       { label: "Skills", href: "#skills" },
       { label: "Where it overlaps", href: "#overlaps" },
+      { label: "Contact", href: "#contact" },
       { label: "Blog", href: "/blog" },
     ],
   },

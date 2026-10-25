@@ -10,19 +10,19 @@
 
 import Image from "next/image";
 import { Icon } from "./Icon";
+import { Obj } from "./Obj";
 import { Preview } from "./Preview";
 import { ELSEWHERE } from "@/lib/profile";
 
 export function Elsewhere() {
   return (
     <details className="group">
-      <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 px-4 py-3 text-[15px] transition-colors hover:bg-muted sm:min-h-0 sm:px-6">
-        <span className="text-muted-foreground transition-transform group-open:rotate-90">
+      <summary className="else-sum">
+        <Obj name="elsewhere" size={30} />
+        <span className="text-[17px] font-bold tracking-[-0.01em]">Elsewhere</span>
+        <span className="text-[14px] text-muted-foreground">{ELSEWHERE.length} more</span>
+        <span className="ml-auto text-muted-foreground transition-transform group-open:rotate-90">
           <Icon name="chev" size={14} />
-        </span>
-        Elsewhere
-        <span className="font-mono text-xs text-muted-foreground">
-          {ELSEWHERE.length} more
         </span>
       </summary>
       <div className="sec-body">
@@ -31,11 +31,11 @@ export function Elsewhere() {
             zero, so the 1fr row resolved to the list's top border and nothing
             else: the section opened one pixel tall. */}
         <div className="sec-body-inner">
-          <ul className="divide-y divide-border border-t border-border">
+          <ul className="pt-2">
         {ELSEWHERE.map((e, i) => (
           <li
             key={e.name}
-            className="else-row flex items-center gap-3 px-4 py-2.5 sm:px-6"
+            className="else-row flex items-center gap-3 rounded-[12px] px-3 py-2.5 transition-colors hover:bg-muted"
             style={{ ["--i" as string]: i }}
           >
             {e.logo ? (
@@ -44,12 +44,12 @@ export function Elsewhere() {
                 alt=""
                 width={24}
                 height={24}
-                className="size-6 shrink-0 rounded-[6px] border border-border bg-white object-contain p-0.5"
+                className="logo-tile size-7 shrink-0 rounded-[8px] bg-white object-contain p-0.5"
               />
             ) : (
               <span
                 aria-hidden="true"
-                className="grid size-6 shrink-0 place-items-center rounded-[6px] border border-border font-mono text-[10px] text-muted-foreground"
+                className="grid size-7 shrink-0 place-items-center rounded-[8px] bg-muted text-[12px] font-bold text-muted-foreground"
               >
                 {e.name[0]}
               </span>
@@ -60,12 +60,12 @@ export function Elsewhere() {
                   href={e.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="tap font-display text-[15px] font-medium underline decoration-border underline-offset-[3px] transition-colors hover:decoration-foreground"
+                  className="tap text-[16px] font-bold underline decoration-transparent underline-offset-[3px] transition-colors hover:decoration-foreground"
                 >
                   {e.name}
                 </a>
               </Preview>
-              <span className="text-[13px] leading-snug text-muted-foreground sm:ml-auto sm:truncate sm:text-right">
+              <span className="text-[14px] leading-snug text-muted-foreground sm:ml-auto sm:truncate sm:text-right">
                 {e.note}
               </span>
             </div>

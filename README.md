@@ -14,7 +14,7 @@ npm run dev
 | You want to change | Edit |
 |---|---|
 | Any word on the page | `src/lib/profile.ts` |
-| Colours, type, the ruled column | `src/app/globals.css` |
+| Colours, type, the look | `src/app/globals.css` (the ignura skin is the last block) |
 | The icon set | `src/components/Icon.tsx` |
 | Page structure | `src/app/page.tsx` |
 
