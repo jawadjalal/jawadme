@@ -6,7 +6,8 @@ import { HeroCtas } from "@/components/HeroCtas";
 import { Cursor } from "@/components/Cursor";
 import { Elsewhere } from "@/components/Elsewhere";
 import { Logo } from "@/components/Logo";
-import { Mark, Obj } from "@/components/Obj";
+import { Face, Obj, type ObjName } from "@/components/Obj";
+import { IconPipe, Pipes } from "@/components/Pipes";
 import { Portrait } from "@/components/Portrait";
 import { Rail } from "@/components/Rail";
 import { Reveal } from "@/components/Reveal";
@@ -27,9 +28,17 @@ import {
 // glossy black objects leading each heading, and one orange word. Sections are
 // told apart by space and by that grey step, never by a rule.
 
+const SKILL_OBJ: Record<"pen" | "code" | "sparkle" | "cube", ObjName> = {
+  pen: "work",
+  code: "gear",
+  sparkle: "chat",
+  cube: "stack",
+};
+
 export default function Home() {
   return (
-    <div className="min-h-dvh">
+    <div className="relative min-h-dvh">
+      <Pipes />
       <Cursor label="hi" />
       <ContactModal />
       <a
@@ -67,13 +76,19 @@ export default function Home() {
         </Section>
 
         <Section title="Skills" id="skills" obj="skills">
-          <ul className="space-y-6">
+          {/* Each area is a station: its glossy object, joined to the next by
+              ignura's pipe, then what it covers and the tools in it. */}
+          <ul className="skills">
+            <IconPipe />
             {SKILLS_TABLE.map((row, i) => (
-              <Reveal key={row.area} as="li" index={i} step={0.07} className="sm:grid sm:grid-cols-[8rem_1fr] sm:gap-6">
-                <h3 className="text-[17px] font-bold tracking-[-0.01em]">{row.area}</h3>
-                <div>
-                  <p className="text-[15px] text-[var(--ink-read)]">{row.what}</p>
-                  <ul className="mt-2.5 flex flex-wrap gap-1.5">
+              <Reveal key={row.area} as="li" index={i} step={0.07} className="skill">
+                <span className="skill-ico" data-ipipe-ico>
+                  <Obj name={SKILL_OBJ[row.icon]} size={44} />
+                </span>
+                <div className="min-w-0">
+                  <h3 className="text-[20px] font-bold leading-tight tracking-[-0.02em]">{row.area}</h3>
+                  <p className="mt-0.5 text-[15px] text-[var(--ink-read)]">{row.what}</p>
+                  <ul className="mt-3 flex flex-wrap gap-1.5">
                     {row.tools.map((t) => (
                       <li key={t.label} className="tool">
                         {t.brand ? <Brand name={t.brand} size={14} /> : t.icon ? <Icon name={t.icon} size={14} /> : null}
@@ -116,8 +131,28 @@ function Hero() {
         </div>
       </div>
       <p className="hero-say mt-7">
-        {HERO.before} <span className="pop">{HERO.pop}</span>
-        {HERO.after}
+        {HERO.lines.map((line, i) => (
+          <span key={i} className="hero-line">
+            {line.map((v) => (
+              <span key={v.text}>
+                {v.lead && `${v.lead} `}
+                <span className="hero-verb">
+                  <Obj name={v.obj} size={0} className="hero-ico" />
+                  {v.text.split(" ")[0]}
+                </span>
+                {` ${v.text.split(" ").slice(1).join(" ")} `}
+              </span>
+            ))}
+            {i === HERO.lines.length - 1 && (
+              <>
+                <em className="rev" data-t={HERO.pop}>
+                  {HERO.pop}
+                </em>
+                .
+              </>
+            )}
+          </span>
+        ))}
       </p>
       <HeroCtas />
     </header>
@@ -135,7 +170,7 @@ function About() {
     <Section title="About" id="about" obj="about">
       <div className="space-y-3 text-[17px] leading-relaxed">
         {intro.map((parsed, i) => (
-          <Streamed key={i} parsed={parsed} animate delay={i * 0.3} />
+          <Streamed key={i} parsed={parsed} animate delay={i * 0.3} className={i === 0 ? "about-lead" : ""} />
         ))}
 
         {/* The roles, on one soft slab: the product's own logo, its name, and
@@ -144,7 +179,7 @@ function About() {
         <ul className="roles my-5">
           {ABOUT_ROLES.map((r) => (
             <li key={r.key}>
-              <Logo src={r.logo} emoji={r.emoji} size={28} />
+              <Logo src={r.logo} emoji={r.emoji} tile={r.logoTile} size={28} />
               <Preview {...(heroFor(r.name) ?? {})}>
                 {r.href ? (
                   <a
@@ -330,32 +365,34 @@ function Status({ status }: { status: string }) {
  * centre, where all four meet, is the darkest place on the figure.
  */
 function Venn() {
-  const [top, left, right, bottom] = VENN;
-  const spots = [
+  const objs: ObjName[] = ["work", "chat", "gear", "stack"];
+  const discs = [
     "top-0 left-1/2 -translate-x-1/2",
     "top-[22%] left-[2%]",
     "top-[22%] right-[2%]",
     "bottom-0 left-1/2 -translate-x-1/2",
   ];
+  const labels = [
+    "left-1/2 top-[13%] -translate-x-1/2 -translate-y-1/2",
+    "left-[17%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[15%]",
+    "right-[17%] top-1/2 -translate-y-1/2 translate-x-1/2 sm:right-[15%]",
+    "bottom-[13%] left-1/2 -translate-x-1/2 translate-y-1/2",
+  ];
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[520px]">
-      {spots.map((pos, i) => (
+    <div className="venn relative mx-auto aspect-square w-full max-w-[540px]">
+      {discs.map((pos, i) => (
         <div key={i} aria-hidden="true" className={`venn-disc absolute size-[58%] rounded-full ${pos}`} />
       ))}
-
-      <span className="venn-label left-1/2 top-[12%] -translate-x-1/2 -translate-y-1/2">{top}</span>
-      <span className="venn-label left-[16%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[13%]">{left}</span>
-      <span className="venn-label right-[16%] top-1/2 -translate-y-1/2 translate-x-1/2 sm:right-[13%]">{right}</span>
-      <span className="venn-label bottom-[12%] left-1/2 -translate-x-1/2 translate-y-1/2">{bottom}</span>
-
-      <Image
-        src={IDENTITY.avatar}
-        alt=""
-        width={160}
-        height={160}
-        className="absolute left-1/2 top-1/2 size-16 -translate-x-1/2 -translate-y-1/2 rounded-[18px] bg-background object-cover p-1 sm:size-24"
-      />
+      {VENN.map((label, i) => (
+        <span key={label} className={`venn-label ${labels[i]}`}>
+          <Obj name={objs[i]} size={0} className="venn-obj" />
+          {label}
+        </span>
+      ))}
+      <span className="venn-face absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <Image src={IDENTITY.avatar} alt="" width={200} height={200} className="size-full rounded-[16px] object-cover" />
+      </span>
     </div>
   );
 }
@@ -396,7 +433,7 @@ function Footer() {
         </div>
         <div className="mt-16 flex flex-wrap items-end justify-between gap-6 sm:mt-24">
           <p aria-hidden="true" className="foot-mark">
-            <Mark className="foot-mark-box" />
+            <Face className="foot-mark-box" />
             {IDENTITY.wordmark.charAt(0) + IDENTITY.wordmark.slice(1).toLowerCase()}
           </p>
           <p className="pb-3 text-[15px] text-muted-foreground">

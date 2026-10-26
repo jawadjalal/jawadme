@@ -1530,3 +1530,112 @@ body { font-family: var(--font); background: var(--paper); color: var(--ink); }
 }
 .nav-chev { transform: rotate(90deg); opacity: 0.6; }
 .nav-menu[open] .nav-chev { transform: rotate(-90deg); }
+
+/* ── 26 Oct: the second pass ──────────────────────────────────────────────── */
+@font-face { font-family: "Fraunces Italic"; src: url("/fonts/fraunces-soft-italic-600.woff2") format("woff2"); font-weight: 400 700; font-style: italic; font-display: swap; }
+
+/* His face is the mark: a rounded square, like ignura's I in a box. */
+.face {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  border-radius: 24%;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: var(--rim);
+}
+
+/* The hero's promise, two lines, each verb led by a glossy object. */
+.hero-say { max-width: 40rem; font-size: clamp(1.375rem, 1.05rem + 1.3vw, 2.25rem); line-height: 1.2; letter-spacing: -0.025em; }
+.hero-verb { white-space: nowrap; }
+.hero-ico { display: inline-block; width: 0.95em; height: 0.95em; margin: 0 0.18em 0 0.04em; vertical-align: -0.16em; }
+
+/* "revenue" in ignura's italic, its one orange word, with the ball's glint
+   crossing it once on load and again on hover. */
+.rev {
+  position: relative;
+  display: inline-block;
+  font-family: "Fraunces Italic", Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0.04em 0 0.02em;
+  color: var(--pop);
+  white-space: nowrap;
+  --rv-shine: color-mix(in srgb, var(--pop) 42%, var(--paper));
+  --rv-my: calc((1lh - 1.2334em) / 2);
+}
+.rev::after {
+  content: attr(data-t);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--rv-shine);
+  pointer-events: none;
+  -webkit-mask: url("/obj/rev-glint.svg") no-repeat;
+  mask: url("/obj/rev-glint.svg") no-repeat;
+  -webkit-mask-size: 1.2em 1.2334em;
+  mask-size: 1.2em 1.2334em;
+  -webkit-mask-position: 4em var(--rv-my);
+  mask-position: 4em var(--rv-my);
+  animation: rv-glint 620ms cubic-bezier(0.45, 0, 0.2, 1) 900ms backwards;
+}
+.rev:hover::after { animation: rv-glint 620ms cubic-bezier(0.45, 0, 0.2, 1); }
+@keyframes rv-glint {
+  from { -webkit-mask-position: -1.2em var(--rv-my); mask-position: -1.2em var(--rv-my); }
+  to { -webkit-mask-position: 4em var(--rv-my); mask-position: 4em var(--rv-my); }
+}
+
+/* About: the first line is the lead, at the statement step. */
+.about-lead { font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem); line-height: 1.4; letter-spacing: -0.015em; color: var(--ink); }
+.about-lead .rp-dim { color: var(--ink-read); }
+.rp-hl-glyph.is-obj { width: 1.05em; height: 1.05em; vertical-align: -0.2em; margin-right: 0.3em; }
+.rp-hl-glyph .obj, .rp-hl-logo { display: block; width: 100%; height: 100%; object-fit: contain; }
+.rp-hl-logo { border-radius: 24%; background: #fff; box-shadow: var(--rim); padding: 6%; }
+.rp-hl-logo[style] { padding: 0; }
+
+/* ── The side pipes ── */
+.pipes { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+main, .foot { position: relative; }
+.sec-obj, .else-sum .obj { position: relative; z-index: 2; }
+.foot-card { z-index: 3; }
+.nv { z-index: 60; }
+
+.gp { --w: var(--gp-w, 0px); position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; filter: var(--ico-lift); }
+.gp-p { fill: none; stroke: #fff; stroke-width: var(--w); stroke-linecap: butt; stroke-linejoin: round; }
+.gp-body { stroke: #070708; }
+.gp-rim { stroke: #3a3b41; stroke-width: calc(var(--w) * 0.22); transform: translate(calc(var(--w) * 0.04), calc(var(--w) * 0.36)); }
+.gp-joints rect { stroke: #000; stroke-opacity: 0.55; }
+.gp-sheen { stroke: #5b5c62; stroke-width: calc(var(--w) * 0.4); transform: translate(calc(var(--w) * -0.06), calc(var(--w) * -0.2)); }
+.gp-line { stroke: #f4f4f6; stroke-opacity: 0.75; stroke-width: calc(var(--w) * 0.12); transform: translate(calc(var(--w) * -0.08), calc(var(--w) * -0.27)); }
+.gp-in image { will-change: transform; }
+
+/* ── Skills: stations on one pipe ── */
+.skills { position: relative; isolation: isolate; display: grid; gap: 2.25rem; }
+.ip-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.skill { position: relative; display: grid; grid-template-columns: 3.5rem 1fr; gap: 1.25rem; align-items: start; }
+.skill-ico { position: relative; z-index: 1; display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 16px; background: var(--soft); transition: transform 0.4s var(--ease); }
+.skill:hover .skill-ico { transform: rotate(-6deg) scale(1.06); }
+
+/* ── Where it overlaps ── */
+.venn-disc { background: color-mix(in srgb, var(--ink) 4.5%, transparent); transition: background-color 0.3s var(--ease); }
+.venn-label { display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem; font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+.venn-obj { width: 1.9rem; height: 1.9rem; }
+.venn-face { width: 4.5rem; height: 4.5rem; padding: 4px; border-radius: 20px; background: var(--paper); box-shadow: var(--rim), var(--lift); }
+@media (min-width: 640px) {
+  .venn-label { font-size: 16px; }
+  .venn-obj { width: 2.5rem; height: 2.5rem; }
+  .venn-face { width: 6.5rem; height: 6.5rem; border-radius: 24px; }
+}
+
+/* the footer's face beside the name */
+.foot-mark-box { width: 0.8em; height: 0.8em; border-radius: 22%; margin-right: 0.08em; }
+
+/* the section rail moves out a step to leave the pipe its margin */
+@media (prefers-reduced-motion: reduce) {
+  .rev::after { animation: none; }
+  .skill:hover .skill-ico { transform: none; }
+}
+/* one line each from a tablet up; on a phone they flow */
+@media (min-width: 640px) { .hero-line { display: block; } }

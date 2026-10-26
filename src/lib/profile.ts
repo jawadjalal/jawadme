@@ -39,12 +39,19 @@ export const ROLES = [
   "Design at Okara",
 ];
 
-/** The hero's one statement, under the name. `pop` is the only orange word on
- *  the page, as "revenue" is on ignura.com. */
+/** The hero's one statement, under the name: two lines, each verb led by a
+ *  glossy object as ignura.com's promise is. `pop` is the only orange word on
+ *  the page, set in ignura's italic, as "revenue" is there. */
 export const HERO = {
-  before: "Designer and founder in London. I make products people use, and the growth that turns them into",
+  /** The first line, then the second; each verb's object stays on its word. */
+  lines: [
+    [
+      { obj: "work", lead: "I", text: "design apps," },
+      { obj: "build", text: "build them," },
+    ],
+    [{ obj: "chart", lead: "and", text: "grow them into" }],
+  ] as { obj: import("@/components/Obj").ObjName; lead?: string; text: string }[][],
   pop: "revenue",
-  after: ".",
 };
 
 /** The About list. Each string is one bullet, and may carry icon tokens. */
@@ -78,7 +85,7 @@ export const ABOUT_ROLES: {
   emoji?: string;
   href?: string;
 }[] = [
-  { key: "ignura", name: "ignura", role: "founder", stat: "6 figure arr", logo: "/logos/ignura.png", href: "https://ignura.com" },
+  { key: "ignura", name: "ignura", role: "founder", stat: "6 figure arr", logo: "/logos/ignura.png", logoTile: "#111111", href: "https://ignura.com" },
   { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 2m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
   { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
   { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
@@ -128,6 +135,7 @@ export const NOW: Item[] = [
     name: "ignura",
     href: "https://ignura.com",
     logo: "/logos/ignura.png",
+    logoTile: "#111111",
     shot: "/design/ignura.webp",
     domain: "ignura.com",
     role: "Founder",
@@ -458,6 +466,8 @@ export function heroFor(phrase: string) {
   return {
     shot: item.shot,
     emoji: item.emoji,
+    logo: item.logo,
+    tile: item.logoTile,
     label: item.domain ?? "no site yet",
   };
 }
