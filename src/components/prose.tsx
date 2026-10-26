@@ -25,6 +25,11 @@
 import { Brand, isBrandKey, type BrandKey } from "./Brand";
 import { Icon, isIconName, type IconName } from "./Icon";
 import { Preview } from "./Preview";
+import { Obj, type ObjName } from "./Obj";
+
+// A marked phrase leads with a glossy object where one fits, as ignura.com's
+// text does; a product leads with its own logo instead.
+const GLOSSY: Partial<Record<string, ObjName>> = { pen: "work", mail: "contact", code: "build", globe: "elsewhere" };
 import { heroFor } from "@/lib/profile";
 
 
@@ -316,8 +321,15 @@ export function Mark({
 
   const body = (
     <>
-      <span className="rp-hl-glyph" aria-hidden="true">
-        <Icon name={name as IconName} size={15} />
+      <span className={`rp-hl-glyph ${hero?.logo || GLOSSY[name] ? "is-obj" : ""}`} aria-hidden="true">
+        {hero?.logo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={hero.logo} alt="" className="rp-hl-logo" style={hero.tile ? { background: hero.tile } : undefined} />
+        ) : GLOSSY[name] ? (
+          <Obj name={GLOSSY[name]!} size={0} />
+        ) : (
+          <Icon name={name as IconName} size={15} />
+        )}
       </span>
       {children}
     </>

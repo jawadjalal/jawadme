@@ -7,7 +7,7 @@
 // the blog passes none and gets a single link back.
 
 import Link from "next/link";
-import { Mark } from "./Obj";
+import { Face } from "./Obj";
 import { NavEmail } from "./NavEmail";
 import { NavMenu, type NavGroup } from "./NavMenu";
 import { Theme } from "./Theme";
@@ -22,7 +22,7 @@ export function SiteNav({ groups, home = true }: { groups?: NavGroup[]; home?: b
           className="tap flex items-center gap-2 rounded-md outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
           aria-label={home ? `${IDENTITY.properName}, back to the top` : `${IDENTITY.properName}, home`}
         >
-          <Mark size={24} />
+          <Face size={30} />
           <span className="text-[15px] font-bold tracking-[-0.01em]">{IDENTITY.properName}</span>
         </Link>
         <div className="flex items-center gap-1.5 md:gap-2">

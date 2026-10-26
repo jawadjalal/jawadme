@@ -61,7 +61,7 @@ export function Rail() {
     <nav
       aria-label="Sections"
       className="fixed top-1/2 z-40 hidden -translate-y-1/2 xl:block"
-      style={{ insetInlineStart: "calc(50% - 380px - 12.5rem)", width: "10.5rem" }}
+      style={{ insetInlineStart: "calc(50% - 380px - 15rem)", width: "10.5rem" }}
     >
       {SECTIONS.map((s) => (
         <a
