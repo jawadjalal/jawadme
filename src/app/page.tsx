@@ -395,8 +395,8 @@ function Venn() {
       <Image
         src="/design/jawad-cut.webp"
         alt=""
-        width={266}
-        height={300}
+        width={320}
+        height={361}
         className="venn-face absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
       />
     </div>
