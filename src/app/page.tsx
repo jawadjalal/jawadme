@@ -313,6 +313,7 @@ function Card({ item, index, wide = false }: { item: Item; index: number; wide?:
             width={1200}
             height={630}
             className={`proj-shot w-full object-cover object-top ${wide ? "h-52 sm:h-72" : "h-48 sm:h-52"}`}
+            style={item.shotPos ? { objectPosition: item.shotPos } : undefined}
           />
         )}
       </div>
@@ -390,9 +391,14 @@ function Venn() {
           {label}
         </span>
       ))}
-      <span className="venn-face absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Image src={IDENTITY.avatar} alt="" width={200} height={200} className="size-full rounded-[16px] object-cover" />
-      </span>
+      {/* just him, cut out of his tile, so the centre reads as a face and not a box */}
+      <Image
+        src="/design/jawad-cut.webp"
+        alt=""
+        width={320}
+        height={361}
+        className="venn-face absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      />
     </div>
   );
 }

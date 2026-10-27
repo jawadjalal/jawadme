@@ -700,44 +700,45 @@ html.has-cursor * { cursor: none !important; }
 /* ── The section rail ─────────────────────────────────────────────────────
    Wide screens leave two hundred-odd pixels of empty ground either side of
    the column. This puts the page's own table of contents in the left of it:
-   a tick per section that lengthens and inks up as you reach it, so the
-   margin says where you are rather than sitting there being empty.
+   the section names in grey, the one you are in inked up with the pipes'
+   orange ball beside it. No rules or ticks: the names line up on their own.
 
    It is anchored to the column rather than to the viewport edge, so the gap
    between rail and text is the same at 1280 as at 2560 and the reading
    column stays the thing the eye lands on. */
+.rail { transition: opacity 0.35s var(--ease), translate 0.35s var(--ease); }
+.rail[data-away] { opacity: 0; translate: -8px 0; pointer-events: none; }
 .rail-item {
-  display: flex;
+  position: relative;
+  display: block;
   width: fit-content;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.28rem 0;
-  color: var(--muted-foreground);
+  padding: 0.3rem 0 0.3rem 1.1rem;
+  color: color-mix(in srgb, var(--ink) 38%, transparent);
   font-size: 0.75rem;
+  font-weight: 500;
   line-height: 1.2;
+  letter-spacing: -0.005em;
   text-decoration: none;
-  transition: color 0.25s var(--ease);
+  transition: color 0.25s var(--ease), translate 0.3s var(--ease);
 }
-.rail-tick {
-  flex: none;
-  width: 14px;
-  height: 1px;
-  background: currentColor;
-  transition: width 0.3s var(--ease);
+.rail-ball {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  opacity: 0;
+  scale: 0.4;
+  transition: opacity 0.25s var(--ease), scale 0.35s var(--ease);
 }
-.rail-item:hover,
-.rail-item[aria-current="true"] {
-  color: var(--foreground);
-}
-.rail-item[aria-current="true"] .rail-tick { width: 30px; }
-.rail-item:focus-visible {
-  outline: none;
-  color: var(--foreground);
-}
-.rail-item:focus-visible .rail-tick { width: 30px; }
+.rail-item:hover { color: var(--ink); }
+.rail-item[aria-current="true"] { color: var(--ink); font-weight: 700; translate: 2px 0; }
+.rail-item[aria-current="true"] .rail-ball { opacity: 1; scale: 1; }
+.rail-item:focus-visible { outline: none; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .rail-item, .rail-tick { transition: none; }
+  .rail, .rail-item, .rail-ball { transition: none; }
 }
 
 /* ── Grid tables ──────────────────────────────────────────────────────────
@@ -1596,10 +1597,12 @@ body { font-family: var(--font); background: var(--paper); color: var(--ink); }
 .rp-hl-logo[style] { padding: 0; }
 
 /* ── The side pipes ── */
-.pipes { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.pipes { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 main, .foot { position: relative; }
 .sec-obj, .else-sum .obj { position: relative; z-index: 2; }
 .foot-card { z-index: 3; }
+/* the footer's white fade sits under the pipes, so they run on into the card */
+.foot-field::before { z-index: 1; }
 .nv { z-index: 60; }
 
 .gp { --w: var(--gp-w, 0px); position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; filter: var(--ico-lift); }
@@ -1622,11 +1625,11 @@ main, .foot { position: relative; }
 .venn-disc { background: color-mix(in srgb, var(--ink) 4.5%, transparent); transition: background-color 0.3s var(--ease); }
 .venn-label { display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem; font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
 .venn-obj { width: 1.9rem; height: 1.9rem; }
-.venn-face { width: 4.5rem; height: 4.5rem; padding: 4px; border-radius: 20px; background: var(--paper); box-shadow: var(--rim), var(--lift); }
+.venn-face { width: 4.75rem; height: auto; filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.16)) drop-shadow(0 1px 2px rgb(0 0 0 / 0.12)); }
 @media (min-width: 640px) {
   .venn-label { font-size: 16px; }
   .venn-obj { width: 2.5rem; height: 2.5rem; }
-  .venn-face { width: 6.5rem; height: 6.5rem; border-radius: 24px; }
+  .venn-face { width: 7rem; }
 }
 
 /* the footer's face beside the name */

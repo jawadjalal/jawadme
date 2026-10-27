@@ -4,8 +4,10 @@
 //
 // Past about 1280px the column leaves two hundred-odd pixels of empty ground
 // on either side, and the page's own structure is the one thing that space
-// can carry without competing with the reading column: a tick per section,
-// the one you are in lengthened and inked up. It is the header's Page menu
+// can carry without competing with the reading column: the section names in
+// a quiet grey, the one you are in inked up with the pipes' orange ball
+// beside it. It steps aside once the footer card arrives, which has its own
+// copy of these links. It is the header's Page menu
 // laid out vertically, so it adds a way to move around rather than a new
 // thing to read.
 //
@@ -27,6 +29,7 @@ const SECTIONS = [
 
 export function Rail() {
   const [here, setHere] = useState<string | null>(null);
+  const [away, setAway] = useState(false);
 
   useEffect(() => {
     const nodes = SECTIONS.map((s) => document.getElementById(s.id)).filter(
@@ -46,6 +49,8 @@ export function Rail() {
         if (n.getBoundingClientRect().top <= line) found = n.id;
       }
       setHere(found);
+      const card = document.querySelector(".foot-card");
+      setAway(Boolean(card && card.getBoundingClientRect().top < window.innerHeight * 0.75));
     };
 
     pick();
@@ -60,7 +65,8 @@ export function Rail() {
   return (
     <nav
       aria-label="Sections"
-      className="fixed top-1/2 z-40 hidden -translate-y-1/2 xl:block"
+      className="rail fixed top-1/2 z-40 hidden -translate-y-1/2 xl:block"
+      data-away={away || undefined}
       style={{ insetInlineStart: "calc(50% - 380px - 15rem)", width: "10.5rem" }}
     >
       {SECTIONS.map((s) => (
@@ -70,7 +76,7 @@ export function Rail() {
           className="rail-item"
           aria-current={here === s.id ? "true" : undefined}
         >
-          <span className="rail-tick" aria-hidden="true" />
+          <img src="/obj/ball.webp" alt="" aria-hidden="true" className="rail-ball" />
           <span>{s.label}</span>
         </a>
       ))}
