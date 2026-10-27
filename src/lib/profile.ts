@@ -110,6 +110,8 @@ export type Item = {
   emoji?: string;
   /** Screenshot for the hover card and the project grid, under /public. */
   shot?: string;
+  /** where to anchor a shot cropped into its card, when the centre would cut the headline */
+  shotPos?: string;
   /** Shown in the hover card's footer, so it says where the link goes. */
   domain?: string;
   role: string;
@@ -214,6 +216,7 @@ export const NOW: Item[] = [
     href: "https://ignaru.com",
     logo: "/logos/ignaru.png",
     shot: "/design/ignaru.webp",
+    shotPos: "left top",
     domain: "ignaru.com",
     role: "Founder",
     roleNote: "side project",

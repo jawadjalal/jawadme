@@ -4,8 +4,8 @@
 //
 // They come out from under the bar at the top and run into the footer card at
 // the bottom. The left one branches into each section's glossy object, so the
-// headings read as stations on one line; the right one carries a collar at
-// the same heights, so the two sides answer each other. An orange ball rides
+// headings read as stations on one line; the right one runs clean, since a
+// collar there would join onto nothing. An orange ball rides
 // inside each, level with the middle of the screen, so it travels down the
 // page with the reader.
 //
@@ -60,7 +60,6 @@ export function Pipes() {
       );
       let dl = `M${xl} ${top}V${bottom}`;
       const jl: Joint[] = [];
-      const jr: Joint[] = [];
       for (const o of objs) {
         const r = o.getBoundingClientRect();
         const y = Math.round((r.top + r.height / 2 - box.top) * 10) / 10;
@@ -68,10 +67,9 @@ export function Pipes() {
         // a branch from the pipe into the object, tucked under it
         dl += `M${xl} ${y}H${x}`;
         jl.push({ x: xl, y, a: 0 }, { x: r.left - box.left - W * 0.3, y, a: 0 });
-        jr.push({ x: xr, y, a: 90 });
       }
       drawPipe(left, { d: dl, w: W, joints: jl, width, height });
-      drawPipe(right, { d: `M${xr} ${top}V${bottom}`, w: W, joints: jr, width, height });
+      drawPipe(right, { d: `M${xr} ${top}V${bottom}`, w: W, joints: [], width, height });
       balls[0].dataset.x = `${xl}`;
       balls[1].dataset.x = `${xr}`;
       cur = -1;
