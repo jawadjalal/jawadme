@@ -6,5 +6,9 @@ const nextConfig = {
       { protocol: "https", hostname: "icons.duckduckgo.com" },
     ],
   },
+  // the Jobbie hero pitch is a static folder in public/jobbie; its pages resolve assets through <base href="/jobbie/">
+  async rewrites() {
+    return [{ source: "/jobbie", destination: "/jobbie/journey.html" }];
+  },
 };
 export default nextConfig;

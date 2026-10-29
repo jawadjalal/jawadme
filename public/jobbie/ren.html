@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<base href="/jobbie/" target="_top">
+<script>/* inside the canvas, links open a new tab so the pitch stays put */ if (self !== top) document.currentScript.previousElementSibling.target = "_blank";</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jobbie, Renaissance</title>
+<meta name="description" content="Jobbie rides out every night, applies to every role that fits you, and you wake up to interviews.">
+<link rel="preload" href="img/eng/r-knight.webp" as="image">
+<link rel="preload" href="img/eng/r-dragon3.webp" as="image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Newsreader at display size: a Times cut, the face the reference sets its capitals in, wide enough not to read tall. -->
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+<link rel="icon" href="img/knight.png">
+<style>
+:root {
+  --paper: #ffffff;
+  --ink: #2438d6;          /* the one engraving ink */
+  --ink-deep: #1a2aa8;     /* pressed ink */
+  --text: #111a4d;         /* running text: the ink, nearly black */
+  --tint: #eef0fd;
+  --margin: clamp(16px, 2.4vw, 36px);
+  --serif: "Newsreader", "Times New Roman", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, system-ui, sans-serif;
+  --ios: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, system-ui, sans-serif;
+  --ease: cubic-bezier(.22, .68, 0, 1.1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+/* photos and logos printed in the plate's ink: dark to ultramarine, light to paper */
+.faces img, .from img, .co img, .f-head img { filter: url(#ink); }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* ---------- The print: a white mount, one plate in it, the product rising over its foot ---------- */
+.hero { position: relative; isolation: isolate; overflow-x: clip; background: #fff; --mount: clamp(12px, 1.95vw, 28px); }
+.plate { position: absolute; height: auto; pointer-events: none; user-select: none; }
+
+/* ---------- Nav: links left, the wordmark centred, the way in on the right ---------- */
+.nav { position: relative; z-index: 20; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 90px; padding: 0 var(--mount); }
+.links { display: flex; gap: 26px; }
+.links a, .login { position: relative; font-size: 16px; font-weight: 500; letter-spacing: -.01em; color: var(--text); text-decoration: none; transition: color .25s; }
+.links a::after, .login::after { content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 1.5px; border-radius: 1px; background: currentColor; scale: 0 1; transform-origin: 100% 50%; transition: scale .5s var(--ease-out); }
+.links a::after { left: 32px; }
+.links a:hover, .login:hover { color: var(--ink); }
+.links a:hover::after, .login:hover::after { scale: 1 1; transform-origin: 0 50%; }
+.links .m-login { display: none; }
+/* each link carries a small engraving from the same plate */
+.links a { display: inline-flex; align-items: center; gap: 8px; }
+.links img { width: 24px; height: 24px; object-fit: contain; transform-origin: 50% 85%; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .links a:hover img { animation: swing .9s var(--ease-out); }
+  @keyframes swing { 0% { rotate: 0deg; translate: 0 0; } 22% { rotate: -12deg; translate: 0 -3px; } 48% { rotate: 7deg; translate: 0 -2px; } 72% { rotate: -3deg; translate: 0 -1px; } 100% { rotate: 0deg; translate: 0 0; } }
+}
+.brand { justify-self: center; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-family: var(--serif); font-weight: 400; font-size: 30px; line-height: 1; letter-spacing: -.03em; text-transform: uppercase; }
+.brand img { width: auto; height: 38px; margin-top: -4px; transition: rotate .6s var(--ease); transform-origin: 50% 90%; }
+@media (hover: hover) { .brand:hover img { rotate: -8deg; } }
+.end { justify-self: end; display: flex; align-items: center; gap: 22px; }
+.login { color: var(--ink); }
+.nav-cta { position: relative; overflow: hidden; isolation: isolate; display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 11px; background: var(--ink); color: #fff; font-weight: 600; font-size: 15px; text-decoration: none; white-space: nowrap; transition: background .3s, translate .4s var(--ease), scale .2s var(--ease); }
+@supports (corner-shape: squircle) { .nav-cta { border-radius: 18px; corner-shape: squircle; } }
+.nav-cta:hover { background: var(--ink-deep); translate: 0 -1px; }
+.nav-cta:active { scale: .97; }
+.menu-btn { display: none; position: relative; width: 42px; height: 42px; border: 0; border-radius: 12px; background: none; color: var(--ink); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: rotate .5s var(--ease); }
+.menu-btn::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--tint); opacity: 0; scale: .7; transition: opacity .3s, scale .4s var(--ease); }
+@media (hover: hover) { .menu-btn:hover::before { opacity: 1; scale: 1; } }
+/* closing: the cross unturns first, then the bars part */
+.menu-btn i { position: absolute; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: currentColor; transition: top .22s var(--ease-out) .16s, transform .26s var(--ease-out), left .35s var(--ease); }
+.menu-btn i:first-child { top: 16px; } .menu-btn i:last-child { top: 24px; left: 19px; }
+@media (hover: hover) { .menu-btn:hover i:last-child { left: 11px; } .menu-btn:hover i:first-child { left: 17px; } }
+/* opening: the bars meet first, then turn into the cross */
+.nav.open .menu-btn i { top: 20px; left: 11px; transition: top .2s var(--ease-out), transform .34s var(--ease) .14s, left .3s var(--ease); }
+.nav.open .menu-btn i:first-child { transform: rotate(45deg); } .nav.open .menu-btn i:last-child { transform: rotate(-45deg); }
+@media (hover: hover) { .nav.open .menu-btn:hover { rotate: 90deg; } }
+
+/* ---------- The plate: the engraving owns the edges, the title owns the white band through the middle ---------- */
+.stage { position: relative; margin: 0 var(--mount); height: clamp(640px, calc(100svh - 90px - var(--mount)), 980px); padding-bottom: 200px; display: grid; place-items: center; overflow: clip; isolation: isolate; background: var(--paper); container-type: size; }
+/* the plate is laid up in the one ink: Durer's knight (1508, a real print), a dragon drawn for this page after the old engravings,
+   a rococo acanthus (1740) hanging in both top corners, an emblem of crossed quills in laurel (1859) at the head */
+.art { position: absolute; inset: 0; pointer-events: none; mask-image: /* taste-skill-ignore: the prints fade into the paper instead of ending on a cut */ linear-gradient(to bottom, transparent, #000 40px, #000 calc(100% - 110px), transparent); }
+.art img { position: absolute; height: auto; max-width: none; user-select: none; }
+.pc { top: 0; width: min(24cqw, 52cqh); }
+.pc-l { left: 0; scale: 1 -1; }
+.pc-r { right: 0; scale: -1 -1; }
+.emblem { left: 50%; top: 1.6cqh; width: min(12.5cqw, 19cqh); translate: -50% 0; }
+.art .knight { left: 0; bottom: 0; height: min(86cqh, 35cqw, 622px); width: auto; }
+/* small specks in the open paper, like the reference's birds and drones: a columbine and a moth from the Hortus Floridus (1614) */
+.art .columbine { top: 1.5cqh; height: min(13cqh, 9.5cqw); width: auto; }
+.art .col-l { right: calc(50% + min(6.25cqw, 11cqh) + 1.2cqw); scale: -1 1; rotate: -9deg; }
+.art .col-r { left: calc(50% + min(6.25cqw, 11cqh) + 1.2cqw); rotate: 9deg; }
+.fly { width: min(4.2cqw, 9.5cqh); }
+.fly-1 { left: 23%; top: 21%; rotate: -16deg; }
+.fly-2 { right: 25%; top: 20%; width: min(3cqw, 7cqh); scale: -1 1; rotate: 12deg; }
+.beast { position: absolute; right: 0; bottom: 0; height: min(86cqh, 35cqw, 622px); aspect-ratio: 667 / 1000; margin: 0; }
+.beast .dragon { position: static; width: 100%; }
+/* the dragon speaks the way figures in old prints do, on a banderole: the line every job seeker has been sent */
+.speech { position: absolute; right: 2%; top: 21%; width: 108%; height: auto; overflow: visible; }
+.speech text { font-family: var(--serif); font-style: italic; font-size: 15px; fill: var(--ink); letter-spacing: -.005em; }
+.title { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 var(--margin); margin-top: 3.5%; }
+@property --spin { syntax: "<angle>"; inherits: true; initial-value: 200deg; }
+.pill { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 9px; height: 38px; padding: 0 14px 0 5px; border-radius: 12px; color: var(--ink); text-decoration: none; font-size: 14px; white-space: nowrap; transition: color .3s; }
+.pill::before, .pill::after { content: ""; position: absolute; border-radius: inherit; pointer-events: none; }
+.pill::before { inset: 0; z-index: -2; background: /* taste-skill-ignore: the glow that circles the trust pill, asked for */ conic-gradient(from var(--spin), transparent 0 64%, rgba(72, 92, 255, .8) 78%, transparent 88%); filter: blur(5px); opacity: .45; transition: opacity .4s, filter .4s, inset .4s; }
+.pill::after { inset: 0; z-index: -1; border: /* taste-skill-ignore: the pill rim the light runs along */ 1px solid transparent; background: /* taste-skill-ignore: white fill inside a moving rim */ linear-gradient(#fff, #fff) padding-box, conic-gradient(from var(--spin), rgba(36, 56, 214, .26) 0 62%, #7d8cff 74%, #2438d6 80%, rgba(36, 56, 214, .26) 90%) border-box; }
+@supports (corner-shape: squircle) { .pill { border-radius: 20px; corner-shape: squircle; } .pill::before, .pill::after { corner-shape: inherit; } }
+.pill:hover { color: var(--ink-deep); }
+.pill:hover::before { opacity: .8; inset: -2px; filter: blur(7px); }
+.pill b { font-weight: 700; }
+.faces { display: flex; flex: none; }
+.faces img { width: 28px; height: 28px; border-radius: 50%; margin-left: -8px; object-fit: cover; outline: 2px solid #fff; transition: margin .45s var(--ease); }
+.pill:hover .faces img:not(:first-child) { margin-left: -4px; }
+.faces img:first-child { margin-left: 0; }
+/* one star beside the rating */
+.score { display: inline-flex; align-items: center; white-space: pre; }
+.star { display: inline-flex; margin: 0 4px 0 3px; color: var(--ink); flex: none; }
+.star svg { width: 14px; height: 14px; translate: 0 -.5px; transition: scale .4s var(--ease), rotate .4s var(--ease); }
+.pill:hover .star svg { scale: 1.25; rotate: 72deg; }
+h1 {
+  margin: 24px 0 0; text-align: center;
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(36px, min(5.3cqw, 13cqh), 76px); font-optical-sizing: auto;
+  line-height: .97; letter-spacing: -.03em; word-spacing: .06em; text-transform: uppercase;
+  color: var(--ink);
+}
+h1 span { display: block; }
+.btn {
+  margin-top: 24px;
+  display: inline-flex; align-items: center; gap: 16px;
+  height: 60px; padding: 0 9px 0 26px; border-radius: 16px;
+  background: var(--ink); color: #fff; text-decoration: none; white-space: nowrap;
+  font-family: var(--sans); font-weight: 600; font-size: 17px; letter-spacing: -.01em;
+  position: relative; overflow: hidden; isolation: isolate;
+  transition: background .3s, translate .45s var(--ease), scale .2s var(--ease);
+}
+.btn i { position: relative; overflow: hidden; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 11px; background: #fff; color: var(--ink); transition: scale .45s var(--ease); }
+@supports (corner-shape: squircle) { .btn { border-radius: 26px; corner-shape: squircle; } .btn i { border-radius: 18px; corner-shape: squircle; } }
+.btn .ar { position: absolute; inset: 0; }
+.btn svg { position: absolute; left: 50%; top: 50%; width: 19px; height: 19px; margin: -9.5px 0 0 -9.5px; transition: translate .5s var(--ease); }
+.btn svg + svg { translate: 0 34px; }
+.btn:hover { background: var(--ink-deep); translate: 0 -2px; }
+.btn:hover i { scale: 1.06; }
+.btn:hover svg { translate: 0 -34px; }
+.btn:hover svg + svg { translate: 0 0; transition-delay: .07s; }
+.btn:active { scale: .97; }
+
+
+/* ---------- The field: the product rises out of the foot of the plate and stands in the grass below it ---------- */
+.field { --k: 1; position: relative; z-index: 5; height: calc(560px * var(--k)); margin-top: -270px; }
+.canvas { position: absolute; left: 50%; top: 0; width: 1440px; height: 560px; margin-left: -720px; transform-origin: 50% 0; scale: var(--k); }
+
+/* the app: three windows of the same tool */
+.win {
+  --d-ink: #1a2aa8; --d-ink-2: #4f5cc8; --d-ink-3: #6f7bd6; --d-soft: #f1f3fd; --d-rule: #e1e5fa;
+  position: absolute; background: #fff; color: var(--d-ink);
+  border: /* taste-skill-ignore: overlapping app windows need their edge */ 1px solid rgba(0, 0, 0, .12); border-radius: 12px; overflow: hidden;
+  box-shadow: /* taste-skill-ignore: windows stacked over a print need real depth */ 0 1px 2px rgba(26, 42, 168, .06), 0 22px 50px -22px rgba(26, 42, 168, .34);
+  font-family: var(--ios); font-size: 13px; line-height: 1.35; text-align: left;
+  /* each window turns a little in space, like three monitors around a desk */
+  --rx: 0deg; --ry: 0deg;
+  transform: perspective(1500px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform .8s var(--ease-out), translate .6s var(--ease-out), box-shadow .6s;
+}
+.win:hover { translate: 0 -6px; box-shadow: /* taste-skill-ignore: a lifted window casts a longer shadow */ 0 1px 2px rgba(26, 42, 168, .06), 0 40px 70px -30px rgba(26, 42, 168, .45); }
+.bar { display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 14px; background: #f7f7f9; color: #3c3c43; font-size: 13px; font-weight: 600; letter-spacing: -.01em; border-bottom: /* taste-skill-ignore: a title bar's own edge */ 1px solid rgba(0, 0, 0, .08); }
+.lights { display: flex; gap: 8px; }
+.lights i { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; outline: /* taste-skill-ignore: the hairline rim on macOS traffic lights */ .5px solid rgba(0, 0, 0, .14); outline-offset: -.5px; }
+.lights i:nth-child(2) { background: #febc2e; } .lights i:nth-child(3) { background: #28c840; }
+.bar > span:last-child { margin: 0 auto; padding-right: 52px; }
+/* the form window is a browser: its title is the address, in a field with a lock */
+.url { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 12px; border-radius: 7px; background: #ececf0; color: #3c3c43; font-size: 12px; font-weight: 500; }
+.url svg { width: 10px; height: 10px; color: #8e8e93; }
+
+/* window 1: last night, as the spreadsheet it is */
+.foot { position: absolute; bottom: -30px; width: 330px; height: auto; z-index: 1; pointer-events: none; user-select: none; }
+.foot-l { left: -6px; } .foot-r { right: -6px; scale: -1 1; }
+.w-sheet { left: 330px; top: 0; width: 780px; height: 520px; z-index: 3; --rx: 9deg; transform-origin: 50% 100%; }
+.sheet-in { display: grid; grid-template-columns: 50px minmax(0, 1fr); height: 100%; }
+.rail { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 0; background: var(--d-soft); color: var(--d-ink-2); }
+.rail .r-logo { width: 26px; height: 28px; margin-bottom: 8px; }
+.rail span { display: grid; place-items: center; width: 34px; height: 32px; border-radius: 8px; }
+.rail span svg { width: 17px; height: 17px; }
+.rail span.on { background: #fff; color: var(--ink); }
+.sheet-main { min-width: 0; }
+.crumbs { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; color: var(--d-ink-2); }
+.crumbs svg { width: 12px; height: 12px; color: var(--d-ink-3); }
+.crumbs b { color: var(--d-ink); font-weight: 600; }
+.crumbs .trial { margin-left: auto; display: flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 7px; background: #e9f7ef; color: #11683c; font-weight: 600; font-size: 12px; }
+.tools { display: flex; align-items: center; gap: 6px; padding: 0 16px 10px; }
+.chip { display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 8px; background: var(--d-soft); color: var(--d-ink-2); font-weight: 500; white-space: nowrap; }
+.switch { width: 28px; height: 16px; border-radius: 99px; border: 0; padding: 0; background: #c9ced6; position: relative; cursor: pointer; transition: background .25s; flex: none; }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; transition: transform .3s var(--ease); }
+.switch[aria-checked="true"] { background: var(--ink); }
+.switch[aria-checked="true"]::after { transform: translateX(12px); }
+.tools .chip:nth-child(4) { display: none; }
+.run.off { background: var(--d-soft); color: var(--d-ink-2); }
+.run { margin-left: auto; height: 28px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--ink); color: #fff; font: 600 12.5px var(--ios); display: flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap; }
+
+.grid { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.grid th, .grid td { height: 37px; padding: 0 10px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-top: /* taste-skill-ignore: a spreadsheet's own grid */ 1px solid var(--d-rule); }
+.grid th { height: 32px; font-weight: 500; color: var(--d-ink-2); background: #f7f8fe; }
+.grid td:first-child, .grid th:first-child { width: 40px; padding-left: 14px; text-overflow: clip; color: var(--d-ink-3); font-variant-numeric: tabular-nums; }
+.grid .c-co { width: 108px; } .grid .c-m { width: 66px; } .grid .c-t { width: 78px; } .grid .c-st { width: 134px; } .grid .c-rc, .grid td:nth-child(7) { display: none; }
+.co { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.co img { width: 18px; height: 18px; object-fit: contain; border-radius: 4px; flex: none; }
+td.role { color: var(--d-ink-2); }
+td.m { font-variant-numeric: tabular-nums; font-weight: 600; }
+.st { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 9px 0 8px; border-radius: 99px; font-weight: 500; font-size: 12.5px; color: var(--d-ink-2); }
+.st::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #b9c1f5; }
+.st.replied { color: var(--ink); background: var(--d-soft); }
+.st.replied::before { background: var(--ink); }
+.st.interview { color: #fff; background: var(--ink); font-weight: 600; }
+.st.interview::before { background: #fff; }
+.st.sending { color: #8a5a00; }
+.rc { display: inline-flex; align-items: center; gap: 7px; }
+.rc i { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font: 700 9px var(--ios); font-style: normal; color: #fff; background: var(--ink) !important; }
+.rc.none { color: var(--d-ink-3); }
+td.t { color: var(--d-ink-2); font-variant-numeric: tabular-nums; }
+.grid tr.new { animation: row-in 1.8s var(--ease-out); }
+@keyframes row-in { from { background: #e4e8fc; } }
+
+/* window 2: the reply */
+.w-inbox { left: 1124px; top: 28px; width: 286px; z-index: 6; --rx: 4deg; --ry: -17deg; transform-origin: 0 50%; }
+.msg { padding: 14px 16px 16px; }
+.from { display: flex; gap: 10px; align-items: center; }
+.from img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none; }
+.from b { display: block; font-weight: 600; font-size: 14px; }
+.from span { color: var(--d-ink-2); font-size: 12px; }
+.from time { margin-left: auto; align-self: flex-start; color: var(--d-ink-2); font-size: 12px; }
+.msg p { margin: 12px 0 0; font-size: 14px; line-height: 1.45; }
+.slots { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.slots button { height: 34px; border-radius: 8px; border: 0; background: var(--d-soft); font: 600 13px var(--ios); color: var(--d-ink); cursor: pointer; transition: background .2s, color .2s, transform .2s var(--ease); }
+.slots button:hover:not(:disabled) { background: var(--tint); }
+.slots button:disabled { cursor: default; }
+.slots button:disabled[aria-pressed="false"] { opacity: .4; }
+.slots button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.slots button:active, .book:active { transform: scale(.96); }
+.slots button:hover:not(:disabled), .book:hover { transform: translateY(-1px); }
+.book { margin-top: 6px; width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--ink); color: #fff; font: 600 13px var(--ios); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: background .25s, transform .2s var(--ease); }
+.book:hover { background: var(--ink-deep); }
+.book.done { background: var(--ink-deep); }
+.book svg { width: 14px; height: 14px; }
+
+/* window 3: the form Jobbie is filling right now */
+.w-form { left: 96px; top: 100px; width: 310px; z-index: 5; --rx: 4deg; --ry: 17deg; transform-origin: 100% 50%; }
+.form { padding: 12px 16px 14px; display: grid; gap: 9px; }
+.f-head { display: flex; gap: 9px; align-items: center; margin-bottom: 2px; }
+.f-head img { width: 26px; height: 26px; object-fit: contain; border-radius: 6px; background: var(--d-soft); padding: 4px; }
+.f-head b { display: block; font-weight: 600; font-size: 14px; }
+.f-head span { color: var(--d-ink-2); font-size: 12px; }
+.fld { display: grid; gap: 4px; }
+.fld > span { font-size: 11.5px; font-weight: 600; color: var(--d-ink-2); }
+.fld output { display: block; min-height: 30px; padding: 6px 9px; border-radius: 7px; background: var(--d-soft); color: var(--d-ink); transition: background .4s; }
+.fld output.flash { background: #e4e8fc; }
+.fld output.area { min-height: 58px; line-height: 1.4; }
+.fld output.area.typing::after { content: ""; display: inline-block; width: 1.5px; height: 14px; margin-left: 1px; vertical-align: -2px; background: var(--ink); animation: blink .8s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.f-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 3px; }
+.f-foot small { color: var(--d-ink-2); font-size: 12px; font-variant-numeric: tabular-nums; }
+.f-foot .go-btn { display: inline-flex; align-items: center; height: 30px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--ink); color: #fff; font: 600 12.5px var(--ios); transition: background .3s; }
+.f-foot .go-btn.done { background: var(--ink-deep); }
+
+/* ---------- Motion ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise .9s var(--ease-out) backwards; }
+  .faces img { animation: rise .8s var(--ease-out) backwards; }
+  .faces img:nth-child(1) { animation-delay: .5s; } .faces img:nth-child(2) { animation-delay: .57s; } .faces img:nth-child(3) { animation-delay: .64s; } .faces img:nth-child(4) { animation-delay: .71s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(22px); } }
+  h1 { animation-delay: .1s; } .go.rise { animation-delay: .32s; }
+  /* the plate settles into its mount, then breathes very slowly */
+  .pc, .emblem, .speck, .foot { animation: fade 1.6s var(--ease-out) backwards; }
+  .fly-1 { animation: fade 1.6s var(--ease-out) backwards, flutter 5s ease-in-out 1.6s infinite alternate; }
+  .fly-2 { animation: fade 1.6s var(--ease-out) backwards, flutter 6s ease-in-out 1.6s infinite alternate-reverse; }
+  @keyframes flutter { to { transform: translate(10px, -8px) rotate(6deg); } }
+  @keyframes fade { from { opacity: 0; } }
+  .knight { animation: ride 1.6s var(--ease-out) .1s backwards; }
+  @keyframes ride { from { opacity: 0; transform: translateX(-70px); } }
+  .beast { animation: rear 1.6s var(--ease-out) .2s backwards; }
+  @keyframes rear { from { opacity: 0; transform: translateX(70px); } }
+  .speech { animation: fade 1s var(--ease-out) 1.2s backwards; }
+  .pill { animation: rise .9s var(--ease-out) .15s backwards, spin 5s linear infinite; }
+  @keyframes spin { to { --spin: 560deg; } }
+  /* the pair of arrows rides up one step every few seconds; the swap back is invisible because they match */
+  .btn:not(:hover) .ar { animation: hop 5s var(--ease) 2.4s infinite; }
+  @keyframes hop { 0%, 84% { translate: 0 0; } 95%, 100% { translate: 0 -34px; } }
+  .btn.rise { animation-delay: .32s; }
+  .w-sheet { animation: lift 1.2s var(--ease-out) .5s backwards; }
+  .w-form { animation: lift 1.2s var(--ease-out) .7s backwards; }
+  .w-inbox { animation: lift 1.2s var(--ease-out) .9s backwards; }
+  @keyframes lift { from { opacity: 0; translate: 0 70px; } }
+  .st.sending::before { animation: ping 1s ease-in-out infinite alternate; }
+  @keyframes ping { to { opacity: .3; } }
+}
+
+/* ---------- Narrower desktops: the field is drawn at 1440 and scaled ---------- */
+@media (max-width: 1240px) { .links { gap: 22px; } }
+
+/* ---------- Tablet and phone: the duel on one line, the windows stacked under it ---------- */
+@media (max-width: 1100px) {
+  .foot { display: none; }
+  .w-form { --ry: 10deg; } .w-inbox { --ry: -10deg; }
+  .nav { display: flex; height: 72px; gap: 14px; padding: 0 max(var(--mount), 18px); }
+  .links, .login { display: none; }
+  .brand { order: -1; margin-right: auto; font-size: 30px; }
+  .end { gap: 14px; }
+  .nav-cta { height: 38px; padding: 0 14px; font-size: 14.5px; }
+  .menu-btn { display: block; }
+  .nav.open .links { display: grid; align-content: start; gap: 0; position: absolute; left: 0; right: 0; top: 100%; height: calc(100svh - 72px); padding: 8px max(var(--mount), 18px) 24px; background: var(--paper) url(img/eng/r-emblem.webp) no-repeat 50% calc(100% - 48px) / min(62%, 300px); animation: sheet .4s var(--ease-out); }
+  .nav.open .links a { padding: 14px 0; font-size: 20px; border-bottom: /* taste-skill-ignore: rows of a full-screen menu */ 1px solid rgba(36, 56, 214, .1); animation: rise .5s var(--ease-out) backwards; }
+  .nav.open .links a::after { display: none; }
+  .nav.open .links a:nth-child(2) { animation-delay: .04s; } .nav.open .links a:nth-child(3) { animation-delay: .08s; } .nav.open .links a:nth-child(4) { animation-delay: .12s; } .nav.open .links a:nth-child(5) { animation-delay: .16s; }
+  @keyframes sheet { from { opacity: 0; } }
+  .nav.open .links a.m-login { display: block; color: var(--ink); font-weight: 600; }
+  /* narrow: the plate becomes a band of the engraving with the title set under it */
+  /* narrow: the same plate, taller; the prints keep the title surrounded */
+  .stage { height: clamp(620px, 84svh, 900px); padding-bottom: 60px; }
+  .pc { width: 29%; }
+  .emblem { width: 18%; top: 2%; }
+  .art .knight { height: 35%; }
+  .art .columbine { top: 1.5%; height: 11%; } .art .col-l { right: calc(50% + 10.5cqw); } .art .col-r { left: calc(50% + 10.5cqw); }
+  .fly { width: 6%; } .fly-1 { left: 8%; top: 24%; } .fly-2 { right: 8%; top: 25%; width: 4.8%; }
+  .beast { right: 0; height: 35%; }
+  .speech { display: none; }
+  .title { margin-top: 0; }
+  h1 { font-size: clamp(38px, 8vw, 64px); }
+  .tools .chip:nth-child(4) { display: flex; }
+  .field { height: auto; margin-top: 0; padding: 0 var(--margin) 0; }
+  .canvas { position: relative; left: auto; top: auto; width: auto; height: auto; margin: 0; scale: none; }
+  .field { margin-top: -60px; }
+  .apps { position: relative; z-index: 9; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .win { position: relative; left: auto; top: auto; width: auto; }
+  .w-sheet { grid-column: 1 / -1; height: 452px; }
+}
+@media (max-width: 760px) {
+  .brand img { height: 32px; }
+  .field { padding-bottom: 32px; }
+  .stage { height: clamp(600px, 82svh, 760px); padding-bottom: 50px; }
+  .pc { width: 44%; } .emblem { width: 26%; }
+  .art .knight { height: 31%; }
+  .art .columbine { display: none; }
+  .fly { width: 8%; } .fly-1 { left: 31%; top: 19%; } .fly-2 { right: 31%; top: 20%; width: 6.5%; }
+  .beast { height: 30%; }
+  .speech { display: none; }
+  h1 { font-size: clamp(30px, 8.7vw, 44px); }
+  .pill { height: 36px; gap: 7px; font-size: 12.5px; padding-right: 12px; }
+  .faces img { width: 24px; height: 24px; } .faces img:nth-child(4) { display: none; }
+  .run, .tools .chip:nth-child(4) { display: none; }
+  /* on a phone the product is one short window, not three to scroll through */
+  .apps { display: block; zoom: .86; }
+  .w-sheet { width: 100%; height: 301px; }
+  .w-form, .w-inbox { display: none; }
+  .sheet-in { grid-template-columns: minmax(0, 1fr); }
+  .rail, .tools .chip:nth-child(n+3) { display: none; }
+  .grid .c-role, .grid .c-m, .grid td:nth-child(3), .grid td:nth-child(4) { display: none; }
+  .grid td:first-child, .grid th:first-child { width: 34px; padding-left: 12px; }
+  .grid .c-co { width: auto; }
+  .crumbs .trial { display: none; }
+}
+@media (max-width: 374px) { .pill .more { display: none; } }
+@media (max-width: 360px) {
+  .brand { font-size: 24px; gap: 7px; } .brand img { height: 26px; }
+  .nav-cta { padding: 0 11px; font-size: 13.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".33 .33 .33 0 0  .33 .33 .33 0 0  .33 .33 .33 0 0  0 0 0 1 0"/><feComponentTransfer><feFuncR type="table" tableValues=".141 1"/><feFuncG type="table" tableValues=".22 1"/><feFuncB type="table" tableValues=".84 1"/></feComponentTransfer></filter></svg>
+
+<header class="hero">
+  <nav class="nav" aria-label="Main">
+    <div class="links" id="menu">
+      <a href="https://jobbie.bot/#features"><img src="img/eng/i-scroll.png" width="96" height="92" alt="">How it works</a>
+      <a href="https://jobbie.bot/#pricing"><img src="img/eng/i-coins.png" width="96" height="89" alt="">Pricing</a>
+      <a href="https://jobbie.bot/testimonials"><img src="img/eng/i-star.png" width="96" height="90" alt="">Reviews</a>
+      <a href="https://jobbie.bot/#faq"><img src="img/eng/i-quill.png" width="70" height="96" alt="">FAQ</a>
+      <a class="m-login" href="https://jobbie.bot/login">Log in</a>
+    </div>
+    <a class="brand" href="https://jobbie.bot" aria-label="Jobbie home"><img src="img/eng/i-mark.png" width="194" height="212" alt="">Jobbie</a>
+    <div class="end">
+      <a class="login" href="https://jobbie.bot/login">Log in</a>
+      <a class="nav-cta" href="https://jobbie.bot/get-hired">Start free</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><i></i><i></i></button>
+    </div>
+  </nav>
+
+  <div class="stage">
+    <div class="art">
+      <img class="pc pc-l" src="img/eng/r-corner.webp" width="960" height="930" alt="">
+      <img class="pc pc-r" src="img/eng/r-corner.webp" width="960" height="930" alt="">
+      <img class="emblem" src="img/eng/r-emblem.webp" width="800" height="510" alt="Two crossed quills tied with a ribbon inside a laurel wreath, after an 1859 engraving">
+      <img class="speck columbine col-l" src="img/eng/r-columbine.webp" width="391" height="705" alt="">
+      <img class="speck columbine col-r" src="img/eng/r-columbine.webp" width="391" height="705" alt="">
+      <img class="speck fly fly-1" src="img/eng/r-fly.webp" width="334" height="332" alt="">
+      <img class="speck fly fly-2" src="img/eng/r-fly.webp" width="334" height="332" alt="">
+      <img class="knight" src="img/eng/r-knight.webp" width="1100" height="1240" alt="Jobbie's knight: Saint George on horseback with his banner, after Albrecht Dürer's engraving of 1508">
+      <figure class="beast">
+        <img class="dragon" src="img/eng/r-dragon3.webp" width="667" height="1000" alt="The dragon of the job hunt, rearing on a cliff and roaring at the knight, drawn in the manner of a Dürer engraving">
+        <svg class="speech" viewBox="0 0 420 92" role="img" aria-label="The dragon says: we have decided to move forward with other candidates">
+          <path d="M16 52 C 120 18, 250 86, 404 40" fill="none" stroke="#2438d6" stroke-width="31" stroke-linecap="butt"/>
+          <path d="M16 52 C 120 18, 250 86, 404 40" fill="none" stroke="#fff" stroke-width="28.5" stroke-linecap="butt"/>
+          <path d="M16 52 l -12 -16 M16 52 l -12 16 M404 40 l 12 -16 M404 40 l 12 16" stroke="#2438d6" stroke-width="1.3" fill="none"/>
+          <path id="speech-line" d="M22 57 C 124 23, 252 91, 400 45" fill="none"/>
+          <text><textPath href="#speech-line" startOffset="50%" text-anchor="middle">“We’ve decided to move forward with other candidates.”</textPath></text>
+        </svg>
+      </figure>
+    </div>
+    <div class="title">
+      <a class="pill rise" href="https://jobbie.bot/testimonials">
+        <span class="faces">
+          <img src="img/avatars/frank.webp" alt="" width="28" height="28">
+          <img src="img/avatars/dane.webp" alt="" width="28" height="28">
+          <img src="img/avatars/trayce.webp" alt="" width="28" height="28">
+          <img src="img/avatars/kerry.webp" alt="" width="28" height="28">
+        </span>
+                <span class="score"><i class="star" aria-hidden="true"><svg viewBox="0 0 20 20"><path fill="currentColor" d="m10 1.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.6 7.7l5.8-.8z"/></svg></i><b>4.9</b> on the App Store<span class="more"> · 100k+ job seekers</span></span>
+      </a>
+      <h1 class="rise"><span>Conquer the</span> <span>job market while</span> <span>you sleep.</span></h1>
+      <a class="btn rise" href="https://jobbie.bot/get-hired"><span>Upload your resume</span><i aria-hidden="true"><span class="ar"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V4.5M5.6 8.7 10 4.3l4.4 4.4"/></svg><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V4.5M5.6 8.7 10 4.3l4.4 4.4"/></svg></span></i></a>
+    </div>
+  </div>
+
+
+  <div class="field">
+    <div class="canvas">
+      <img class="foot foot-l" src="img/eng/r-corner.webp" alt="" width="960" height="930" loading="lazy">
+      <img class="foot foot-r" src="img/eng/r-corner.webp" alt="" width="960" height="930" loading="lazy">
+
+      <div class="apps">
+        <div class="win w-sheet" data-ui aria-label="Jobbie: the applications it sent last night">
+          <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>Jobbie</span></div>
+          <div class="sheet-in">
+            <div class="rail" aria-hidden="true">
+              <img class="r-logo" src="img/knight.png" width="194" height="212" alt="">
+              <span class="on"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M3 8h14M8 8v9"/></svg></span>
+              <span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 4 4"/></svg></span>
+              <span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5h14v9H3z"/><path d="m3 5.5 7 5 7-5"/></svg></span>
+              <span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5h7l3.5 3.5v11.5H5z"/><path d="M8 10h5M8 13.5h5"/></svg></span>
+              <span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 12.5A6.5 6.5 0 0 1 7.5 4 6.5 6.5 0 1 0 16 12.5z"/></svg></span>
+            </div>
+            <div class="sheet-main">
+              <div class="crumbs">Home<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg><b>Applied overnight</b><span class="trial">Free trial, 6 days left</span></div>
+              <div class="tools">
+                <label class="chip">Autopilot <button class="switch" id="auto" role="switch" aria-checked="true" aria-label="Autopilot"></button></label>
+                <span class="chip"><b id="sent">41</b>&nbsp;sent</span>
+                <span class="chip">SF or remote, $160k+</span>
+                <span class="chip">Engineering</span>
+                <button class="run" type="button" id="queued">12 queued for tonight</button>
+              </div>
+              <table class="grid">
+                <thead><tr><th>#</th><th class="c-co">Company</th><th class="c-role">Role</th><th class="c-m">Match</th><th class="c-t">Sent</th><th class="c-st">Status</th><th class="c-rc">Recruiter</th></tr></thead>
+                <tbody id="rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="win w-inbox" data-ui aria-label="Jobbie inbox: an interview request from Stripe">
+          <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>Inbox</span></div>
+          <div class="msg">
+            <div class="from"><img src="img/people/priya.webp" width="160" height="160" alt="Priya Raman, recruiter at Stripe"><div><b>Priya Raman</b><span>Recruiter, Stripe</span></div><time>7:02 am</time></div>
+            <p>Hi Maya, loved your payments work. Are you free for a first chat?</p>
+            <div class="slots" role="group" aria-label="Pick a time">
+              <button type="button" aria-pressed="true">Fri 2:30 pm</button>
+              <button type="button" aria-pressed="false">Mon 11:00 am</button>
+            </div>
+            <button class="book" id="book" type="button">Book Friday, 2:30 pm</button>
+          </div>
+        </div>
+
+        <div class="win w-form" data-ui aria-label="Jobbie filling an application right now">
+          <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span><span class="url"><svg viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><path d="M3 4.2V3a2 2 0 0 1 4 0v1.2h.4c.4 0 .6.3.6.6v4c0 .4-.2.7-.6.7H2.6c-.4 0-.6-.3-.6-.7v-4c0-.3.2-.6.6-.6zm1 0h2V3a1 1 0 0 0-2 0z"/></svg><span id="f-url">careers.datadoghq.com</span></span></span></div>
+          <div class="form">
+            <div class="f-head"><img id="f-logo" src="logos/datadog.png" alt=""><div><b id="f-co">Datadog</b><span id="f-role">Site Reliability Engineer</span></div></div>
+            <div class="fld"><span id="f-q">Why Datadog?</span><output class="area" id="f3"></output></div>
+            <div class="fld"><span>Full name</span><output id="f1">Maya Chen</output></div>
+            <div class="fld"><span>Work authorization</span><output id="f2">US citizen</output></div>
+            <div class="f-foot"><small id="f-count">Jobbie filled 24 of 26</small><span class="go-btn" id="f-go">Send application</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+
+<script>
+(() => {
+  const L = n => `logos/${n}`;
+  const RC = { "Priya Raman": "#2438d6", "Sam Ortiz": "#0e9f8a", "Alex Kim": "#e2683c" };
+  const SEEN = [
+    { co: "Dropbox", logo: L("dropbox.svg"), role: "Software Engineer, Sync", match: 87, st: "", label: "Sent", t: "1:04 am" },
+    { co: "Stripe", logo: L("stripe.svg"), role: "Software Engineer, Payments", match: 92, st: "replied", label: "Replied", rc: "Priya Raman", t: "1:12 am" },
+    { co: "Shopify", logo: L("shopify.svg"), role: "Frontend Engineer, Checkout", match: 88, st: "", label: "Sent", t: "1:30 am" },
+    { co: "Notion", logo: L("notion.svg"), role: "Product Engineer, Growth", match: 90, st: "replied", label: "Replied", rc: "Sam Ortiz", t: "1:48 am" },
+    { co: "Figma", logo: L("figma.png"), role: "Software Engineer, Editor", match: 90, st: "interview", label: "Interview", rc: "Alex Kim", t: "2:31 am" },
+    { co: "Robinhood", logo: L("robinhood.svg"), role: "Software Engineer, Brokerage", match: 85, st: "", label: "Sent", t: "3:05 am" },
+    { co: "Coinbase", logo: L("coinbase-mark.svg"), role: "Frontend Engineer, Wallet", match: 91, st: "", label: "Sent", t: "3:44 am" },
+    { co: "Duolingo", logo: L("duolingo.svg"), role: "Product Engineer, Learning", match: 89, st: "", label: "Sent", t: "4:20 am" },
+    { co: "Airbnb", logo: L("airbnb.svg"), role: "Frontend Engineer, Guests", match: 88, st: "", label: "Sent", t: "5:02 am" },
+    { co: "GitHub", logo: L("github.svg"), role: "Software Engineer, Actions", match: 90, st: "", label: "Sent", t: "5:40 am" },
+    { co: "Plaid", logo: L("plaid.png"), role: "Software Engineer, Risk", match: 86, st: "", label: "Sent", t: "6:16 am" },
+  ];
+  const QUEUE = [
+    { co: "Datadog", logo: L("datadog.png"), url: "careers.datadoghq.com", role: "Site Reliability Engineer", match: 89, why: "I kept a payments API at 99.99% for two years, and Datadog was the first tab I opened in every incident." },
+    { co: "Spotify", logo: L("spotify.png"), url: "lifeatspotify.com", role: "Backend Engineer, Podcasts", match: 87, why: "I build the kind of streaming backend your podcasts run on, and I listen to them every commute." },
+    { co: "Linear", logo: L("linear.svg"), url: "linear.app/careers", role: "Product Engineer", match: 89, why: "Linear is the one tool my whole team agreed on. I want to build the product I already use every day." },
+    { co: "DoorDash", logo: L("doordash.png"), url: "careers.doordash.com", role: "Software Engineer, Logistics", match: 88, why: "I shipped routing for a delivery pilot in two cities and want to work on it at DoorDash's scale." },
+  ];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = id => document.getElementById(id);
+  const rows = $("rows"), sent = $("sent"), auto = $("auto");
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const initials = n => n.split(" ").map(w => w[0]).join("");
+  const rowHTML = j => `<td></td><td><span class="co"><img src="${j.logo}" alt="">${esc(j.co)}</span></td><td class="role">${esc(j.role)}</td><td class="m">${j.match}%</td><td class="t">${j.t}</td><td><span class="st ${j.st}">${j.label}</span></td><td>${j.rc ? `<span class="rc"><i style="background:${RC[j.rc]}">${initials(j.rc)}</i>${esc(j.rc)}</span>` : `<span class="rc none">Waiting</span>`}</td>`;
+  const number = () => [...rows.children].forEach((tr, i) => { tr.firstElementChild.textContent = i + 1; });
+  // replies and interviews stay pinned at the top; new sends land just under them, newest first
+  const pinned = tr => /replied|interview/.test(tr.querySelector(".st").className);
+  const add = j => {
+    const tr = document.createElement("tr"); tr.innerHTML = rowHTML(j); tr.dataset.co = j.co;
+    // one row per company: a fresh send replaces the older plain row for the same place
+    if (!j.st) [...rows.children].filter(r => r.dataset.co === j.co && !pinned(r)).forEach(r => r.remove());
+    if (j.st) rows.prepend(tr); else rows.insertBefore(tr, [...rows.children].find(r => !pinned(r)) || null);
+    number(); return tr;
+  };
+  SEEN.forEach(add);
+
+  // the field is drawn at 1440 and scaled down to fit narrower desktops
+  const field = document.querySelector(".field");
+  const fit = () => field.style.setProperty("--k", innerWidth > 1100 ? Math.min(1, innerWidth / 1440) : 1);
+  fit(); addEventListener("resize", fit);
+
+
+  // one application at a time: the form fills in its window, then the row lands in the sheet
+  let n = 41, q = 0, clock = 6 * 60 + 40;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const on = () => auto.getAttribute("aria-checked") === "true" && !document.hidden;
+  const f1 = $("f1"), f2 = $("f2"), f3 = $("f3"), count = $("f-count"), go = $("f-go");
+  const flash = el => { el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 500); };
+  // every step checks Autopilot, so switching it off stops the application mid-way
+  const step = async ms => { await wait(ms); if (!on()) throw "paused"; };
+  let left = 12; const queued = $("queued");
+  async function fillOne() {
+    const job = QUEUE[q++ % QUEUE.length];
+    $("f-logo").src = job.logo; $("f-co").textContent = job.co; $("f-role").textContent = job.role; $("f-url").textContent = job.url; $("f-q").textContent = `Why ${job.co}?`;
+    f3.textContent = ""; go.className = "go-btn"; go.textContent = "Send application"; count.textContent = "Jobbie filled 12 of 26";
+    await step(500); flash(f1); count.textContent = "Jobbie filled 18 of 26";
+    await step(450); flash(f2); count.textContent = "Jobbie filled 24 of 26";
+    await step(350); f3.classList.add("typing");
+    for (let i = 1; i <= job.why.length; i += 2) { f3.textContent = job.why.slice(0, i); await step(24); }
+    f3.textContent = job.why; f3.classList.remove("typing"); count.textContent = "Jobbie filled 26 of 26";
+    await step(500); go.classList.add("done"); go.textContent = "Sent";
+    // the demo stays inside the last minutes before 7 am, however long someone watches
+    clock = 6 * 60 + 41 + (clock - 6 * 60 - 41 + 2) % 19; const mm = clock % 60;
+    const tr = add({ ...job, st: "", label: "Sent", t: `${Math.floor(clock / 60)}:${mm < 10 ? "0" + mm : mm} am` }); tr.classList.add("new");
+    const plain = [...rows.children].reverse().find(r => r.querySelector(".st").className === "st");
+    if (rows.children.length > 14 && plain) { plain.remove(); number(); }
+    sent.textContent = ++n;
+    if (left > 1) queued.textContent = `${--left} queued for tonight`;
+    await wait(1600);
+  }
+  auto.addEventListener("click", () => {
+    const now = auto.getAttribute("aria-checked") !== "true";
+    auto.setAttribute("aria-checked", String(now));
+    queued.textContent = now ? `${left} queued for tonight` : "Autopilot paused";
+    queued.classList.toggle("off", !now);
+    if (!now) { f3.classList.remove("typing"); f3.textContent = ""; go.className = "go-btn"; go.textContent = "Paused"; count.textContent = "Autopilot is off"; }
+  });
+  if (reduce) { f3.textContent = QUEUE[0].why; count.textContent = "Jobbie filled 26 of 26"; }
+  else (async () => {
+    await wait(2000);
+    for (;;) { if (on()) await fillOne().catch(() => {}); else await wait(600); }
+  })();
+
+  // pick a time, book it
+  const slots = [...document.querySelectorAll(".slots button")], book = $("book");
+  slots.forEach(b => b.addEventListener("click", () => {
+    slots.forEach(o => o.setAttribute("aria-pressed", String(o === b)));
+    const [d, ...t] = b.textContent.split(" ");
+    book.textContent = `Book ${d === "Fri" ? "Friday" : "Monday"}, ${t.join(" ")}`;
+  }));
+  let booked = false;
+  book.addEventListener("click", () => {
+    if (booked) return;
+    booked = true;
+    const pick = slots.find(o => o.getAttribute("aria-pressed") === "true");
+    slots.forEach(o => { o.disabled = true; });
+    book.classList.add("done");
+    book.innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>Booked, ${esc(pick.textContent)}`;
+    const stripe = [...rows.children].find(tr => tr.querySelector(".co").textContent === "Stripe");
+    // the reply becomes an interview and rises to the top of the sheet
+    if (stripe) { const st = stripe.querySelector(".st"); st.className = "st interview"; st.textContent = "Interview"; rows.prepend(stripe); number(); stripe.classList.remove("new"); void stripe.offsetWidth; stripe.classList.add("new"); }
+  });
+
+  // the menu on narrow screens
+  const nav = document.querySelector(".nav"), menuBtn = document.querySelector(".menu-btn");
+  menuBtn.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", String(open));
+    menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    document.documentElement.style.overflow = open ? "hidden" : "";
+  });
+  addEventListener("keydown", e => { if (e.key === "Escape" && nav.classList.contains("open")) { menuBtn.click(); menuBtn.focus(); } });
+  document.querySelectorAll("#menu a").forEach(a => a.addEventListener("click", () => nav.classList.contains("open") && menuBtn.click()));
+})();
+</script>
+</body>
+</html>
