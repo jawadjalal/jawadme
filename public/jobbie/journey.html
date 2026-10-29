@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<base href="/jobbie/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jobbie Hero Journey</title>
+<meta name="description" content="Three rounds of the Jobbie hero, from today's site to the engraved knight. The last two are live.">
+<link rel="icon" href="img/knight.png">
+<style>
+@font-face { font-family: Satoshi; src: url(fonts/satoshi-400.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: Satoshi; src: url(fonts/satoshi-500.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: Satoshi; src: url(fonts/satoshi-700.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+:root { --ink: #172b4a; --ink-2: #5d6676; --accent: #2438d6; --soft: #f4f5f8; --margin: clamp(16px, 2.4vw, 40px); --fw: min(1180px, calc(100vw - var(--margin) - 230px), calc((100svh - 330px) * 1.6)); }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: #fff; color: var(--ink); font-family: Satoshi, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+header { padding: 36px var(--margin) 0; display: flex; align-items: end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+h1 { margin: 0; font-size: clamp(34px, 3.6vw, 50px); line-height: 1; letter-spacing: -.035em; font-weight: 700; }
+header p { margin: 12px 0 0; max-width: 620px; font-size: 18px; line-height: 1.5; }
+.hint { margin: 10px 0 0; font-size: 14px; color: var(--ink-2); text-align: right; }
+/* jump straight to a round */
+.rounds { display: flex; gap: 6px; padding: 5px; border-radius: 14px; background: var(--soft); }
+.rounds button { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px 0 8px; border: 0; border-radius: 10px; background: none; font: 500 15px Satoshi, system-ui, sans-serif; color: var(--ink); cursor: pointer; transition: background .25s, color .25s; }
+.rounds button i { font-style: normal; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 12px; font-weight: 700; }
+.rounds button:last-child i { background: var(--accent); }
+.rounds button:hover { background: #e9ebf2; }
+.rounds button[aria-current="true"] { background: #fff; font-weight: 700; }
+.sign { padding: 0 var(--margin) 72px; max-width: 760px; }
+.sign p { margin: 0; font-size: 20px; line-height: 1.45; }
+.sign p + p { margin-top: 10px; font-size: 16px; color: var(--ink-2); }
+.sign a { color: var(--accent); font-weight: 700; text-decoration: none; }
+.sign a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* the board pans sideways: three frames at a size you can actually use, two notes between them */
+.board { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 28px var(--margin) 56px; cursor: grab; scroll-snap-type: x proximity; scrollbar-width: thin; }
+.board.drag { cursor: grabbing; scroll-snap-type: none; }
+.frame { flex: none; width: var(--fw); margin: 0; scroll-snap-align: center; }
+.screen { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 12px; background: var(--soft); outline: /* taste-skill-ignore: a frame on a board needs its edge */ 1px solid rgba(23, 43, 74, .14); }
+.screen iframe { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; scale: var(--s, .65); }
+.screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.screen a { display: block; height: 100%; }
+.frame figcaption { margin-top: 18px; display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+.frame h2 { margin: 0; font-size: 22px; letter-spacing: -.02em; font-weight: 700; display: flex; align-items: baseline; gap: 10px; }
+.frame h2 i { font-style: normal; display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 14px; flex: none; transform: translateY(-2px); }
+.frame.win h2 i { background: var(--accent); }
+.frame p { margin: 8px 0 0; font-size: 16px; line-height: 1.5; color: var(--ink); max-width: 56ch; }
+.open { flex: none; font-size: 14px; font-weight: 700; color: var(--accent); text-decoration: none; padding: 8px 12px; border-radius: 10px; background: #eef0fd; white-space: nowrap; }
+.open:hover { background: #e2e6fc; }
+.tag { display: block; margin-top: 4px; font-size: 14px; color: var(--ink-2); }
+
+.link { flex: none; width: max(230px, calc(100vw - var(--margin) - var(--fw))); padding: 0 22px; margin-top: 12%; }
+.link > * { max-width: 300px; margin-inline: auto; }
+.link svg { display: block; width: 100%; height: 76px; color: var(--accent); overflow: visible; }
+.note { margin-top: 10px; background: var(--soft); border-radius: 14px; padding: 15px 16px 16px; font-size: 15px; line-height: 1.45; rotate: -1.5deg; }
+.link + .frame + .link .note { rotate: 1.2deg; }
+.note b { display: block; font-weight: 700; color: var(--ink); }
+.note span { display: block; margin-top: 8px; color: var(--ink-2); }
+
+/* the board lays itself out left to right: frame, note, frame */
+@media (prefers-reduced-motion: no-preference) {
+  .board > * { animation: in .9s cubic-bezier(.2, .8, .2, 1) backwards; }
+  .board > :nth-child(2) { animation-delay: .12s; } .board > :nth-child(3) { animation-delay: .24s; }
+  .board > :nth-child(4) { animation-delay: .36s; } .board > :nth-child(5) { animation-delay: .48s; }
+  @keyframes in { from { opacity: 0; transform: translateY(28px); } }
+}
+
+@media (max-width: 900px) {
+  :root { --fw: calc(100vw - 2 * var(--margin)); }
+  .board { flex-direction: column; overflow: visible; cursor: auto; gap: 8px; }
+  .link { width: auto; margin: 4px 0 18px; padding: 0 0 0 30px; }
+  .link > * { margin-inline: 0; }
+  .link svg { width: 60px; height: 64px; rotate: 90deg; margin-left: -6px; }
+  .note, .link + .frame + .link .note { rotate: none; max-width: 420px; }
+  .rounds button { padding-right: 10px; font-size: 14px; }
+  .hint { display: none; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Three rounds of the Jobbie hero</h1>
+    <p>From the site Jobbie runs today, to a working product in the sky, to a knight that owns the page. Rounds two and three are live on a laptop: watch the form fill itself, click Book, flip Autopilot.</p>
+  </div>
+  <div>
+    <nav class="rounds" aria-label="Jump to a round">
+      <button type="button" data-to="0"><i>1</i>Today</button>
+      <button type="button" data-to="1"><i>2</i>The sky</button>
+      <button type="button" data-to="2"><i>3</i>The knight</button>
+    </nav>
+    <p class="hint">Scroll sideways, or pick a round</p>
+  </div>
+</header>
+
+<main class="board" id="board">
+  <figure class="frame">
+    <div class="screen"><a href="https://jobbie.bot" target="_blank" rel="noopener"><img src="img/journey/1-original.jpg" width="1440" height="900" alt="Jobbie's current hero: Get Hired Fast!, two buttons, store badges and a phone mockup"></a></div>
+    <figcaption>
+      <div>
+        <h2><i>1</i>Where Jobbie is today</h2>
+        <p>"Get Hired Fast!" with two buttons, two store badges and a phone. Clear and direct, with the phone doing most of the talking. <span class="tag">A still, because jobbie.bot can't be embedded.</span></p>
+      </div>
+      <a class="open" href="https://jobbie.bot" target="_blank" rel="noopener">Open live</a>
+    </figcaption>
+  </figure>
+
+  <div class="link" aria-hidden="true">
+    <svg viewBox="0 0 190 76" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 50 C 56 6, 124 6, 178 42"/><path d="M163 43 L 179 43 L 172 28"/></svg>
+    <div class="note"><b>Next: lose the phone.</b><span>The product moves to the centre as working windows, with one CTA, and the promise becomes "Wake up to interviews."</span></div>
+  </div>
+
+  <figure class="frame">
+    <div class="screen"><iframe src="cloud.html" title="Round two, live: Wake up to interviews" loading="lazy"></iframe></div>
+    <figcaption>
+      <div>
+        <h2><i>2</i>The product in the sky</h2>
+        <p>A sheet of last night's applications, a form typing live and a recruiter reply to book. It works, but it's the safe answer.</p>
+      </div>
+      <a class="open" href="cloud.html" target="_blank" rel="noopener">Open full</a>
+    </figcaption>
+  </figure>
+
+  <div class="link" aria-hidden="true">
+    <svg viewBox="0 0 190 76" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 26 C 58 72, 128 70, 178 32"/><path d="M165 28 L 179 31 L 176 46"/></svg>
+    <div class="note"><b>Then: let the knight lead.</b><span>Jobbie already rides under a knight. Everything around the product is engraved in one ink, and the product itself stays modern.</span></div>
+  </div>
+
+  <figure class="frame win">
+    <div class="screen"><iframe src="ren.html" title="Round three, live: Conquer the job market"></iframe></div>
+    <figcaption>
+      <div>
+        <h2><i>3</i>Conquer the job market</h2>
+        <p>Dürer's knight against a dragon whose only line is “We’ve decided to move forward with other candidates.” The working product sits between them.</p>
+      </div>
+      <a class="open" href="ren.html" target="_blank" rel="noopener">Open full</a>
+    </figcaption>
+  </figure>
+</main>
+
+<footer class="sign">
+  <p><b>Round three is the one I'd build out</b>: the whole homepage drawn in the same ink, with the product working at its centre.</p>
+  <p>Made for Jobbie by Jawad Jalal · <a href="https://jawadjalal.com" target="_blank" rel="noopener">jawadjalal.com</a></p>
+</footer>
+
+<script>
+(() => {
+  // each live page is laid out at 1440 and scaled to its frame
+  const fit = () => document.querySelectorAll(".screen").forEach(s => s.style.setProperty("--s", s.clientWidth / 1440));
+  fit(); addEventListener("resize", fit);
+
+  // drag the board to pan, the way a canvas moves
+  const board = document.getElementById("board");
+  let x0 = 0, s0 = 0, down = false;
+  board.addEventListener("pointerdown", e => {
+    if (e.pointerType !== "mouse" || e.target.closest("a, iframe")) return;
+    down = true; x0 = e.clientX; s0 = board.scrollLeft; board.classList.add("drag"); board.setPointerCapture(e.pointerId);
+  });
+  board.addEventListener("pointermove", e => { if (down) board.scrollLeft = s0 - (e.clientX - x0); });
+  const up = () => { down = false; board.classList.remove("drag"); };
+  board.addEventListener("pointerup", up); board.addEventListener("pointercancel", up);
+
+  // the round buttons jump to a frame; the one in view is marked
+  const frames = [...board.querySelectorAll(".frame")], tabs = [...document.querySelectorAll(".rounds button")];
+  const wide = () => getComputedStyle(board).flexDirection === "row";
+  const go = (i, smooth = true) => {
+    const f = frames[i];
+    // the last round is shown with the note that led to it, so nothing cut-off sits beside it
+    const lead = i === frames.length - 1 && f.previousElementSibling, pad = parseFloat(getComputedStyle(board).paddingLeft);
+    const left = lead && lead.offsetWidth + f.offsetWidth + pad <= board.clientWidth + 1 ? lead.offsetLeft + 2 : f.offsetLeft - (board.clientWidth - f.offsetWidth) / 2;
+    if (wide()) board.scrollTo({ left, behavior: smooth ? "smooth" : "auto" });
+    else f.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+  };
+  tabs.forEach(t => t.addEventListener("click", () => { touched = true; go(+t.dataset.to); }));
+  const mark = () => {
+    const mid = wide() ? board.scrollLeft + board.clientWidth / 2 : scrollY + innerHeight / 2;
+    let best = 0, d = Infinity;
+    frames.forEach((f, i) => { const r = f.getBoundingClientRect(); const c = wide() ? board.scrollLeft + r.left + r.width / 2 - board.getBoundingClientRect().left : scrollY + r.top + r.height / 2; if (Math.abs(c - mid) < d) { d = Math.abs(c - mid); best = i; } });
+    tabs.forEach((t, i) => t.setAttribute("aria-current", String(i === best)));
+  };
+  board.addEventListener("scroll", mark, { passive: true }); addEventListener("scroll", mark, { passive: true }); mark();
+
+  // on a wide screen the board glides to round three, the one this is about, unless you've already moved
+  let touched = false;
+  ["pointerdown", "wheel", "keydown", "touchstart"].forEach(e => addEventListener(e, () => { touched = true; }, { passive: true, once: true }));
+  setTimeout(() => { if (!touched && wide()) go(2); }, 1400);
+})();
+</script>
+</body>
+</html>

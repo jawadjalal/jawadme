@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<base href="/jobbie/" target="_top">
+<script>/* inside the canvas, links open a new tab so the pitch stays put */ if (self !== top) document.currentScript.previousElementSibling.target = "_blank";</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jobbie · Wake up to interviews</title>
+<meta name="description" content="Upload your resume once. Jobbie finds the roles that fit you, fills every application and sends them while you sleep.">
+<link rel="preload" href="fonts/chillax-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/satoshi-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/cloud/sky-dawn2.jpg" as="image">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@1,800&text=Jobbie&display=swap" rel="stylesheet">
+<link rel="icon" href="img/knight.png">
+<style>
+@font-face { font-family: Chillax; src: url(fonts/chillax-600.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: Satoshi; src: url(fonts/satoshi-400.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: Satoshi; src: url(fonts/satoshi-500.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: Satoshi; src: url(fonts/satoshi-700.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: Satoshi; src: url(fonts/satoshi-900.woff2) format("woff2"); font-weight: 900; font-display: swap; }
+
+:root {
+  --sky: #bcdaf3;
+  --ink: #172b4a;
+  --muted: #46546b;
+  --line: #dde4ee;
+  --panel: #e9eef6;
+  --accent: #2464ed;
+  --accent-press: #1a52cc;
+  --tint: #eef3fd;
+  --cream: #fdfaf2;
+  --margin: clamp(16px, 2.2vw, 32px);
+  --display: Chillax, Satoshi, system-ui, sans-serif;
+  --text: Satoshi, -apple-system, system-ui, sans-serif;
+  --ios: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, system-ui, sans-serif;
+  --ease: cubic-bezier(.22, .68, 0, 1.1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--sky);
+  color: #fff;
+  font-family: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 10px; }
+.tab :focus-visible, .screen :focus-visible { outline-color: var(--accent); }
+
+/* ---------- The sky: one painting, the name in its clouds, the dashboard rising out of them ---------- */
+.stage {
+  position: relative;
+  background: #2f6fd6;
+  min-height: max(100svh, 860px);
+  padding-bottom: 36px;
+  overflow: clip;
+  isolation: isolate;
+}
+.sky-bg { position: absolute; inset: 0; z-index: 0; display: block; }
+.sky-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; translate: 0 0; transform-origin: 50% 0; animation: breathe 40s ease-in-out infinite alternate; }
+@keyframes breathe { from { scale: 1.01; } to { scale: 1.05; } }
+
+
+.cl { position: absolute; height: auto; pointer-events: none; animation: cloud 26s ease-in-out infinite alternate; }
+@keyframes cloud { from { translate: -24px 0; } to { translate: 26px 0; } }
+.cl-f1 { z-index: 6; width: 70vw; left: -22vw; bottom: -7vh; animation-duration: 34s; }
+.cl-f2 { z-index: 6; width: 50vw; right: -16vw; bottom: -7vh; scale: -1 1; animation-duration: 28s; animation-delay: -7s; }
+
+/* ---------- Nav: the Clay tab, each link with its own small object ---------- */
+.tab {
+  position: relative; z-index: 10;
+  margin: 0 var(--margin);
+  height: 66px;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 0 0 22px 22px;
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 12px 0 22px;
+}
+.brand { display: flex; align-items: center; gap: 9px; text-decoration: none; margin-right: 22px; }
+.brand img { height: 32px; width: auto; }
+.brand span { font-family: Inter, system-ui, sans-serif; font-style: italic; font-weight: 800; font-size: 26px; letter-spacing: -.035em; line-height: 1; color: #172b4a; }
+.links { display: flex; gap: 2px; margin-right: auto; }
+.menu-btn { display: none; width: 44px; height: 44px; margin-left: 6px; border: 0; border-radius: 12px; background: var(--tint); color: var(--ink); cursor: pointer; place-items: center; }
+.menu-btn svg { width: 20px; height: 20px; }
+.menu-btn path { transition: d .3s var(--ease); }
+.tab.open .menu-btn path { d: path("M5 5l10 10M15 5 5 15"); }
+.links a, .login {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; font-size: 15px; font-weight: 500; padding: 7px 12px 7px 8px; border-radius: 12px;
+  transition: background .2s;
+}
+.login { padding-left: 12px; }
+.nav-cta { display: flex; align-items: center; gap: 8px; height: 42px; margin-left: 6px; padding: 0 14px 0 18px; border-radius: 13px; background: var(--ink); color: #fff; text-decoration: none; font-size: 15px; font-weight: 600; transition: background .2s, transform .2s var(--ease); }
+@supports (corner-shape: squircle) { .nav-cta { border-radius: 22px; corner-shape: squircle; } }
+.nav-cta svg { width: 15px; height: 15px; transition: transform .3s var(--ease); }
+.nav-cta:hover { background: #0d1b33; }
+.nav-cta:hover svg { transform: translateX(3px); }
+.nav-cta:active { transform: scale(.97); }
+.links .m-login { display: none; }
+.links a img { width: 30px; height: 30px; object-fit: contain; transition: transform .35s var(--ease); }
+.links a:hover { background: var(--tint); }
+.links a:hover img { transform: rotate(-10deg) scale(1.18) translateY(-2px); }
+.login:hover { background: var(--tint); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  border: 0; border-radius: 12px;
+  font-family: var(--text); font-weight: 700; text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: background .2s, transform .25s var(--ease);
+}
+.btn:active { transform: scale(.97); }
+.btn-ink { background: var(--ink); color: #fff; font-size: 15px; padding: 11px 18px; }
+.btn-ink:hover { background: #0d1b33; }
+
+/* ---------- First band: four words on the left, the case for them on the right ---------- */
+.top {
+  position: relative; z-index: 4;
+  display: grid; justify-items: center; gap: 18px; text-align: center;
+  padding: 30px calc(var(--margin) + 22px) 0;
+  color: #fff;
+}
+.top h1 { margin: 0; font-family: var(--text); font-weight: 700; font-size: clamp(48px, 6.6vw, 100px); line-height: .96; letter-spacing: -.045em; }
+.top h1 span { display: inline; }
+.pitch { max-width: 820px; display: grid; justify-items: center; }
+.pitch .sub { max-width: 640px; font-size: 21px; }
+.pitch .sub { margin: 0; font-size: 19px; line-height: 1.5; font-weight: 500; text-wrap: balance; }
+.sub .ico { display: inline-block; width: 1.6em; height: 1.6em; margin: -.4em .02em -.38em; object-fit: contain; vertical-align: baseline; transition: transform .35s var(--ease); }
+.sub .ico:hover { transform: rotate(-8deg) scale(1.15); }
+.go { margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.btn-main { height: 54px; padding: 0 24px 0 20px; background: #fff; color: var(--ink); font-size: 17px; border-radius: 16px; }
+@supports (corner-shape: squircle) { .btn-main { border-radius: 28px; corner-shape: squircle; } }
+.btn-main svg { width: 20px; height: 20px; flex: none; }
+.btn-main:hover { background: #fdf5e6; }
+.go .free { font-size: 14px; font-weight: 500; opacity: .9; }
+.trust { display: flex; align-items: center; gap: 10px; padding: 5px 16px 5px 5px; border-radius: 99px; background: rgba(13, 35, 90, .28); }
+.faces { display: flex; }
+.faces img { width: 28px; height: 28px; border-radius: 50%; margin-left: -10px; object-fit: cover; outline: 2px solid #2f6fd6; }
+.faces img:first-child { margin-left: 0; }
+.trust p { margin: 0; font-size: 14px; line-height: 1.3; white-space: nowrap; }
+.trust p b { margin-right: 4px; }
+.trust b { font-weight: 700; }
+.stars { display: inline-flex; gap: 1px; vertical-align: -2px; margin-right: 6px; }
+.stars img { width: 15px; height: 15px; }
+
+/* ---------- The scene: the name painted huge in the sky, the app's windows standing in front of it ---------- */
+.scene {
+  --ww: min(92vw, 1320px); --wh: calc(var(--ww) / 5.041);
+  position: relative; z-index: 2;
+  margin-top: -20px;
+}
+.word { position: absolute; z-index: 1; left: 50%; top: 0; width: var(--ww); height: auto; translate: -50% 0; pointer-events: none; animation: drift-word 14s ease-in-out infinite alternate; }
+@keyframes drift-word { to { transform: translateY(6px); } }
+
+/* ---------- The app: three windows of the same tool, stepping up to the right, the clouds across their feet ---------- */
+.scene { --dt: 8px; height: calc(var(--dt) + 600px * var(--k, 1)); }
+.apps { position: absolute; z-index: 3; left: 50%; top: var(--dt); width: 1260px; height: 640px; margin-left: -630px; transform-origin: 50% 0; scale: var(--k, 1); }
+.win {
+  --d-ink: #16191f; --d-ink-2: #646b78; --d-ink-3: #9299a6; --d-soft: #f5f6f8; --d-rule: #ebedf1;
+  position: absolute; background: #fff; color: var(--d-ink);
+  border: /* taste-skill-ignore: overlapping app windows need their edge */ 1px solid rgba(16, 24, 40, .12); border-radius: 12px; overflow: hidden;
+  font-family: var(--ios); font-size: 13px; line-height: 1.35; text-align: left;
+}
+.bar { display: flex; align-items: center; gap: 10px; height: 30px; padding: 0 12px; background: var(--d-soft); color: var(--d-ink-2); font-size: 12px; font-weight: 500; }
+.lights { display: flex; gap: 6px; }
+.lights i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+.lights i:nth-child(2) { background: #febc2e; }
+.lights i:nth-child(3) { background: #28c840; }
+.bar span:last-child { margin: 0 auto; padding-right: 46px; }
+
+/* window 1: last night, as the spreadsheet it is */
+.w-sheet { left: 190px; top: 40px; width: 880px; height: 660px; z-index: 3; }
+.sheet-in { display: grid; grid-template-columns: 52px minmax(0, 1fr); height: 100%; }
+.rail { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 0; background: var(--d-soft); }
+.rail img { width: 22px; height: 22px; object-fit: contain; }
+.rail .r-logo { width: 26px; height: 28px; margin-bottom: 8px; }
+.rail span { display: grid; place-items: center; width: 36px; height: 34px; border-radius: 9px; }
+.rail span.on { background: #fff; }
+.sheet-main { min-width: 0; padding: 0 0 0 0; }
+.crumbs { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 92px 0 16px; color: var(--d-ink-2); }
+.crumbs svg { width: 12px; height: 12px; color: var(--d-ink-3); }
+.crumbs b { color: var(--d-ink); font-weight: 600; }
+.crumbs .trial { margin-left: auto; display: flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px; border-radius: 7px; background: #e9f7ef; color: #11683c; font-weight: 600; font-size: 12px; }
+.tools { display: flex; align-items: center; gap: 6px; padding: 0 92px 10px 16px; }
+.chip { display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 8px; background: var(--d-soft); color: var(--d-ink-2); font-weight: 500; white-space: nowrap; }
+.chip svg { width: 13px; height: 13px; }
+.chip em { font-style: normal; color: #11683c; font-weight: 600; }
+.switch { width: 28px; height: 16px; border-radius: 99px; border: 0; padding: 0; background: #c9ced6; position: relative; cursor: pointer; transition: background .25s; flex: none; }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; transition: transform .3s var(--ease); }
+.switch[aria-checked="true"] { background: #22a35a; }
+.switch[aria-checked="true"]::after { transform: translateX(12px); }
+.run { margin-left: auto; height: 28px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--d-ink); color: #fff; font: 600 12.5px var(--ios); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.run b { font-weight: 600; color: #9aa3b2; }
+
+.grid { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.grid th, .grid td { height: 38px; padding: 0 10px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-top: /* taste-skill-ignore: a spreadsheet's own grid */ 1px solid var(--d-rule); }
+.grid th { height: 32px; font-weight: 500; color: var(--d-ink-2); background: #fafbfc; }
+.grid th svg { width: 12px; height: 12px; vertical-align: -1px; margin-right: 5px; color: var(--d-ink-3); }
+.grid td:first-child, .grid th:first-child { width: 48px; padding-left: 16px; text-overflow: clip; color: var(--d-ink-3); font-variant-numeric: tabular-nums; }
+.grid .c-co { width: 136px; } .grid .c-role { width: 188px; } .grid .c-m { width: 64px; } .grid .c-t { width: 80px; } .grid .c-st { width: 106px; } .grid .c-rc { width: 150px; }
+.co { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.co img { width: 18px; height: 18px; object-fit: contain; border-radius: 4px; flex: none; }
+td.role { color: var(--d-ink-2); }
+td.m { font-variant-numeric: tabular-nums; font-weight: 600; }
+.st { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
+.st::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #b3b9c4; }
+.st.replied::before { background: #2f6bff; }
+.st.interview::before { background: #1ea35a; }
+.st.sending { color: #8a5a00; }
+.st.sending::before { background: #f0a400; animation: ping 1s ease-in-out infinite alternate; }
+@keyframes ping { to { opacity: .3; } }
+.rc { display: inline-flex; align-items: center; gap: 7px; }
+.rc i { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font: 700 9px var(--ios); font-style: normal; color: #fff; }
+.rc.none { color: var(--d-ink-3); }
+td.t { color: var(--d-ink-2); font-variant-numeric: tabular-nums; }
+.grid tr.new { animation: row-in 1.8s var(--ease-out); }
+@keyframes row-in { from { background: #fff6d6; } }
+
+/* window 2: the reply, highest, over the name */
+.w-inbox { left: 1024px; top: 96px; width: 300px; z-index: 5; }
+.msg { padding: 14px 16px 16px; }
+.from { display: flex; gap: 10px; align-items: center; }
+.from img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none; }
+.from b { display: block; font-weight: 600; font-size: 14px; }
+.from span { color: var(--d-ink-2); font-size: 12px; }
+.from time { margin-left: auto; align-self: flex-start; color: var(--d-ink-3); font-size: 12px; }
+.msg p { margin: 12px 0 0; font-size: 14px; line-height: 1.45; }
+.slots { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.slots button { height: 34px; border-radius: 8px; border: 0; background: var(--d-soft); font: 600 13px var(--ios); color: var(--d-ink); cursor: pointer; transition: background .2s, color .2s, transform .2s var(--ease); }
+.slots button:disabled { cursor: default; }
+.slots button:disabled[aria-pressed="false"] { opacity: .4; }
+.slots button[aria-pressed="true"] { background: #2f6bff; color: #fff; }
+.slots button:active, .book:active { transform: scale(.96); }
+.book { margin-top: 6px; width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--d-ink); color: #fff; font: 600 13px var(--ios); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: background .25s, transform .2s var(--ease); }
+.book:hover { background: #2b3040; }
+.book.done { background: #11683c; }
+.book svg { width: 14px; height: 14px; }
+
+/* window 3: the form Jobbie is filling right now */
+.w-form { left: -58px; top: 150px; width: 348px; z-index: 4; }
+.form { padding: 12px 16px 14px; display: grid; gap: 9px; }
+.f-head { display: flex; gap: 9px; align-items: center; margin-bottom: 2px; }
+.f-head img { width: 26px; height: 26px; object-fit: contain; border-radius: 6px; background: var(--d-soft); padding: 4px; }
+.f-head b { display: block; font-weight: 600; font-size: 14px; }
+.f-head span { color: var(--d-ink-2); font-size: 12px; }
+.fld { display: grid; gap: 4px; }
+.fld > span { font-size: 11.5px; font-weight: 600; color: var(--d-ink-2); }
+.fld output { display: block; min-height: 30px; padding: 6px 9px; border-radius: 7px; background: var(--d-soft); color: var(--d-ink); transition: background .4s; }
+.fld output.flash { background: #e6efff; }
+.fld output.area { min-height: 58px; line-height: 1.4; }
+.fld output.area.typing::after { content: ""; display: inline-block; width: 1.5px; height: 14px; margin-left: 1px; vertical-align: -2px; background: #2f6bff; animation: blink .8s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.f-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 3px; }
+.f-foot small { color: var(--d-ink-2); font-size: 12px; font-variant-numeric: tabular-nums; }
+.f-foot .go-btn { display: inline-flex; align-items: center; height: 30px; padding: 0 14px; border: 0; border-radius: 8px; background: #2f6bff; color: #fff; font: 600 12.5px var(--ios); transition: background .3s; }
+.f-foot .go-btn.done { background: #11683c; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise 1s var(--ease-out) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
+  .top h1 { animation: rise .9s var(--ease-out) .15s backwards; }
+  .pitch { animation: rise .9s var(--ease-out) .3s backwards; }
+  .word { animation: word-in 1.6s var(--ease-out) .2s backwards, drift-word 14s ease-in-out 1.8s infinite alternate; }
+  @keyframes word-in { from { opacity: 0; transform: translateY(40px) scale(.96); } }
+  .w-sheet { animation: lift 1.2s var(--ease-out) .5s backwards; }
+  .w-form { animation: lift 1.2s var(--ease-out) .75s backwards; }
+  .w-inbox { animation: lift 1.2s var(--ease-out) .95s backwards; }
+  @keyframes lift { from { opacity: 0; transform: translateY(80px); } }
+}
+
+/* ---------- Narrower screens: the windows stack, the name stays huge ---------- */
+@media (max-width: 1100px) {
+  .links, .login { display: none; }
+  .brand { margin-right: auto; }
+  .menu-btn { display: grid; }
+  .tab.open .links { display: grid; position: absolute; left: 0; right: 0; top: 100%; margin: 0; padding: 8px 10px 14px; background: #fff; border-radius: 0 0 22px 22px; }
+  .tab.open { border-radius: 0; }
+  .tab.open .links a { padding: 11px 12px 11px 8px; font-size: 17px; }
+  .tab.open .links a.m-login { display: flex; }
+  .top { padding-top: 40px; }
+  .pitch { max-width: 560px; }
+  .cl { z-index: 1; }
+  .word { --ww: 96vw; width: 96vw; }
+  /* the windows come out of the sky and into the flow: the sheet first, the form laid over its foot, the reply after */
+  .scene { height: auto; margin-top: 36px; padding: 0 var(--margin) 60px; }
+  .apps { position: relative; left: auto; top: auto; width: auto; height: auto; margin: 0; scale: none; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .win { position: relative; left: auto; top: auto; width: auto; }
+  .w-sheet { grid-column: 1 / -1; height: 452px; }
+  .w-form { margin: 0; }
+  .w-inbox { margin-right: 16px; }
+  .grid .c-rc { display: none; } .grid td:nth-child(7) { display: none; }
+  .crumbs, .tools { padding-right: 16px; }
+  .cl-f1 { width: 80vw; left: -30vw; }
+  .cl-f2 { width: 64vw; right: -24vw; }
+}
+@media (max-width: 760px) {
+  .top { padding: 34px var(--margin) 0; justify-items: start; text-align: left; gap: 14px; }
+  .top h1 span { display: block; }
+  .pitch { justify-items: start; }
+  .go { justify-content: flex-start; }
+  .go { align-items: stretch; }
+  .go .free { text-align: center; }
+  .trust p { white-space: normal; }
+  .nav-cta { height: 40px; padding: 0 12px 0 14px; font-size: 14px; }
+  .top h1 { font-size: clamp(44px, 12.6vw, 64px); }
+  .pitch .sub { font-size: 17px; }
+  .sub .i-opt { display: none; }
+  .go { gap: 14px; }
+  .btn-main { width: 100%; }
+  .apps { grid-template-columns: minmax(0, 1fr); }
+  .w-sheet { height: 430px; }
+  .w-form { order: 1; margin: -110px 0 0; z-index: 4; }
+  .w-inbox { order: 2; margin: 0; }
+  .sheet-in { grid-template-columns: minmax(0, 1fr); }
+  .rail, .tools .chip:nth-child(n+3), .run b { display: none; }
+  .grid .c-role, .grid .c-m, .grid td:nth-child(3), .grid td:nth-child(4) { display: none; }
+  .grid td:first-child, .grid th:first-child { width: 34px; padding-left: 12px; }
+  .grid .c-co { width: auto; }
+  .crumbs .trial { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sky-bg img, .cl, .word { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="stage">
+  <picture class="sky-bg"><img src="img/cloud/sky-dawn2.jpg" width="1536" height="1024" alt="" fetchpriority="high"></picture>
+
+  <nav class="tab rise" aria-label="Main">
+    <a class="brand" href="https://jobbie.bot" aria-label="Jobbie home">
+      <img src="img/knight.png" width="194" height="212" alt="">
+      <span>Jobbie</span>
+    </a>
+    <div class="links" id="menu">
+      <a href="https://jobbie.bot/#features"><img src="img/nav2/horse.webp" width="128" height="128" alt="">How it works</a>
+      <a href="https://jobbie.bot/#pricing"><img src="img/nav2/saddle.webp" width="128" height="128" alt="">Pricing</a>
+      <a href="https://jobbie.bot/testimonials"><img src="img/nav2/rosette.webp" width="128" height="128" alt="">Reviews</a>
+      <a href="https://jobbie.bot/#faq"><img src="img/nav2/helmet.webp" width="128" height="128" alt="">FAQ</a>
+      <a class="m-login" href="https://jobbie.bot"><img src="img/nav2/shoe.webp" width="128" height="128" alt="">Log in</a>
+    </div>
+    <a class="login" href="https://jobbie.bot">Log in</a>
+    <a class="nav-cta" href="https://jobbie.bot">Start free<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8h9M8.5 4l4 4-4 4"/></svg></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3.5 7h13M3.5 13h13"/></svg></button>
+  </nav>
+
+  <div class="top">
+    <div class="trust">
+      <div class="faces">
+        <img src="img/avatars/frank.webp" alt="" width="36" height="36">
+        <img src="img/avatars/dane.webp" alt="" width="36" height="36">
+        <img src="img/avatars/trayce.webp" alt="" width="36" height="36">
+        <img src="img/avatars/kerry.webp" alt="" width="36" height="36">
+      </div>
+      <p><span class="stars" aria-hidden="true"><img src="img/nav2/star.webp" alt=""><img src="img/nav2/star.webp" alt=""><img src="img/nav2/star.webp" alt=""><img src="img/nav2/star.webp" alt=""><img src="img/nav2/star.webp" alt=""></span><b>4.9</b> from 100k+ job seekers</p>
+    </div>
+    <h1><span>Wake up</span> <span>to interviews.</span></h1>
+    <div class="pitch">
+      <p class="sub">Add your resume <img class="ico" src="img/nav2/scroll.webp" width="128" height="128" alt=""> once. Jobbie applies <img class="ico" src="img/nav2/form.webp" width="128" height="128" alt=""> while you sleep.</p>
+      <div class="go">
+        <a class="btn btn-main" href="https://jobbie.bot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13.5V3.5M5.8 7.6 10 3.4l4.2 4.2M3.5 12.5v2.2c0 1 .8 1.8 1.8 1.8h9.4c1 0 1.8-.8 1.8-1.8v-2.2"/></svg>Upload your resume</a>
+        <span class="free">Free for 7 days, no card</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene">
+
+    <div class="apps">
+      <div class="win w-sheet" data-ui aria-label="Jobbie: the applications it sent last night">
+        <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>Jobbie</span></div>
+        <div class="sheet-in">
+          <div class="rail" aria-hidden="true">
+            <img class="r-logo" src="img/knight.png" width="194" height="212" alt="">
+            <span class="on"><img src="img/nav2/form.webp" width="128" height="128" alt=""></span>
+            <span><img src="img/nav2/find.webp" width="128" height="128" alt=""></span>
+            <span><img src="img/nav2/check.webp" width="128" height="128" alt=""></span>
+            <span><img src="img/nav2/scroll.webp" width="128" height="128" alt=""></span>
+            <span><img src="img/nav2/night.webp" width="128" height="128" alt=""></span>
+          </div>
+          <div class="sheet-main">
+            <div class="crumbs">Home<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg><b>Applied overnight</b><span class="trial">Free trial, 6 days left</span></div>
+            <div class="tools">
+              <label class="chip">Autopilot <button class="switch" id="auto" role="switch" aria-checked="true" aria-label="Autopilot"></button></label>
+              <span class="chip"><b id="sent">41</b>&nbsp;sent</span>
+              <span class="chip">SF or remote, $160k+</span>
+              <span class="chip">Engineering</span>
+              <button class="run" type="button">12 queued for tonight <b>⌘↵</b></button>
+            </div>
+            <table class="grid">
+              <thead><tr><th>#</th><th class="c-co">Company</th><th class="c-role">Role</th><th class="c-m">Match</th><th class="c-t">Sent</th><th class="c-st">Status</th><th class="c-rc">Recruiter</th></tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="win w-inbox" data-ui aria-label="Jobbie inbox: an interview request from Stripe">
+        <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>Inbox</span></div>
+        <div class="msg">
+          <div class="from"><img src="img/people/priya.webp" width="160" height="160" alt="Priya Raman, recruiter at Stripe"><div><b>Priya Raman</b><span>Recruiter, Stripe</span></div><time>7:02 am</time></div>
+          <p>Hi Maya, loved your payments work. Are you free for a first chat?</p>
+          <div class="slots" role="group" aria-label="Pick a time">
+            <button type="button" aria-pressed="true">Fri 2:30 pm</button>
+            <button type="button" aria-pressed="false">Mon 11:00 am</button>
+          </div>
+          <button class="book" id="book" type="button">Book Friday, 2:30 pm</button>
+        </div>
+      </div>
+
+      <div class="win w-form" data-ui aria-label="Jobbie filling an application right now">
+        <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span id="f-url">careers.datadoghq.com</span></div>
+        <div class="form">
+          <div class="f-head"><img id="f-logo" src="logos/datadog.png" alt=""><div><b id="f-co">Datadog</b><span id="f-role">Site Reliability Engineer</span></div></div>
+          <div class="fld"><span>Full name</span><output id="f1">Maya Chen</output></div>
+          <div class="fld"><span>Work authorization</span><output id="f2">US citizen</output></div>
+          <div class="fld"><span id="f-q">Why Datadog?</span><output class="area" id="f3"></output></div>
+          <div class="f-foot"><small id="f-count">Jobbie filled 24 of 26</small><span class="go-btn" id="f-go">Send application</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <img class="cl cl-f1" src="img/cloud/bank.webp" width="1400" height="310" alt="">
+  <img class="cl cl-f2" src="img/cloud/bank.webp" width="1400" height="310" alt="">
+</header>
+
+<script>
+(() => {
+  const L = n => `logos/${n}`;
+  const RC = { "Priya Raman": "#7c5cff", "Sam Ortiz": "#0e9f8a", "Alex Kim": "#e2683c" };
+  const SEEN = [
+    { co: "Dropbox", logo: L("dropbox.svg"), role: "Software Engineer, Sync", match: 87, st: "", label: "Sent", t: "1:04 am" },
+    { co: "Stripe", logo: L("stripe.svg"), role: "Software Engineer, Payments", match: 92, st: "replied", label: "Replied", rc: "Priya Raman", t: "1:12 am" },
+    { co: "Shopify", logo: L("shopify.svg"), role: "Frontend Engineer, Checkout", match: 88, st: "", label: "Sent", t: "1:30 am" },
+    { co: "Notion", logo: L("notion.svg"), role: "Product Engineer, Growth", match: 90, st: "replied", label: "Replied", rc: "Sam Ortiz", t: "1:48 am" },
+    { co: "Figma", logo: L("figma.png"), role: "Software Engineer, Editor", match: 90, st: "interview", label: "Interview", rc: "Alex Kim", t: "2:31 am" },
+    { co: "Robinhood", logo: L("robinhood.svg"), role: "Software Engineer, Brokerage", match: 85, st: "", label: "Sent", t: "3:05 am" },
+    { co: "Coinbase", logo: L("coinbase-mark.svg"), role: "Frontend Engineer, Wallet", match: 91, st: "", label: "Sent", t: "3:44 am" },
+    { co: "Duolingo", logo: L("duolingo.svg"), role: "Product Engineer, Learning", match: 89, st: "", label: "Sent", t: "4:20 am" },
+    { co: "Airbnb", logo: L("airbnb.svg"), role: "Frontend Engineer, Guests", match: 88, st: "", label: "Sent", t: "5:02 am" },
+    { co: "GitHub", logo: L("github.svg"), role: "Software Engineer, Actions", match: 90, st: "", label: "Sent", t: "5:40 am" },
+    { co: "Plaid", logo: L("plaid.png"), role: "Software Engineer, Risk", match: 86, st: "", label: "Sent", t: "6:16 am" },
+  ];
+  const QUEUE = [
+    { co: "Datadog", logo: L("datadog.png"), url: "careers.datadoghq.com", role: "Site Reliability Engineer", match: 89, why: "I kept a payments API at 99.99% for two years, and Datadog was the first tab I opened in every incident." },
+    { co: "Spotify", logo: L("spotify.png"), url: "lifeatspotify.com", role: "Backend Engineer, Podcasts", match: 87, why: "I build the kind of streaming backend your podcasts run on, and I listen to them every commute." },
+    { co: "Linear", logo: L("linear.svg"), url: "linear.app/careers", role: "Product Engineer", match: 89, why: "Linear is the one tool my whole team agreed on. I want to build the product I already use every day." },
+    { co: "DoorDash", logo: L("doordash.png"), url: "careers.doordash.com", role: "Software Engineer, Logistics", match: 88, why: "I shipped routing for a delivery pilot in two cities and want to work on it at DoorDash's scale." },
+  ];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = id => document.getElementById(id);
+  const rows = $("rows"), sent = $("sent"), auto = $("auto");
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const initials = n => n.split(" ").map(w => w[0]).join("");
+  const rowHTML = j => `<td></td><td><span class="co"><img src="${j.logo}" alt="">${esc(j.co)}</span></td><td class="role">${esc(j.role)}</td><td class="m">${j.match}%</td><td class="t">${j.t}</td><td><span class="st ${j.st}">${j.label}</span></td><td>${j.rc ? `<span class="rc"><i style="background:${RC[j.rc]}">${initials(j.rc)}</i>${esc(j.rc)}</span>` : `<span class="rc none">Waiting</span>`}</td>`;
+  const number = () => [...rows.children].forEach((tr, i) => { tr.firstElementChild.textContent = i + 1; });
+  // replies and interviews stay pinned at the top; new sends land just under them, newest first
+  const pinned = tr => /replied|interview/.test(tr.querySelector(".st").className);
+  const add = j => {
+    const tr = document.createElement("tr"); tr.innerHTML = rowHTML(j); tr.dataset.co = j.co;
+    // one row per company: a fresh send replaces the older plain row for the same place
+    if (!j.st) [...rows.children].filter(r => r.dataset.co === j.co && !pinned(r)).forEach(r => r.remove());
+    if (j.st) rows.prepend(tr); else rows.insertBefore(tr, [...rows.children].find(r => !pinned(r)) || null);
+    number(); return tr;
+  };
+  SEEN.forEach(add);
+
+  // the scene is drawn at 1440 and scaled down to fit narrower desktops
+  const fit = () => document.querySelector(".scene").style.setProperty("--k", innerWidth > 1100 ? Math.min(1, innerWidth / 1440) : 1);
+  fit(); addEventListener("resize", fit);
+
+  // one application at a time: the form fills in its window, then the row lands in the sheet
+  let n = 41, q = 0, clock = 6 * 60 + 40;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const on = () => auto.getAttribute("aria-checked") === "true" && !document.hidden;
+  const f1 = $("f1"), f2 = $("f2"), f3 = $("f3"), count = $("f-count"), go = $("f-go");
+  const flash = el => { el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 500); };
+  async function fillOne() {
+    const job = QUEUE[q++ % QUEUE.length];
+    $("f-logo").src = job.logo; $("f-co").textContent = job.co; $("f-role").textContent = job.role; $("f-url").textContent = job.url; $("f-q").textContent = `Why ${job.co}?`;
+    f3.textContent = ""; go.className = "go-btn"; go.textContent = "Send application"; count.textContent = "Jobbie filled 12 of 26";
+    await wait(500); flash(f1); count.textContent = "Jobbie filled 18 of 26";
+    await wait(450); flash(f2); count.textContent = "Jobbie filled 24 of 26";
+    await wait(350); f3.classList.add("typing");
+    for (let i = 1; i <= job.why.length; i += 2) { f3.textContent = job.why.slice(0, i); await wait(24); }
+    f3.textContent = job.why; f3.classList.remove("typing"); count.textContent = "Jobbie filled 26 of 26";
+    await wait(500); go.classList.add("done"); go.textContent = "Sent";
+    // the demo stays inside the last minutes before 7 am, however long someone watches
+    clock = 6 * 60 + 41 + (clock - 6 * 60 - 41 + 2) % 19; const mm = clock % 60;
+    const tr = add({ ...job, st: "", label: "Sent", t: `${Math.floor(clock / 60)}:${mm < 10 ? "0" + mm : mm} am` }); tr.classList.add("new");
+    const plain = [...rows.children].reverse().find(r => r.querySelector(".st").className === "st");
+    if (rows.children.length > 14 && plain) { plain.remove(); number(); }
+    sent.textContent = ++n;
+    await wait(1600);
+  }
+  auto.addEventListener("click", () => auto.setAttribute("aria-checked", String(auto.getAttribute("aria-checked") !== "true")));
+  if (reduce) { f3.textContent = QUEUE[0].why; count.textContent = "Jobbie filled 26 of 26"; }
+  else (async () => {
+    await wait(2000);
+    for (;;) { if (on()) await fillOne(); else await wait(600); }
+  })();
+
+  // pick a time, book it
+  const slots = [...document.querySelectorAll(".slots button")], book = $("book");
+  slots.forEach(b => b.addEventListener("click", () => {
+    slots.forEach(o => o.setAttribute("aria-pressed", String(o === b)));
+    const [d, ...t] = b.textContent.split(" ");
+    book.textContent = `Book ${d === "Fri" ? "Friday" : "Monday"}, ${t.join(" ")}`;
+  }));
+  let booked = false;
+  book.addEventListener("click", () => {
+    if (booked) return;
+    booked = true;
+    const pick = slots.find(o => o.getAttribute("aria-pressed") === "true");
+    slots.forEach(o => { o.disabled = true; });
+    book.classList.add("done");
+    book.innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>Booked, ${esc(pick.textContent)}`;
+    const stripe = [...rows.children].find(tr => tr.querySelector(".co").textContent === "Stripe");
+    // the reply becomes an interview and rises to the top of the sheet
+    if (stripe) { const st = stripe.querySelector(".st"); st.className = "st interview"; st.textContent = `Interview ${pick.textContent.split(" ")[0]}`; rows.prepend(stripe); number(); stripe.classList.remove("new"); void stripe.offsetWidth; stripe.classList.add("new"); }
+  });
+
+  // the menu on narrow screens
+  const tab = document.querySelector(".tab"), menuBtn = document.querySelector(".menu-btn");
+  menuBtn.addEventListener("click", () => {
+    const open = tab.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", String(open));
+  });
+})();
+</script>
+</body>
+</html>
