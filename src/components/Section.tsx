@@ -68,8 +68,12 @@ export function Section({
   return (
     <section id={id} className="sec scroll-mt-20">
       {doodle && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={doodle} alt="" aria-hidden="true" className="margin-doodle ink" style={{ rotate: `${tilt}deg` }} />
+        // A marker splash sits behind the ink, on the span, so the night
+        // invert on the drawing leaves the colour alone.
+        <span aria-hidden="true" className="margin-doodle" style={{ rotate: `${tilt}deg` }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={doodle} alt="" className="ink" />
+        </span>
       )}
       <div className="sec-head">
         <h2 className="sec-title">

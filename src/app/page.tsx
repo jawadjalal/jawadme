@@ -120,11 +120,12 @@ export default function Home() {
 
 function Hero() {
   return (
-    <header className="hero-sheet relative mt-8 sm:mt-12">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/ink/m-bus.webp" alt="" aria-hidden="true" className="margin-doodle ink" style={{ rotate: "-6deg" }} />
-      {/* The hero is a sheet of graph paper with his drawing pinned to it,
-          the way a sketchbook page carries its own picture. */}
+    <header className="hero relative pt-10 sm:pt-14">
+      <span aria-hidden="true" className="margin-doodle" style={{ rotate: "-6deg" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/ink/m-bus.webp" alt="" className="ink" />
+      </span>
+      {/* No box: the name, his pinned drawing and the line sit on the page. */}
       <div className="hero-top">
         <div className="min-w-0">
           <h1 className="hero-name">{IDENTITY.properName}</h1>

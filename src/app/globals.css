@@ -1784,24 +1784,6 @@ main, .foot { position: relative; }
    the margins at 6-14 degrees; hand notes run at 19-22px. Here the same
    rules on his structure, in his black ink and one orange. */
 
-/* the hero sheet: graph paper inside a drawn outline */
-.hero-sheet {
-  --grid: color-mix(in srgb, var(--ink) 7%, transparent);
-  padding: clamp(1.25rem, 3.5vw, 2.25rem);
-  border-radius: 28px;
-  background-color: var(--paper);
-  background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: -1px -1px;
-}
-.hero-sheet::before {
-  content: ""; position: absolute; inset: 0; z-index: 0;
-  border: 1.8px solid var(--ink); border-radius: inherit;
-  filter: url(#hand); pointer-events: none;
-}
-.hero-sheet > * { position: relative; z-index: 1; }
 .hero-top { display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 1.25rem; }
 @media (min-width: 640px) {
   .hero-top { flex-direction: row; align-items: center; justify-content: space-between; gap: 1.5rem; }
@@ -1853,10 +1835,113 @@ main, .foot { position: relative; }
     width: 9.5rem; height: auto;
     pointer-events: none;
   }
-  .hero-sheet .margin-doodle { left: calc(100% + 6.5rem); top: 1rem; width: 10.5rem; }
+  .hero .margin-doodle { left: calc(100% + 6.5rem); top: 1rem; width: 10.5rem; }
 }
 
 /* hand notes at the measured size, a step down on a phone so a title
    and its note share one line */
 .sec-aside, .sec-title { white-space: nowrap; }
 @media (min-width: 640px) { .sec-aside { font-size: 20px; } }
+
+/* ── Splashes of colour ──
+   The ink stays black; colour comes in the way a marker or a strip of tape
+   would on a sketchbook page: a blob behind a doodle, a swash under a
+   heading, tape on a print. Five saturated inks besides the orange, each
+   section taking its own, so no two neighbours share one. */
+:root {
+  --sp-blue: #2f6bff;
+  --sp-green: #12b76a;
+  --sp-pink: #ff4fa0;
+  --sp-yellow: #ffc21a;
+  --sp-violet: #8b5cf6;
+  --blob: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M52 5C79 3 97 23 95 49C93 76 74 96 47 94C21 92 3 74 6 47C9 22 27 7 52 5Z'/%3E%3C/svg%3E");
+  --swash-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 7 C 40 3, 90 9, 130 6 S 182 4, 197 7' fill='none' stroke='%23000' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  --swash-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 5 C 50 9, 110 4, 160 7 C 176 8, 189 6, 197 4' fill='none' stroke='%23000' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  --swash-c: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 6 C 60 4, 120 8, 196 5 M 26 10 C 80 8, 130 10, 172 9' fill='none' stroke='%23000' stroke-width='2.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  --swash-fat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30' preserveAspectRatio='none'%3E%3Cpath d='M6 18 C 50 10, 120 22, 194 12' fill='none' stroke='%23000' stroke-width='16' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+.sec { --splash: var(--sp-blue); }
+.sec:nth-of-type(5n+2) { --splash: var(--sp-pink); }
+.sec:nth-of-type(5n+3) { --splash: var(--sp-green); }
+.sec:nth-of-type(5n+4) { --splash: var(--sp-yellow); }
+.sec:nth-of-type(5n) { --splash: var(--sp-violet); }
+
+/* the line under each heading, now drawn in the section's colour */
+.sec-title::after {
+  height: 0.36em; bottom: -0.34em; opacity: 1; filter: none;
+  background: var(--splash);
+  -webkit-mask: var(--swash-a) no-repeat 0 0 / 100% 100%;
+          mask: var(--swash-a) no-repeat 0 0 / 100% 100%;
+}
+[data-theme="dark"] .sec-title::after { filter: none; }
+.sec:nth-of-type(3n+2) .sec-title::after { -webkit-mask-image: var(--swash-b); mask-image: var(--swash-b); }
+.sec:nth-of-type(3n) .sec-title::after { -webkit-mask-image: var(--swash-c); mask-image: var(--swash-c); }
+
+/* a marker blob behind each section's drawing */
+.sec-title { isolation: isolate; }
+.sec-title::before {
+  content: ""; position: absolute; z-index: -1;
+  left: -0.2rem; top: 50%; width: 2.6rem; height: 2.3rem; translate: 0 -50%;
+  background: var(--splash); opacity: 0.85;
+  -webkit-mask: var(--blob) no-repeat center / contain;
+          mask: var(--blob) no-repeat center / contain;
+}
+
+/* and a bigger one behind each margin doodle */
+.margin-doodle { isolation: isolate; }
+.margin-doodle::before {
+  content: ""; position: absolute; z-index: -1; inset: 30% 0 2% 30%;
+  background: var(--splash, var(--sp-yellow)); opacity: 0.85;
+  -webkit-mask: var(--blob) no-repeat center / 100% 100%;
+          mask: var(--blob) no-repeat center / 100% 100%;
+}
+.margin-doodle img { display: block; width: 100%; height: auto; }
+.hero { --splash: var(--sp-yellow); }
+
+/* tape on the prints, a different colour on each */
+.proj { --tape: var(--sp-yellow); }
+.proj:nth-child(4n+2) { --tape: var(--sp-blue); }
+.proj:nth-child(4n+3) { --tape: var(--sp-pink); }
+.proj:nth-child(4n) { --tape: var(--sp-green); }
+.proj::before {
+  content: ""; position: absolute; z-index: 4;
+  top: -11px; left: 50%; width: 88px; height: 24px;
+  translate: -50% 0; rotate: -4deg;
+  background: color-mix(in srgb, var(--tape) 82%, transparent);
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.08);
+  pointer-events: none;
+}
+.proj:nth-child(even)::before { rotate: 5deg; left: 40%; }
+
+/* his print gets tape too, and his name a marker swash */
+.portrait-mat { position: relative; }
+.portrait-mat::before {
+  content: ""; position: absolute; z-index: 2;
+  top: -10px; left: 50%; width: 74px; height: 22px;
+  translate: -50% 0; rotate: -6deg;
+  background: color-mix(in srgb, var(--sp-blue) 82%, transparent);
+}
+.hero-name { position: relative; width: fit-content; isolation: isolate; }
+.hero-name::after {
+  content: ""; position: absolute; z-index: -1;
+  left: 46%; right: -0.08em; bottom: -0.04em; height: 0.42em;
+  background: var(--sp-pink); opacity: 0.85;
+  -webkit-mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+          mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+}
+
+/* the Venn's four circles, each washed in its own ink */
+.venn-disc:nth-child(1) { background: color-mix(in srgb, var(--sp-blue) 16%, transparent); }
+.venn-disc:nth-child(2) { background: color-mix(in srgb, var(--sp-pink) 16%, transparent); }
+.venn-disc:nth-child(3) { background: color-mix(in srgb, var(--sp-green) 16%, transparent); }
+.venn-disc:nth-child(4) { background: color-mix(in srgb, var(--sp-yellow) 20%, transparent); }
+
+/* the signature gets a green marker line under it */
+.foot-mark { position: relative; isolation: isolate; }
+.foot-mark::after {
+  content: ""; position: absolute; z-index: -1;
+  left: 1.05em; right: 0; bottom: -0.02em; height: 0.2em;
+  background: var(--sp-green); opacity: 0.85;
+  -webkit-mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+          mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+}
