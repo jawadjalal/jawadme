@@ -1659,7 +1659,10 @@ main, .foot { position: relative; }
 [data-theme="dark"] img[src*="jawad-ink"] { filter: invert(0.92); }
 .obj { filter: none; }
 .face { box-shadow: none; background: var(--paper); }
-[data-theme="dark"] .face { background: #000; }
+/* the invert runs over the face's own ground too, so it starts white */
+[data-theme="dark"] .face { background: #fff; }
+/* a key tile stays white at night, so its ink stays black */
+[data-theme="dark"] .key-tile .obj { filter: none; }
 
 /* "revenue", lettered by hand in the orange, with a scribble under it */
 .rev {
