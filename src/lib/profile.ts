@@ -87,7 +87,7 @@ export const ABOUT_ROLES: {
   href?: string;
 }[] = [
   { key: "ignura", name: "ignura", role: "founder", stat: "6 figure arr", logo: "/logos/ignura.png", logoTile: "#111111", href: "https://ignura.com" },
-  { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 2m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
+  { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 1.5m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
   { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
   { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
   { key: "ignaru", name: "ignaru", role: "founder", stat: "design tool", logo: "/logos/ignaru.png", href: "https://ignaru.com" },
@@ -167,7 +167,7 @@ export const NOW: Item[] = [
     role: "Design",
     period: "Since 2026",
     status: "Live",
-    blurb: "The app for eating out healthy. 7 figure ARR and 2 million users. I design the product.",
+    blurb: "The app for eating out healthy. 7 figure ARR and 1.5 million users. I design the product.",
     tags: [
       { brand: "figmacolour", label: "Product design" },
       { label: "iOS" },
@@ -235,42 +235,6 @@ export const NOW: Item[] = [
       { label: "Agents" },
       { label: "macOS" },
     ],
-  },
-];
-
-/** Still live, still his, just not what the week is going into. Putting these
- *  in the same list as the four above would say otherwise. */
-export const ARCHIVE: Item[] = [
-  {
-    key: "bidframe",
-    ink: "/ink/bidframe.webp",
-    roleIcon: "target",
-    name: "bidframe",
-    href: "https://bidframe.org",
-    logo: "/logos/bidframe.png",
-    shot: "/design/bidframe.webp",
-    domain: "bidframe.org",
-    role: "Founder",
-    period: "2026",
-    status: "Discontinued",
-    blurb: "Reads a tender and flags what would disqualify your bid, each linked to its clause.",
-    tags: [{ brand: "nextdotjs", label: "Next.js" }, { label: "Postgres" }],
-  },
-  {
-    key: "weld",
-    ink: "/ink/weld.webp",
-    roleIcon: "team",
-    name: "weld",
-    href: "https://weldroblox.com",
-    logo: "/logos/weldroblox.png",
-    logoTile: "#eb3c17",
-    shot: "/design/weld.webp",
-    domain: "weldroblox.com",
-    role: "Founder & PM",
-    period: "2026",
-    status: "Discontinued",
-    blurb: "A marketplace fixing how Roblox studios hire developers. Waitlist is live.",
-    tags: [{ brand: "nextdotjs", label: "Next.js" }, { brand: "supabase", label: "Supabase" }],
   },
 ];
 
@@ -440,7 +404,7 @@ export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
   "a web design agency at 6 figure ARR, and builds Ignaru (ignaru.com), an agent-native design tool " +
   "where design and code share one canvas. He also runs bevel, a 3D art team for games at 6 figure ARR, " +
-  "and does design at Okara and at MenuFit (menufit.com), an app for eating out healthy with 2 million users and 7 figure ARR.";
+  "and does design at Okara and at MenuFit (menufit.com), an app for eating out healthy with 1.5 million users and 7 figure ARR.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [
@@ -472,7 +436,7 @@ const PHRASE_TO_KEY: Record<string, string> = {
 export function heroFor(phrase: string) {
   const key = PHRASE_TO_KEY[phrase.toLowerCase()];
   if (!key) return null;
-  const item = [...NOW, ...ARCHIVE].find((i) => i.key === key);
+  const item = NOW.find((i) => i.key === key);
   if (!item) return null;
   return {
     shot: item.shot,
