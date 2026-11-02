@@ -13,7 +13,7 @@ import { Icon, type IconName } from "./Icon";
 import { Obj, type ObjName } from "./Obj";
 
 // Each menu is led by one glossy object, as ignura.com's links are.
-const OBJ: Partial<Record<IconName, ObjName>> = { block: "work", sparkle: "now", mail: "contact" };
+const OBJ: Partial<Record<IconName, ObjName>> = { block: "projects", sparkle: "now", mail: "contact" };
 
 export type NavGroup = {
   label: string;

@@ -3,7 +3,7 @@ import { IDENTITY, SUMMARY, SKILLS, SOCIALS } from "@/lib/profile";
 
 const TITLE = `${IDENTITY.properName}, designer and founder of Ignura`;
 const DESCRIPTION =
-  "Designer and founder in London. I run Ignura (ignura.com), an agency that builds growth solutions for startups, and design at MenuFit and Okara.";
+  "Designer and founder in London. I run Ignura (ignura.com), a web design agency, build Ignaru (ignaru.com), an agent-native design tool, and design at MenuFit and Okara.";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -71,7 +71,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
       </head>
-      <body className="min-h-dvh font-sans antialiased">{children}</body>
+      <body className="min-h-dvh font-sans antialiased">
+        {/* The wobble every drawn line on the page shares: `filter: url(#hand)`. */}
+        <svg width="0" height="0" aria-hidden="true" style={{ position: "absolute" }}>
+          <filter id="hand">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="4" />
+            <feDisplacementMap in="SourceGraphic" scale="3" />
+          </filter>
+        </svg>
+        {children}
+      </body>
     </html>
   );
 }

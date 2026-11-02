@@ -1,6 +1,7 @@
 "use client";
 
-// The portrait, in its double frame, with the switch that swaps the face.
+// The portrait, pinned to the hero sheet on a white mat, with the switch that
+// swaps the drawing for the memoji it was drawn from.
 //
 // Both images are in the DOM and one is faded over the other, rather than the
 // src being swapped: swapping would show an empty box on the first flip while
@@ -19,14 +20,14 @@ export function Portrait() {
   const [alt, setAlt] = useState(false);
 
   return (
-    <div className="flex w-fit flex-col items-center gap-2">
-      <div className="w-fit rounded-[20px] bg-muted p-1.5">
-        <div className="relative box-border size-20 select-none overflow-hidden rounded-[14px] bg-background sm:size-28">
+    <div className="portrait">
+      <div className="portrait-mat">
+        <div className="portrait-frame relative box-border select-none overflow-hidden rounded-[14px] bg-background">
           <Image
             src={IDENTITY.avatar}
             alt={`${IDENTITY.properName}, designer and founder`}
-            width={160}
-            height={160}
+            width={320}
+            height={320}
             priority
             className="absolute inset-0 size-full rounded-[14px] object-cover transition-opacity duration-300"
             style={{ opacity: alt ? 0 : 1 }}
@@ -35,18 +36,20 @@ export function Portrait() {
             src={IDENTITY.avatarAlt}
             alt=""
             aria-hidden="true"
-            width={160}
-            height={160}
+            width={320}
+            height={320}
             className="absolute inset-0 size-full rounded-[14px] object-cover transition-opacity duration-300"
             style={{ opacity: alt ? 1 : 0 }}
           />
         </div>
       </div>
+      <div className="flex items-center gap-2">
+      <span className="flip-note" aria-hidden="true">flip me</span>
       <button
         type="button"
         role="switch"
         aria-checked={alt}
-        aria-label="Show the other portrait"
+        aria-label="Show the memoji"
         data-cur={alt ? "back" : "swap"}
         onClick={() => setAlt((v) => !v)}
         className={`tap relative h-5 w-9 shrink-0 rounded-full outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring ${
@@ -61,6 +64,7 @@ export function Portrait() {
           style={{ left: alt ? "calc(100% - 18px)" : "2px" }}
         />
       </button>
+      </div>
     </div>
   );
 }

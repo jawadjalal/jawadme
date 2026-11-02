@@ -151,9 +151,9 @@ export function Cursor({ label = "hi" }: { label?: string }) {
   return (
     <div ref={root} aria-hidden="true" className="cur-root" popover="manual">
       <div ref={arrow} className="cur-arrow">
-        {/* ignura.com's glossy black arrow, tip on the pointer's hotspot. */}
+        {/* an inked arrow to match the drawings, tip on the pointer's hotspot. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/cursor/arrow.png" srcSet="/cursor/arrow.png 1x, /cursor/arrow@2x.png 2x" alt="" width={32} height={32} />
+        <img src="/cursor/ink-arrow.svg" alt="" width={32} height={32} />
       </div>
       <div ref={pill} className="cur-pill">
         {word}

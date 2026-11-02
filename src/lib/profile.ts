@@ -26,15 +26,16 @@ export const IDENTITY = {
   email: "hijawadjalal@gmail.com",
   cv: "/jawad-jalal-cv.pdf",
   site: "https://jawadjalal.com",
-  avatar: "/design/jawad.webp",
-  /** The second face, shown when the toggle under the portrait is flipped. */
-  avatarAlt: "/design/jawad-photo.webp",
+  /** His memoji, redrawn in ink: the face the page shows. */
+  avatar: "/design/jawad-ink.webp",
+  /** The original memoji, shown when the switch under the portrait is flipped. */
+  avatarAlt: "/design/jawad.webp",
 };
 
 /** The titles that cycle under the name, one line at a time. */
 export const ROLES = [
   "Founder of Ignura",
-  "Designer & Founder",
+  "Building Ignaru",
   "Design at MenuFit",
   "Design at Okara",
 ];
@@ -57,8 +58,8 @@ export const HERO = {
 /** The About list. Each string is one bullet, and may carry icon tokens. */
 export const ABOUT = [
   "i'm jawad :sparkle:, a :pen:{designer} and founder in london :globe: :rocket:[(yc soon)|https://www.ycombinator.com/]. ~i started making things for money at thirteen and never really stopped. i'm fifteen now.~",
-  "~i run~ :rocket:{ignura|https://ignura.com}~, an agency that finds a startup's growth problem, builds the engine that fixes it, and runs it.~",
-  "~i build~ :rocket:{ignaru|https://ignaru.com}~, the product for teams that build their own growth systems.~",
+  "~i run~ :rocket:{ignura|https://ignura.com}~, a web design agency. every site is designed and built from scratch, and launch pages go live in about a week.~",
+  "~i build~ :rocket:{ignaru|https://ignaru.com}~, the agent-native design tool: design and code on one canvas, with claude code, codex or cursor doing the work.~",
   "~i build my own products~ :cube:<end to end>~: the brand, the interface, and the thing that actually ships.~",
 ];
 
@@ -89,7 +90,7 @@ export const ABOUT_ROLES: {
   { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 2m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
   { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
   { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
-  { key: "ignaru", name: "ignaru", role: "founder", stat: "side project", logo: "/logos/ignaru.png", href: "https://ignaru.com" },
+  { key: "ignaru", name: "ignaru", role: "founder", stat: "design tool", logo: "/logos/ignaru.png", href: "https://ignaru.com" },
 ];
 
 export const ABOUT_TAIL = [
@@ -108,6 +109,8 @@ export type Item = {
    *  onto the white tile would lose the figure entirely. */
   logoTile?: string;
   emoji?: string;
+  /** The product's ink doodle, under /public/ink. */
+  ink?: string;
   /** Screenshot for the hover card and the project grid, under /public. */
   shot?: string;
   /** where to anchor a shot cropped into its card, when the centre would cut the headline */
@@ -133,27 +136,28 @@ export type Item = {
 export const NOW: Item[] = [
   {
     key: "ignura",
+    ink: "/ink/ignura.webp",
     roleIcon: "rocket",
     name: "ignura",
     href: "https://ignura.com",
     logo: "/logos/ignura.png",
     logoTile: "#111111",
-    shot: "/design/ignura.webp",
+    shot: "/design/ignura-card.webp",
     domain: "ignura.com",
     role: "Founder",
     period: "Since 2026",
     status: "Live",
     blurb:
-      "An agency that builds growth solutions for startups: we find what leaks, build the engine that fixes it, and run it. 6 figure ARR.",
+      "A web design agency. Every site is designed and built from scratch, and launch pages go live in about a week. 6 figure ARR.",
     tags: [
-      { label: "Launch films" },
-      { label: "App Store screenshots" },
-      { label: "Landing pages" },
-      { label: "UGC" },
+      { label: "Web design" },
+      { label: "Site builds" },
+      { label: "Launch pages" },
     ],
   },
   {
     key: "menufit",
+    ink: "/ink/menufit.webp",
     roleIcon: "pen",
     name: "menufit",
     href: "https://menufit.com",
@@ -173,6 +177,7 @@ export const NOW: Item[] = [
   },
   {
     key: "bevel",
+    ink: "/ink/bevel.webp",
     roleIcon: "cube",
     name: "bevel",
     href: "https://bevel.team",
@@ -192,11 +197,12 @@ export const NOW: Item[] = [
   },
   {
     key: "okara",
+    ink: "/ink/okara.webp",
     roleIcon: "pen",
     name: "okara",
     href: "https://okara.ai",
     logo: "/logos/okara.png",
-    shot: "/design/okara.png",
+    shot: "/design/okara-card.webp",
     domain: "okara.ai",
     role: "Design",
     period: "Since 2026",
@@ -211,22 +217,23 @@ export const NOW: Item[] = [
   },
   {
     key: "ignaru",
+    ink: "/ink/ignaru.webp",
     roleIcon: "trend",
     name: "ignaru",
     href: "https://ignaru.com",
     logo: "/logos/ignaru.png",
-    shot: "/design/ignaru.webp",
+    shot: "/design/ignaru-card.webp",
     shotPos: "left top",
     domain: "ignaru.com",
     role: "Founder",
-    roleNote: "side project",
     period: "Since 2026",
-    status: "Building",
-    blurb: "Build your own growth systems. A product for teams that run their own growth, from signals to revenue.",
+    status: "Live",
+    blurb:
+      "The agent-native design tool. Design and code sit on one canvas, and the coding agent you already pay for, Claude Code, Codex or Cursor, does the work.",
     tags: [
-      { label: "B2B" },
-      { label: "Growth" },
-      { label: "GTM" },
+      { label: "Design tool" },
+      { label: "Agents" },
+      { label: "macOS" },
     ],
   },
 ];
@@ -236,6 +243,7 @@ export const NOW: Item[] = [
 export const ARCHIVE: Item[] = [
   {
     key: "bidframe",
+    ink: "/ink/bidframe.webp",
     roleIcon: "target",
     name: "bidframe",
     href: "https://bidframe.org",
@@ -250,6 +258,7 @@ export const ARCHIVE: Item[] = [
   },
   {
     key: "weld",
+    ink: "/ink/weld.webp",
     roleIcon: "team",
     name: "weld",
     href: "https://weldroblox.com",
@@ -429,10 +438,9 @@ export const VENN = [
  *  here, rather than stitched together from the page's copy. */
 export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
-  "an agency that builds growth solutions for startups, and bevel, " +
-  "a 3D art team available for hire. Both are at 6 figure ARR. He does design at Okara and at MenuFit (menufit.com), " +
-  "an app for eating out healthy with 2 million users and 7 figure ARR. " +
-  "As a side project he builds ignaru (ignaru.com), a product for teams that build their own growth systems.";
+  "a web design agency at 6 figure ARR, and builds Ignaru (ignaru.com), an agent-native design tool " +
+  "where design and code share one canvas. He also runs bevel, a 3D art team for games at 6 figure ARR, " +
+  "and does design at Okara and at MenuFit (menufit.com), an app for eating out healthy with 2 million users and 7 figure ARR.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [

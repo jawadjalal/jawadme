@@ -76,7 +76,7 @@ export function Rail() {
           className="rail-item"
           aria-current={here === s.id ? "true" : undefined}
         >
-          <img src="/obj/ball.webp" alt="" aria-hidden="true" className="rail-ball" />
+          <span aria-hidden="true" className="rail-ball" />
           <span>{s.label}</span>
         </a>
       ))}

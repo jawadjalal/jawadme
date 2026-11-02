@@ -25,8 +25,11 @@ export function Section({
   title,
   id,
   aside,
-  /** The glossy object that leads the heading. */
+  /** The ink drawing that leads the heading. */
   obj,
+  /** A loose doodle in the page's right margin, tilted by `tilt` degrees. */
+  doodle,
+  tilt = 0,
   /** Sections that carry the argument open by default; the long tail does not. */
   defaultOpen = true,
   children,
@@ -35,6 +38,8 @@ export function Section({
   id?: string;
   aside?: React.ReactNode;
   obj?: ObjName;
+  doodle?: string;
+  tilt?: number;
   defaultOpen?: boolean;
   children: React.ReactNode;
 }) {
@@ -62,13 +67,21 @@ export function Section({
 
   return (
     <section id={id} className="sec scroll-mt-20">
+      {doodle && (
+        // A marker splash sits behind the ink, on the span, so the night
+        // invert on the drawing leaves the colour alone.
+        <span aria-hidden="true" className="margin-doodle" style={{ rotate: `${tilt}deg` }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={doodle} alt="" className="ink" />
+        </span>
+      )}
       <div className="sec-head">
         <h2 className="sec-title">
           {obj && <Obj name={obj} size={34} className="sec-obj" />}
           {title}
         </h2>
         <div className="flex items-center gap-2">
-          {aside && <span className="text-[14px] text-muted-foreground">{aside}</span>}
+          {aside && <span className="sec-aside">{aside}</span>}
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}

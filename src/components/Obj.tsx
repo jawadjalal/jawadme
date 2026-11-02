@@ -1,36 +1,35 @@
-// A glossy black object from ignura.com's family, at icon size.
-//
-// They are rendered stills, so each carries a 2x source and nothing else:
-// no tile, no ring, no tint. They sit straight on the paper the way they do on
-// ignura.com. At night a hairline of light (--ico-lift) keeps a black object
-// from sinking into a black page.
+// A small ink drawing, at icon size, straight on the paper with no tile,
+// ring or tint. At night the ink is inverted to chalk.
 
 export type ObjName =
-  | "about" | "now" | "work" | "previously" | "skills" | "elsewhere" | "contact" | "overlaps" | "ball"
+  | "about" | "now" | "work" | "projects" | "previously" | "skills" | "elsewhere" | "contact" | "overlaps" | "ball"
   | "chart" | "chat" | "play" | "stack" | "gear" | "funnel" | "find" | "build" | "run" | "fix" | "talk";
 
+// Each name is an ink drawing from the same sheet, in the fineliner style of
+// his hand-drawn memoji. One file serves both densities: they are drawn at
+// 256px and never shown above 128.
 const SRC: Record<ObjName, [string, string]> = {
-  about: ["/obj/linkedin.png", "/obj/linkedin@2x.png"],
-  now: ["/obj/nav-how.png", "/obj/nav-how@2x.png"],
-  work: ["/obj/site.png", "/obj/site@2x.png"],
-  previously: ["/obj/drop.png", "/obj/drop@2x.png"],
-  skills: ["/obj/nav-fix.png", "/obj/nav-fix@2x.png"],
-  elsewhere: ["/obj/map.webp", "/obj/map@2x.webp"],
-  contact: ["/obj/outbound.png", "/obj/outbound@2x.png"],
-  overlaps: ["/obj/ring.webp", "/obj/ring@2x.webp"],
-  ball: ["/obj/ball.webp", "/obj/ball@2x.webp"],
-  chart: ["/obj/tracking.png", "/obj/tracking@2x.png"],
-  chat: ["/obj/content.png", "/obj/content@2x.png"],
-  play: ["/obj/creators.png", "/obj/creators@2x.png"],
-  stack: ["/obj/list.png", "/obj/list@2x.png"],
-  gear: ["/obj/gear.webp", "/obj/gear.webp"],
-  funnel: ["/obj/funnel.webp", "/obj/funnel.webp"],
-  // ignura's small inline objects, drawn to sit in a line of text
-  find: ["/obj/ico-find.webp", "/obj/ico-find.webp"],
-  build: ["/obj/ico-build.webp", "/obj/ico-build.webp"],
-  run: ["/obj/ico-run.webp", "/obj/ico-run.webp"],
-  fix: ["/obj/ico-fix.webp", "/obj/ico-fix.webp"],
-  talk: ["/obj/ico-talk.webp", "/obj/ico-talk.webp"],
+  about: ["/ink/wave.webp", "/ink/wave.webp"],
+  now: ["/ink/sun.webp", "/ink/sun.webp"],
+  work: ["/ink/pen.webp", "/ink/pen.webp"],
+  projects: ["/ink/folder.webp", "/ink/folder.webp"],
+  previously: ["/ink/archive.webp", "/ink/archive.webp"],
+  skills: ["/ink/toolbox.webp", "/ink/toolbox.webp"],
+  elsewhere: ["/ink/map.webp", "/ink/map.webp"],
+  contact: ["/ink/plane.webp", "/ink/plane.webp"],
+  overlaps: ["/ink/venn.webp", "/ink/venn.webp"],
+  ball: ["/ink/sun.webp", "/ink/sun.webp"],
+  chart: ["/ink/chart.webp", "/ink/chart.webp"],
+  chat: ["/ink/chat.webp", "/ink/chat.webp"],
+  play: ["/ink/video.webp", "/ink/video.webp"],
+  stack: ["/ink/stack.webp", "/ink/stack.webp"],
+  gear: ["/ink/gear.webp", "/ink/gear.webp"],
+  funnel: ["/ink/chart.webp", "/ink/chart.webp"],
+  find: ["/ink/map.webp", "/ink/map.webp"],
+  build: ["/ink/gear.webp", "/ink/gear.webp"],
+  run: ["/ink/plane.webp", "/ink/plane.webp"],
+  fix: ["/ink/toolbox.webp", "/ink/toolbox.webp"],
+  talk: ["/ink/chat.webp", "/ink/chat.webp"],
 };
 
 export function Obj({ name, size = 28, className = "" }: { name: ObjName; size?: number; className?: string }) {
@@ -59,7 +58,7 @@ export function Face({ size, className = "" }: { size?: number; className?: stri
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={size && size <= 48 ? "/design/jawad-face-96.webp" : "/design/jawad-face-320.webp"}
+      src={size && size <= 48 ? "/design/jawad-ink-simple.webp" : "/design/jawad-ink-320.webp"}
       alt=""
       aria-hidden="true"
       width={size || 160}

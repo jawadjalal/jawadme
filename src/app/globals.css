@@ -1605,14 +1605,15 @@ main, .foot { position: relative; }
 .foot-field::before { z-index: 1; }
 .nv { z-index: 60; }
 
-.gp { --w: var(--gp-w, 0px); position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; filter: var(--ico-lift); }
-.gp-p { fill: none; stroke: #fff; stroke-width: var(--w); stroke-linecap: butt; stroke-linejoin: round; }
-.gp-body { stroke: #070708; }
-.gp-rim { stroke: #3a3b41; stroke-width: calc(var(--w) * 0.22); transform: translate(calc(var(--w) * 0.04), calc(var(--w) * 0.36)); }
-.gp-joints rect { stroke: #000; stroke-opacity: 0.55; }
-.gp-sheen { stroke: #5b5c62; stroke-width: calc(var(--w) * 0.4); transform: translate(calc(var(--w) * -0.06), calc(var(--w) * -0.2)); }
-.gp-line { stroke: #f4f4f6; stroke-opacity: 0.75; stroke-width: calc(var(--w) * 0.12); transform: translate(calc(var(--w) * -0.08), calc(var(--w) * -0.27)); }
-.gp-in image { will-change: transform; }
+.gp { --w: var(--gp-w, 0px); position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.gp-p { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+/* two inked edges: a fat ink stroke with a paper stroke inside it */
+.gp-edge { stroke: var(--ink); stroke-width: var(--w); }
+.gp-bore { stroke: var(--paper); stroke-width: calc(var(--w) - 3px); }
+/* a dashed hatch down one side, the fineliner's shading */
+.gp-hatch { stroke: var(--ink); stroke-width: 1px; stroke-dasharray: 1.5 3.5; opacity: 0.7; transform: translate(calc(var(--w) * 0.22), 0); }
+.gp-joints rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5px; }
+.gp-ball { fill: var(--pop); stroke: var(--ink); stroke-width: 1.4px; will-change: transform; }
 
 /* ── Skills: stations on one pipe ── */
 .skills { position: relative; isolation: isolate; display: grid; gap: 2.25rem; }
@@ -1642,3 +1643,305 @@ main, .foot { position: relative; }
 }
 /* one line each from a tablet up; on a phone they flow */
 @media (min-width: 640px) { .hero-line { display: block; } }
+
+/* ── 2 Nov: drawn by hand ─────────────────────────────────────────────────
+   Every picture on the page is now a black fineliner drawing from one sheet,
+   in the style of his hand-drawn memoji. This block makes the rest agree:
+   a handwriting face for the accents only (Satoshi still sets every word you
+   read), one wobble filter that makes a drawn line out of a ruled one, and
+   the ink turned to chalk at night. */
+@font-face { font-family: "Hand"; src: url("/fonts/Excalifont-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+
+/* the drawings are black ink on clear ground; at night the ink goes light */
+[data-theme="dark"] .obj,
+[data-theme="dark"] .face,
+[data-theme="dark"] .ink,
+[data-theme="dark"] img[src*="jawad-ink"] { filter: invert(0.92); }
+.obj { filter: none; }
+.face { box-shadow: none; background: var(--paper); }
+/* the invert runs over the face's own ground too, so it starts white */
+[data-theme="dark"] .face { background: #fff; }
+/* a key tile stays white at night, so its ink stays black */
+[data-theme="dark"] .key-tile .obj { filter: none; }
+
+/* "revenue", lettered by hand in the orange, with a scribble under it */
+.rev {
+  font-family: "Hand", "Fraunces Italic", cursive;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  padding-bottom: 0.08em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 C 20 3, 38 11, 58 6 S 96 3, 118 7' fill='none' stroke='%23f05a00' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 0 100% / 100% 0.32em;
+}
+.rev::after { content: none; }
+
+/* the name at the foot, signed rather than set */
+.foot-mark { font-family: "Hand", var(--font); font-weight: 400; letter-spacing: -0.01em; line-height: 0.9; }
+.foot-mark-box { border-radius: 50%; }
+
+/* a section's side note is written in the margin, with a drawn arrow */
+.sec-aside {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-family: "Hand", var(--font); font-size: 17px; color: var(--ink-read);
+  transform: rotate(-3deg);
+}
+.sec-aside::after {
+  content: "";
+  width: 30px; height: 18px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 18'%3E%3Cpath d='M2 4 C 10 2, 20 6, 25 14 M 19 13 L 25.5 14.5 L 26 8' fill='none' stroke='%23111' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+[data-theme="dark"] .sec-aside::after { filter: invert(0.92); }
+
+/* a drawn line under each section's name */
+.sec-title { position: relative; }
+.sec-title::after {
+  content: "";
+  position: absolute; left: 2.6rem; right: -0.2em; bottom: -0.3em; height: 0.28em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M1 6 C 40 2, 90 8, 130 5 S 180 3, 199 6' fill='none' stroke='%23111' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%;
+  opacity: 0.85;
+}
+[data-theme="dark"] .sec-title::after { filter: invert(0.92); }
+
+/* the Venn as four drawn circles: an ink outline through the wobble filter,
+   over the same faint fill */
+.venn-disc { border: 1.6px solid var(--ink); filter: url(#hand); }
+.venn-face { filter: none; width: 5.5rem; }
+[data-theme="dark"] .venn-face { filter: invert(0.92); }
+@media (min-width: 640px) { .venn-face { width: 8rem; } }
+
+/* each project's own doodle, peeking over the top corner of its tray */
+.proj-doodle {
+  position: absolute; z-index: 3; top: -40px; right: 4px;
+  width: 96px; height: 96px;
+  transform: rotate(6deg);
+  /* a paper edge round the ink, like a sticker, so it reads over a dark shot */
+  filter: drop-shadow(2px 0 0 var(--paper)) drop-shadow(-2px 0 0 var(--paper)) drop-shadow(0 2px 0 var(--paper)) drop-shadow(0 -2px 0 var(--paper));
+  transition: transform 300ms var(--ease);
+  pointer-events: none;
+}
+.proj:hover .proj-doodle { transform: rotate(-4deg) translateY(-4px); }
+.proj-slab::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 3;
+  border: 1.6px solid var(--ink);
+  border-bottom: 0;
+  border-radius: inherit;
+  filter: url(#hand);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) { .proj-doodle { transition: none; } }
+@media (max-width: 639px) { .proj-doodle { top: -32px; right: 2px; width: 76px; height: 76px; } }
+.role-ink { width: 52px; height: 52px; flex: none; object-fit: contain; }
+[data-theme="dark"] .proj-doodle { filter: invert(0.92) drop-shadow(2px 0 0 #0d0d0d) drop-shadow(-2px 0 0 #0d0d0d) drop-shadow(0 2px 0 #0d0d0d) drop-shadow(0 -2px 0 #0d0d0d); }
+
+/* the Venn's words sit on a scrap of paper, so the drawn circles pass behind
+   them, and the face gets a paper disc of its own for the same reason */
+.venn-text { padding: 0.1rem 0.4rem; border-radius: 6px; background: var(--paper); }
+.venn-face { border-radius: 50%; background: var(--paper); }
+[data-theme="dark"] .venn-face { background: #fff; }
+
+/* one ink: the tool marks lose their brand colour */
+.tool img, .tool svg { filter: grayscale(1); }
+[data-theme="dark"] .tool img, [data-theme="dark"] .tool svg { filter: grayscale(1) brightness(1.6); }
+.rp-link-glyph svg, .foot-link svg { filter: grayscale(1); }
+[data-theme="dark"] .rp-link-glyph svg, [data-theme="dark"] .foot-link svg { filter: grayscale(1) brightness(1.6); }
+
+/* at night the faces are not inverted, which made a photo negative of him:
+   they keep their black ink on a white card, like a drawing pinned up */
+[data-theme="dark"] .face,
+[data-theme="dark"] img[src*="jawad-ink"],
+[data-theme="dark"] .venn-face { filter: none; background: #f4f4f2; }
+[data-theme="dark"] .venn-face { border-radius: 50%; }
+
+/* the rail's marker, a flat dot of the same orange as the pipes' ball */
+.rail-ball { border-radius: 50%; background: var(--pop); box-shadow: 0 0 0 1.2px var(--ink); }
+
+/* the line under each section's name is drawn three ways, so no two
+   neighbours share one */
+.sec:nth-of-type(3n+2) .sec-title::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M2 4 C 50 7, 110 3, 160 6 C 175 7, 188 5, 197 3' fill='none' stroke='%23111' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+.sec:nth-of-type(3n) .sec-title::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M3 5 C 60 3, 120 6, 196 4 M 30 8 C 80 6, 130 8, 170 7' fill='none' stroke='%23111' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* the grey slabs become drawn boxes: paper inside, one wobbly ink line round */
+.roles, .else-sum, .foot-card { background: var(--paper); position: relative; }
+.roles::before, .else-sum::before, .foot-card::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  border: 1.6px solid var(--ink); border-radius: inherit;
+  filter: url(#hand); pointer-events: none;
+}
+.foot-card::before { border-bottom: 0; }
+.roles > li, .else-sum > * { position: relative; z-index: 1; }
+.roles > li:hover, .else-sum:hover { background: var(--soft); }
+.foot-card { box-shadow: none; }
+
+/* ── 2 Nov, after a teardown of jackiezhang.co.za ──
+   Measured there: the hero sits on a ruled sheet with its drawing taking
+   nearly half of it; work is shown as prints (white mat 10px, radius 20px,
+   a 1px-2px shadow) set at small tilts; loose doodles of 100-250px sit in
+   the margins at 6-14 degrees; hand notes run at 19-22px. Here the same
+   rules on his structure, in his black ink and one orange. */
+
+.hero-top { display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 1.25rem; }
+@media (min-width: 640px) {
+  .hero-top { flex-direction: row; align-items: center; justify-content: space-between; gap: 1.5rem; }
+}
+
+/* his drawing, pinned on as a print */
+.portrait { display: flex; width: fit-content; flex-direction: column; align-items: center; gap: 0.6rem; }
+.portrait-mat {
+  padding: 8px; border-radius: 20px; background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 14px 28px -18px rgb(0 0 0 / 0.35);
+  rotate: 3deg;
+  transition: rotate 300ms var(--ease);
+}
+.portrait:hover .portrait-mat { rotate: -1deg; }
+.portrait-frame { width: 8rem; height: 8rem; }
+@media (min-width: 640px) { .portrait-frame { width: 12.5rem; height: 12.5rem; } }
+[data-theme="dark"] .portrait-frame { background: #fff; }
+.flip-note { font-family: "Hand", cursive; font-size: 19px; line-height: 1; color: var(--ink-2); rotate: -4deg; }
+.flip-note::after { content: " \2192"; }
+
+/* the projects become prints: a white mat, a small shadow, a small tilt,
+   and the second column dropped half a step so the grid reads as laid down */
+.proj-slab {
+  padding: 10px; border-radius: 20px; background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 18px 30px -22px rgb(0 0 0 / 0.4);
+  overflow: hidden;
+  rotate: -0.8deg;
+  transition: rotate 300ms var(--ease), translate 300ms var(--ease);
+}
+.proj-slab::before { content: none; }
+.proj-slab .proj-shot { border-radius: 12px; }
+.proj:nth-child(even) .proj-slab { rotate: 1.2deg; }
+.proj:nth-child(3n) .proj-slab { rotate: -1.4deg; }
+.proj:hover .proj-slab { rotate: 0deg; translate: 0 -3px; background: #fff; }
+.proj:hover .proj-shot { transform: none; }
+.proj:hover { background: transparent; }
+@media (min-width: 640px) {
+  .proj:nth-child(odd):not(:first-child) { translate: 0 2.5rem; }
+  #projects .sec-body-inner > .grid { padding-bottom: 2.5rem; }
+}
+
+/* loose doodles in the right margin, outside the pipe, on wide screens only */
+.sec { position: relative; }
+.margin-doodle { display: none; }
+@media (min-width: 1280px) {
+  .margin-doodle {
+    display: block; position: absolute; z-index: 0;
+    left: calc(100% + 7.5rem); top: -0.5rem;
+    width: 9.5rem; height: auto;
+    pointer-events: none;
+  }
+  .hero .margin-doodle { left: calc(100% + 6.5rem); top: 1rem; width: 10.5rem; }
+}
+
+/* hand notes at the measured size, a step down on a phone so a title
+   and its note share one line */
+.sec-aside, .sec-title { white-space: nowrap; }
+@media (min-width: 640px) { .sec-aside { font-size: 20px; } }
+
+/* ── Splashes of colour ──
+   The ink stays black; colour comes in the way a marker or a strip of tape
+   would on a sketchbook page: a blob behind a doodle, a swash under a
+   heading, tape on a print. Five saturated inks besides the orange, each
+   section taking its own, so no two neighbours share one. */
+:root {
+  --sp-blue: #2f6bff;
+  --sp-green: #12b76a;
+  --sp-pink: #ff4fa0;
+  --sp-yellow: #ffc21a;
+  --sp-violet: #8b5cf6;
+  --blob: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M52 5C79 3 97 23 95 49C93 76 74 96 47 94C21 92 3 74 6 47C9 22 27 7 52 5Z'/%3E%3C/svg%3E");
+  --swash-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 7 C 40 3, 90 9, 130 6 S 182 4, 197 7' fill='none' stroke='%23000' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  --swash-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 5 C 50 9, 110 4, 160 7 C 176 8, 189 6, 197 4' fill='none' stroke='%23000' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  --swash-c: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 6 C 60 4, 120 8, 196 5 M 26 10 C 80 8, 130 10, 172 9' fill='none' stroke='%23000' stroke-width='2.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  --swash-fat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30' preserveAspectRatio='none'%3E%3Cpath d='M6 18 C 50 10, 120 22, 194 12' fill='none' stroke='%23000' stroke-width='16' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+.sec { --splash: var(--sp-blue); }
+.sec:nth-of-type(5n+2) { --splash: var(--sp-pink); }
+.sec:nth-of-type(5n+3) { --splash: var(--sp-green); }
+.sec:nth-of-type(5n+4) { --splash: var(--sp-yellow); }
+.sec:nth-of-type(5n) { --splash: var(--sp-violet); }
+
+/* the line under each heading, now drawn in the section's colour */
+.sec-title::after {
+  height: 0.36em; bottom: -0.34em; opacity: 1; filter: none;
+  background: var(--splash);
+  -webkit-mask: var(--swash-a) no-repeat 0 0 / 100% 100%;
+          mask: var(--swash-a) no-repeat 0 0 / 100% 100%;
+}
+[data-theme="dark"] .sec-title::after { filter: none; }
+.sec:nth-of-type(3n+2) .sec-title::after { -webkit-mask-image: var(--swash-b); mask-image: var(--swash-b); }
+.sec:nth-of-type(3n) .sec-title::after { -webkit-mask-image: var(--swash-c); mask-image: var(--swash-c); }
+
+/* a marker blob behind each section's drawing */
+.sec-title { isolation: isolate; }
+.sec-title::before {
+  content: ""; position: absolute; z-index: -1;
+  left: -0.2rem; top: 50%; width: 2.6rem; height: 2.3rem; translate: 0 -50%;
+  background: var(--splash); opacity: 0.85;
+  -webkit-mask: var(--blob) no-repeat center / contain;
+          mask: var(--blob) no-repeat center / contain;
+}
+
+/* and a bigger one behind each margin doodle */
+.margin-doodle { isolation: isolate; }
+.margin-doodle::before {
+  content: ""; position: absolute; z-index: -1; inset: 30% 0 2% 30%;
+  background: var(--splash, var(--sp-yellow)); opacity: 0.85;
+  -webkit-mask: var(--blob) no-repeat center / 100% 100%;
+          mask: var(--blob) no-repeat center / 100% 100%;
+}
+.margin-doodle img { display: block; width: 100%; height: auto; }
+.hero { --splash: var(--sp-yellow); }
+
+/* tape on the prints, a different colour on each */
+.proj { --tape: var(--sp-yellow); }
+.proj:nth-child(4n+2) { --tape: var(--sp-blue); }
+.proj:nth-child(4n+3) { --tape: var(--sp-pink); }
+.proj:nth-child(4n) { --tape: var(--sp-green); }
+.proj::before {
+  content: ""; position: absolute; z-index: 4;
+  top: -11px; left: 50%; width: 88px; height: 24px;
+  translate: -50% 0; rotate: -4deg;
+  background: color-mix(in srgb, var(--tape) 82%, transparent);
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.08);
+  pointer-events: none;
+}
+.proj:nth-child(even)::before { rotate: 5deg; left: 40%; }
+
+/* his print gets tape too, and his name a marker swash */
+.portrait-mat { position: relative; }
+.portrait-mat::before {
+  content: ""; position: absolute; z-index: 2;
+  top: -10px; left: 50%; width: 74px; height: 22px;
+  translate: -50% 0; rotate: -6deg;
+  background: color-mix(in srgb, var(--sp-blue) 82%, transparent);
+}
+.hero-name { position: relative; width: fit-content; isolation: isolate; }
+.hero-name::after {
+  content: ""; position: absolute; z-index: -1;
+  left: 46%; right: -0.08em; bottom: -0.04em; height: 0.42em;
+  background: var(--sp-pink); opacity: 0.85;
+  -webkit-mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+          mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+}
+
+/* the Venn's four circles, each washed in its own ink */
+.venn-disc:nth-child(1) { background: color-mix(in srgb, var(--sp-blue) 16%, transparent); }
+.venn-disc:nth-child(2) { background: color-mix(in srgb, var(--sp-pink) 16%, transparent); }
+.venn-disc:nth-child(3) { background: color-mix(in srgb, var(--sp-green) 16%, transparent); }
+.venn-disc:nth-child(4) { background: color-mix(in srgb, var(--sp-yellow) 20%, transparent); }
+
+/* the signature gets a green marker line under it */
+.foot-mark { position: relative; isolation: isolate; }
+.foot-mark::after {
+  content: ""; position: absolute; z-index: -1;
+  left: 1.05em; right: 0; bottom: -0.02em; height: 0.2em;
+  background: var(--sp-green); opacity: 0.85;
+  -webkit-mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+          mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+}

@@ -61,11 +61,11 @@ export default function Home() {
         <Hero />
         <About />
 
-        <Section title="Projects" id="projects" obj="work" aside="live work">
+        <Section title="Projects" id="projects" obj="projects" aside="live work" doodle="/ink/m-laptop.webp" tilt={-9}>
           <Grid items={NOW.filter((i) => i.shot || i.emoji)} />
         </Section>
 
-        <Section title="Also mine" obj="previously" aside="still live">
+        <Section title="Also mine" obj="previously" aside="side quests" doodle="/ink/m-pigeon.webp" tilt={6}>
           <ul className="space-y-1">
             {ARCHIVE.map((item, i) => (
               <Reveal key={item.key} as="li" index={i}>
@@ -75,7 +75,7 @@ export default function Home() {
           </ul>
         </Section>
 
-        <Section title="Skills" id="skills" obj="skills">
+        <Section title="Skills" id="skills" obj="skills" doodle="/ink/m-sketchbook.webp" tilt={-7}>
           {/* Each area is a station: its glossy object, joined to the next by
               ignura's pipe, then what it covers and the tools in it. */}
           <ul className="skills">
@@ -106,7 +106,7 @@ export default function Home() {
           <Elsewhere />
         </section>
 
-        <Section title="Where it overlaps" id="overlaps" obj="overlaps">
+        <Section title="Where it overlaps" id="overlaps" obj="overlaps" doodle="/ink/m-rocket.webp" tilt={12}>
           <div className="py-4 sm:px-8">
             <Venn />
           </div>
@@ -120,15 +120,20 @@ export default function Home() {
 
 function Hero() {
   return (
-    <header className="pt-10 sm:pt-14">
-      <div className="flex items-end gap-5 sm:gap-6">
-        <Portrait />
-        <div className="min-w-0 pb-7 sm:pb-8">
+    <header className="hero relative pt-10 sm:pt-14">
+      <span aria-hidden="true" className="margin-doodle" style={{ rotate: "-6deg" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/ink/m-bus.webp" alt="" className="ink" />
+      </span>
+      {/* No box: the name, his pinned drawing and the line sit on the page. */}
+      <div className="hero-top">
+        <div className="min-w-0">
           <h1 className="hero-name">{IDENTITY.properName}</h1>
           <p className="mt-1 flex min-h-7 items-center text-[17px] font-medium text-muted-foreground sm:text-[20px]">
             <Rotator items={ROLES} />
           </p>
         </div>
+        <Portrait />
       </div>
       <p className="hero-say mt-7">
         {HERO.lines.map((line, i) => (
@@ -167,7 +172,7 @@ function About() {
   const tail = ABOUT_TAIL.map(parseProse);
 
   return (
-    <Section title="About" id="about" obj="about">
+    <Section title="About" id="about" obj="about" doodle="/ink/m-tea.webp" tilt={8}>
       <div className="space-y-3 text-[17px] leading-relaxed">
         {intro.map((parsed, i) => (
           <Streamed key={i} parsed={parsed} animate delay={i * 0.3} className={i === 0 ? "about-lead" : ""} />
@@ -235,13 +240,12 @@ function Role({ item }: { item: Item }) {
     // The card opens from anywhere on the line, not only from the name.
     <Preview block shot={item.shot} label={item.domain ?? "no site yet"}>
       <div className="role-row">
-        <Logo
-          src={item.logo}
-          emoji={item.emoji}
-          tile={item.logoTile}
-          size={52}
-          className="role-logo"
-        />
+        {item.ink ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={item.ink} alt="" aria-hidden="true" width={52} height={52} className="role-logo role-ink ink" />
+        ) : (
+          <Logo src={item.logo} emoji={item.emoji} tile={item.logoTile} size={52} className="role-logo" />
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between gap-3">
             <h3 className="text-[17px] font-bold leading-snug tracking-[-0.01em]">{name}</h3>
@@ -297,6 +301,10 @@ function Card({ item, index, wide = false }: { item: Item; index: number; wide?:
           <span className="sr-only">{`Open ${item.name}`}</span>
         </a>
       )}
+      {item.ink && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={item.ink} alt="" aria-hidden="true" width={76} height={76} className="proj-doodle ink" />
+      )}
       {/* The shot sits on a soft grey slab, inset at the top and sides and
           running off the bottom edge, like a screen standing in a tray. */}
       <div className="proj-slab">
@@ -334,10 +342,10 @@ function Card({ item, index, wide = false }: { item: Item; index: number; wide?:
   );
 }
 
-// Status, as a glyph rather than a pill. A live thing gets a small green tick;
+// Status, as a glyph rather than a pill. A live thing gets a small ink tick;
 // a thing being built gets the orange bolt; a thing that is over is greyed.
 const STATUS: Record<string, { icon: IconName; hue: string; say: string }> = {
-  Live: { icon: "check", hue: "var(--live)", say: "Live" },
+  Live: { icon: "check", hue: "var(--ink)", say: "Live" },
   Building: { icon: "bolt", hue: "var(--building)", say: "Being built" },
   Waitlist: { icon: "clock", hue: "var(--building)", say: "Waitlist open" },
   Discontinued: { icon: "target", hue: "var(--muted-foreground)", say: "Not worked on any more" },
@@ -375,8 +383,8 @@ function Venn() {
   ];
   const labels = [
     "left-1/2 top-[13%] -translate-x-1/2 -translate-y-1/2",
-    "left-[17%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[15%]",
-    "right-[17%] top-1/2 -translate-y-1/2 translate-x-1/2 sm:right-[15%]",
+    "left-[22%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[15%]",
+    "right-[22%] top-1/2 -translate-y-1/2 translate-x-1/2 sm:right-[15%]",
     "bottom-[13%] left-1/2 -translate-x-1/2 translate-y-1/2",
   ];
 
@@ -388,15 +396,15 @@ function Venn() {
       {VENN.map((label, i) => (
         <span key={label} className={`venn-label ${labels[i]}`}>
           <Obj name={objs[i]} size={0} className="venn-obj" />
-          {label}
+          <span className="venn-text">{label}</span>
         </span>
       ))}
       {/* just him, cut out of his tile, so the centre reads as a face and not a box */}
       <Image
-        src="/design/jawad-cut.webp"
+        src="/design/jawad-ink.webp"
         alt=""
         width={320}
-        height={361}
+        height={320}
         className="venn-face absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
       />
     </div>
