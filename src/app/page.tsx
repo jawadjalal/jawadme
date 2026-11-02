@@ -61,7 +61,7 @@ export default function Home() {
         <Hero />
         <About />
 
-        <Section title="Projects" id="projects" obj="work" aside="live work">
+        <Section title="Projects" id="projects" obj="projects" aside="live work">
           <Grid items={NOW.filter((i) => i.shot || i.emoji)} />
         </Section>
 
@@ -337,10 +337,10 @@ function Card({ item, index, wide = false }: { item: Item; index: number; wide?:
   );
 }
 
-// Status, as a glyph rather than a pill. A live thing gets a small green tick;
+// Status, as a glyph rather than a pill. A live thing gets a small ink tick;
 // a thing being built gets the orange bolt; a thing that is over is greyed.
 const STATUS: Record<string, { icon: IconName; hue: string; say: string }> = {
-  Live: { icon: "check", hue: "var(--live)", say: "Live" },
+  Live: { icon: "check", hue: "var(--ink)", say: "Live" },
   Building: { icon: "bolt", hue: "var(--building)", say: "Being built" },
   Waitlist: { icon: "clock", hue: "var(--building)", say: "Waitlist open" },
   Discontinued: { icon: "target", hue: "var(--muted-foreground)", say: "Not worked on any more" },
@@ -378,8 +378,8 @@ function Venn() {
   ];
   const labels = [
     "left-1/2 top-[13%] -translate-x-1/2 -translate-y-1/2",
-    "left-[17%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[15%]",
-    "right-[17%] top-1/2 -translate-y-1/2 translate-x-1/2 sm:right-[15%]",
+    "left-[22%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[15%]",
+    "right-[22%] top-1/2 -translate-y-1/2 translate-x-1/2 sm:right-[15%]",
     "bottom-[13%] left-1/2 -translate-x-1/2 translate-y-1/2",
   ];
 
@@ -391,7 +391,7 @@ function Venn() {
       {VENN.map((label, i) => (
         <span key={label} className={`venn-label ${labels[i]}`}>
           <Obj name={objs[i]} size={0} className="venn-obj" />
-          {label}
+          <span className="venn-text">{label}</span>
         </span>
       ))}
       {/* just him, cut out of his tile, so the centre reads as a face and not a box */}

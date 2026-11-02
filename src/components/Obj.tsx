@@ -1,12 +1,8 @@
-// A glossy black object from ignura.com's family, at icon size.
-//
-// They are rendered stills, so each carries a 2x source and nothing else:
-// no tile, no ring, no tint. They sit straight on the paper the way they do on
-// ignura.com. At night a hairline of light (--ico-lift) keeps a black object
-// from sinking into a black page.
+// A small ink drawing, at icon size, straight on the paper with no tile,
+// ring or tint. At night the ink is inverted to chalk.
 
 export type ObjName =
-  | "about" | "now" | "work" | "previously" | "skills" | "elsewhere" | "contact" | "overlaps" | "ball"
+  | "about" | "now" | "work" | "projects" | "previously" | "skills" | "elsewhere" | "contact" | "overlaps" | "ball"
   | "chart" | "chat" | "play" | "stack" | "gear" | "funnel" | "find" | "build" | "run" | "fix" | "talk";
 
 // Each name is an ink drawing from the same sheet, in the fineliner style of
@@ -16,6 +12,7 @@ const SRC: Record<ObjName, [string, string]> = {
   about: ["/ink/wave.webp", "/ink/wave.webp"],
   now: ["/ink/sun.webp", "/ink/sun.webp"],
   work: ["/ink/pen.webp", "/ink/pen.webp"],
+  projects: ["/ink/folder.webp", "/ink/folder.webp"],
   previously: ["/ink/archive.webp", "/ink/archive.webp"],
   skills: ["/ink/toolbox.webp", "/ink/toolbox.webp"],
   elsewhere: ["/ink/map.webp", "/ink/map.webp"],
@@ -61,7 +58,7 @@ export function Face({ size, className = "" }: { size?: number; className?: stri
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={size && size <= 48 ? "/design/jawad-ink-96.webp" : "/design/jawad-ink-320.webp"}
+      src={size && size <= 48 ? "/design/jawad-ink-simple.webp" : "/design/jawad-ink-320.webp"}
       alt=""
       aria-hidden="true"
       width={size || 160}
