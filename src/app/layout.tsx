@@ -3,7 +3,7 @@ import { IDENTITY, SUMMARY, SKILLS, SOCIALS } from "@/lib/profile";
 
 const TITLE = `${IDENTITY.properName}, designer and founder of Ignura`;
 const DESCRIPTION =
-  "Designer and founder in London. I run Ignura (ignura.com), an agency that builds growth solutions for startups, and design at MenuFit and Okara.";
+  "Designer and founder in London. I run Ignura (ignura.com), a web design agency, build Ignaru (ignaru.com), an agent-native design tool, and design at MenuFit and Okara.";
 import "./globals.css";
 
 export const metadata: Metadata = {

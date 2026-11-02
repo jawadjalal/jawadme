@@ -1,0 +1,2300 @@
+{
+ "url": "http://localhost:3000",
+ "at": "2026-11-02T18:45:56.076Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 6,
+   "filled": [
+    0.44,
+    0.49,
+    0.27,
+    0.48,
+    0.44,
+    0.53
+   ],
+   "motion": {
+    "elements": 16,
+    "css": 0,
+    "transitions": 15,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 5044,
+     "screens": 5.6,
+     "words": 550,
+     "img": 12,
+     "video": 0,
+     "canvas": 1,
+     "svg": 9,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 6,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "image?url=%2Fdesign%2Fjawad-photo.webp&w=640&q=7",
+      "image?url=%2Fwork%2Fignura.webp&w=640&q=75",
+      "image?url=%2Fwork%2Fignaru.webp&w=640&q=75",
+      "image?url=%2Fwork%2Fbevel.webp&w=640&q=75",
+      "image?url=%2Fwork%2Fmenufit.webp&w=640&q=75",
+      "image?url=%2Fwork%2Fokara.webp&w=640&q=75"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Jawad Jalal",
+     "words": 2,
+     "chars": 11,
+     "lines": 1,
+     "size": 175.7,
+     "vw": 12.2,
+     "font": "Satoshi",
+     "weight": 700,
+     "tracking": -0.055,
+     "leading": 0.86,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.64,
+     "top": 278,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Jawad Jalal",
+     "words": 2,
+     "lines": 1,
+     "size": 175.7,
+     "font": "Satoshi"
+    },
+    "headings": [
+     {
+      "text": "Jawad Jalal",
+      "words": 2,
+      "chars": 11,
+      "lines": 1,
+      "size": 175.7,
+      "vw": 12.2,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.055,
+      "leading": 0.86,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.64,
+      "top": 278,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "I design websites and apps, and I build the tool I design them with.",
+      "words": 14,
+      "chars": 68,
+      "lines": 2,
+      "size": 33.1,
+      "vw": 2.3,
+      "font": "Satoshi",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.18,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.37,
+      "top": 472,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "What I make",
+      "words": 3,
+      "chars": 11,
+      "lines": 1,
+      "size": 33.1,
+      "vw": 2.3,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.96,
+      "top": 920,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Ignura",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 80.6,
+      "vw": 5.6,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.16,
+      "top": 1004,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Ignaru",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 80.6,
+      "vw": 5.6,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.16,
+      "top": 1224,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Bevel",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 80.6,
+      "vw": 5.6,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.13,
+      "top": 1472,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "MenuFit",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 80.6,
+      "vw": 5.6,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.19,
+      "top": 1692,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Okara",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 80.6,
+      "vw": 5.6,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.15,
+      "top": 1912,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Everything else",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 33.1,
+      "vw": 2.3,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.96,
+      "top": 2293,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "About",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 33.1,
+      "vw": 2.3,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.23,
+      "top": 3294,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jawad",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Fraunces Italic",
+      "weight": 600,
+      "tracking": -0.01,
+      "leading": 1,
+      "upper": false,
+      "italic": true,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.47,
+      "top": 3818,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Making something? Tell me about it.",
+      "words": 6,
+      "chars": 35,
+      "lines": 2,
+      "size": 33.1,
+      "vw": 2.3,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.32,
+      "top": 4189,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jawad Jalal",
+      "words": 2,
+      "chars": 11,
+      "lines": 1,
+      "size": 267.8,
+      "vw": 18.6,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.06,
+      "leading": 0.8,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.96,
+      "top": 4738,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 13,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 8,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Satoshi",
+       "share": 1,
+       "mono": false
+      },
+      {
+       "family": "Fraunces Italic",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      33,
+      44,
+      81,
+      176,
+      268
+     ],
+     "sizeCount": 11,
+     "notLoaded": [],
+     "body": {
+      "font": "Satoshi",
+      "size": 20,
+      "leading": 1.6,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 16.4
+     },
+     "measureChars": 68,
+     "max": {
+      "size": 267.8,
+      "vw": 18.6,
+      "font": "Satoshi",
+      "text": "Jawad Jalal"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "ignura.com",
+      "above": "Ignaru",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 1163
+     },
+     {
+      "text": "ignaru.com",
+      "above": "Bevel",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 1411
+     },
+     {
+      "text": "bevel.team",
+      "above": "MenuFit",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 1631
+     },
+     {
+      "text": "menufit.com",
+      "above": "Okara",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 1851
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#efefef",
+       "top": 1004,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.94
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#4f4f4f",
+       "share": 0.45
+      },
+      {
+       "color": "#111111",
+       "share": 0.42
+      },
+      {
+       "color": "#6b6b6b",
+       "share": 0.13
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      },
+      {
+       "color": "#f05a00",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#111111",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0.07
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 2,
+     "radius": "pill",
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Email me",
+      "Email me"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 1,
+     "boxRadius": 10,
+     "squareMedia": 1,
+     "roundedMedia": 7,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.19
+     }
+    ],
+    "nav": {
+     "links": 6,
+     "fixed": false,
+     "height": 80,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "satoshi",
+     "satoshi fallback",
+     "fraunces italic"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 5044,
+    "margins": {
+     "left": 32,
+     "right": 32
+    },
+    "sections": [
+     {
+      "sel": "header.hero",
+      "tag": "header",
+      "top": 80,
+      "height": 640,
+      "words": 43,
+      "media": 1,
+      "middle": 40,
+      "heading": {
+       "text": "Jawad Jalal",
+       "size": 176,
+       "tag": "h1"
+      },
+      "left": 23,
+      "right": 32,
+      "textLeft": 23,
+      "textRight": 515,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#work.blk",
+      "tag": "section",
+      "top": 720,
+      "height": 1373,
+      "words": 148,
+      "media": 2,
+      "middle": 286,
+      "heading": {
+       "text": "Ignura",
+       "size": 81,
+       "tag": "span"
+      },
+      "left": 32,
+      "right": 32,
+      "textLeft": 32,
+      "textRight": 32,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": true
+     },
+     {
+      "sel": "section#more.blk",
+      "tag": "section",
+      "top": 2093,
+      "height": 900,
+      "words": 136,
+      "media": 0,
+      "middle": 141,
+      "heading": {
+       "text": "Everything else",
+       "size": 33,
+       "tag": "h2"
+      },
+      "left": 32,
+      "right": 44,
+      "textLeft": 32,
+      "textRight": 44,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#about.blk",
+      "tag": "section",
+      "top": 2993,
+      "height": 996,
+      "words": 150,
+      "media": 0,
+      "middle": 261,
+      "heading": {
+       "text": "About",
+       "size": 33,
+       "tag": "h2"
+      },
+      "left": 149,
+      "right": 265,
+      "textLeft": 149,
+      "textRight": 265,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#contact.blk",
+      "tag": "section",
+      "top": 3989,
+      "height": 429,
+      "words": 26,
+      "media": 0,
+      "middle": 300,
+      "heading": {
+       "text": "Making something?",
+       "size": 33,
+       "tag": "h2"
+      },
+      "left": 32,
+      "right": 32,
+      "textLeft": 32,
+      "textRight": 32,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.end",
+      "tag": "footer",
+      "top": 4618,
+      "height": 426,
+      "words": 14,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Jawad Jalal",
+       "size": 268,
+       "tag": "p"
+      },
+      "left": 19,
+      "right": 32,
+      "textLeft": 19,
+      "textRight": 32,
+      "fullBleed": true,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [
+     {
+      "top": 2984,
+      "height": 304
+     },
+     {
+      "top": 3888,
+      "height": 296
+     }
+    ],
+    "h1s": [
+     {
+      "text": "Jawad Jalal",
+      "size": 176,
+      "top": 278,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 23,
+      "n": 9
+     },
+     {
+      "x": 499,
+      "n": 5
+     },
+     {
+      "x": 149,
+      "n": 1
+     },
+     {
+      "x": 615,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 16,
+    "bodySize": 20,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.2,
+    "voidBox": {
+     "x": 0,
+     "y": 720,
+     "w": 1440,
+     "h": 180
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.42,
+    0.64,
+    0.72,
+    0.63,
+    0.52,
+    0.2,
+    0.69,
+    0.43
+   ],
+   "motion": {
+    "elements": 12,
+    "css": 0,
+    "transitions": 11,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 7862,
+     "screens": 7.7,
+     "words": 547,
+     "img": 12,
+     "video": 0,
+     "canvas": 1,
+     "svg": 9,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 6,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "image?url=%2Fdesign%2Fjawad-photo.webp&w=750&q=7",
+      "image?url=%2Fwork%2Fignura.webp&w=828&q=75",
+      "image?url=%2Fwork%2Fignaru.webp&w=828&q=75",
+      "image?url=%2Fwork%2Fbevel.webp&w=828&q=75",
+      "image?url=%2Fwork%2Fmenufit.webp&w=828&q=75",
+      "image?url=%2Fwork%2Fokara.webp&w=828&q=75"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Jawad Jalal",
+     "words": 2,
+     "chars": 11,
+     "lines": 1,
+     "size": 128,
+     "vw": 16.7,
+     "font": "Satoshi",
+     "weight": 700,
+     "tracking": -0.055,
+     "leading": 0.86,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.95,
+     "top": 616,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Jawad Jalal",
+     "words": 2,
+     "lines": 1,
+     "size": 128,
+     "font": "Satoshi"
+    },
+    "headings": [
+     {
+      "text": "Jawad Jalal",
+      "words": 2,
+      "chars": 11,
+      "lines": 1,
+      "size": 128,
+      "vw": 16.7,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.055,
+      "leading": 0.86,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.95,
+      "top": 616,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "I design websites and apps, and I build the tool I design them with.",
+      "words": 14,
+      "chars": 68,
+      "lines": 2,
+      "size": 26,
+      "vw": 3.4,
+      "font": "Satoshi",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.18,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.54,
+      "top": 754,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "What I make",
+      "words": 3,
+      "chars": 11,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 1105,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Ignura",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 72,
+      "vw": 9.4,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 1681,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Ignaru",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 72,
+      "vw": 9.4,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 2415,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Bevel",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 72,
+      "vw": 9.4,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.21,
+      "top": 3177,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "MenuFit",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 72,
+      "vw": 9.4,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.32,
+      "top": 3911,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Okara",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 72,
+      "vw": 9.4,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.25,
+      "top": 4646,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Everything else",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 4937,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "About",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 6186,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jawad",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 44,
+      "vw": 5.7,
+      "font": "Fraunces Italic",
+      "weight": 600,
+      "tracking": -0.01,
+      "leading": 1,
+      "upper": false,
+      "italic": true,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 6688,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Making something? Tell me about it.",
+      "words": 6,
+      "chars": 35,
+      "lines": 2,
+      "size": 26,
+      "vw": 3.4,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.48,
+      "top": 6918,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jawad Jalal",
+      "words": 2,
+      "chars": 11,
+      "lines": 1,
+      "size": 142.8,
+      "vw": 18.6,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.06,
+      "leading": 0.8,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.95,
+      "top": 7634,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 13,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 8,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Satoshi",
+       "share": 1,
+       "mono": false
+      },
+      {
+       "family": "Fraunces Italic",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      14,
+      15,
+      16,
+      17,
+      18,
+      26,
+      44,
+      72,
+      128,
+      143
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "Satoshi",
+      "size": 18,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 8.2
+     },
+     "measureChars": 75,
+     "max": {
+      "size": 142.8,
+      "vw": 18.6,
+      "font": "Satoshi",
+      "text": "Jawad Jalal"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#efefef",
+       "top": 1182,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.94
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#4f4f4f",
+       "share": 0.45
+      },
+      {
+       "color": "#111111",
+       "share": 0.42
+      },
+      {
+       "color": "#6b6b6b",
+       "share": 0.12
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      },
+      {
+       "color": "#f05a00",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#111111",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0.07
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 2,
+     "radius": "pill",
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Email me",
+      "Email me"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 1,
+     "boxRadius": 10,
+     "squareMedia": 1,
+     "roundedMedia": 11,
+     "mediaRadius": 10,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.21
+     }
+    ],
+    "nav": {
+     "links": 6,
+     "fixed": false,
+     "height": 80,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "satoshi",
+     "satoshi fallback",
+     "fraunces italic"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 7862,
+    "margins": {
+     "left": 24,
+     "right": 24
+    },
+    "sections": [
+     {
+      "sel": "header.hero",
+      "tag": "header",
+      "top": 80,
+      "height": 905,
+      "words": 43,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Jawad Jalal",
+       "size": 128,
+       "tag": "h1"
+      },
+      "left": 18,
+      "right": 93,
+      "textLeft": 18,
+      "textRight": 93,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#work.blk",
+      "tag": "section",
+      "top": 985,
+      "height": 3832,
+      "words": 145,
+      "media": 10,
+      "middle": 0,
+      "heading": {
+       "text": "Ignura",
+       "size": 72,
+       "tag": "span"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 213,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#more.blk",
+      "tag": "section",
+      "top": 4817,
+      "height": 1209,
+      "words": 136,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Everything else",
+       "size": 26,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#about.blk",
+      "tag": "section",
+      "top": 6026,
+      "height": 772,
+      "words": 150,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "About",
+       "size": 26,
+       "tag": "h2"
+      },
+      "left": 48,
+      "right": 49,
+      "textLeft": 48,
+      "textRight": 49,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#contact.blk",
+      "tag": "section",
+      "top": 6798,
+      "height": 596,
+      "words": 26,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Making something?",
+       "size": 26,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.end",
+      "tag": "footer",
+      "top": 7514,
+      "height": 349,
+      "words": 14,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Jawad Jalal",
+       "size": 143,
+       "tag": "p"
+      },
+      "left": 17,
+      "right": 24,
+      "textLeft": 17,
+      "textRight": 24,
+      "fullBleed": true,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Jawad Jalal",
+      "size": 128,
+      "top": 616,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 18,
+      "n": 10
+     },
+     {
+      "x": 48,
+      "n": 6
+     }
+    ],
+    "leftBlocks": 16,
+    "bodySize": 18,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 9,
+   "filled": [
+    0.53,
+    0.52,
+    0.56,
+    0.69,
+    0.29,
+    0.33,
+    0.75,
+    0.58,
+    0.58
+   ],
+   "motion": {
+    "elements": 12,
+    "css": 0,
+    "transitions": 11,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 7239,
+     "screens": 8.6,
+     "words": 543,
+     "img": 12,
+     "video": 0,
+     "canvas": 1,
+     "svg": 9,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 6,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "image?url=%2Fdesign%2Fjawad-photo.webp&w=384&q=7",
+      "image?url=%2Fwork%2Fignura.webp&w=640&q=75",
+      "image?url=%2Fwork%2Fignaru.webp&w=640&q=75",
+      "image?url=%2Fwork%2Fbevel.webp&w=640&q=75",
+      "image?url=%2Fwork%2Fmenufit.webp&w=640&q=75",
+      "image?url=%2Fwork%2Fokara.webp&w=640&q=75"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Jawad Jalal",
+     "words": 2,
+     "chars": 11,
+     "lines": 1,
+     "size": 66.3,
+     "vw": 17,
+     "font": "Satoshi",
+     "weight": 700,
+     "tracking": -0.055,
+     "leading": 0.86,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.93,
+     "top": 446,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Jawad Jalal",
+     "words": 2,
+     "lines": 1,
+     "size": 66.3,
+     "font": "Satoshi"
+    },
+    "headings": [
+     {
+      "text": "Jawad Jalal",
+      "words": 2,
+      "chars": 11,
+      "lines": 1,
+      "size": 66.3,
+      "vw": 17,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.055,
+      "leading": 0.86,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 446,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "I design websites and apps, and I build the tool I design them with.",
+      "words": 14,
+      "chars": 68,
+      "lines": 3,
+      "size": 26,
+      "vw": 6.7,
+      "font": "Satoshi",
+      "weight": 500,
+      "tracking": -0.02,
+      "leading": 1.18,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 531,
+      "tag": "p",
+      "kind": "statement"
+     },
+     {
+      "text": "What I make",
+      "words": 3,
+      "chars": 11,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 936,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Ignura",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 44,
+      "vw": 11.3,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.32,
+      "top": 1271,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Ignaru",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 44,
+      "vw": 11.3,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.32,
+      "top": 1761,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Bevel",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 44,
+      "vw": 11.3,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 2277,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "MenuFit",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 44,
+      "vw": 11.3,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.39,
+      "top": 2766,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Okara",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 44,
+      "vw": 11.3,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.3,
+      "top": 3273,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Everything else",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 3605,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "About",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 5265,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jawad",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 44,
+      "vw": 11.3,
+      "font": "Fraunces Italic",
+      "weight": 600,
+      "tracking": -0.01,
+      "leading": 1,
+      "upper": false,
+      "italic": true,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 6137,
+      "tag": "span",
+      "kind": "statement"
+     },
+     {
+      "text": "Making something? Tell me about it.",
+      "words": 6,
+      "chars": 35,
+      "lines": 2,
+      "size": 26,
+      "vw": 6.7,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 6367,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jawad Jalal",
+      "words": 2,
+      "chars": 11,
+      "lines": 1,
+      "size": 72.5,
+      "vw": 18.6,
+      "font": "Satoshi",
+      "weight": 700,
+      "tracking": -0.06,
+      "leading": 0.8,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 7027,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 13,
+     "maxLines": 3,
+     "over2Lines": 0,
+     "statements": 8,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Satoshi",
+       "share": 1,
+       "mono": false
+      },
+      {
+       "family": "Fraunces Italic",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      14,
+      15,
+      16,
+      17,
+      18,
+      26,
+      44,
+      66,
+      73
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Satoshi",
+      "size": 18,
+      "leading": 1.6,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 16.4
+     },
+     "measureChars": 34,
+     "max": {
+      "size": 72.5,
+      "vw": 18.6,
+      "font": "Satoshi",
+      "text": "Jawad Jalal"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#efefef",
+       "top": 5225,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.94
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#4f4f4f",
+       "share": 0.45
+      },
+      {
+       "color": "#111111",
+       "share": 0.43
+      },
+      {
+       "color": "#6b6b6b",
+       "share": 0.12
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      },
+      {
+       "color": "#f05a00",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#111111",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0.07
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 2,
+     "radius": "pill",
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Email me",
+      "Email me"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 1,
+     "boxRadius": 10,
+     "squareMedia": 1,
+     "roundedMedia": 11,
+     "mediaRadius": 10,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.2
+     }
+    ],
+    "nav": {
+     "links": 2,
+     "fixed": false,
+     "height": 80,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "satoshi",
+     "satoshi fallback",
+     "fraunces italic"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 7239,
+    "margins": {
+     "left": 16,
+     "right": 16
+    },
+    "sections": [
+     {
+      "sel": "header.hero",
+      "tag": "header",
+      "top": 80,
+      "height": 736,
+      "words": 43,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Jawad Jalal",
+       "size": 66,
+       "tag": "h1"
+      },
+      "left": 13,
+      "right": 35,
+      "textLeft": 13,
+      "textRight": 35,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#work.blk",
+      "tag": "section",
+      "top": 816,
+      "height": 2668,
+      "words": 145,
+      "media": 10,
+      "middle": 0,
+      "heading": {
+       "text": "Ignura",
+       "size": 44,
+       "tag": "span"
+      },
+      "left": 16,
+      "right": 16,
+      "textLeft": 16,
+      "textRight": 17,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#more.blk",
+      "tag": "section",
+      "top": 3485,
+      "height": 1620,
+      "words": 136,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Everything else",
+       "size": 26,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 16,
+      "textLeft": 16,
+      "textRight": 16,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#about.blk",
+      "tag": "section",
+      "top": 5105,
+      "height": 1142,
+      "words": 150,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "About",
+       "size": 26,
+       "tag": "h2"
+      },
+      "left": 40,
+      "right": 45,
+      "textLeft": 40,
+      "textRight": 45,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#contact.blk",
+      "tag": "section",
+      "top": 6247,
+      "height": 588,
+      "words": 26,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Making something?",
+       "size": 26,
+       "tag": "h2"
+      },
+      "left": 16,
+      "right": 16,
+      "textLeft": 16,
+      "textRight": 16,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "footer.end",
+      "tag": "footer",
+      "top": 6955,
+      "height": 284,
+      "words": 14,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Jawad Jalal",
+       "size": 73,
+       "tag": "p"
+      },
+      "left": 12,
+      "right": 9,
+      "textLeft": 12,
+      "textRight": 9,
+      "fullBleed": true,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Jawad Jalal",
+      "size": 66,
+      "top": 446,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 13,
+      "n": 10
+     },
+     {
+      "x": 40,
+      "n": 6
+     }
+    ],
+    "leftBlocks": 16,
+    "bodySize": 18,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "width": 1440,
+   "message": "4 eyebrow/kicker label(s) above headings: \"ignura.com\" above \"Ignaru\"; \"ignaru.com\" above \"Bevel\"; \"bevel.team\" above \"MenuFit\"; \"menufit.com\" above \"Okara\"",
+   "fix": "Delete them. If the label carried real information, fold it into the headline or the supporting sentence."
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "11 different font sizes (14, 15, 16, 17, 18, 20, 33, 44, 81, 176, 268).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 390,
+   "message": "1 headline(s) wrap past two lines at 390px: \"I design websites and apps, and I build the tool\" → 3 lines (14 words, 26px, a paragraph set above 24px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 24px or less."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/Users/jawadjalal/Documents/jawadme/.taste-skill/after/desktop-fold.jpg",
+   "pages": [
+    "/Users/jawadjalal/Documents/jawadme/.taste-skill/after/desktop-page-01.jpg",
+    "/Users/jawadjalal/Documents/jawadme/.taste-skill/after/desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "/Users/jawadjalal/Documents/jawadme/.taste-skill/after/tablet-fold.jpg",
+   "pages": [
+    "/Users/jawadjalal/Documents/jawadme/.taste-skill/after/tablet-page-01.jpg",
+    "/Users/jawadjalal/Documents/jawadme/.taste-skill/after/tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "/Users/jawadjalal/Documents/jawadme/.taste-skill/after/mobile-fold.jpg",
+   "pages": [
+    "/Users/jawadjalal/Documents/jawadme/.taste-skill/after/mobile-page-01.jpg",
+    "/Users/jawadjalal/Documents/jawadme/.taste-skill/after/mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}
