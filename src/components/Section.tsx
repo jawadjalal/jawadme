@@ -27,6 +27,9 @@ export function Section({
   aside,
   /** The ink drawing that leads the heading. */
   obj,
+  /** A loose doodle in the page's right margin, tilted by `tilt` degrees. */
+  doodle,
+  tilt = 0,
   /** Sections that carry the argument open by default; the long tail does not. */
   defaultOpen = true,
   children,
@@ -35,6 +38,8 @@ export function Section({
   id?: string;
   aside?: React.ReactNode;
   obj?: ObjName;
+  doodle?: string;
+  tilt?: number;
   defaultOpen?: boolean;
   children: React.ReactNode;
 }) {
@@ -62,6 +67,10 @@ export function Section({
 
   return (
     <section id={id} className="sec scroll-mt-20">
+      {doodle && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={doodle} alt="" aria-hidden="true" className="margin-doodle ink" style={{ rotate: `${tilt}deg` }} />
+      )}
       <div className="sec-head">
         <h2 className="sec-title">
           {obj && <Obj name={obj} size={34} className="sec-obj" />}

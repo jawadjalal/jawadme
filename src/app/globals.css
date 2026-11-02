@@ -1776,3 +1776,87 @@ main, .foot { position: relative; }
 .roles > li, .else-sum > * { position: relative; z-index: 1; }
 .roles > li:hover, .else-sum:hover { background: var(--soft); }
 .foot-card { box-shadow: none; }
+
+/* ── 2 Nov, after a teardown of jackiezhang.co.za ──
+   Measured there: the hero sits on a ruled sheet with its drawing taking
+   nearly half of it; work is shown as prints (white mat 10px, radius 20px,
+   a 1px-2px shadow) set at small tilts; loose doodles of 100-250px sit in
+   the margins at 6-14 degrees; hand notes run at 19-22px. Here the same
+   rules on his structure, in his black ink and one orange. */
+
+/* the hero sheet: graph paper inside a drawn outline */
+.hero-sheet {
+  --grid: color-mix(in srgb, var(--ink) 7%, transparent);
+  padding: clamp(1.25rem, 3.5vw, 2.25rem);
+  border-radius: 28px;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+}
+.hero-sheet::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  border: 1.8px solid var(--ink); border-radius: inherit;
+  filter: url(#hand); pointer-events: none;
+}
+.hero-sheet > * { position: relative; z-index: 1; }
+.hero-top { display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 1.25rem; }
+@media (min-width: 640px) {
+  .hero-top { flex-direction: row; align-items: center; justify-content: space-between; gap: 1.5rem; }
+}
+
+/* his drawing, pinned on as a print */
+.portrait { display: flex; width: fit-content; flex-direction: column; align-items: center; gap: 0.6rem; }
+.portrait-mat {
+  padding: 8px; border-radius: 20px; background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 14px 28px -18px rgb(0 0 0 / 0.35);
+  rotate: 3deg;
+  transition: rotate 300ms var(--ease);
+}
+.portrait:hover .portrait-mat { rotate: -1deg; }
+.portrait-frame { width: 8rem; height: 8rem; }
+@media (min-width: 640px) { .portrait-frame { width: 12.5rem; height: 12.5rem; } }
+[data-theme="dark"] .portrait-frame { background: #fff; }
+.flip-note { font-family: "Hand", cursive; font-size: 19px; line-height: 1; color: var(--ink-2); rotate: -4deg; }
+.flip-note::after { content: " \2192"; }
+
+/* the projects become prints: a white mat, a small shadow, a small tilt,
+   and the second column dropped half a step so the grid reads as laid down */
+.proj-slab {
+  padding: 10px; border-radius: 20px; background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 18px 30px -22px rgb(0 0 0 / 0.4);
+  overflow: hidden;
+  rotate: -0.8deg;
+  transition: rotate 300ms var(--ease), translate 300ms var(--ease);
+}
+.proj-slab::before { content: none; }
+.proj-slab .proj-shot { border-radius: 12px; }
+.proj:nth-child(even) .proj-slab { rotate: 1.2deg; }
+.proj:nth-child(3n) .proj-slab { rotate: -1.4deg; }
+.proj:hover .proj-slab { rotate: 0deg; translate: 0 -3px; background: #fff; }
+.proj:hover .proj-shot { transform: none; }
+.proj:hover { background: transparent; }
+@media (min-width: 640px) {
+  .proj:nth-child(odd):not(:first-child) { translate: 0 2.5rem; }
+  #projects .sec-body-inner > .grid { padding-bottom: 2.5rem; }
+}
+
+/* loose doodles in the right margin, outside the pipe, on wide screens only */
+.sec { position: relative; }
+.margin-doodle { display: none; }
+@media (min-width: 1280px) {
+  .margin-doodle {
+    display: block; position: absolute; z-index: 0;
+    left: calc(100% + 7.5rem); top: -0.5rem;
+    width: 9.5rem; height: auto;
+    pointer-events: none;
+  }
+  .hero-sheet .margin-doodle { left: calc(100% + 6.5rem); top: 1rem; width: 10.5rem; }
+}
+
+/* hand notes at the measured size, a step down on a phone so a title
+   and its note share one line */
+.sec-aside, .sec-title { white-space: nowrap; }
+@media (min-width: 640px) { .sec-aside { font-size: 20px; } }

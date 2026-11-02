@@ -61,11 +61,11 @@ export default function Home() {
         <Hero />
         <About />
 
-        <Section title="Projects" id="projects" obj="projects" aside="live work">
+        <Section title="Projects" id="projects" obj="projects" aside="live work" doodle="/ink/m-laptop.webp" tilt={-9}>
           <Grid items={NOW.filter((i) => i.shot || i.emoji)} />
         </Section>
 
-        <Section title="Also mine" obj="previously" aside="side quests">
+        <Section title="Also mine" obj="previously" aside="side quests" doodle="/ink/m-pigeon.webp" tilt={6}>
           <ul className="space-y-1">
             {ARCHIVE.map((item, i) => (
               <Reveal key={item.key} as="li" index={i}>
@@ -75,7 +75,7 @@ export default function Home() {
           </ul>
         </Section>
 
-        <Section title="Skills" id="skills" obj="skills">
+        <Section title="Skills" id="skills" obj="skills" doodle="/ink/m-sketchbook.webp" tilt={-7}>
           {/* Each area is a station: its glossy object, joined to the next by
               ignura's pipe, then what it covers and the tools in it. */}
           <ul className="skills">
@@ -106,7 +106,7 @@ export default function Home() {
           <Elsewhere />
         </section>
 
-        <Section title="Where it overlaps" id="overlaps" obj="overlaps">
+        <Section title="Where it overlaps" id="overlaps" obj="overlaps" doodle="/ink/m-rocket.webp" tilt={12}>
           <div className="py-4 sm:px-8">
             <Venn />
           </div>
@@ -120,15 +120,19 @@ export default function Home() {
 
 function Hero() {
   return (
-    <header className="pt-10 sm:pt-14">
-      <div className="flex items-end gap-5 sm:gap-6">
-        <Portrait />
-        <div className="min-w-0 pb-7 sm:pb-8">
+    <header className="hero-sheet relative mt-8 sm:mt-12">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/ink/m-bus.webp" alt="" aria-hidden="true" className="margin-doodle ink" style={{ rotate: "-6deg" }} />
+      {/* The hero is a sheet of graph paper with his drawing pinned to it,
+          the way a sketchbook page carries its own picture. */}
+      <div className="hero-top">
+        <div className="min-w-0">
           <h1 className="hero-name">{IDENTITY.properName}</h1>
           <p className="mt-1 flex min-h-7 items-center text-[17px] font-medium text-muted-foreground sm:text-[20px]">
             <Rotator items={ROLES} />
           </p>
         </div>
+        <Portrait />
       </div>
       <p className="hero-say mt-7">
         {HERO.lines.map((line, i) => (
@@ -167,7 +171,7 @@ function About() {
   const tail = ABOUT_TAIL.map(parseProse);
 
   return (
-    <Section title="About" id="about" obj="about">
+    <Section title="About" id="about" obj="about" doodle="/ink/m-tea.webp" tilt={8}>
       <div className="space-y-3 text-[17px] leading-relaxed">
         {intro.map((parsed, i) => (
           <Streamed key={i} parsed={parsed} animate delay={i * 0.3} className={i === 0 ? "about-lead" : ""} />
