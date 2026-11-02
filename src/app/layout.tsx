@@ -71,7 +71,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
       </head>
-      <body className="min-h-dvh font-sans antialiased">{children}</body>
+      <body className="min-h-dvh font-sans antialiased">
+        {/* The wobble every drawn line on the page shares: `filter: url(#hand)`. */}
+        <svg width="0" height="0" aria-hidden="true" style={{ position: "absolute" }}>
+          <filter id="hand">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="4" />
+            <feDisplacementMap in="SourceGraphic" scale="3" />
+          </filter>
+        </svg>
+        {children}
+      </body>
     </html>
   );
 }

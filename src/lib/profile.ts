@@ -26,9 +26,10 @@ export const IDENTITY = {
   email: "hijawadjalal@gmail.com",
   cv: "/jawad-jalal-cv.pdf",
   site: "https://jawadjalal.com",
-  avatar: "/design/jawad.webp",
-  /** The second face, shown when the toggle under the portrait is flipped. */
-  avatarAlt: "/design/jawad-photo.webp",
+  /** His memoji, redrawn in ink: the face the page shows. */
+  avatar: "/design/jawad-ink.webp",
+  /** The original memoji, shown when the switch under the portrait is flipped. */
+  avatarAlt: "/design/jawad.webp",
 };
 
 /** The titles that cycle under the name, one line at a time. */
@@ -108,6 +109,8 @@ export type Item = {
    *  onto the white tile would lose the figure entirely. */
   logoTile?: string;
   emoji?: string;
+  /** The product's ink doodle, under /public/ink. */
+  ink?: string;
   /** Screenshot for the hover card and the project grid, under /public. */
   shot?: string;
   /** where to anchor a shot cropped into its card, when the centre would cut the headline */
@@ -133,12 +136,13 @@ export type Item = {
 export const NOW: Item[] = [
   {
     key: "ignura",
+    ink: "/ink/ignura.webp",
     roleIcon: "rocket",
     name: "ignura",
     href: "https://ignura.com",
     logo: "/logos/ignura.png",
     logoTile: "#111111",
-    shot: "/design/ignura.webp",
+    shot: "/design/ignura-card.webp",
     domain: "ignura.com",
     role: "Founder",
     period: "Since 2026",
@@ -153,6 +157,7 @@ export const NOW: Item[] = [
   },
   {
     key: "menufit",
+    ink: "/ink/menufit.webp",
     roleIcon: "pen",
     name: "menufit",
     href: "https://menufit.com",
@@ -172,6 +177,7 @@ export const NOW: Item[] = [
   },
   {
     key: "bevel",
+    ink: "/ink/bevel.webp",
     roleIcon: "cube",
     name: "bevel",
     href: "https://bevel.team",
@@ -191,11 +197,12 @@ export const NOW: Item[] = [
   },
   {
     key: "okara",
+    ink: "/ink/okara.webp",
     roleIcon: "pen",
     name: "okara",
     href: "https://okara.ai",
     logo: "/logos/okara.png",
-    shot: "/design/okara.png",
+    shot: "/design/okara-card.webp",
     domain: "okara.ai",
     role: "Design",
     period: "Since 2026",
@@ -210,11 +217,12 @@ export const NOW: Item[] = [
   },
   {
     key: "ignaru",
+    ink: "/ink/ignaru.webp",
     roleIcon: "trend",
     name: "ignaru",
     href: "https://ignaru.com",
     logo: "/logos/ignaru.png",
-    shot: "/design/ignaru.webp",
+    shot: "/design/ignaru-card.webp",
     shotPos: "left top",
     domain: "ignaru.com",
     role: "Founder",
@@ -235,6 +243,7 @@ export const NOW: Item[] = [
 export const ARCHIVE: Item[] = [
   {
     key: "bidframe",
+    ink: "/ink/bidframe.webp",
     roleIcon: "target",
     name: "bidframe",
     href: "https://bidframe.org",
@@ -249,6 +258,7 @@ export const ARCHIVE: Item[] = [
   },
   {
     key: "weld",
+    ink: "/ink/weld.webp",
     roleIcon: "team",
     name: "weld",
     href: "https://weldroblox.com",

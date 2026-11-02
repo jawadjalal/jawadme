@@ -1,6 +1,7 @@
 "use client";
 
-// The portrait, in its double frame, with the switch that swaps the face.
+// The portrait, in its double frame, with the switch that swaps the drawing
+// for the memoji it was drawn from.
 //
 // Both images are in the DOM and one is faded over the other, rather than the
 // src being swapped: swapping would show an empty box on the first flip while
@@ -46,7 +47,7 @@ export function Portrait() {
         type="button"
         role="switch"
         aria-checked={alt}
-        aria-label="Show the other portrait"
+        aria-label="Show the memoji"
         data-cur={alt ? "back" : "swap"}
         onClick={() => setAlt((v) => !v)}
         className={`tap relative h-5 w-9 shrink-0 rounded-full outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring ${

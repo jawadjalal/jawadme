@@ -65,7 +65,7 @@ export default function Home() {
           <Grid items={NOW.filter((i) => i.shot || i.emoji)} />
         </Section>
 
-        <Section title="Also mine" obj="previously" aside="still live">
+        <Section title="Also mine" obj="previously" aside="side quests">
           <ul className="space-y-1">
             {ARCHIVE.map((item, i) => (
               <Reveal key={item.key} as="li" index={i}>
@@ -235,13 +235,12 @@ function Role({ item }: { item: Item }) {
     // The card opens from anywhere on the line, not only from the name.
     <Preview block shot={item.shot} label={item.domain ?? "no site yet"}>
       <div className="role-row">
-        <Logo
-          src={item.logo}
-          emoji={item.emoji}
-          tile={item.logoTile}
-          size={52}
-          className="role-logo"
-        />
+        {item.ink ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={item.ink} alt="" aria-hidden="true" width={52} height={52} className="role-logo role-ink ink" />
+        ) : (
+          <Logo src={item.logo} emoji={item.emoji} tile={item.logoTile} size={52} className="role-logo" />
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between gap-3">
             <h3 className="text-[17px] font-bold leading-snug tracking-[-0.01em]">{name}</h3>
@@ -296,6 +295,10 @@ function Card({ item, index, wide = false }: { item: Item; index: number; wide?:
         >
           <span className="sr-only">{`Open ${item.name}`}</span>
         </a>
+      )}
+      {item.ink && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={item.ink} alt="" aria-hidden="true" width={76} height={76} className="proj-doodle ink" />
       )}
       {/* The shot sits on a soft grey slab, inset at the top and sides and
           running off the bottom edge, like a screen standing in a tray. */}
@@ -393,10 +396,10 @@ function Venn() {
       ))}
       {/* just him, cut out of his tile, so the centre reads as a face and not a box */}
       <Image
-        src="/design/jawad-cut.webp"
+        src="/design/jawad-ink.webp"
         alt=""
         width={320}
-        height={361}
+        height={320}
         className="venn-face absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
       />
     </div>

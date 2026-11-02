@@ -1605,14 +1605,15 @@ main, .foot { position: relative; }
 .foot-field::before { z-index: 1; }
 .nv { z-index: 60; }
 
-.gp { --w: var(--gp-w, 0px); position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; filter: var(--ico-lift); }
-.gp-p { fill: none; stroke: #fff; stroke-width: var(--w); stroke-linecap: butt; stroke-linejoin: round; }
-.gp-body { stroke: #070708; }
-.gp-rim { stroke: #3a3b41; stroke-width: calc(var(--w) * 0.22); transform: translate(calc(var(--w) * 0.04), calc(var(--w) * 0.36)); }
-.gp-joints rect { stroke: #000; stroke-opacity: 0.55; }
-.gp-sheen { stroke: #5b5c62; stroke-width: calc(var(--w) * 0.4); transform: translate(calc(var(--w) * -0.06), calc(var(--w) * -0.2)); }
-.gp-line { stroke: #f4f4f6; stroke-opacity: 0.75; stroke-width: calc(var(--w) * 0.12); transform: translate(calc(var(--w) * -0.08), calc(var(--w) * -0.27)); }
-.gp-in image { will-change: transform; }
+.gp { --w: var(--gp-w, 0px); position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.gp-p { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+/* two inked edges: a fat ink stroke with a paper stroke inside it */
+.gp-edge { stroke: var(--ink); stroke-width: var(--w); }
+.gp-bore { stroke: var(--paper); stroke-width: calc(var(--w) - 3px); }
+/* a dashed hatch down one side, the fineliner's shading */
+.gp-hatch { stroke: var(--ink); stroke-width: 1px; stroke-dasharray: 1.5 3.5; opacity: 0.7; transform: translate(calc(var(--w) * 0.22), 0); }
+.gp-joints rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5px; }
+.gp-ball { fill: var(--pop); stroke: var(--ink); stroke-width: 1.4px; will-change: transform; }
 
 /* ── Skills: stations on one pipe ── */
 .skills { position: relative; isolation: isolate; display: grid; gap: 2.25rem; }
@@ -1642,3 +1643,90 @@ main, .foot { position: relative; }
 }
 /* one line each from a tablet up; on a phone they flow */
 @media (min-width: 640px) { .hero-line { display: block; } }
+
+/* ── 2 Nov: drawn by hand ─────────────────────────────────────────────────
+   Every picture on the page is now a black fineliner drawing from one sheet,
+   in the style of his hand-drawn memoji. This block makes the rest agree:
+   a handwriting face for the accents only (Satoshi still sets every word you
+   read), one wobble filter that makes a drawn line out of a ruled one, and
+   the ink turned to chalk at night. */
+@font-face { font-family: "Hand"; src: url("/fonts/Excalifont-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+
+/* the drawings are black ink on clear ground; at night the ink goes light */
+[data-theme="dark"] .obj,
+[data-theme="dark"] .face,
+[data-theme="dark"] .ink,
+[data-theme="dark"] img[src*="jawad-ink"] { filter: invert(0.92); }
+.obj { filter: none; }
+.face { box-shadow: none; background: var(--paper); }
+[data-theme="dark"] .face { background: #000; }
+
+/* "revenue", lettered by hand in the orange, with a scribble under it */
+.rev {
+  font-family: "Hand", "Fraunces Italic", cursive;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  padding-bottom: 0.08em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 C 20 3, 38 11, 58 6 S 96 3, 118 7' fill='none' stroke='%23f05a00' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 0 100% / 100% 0.32em;
+}
+.rev::after { content: none; }
+
+/* the name at the foot, signed rather than set */
+.foot-mark { font-family: "Hand", var(--font); font-weight: 400; letter-spacing: -0.01em; line-height: 0.9; }
+.foot-mark-box { border-radius: 50%; }
+
+/* a section's side note is written in the margin, with a drawn arrow */
+.sec-aside {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-family: "Hand", var(--font); font-size: 17px; color: var(--ink-read);
+  transform: rotate(-3deg);
+}
+.sec-aside::after {
+  content: "";
+  width: 30px; height: 18px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 18'%3E%3Cpath d='M2 4 C 10 2, 20 6, 25 14 M 19 13 L 25.5 14.5 L 26 8' fill='none' stroke='%23111' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+[data-theme="dark"] .sec-aside::after { filter: invert(0.92); }
+
+/* a drawn line under each section's name */
+.sec-title { position: relative; }
+.sec-title::after {
+  content: "";
+  position: absolute; left: 2.6rem; right: -0.2em; bottom: -0.3em; height: 0.28em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M1 6 C 40 2, 90 8, 130 5 S 180 3, 199 6' fill='none' stroke='%23111' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%;
+  opacity: 0.85;
+}
+[data-theme="dark"] .sec-title::after { filter: invert(0.92); }
+
+/* the Venn as four drawn circles: an ink outline through the wobble filter,
+   over the same faint fill */
+.venn-disc { border: 1.6px solid var(--ink); filter: url(#hand); }
+.venn-face { filter: none; width: 5.5rem; }
+[data-theme="dark"] .venn-face { filter: invert(0.92); }
+@media (min-width: 640px) { .venn-face { width: 8rem; } }
+
+/* each project's own doodle, peeking over the top corner of its tray */
+.proj-doodle {
+  position: absolute; z-index: 3; top: -40px; right: 4px;
+  width: 96px; height: 96px;
+  transform: rotate(6deg);
+  /* a paper edge round the ink, like a sticker, so it reads over a dark shot */
+  filter: drop-shadow(2px 0 0 var(--paper)) drop-shadow(-2px 0 0 var(--paper)) drop-shadow(0 2px 0 var(--paper)) drop-shadow(0 -2px 0 var(--paper));
+  transition: transform 300ms var(--ease);
+  pointer-events: none;
+}
+.proj:hover .proj-doodle { transform: rotate(-4deg) translateY(-4px); }
+.proj-slab::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 3;
+  border: 1.6px solid var(--ink);
+  border-bottom: 0;
+  border-radius: inherit;
+  filter: url(#hand);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) { .proj-doodle { transition: none; } }
+@media (max-width: 639px) { .proj-doodle { top: -32px; right: 2px; width: 76px; height: 76px; } }
+.role-ink { width: 52px; height: 52px; flex: none; object-fit: contain; }
+[data-theme="dark"] .proj-doodle { filter: invert(0.92) drop-shadow(2px 0 0 #0d0d0d) drop-shadow(-2px 0 0 #0d0d0d) drop-shadow(0 2px 0 #0d0d0d) drop-shadow(0 -2px 0 #0d0d0d); }

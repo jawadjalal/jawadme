@@ -25,7 +25,7 @@ export function Section({
   title,
   id,
   aside,
-  /** The glossy object that leads the heading. */
+  /** The ink drawing that leads the heading. */
   obj,
   /** Sections that carry the argument open by default; the long tail does not. */
   defaultOpen = true,
@@ -68,7 +68,7 @@ export function Section({
           {title}
         </h2>
         <div className="flex items-center gap-2">
-          {aside && <span className="text-[14px] text-muted-foreground">{aside}</span>}
+          {aside && <span className="sec-aside">{aside}</span>}
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
