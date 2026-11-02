@@ -20,7 +20,7 @@ import { Rotator } from "@/components/Rotator";
 import { Streamed } from "@/components/Streamed";
 import { parseProse } from "@/components/prose";
 import {
-  ABOUT, ABOUT_ROLES, ABOUT_TAIL, ARCHIVE, heroFor, HERO, NAV, IDENTITY, NOW, ROLES, SKILLS_TABLE, SOCIALS, VENN, type Item,
+  ABOUT, ABOUT_ROLES, ABOUT_TAIL, heroFor, HERO, NAV, IDENTITY, NOW, ROLES, SKILLS_TABLE, SOCIALS, VENN, type Item,
 } from "@/lib/profile";
 
 // One reading column on white paper, in ignura.com's black and white: Satoshi
@@ -63,16 +63,6 @@ export default function Home() {
 
         <Section title="Projects" id="projects" obj="projects" aside="live work" doodle="/ink/m-laptop.webp" tilt={-9}>
           <Grid items={NOW.filter((i) => i.shot || i.emoji)} />
-        </Section>
-
-        <Section title="Also mine" obj="previously" aside="side quests" doodle="/ink/m-pigeon.webp" tilt={6}>
-          <ul className="space-y-1">
-            {ARCHIVE.map((item, i) => (
-              <Reveal key={item.key} as="li" index={i}>
-                <Role item={item} />
-              </Reveal>
-            ))}
-          </ul>
         </Section>
 
         <Section title="Skills" id="skills" obj="skills" doodle="/ink/m-sketchbook.webp" tilt={-7}>
@@ -212,57 +202,6 @@ function About() {
         ))}
       </div>
     </Section>
-  );
-}
-
-/** One thing he works on, as a row that lifts onto the soft grey. */
-function Role({ item }: { item: Item }) {
-  const dead = item.status === "Discontinued";
-  const name = item.href ? (
-    <a
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      // Scribbled out, not greyed. Grey would say "less important"; the mark
-      // says "this is over", which is the actual fact, and the site is still
-      // standing so the link stays live.
-      className={`tap underline-offset-[3px] transition-colors ${
-        dead ? "scribble" : "underline decoration-transparent hover:decoration-foreground"
-      }`}
-    >
-      {item.name}
-    </a>
-  ) : (
-    item.name
-  );
-
-  return (
-    // The card opens from anywhere on the line, not only from the name.
-    <Preview block shot={item.shot} label={item.domain ?? "no site yet"}>
-      <div className="role-row">
-        {item.ink ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={item.ink} alt="" aria-hidden="true" width={52} height={52} className="role-logo role-ink ink" />
-        ) : (
-          <Logo src={item.logo} emoji={item.emoji} tile={item.logoTile} size={52} className="role-logo" />
-        )}
-        <div className="min-w-0 flex-1">
-          <div className="flex items-baseline justify-between gap-3">
-            <h3 className="text-[17px] font-bold leading-snug tracking-[-0.01em]">{name}</h3>
-            <p className="shrink-0 text-[13px] tabular-nums text-muted-foreground">{item.period}</p>
-          </div>
-          <p className="mt-0.5 flex items-center gap-1.5 text-[14px] leading-snug">
-            <span className="rp-role">
-              <Icon name={item.roleIcon} size={13} className="rp-role-icon" />
-              {item.role}
-            </span>
-            {item.roleNote && <span className="role-note">{item.roleNote}</span>}
-            {dead && <Status status={item.status} />}
-          </p>
-          <p className="mt-1.5 text-[15px] leading-relaxed text-[var(--ink-read)]">{item.blurb}</p>
-        </div>
-      </div>
-    </Preview>
   );
 }
 

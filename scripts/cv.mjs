@@ -64,7 +64,7 @@ const ROLES = [
     when: "2026 to now",
     line: "The app for eating out healthy · iOS and Android",
     points: [
-      "Design the core product for an app with **2 million users** and **seven figure ARR**: a healthy menu for every restaurant, with macros and a fit score on each dish.",
+      "Design the core product for an app with **1.5 million users** and **seven figure ARR**: a healthy menu for every restaurant, with macros and a fit score on each dish.",
       "Own screens across iOS and Android, light and dark, and the components they share.",
     ],
   },
