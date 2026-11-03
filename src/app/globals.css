@@ -1934,10 +1934,10 @@ main, .foot { position: relative; }
 .fx.is-orange { --fx: var(--pop); }
 .fx-u { isolation: isolate; }
 .fx-u::after {
-  content: ""; position: absolute; z-index: -1; left: -0.05em; right: -0.05em; bottom: -0.18em; height: 0.36em;
-  background: var(--fx);
-  -webkit-mask: var(--swash-a) no-repeat 0 0 / 100% 100%;
-          mask: var(--swash-a) no-repeat 0 0 / 100% 100%;
+  content: ""; position: absolute; z-index: -1; left: -0.08em; right: -0.08em; bottom: -0.16em; height: 0.34em;
+  background: var(--fx); opacity: 0.9;
+  -webkit-mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+          mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
 }
 .fx-hl {
   padding: 0 0.18em; margin: 0 -0.08em;
@@ -1966,3 +1966,8 @@ main, .foot { position: relative; }
 .nv .face, [data-theme="dark"] .nv .face { background: transparent; box-shadow: none; border-radius: 0; }
 .nv .face { mix-blend-mode: multiply; }
 [data-theme="dark"] .nv .face { filter: invert(1); mix-blend-mode: screen; }
+[data-theme="dark"] .fx-hl { background-image: linear-gradient(100deg, transparent 0.12em, color-mix(in srgb, var(--fx) 62%, transparent) 0.2em, color-mix(in srgb, var(--fx) 52%, transparent) 88%, transparent calc(100% - 0.05em)); color: #fff; }
+
+/* the hero sketch stays a plain drawing at night too: chalk lines straight
+   on the page, not the pinned white card the smaller faces use */
+[data-theme="dark"] img.portrait-frame { filter: invert(1); background: transparent; mix-blend-mode: screen; }
