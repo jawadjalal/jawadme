@@ -22,7 +22,7 @@ export function SiteNav({ groups, home = true }: { groups?: NavGroup[]; home?: b
           className="tap flex items-center gap-2 rounded-md outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
           aria-label={home ? `${IDENTITY.properName}, back to the top` : `${IDENTITY.properName}, home`}
         >
-          <Face size={30} />
+          <Face size={40} />
           <span className="text-[15px] font-bold tracking-[-0.01em]">{IDENTITY.properName}</span>
         </Link>
         <div className="flex items-center gap-1.5 md:gap-2">

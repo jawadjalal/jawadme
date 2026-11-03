@@ -49,7 +49,13 @@ export type Segment =
   // rationed to the handful of phrases that name a thing; everything else
   // that wants emphasis takes the hue on the words themselves.
   | { kind: "tint"; hue: Hue; value: string; href?: string; at: number }
-  | { kind: "ink"; name: string; value: string; at: number };
+  | { kind: "ink"; name: string; value: string; at: number }
+  // A pen effect on plain words: a marker underline, a highlighter, the hand
+  // lettering, or a circle drawn round them. Rationed to one per sentence.
+  | { kind: "fx"; fx: Fx; color: FxColor; value: string; dim: boolean; at: number };
+
+export type Fx = "u" | "hl" | "hand" | "circle";
+export type FxColor = "blue" | "pink" | "green" | "yellow" | "violet" | "orange";
 
 export type Parsed = { segments: Segment[]; length: number };
 
@@ -91,6 +97,11 @@ export const hueFor = (name: string): Hue => HUES[name] ?? "slate";
 // whose name is a single letter, X, fell through as literal text.
 const TOKEN = /:([a-z][a-z0-9-]{0,20}):(?:\{([^{}|]{1,90})(?:\|([^{}]{1,200}))?\}|\[([^\[\]|]{1,90})(?:\|([^\[\]]{1,200}))?\]|<([^<>]{1,90})>)?/gi;
 
+// A pen effect: ^u{words}, ^hl{words}, ^hand{words}, ^circle{words}, each
+// with an optional colour, as in ^u.pink{words}. The caret never appears in
+// this copy for any other reason.
+const FX = /\^(u|hl|hand|circle)(?:\.(blue|pink|green|yellow|violet|orange))?\{([^{}]{1,90})\}/g;
+
 // Supporting text, wrapped in tildes. Chosen because it is the one wrapper
 // that never appears in this copy for any other reason.
 const DIM = /~([^~]{1,400})~/g;
@@ -101,7 +112,8 @@ type Raw =
   | { kind: "mark"; name: string; hue: Hue; value: string; href?: string }
   | { kind: "link"; brand?: BrandKey; icon?: string; value: string; href: string }
   | { kind: "tint"; hue: Hue; value: string; href?: string }
-  | { kind: "ink"; name: string; value: string };
+  | { kind: "ink"; name: string; value: string }
+  | { kind: "fx"; fx: Fx; color: FxColor; value: string; dim: boolean };
 
 /** Splits a run into dim and plain pieces, keeping source order. */
 function splitDim(text: string): { value: string; dim: boolean }[] {
@@ -123,7 +135,16 @@ export function parseProse(text: string): Parsed {
   let cursor = 0;
 
   const pushText = (value: string) => {
-    for (const piece of splitDim(value)) raw.push({ kind: "text", ...piece });
+    for (const piece of splitDim(value)) {
+      let at = 0;
+      for (const m of piece.value.matchAll(FX)) {
+        const i = m.index ?? 0;
+        if (i > at) raw.push({ kind: "text", value: piece.value.slice(at, i), dim: piece.dim });
+        raw.push({ kind: "fx", fx: m[1] as Fx, color: (m[2] as FxColor) ?? "yellow", value: m[3], dim: piece.dim });
+        at = i + m[0].length;
+      }
+      if (at < piece.value.length) raw.push({ kind: "text", value: piece.value.slice(at), dim: piece.dim });
+    }
   };
 
   for (const match of text.matchAll(TOKEN)) {
@@ -197,7 +218,7 @@ export function parseProse(text: string): Parsed {
       at += item.value.length;
       continue;
     }
-    if (item.kind === "link" || item.kind === "tint" || item.kind === "ink") {
+    if (item.kind === "link" || item.kind === "tint" || item.kind === "ink" || item.kind === "fx") {
       segments.push({ ...item, at });
       at += item.value.length;
       continue;

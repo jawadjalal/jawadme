@@ -157,6 +157,18 @@ export function Segments({ parsed, shown }: { parsed: Parsed; shown: number }) {
           );
         }
 
+        if (segment.kind === "fx") {
+          return (
+            <span key={i} className={`fx fx-${segment.fx} is-${segment.color} ${segment.dim ? "rp-dim" : ""}`}>
+              {complete ? (
+                segment.value
+              ) : (
+                <Chars value={segment.value} at={segment.at} shown={shown} />
+              )}
+            </span>
+          );
+        }
+
         if (segment.kind === "tint") {
           const body = complete ? (
             segment.value
