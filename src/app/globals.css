@@ -1921,3 +1921,53 @@ main, .foot { position: relative; }
   -webkit-mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
           mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
 }
+
+/* ── Pen effects in the bio ──
+   One per sentence at most: a marker underline, a highlighter stroke, a
+   word in the hand, or a ring drawn round it, each in one of the splash
+   inks. The words themselves stay in the page's ink. */
+.fx { --fx: var(--sp-yellow); position: relative; color: var(--ink); white-space: nowrap; }
+.fx.is-blue { --fx: var(--sp-blue); }
+.fx.is-pink { --fx: var(--sp-pink); }
+.fx.is-green { --fx: var(--sp-green); }
+.fx.is-violet { --fx: var(--sp-violet); }
+.fx.is-orange { --fx: var(--pop); }
+.fx-u { isolation: isolate; }
+.fx-u::after {
+  content: ""; position: absolute; z-index: -1; left: -0.08em; right: -0.08em; bottom: -0.16em; height: 0.34em;
+  background: var(--fx); opacity: 0.9;
+  -webkit-mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+          mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
+}
+.fx-hl {
+  padding: 0 0.18em; margin: 0 -0.08em;
+  background: linear-gradient(100deg, transparent 0.12em, color-mix(in srgb, var(--fx) 42%, transparent) 0.2em, color-mix(in srgb, var(--fx) 34%, transparent) 88%, transparent calc(100% - 0.05em)) no-repeat 0 62% / 100% 70%;
+  border-radius: 0.3em 0.6em 0.4em 0.7em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.fx-hand { font-family: "Hand", cursive; font-size: 1.22em; line-height: 1; color: var(--fx); letter-spacing: 0; }
+.fx-circle { isolation: isolate; padding: 0 0.12em; }
+.fx-circle::after {
+  content: ""; position: absolute; z-index: -1; inset: -0.32em -0.34em -0.28em -0.3em;
+  background: var(--fx);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 50' preserveAspectRatio='none'%3E%3Cpath d='M64 4 C 100 3, 117 13, 116 25 C 115 39, 90 47, 58 46 C 24 45, 4 37, 5 24 C 6 11, 30 4, 70 6 C 82 7, 92 9, 99 13' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 50' preserveAspectRatio='none'%3E%3Cpath d='M64 4 C 100 3, 117 13, 116 25 C 115 39, 90 47, 58 46 C 24 45, 4 37, 5 24 C 6 11, 30 4, 70 6 C 82 7, 92 9, 99 13' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%;
+}
+/* the app marks in the bio keep their own colours now */
+.rp-link-glyph svg, [data-theme="dark"] .rp-link-glyph svg { filter: none; }
+
+/* ── Hero: his sketch right beside his name, at the name's scale ── */
+.hero-top { flex-direction: row; align-items: center; justify-content: flex-start; gap: 0.6rem; }
+@media (min-width: 640px) { .hero-top { flex-direction: row; justify-content: flex-start; gap: 0.9rem; } }
+.portrait-frame { width: 4.25rem; height: 4.25rem; }
+@media (min-width: 640px) { .portrait-frame { width: 6rem; height: 6rem; } }
+
+/* ── Nav: a bigger face, straight on the bar, no white square ── */
+.nv .face, [data-theme="dark"] .nv .face { background: transparent; box-shadow: none; border-radius: 0; }
+.nv .face { mix-blend-mode: multiply; }
+[data-theme="dark"] .nv .face { filter: invert(1); mix-blend-mode: screen; }
+[data-theme="dark"] .fx-hl { background-image: linear-gradient(100deg, transparent 0.12em, color-mix(in srgb, var(--fx) 62%, transparent) 0.2em, color-mix(in srgb, var(--fx) 52%, transparent) 88%, transparent calc(100% - 0.05em)); color: #fff; }
+
+/* the hero sketch stays a plain drawing at night too: chalk lines straight
+   on the page, not the pinned white card the smaller faces use */
+[data-theme="dark"] img.portrait-frame { filter: invert(1); background: transparent; mix-blend-mode: screen; }

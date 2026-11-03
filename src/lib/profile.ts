@@ -57,10 +57,10 @@ export const HERO = {
 
 /** The About list. Each string is one bullet, and may carry icon tokens. */
 export const ABOUT = [
-  "i'm jawad :sparkle:, a :pen:{designer} and founder in london :globe: :rocket:[(yc soon)|https://www.ycombinator.com/]. ~i started making things for money at thirteen and never really stopped. i'm fifteen now.~",
-  "~i run~ :rocket:{ignura|https://ignura.com}~, a web design agency. every site is designed and built from scratch, and launch pages go live in about a week.~",
-  "~i build~ :rocket:{ignaru|https://ignaru.com}~, the agent-native design tool: design and code on one canvas, with claude code, codex or cursor doing the work.~",
-  "~i build my own products~ :cube:<end to end>~: the brand, the interface, and the thing that actually ships.~",
+  "i'm jawad :sparkle:, a :pen:{designer} and founder in london :globe: :rocket:[(yc soon)|https://www.ycombinator.com/]. ~i started making things for money at~ ^hand.orange{thirteen} ~and never really stopped. i'm~ ^circle.pink{fifteen} ~now!~",
+  "~i run~ :rocket:{ignura|https://ignura.com}~, a web design agency. every site is designed and built~ ^u.blue{from scratch}~. launch pages? live in~ ^hl.yellow{about a week}~.~",
+  "~i build~ :rocket:{ignaru|https://ignaru.com}~, the~ ^hand.violet{agent-native} ~design tool: design and code on one canvas, with~ :claude:{claude code|https://claude.com/claude-code}~,~ :openai:{codex|https://openai.com/codex} ~or~ :cursor:{cursor|https://cursor.com} ~doing the work.~",
+  "~i build my own products~ :cube:<end to end>~: the brand, the interface, and the thing that~ ^u.green{actually ships}~.~",
 ];
 
 /**
@@ -90,13 +90,13 @@ export const ABOUT_ROLES: {
   { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 1.5m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
   { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
   { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
-  { key: "ignaru", name: "ignaru", role: "founder", stat: "design tool", logo: "/logos/ignaru.png", href: "https://ignaru.com" },
+  { key: "ignaru", name: "ignaru", role: "founder", stat: "design tool", logo: "/logos/ignaru.svg", href: "https://ignaru.com" },
 ];
 
 export const ABOUT_TAIL = [
-  "~the rest of the time it's~ :pen:<3d art and logo work>~, and whatever i can talk someone into letting me redesign~ :bolt:.",
+  "~the rest of the time it's~ :pen:<3d art and logo work>~, and whatever i can~ ^hl.pink{talk someone into} ~letting me redesign~ :bolt:.",
   "~find me on~ :x:{twitter|https://x.com/jawadmakes}, :linkedin:{linkedin|https://www.linkedin.com/in/jawad-jalal-designs}, :instagram:{instagram|https://www.instagram.com/j.awadjalal/} ~and~ :youtube:{youtube|https://www.youtube.com/@jawadmake}.",
-  "~got something in mind?~ :mail:{work with me|mailto:hijawadjalal@gmail.com}",
+  "~got something in mind? say hi:~ :mail:{work with me|mailto:hijawadjalal@gmail.com}",
 ];
 
 export type Item = {
@@ -221,7 +221,7 @@ export const NOW: Item[] = [
     roleIcon: "trend",
     name: "ignaru",
     href: "https://ignaru.com",
-    logo: "/logos/ignaru.png",
+    logo: "/logos/ignaru.svg",
     shot: "/design/ignaru-card.webp",
     shotPos: "left top",
     domain: "ignaru.com",
@@ -430,6 +430,7 @@ const PHRASE_TO_KEY: Record<string, string> = {
   menufit: "menufit",
   ignaru: "ignaru",
   bevel: "bevel",
+  okara: "okara",
   "design at menufit": "menufit",
 };
 
