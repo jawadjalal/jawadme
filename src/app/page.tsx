@@ -16,11 +16,10 @@ import { SiteNav } from "@/components/SiteNav";
 import { DotField } from "@/components/DotField";
 import { Icon, type IconName } from "@/components/Icon";
 import { Preview } from "@/components/Preview";
-import { Rotator } from "@/components/Rotator";
 import { Streamed } from "@/components/Streamed";
 import { parseProse } from "@/components/prose";
 import {
-  ABOUT, ABOUT_ROLES, ABOUT_TAIL, heroFor, HERO, NAV, IDENTITY, NOW, ROLES, SKILLS_TABLE, SOCIALS, VENN, type Item,
+  ABOUT, ABOUT_ROLES, ABOUT_TAIL, heroFor, HERO, NAV, IDENTITY, NOW, SKILLS_TABLE, SOCIALS, VENN, type Item,
 } from "@/lib/profile";
 
 // One reading column on white paper, in ignura.com's black and white: Satoshi
@@ -115,13 +114,10 @@ function Hero() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/ink/m-bus.webp" alt="" className="ink" />
       </span>
-      {/* No box: the name, his pinned drawing and the line sit on the page. */}
+      {/* No box: the name and his drawing sit on the page. */}
       <div className="hero-top">
         <div className="min-w-0">
           <h1 className="hero-name">{IDENTITY.properName}</h1>
-          <p className="mt-1 flex min-h-7 items-center text-[17px] font-medium text-muted-foreground sm:text-[20px]">
-            <Rotator items={ROLES} />
-          </p>
         </div>
         <Portrait />
       </div>

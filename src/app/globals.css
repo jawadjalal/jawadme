@@ -1789,20 +1789,13 @@ main, .foot { position: relative; }
   .hero-top { flex-direction: row; align-items: center; justify-content: space-between; gap: 1.5rem; }
 }
 
-/* his drawing, pinned on as a print */
-.portrait { display: flex; width: fit-content; flex-direction: column; align-items: center; gap: 0.6rem; }
-.portrait-mat {
-  padding: 8px; border-radius: 20px; background: #fff;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 14px 28px -18px rgb(0 0 0 / 0.35);
-  rotate: 3deg;
-  transition: rotate 300ms var(--ease);
-}
-.portrait:hover .portrait-mat { rotate: -1deg; }
+/* his drawing, on the page as it is */
+.portrait { display: flex; width: fit-content; }
 .portrait-frame { width: 8rem; height: 8rem; }
 @media (min-width: 640px) { .portrait-frame { width: 12.5rem; height: 12.5rem; } }
-[data-theme="dark"] .portrait-frame { background: #fff; }
-.flip-note { font-family: "Hand", cursive; font-size: 19px; line-height: 1; color: var(--ink-2); rotate: -4deg; }
-.flip-note::after { content: " \2192"; }
+/* the drawing's white paper drops out, so only the pencil sits on the page */
+.portrait-frame { mix-blend-mode: multiply; }
+[data-theme="dark"] .portrait-frame { filter: invert(1); mix-blend-mode: screen; }
 
 /* the projects become prints: a white mat, a small shadow, a small tilt,
    and the second column dropped half a step so the grid reads as laid down */
@@ -1912,23 +1905,6 @@ main, .foot { position: relative; }
   pointer-events: none;
 }
 .proj:nth-child(even)::before { rotate: 5deg; left: 40%; }
-
-/* his print gets tape too, and his name a marker swash */
-.portrait-mat { position: relative; }
-.portrait-mat::before {
-  content: ""; position: absolute; z-index: 2;
-  top: -10px; left: 50%; width: 74px; height: 22px;
-  translate: -50% 0; rotate: -6deg;
-  background: color-mix(in srgb, var(--sp-blue) 82%, transparent);
-}
-.hero-name { position: relative; width: fit-content; isolation: isolate; }
-.hero-name::after {
-  content: ""; position: absolute; z-index: -1;
-  left: 46%; right: -0.08em; bottom: -0.04em; height: 0.42em;
-  background: var(--sp-pink); opacity: 0.85;
-  -webkit-mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
-          mask: var(--swash-fat) no-repeat 0 0 / 100% 100%;
-}
 
 /* the Venn's four circles, each washed in its own ink */
 .venn-disc:nth-child(1) { background: color-mix(in srgb, var(--sp-blue) 16%, transparent); }
