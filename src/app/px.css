@@ -289,7 +289,7 @@ html:has(.px) { scroll-behavior: smooth; scroll-padding-top: 24px; }
 .work { max-width: 1240px; margin: 200px auto 0; }
 .work-head { position: relative; max-width: 640px; margin: 0 auto 56px; text-align: center; }
 .h2 { font-family: var(--pixel); font-weight: 400; font-size: clamp(40px, 5vw, 64px); line-height: 1; color: var(--paper); margin-bottom: 20px; }
-.work-head p { color: #b9b7ae; font-size: 18px; }
+.work-head p { color: #d4d2c9; font-size: 18px; }
 .dd-sketchbook { left: -150px; top: -10px; }
 .board {
   position: relative;
@@ -342,7 +342,7 @@ html:has(.px) { scroll-behavior: smooth; scroll-padding-top: 24px; }
   position: absolute;
   right: -16px;
   bottom: -40px;
-  width: 22%;
+  width: 17%;
   background: var(--ink);
   padding: 6px;
   box-shadow: 0 0 0 2px var(--paper);
@@ -352,15 +352,15 @@ html:has(.px) { scroll-behavior: smooth; scroll-padding-top: 24px; }
 .cap h3 { font-family: var(--pixel); font-weight: 400; font-size: 22px; line-height: 1.1; color: var(--paper); display: flex; align-items: center; gap: 10px; }
 .card-big .cap h3 { font-size: 28px; }
 .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); background: var(--pop); padding: 3px 6px; }
-.cap p { grid-column: 1 / -1; color: #b9b7ae; font-size: 15px; line-height: 1.45; max-width: 520px; }
+.cap p { grid-column: 1 / -1; color: #cfcdc4; font-size: 15px; line-height: 1.45; max-width: 520px; }
 .cap-url { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12px; color: #8f93ff; }
 .cap-url:hover { color: var(--paper); background: var(--blue); }
-.cap-off, .cap-off:hover { color: #7d7b73; background: none; }
+.cap-off, .cap-off:hover { color: #aaa89f; background: none; }
 .tag-concept { background: var(--paper); }
 .tag-template { background: #8f93ff; }
 .tag-client { background: var(--paper-2); }
 
-.cap time { font-family: var(--grid); font-size: 12px; color: #7d7b73; justify-self: end; grid-row: 1; grid-column: 2; align-self: center; }
+.cap time { font-family: var(--grid); font-size: 12px; color: #aaa89f; justify-self: end; grid-row: 1; grid-column: 2; align-self: center; }
 
 /* ── the build log ── */
 .log { position: relative; display: flex; align-items: flex-end; justify-content: center; gap: 56px; width: max-content; max-width: 100%; margin: 0 auto 72px; padding: 36px 40px 28px; background: var(--paper); color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
@@ -396,12 +396,12 @@ html:has(.px) { scroll-behavior: smooth; scroll-padding-top: 24px; }
   background: rgb(243 241 234 / 0.04);
   box-shadow: inset 0 0 0 1px rgb(243 241 234 / 0.08);
 }
-.px-roles li:hover { background: var(--blue); box-shadow: none; }
+@media (hover: hover) { .px-roles li:hover { background: var(--blue); box-shadow: none; } }
 .px-roles img { justify-self: center; }
 .px-roles a { font-family: var(--pixel); font-size: 18px; }
 .px-roles .role { font-family: var(--mono); font-size: 13px; color: #a7a59c; }
 .px-roles .stat { font-family: var(--grid); font-size: 13px; color: var(--pop); }
-.px-roles li:hover .stat, .px-roles li:hover .role { color: var(--paper); }
+@media (hover: hover) { .px-roles li:hover .stat, .px-roles li:hover .role { color: var(--paper); } }
 .dd-bus { left: -170px; bottom: -120px; }
 .dd-bigben { right: -60px; top: -140px; }
 
@@ -444,7 +444,7 @@ html:has(.px) { scroll-behavior: smooth; scroll-padding-top: 24px; }
 .ticker-run > span > span { display: inline-flex; align-items: center; gap: 20px; padding-right: 20px; }
 .ticker-run svg { color: var(--pop); }
 @keyframes tick { to { transform: translateX(-50%); } }
-.px-foot-line { display: flex; justify-content: center; gap: 24px; margin-top: 32px; font-family: var(--mono); font-size: 12px; color: #8a887f; }
+.px-foot-line { display: flex; justify-content: center; gap: 24px; margin-top: 32px; font-family: var(--mono); font-size: 12px; color: #b3b1a8; }
 .px-foot-line a:hover { color: var(--paper); background: var(--blue); }
 
 /* ── arrivals: whole frames, not eases ── */
