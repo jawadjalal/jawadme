@@ -7,3 +7,7 @@ out
 next-env.d.ts
 .DS_Store
 .taste-skill/
+
+# monid sketch sources: regenerate from art/src/*.json, outputs are large
+art/src/*.png
+art/src/*.out

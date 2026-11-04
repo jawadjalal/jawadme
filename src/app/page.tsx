@@ -1,424 +1,417 @@
-import Image from "next/image";
-import { Brand } from "@/components/Brand";
-import { ContactModal } from "@/components/ContactModal";
-import { Cta } from "@/components/Cta";
-import { HeroCtas } from "@/components/HeroCtas";
-import { Cursor } from "@/components/Cursor";
-import { Elsewhere } from "@/components/Elsewhere";
-import { Logo } from "@/components/Logo";
-import { Face, Obj, type ObjName } from "@/components/Obj";
-import { IconPipe, Pipes } from "@/components/Pipes";
-import { Portrait } from "@/components/Portrait";
-import { Rail } from "@/components/Rail";
-import { Reveal } from "@/components/Reveal";
-import { Section } from "@/components/Section";
-import { SiteNav } from "@/components/SiteNav";
-import { DotField } from "@/components/DotField";
-import { Icon, type IconName } from "@/components/Icon";
-import { Preview } from "@/components/Preview";
-import { Streamed } from "@/components/Streamed";
-import { parseProse } from "@/components/prose";
-import {
-  ABOUT, ABOUT_ROLES, ABOUT_TAIL, heroFor, HERO, NAV, IDENTITY, NOW, SKILLS_TABLE, SOCIALS, VENN, type Item,
-} from "@/lib/profile";
+import "./px.css";
+import { ABOUT_ROLES, IDENTITY, SOCIALS } from "@/lib/profile";
+import { WORK, type Work } from "@/lib/work";
+import { Bit } from "@/components/px/Bit";
+import { Columns } from "@/components/px/Columns";
+import { Desk } from "@/components/px/Desk";
+import { Develop } from "@/components/px/Develop";
+import { ART, Doodle, Icon, type DoodleName } from "@/components/px/Doodle";
+import { Lens } from "@/components/px/Lens";
+import { Log } from "@/components/px/Log";
+import { Arrivals, LondonTime } from "@/components/px/Live";
 
-// One reading column on white paper, in ignura.com's black and white: Satoshi
-// alone, a soft grey step for anything that sits on the page, the 12px radius,
-// glossy black objects leading each heading, and one orange word. Sections are
-// told apart by space and by that grey step, never by a rule.
-
-const SKILL_OBJ: Record<"pen" | "code" | "sparkle" | "cube", ObjName> = {
-  pen: "work",
-  code: "gear",
-  sparkle: "chat",
-  cube: "stack",
-};
+// jawadjalal.com as a sketchbook kept in pixels. Every drawing on the page
+// started as an ink sketch and was box-filtered onto a square grid
+// (art/pixelate.py), so the hand-drawn and the pixel are the same thing at
+// two zoom levels. One desk (a dithered WebGL field), one sheet for the hero,
+// a ruled board for the work, and square corners everywhere.
 
 export default function Home() {
   return (
-    <div className="relative min-h-dvh">
-      <Pipes />
-      <Cursor label="hi" />
-      <ContactModal />
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm"
-      >
-        Skip to content
+    <main className="px" id="main">
+      <Desk />
+      <Columns />
+      <Arrivals />
+      <a href="#work" className="skip">Skip to the work</a>
+      <noscript>
+        <style>{"[data-in]{opacity:1!important;transform:none!important}.dev img{opacity:1!important}"}</style>
+      </noscript>
+
+      <Nav />
+      <Hero />
+      <How />
+      <WorkBoard />
+      <About />
+      <Contact />
+      <Foot />
+    </main>
+  );
+}
+
+function Nav() {
+  const [fw, fh] = ART["face-sm"];
+  return (
+    <nav className="nav" aria-label="Main">
+      <a href="#top" className="nav-face" aria-label="Jawad Jalal, home">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/px/face-sm.png" alt="" width={fw} height={fh} className="pxart" />
       </a>
-
-      <SiteNav groups={NAV} />
-      <Rail />
-
-      {/* The halftone the bar hangs over. The pointer pushes the dots and they
-          warm to the orange, the page's one moving texture. */}
-      <div className="dot-band h-28 w-full sm:h-36" aria-hidden="true">
-        <DotField />
-      </div>
-
-      <main id="main" className="mx-auto w-full max-w-column px-4 sm:px-6">
-        <Hero />
-        <About />
-
-        <Section title="Projects" id="projects" obj="projects" aside="live work" doodle="/ink/m-laptop.webp" tilt={-9}>
-          <Grid items={NOW.filter((i) => i.shot || i.emoji)} />
-        </Section>
-
-        <Section title="Skills" id="skills" obj="skills" doodle="/ink/m-sketchbook.webp" tilt={-7}>
-          {/* Each area is a station: its glossy object, joined to the next by
-              ignura's pipe, then what it covers and the tools in it. */}
-          <ul className="skills">
-            <IconPipe />
-            {SKILLS_TABLE.map((row, i) => (
-              <Reveal key={row.area} as="li" index={i} step={0.07} className="skill">
-                <span className="skill-ico" data-ipipe-ico>
-                  <Obj name={SKILL_OBJ[row.icon]} size={44} />
-                </span>
-                <div className="min-w-0">
-                  <h3 className="text-[20px] font-bold leading-tight tracking-[-0.02em]">{row.area}</h3>
-                  <p className="mt-0.5 text-[15px] text-[var(--ink-read)]">{row.what}</p>
-                  <ul className="mt-3 flex flex-wrap gap-1.5">
-                    {row.tools.map((t) => (
-                      <li key={t.label} className="tool">
-                        {t.brand ? <Brand name={t.brand} size={14} /> : t.icon ? <Icon name={t.icon} size={14} /> : null}
-                        {t.label}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            ))}
-          </ul>
-        </Section>
-
-        <section id="elsewhere" className="sec scroll-mt-20">
-          <Elsewhere />
-        </section>
-
-        <Section title="Where it overlaps" id="overlaps" obj="overlaps" doodle="/ink/m-rocket.webp" tilt={12}>
-          <div className="py-4 sm:px-8">
-            <Venn />
-          </div>
-        </Section>
-      </main>
-
-      <Footer />
-    </div>
+      <a href="#about">about</a>
+      <a href="#work" className="nav-perch">
+        work
+        <Doodle name="pigeon" cell={1} className="perch" />
+      </a>
+      <a href="#contact">say hi</a>
+      <a href="/blog">blog</a>
+    </nav>
   );
 }
 
 function Hero() {
   return (
-    <header className="hero relative pt-10 sm:pt-14">
-      <span aria-hidden="true" className="margin-doodle" style={{ rotate: "-6deg" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/ink/m-bus.webp" alt="" className="ink" />
-      </span>
-      {/* No box: the name and his drawing sit on the page. */}
-      <div className="hero-top">
-        <div className="min-w-0">
-          <h1 className="hero-name">{IDENTITY.properName}</h1>
-        </div>
-        <Portrait />
-      </div>
-      <p className="hero-say mt-7">
-        {HERO.lines.map((line, i) => (
-          <span key={i} className="hero-line">
-            {line.map((v) => (
-              <span key={v.text}>
-                {v.lead && `${v.lead} `}
-                <span className="hero-verb">
-                  <Obj name={v.obj} size={0} className="hero-ico" />
-                  {v.text.split(" ")[0]}
-                </span>
-                {` ${v.text.split(" ").slice(1).join(" ")} `}
-              </span>
-            ))}
-            {i === HERO.lines.length - 1 && (
-              <>
-                <em className="rev" data-t={HERO.pop}>
-                  {HERO.pop}
-                </em>
-                .
-              </>
-            )}
+    <section className="px-hero" id="top" aria-labelledby="hero-h">
+      <Doodle name="floppy" cell={2} className="dd dd-floppy" />
+      <Doodle name="controller" cell={2} className="dd dd-controller" />
+      <Doodle name="tea" cell={2} className="dd dd-tea" />
+      <Doodle name="plane" cell={2} className="dd dd-plane" />
+
+      <div className="sheet" data-in>
+        <header className="bar">
+          <span className="bar-dots" aria-hidden="true">
+            <i />
+            <i />
+            <i />
           </span>
-        ))}
-      </p>
-      <HeroCtas />
-    </header>
+          <span className="bar-title">jawad.png</span>
+          <span className="bar-meta">1-bit · 100%</span>
+        </header>
+        <div className="sheet-body">
+          <div className="hero-copy">
+            <p className="sig">jawad jalal</p>
+            <p className="kicker">design engineer · 15 · london</p>
+            <h1 id="hero-h" className="h1">
+              i make a <br />
+              <mark>website</mark>
+              <br />a day.
+            </h1>
+            <p className="lede">
+              I design and build my own products, from the brand to the code that ships. Ignaru and Ignura are
+              mine. Below is the sketchbook, one site at a time, nearly all of it live.
+            </p>
+            <div className="ctas">
+              <a href="#work" className="btn">
+                see the work <Bit name="arrowDown" cell={2} />
+              </a>
+              <a href={`mailto:${IDENTITY.email}`} className="btn btn-ghost">
+                say hi
+              </a>
+            </div>
+          </div>
+          <Lens
+            src="/px/hero-ink.png"
+            still="/px/hero-still.png"
+            alt="A sketch of Jawad, curly hair and a grin, painting a website with a giant pencil, a pigeon on the browser window"
+          />
+        </div>
+        <footer className="sheet-foot">
+          <span>
+            <LondonTime />
+          </span>
+          <span>{WORK.length} sites in the sketchbook</span>
+        </footer>
+      </div>
+    </section>
   );
 }
 
-function About() {
-  // Parsed on the server: the icon tokens never reach the browser as text,
-  // and the finished sentence is in the HTML for anyone who never runs the
-  // script.
-  const intro = ABOUT.map(parseProse);
-  const tail = ABOUT_TAIL.map(parseProse);
+const NOTES: { k: string; title: string; body: string; icon: DoodleName; look: string }[] = [
+  {
+    k: "design",
+    title: "design it.",
+    body: "The brand and the interface. Drawn first, then designed in Figma or straight in code.",
+    icon: "pencil",
+    look: "note-paper",
+  },
+  {
+    k: "build",
+    title: "build it.",
+    body: "Next.js, React, TypeScript and real shaders. Claude Code and Codex do the typing, I make the calls.",
+    icon: "laptop",
+    look: "note-blue",
+  },
+  {
+    k: "ship",
+    title: "ship it.",
+    body: "Live on the web the same day. Then the next one.",
+    icon: "rocket",
+    look: "note-grid",
+  },
+];
 
+function How() {
   return (
-    <Section title="About" id="about" obj="about" doodle="/ink/m-tea.webp" tilt={8}>
-      <div className="space-y-3 text-[17px] leading-relaxed">
-        {intro.map((parsed, i) => (
-          <Streamed key={i} parsed={parsed} animate delay={i * 0.3} className={i === 0 ? "about-lead" : ""} />
+    <section className="how" aria-label="How I work">
+      <Doodle name="bulb" cell={2} className="dd dd-bulb" />
+      <Doodle name="cube" cell={2} className="dd dd-cube" />
+      <div className="notes">
+        {NOTES.map((n, i) => (
+          <article key={n.k} className={`note ${n.look}`} data-in style={{ "--i": i } as React.CSSProperties}>
+            <span className="tape" aria-hidden="true" />
+            <Icon name={n.icon} tone={n.look === "note-blue" ? "i" : "b"} cell={3} />
+            <h2>{n.title}</h2>
+            <p>{n.body}</p>
+          </article>
         ))}
+      </div>
+    </section>
+  );
+}
 
-        {/* The roles, on one soft slab: the product's own logo, its name, and
-            what he does there on the right. One surface rather than a box per
-            row, so it reads as one list. */}
-        <ul className="roles my-5">
+// The board's columns, by position: the two pinned products side by side,
+// then a repeating run of spans and drops so the stills land like prints
+// pinned to a board rather than a uniform grid.
+const PINS = [
+  { span: 7, drop: 0 },
+  { span: 5, drop: 96 },
+];
+const RUN = [
+  { span: 4, drop: 0 },
+  { span: 4, drop: 64 },
+  { span: 4, drop: 16 },
+  { span: 6, drop: 0 },
+  { span: 6, drop: 72 },
+  { span: 5, drop: 24 },
+  { span: 7, drop: 0 },
+  { span: 4, drop: 48 },
+  { span: 4, drop: 0 },
+  { span: 4, drop: 88 },
+  { span: 7, drop: 0 },
+  { span: 5, drop: 56 },
+];
+const place = (i: number) => (i < PINS.length ? PINS[i] : RUN[(i - PINS.length) % RUN.length]);
+
+function WorkBoard() {
+  return (
+    <section className="work" id="work" aria-labelledby="work-h">
+      <div className="work-head" data-in>
+        <Doodle name="sketchbook" cell={2} className="dd dd-sketchbook" />
+        <h2 id="work-h" className="h2">
+          the sketchbook
+        </h2>
+        <p>
+          A site a day, each one designed and built by me. My own two are pinned, the rest run newest
+          first. Concepts are pitch sites I made for real companies.
+        </p>
+      </div>
+      <div data-in>
+        <Log work={WORK} />
+      </div>
+      <div className="board">
+        <div className="ruler ruler-x" aria-hidden="true">
+          {Array.from({ length: 13 }, (_, i) => (
+            <span key={i}>{i * 128}</span>
+          ))}
+        </div>
+        <div className="ruler ruler-y" aria-hidden="true">
+          {Array.from({ length: 48 }, (_, i) => (
+            <span key={i}>{String(i + 1).padStart(2, "0")}</span>
+          ))}
+        </div>
+        <Doodle name="pigeon" cell={2} className="bd bd-1" />
+        <Doodle name="rocket" cell={2} className="bd bd-2" />
+        <Doodle name="plant" cell={2} className="bd bd-4" />
+        <ol className="board-grid">
+          {WORK.map((w, i) => (
+            <Card key={w.key} w={w} i={i} />
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function Card({ w, i }: { w: Work; i: number }) {
+  const l = place(i);
+  const big = l.span >= 7;
+  const win = (
+    <div className="win">
+      <div className="win-bar">
+        <span className="bar-dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+        <span className="win-title">{w.host}</span>
+        <span className="win-no">{w.pinned ? "pinned" : `no. ${String(i - 1).padStart(2, "0")}`}</span>
+      </div>
+      <Develop src={w.still} alt={`${w.name}, the first screen`} width={1600} height={1000} priority={i < 2} pos={w.pos} />
+      {big && w.phone && (
+        <div className="phone" aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={w.phone} alt="" width={780} height={1688} loading="lazy" />
+        </div>
+      )}
+    </div>
+  );
+  const ext = w.url?.startsWith("http");
+  return (
+    <li
+      className={`card ${big ? "card-big" : ""} ${w.pinned ? "card-pin" : ""}`}
+      style={{ "--span": l.span, "--drop": `${l.drop}px` } as React.CSSProperties}
+      data-in
+    >
+      {w.url ? (
+        <a href={w.url} target={ext ? "_blank" : undefined} rel="noreferrer" className="card-link" aria-label={`${w.name}, opens ${w.host}`}>
+          {win}
+        </a>
+      ) : (
+        <div className="card-link">{win}</div>
+      )}
+      <div className="cap">
+        <h3>
+          {w.name}
+          {w.tag && <span className={`tag tag-${w.tag}`}>{w.tag}</span>}
+        </h3>
+        <p>{w.line}</p>
+        {w.url ? (
+          <a href={w.url} target={ext ? "_blank" : undefined} rel="noreferrer" className="cap-url">
+            {w.host} <Bit name="arrowOut" cell={1} />
+          </a>
+        ) : (
+          <span className="cap-url cap-off">not public yet</span>
+        )}
+        {w.date && <time dateTime={w.date}>{fmt(w.date)}</time>}
+      </div>
+    </li>
+  );
+}
+
+function fmt(d: string) {
+  return new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }).toLowerCase();
+}
+
+const ROLE_ICON: Record<string, DoodleName> = {
+  ignura: "rocket",
+  menufit: "phone",
+  bevel: "cube",
+  okara: "bulb",
+  ignaru: "pencil",
+};
+
+function About() {
+  const [fw, fh] = ART.face;
+  return (
+    <section className="about" id="about" aria-labelledby="about-h">
+      <Doodle name="bus" cell={2} className="dd dd-bus" />
+      <Doodle name="bigben" cell={2} className="dd dd-bigben" />
+      <figure className="polaroid" data-in>
+        <span className="tape" aria-hidden="true" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/px/face.png" alt="Jawad, drawn in pixels: curly hair, a taper fade" width={fw * 3} height={fh * 3} className="pxart" />
+        <figcaption>jawad, london</figcaption>
+      </figure>
+      <div className="about-copy" data-in>
+        <h2 id="about-h" className="h2">
+          who&apos;s drawing
+        </h2>
+        <p>
+          I&apos;m Jawad, 15, in London. I started making things for money at thirteen and never really stopped.
+          These days that means a studio, a design tool and design work on other people&apos;s apps.
+        </p>
+        <ul className="px-roles">
           {ABOUT_ROLES.map((r) => (
             <li key={r.key}>
-              <Logo src={r.logo} emoji={r.emoji} tile={r.logoTile} size={28} />
-              <Preview {...(heroFor(r.name) ?? {})}>
-                {r.href ? (
-                  <a
-                    href={r.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="tap font-bold underline decoration-transparent underline-offset-[3px] transition-colors hover:decoration-foreground"
-                  >
-                    {r.name}
-                  </a>
-                ) : (
-                  <span className="font-bold">{r.name}</span>
-                )}
-              </Preview>
-              <span className="ml-auto text-right text-[15px] text-muted-foreground">
-                {r.role}
-                {r.stat && <span className="text-foreground"> · {r.stat}</span>}
-              </span>
+              <Icon name={ROLE_ICON[r.key] ?? "cursor"} tone="i" cell={1} />
+              <a href={r.href} target="_blank" rel="noreferrer">
+                {r.name}
+              </a>
+              <span className="role">{r.role}</span>
+              {r.stat && <span className="stat">{r.stat}</span>}
             </li>
           ))}
         </ul>
-
-        {tail.map((parsed, i) => (
-          <Streamed key={i} parsed={parsed} animate delay={0.8 + i * 0.3} />
-        ))}
       </div>
-    </Section>
+    </section>
   );
 }
 
-/** The project grid. With an odd count the first project is drawn across the
- *  full width and the rest sit in pairs under it, so five reads as one
- *  headline and two rows of two rather than four and an orphan. */
-function Grid({ items }: { items: Item[] }) {
-  const lead = items.length % 2 === 1 ? items[0] : null;
-  const pairs = lead ? items.slice(1) : items;
+const TAKES = [
+  "launch pages, live in about a week",
+  "product design for apps",
+  "brand identity and logos",
+  "3d art for games",
+];
 
+function Contact() {
   return (
-    <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-      {lead && <Card item={lead} index={0} wide />}
-      {pairs.map((item, i) => (
-        <Card key={item.key} item={item} index={i + (lead ? 1 : 0)} />
-      ))}
-    </div>
-  );
-}
-
-function Card({ item, index, wide = false }: { item: Item; index: number; wide?: boolean }) {
-  return (
-    <Reveal
-      index={index}
-      step={0.08}
-      className={`proj group/card relative flex flex-col ${wide ? "sm:col-span-2" : ""}`}
-    >
-      {item.href && (
-        <a
-          href={item.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cur="open"
-          className="absolute inset-0 z-[1] rounded-[12px] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
-        >
-          <span className="sr-only">{`Open ${item.name}`}</span>
-        </a>
-      )}
-      {item.ink && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={item.ink} alt="" aria-hidden="true" width={76} height={76} className="proj-doodle ink" />
-      )}
-      {/* The shot sits on a soft grey slab, inset at the top and sides and
-          running off the bottom edge, like a screen standing in a tray. */}
-      <div className="proj-slab">
-        {item.emoji ? (
-          <div className={`proj-shot flex w-full items-center justify-center bg-white ${wide ? "h-52 sm:h-72" : "h-48 sm:h-52"}`}>
-            <span className="text-6xl leading-none" aria-hidden="true">
-              {item.emoji}
-            </span>
-          </div>
-        ) : (
-          <Image
-            src={item.shot!}
-            alt=""
-            width={1200}
-            height={630}
-            className={`proj-shot w-full object-cover object-top ${wide ? "h-52 sm:h-72" : "h-48 sm:h-52"}`}
-            style={item.shotPos ? { objectPosition: item.shotPos } : undefined}
-          />
-        )}
-      </div>
-      <div className="mt-3 flex items-center justify-between gap-3">
-        <h3 className="flex min-w-0 items-center gap-2 text-[17px] font-bold leading-snug tracking-[-0.01em]">
-          {item.name}
-          {item.roleNote && (
-            <span className="text-[13px] font-normal text-muted-foreground">{item.roleNote}</span>
-          )}
-        </h3>
-        <span className="proj-go" aria-hidden="true">
-          <Status status={item.status} />
-          <Icon name="chev" size={14} className="proj-arrow" />
-        </span>
-      </div>
-      <p className="mt-1 text-[15px] leading-relaxed text-[var(--ink-read)]">{item.blurb}</p>
-    </Reveal>
-  );
-}
-
-// Status, as a glyph rather than a pill. A live thing gets a small ink tick;
-// a thing being built gets the orange bolt; a thing that is over is greyed.
-const STATUS: Record<string, { icon: IconName; hue: string; say: string }> = {
-  Live: { icon: "check", hue: "var(--ink)", say: "Live" },
-  Building: { icon: "bolt", hue: "var(--building)", say: "Being built" },
-  Waitlist: { icon: "clock", hue: "var(--building)", say: "Waitlist open" },
-  Discontinued: { icon: "target", hue: "var(--muted-foreground)", say: "Not worked on any more" },
-};
-
-function Status({ status }: { status: string }) {
-  const s = STATUS[status] ?? STATUS.Building;
-  return (
-    <span
-      className="inline-flex items-center gap-1 text-[12px] font-medium"
-      style={{ color: s.hue }}
-      title={s.say}
-    >
-      <Icon name={s.icon} size={14} />
-      <span className="sr-only">{s.say}</span>
-    </span>
-  );
-}
-
-/**
- * Four overlapping discs with him in the middle.
- *
- * Positions are percentages of a square box, so the whole thing scales from a
- * phone to a desktop without a media query. In black and white the discs are
- * one faint ink each, so where two cross the grey deepens on its own and the
- * centre, where all four meet, is the darkest place on the figure.
- */
-function Venn() {
-  const objs: ObjName[] = ["work", "chat", "gear", "stack"];
-  const discs = [
-    "top-0 left-1/2 -translate-x-1/2",
-    "top-[22%] left-[2%]",
-    "top-[22%] right-[2%]",
-    "bottom-0 left-1/2 -translate-x-1/2",
-  ];
-  const labels = [
-    "left-1/2 top-[13%] -translate-x-1/2 -translate-y-1/2",
-    "left-[22%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[15%]",
-    "right-[22%] top-1/2 -translate-y-1/2 translate-x-1/2 sm:right-[15%]",
-    "bottom-[13%] left-1/2 -translate-x-1/2 translate-y-1/2",
-  ];
-
-  return (
-    <div className="venn relative mx-auto aspect-square w-full max-w-[540px]">
-      {discs.map((pos, i) => (
-        <div key={i} aria-hidden="true" className={`venn-disc absolute size-[58%] rounded-full ${pos}`} />
-      ))}
-      {VENN.map((label, i) => (
-        <span key={label} className={`venn-label ${labels[i]}`}>
-          <Obj name={objs[i]} size={0} className="venn-obj" />
-          <span className="venn-text">{label}</span>
-        </span>
-      ))}
-      {/* just him, cut out of his tile, so the centre reads as a face and not a box */}
-      <Image
-        src="/design/jawad-ink.webp"
-        alt=""
-        width={320}
-        height={320}
-        className="venn-face absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-      />
-    </div>
-  );
-}
-
-/**
- * The close, after ignura.com's: a field of dots the pointer pushes around,
- * and a soft card rising out of it with curved top corners. The card carries
- * the ask, the page's links, and the name set large with its mark, so the last
- * screen is a designed end rather than a sitemap.
- */
-function Footer() {
-  const PAGE = [
-    { label: "About", href: "#about" },
-    { label: "Projects", href: "#projects" },
-    { label: "Skills", href: "#skills" },
-    { label: "Blog", href: "/blog" },
-  ];
-  const ELSE = SOCIALS.filter((s) => s.label !== "Email");
-
-  return (
-    <footer id="contact" className="foot scroll-mt-10">
-      <div className="foot-field" aria-hidden="true">
-        <DotField />
-      </div>
-      <div className="foot-card">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
-            <h2 className="foot-ask">Still reading? Let&rsquo;s talk.</h2>
-            <p className="mt-3 max-w-sm text-[17px] text-[var(--ink-read)]">
-              Something clicked, then. Send a line about what you are making.
-            </p>
-            <div className="mt-6">
-              <Cta />
-            </div>
-          </div>
-          <FootList title="The page" items={PAGE} />
-          <FootList title="Elsewhere" items={ELSE.map((s) => ({ label: s.label, href: s.href, brand: s.brand, icon: s.icon }))} />
-        </div>
-        <div className="mt-16 flex flex-wrap items-end justify-between gap-6 sm:mt-24">
-          <p aria-hidden="true" className="foot-mark">
-            <Face className="foot-mark-box" />
-            {IDENTITY.wordmark.charAt(0) + IDENTITY.wordmark.slice(1).toLowerCase()}
-          </p>
-          <p className="pb-3 text-[15px] text-muted-foreground">
-            Designer and founder in London. &copy; {IDENTITY.properName} 2026
-          </p>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-function FootList({
-  title,
-  items,
-}: {
-  title: string;
-  items: { label: string; href: string; brand?: import("@/components/Brand").BrandKey; icon?: IconName }[];
-}) {
-  return (
-    <div>
-      <h3 className="text-[15px] font-medium text-muted-foreground">{title}</h3>
-      <ul className="mt-3 space-y-2">
-        {items.map((it) => (
-          <li key={it.label}>
-            <a
-              href={it.href}
-              target={it.href.startsWith("http") ? "_blank" : undefined}
-              rel="noopener noreferrer"
-              className="foot-link"
-            >
-              {it.brand ? <Brand name={it.brand} size={14} /> : it.icon ? <Icon name={it.icon} size={14} /> : null}
-              {it.label}
+    <section className="contact" id="contact" aria-labelledby="contact-h">
+      <Doodle name="postbox" cell={2} className="dd dd-postbox" />
+      <Doodle name="console" cell={2} className="dd dd-console" />
+      <div className="card-sheet" data-in>
+        <Doodle name="plane" cell={2} className="fly" />
+        <div className="contact-l">
+          <h2 id="contact-h" className="h2 h2-ink">
+            got something
+            <br />
+            in mind?
+          </h2>
+          <ul className="takes">
+            {TAKES.map((t) => (
+              <li key={t}>
+                <span className="box" aria-hidden="true">
+                  <Bit name="check" cell={2} />
+                </span>
+                {t}
+              </li>
+            ))}
+          </ul>
+          <div className="ctas">
+            <a href={`mailto:${IDENTITY.email}`} className="btn">
+              work with me
             </a>
-          </li>
-        ))}
-      </ul>
-    </div>
+            <a href={`mailto:${IDENTITY.email}`} className="mail">
+              {IDENTITY.email}
+            </a>
+          </div>
+        </div>
+        <div className="contact-r">
+          <p className="kicker">elsewhere</p>
+          <ul className="socials">
+            {SOCIALS.filter((s) => s.label !== "Email").map((s) => (
+              <li key={s.label}>
+                <a href={s.href} target={s.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                  {s.label.toLowerCase()}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Foot() {
+  const [sw, sh] = ART.scene;
+  return (
+    <footer className="px-foot">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/px/scene.png"
+        alt="Jawad cross-legged on a giant laptop, browser windows on an easel behind him and London across the river"
+        width={sw * 2}
+        height={sh * 2}
+        className="pxart scene"
+        loading="lazy"
+      />
+      <div className="ticker" aria-hidden="true">
+        <div className="ticker-run">
+          {[0, 1].map((k) => (
+            <span key={k}>
+              {WORK.map((w) => (
+                <span key={w.key}>
+                  {w.name} <Bit name="heart" cell={2} />
+                </span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+      <p className="px-foot-line">
+        <span>drawn by hand, kept in pixels. © {new Date().getFullYear()} jawad jalal</span>
+        <a href="/blog">blog</a>
+        <a href={IDENTITY.cv}>cv</a>
+      </p>
+    </footer>
   );
 }

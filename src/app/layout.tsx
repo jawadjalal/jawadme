@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { IDENTITY, SUMMARY, SKILLS, SOCIALS } from "@/lib/profile";
 
-const TITLE = `${IDENTITY.properName}, designer and founder of Ignura`;
+const TITLE = `${IDENTITY.properName}, design engineer`;
 const DESCRIPTION =
-  "Designer and founder in London. I run Ignura (ignura.com), a web design agency, build Ignaru (ignaru.com), an agent-native design tool, and design at MenuFit and Okara.";
+  "A 15-year-old design engineer in London. I design and build my own products, Ignaru and Ignura, and put a new site out most days. This is the sketchbook.";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,15 +16,14 @@ export const metadata: Metadata = {
     url: IDENTITY.site,
     siteName: IDENTITY.properName,
     type: "profile",
-    // Built by scripts/og.mjs from the site's own screenshots, so the card
-    // shows the work rather than describing it. Rebuild with `npm run og`
-    // after changing which projects lead.
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: SUMMARY }],
+    // A 1200x630 capture of the hero sheet itself, so the card is the page.
+    // Ship a changed card under a new name: Vercel caches public files.
+    images: [{ url: "/og-pixel.png", width: 1200, height: 630, alt: SUMMARY }],
   },
   twitter: {
     card: "summary_large_image",
     creator: "@jawadmakes",
-    images: ["/og.png"],
+    images: ["/og-pixel.png"],
   },
   alternates: { canonical: IDENTITY.site },
 };
