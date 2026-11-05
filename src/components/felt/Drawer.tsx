@@ -6,10 +6,12 @@
  * project ships. Escape and the backdrop close it, the arrow keys step through. Styles: felt.css (`fh-dr`).
  */
 import { useEffect, useRef, useState, type PointerEvent as RPE } from "react";
-import { BOOK, SITES, SLOTS, feltSrc } from "./copy";
+import { Book } from "./Book";
+import { dayLink, type Booking } from "./booking";
+import { SITES, SLOTS, feltSrc, type Site } from "./copy";
 import { sfx } from "./Sound";
 
-export function Drawer({ at, onClose, onStep }: { at: number | null; onClose: () => void; onStep: (by: number) => void }) {
+export function Drawer({ booking, at, onClose, onStep }: { booking: Booking; at: number | null; onClose: () => void; onStep: (by: number) => void }) {
   const ref = useRef<HTMLDialogElement>(null);
   const [shown, setShown] = useState(0);
   useEffect(() => {
@@ -31,7 +33,7 @@ export function Drawer({ at, onClose, onStep }: { at: number | null; onClose: ()
   return (
     <dialog
       ref={ref}
-      className="fh-dr"
+      className={s.id === "sites" ? "fh-dr fh-dr-wide" : "fh-dr"}
       aria-labelledby="fh-dr-t"
       style={{ ["--c" as string]: s.color }}
       onClick={(e) => {
@@ -67,7 +69,7 @@ export function Drawer({ at, onClose, onStep }: { at: number | null; onClose: ()
         {s.id === "agents" && <Agents />}
         {s.id === "design" && <Design />}
         {s.id === "sites" && <Sites />}
-        {s.id === "ship" && <Ship />}
+        {s.id === "ship" && <Ship b={booking} />}
       </article>
     </dialog>
   );
@@ -96,6 +98,11 @@ function Agents() {
         coding agent fixes it in your files.
       </p>
       <div className="fh-card fh-agents">
+        <div className="fh-shot">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/sites/ignaru.webp" alt="ignaru.com, the first screen" width={960} height={600} />
+          <span className="fh-shot-ring" aria-hidden="true" />
+        </div>
         <div className="fh-seg" role="tablist" aria-label="Agents">
           {AGENTS.map((g, i) => (
             <button key={g.name} type="button" role="tab" aria-selected={i === a} onClick={() => setA(i)}>
@@ -158,81 +165,139 @@ function Design() {
         </svg>
         <p className="fh-cap">Drag a handle. Every curve on my sites starts like this.</p>
       </div>
+      <Swatches />
     </>
   );
 }
 
+const SW = [
+  ["Petal", "#9a4dea"],
+  ["Coral", "#f0454f"],
+  ["Yolk", "#f5b400"],
+  ["Sky", "#1f7ae0"],
+  ["Ink", "#050505"],
+];
+
+function Swatches() {
+  const [got, setGot] = useState<string | null>(null);
+  return (
+    <div className="fh-card fh-sw">
+      <p className="fh-sw-h">This site&apos;s palette. Click to copy.</p>
+      <ul>
+        {SW.map(([n, hex]) => (
+          <li key={n}>
+            <button
+              type="button"
+              style={{ ["--sw" as string]: hex }}
+              onClick={() => {
+                void navigator.clipboard?.writeText(hex);
+                setGot(n);
+                setTimeout(() => setGot((g) => (g === n ? null : g)), 1200);
+              }}
+            >
+              <i />
+              <b>{got === n ? "Copied" : n}</b>
+              <span>{hex}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+const GROUPS = ["All", "Products", "Pitch sites", "Concepts", "Templates"] as const;
+
 function Sites() {
+  const [g, setG] = useState<(typeof GROUPS)[number]>("All");
+  const list = g === "All" ? SITES : SITES.filter((w) => w.group === g);
   return (
     <>
-      <p>Launch pages and pitch sites for founders, designed and built from scratch. A few recent ones:</p>
-      <ul className="fh-sites">
-        {SITES.map((w) => {
-          const body = (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/work/${w.still}.webp`} alt={`${w.name}, the first screen`} width={1600} height={1000} loading="lazy" />
-              <span className="fh-site-name">
-                {w.name}
-                {w.url ? <Chev d="M4.5 9.5l5-5M5.5 4.5h4v4" /> : <em>private</em>}
-              </span>
-              <span className="fh-site-line">{w.line}</span>
-            </>
-          );
-          return (
-            <li key={w.name}>
-              {w.url ? (
-                <a href={w.url} target="_blank" rel="noreferrer">
-                  {body}
-                </a>
-              ) : (
-                <div>{body}</div>
-              )}
-            </li>
-          );
-        })}
+      <p>
+        {SITES.length} live sites: my products, pitch sites for founders, redesign concepts and templates. Each one
+        designed and built from scratch.
+      </p>
+      <div className="fh-chips" role="tablist" aria-label="Filter sites">
+        {GROUPS.map((x) => (
+          <button key={x} type="button" role="tab" aria-selected={x === g} onClick={() => setG(x)}>
+            {x}
+            <span>{x === "All" ? SITES.length : SITES.filter((w) => w.group === x).length}</span>
+          </button>
+        ))}
+      </div>
+      <ul className="fh-gal">
+        {list.map((w) => (
+          <SiteCard key={w.key} w={w} />
+        ))}
       </ul>
     </>
   );
 }
 
+function SiteCard({ w }: { w: Site }) {
+  return (
+    <li>
+      <a href={`https://${w.host}`} target="_blank" rel="noreferrer" className="fh-site">
+        <span className="fh-site-win">
+          <span className="fh-site-bar" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <span>{w.host}</span>
+          </span>
+          <span className="fh-site-view" style={{ ["--tall" as string]: `url(/sites/${w.key}-tall.webp)` }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`/sites/${w.key}.webp`} alt={`${w.name}, the first screen`} width={960} height={600} loading="lazy" decoding="async" />
+          </span>
+        </span>
+        <span className="fh-site-meta">
+          <b>{w.name}</b>
+          <em>{w.group === "Products" ? "Product" : w.group.replace(/s$/, "").replace("Pitch site", "Pitch")}</em>
+          <Chev d="M4.5 9.5l5-5M5.5 4.5h4v4" />
+        </span>
+        <span className="fh-site-line">{w.line}</span>
+      </a>
+    </li>
+  );
+}
+
 const STEPS = [
-  ["brief", "one call, and a page of what the site has to do"],
-  ["design", "the brand, the type, every screen"],
-  ["build", "real code in your repo, not a template"],
-  ["ship", "a launch page live in about a week"],
+  ["Call", "Fifteen minutes on what the site has to do and who it is for."],
+  ["Design", "The brand, the type and every screen, shown to you as it grows."],
+  ["Build", "Real code in your repo, not a template you rent."],
+  ["Ship", "A launch page live in about a week, then we keep going."],
 ];
 
-function Ship() {
-  const [n, setN] = useState(STEPS.length);
-  const run = () => {
-    setN(0);
-    STEPS.forEach((_, i) => setTimeout(() => setN(i + 1), 420 * (i + 1)));
-  };
+function Ship({ b }: { b: Booking }) {
   return (
     <>
-      <p>Most projects start with a fifteen minute call through Ignura, my studio. This is how it goes from there.</p>
-      <div className="fh-card fh-term">
-        <div className="fh-term-bar">
-          <i />
-          <i />
-          <i />
-          <button type="button" onClick={run}>
-            run again
-          </button>
-        </div>
-        <ol>
-          {STEPS.map(([k, v], i) => (
-            <li key={k} className={i < n ? "is-on" : ""}>
-              <b>$ {k}</b> <span>{v}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
-      <div className="fh-dr-cta">
-        <a className="fh-btn" href={BOOK} target="_blank" rel="noreferrer">
-          Book a call
-        </a>
+      <p>Most projects start with a short call through Ignura, my studio. From there it goes like this.</p>
+      <ol className="fh-steps">
+        {STEPS.map(([k, v], i) => (
+          <li key={k} style={{ ["--i" as string]: i }}>
+            <span className="fh-step-n">{i + 1}</span>
+            <b>{k}</b>
+            <span>{v}</span>
+          </li>
+        ))}
+      </ol>
+      <div className="fh-card fh-cal">
+        <Book b={b} big />
+        {b.slots.length > 0 && (
+          <>
+            <p className="fh-cal-h">Next free days</p>
+            <ul className="fh-days">
+              {b.slots.map((x) => (
+                <li key={x.iso}>
+                  <a href={dayLink(x.iso)} target="_blank" rel="noreferrer">
+                    <b>{x.day}</b>
+                    <span>from {x.time}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
     </>
   );
