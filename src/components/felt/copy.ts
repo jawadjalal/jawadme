@@ -4,7 +4,7 @@
 export const BOOK = "https://cal.com/jawad-jalal-hesqbk/intro-call-with-ignura";
 export const EMAIL = "hijawadjalal@gmail.com";
 
-export const LINE = "I design and build sites for startups, and I'm building Ignaru.";
+export const LINE = "I'm a design engineer. I build sites for startups, and I'm building Ignaru.";
 
 export const feltSrc = (name: string) => ({
   src: `/felt/${name}-1x.webp`,

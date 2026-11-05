@@ -5,7 +5,8 @@ import { Slots } from "@/components/felt/Slots";
 import { SoundToggle } from "@/components/felt/Sound";
 import { Book } from "@/components/felt/Book";
 import { getBooking } from "@/components/felt/booking";
-import { LINE, SLOTS, SOCIALS, feltSrc } from "@/components/felt/copy";
+import { LINE, SLOTS, feltSrc } from "@/components/felt/copy";
+import { Socials } from "@/components/felt/Socials";
 import "@/components/felt/felt.css";
 
 // Not preloaded: the first paint is the felt, and the text may swap in a beat later.
@@ -34,20 +35,19 @@ export default async function Home() {
       </header>
       <main className="fh-main">
         <Slots booking={booking} />
+        <h1 className="fh-line">{LINE}</h1>
       </main>
       <footer className="fh-foot">
         <div className="fh-tab">
           <div className="fh-me">
-            <p className="fh-name">Jawad Jalal</p>
-            <h1 className="fh-line">{LINE}</h1>
-            <nav className="fh-links" aria-label="Elsewhere">
-              {SOCIALS.map((l) => (
-                <a key={l.label} href={l.href} target={l.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
-                  {l.label}
-                </a>
-              ))}
-            </nav>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="fh-av" src="/felt/jawad-av-96.webp" srcSet="/felt/jawad-av-96.webp 1x, /felt/jawad-av.webp 2x" alt="Jawad" width={48} height={48} />
+            <p>
+              <b>Jawad Jalal</b>
+              <span>Design engineer, London</span>
+            </p>
           </div>
+          <Socials />
           <Book b={booking} />
         </div>
       </footer>
