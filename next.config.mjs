@@ -8,7 +8,12 @@ const nextConfig = {
   },
   // the Jobbie hero pitch is a static folder in public/jobbie; its pages resolve assets through <base href="/jobbie/">
   async rewrites() {
-    return [{ source: "/jobbie", destination: "/jobbie/journey.html" }];
+    return [
+      { source: "/jobbie", destination: "/jobbie/journey.html" },
+      // Next does not serve a directory index out of public/, so the Clicky Graph demo needs its own rewrite
+      { source: "/heyclicky", destination: "/heyclicky/index.html" },
+      { source: "/heyclicky/", destination: "/heyclicky/index.html" },
+    ];
   },
 };
 export default nextConfig;

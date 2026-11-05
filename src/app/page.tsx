@@ -1,424 +1,250 @@
-import Image from "next/image";
-import { Brand } from "@/components/Brand";
-import { ContactModal } from "@/components/ContactModal";
-import { Cta } from "@/components/Cta";
-import { HeroCtas } from "@/components/HeroCtas";
-import { Cursor } from "@/components/Cursor";
-import { Elsewhere } from "@/components/Elsewhere";
-import { Logo } from "@/components/Logo";
-import { Face, Obj, type ObjName } from "@/components/Obj";
-import { IconPipe, Pipes } from "@/components/Pipes";
-import { Portrait } from "@/components/Portrait";
-import { Rail } from "@/components/Rail";
-import { Reveal } from "@/components/Reveal";
-import { Section } from "@/components/Section";
-import { SiteNav } from "@/components/SiteNav";
-import { DotField } from "@/components/DotField";
-import { Icon, type IconName } from "@/components/Icon";
-import { Preview } from "@/components/Preview";
-import { Streamed } from "@/components/Streamed";
-import { parseProse } from "@/components/prose";
-import {
-  ABOUT, ABOUT_ROLES, ABOUT_TAIL, heroFor, HERO, NAV, IDENTITY, NOW, SKILLS_TABLE, SOCIALS, VENN, type Item,
-} from "@/lib/profile";
+import "./px.css";
+import { ABOUT_ROLES, IDENTITY, SOCIALS } from "@/lib/profile";
+import { WORK, type Work } from "@/lib/work";
+import { Bit } from "@/components/px/Bit";
+import { Desk } from "@/components/px/Desk";
+import { Develop } from "@/components/px/Develop";
+import { ART, Doodle } from "@/components/px/Doodle";
+import { Lens } from "@/components/px/Lens";
+import { Log } from "@/components/px/Log";
+import { Arrivals, LondonTime } from "@/components/px/Live";
 
-// One reading column on white paper, in ignura.com's black and white: Satoshi
-// alone, a soft grey step for anything that sits on the page, the 12px radius,
-// glossy black objects leading each heading, and one orange word. Sections are
-// told apart by space and by that grey step, never by a rule.
+// jawadjalal.com as a sketchbook kept in pixels, laid out as two panes: the
+// jawad.png sheet stays put on the left (who he is, one statement, one
+// button), and the work scrolls past it on the right, ending at a booking
+// form. Every drawing started as an ink sketch and was box-filtered onto a
+// square grid (art/pixelate.py). Square corners everywhere.
 
-const SKILL_OBJ: Record<"pen" | "code" | "sparkle" | "cube", ObjName> = {
-  pen: "work",
-  code: "gear",
-  sparkle: "chat",
-  cube: "stack",
-};
+/** Ignura's intro call, the same link ignura.com books through. */
+const BOOK = "https://cal.com/jawad-jalal-hesqbk/intro-call-with-ignura";
 
 export default function Home() {
   return (
-    <div className="relative min-h-dvh">
-      <Pipes />
-      <Cursor label="hi" />
-      <ContactModal />
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm"
-      >
-        Skip to content
-      </a>
-
-      <SiteNav groups={NAV} />
-      <Rail />
-
-      {/* The halftone the bar hangs over. The pointer pushes the dots and they
-          warm to the orange, the page's one moving texture. */}
-      <div className="dot-band h-28 w-full sm:h-36" aria-hidden="true">
-        <DotField />
+    <main className="px split" id="main">
+      <Desk />
+      <Arrivals />
+      <a href="#work" className="skip">Skip to the work</a>
+      <noscript>
+        <style>{"[data-in]{opacity:1!important;transform:none!important}.dev img{opacity:1!important}"}</style>
+      </noscript>
+      <Side />
+      <div className="pane">
+        <Bar />
+        <Gallery />
+        <Book />
+        <Foot />
       </div>
-
-      <main id="main" className="mx-auto w-full max-w-column px-4 sm:px-6">
-        <Hero />
-        <About />
-
-        <Section title="Projects" id="projects" obj="projects" aside="live work" doodle="/ink/m-laptop.webp" tilt={-9}>
-          <Grid items={NOW.filter((i) => i.shot || i.emoji)} />
-        </Section>
-
-        <Section title="Skills" id="skills" obj="skills" doodle="/ink/m-sketchbook.webp" tilt={-7}>
-          {/* Each area is a station: its glossy object, joined to the next by
-              ignura's pipe, then what it covers and the tools in it. */}
-          <ul className="skills">
-            <IconPipe />
-            {SKILLS_TABLE.map((row, i) => (
-              <Reveal key={row.area} as="li" index={i} step={0.07} className="skill">
-                <span className="skill-ico" data-ipipe-ico>
-                  <Obj name={SKILL_OBJ[row.icon]} size={44} />
-                </span>
-                <div className="min-w-0">
-                  <h3 className="text-[20px] font-bold leading-tight tracking-[-0.02em]">{row.area}</h3>
-                  <p className="mt-0.5 text-[15px] text-[var(--ink-read)]">{row.what}</p>
-                  <ul className="mt-3 flex flex-wrap gap-1.5">
-                    {row.tools.map((t) => (
-                      <li key={t.label} className="tool">
-                        {t.brand ? <Brand name={t.brand} size={14} /> : t.icon ? <Icon name={t.icon} size={14} /> : null}
-                        {t.label}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            ))}
-          </ul>
-        </Section>
-
-        <section id="elsewhere" className="sec scroll-mt-20">
-          <Elsewhere />
-        </section>
-
-        <Section title="Where it overlaps" id="overlaps" obj="overlaps" doodle="/ink/m-rocket.webp" tilt={12}>
-          <div className="py-4 sm:px-8">
-            <Venn />
-          </div>
-        </Section>
-      </main>
-
-      <Footer />
-    </div>
+    </main>
   );
 }
 
-function Hero() {
+function Side() {
+  const [fw, fh] = ART["face-sm"];
   return (
-    <header className="hero relative pt-10 sm:pt-14">
-      <span aria-hidden="true" className="margin-doodle" style={{ rotate: "-6deg" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/ink/m-bus.webp" alt="" className="ink" />
-      </span>
-      {/* No box: the name and his drawing sit on the page. */}
-      <div className="hero-top">
-        <div className="min-w-0">
-          <h1 className="hero-name">{IDENTITY.properName}</h1>
+    <aside className="side" id="top" aria-labelledby="hero-h">
+      <header className="side-top">
+        <a href="#top" className="side-me">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/px/face-sm.png" alt="" width={fw} height={fh} className="pxart" />
+          <span>hi, i&apos;m jawad</span>
+        </a>
+        <nav className="side-links" aria-label="Elsewhere">
+          <a href="/blog">blog</a>
+          <a href="https://x.com/jawadmakes" target="_blank" rel="noreferrer">
+            x
+          </a>
+        </nav>
+      </header>
+
+      <Lens
+        src="/px/hero-ink.png"
+        still="/px/hero-still.png"
+        alt="A sketch of Jawad, curly hair and a grin, painting a website with a giant pencil, a pigeon on the browser window"
+      />
+
+      <div className="side-copy">
+        <p className="status">
+          <i aria-hidden="true" />
+          design engineer · 15 · <LondonTime />
+        </p>
+        <h1 id="hero-h" className="h1">
+          i make a
+          <br />
+          <mark>website</mark>
+          <br />a day.
+        </h1>
+        <p className="lede">
+          I design and build my own products, from the brand to the code that ships. My studio Ignura builds
+          yours: launch pages go live in about a week.
+        </p>
+        <div className="ctas">
+          <a href={BOOK} target="_blank" rel="noreferrer" className="btn">
+            book a call <Bit name="arrowOut" cell={2} />
+          </a>
+          <a href={`mailto:${IDENTITY.email}`} className="mail">
+            or email me
+          </a>
         </div>
-        <Portrait />
       </div>
-      <p className="hero-say mt-7">
-        {HERO.lines.map((line, i) => (
-          <span key={i} className="hero-line">
-            {line.map((v) => (
-              <span key={v.text}>
-                {v.lead && `${v.lead} `}
-                <span className="hero-verb">
-                  <Obj name={v.obj} size={0} className="hero-ico" />
-                  {v.text.split(" ")[0]}
-                </span>
-                {` ${v.text.split(" ").slice(1).join(" ")} `}
-              </span>
-            ))}
-            {i === HERO.lines.length - 1 && (
-              <>
-                <em className="rev" data-t={HERO.pop}>
-                  {HERO.pop}
-                </em>
-                .
-              </>
-            )}
-          </span>
-        ))}
-      </p>
-      <HeroCtas />
-    </header>
-  );
-}
 
-function About() {
-  // Parsed on the server: the icon tokens never reach the browser as text,
-  // and the finished sentence is in the HTML for anyone who never runs the
-  // script.
-  const intro = ABOUT.map(parseProse);
-  const tail = ABOUT_TAIL.map(parseProse);
-
-  return (
-    <Section title="About" id="about" obj="about" doodle="/ink/m-tea.webp" tilt={8}>
-      <div className="space-y-3 text-[17px] leading-relaxed">
-        {intro.map((parsed, i) => (
-          <Streamed key={i} parsed={parsed} animate delay={i * 0.3} className={i === 0 ? "about-lead" : ""} />
-        ))}
-
-        {/* The roles, on one soft slab: the product's own logo, its name, and
-            what he does there on the right. One surface rather than a box per
-            row, so it reads as one list. */}
-        <ul className="roles my-5">
+      <div className="side-foot">
+        <p className="kicker">where i work</p>
+        <ul className="marks">
           {ABOUT_ROLES.map((r) => (
             <li key={r.key}>
-              <Logo src={r.logo} emoji={r.emoji} tile={r.logoTile} size={28} />
-              <Preview {...(heroFor(r.name) ?? {})}>
-                {r.href ? (
-                  <a
-                    href={r.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="tap font-bold underline decoration-transparent underline-offset-[3px] transition-colors hover:decoration-foreground"
-                  >
-                    {r.name}
-                  </a>
-                ) : (
-                  <span className="font-bold">{r.name}</span>
-                )}
-              </Preview>
-              <span className="ml-auto text-right text-[15px] text-muted-foreground">
-                {r.role}
-                {r.stat && <span className="text-foreground"> · {r.stat}</span>}
-              </span>
+              <a href={r.href} target="_blank" rel="noreferrer" title={`${r.name}, ${r.role}${r.stat ? `, ${r.stat}` : ""}`}>
+                <span className="mark-tile" style={r.logoTile ? { background: r.logoTile } : undefined}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={r.logo} alt="" width={20} height={20} />
+                </span>
+                {r.name}
+              </a>
             </li>
           ))}
         </ul>
-
-        {tail.map((parsed, i) => (
-          <Streamed key={i} parsed={parsed} animate delay={0.8 + i * 0.3} />
-        ))}
       </div>
-    </Section>
+    </aside>
   );
 }
 
-/** The project grid. With an odd count the first project is drawn across the
- *  full width and the rest sit in pairs under it, so five reads as one
- *  headline and two rows of two rather than four and an orphan. */
-function Grid({ items }: { items: Item[] }) {
-  const lead = items.length % 2 === 1 ? items[0] : null;
-  const pairs = lead ? items.slice(1) : items;
-
+function Bar() {
   return (
-    <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-      {lead && <Card item={lead} index={0} wide />}
-      {pairs.map((item, i) => (
-        <Card key={item.key} item={item} index={i + (lead ? 1 : 0)} />
-      ))}
+    <div className="bar-top">
+      <p>
+        <span className="bar-k">work</span>
+        <span className="bar-n">{WORK.length} sites, newest first</span>
+      </p>
+      <a href={BOOK} target="_blank" rel="noreferrer" className="btn btn-sm">
+        book a call
+      </a>
     </div>
   );
 }
 
-function Card({ item, index, wide = false }: { item: Item; index: number; wide?: boolean }) {
+function Gallery() {
   return (
-    <Reveal
-      index={index}
-      step={0.08}
-      className={`proj group/card relative flex flex-col ${wide ? "sm:col-span-2" : ""}`}
-    >
-      {item.href && (
-        <a
-          href={item.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cur="open"
-          className="absolute inset-0 z-[1] rounded-[12px] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
-        >
-          <span className="sr-only">{`Open ${item.name}`}</span>
+    <section className="gallery" id="work" aria-label="Work">
+      <div className="g-wide" data-in>
+        <Log work={WORK} />
+      </div>
+      {WORK.map((w, i) => (
+        <Card key={w.key} w={w} i={i} />
+      ))}
+    </section>
+  );
+}
+
+function Card({ w, i }: { w: Work; i: number }) {
+  const wide = i === 0;
+  const ext = w.url?.startsWith("http");
+  const win = (
+    <div className="win">
+      <div className="win-bar">
+        <span className="bar-dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+        <span className="win-title">{w.host}</span>
+        <span className="win-no">{w.pinned ? "pinned" : `no. ${String(i - 1).padStart(2, "0")}`}</span>
+      </div>
+      <Develop src={w.still} alt={`${w.name}, the first screen`} width={1600} height={1000} pos={w.pos} />
+      {wide && w.phone && (
+        <div className="phone" aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={w.phone} alt="" width={780} height={1688} loading="lazy" />
+        </div>
+      )}
+    </div>
+  );
+  return (
+    <article className={`card ${wide ? "g-wide card-big" : ""} ${w.pinned ? "card-pin" : ""}`} data-in>
+      {w.url ? (
+        <a href={w.url} target={ext ? "_blank" : undefined} rel="noreferrer" className="card-link" aria-label={`${w.name}, opens ${w.host}`}>
+          {win}
         </a>
+      ) : (
+        <div className="card-link">{win}</div>
       )}
-      {item.ink && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={item.ink} alt="" aria-hidden="true" width={76} height={76} className="proj-doodle ink" />
-      )}
-      {/* The shot sits on a soft grey slab, inset at the top and sides and
-          running off the bottom edge, like a screen standing in a tray. */}
-      <div className="proj-slab">
-        {item.emoji ? (
-          <div className={`proj-shot flex w-full items-center justify-center bg-white ${wide ? "h-52 sm:h-72" : "h-48 sm:h-52"}`}>
-            <span className="text-6xl leading-none" aria-hidden="true">
-              {item.emoji}
-            </span>
-          </div>
-        ) : (
-          <Image
-            src={item.shot!}
-            alt=""
-            width={1200}
-            height={630}
-            className={`proj-shot w-full object-cover object-top ${wide ? "h-52 sm:h-72" : "h-48 sm:h-52"}`}
-            style={item.shotPos ? { objectPosition: item.shotPos } : undefined}
-          />
-        )}
-      </div>
-      <div className="mt-3 flex items-center justify-between gap-3">
-        <h3 className="flex min-w-0 items-center gap-2 text-[17px] font-bold leading-snug tracking-[-0.01em]">
-          {item.name}
-          {item.roleNote && (
-            <span className="text-[13px] font-normal text-muted-foreground">{item.roleNote}</span>
-          )}
+      <div className="cap">
+        <h3>
+          {w.name}
+          {w.tag && <span className={`tag tag-${w.tag}`}>{w.tag}</span>}
         </h3>
-        <span className="proj-go" aria-hidden="true">
-          <Status status={item.status} />
-          <Icon name="chev" size={14} className="proj-arrow" />
-        </span>
+        {w.date && <time dateTime={w.date}>{fmt(w.date)}</time>}
+        <p>{w.line}</p>
       </div>
-      <p className="mt-1 text-[15px] leading-relaxed text-[var(--ink-read)]">{item.blurb}</p>
-    </Reveal>
+    </article>
   );
 }
 
-// Status, as a glyph rather than a pill. A live thing gets a small ink tick;
-// a thing being built gets the orange bolt; a thing that is over is greyed.
-const STATUS: Record<string, { icon: IconName; hue: string; say: string }> = {
-  Live: { icon: "check", hue: "var(--ink)", say: "Live" },
-  Building: { icon: "bolt", hue: "var(--building)", say: "Being built" },
-  Waitlist: { icon: "clock", hue: "var(--building)", say: "Waitlist open" },
-  Discontinued: { icon: "target", hue: "var(--muted-foreground)", say: "Not worked on any more" },
-};
+function fmt(d: string) {
+  return new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }).toLowerCase();
+}
 
-function Status({ status }: { status: string }) {
-  const s = STATUS[status] ?? STATUS.Building;
+function Book() {
   return (
-    <span
-      className="inline-flex items-center gap-1 text-[12px] font-medium"
-      style={{ color: s.hue }}
-      title={s.say}
-    >
-      <Icon name={s.icon} size={14} />
-      <span className="sr-only">{s.say}</span>
-    </span>
+    <section className="book" id="contact" aria-labelledby="book-h">
+      <Doodle name="pigeon" cell={2} className="dd dd-pigeon" />
+      <div className="book-head" data-in>
+        <h2 id="book-h" className="h2">
+          yours could be
+          <br />
+          the next one.
+        </h2>
+        <p>
+          Book an intro call with Ignura, my studio. Every site is designed and built from scratch, and launch
+          pages go live in about a week.
+        </p>
+      </div>
+      <div className="win book-win" data-in>
+        <div className="win-bar">
+          <span className="bar-dots" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span className="win-title">cal.com/jawad-jalal-hesqbk</span>
+          <a href={BOOK} target="_blank" rel="noreferrer" className="win-no">
+            open
+          </a>
+        </div>
+        <iframe
+          src={`${BOOK}?embed=true&theme=light&layout=month_view`}
+          title="Book an intro call with Ignura"
+          loading="lazy"
+        />
+      </div>
+    </section>
   );
 }
 
-/**
- * Four overlapping discs with him in the middle.
- *
- * Positions are percentages of a square box, so the whole thing scales from a
- * phone to a desktop without a media query. In black and white the discs are
- * one faint ink each, so where two cross the grey deepens on its own and the
- * centre, where all four meet, is the darkest place on the figure.
- */
-function Venn() {
-  const objs: ObjName[] = ["work", "chat", "gear", "stack"];
-  const discs = [
-    "top-0 left-1/2 -translate-x-1/2",
-    "top-[22%] left-[2%]",
-    "top-[22%] right-[2%]",
-    "bottom-0 left-1/2 -translate-x-1/2",
-  ];
-  const labels = [
-    "left-1/2 top-[13%] -translate-x-1/2 -translate-y-1/2",
-    "left-[22%] top-1/2 -translate-x-1/2 -translate-y-1/2 sm:left-[15%]",
-    "right-[22%] top-1/2 -translate-y-1/2 translate-x-1/2 sm:right-[15%]",
-    "bottom-[13%] left-1/2 -translate-x-1/2 translate-y-1/2",
-  ];
-
+function Foot() {
+  const [sw, sh] = ART.scene;
   return (
-    <div className="venn relative mx-auto aspect-square w-full max-w-[540px]">
-      {discs.map((pos, i) => (
-        <div key={i} aria-hidden="true" className={`venn-disc absolute size-[58%] rounded-full ${pos}`} />
-      ))}
-      {VENN.map((label, i) => (
-        <span key={label} className={`venn-label ${labels[i]}`}>
-          <Obj name={objs[i]} size={0} className="venn-obj" />
-          <span className="venn-text">{label}</span>
-        </span>
-      ))}
-      {/* just him, cut out of his tile, so the centre reads as a face and not a box */}
-      <Image
-        src="/design/jawad-ink.webp"
-        alt=""
-        width={320}
-        height={320}
-        className="venn-face absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+    <footer className="px-foot">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/px/scene.png"
+        alt="Jawad cross-legged on a giant laptop, browser windows on an easel behind him and London across the river"
+        width={sw * 2}
+        height={sh * 2}
+        className="pxart scene"
+        loading="lazy"
       />
-    </div>
-  );
-}
-
-/**
- * The close, after ignura.com's: a field of dots the pointer pushes around,
- * and a soft card rising out of it with curved top corners. The card carries
- * the ask, the page's links, and the name set large with its mark, so the last
- * screen is a designed end rather than a sitemap.
- */
-function Footer() {
-  const PAGE = [
-    { label: "About", href: "#about" },
-    { label: "Projects", href: "#projects" },
-    { label: "Skills", href: "#skills" },
-    { label: "Blog", href: "/blog" },
-  ];
-  const ELSE = SOCIALS.filter((s) => s.label !== "Email");
-
-  return (
-    <footer id="contact" className="foot scroll-mt-10">
-      <div className="foot-field" aria-hidden="true">
-        <DotField />
-      </div>
-      <div className="foot-card">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
-            <h2 className="foot-ask">Still reading? Let&rsquo;s talk.</h2>
-            <p className="mt-3 max-w-sm text-[17px] text-[var(--ink-read)]">
-              Something clicked, then. Send a line about what you are making.
-            </p>
-            <div className="mt-6">
-              <Cta />
-            </div>
-          </div>
-          <FootList title="The page" items={PAGE} />
-          <FootList title="Elsewhere" items={ELSE.map((s) => ({ label: s.label, href: s.href, brand: s.brand, icon: s.icon }))} />
-        </div>
-        <div className="mt-16 flex flex-wrap items-end justify-between gap-6 sm:mt-24">
-          <p aria-hidden="true" className="foot-mark">
-            <Face className="foot-mark-box" />
-            {IDENTITY.wordmark.charAt(0) + IDENTITY.wordmark.slice(1).toLowerCase()}
-          </p>
-          <p className="pb-3 text-[15px] text-muted-foreground">
-            Designer and founder in London. &copy; {IDENTITY.properName} 2026
-          </p>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-function FootList({
-  title,
-  items,
-}: {
-  title: string;
-  items: { label: string; href: string; brand?: import("@/components/Brand").BrandKey; icon?: IconName }[];
-}) {
-  return (
-    <div>
-      <h3 className="text-[15px] font-medium text-muted-foreground">{title}</h3>
-      <ul className="mt-3 space-y-2">
-        {items.map((it) => (
-          <li key={it.label}>
-            <a
-              href={it.href}
-              target={it.href.startsWith("http") ? "_blank" : undefined}
-              rel="noopener noreferrer"
-              className="foot-link"
-            >
-              {it.brand ? <Brand name={it.brand} size={14} /> : it.icon ? <Icon name={it.icon} size={14} /> : null}
-              {it.label}
-            </a>
-          </li>
+      <p className="px-foot-line">
+        <span>drawn by hand, kept in pixels. © {new Date().getFullYear()} jawad jalal</span>
+        <a href={BOOK} target="_blank" rel="noreferrer">
+          book a call
+        </a>
+        <a href="/blog">blog</a>
+        <a href={IDENTITY.cv}>cv</a>
+        {SOCIALS.filter((s) => s.href.startsWith("https")).map((s) => (
+          <a key={s.label} href={s.href} target="_blank" rel="noreferrer">
+            {s.label.toLowerCase()}
+          </a>
         ))}
-      </ul>
-    </div>
+      </p>
+    </footer>
   );
 }
