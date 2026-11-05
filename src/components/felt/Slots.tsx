@@ -10,6 +10,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SLOTS, feltSrc } from "./copy";
+import type { Booking } from "./booking";
 import { Drawer } from "./Drawer";
 import { sfx } from "./Sound";
 
@@ -18,7 +19,7 @@ const SIZES = "(max-width: 760px) 42vw, min(22vw, 320px)";
 // larger than the first paint's and the first shapes stay the page's LCP
 const jitter = (rest: number) => -Math.sign(rest) * Math.round(Math.random() * 25) / 10;
 
-export function Slots() {
+export function Slots({ booking }: { booking: Booking }) {
   const [shape, setShape] = useState<number[]>(() => SLOTS.map(() => 0));
   const [tilt, setTilt] = useState<number[]>(() => SLOTS.map(() => 0));
   const [open, setOpen] = useState<number | null>(null);
@@ -122,7 +123,7 @@ export function Slots() {
           );
         })}
       </ul>
-      <Drawer at={open} onClose={() => setOpen(null)} onStep={(by) => setOpen((o) => (o === null ? o : (o + by + SLOTS.length) % SLOTS.length))} />
+      <Drawer booking={booking} at={open} onClose={() => setOpen(null)} onStep={(by) => setOpen((o) => (o === null ? o : (o + by + SLOTS.length) % SLOTS.length))} />
     </>
   );
 }

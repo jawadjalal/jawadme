@@ -73,14 +73,26 @@ export const SLOTS: Slot[] = [
   },
 ];
 
-export const SITES: { name: string; url?: string; still: string; line: string }[] = [
-  { name: "Rocquire", still: "rocquire", line: "A marketplace for whole Roblox games. Private for now." },
-  { name: "Hyperspell", url: "https://hyperspell-concept.vercel.app", still: "hyperspell", line: "A redesign concept for a company brain." },
-  { name: "treg", url: "https://treg-pitch.vercel.app", still: "treg", line: "OpenRouter for agent tools: one key, paid per call." },
-  { name: "Mercy", url: "https://mercy-perps.vercel.app", still: "mercy", line: "Perps that pay back liquidated margin in USDC." },
-  { name: "Do Big", url: "https://dobig-pitch.vercel.app", still: "dobig", line: "They build, run and buy Roblox games." },
-  { name: "Paradev", url: "https://paradev-concept.vercel.app", still: "paradev", line: "A concept site." },
-  { name: "founders.school", url: "https://founders-school-concept.vercel.app", still: "founders", line: "A concept site." },
+export type Site = { key: string; name: string; host: string; group: "Products" | "Pitch sites" | "Concepts" | "Templates"; line: string };
+
+/** Every live site, newest work first within each group. Stills: public/sites/<key>.webp and <key>-tall.webp (three
+ *  screens, scrolled through on hover), shot at 1440 on a box on 5 Nov 2026. */
+export const SITES: Site[] = [
+  { key: "ignaru", name: "Ignaru", host: "ignaru.com", group: "Products", line: "A design canvas that opens your repo. Circle what's wrong and your agent fixes it." },
+  { key: "wayari", name: "Wayari", host: "wayari.com", group: "Products", line: "Coding agents that go from a prompt to a reviewed pull request." },
+  { key: "rocquire", name: "Rocquire", host: "rocquire-concept.vercel.app", group: "Pitch sites", line: "A verified marketplace for buying whole Roblox games." },
+  { key: "treg", name: "treg", host: "treg-pitch.vercel.app", group: "Pitch sites", line: "OpenRouter for agent tools: one key, 4,100+ endpoints, paid per call." },
+  { key: "dobig", name: "Do Big Studios", host: "dobig-pitch.vercel.app", group: "Pitch sites", line: "They build, run and buy Roblox games millions play." },
+  { key: "ropilot", name: "Ropilot", host: "ropilot-site.vercel.app", group: "Pitch sites", line: "Make Roblox games by asking: it writes, models and playtests." },
+  { key: "mercy", name: "Mercy", host: "mercy-perps.vercel.app", group: "Pitch sites", line: "Perps that pay back 25 to 100% of liquidated margin. A prototype." },
+  { key: "fxpheno", name: "Pheno", host: "fxpheno-portfolio.vercel.app", group: "Pitch sites", line: "A portfolio for a video editor and motion designer." },
+  { key: "founders", name: "Founders School", host: "founders-school-concept.vercel.app", group: "Concepts", line: "A redesign concept for founders.school. Not affiliated." },
+  { key: "paradev", name: "Paradev", host: "paradev-concept.vercel.app", group: "Concepts", line: "A design concept for paradev.com. Not affiliated." },
+  { key: "hyperspell", name: "Hyperspell", host: "hyperspell-concept.vercel.app", group: "Concepts", line: "A redesign concept for hyperspell.com. Not affiliated." },
+  { key: "varick", name: "Varick Agents", host: "varick-concept.vercel.app", group: "Concepts", line: "A redesign concept for Varick Agents. Not affiliated." },
+  { key: "ruled", name: "Ruled", host: "ruled-template.vercel.app", group: "Templates", line: "An AI bookkeeper for small businesses." },
+  { key: "tavola", name: "Tavola", host: "tavola-template.vercel.app", group: "Templates", line: "A trattoria and wine bar on a London street." },
+  { key: "parade", name: "Parade", host: "parade-template.vercel.app", group: "Templates", line: "A studio for launch films and short-form video." },
 ];
 
 export const SOCIALS = [
