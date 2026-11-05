@@ -41,7 +41,7 @@ export function Drawer({ booking, at, onClose, onStep }: { booking: Booking; at:
       ref={ref}
       className={s.id === "sites" ? "fh-dr fh-dr-wide" : "fh-dr"}
       aria-labelledby="fh-dr-t"
-      style={{ ["--c" as string]: s.color }}
+      style={{ ["--c" as string]: s.color, ["--ci" as string]: s.id === "sites" ? "#141414" : "#fff" }}
       onClick={(e) => {
         if (e.target !== e.currentTarget) return;
         const r = e.currentTarget.getBoundingClientRect();
@@ -402,9 +402,6 @@ function SiteCard({ w }: { w: Site }) {
       <a href={`https://${w.host}`} target="_blank" rel="noreferrer" className="fh-site">
         <span className="fh-site-win">
           <span className="fh-site-bar" aria-hidden="true">
-            <i />
-            <i />
-            <i />
             <span>{w.host}</span>
           </span>
           <span className="fh-site-view" style={{ ["--tall" as string]: `url(/sites/${w.key}-tall.webp)` }}>
