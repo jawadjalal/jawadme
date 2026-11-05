@@ -1,5 +1,6 @@
 "use client";
 
+import { later } from "./later";
 import { useEffect, useRef } from "react";
 
 // The desk everything sits on: slow value noise, ordered-dithered into two
@@ -59,86 +60,100 @@ export function Desk() {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const cv = ref.current;
-    if (!cv) return;
-    const gl = cv.getContext("webgl", { antialias: false, preserveDrawingBuffer: true });
-    if (!gl) return;
-    const sh = (type: number, src: string) => {
-      const s = gl.createShader(type)!;
-      gl.shaderSource(s, src);
-      gl.compileShader(s);
-      return s;
+    // WebGL setup is a long task, so it waits until the page has painted
+    // and the browser is idle: the headline is never kept waiting by it.
+    let stop: (() => void) | undefined;
+    const run = () => {
+      stop = init();
     };
-    const pr = gl.createProgram()!;
-    gl.attachShader(pr, sh(gl.VERTEX_SHADER, VERT));
-    gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FRAG));
-    gl.linkProgram(pr);
-    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return;
-    gl.useProgram(pr);
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(pr, "p");
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    const u = (k: string) => gl.getUniformLocation(pr, k);
-    const uR = u("r"), uT = u("t"), uM = u("m"), uS = u("s"), uV = u("v");
-
-    let w = 0, h = 0;
-    const size = () => {
-      w = Math.ceil(innerWidth / CELL);
-      h = Math.ceil(innerHeight / CELL);
-      cv.width = w;
-      cv.height = h;
-      gl.viewport(0, 0, w, h);
-    };
-    size();
-    addEventListener("resize", size);
-
-    // The pointer is eased so the blue patch trails it like wet ink; on touch
-    // screens it idles in a slow loop so the desk still breathes.
-    const ptr = { x: innerWidth * 0.7, y: innerHeight * 0.4, tx: innerWidth * 0.7, ty: innerHeight * 0.4, seen: 0 };
-    const move = (e: PointerEvent) => {
-      ptr.tx = e.clientX;
-      ptr.ty = e.clientY;
-      ptr.seen = performance.now();
-    };
-    addEventListener("pointermove", move, { passive: true });
-
-    let vel = 0, lastY = scrollY;
-    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let raf = 0, last = 0, on = true;
-    const t0 = performance.now();
-    const frame = (now: number) => {
-      raf = requestAnimationFrame(frame);
-      if (!on || now - last < 33) return;
-      last = now;
-      if (now - ptr.seen > 2500) {
-        const k = (now - t0) / 1000;
-        ptr.tx = innerWidth * (0.5 + 0.32 * Math.sin(k * 0.21));
-        ptr.ty = innerHeight * (0.5 + 0.3 * Math.sin(k * 0.13 + 1));
-      }
-      ptr.x += (ptr.tx - ptr.x) * 0.12;
-      ptr.y += (ptr.ty - ptr.y) * 0.12;
-      const dy = scrollY - lastY;
-      lastY = scrollY;
-      vel += (Math.min(Math.abs(dy) / 40, 1) - vel) * 0.1;
-      gl.uniform2f(uR, w, h);
-      gl.uniform1f(uT, still ? 0 : (now - t0) / 1000);
-      gl.uniform2f(uM, ptr.x / CELL, h - ptr.y / CELL);
-      gl.uniform1f(uS, scrollY / CELL);
-      gl.uniform1f(uV, vel);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-    };
-    raf = requestAnimationFrame(frame);
-    const vis = () => (on = document.visibilityState === "visible");
-    document.addEventListener("visibilitychange", vis);
+    const cancel = later(run);
     return () => {
-      cancelAnimationFrame(raf);
-      removeEventListener("resize", size);
-      removeEventListener("pointermove", move);
-      document.removeEventListener("visibilitychange", vis);
+      cancel();
+      stop?.();
     };
+    function init(): (() => void) | undefined {
+      const cv = ref.current;
+      if (!cv) return;
+      const gl = cv.getContext("webgl", { antialias: false, preserveDrawingBuffer: true });
+      if (!gl) return;
+      const sh = (type: number, src: string) => {
+        const s = gl.createShader(type)!;
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        return s;
+      };
+      const pr = gl.createProgram()!;
+      gl.attachShader(pr, sh(gl.VERTEX_SHADER, VERT));
+      gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FRAG));
+      gl.linkProgram(pr);
+      if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return;
+      gl.useProgram(pr);
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(pr, "p");
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+      const u = (k: string) => gl.getUniformLocation(pr, k);
+      const uR = u("r"), uT = u("t"), uM = u("m"), uS = u("s"), uV = u("v");
+
+      let w = 0, h = 0;
+      const size = () => {
+        w = Math.ceil(innerWidth / CELL);
+        h = Math.ceil(innerHeight / CELL);
+        cv.width = w;
+        cv.height = h;
+        gl.viewport(0, 0, w, h);
+      };
+      size();
+      addEventListener("resize", size);
+
+      // The pointer is eased so the blue patch trails it like wet ink; on touch
+      // screens it idles in a slow loop so the desk still breathes.
+      const ptr = { x: innerWidth * 0.7, y: innerHeight * 0.4, tx: innerWidth * 0.7, ty: innerHeight * 0.4, seen: 0 };
+      const move = (e: PointerEvent) => {
+        ptr.tx = e.clientX;
+        ptr.ty = e.clientY;
+        ptr.seen = performance.now();
+      };
+      addEventListener("pointermove", move, { passive: true });
+
+      let vel = 0, lastY = scrollY;
+      const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let raf = 0, last = 0, on = true;
+      const t0 = performance.now();
+      const frame = (now: number) => {
+        raf = requestAnimationFrame(frame);
+        if (!on || now - last < 100) return; // 10 steps a second: the desk moves like a sprite, and costs little
+        last = now;
+        if (now - ptr.seen > 2500) {
+          const k = (now - t0) / 1000;
+          ptr.tx = innerWidth * (0.5 + 0.32 * Math.sin(k * 0.21));
+          ptr.ty = innerHeight * (0.5 + 0.3 * Math.sin(k * 0.13 + 1));
+        }
+        ptr.x += (ptr.tx - ptr.x) * 0.12;
+        ptr.y += (ptr.ty - ptr.y) * 0.12;
+        const dy = scrollY - lastY;
+        lastY = scrollY;
+        vel += (Math.min(Math.abs(dy) / 40, 1) - vel) * 0.1;
+        gl.uniform2f(uR, w, h);
+        gl.uniform1f(uT, still ? 0 : (now - t0) / 1000);
+        gl.uniform2f(uM, ptr.x / CELL, h - ptr.y / CELL);
+        gl.uniform1f(uS, scrollY / CELL);
+        gl.uniform1f(uV, vel);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      };
+      raf = requestAnimationFrame(frame);
+      const vis = () => (on = document.visibilityState === "visible");
+      document.addEventListener("visibilitychange", vis);
+      return () => {
+        cancelAnimationFrame(raf);
+        removeEventListener("resize", size);
+        removeEventListener("pointermove", move);
+        document.removeEventListener("visibilitychange", vis);
+      };
+
+    }
   }, []);
 
   return <canvas ref={ref} className="desk" aria-hidden="true" />;

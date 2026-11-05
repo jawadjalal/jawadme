@@ -17,11 +17,23 @@ export function LondonTime() {
 }
 
 /**
- * Adds `is-in` to every `[data-in]` element the first time it is on screen.
+ * Adds `is-in` to every `[data-in]` element the first time it is on screen,
+ * and drives the doodles' scroll-linked boil.
  * The CSS moves them with steps(), so things arrive in whole frames, the way
  * sprites do, instead of easing in.
  */
 export function Arrivals() {
+  // every doodle on the page flips to its other boil frame each 96px scrolled
+  useEffect(() => {
+    let f = -1;
+    const on = () => {
+      const n = Math.floor(scrollY / 96) % 2;
+      if (n !== f) document.documentElement.style.setProperty("--boil", String((f = n)));
+    };
+    on();
+    addEventListener("scroll", on, { passive: true });
+    return () => removeEventListener("scroll", on);
+  }, []);
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>("[data-in]");
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {

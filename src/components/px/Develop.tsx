@@ -92,6 +92,7 @@ export function Develop({
         width={width}
         height={height}
         loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "low"}
         decoding="async"
         style={pos ? { objectPosition: pos } : undefined}
       />

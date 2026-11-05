@@ -5,9 +5,9 @@
 /* ── Fonts ────────────────────────────────────────────────────────────────
    Satoshi, self-hosted: the one face, as on ignura.com. Three weights do all
    the work (400 text, 500 links and labels, 700 every heading). */
-@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-700.woff2") format("woff2"); font-weight: 600 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: optional; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: optional; }
+@font-face { font-family: "Satoshi"; src: url("/fonts/satoshi-700.woff2") format("woff2"); font-weight: 600 900; font-style: normal; font-display: optional; }
 @font-face { font-family: "Satoshi Fallback"; src: local("Arial"), local("Helvetica Neue"), local("Helvetica"); size-adjust: 98%; }
 
 /* ── Tokens ───────────────────────────────────────────────────────────────
@@ -1533,7 +1533,7 @@ body { font-family: var(--font); background: var(--paper); color: var(--ink); }
 .nav-menu[open] .nav-chev { transform: rotate(-90deg); }
 
 /* ── 26 Oct: the second pass ──────────────────────────────────────────────── */
-@font-face { font-family: "Fraunces Italic"; src: url("/fonts/fraunces-soft-italic-600.woff2") format("woff2"); font-weight: 400 700; font-style: italic; font-display: swap; }
+@font-face { font-family: "Fraunces Italic"; src: url("/fonts/fraunces-soft-italic-600.woff2") format("woff2"); font-weight: 400 700; font-style: italic; font-display: optional; }
 
 /* His face is the mark: a rounded square, like ignura's I in a box. */
 .face {
@@ -1650,7 +1650,7 @@ main, .foot { position: relative; }
    a handwriting face for the accents only (Satoshi still sets every word you
    read), one wobble filter that makes a drawn line out of a ruled one, and
    the ink turned to chalk at night. */
-@font-face { font-family: "Hand"; src: url("/fonts/Excalifont-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Hand"; src: url("/fonts/Excalifont-Regular.woff2") format("woff2"); font-weight: 400; font-display: optional; }
 
 /* the drawings are black ink on clear ground; at night the ink goes light */
 [data-theme="dark"] .obj,
