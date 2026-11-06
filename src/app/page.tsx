@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import { Edge } from "@/components/felt/Edge";
 import { Slots } from "@/components/felt/Slots";
 import { SoundToggle } from "@/components/felt/Sound";
+import { About, AboutLink, Contact } from "@/components/felt/About";
 import { MeetPill } from "@/components/felt/Meet";
 import { getBooking } from "@/components/felt/booking";
 import { LINE, SLOTS, feltSrc } from "@/components/felt/copy";
@@ -27,11 +28,15 @@ export default async function Home() {
   return (
     <div className={`fh ${sans.variable}`}>
       <Edge />
+      <About />
       <header className="fh-top">
         <SoundToggle />
-        <a className="fh-toplink" href="/blog">
-          Blog
-        </a>
+        <nav className="fh-toplinks">
+          <AboutLink className="fh-toplink">About</AboutLink>
+          <a className="fh-toplink" href="/blog">
+            Blog
+          </a>
+        </nav>
       </header>
       <main className="fh-main">
         <Slots booking={booking} />
@@ -42,12 +47,15 @@ export default async function Home() {
           <div className="fh-me">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="fh-av" src="/felt/jawad-av-96.webp" srcSet="/felt/jawad-av-96.webp 1x, /felt/jawad-av.webp 2x" alt="Jawad" width={48} height={48} />
-            <p>
+            <AboutLink className="fh-me-name">
               <b>Jawad Jalal</b>
-              <span>Design engineer, London</span>
-            </p>
+              <span>
+                Design engineer, London<span className="fh-me-more"> · about me</span>
+              </span>
+            </AboutLink>
           </div>
           <Socials />
+          <Contact />
           <MeetPill minutes={booking.minutes} />
         </div>
       </footer>
