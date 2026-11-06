@@ -84,6 +84,21 @@ html:has(.fh), html:has(.fh) body { margin: 0; background: #050505; color-scheme
 .fh-soc a:hover { color: var(--b); background: rgba(255, 255, 255, 0.05); }
 .fh-soc a:focus-visible { color: var(--b); }
 
+/* the docked booking pill: neutral off-white, the Google Meet mark, no purple, no glow (matches ignaru.com) */
+.fh-meet {
+  flex: none; display: inline-flex; align-items: center; gap: 11px;
+  height: 52px; padding: 0 22px 0 16px; border-radius: 999px;
+  background: #f4f4f2; color: #141414;
+  box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.15s var(--ease), translate 0.15s var(--ease);
+}
+.fh-meet:hover { background: #fff; translate: 0 -1px; }
+.fh-meet:active { translate: 0 1px; background: #e9e9e6; }
+.fh-meet svg { flex: none; }
+.fh-meet-text { display: grid; gap: 1px; line-height: 1.15; }
+.fh-meet-text b { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.fh-meet-text span { font-size: 12px; color: #6b6a66; white-space: nowrap; }
+
 /* the booking key: a felt-purple card that presses, the call's real length, place and next free day */
 .fh-book {
   position: relative; flex: none;
@@ -121,6 +136,7 @@ html:has(.fh), html:has(.fh) body { margin: 0; background: #050505; color-scheme
   .fh-foot { padding: 0; }
   .fh-tab { flex-wrap: wrap; gap: 12px 8px; width: 100%; padding: 14px 14px calc(14px + env(safe-area-inset-bottom)); border-radius: 22px 22px 0 0; }
   .fh-tab > .fh-book { order: 3; flex: 1 1 100%; min-height: 66px; }
+  .fh-tab > .fh-meet { order: 3; flex: 1 1 100%; justify-content: center; height: 54px; }
   .fh-book-arrow { margin-left: auto; }
   .fh-av { width: 42px; height: 42px; }
   .fh-soc a { width: 34px; height: 34px; }
