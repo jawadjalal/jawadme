@@ -3,7 +3,7 @@ import { Geist } from "next/font/google";
 import { Edge } from "@/components/felt/Edge";
 import { Slots } from "@/components/felt/Slots";
 import { SoundToggle } from "@/components/felt/Sound";
-import { Book } from "@/components/felt/Book";
+import { MeetPill } from "@/components/felt/Meet";
 import { getBooking } from "@/components/felt/booking";
 import { LINE, SLOTS, feltSrc } from "@/components/felt/copy";
 import { Socials } from "@/components/felt/Socials";
@@ -48,7 +48,7 @@ export default async function Home() {
             </p>
           </div>
           <Socials />
-          <Book b={booking} />
+          <MeetPill minutes={booking.minutes} />
         </div>
       </footer>
     </div>
