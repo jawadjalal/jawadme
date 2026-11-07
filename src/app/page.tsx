@@ -8,14 +8,21 @@ import { MeetPill } from "@/components/felt/Meet";
 import { getBooking } from "@/components/felt/booking";
 import { LINE, SLOTS, feltSrc } from "@/components/felt/copy";
 import { Socials } from "@/components/felt/Socials";
+import { Index } from "@/components/felt/Index";
+import { VerseText } from "@/components/verse-text";
 import "@/components/felt/felt.css";
 
 // Not preloaded: the first paint is the felt, and the text may swap in a beat later.
 const sans = Geist({ subsets: ["latin"], display: "swap", variable: "--font-geist-sans", preload: false });
 
-// jawadjalal.com, after ignaru.com: one black screen, four felt objects for the four things Jawad does, each opening
-// a drawer; a tab docked to the foot with the name, the one line and the booking key (real slots from Cal.com). Server-rendered,
-// so the first shapes and the tab paint before any script runs.
+// jawadjalal.com, after ignaru.com: one black screen, four felt objects for the kinds of work Jawad does, the line, and a
+// felt row naming every drawer (his products, Okara, MenuFit, the ads, the sites, a call); a tab docked to the foot with
+// the name and the booking key (real slots from Cal.com). Server-rendered, so the first shapes and the tab paint before
+// any script runs.
+//
+// The line prints with <VerseText />, Jawad's own words in a misregistered comic print. Its glitch follows
+// Spider-Man: Into the Spider-Verse (2018) and the component's sample caption is by Stan Lee and Steve Ditko, from
+// Amazing Fantasy #15 (1962). A fan study with no link to Marvel or Sony.
 
 export const revalidate = 1800;
 
@@ -40,7 +47,10 @@ export default async function Home() {
       </header>
       <main className="fh-main">
         <Slots booking={booking} />
-        <h1 className="fh-line">{LINE}</h1>
+        <h1 className="fh-line">
+          <VerseText text={LINE} tone="dark" seed={1507} className="fh-vt" />
+        </h1>
+        <Index />
       </main>
       <footer className="fh-foot">
         <div className="fh-tab">

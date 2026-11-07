@@ -36,7 +36,7 @@ const SUMMARY =
   "happiest owning a product end to end.";
 
 const NUMBERS = [
-  ["2M", "users on the app I design"],
+  ["1.5M", "people use the app I design"],
   ["7 fig", "ARR at MenuFit"],
   ["2", "companies I run at 6 figure ARR"],
   ["14M", "views on Okara's launch, day one"],
@@ -71,12 +71,11 @@ const ROLES = [
   {
     name: "Okara",
     url: "okara.ai",
-    title: "Product Designer",
+    title: "Product Development Intern",
     when: "2026 to now",
-    line: "AI CMO serving 120,000+ businesses · internship",
+    line: "AI CMO serving 150,000+ businesses",
     points: [
-      "Won the role with an unsolicited product teardown: a week on the free tier, then a deployed site with **three redesigns built as live React mockups**.",
-      "Design the dashboard and agent surfaces, in Figma and in code (Next.js, Tailwind), on a team that ships six or seven times a day.",
+      "Won the internship with an unsolicited product teardown: a week on the free tier, then a deployed site with **three redesigns built as live React mockups**.",
     ],
   },
   {
@@ -115,7 +114,9 @@ const BUILDS = [
   ["Clicky Graph", "an interactive product demo for heyclicky.com, on a hand rolled renderer of 3,000 elements"],
   ["claude-code-spend", "open source tool that prices every token class in local Claude Code transcripts"],
   ["Client sites", "Splitting Point, Vizzbees, KleoKlaw: design and build, brief to launch"],
-  ["Weld, Bidframe", "two earlier products I founded: a hiring marketplace for Roblox studios and a tender risk checker"],
+  ["Wayari", "a CLI and desktop app that takes coding agents from a prompt to a reviewed pull request, with 480 PRs merged"],
+  ["Bidframe", "one of four builders at a hackathon. It reads a tender pack and flags what would disqualify the bid"],
+  ["Weld", "an earlier product I founded: a hiring marketplace for Roblox studios"],
 ];
 
 const SKILLS = [

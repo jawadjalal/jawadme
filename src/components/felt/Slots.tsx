@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * The four felt slots, after ignaru.com. Each slot keeps its colour and cycles its shapes: one slot swaps every 600 ms
+ * The four felt slots, after ignaru.com. Each opens the first drawer of its kind of work (copy.ts, `opens`). Each slot keeps its colour and cycles its shapes: one slot swaps every 600 ms
  * in turn, so each changes every 2.4 s and no two change together. A swap is a squash and pop, and the new shape lands
  * a degree or two off the slot's resting tilt. Hover straightens and lifts a slot and shows its name; a click opens
  * its drawer. The first shapes are server-rendered and are the page's LCP; the rest load once the page is idle, and a
@@ -9,7 +9,7 @@
  * hidden, or under reduced motion, and the cycling starts 2.5 s after load. Words and art: copy.ts. Styles: felt.css (`fh-`).
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SLOTS, feltSrc } from "./copy";
+import { DRAWERS, SLOTS, drawerAt, feltSrc, type DrawerId } from "./copy";
 import type { Booking } from "./booking";
 import { Drawer } from "./Drawer";
 import { sfx } from "./Sound";
@@ -30,6 +30,16 @@ export function Slots({ booking }: { booking: Booking }) {
   openRef.current = open;
   const shapeRef = useRef(shape);
   shapeRef.current = shape;
+
+  // the felt row under the line (Index.tsx) and anything else on the page open a drawer by its id
+  useEffect(() => {
+    const go = (e: Event) => {
+      const i = drawerAt((e as CustomEvent<DrawerId>).detail);
+      if (i >= 0) setOpen(i);
+    };
+    addEventListener("fh-open", go);
+    return () => removeEventListener("fh-open", go);
+  }, []);
 
   useEffect(() => {
     const warm = () =>
@@ -102,7 +112,7 @@ export function Slots({ booking }: { booking: Booking }) {
                 className="fh-obj"
                 aria-haspopup="dialog"
                 aria-label={`${s.label}: ${s.title}`}
-                onClick={() => setOpen(i)}
+                onClick={() => setOpen(drawerAt(s.opens))}
                 onPointerEnter={(e) => {
                   hovered.current = i;
                   if (e.pointerType === "mouse") sfx("hover");
@@ -123,7 +133,7 @@ export function Slots({ booking }: { booking: Booking }) {
           );
         })}
       </ul>
-      <Drawer booking={booking} at={open} onClose={() => setOpen(null)} onStep={(by) => setOpen((o) => (o === null ? o : (o + by + SLOTS.length) % SLOTS.length))} />
+      <Drawer booking={booking} at={open} onClose={() => setOpen(null)} onStep={(by) => setOpen((o) => (o === null ? o : (o + by + DRAWERS.length) % DRAWERS.length))} />
     </>
   );
 }

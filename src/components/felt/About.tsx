@@ -7,10 +7,12 @@ import { EMAIL, SITES } from "./copy";
 
 const RUN = [
   { name: "Ignura", what: "Founder. A web design studio for startups, at six-figure ARR.", href: "https://ignura.com" },
-  { name: "Ignaru", what: "Founder. An agent-native design tool: design and code on one canvas.", href: "https://ignaru.com" },
+  { name: "Ignaru", what: "Founder. A design canvas that opens your repo; your coding agent does the fixing.", href: "https://ignaru.com" },
+  { name: "Wayari", what: "Designed and built. Coding agents that go from a prompt to a reviewed pull request.", href: "https://wayari.com" },
   { name: "Bevel", what: "Founder. A 3D art team for games, at six-figure ARR.", href: "https://bevel.team" },
   { name: "MenuFit", what: "Design. An app for eating out healthy, with 1.5 million users.", href: "https://menufit.com" },
-  { name: "Okara", what: "Design.", href: "https://okara.ai" },
+  { name: "Okara", what: "Product development intern. I got in with a teardown of its dashboard.", href: "https://okara.ai" },
+  { name: "Bidframe", what: "One of four builders, at a hackathon. It flags what would disqualify a tender bid.", href: "https://bidframe.org" },
 ];
 const BUILT = ["rocquire", "paradev", "hyperspell", "treg", "mercy", "dobig"];
 
@@ -55,7 +57,7 @@ export function About() {
             <p>I design and build my own companies, and sites for founders. These are the things I have run and made.</p>
           </header>
           <section className="fh-in" style={{ ["--d" as string]: 1 }}>
-            <h3 className="fh-ab-h">Companies</h3>
+            <h3 className="fh-ab-h">What I run and what I&apos;ve built</h3>
             <ol className="fh-tl">
               {RUN.map((r) => (
                 <li key={r.name}>
