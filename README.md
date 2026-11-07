@@ -13,10 +13,11 @@ npm run dev
 
 | You want to change | Edit |
 |---|---|
-| Any word on the home page and its drawers | `src/components/felt/copy.ts` and `Drawer.tsx` |
+| Any word on the home page and its drawers | `src/components/felt/copy.ts` (the ring's ten doors, their lines, the bar) and `Drawer.tsx` |
+| The home page's look: halftone, bar, ring, drawers | `src/components/felt/felt.css` (after ignaru.com's `components/home`) |
 | The CV, the blog and the JSON-LD facts | `src/lib/profile.ts` |
 | The drawers' stills | `public/sites`, `public/okara`, `public/menufit`, `public/ads` |
-| Colours, type, the look | `src/app/globals.css` (the ignura skin is the last block) |
+| Colours and type on the blog | `src/app/globals.css` (the ignura skin is the last block) |
 | The icon set | `src/components/Icon.tsx` |
 | Page structure | `src/app/page.tsx` |
 

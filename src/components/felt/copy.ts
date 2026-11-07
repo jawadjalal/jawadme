@@ -1,106 +1,55 @@
-// The words and art for the felt home (src/app/page.tsx). Four felt slots in the hero and a row of felt links under
-// the line; both open the drawers, and every drawer is one thing Jawad has made or done. Art: public/felt (transparent
-// squares, 320 and 640 wide; the canvas-*, ship-merge and nav-blog pieces come from ignaru.com's set). Stills:
+// The words and art for the felt home (src/app/page.tsx), after ignaru.com: a ring of felt doors around one line, and
+// a drawer behind each door. Every drawer is one thing Jawad has made or done. Art: public/felt (transparent squares,
+// 320 and 640 wide; the ship-*, onb-*, circle*, more-*, nav-* and yarn pieces come from ignaru.com's set). Stills:
 // public/sites, public/okara, public/menufit, public/ads.
 //
 // Facts only. Each number here was read from a live page or a repo on 7 Nov 2026; the source sits beside it.
 
 export const BOOK = "https://cal.com/jawad-jalal-hesqbk/intro-call-with-ignura";
 export const EMAIL = "hijawadjalal@gmail.com";
+export const CV = "/jawad-jalal-cv.pdf";
 
-export const LINE = "I'm a design engineer. I've shipped Ignaru and Wayari, and I build sites for startups.";
+/** The line in the ring's centre: who, then what. The break falls after the first sentence where there is room. */
+export const LINE = ["I'm Jawad, a design engineer.", "I build Ignaru, and sites for startups."] as const;
 
 export const feltSrc = (name: string) => ({
   src: `/felt/${name}-1x.webp`,
   srcSet: `/felt/${name}-1x.webp 320w, /felt/${name}.webp 640w`,
 });
 
-/** Every drawer, in the order the arrows step through them. */
+/**
+ * Every door on the ring, in the order the turn passes along it and the drawer arrows step through it. `art` is the
+ * door's own felt piece (first paint), `set` the pieces it changes between, `line` what the ring's centre says while
+ * it is the door's turn or under the pointer (under 60 characters).
+ */
 export const DRAWERS = [
-  { id: "ignaru", label: "Ignaru", art: "petal", color: "#9a4dea", ink: "#fff" },
-  { id: "wayari", label: "Wayari", art: "ship-merge", color: "#1f7ae0", ink: "#fff" },
-  { id: "bidframe", label: "Bidframe", art: "nav-blog", color: "#f5b400", ink: "#1d1600" },
-  { id: "okara", label: "Okara", art: "canvas-dashboard", color: "#f0454f", ink: "#fff" },
-  { id: "menufit", label: "MenuFit", art: "phone", color: "#f5b400", ink: "#1d1600", wide: true },
-  { id: "ads", label: "Ads", art: "palette", color: "#f0454f", ink: "#fff" },
-  { id: "sites", label: "Sites", art: "browser", color: "#f5b400", ink: "#1d1600", wide: true },
-  { id: "book", label: "Book a call", art: "call", color: "#1f7ae0", ink: "#fff" },
+  { id: "ignaru", label: "Ignaru", art: "petal", set: ["petal", "claude", "openai", "gemini", "grok"], color: "#9a4dea", alt: "A purple felt petal, the Ignaru mark", line: "" },
+  { id: "wayari", label: "Wayari", art: "ship-merge", set: ["ship-merge", "ship-branch", "ship"], color: "#1f7ae0", alt: "A blue felt merge arrow", line: "Wayari takes a prompt to a reviewed pull request." },
+  { id: "okara", label: "Okara", art: "canvas-dashboard", set: ["canvas-dashboard", "canvas-button", "canvas"], color: "#f0454f", alt: "A coral felt dashboard", line: "Okara took me on after I pulled its dashboard apart." },
+  { id: "menufit", label: "MenuFit", art: "phone", set: ["phone", "poster", "canvas-phone"], color: "#f5b400", alt: "A yellow felt phone", line: "I design MenuFit's screens, for 1.5 million people." },
+  { id: "bidframe", label: "Bidframe", art: "onb-check", set: ["onb-check", "circle", "nav-blog"], color: "#3fae63", alt: "A green felt tick", line: "Bidframe finds the clause that loses the bid." },
+  { id: "ads", label: "Ads", art: "palette", set: ["palette", "bezier", "pen"], color: "#f0454f", alt: "A coral felt palette", line: "Spec ads for Devin: one line, one picture each." },
+  { id: "bevel", label: "Bevel", art: "more-shader", set: ["more-shader", "yarn", "circle-cursor"], color: "#7a5cf0", alt: "A marbled felt ball", line: "Bevel is my 3D art team for game studios." },
+  { id: "sites", label: "Sites", art: "browser", set: ["browser", "canvas", "poster"], color: "#f5b400", alt: "A yellow felt browser window", line: "20 live sites, each one designed and coded by me." },
+  { id: "about", label: "About", art: "nav-about", set: ["nav-about", "onb-wave", "onb-spark"], color: "#9a4dea", alt: "A purple felt speech bubble with an i", line: "Design engineer in London. I founded Ignura and Bevel." },
+  { id: "book", label: "Book a call", art: "call", set: ["call", "circle-comment", "more-team"], color: "#1f7ae0", alt: "A blue felt calendar", line: "Fifteen minutes about your launch. No prep needed." },
 ] as const;
 
 export type DrawerId = (typeof DRAWERS)[number]["id"];
 export const drawerAt = (id: DrawerId) => DRAWERS.findIndex((d) => d.id === id);
 
-/** Ask the drawers to open on one of them, from anywhere on the page (the felt row under the line). */
+/** Ask the page to open one drawer, from anywhere (the bar, the "more" sheet, a link inside another drawer). */
 export const openDrawer = (id: DrawerId) => dispatchEvent(new CustomEvent("fh-open", { detail: id }));
 
-export type Slot = {
-  id: "products" | "work" | "sites" | "book";
-  /** the drawer a click opens */
-  opens: DrawerId;
-  label: string;
-  title: string;
-  color: string;
-  tilt: number;
-  shapes: { src: string; alt: string }[];
-};
+/** The bar's three links, each with its small felt mark, after ignaru.com's: two open drawers, the blog is a page. */
+export const NAV = [
+  { id: "sites", label: "Work", art: "browser", href: "/#sites" },
+  { id: "about", label: "About", art: "nav-about", href: "/#about" },
+  { id: "blog", label: "Blog", art: "nav-blog", href: "/blog" },
+] as const;
 
-export const SLOTS: Slot[] = [
-  {
-    id: "products",
-    opens: "ignaru",
-    label: "Products",
-    title: "Products I've shipped",
-    color: "#9a4dea",
-    tilt: -7,
-    shapes: [
-      { src: "petal", alt: "A purple felt petal, the Ignaru mark" },
-      { src: "claude", alt: "A purple felt asterisk" },
-      { src: "openai", alt: "A purple felt knot" },
-      { src: "gemini", alt: "A purple felt four-point star" },
-      { src: "grok", alt: "A purple felt mark" },
-    ],
-  },
-  {
-    id: "work",
-    opens: "okara",
-    label: "Okara and MenuFit",
-    title: "Where I work",
-    color: "#f0454f",
-    tilt: 5,
-    shapes: [
-      { src: "canvas-dashboard", alt: "A coral felt dashboard with a bar chart" },
-      { src: "canvas-phone", alt: "A coral felt phone" },
-      { src: "canvas", alt: "A coral felt browser window" },
-      { src: "canvas-button", alt: "A coral felt button with an arrow" },
-    ],
-  },
-  {
-    id: "sites",
-    opens: "sites",
-    label: "Sites",
-    title: "Sites for startups",
-    color: "#f5b400",
-    tilt: -3,
-    shapes: [
-      { src: "browser", alt: "A yellow felt browser window" },
-      { src: "phone", alt: "A yellow felt phone" },
-      { src: "poster", alt: "A yellow felt poster" },
-    ],
-  },
-  {
-    id: "book",
-    opens: "book",
-    label: "Book a call",
-    title: "Build and ship with me",
-    color: "#1f7ae0",
-    tilt: 8,
-    shapes: [
-      { src: "code", alt: "Blue felt code brackets" },
-      { src: "terminal", alt: "A blue felt terminal" },
-      { src: "call", alt: "A blue felt calendar" },
-    ],
-  },
-];
+/** A lifted shade of a door's colour, for type and small marks on the dark drawer. */
+export const lift = (hex: string) => `color-mix(in oklab, ${hex} 72%, #fff)`;
 
 export type Site = { key: string; name: string; host: string; group: "Products" | "Pitch sites" | "Concepts" | "Templates"; line: string };
 

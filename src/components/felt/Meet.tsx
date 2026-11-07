@@ -1,7 +1,5 @@
-// The docked booking pill: a neutral off-white pill with the official Google Meet mark (geometry from Wikimedia's
-// Google_Meet_icon_(2020).svg, inlined), "Book a call" and the call's length. Same Cal link as everywhere. Matches the
-// pill on ignaru.com. Styles: felt.css (`fh-meet`).
-import { BOOK } from "./copy";
+// The official Google Meet mark (geometry from Wikimedia's Google_Meet_icon_(2020).svg, inlined), on the bar's key and
+// the drawers' booking pill.
 
 export function MeetMark({ size = 20 }: { size?: number }) {
   return (
@@ -13,17 +11,5 @@ export function MeetMark({ size = 20 }: { size?: number }) {
       <path fill="#00ac47" d="M82.6 8.68L69.5 19.42v33.66l13.16 10.79c1.97 1.54 4.85.135 4.85-2.37V11c0-2.535-2.945-3.925-4.91-2.32zM49.5 36v15.5h-29V72h43c3.315 0 6-2.685 6-6V53.08z" />
       <path fill="#ffba00" d="M63.5 0h-43v20.5h29V36l20-16.57V6c0-3.315-2.685-6-6-6z" />
     </svg>
-  );
-}
-
-export function MeetPill({ minutes }: { minutes: number }) {
-  return (
-    <a className="fh-meet" href={BOOK} target="_blank" rel="noreferrer">
-      <MeetMark />
-      <span className="fh-meet-text">
-        <b>Book a call</b>
-        <span>{minutes} min · Google Meet</span>
-      </span>
-    </a>
   );
 }
