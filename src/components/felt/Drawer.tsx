@@ -417,11 +417,11 @@ const AdShot = ({ a, z, sizes, className }: { a: Ad; z: Ctx["z"]; sizes?: string
 function Fan({ ads }: { ads: Ad[] }) {
   const mid = (ads.length - 1) / 2;
   return (
-    <div className="bx-fan" style={{ "--n": ads.length } as CSSProperties}>
+    <div className={`bx-fan${ads.length < 4 ? " is-few" : ""}`} style={{ "--n": ads.length } as CSSProperties}>
       {ads.map((a, i) => (
         <div key={a.src} className={`bx-fan-i${i === mid ? " is-lead" : ""}`} style={{ "--i": i, zIndex: 10 - Math.abs(i - mid) * 2 } as CSSProperties}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={a.small} srcSet={`${a.small} 480w, ${a.src} 960w`} sizes="(max-width: 760px) 45vw, 260px" alt={a.alt} width={480} height={600} loading="lazy" decoding="async" />
+          <img src={a.small} srcSet={`${a.small} 480w, ${a.src} 960w`} sizes="(max-width: 760px) 40vw, 220px" alt={a.alt} width={480} height={600} loading="lazy" decoding="async" />
         </div>
       ))}
     </div>
@@ -450,7 +450,7 @@ function SetCell({ s, z, w = 6, also }: { s: AdSet; z: Ctx["z"]; w?: 4 | 6; also
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={x.small} alt="" width={480} height={600} loading="lazy" decoding="async" />
                 <span>
-                  {x.brand && x.brand !== s.brand ? <b>{x.brand}</b> : null}
+                  {x.brand && x.brand !== s.brand ? <b>{x.brand}</b> : null}{" "}
                   {x.says}
                 </span>
               </button>
@@ -655,7 +655,7 @@ const PAGES: Record<DrawerId, Page> = {
         >
           <Shot src={ASIDE.src} small={ASIDE.small} alt={ASIDE.alt} z={z} w={1080} h={1350} tall sizes="(max-width: 760px) 60vw, 300px" className="bx-ad" />
         </Cell>
-        <Cell w={6} side title={<span className="bx-n">140</span>} line="spec ads for seven companies, all in one gallery." more={<More label="see all 140" href="https://ignaru-spec-ads.vercel.app" />} className="bx-count">
+        <Cell w={6} side title={<span className="bx-n">140</span>} line="spec ads for seven companies, live on one page." more={<More label="see all 140" href="https://ignaru-spec-ads.vercel.app" />} className="bx-count">
           <Win w={{ key: "spec", name: "Ignaru spec ads", host: "ignaru-spec-ads.vercel.app", img: "/showcase/ignaru-spec-ads-720.webp", w: 720, h: 450, line: "" }} sizes="(max-width: 760px) 100vw, 480px" />
         </Cell>
       </>
@@ -714,7 +714,7 @@ const PAGES: Record<DrawerId, Page> = {
         Say <Circ>hello</Circ>.
       </>
     ),
-    line: "Email is quickest. For ads or a site, book a short call and we'll see if it's a fit.",
+    line: "Book a short call about ads or a site, or email me.",
     bar: (b) => ({ href: BOOK, label: `book a call, ${b.minutes} min`, glyph: <MeetMark size={18} />, also: { href: CV, label: "my cv", download: true } }),
     body: ({ booking: b, go }) => (
       <>
