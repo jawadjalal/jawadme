@@ -45,6 +45,16 @@ const NUMBERS = [
 
 const ROLES = [
   {
+    name: "Ignaru",
+    url: "ignaru.com",
+    title: "Founder",
+    when: "2026 to now",
+    line: "A design canvas for your coding agent",
+    points: [
+      "Designed and built a full product: a canvas that opens your repo, where you circle what's wrong and your own coding agent fixes it. Next.js, Supabase, WorkOS auth, usage based credits, and a **Tauri desktop app for Mac**.",
+    ],
+  },
+  {
     name: "Ignura",
     url: "ignura.com",
     title: "Founder",
@@ -60,18 +70,18 @@ const ROLES = [
     name: "MenuFit",
     url: "menufit.com",
     title: "Product Designer",
-    when: "2026 to now",
+    when: "2026",
     line: "The app for eating out healthy · iOS and Android",
     points: [
-      "Design the core product for an app with **1.5 million users** and **seven figure ARR**: a healthy menu for every restaurant, with macros and a fit score on each dish.",
-      "Own screens across iOS and Android, light and dark, and the components they share.",
+      "Designed the core product for an app with **1.5 million users** and **seven figure ARR**: a healthy menu for every restaurant, with macros and a fit score on each dish.",
+      "Owned screens across iOS and Android, light and dark, and the components they share.",
     ],
   },
   {
     name: "Okara",
     url: "okara.ai",
     title: "Product Development Intern",
-    when: "2026 to now",
+    when: "2026",
     line: "AI CMO serving 150,000+ businesses",
     points: [
       "Won the internship with an unsolicited product teardown: a week on the free tier, then a deployed site with **three redesigns built as live React mockups**.",
@@ -89,16 +99,6 @@ const ROLES = [
     ],
   },
   {
-    name: "Ignaru",
-    url: "ignaru.com",
-    title: "Founder",
-    when: "2026 to now",
-    line: "A design canvas for your coding agent",
-    points: [
-      "Designed and built a full product: a canvas that opens your repo, where you circle what's wrong and your own coding agent fixes it. Next.js, Supabase, WorkOS auth, usage based credits, and a **Tauri desktop app for Mac**.",
-    ],
-  },
-  {
     name: "Nooli",
     title: "Head of Product",
     when: "2026",
@@ -113,7 +113,6 @@ const BUILDS = [
   ["Clicky Graph", "an interactive product demo for heyclicky.com, on a hand rolled renderer of 3,000 elements"],
   ["claude-code-spend", "open source tool that prices every token class in local Claude Code transcripts"],
   ["Client sites", "Splitting Point, Vizzbees, KleoKlaw: design and build, brief to launch"],
-  ["Wayari", "a CLI and desktop app that takes coding agents from a prompt to a reviewed pull request, with 480 PRs merged"],
   ["Bidframe", "one of four builders at a hackathon. It reads a tender pack and flags what would disqualify the bid"],
   ["Weld", "an earlier product I founded: a hiring marketplace for Roblox studios"],
 ];
