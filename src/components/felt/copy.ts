@@ -23,10 +23,10 @@ export const LINE = ["I'm Jawad, 15, building Ignaru,", "and designing sites and
  * is the door's turn or under the pointer (under 60 characters; the first door shows the page's line instead).
  */
 export const DRAWERS = [
-  { id: "ignaru", label: "Ignaru", art: "petal", set: ["petal", "claude", "openai", "gemini", "grok"], color: "#9a4dea", alt: "A purple felt petal, the Ignaru mark", line: "" },
-  { id: "sites", label: "Site design", art: "browser", set: ["browser", "canvas", "poster"], color: "#f5b400", alt: "A yellow felt browser window", line: "Sites for startups, designed and built by hand." },
-  { id: "ads", label: "The ad machine", art: "palette", set: ["palette", "bezier", "pen"], color: "#f0454f", alt: "A coral felt palette", line: "Ads that sell, tested on strangers before they run." },
-  { id: "before", label: "Before", art: "phone", set: ["phone", "canvas-dashboard", "canvas-phone"], color: "#1f7ae0", alt: "A blue felt phone", line: "Before Ignaru: Okara, and new screens for MenuFit." },
+  { id: "work", label: "Work", art: "poster", set: ["poster", "palette", "browser"], color: "#1f7ae0", alt: "A blue felt poster", line: "" },
+  { id: "ads", label: "Ads", art: "palette", set: ["palette", "bezier", "pen"], color: "#f0454f", alt: "A coral felt palette", line: "Ads that sell, tested on strangers before they run." },
+  { id: "sites", label: "Sites", art: "browser", set: ["browser", "canvas", "poster"], color: "#f5b400", alt: "A yellow felt browser window", line: "Sites for startups, designed and built by hand." },
+  { id: "ignaru", label: "Ignaru", art: "petal", set: ["petal", "claude", "openai", "gemini", "grok"], color: "#9a4dea", alt: "A purple felt petal, the Ignaru mark", line: "Ignaru, the design tool I'm building." },
   { id: "contact", label: "Contact", art: "call", set: ["call", "circle-comment", "onb-wave"], color: "#3fae63", alt: "A green felt calendar", line: "Email me, book a call, or take my CV." },
 ] as const;
 
@@ -36,32 +36,94 @@ export const drawerAt = (id: DrawerId) => DRAWERS.findIndex((d) => d.id === id);
 /** Ask the page to open one drawer, from anywhere (the bar, the "more" sheet, a link inside another drawer). */
 export const openDrawer = (id: DrawerId) => dispatchEvent(new CustomEvent("fh-open", { detail: id }));
 
-/** The bar's three links, each with its small felt mark. Each opens its drawer; the blog lives in "more". */
+/** The bar's three links, each with its small felt mark. Each opens its drawer; sites, contact and the blog live in "more". */
 export const NAV = [
-  { id: "ignaru", label: "Ignaru", art: "petal" },
-  { id: "sites", label: "Sites", art: "browser" },
+  { id: "work", label: "Work", art: "poster" },
   { id: "ads", label: "Ads", art: "palette" },
+  { id: "ignaru", label: "Ignaru", art: "petal" },
 ] as const;
 
 /** A lifted shade of a door's colour, for type and small marks on the dark drawer. */
 export const lift = (hex: string) => `color-mix(in oklab, ${hex} 72%, #fff)`;
 
-export type Site = { key: string; name: string; host: string; img: string; w: number; h: number; line: string };
+export type Site = { key: string; name: string; host: string; img: string; w: number; h: number; line: string; tall?: string };
 
 /** The live sites in the Site design drawer. Stills shot at 1440 by 900 on a box (public/showcase and pumpgtm on 8 Nov
  *  2026, monid and ropilot on 5 and 7 Nov). */
 export const SITES: Site[] = [
   { key: "roport", name: "Roport", host: "roport-concept.vercel.app", img: "/showcase/roport-1440.webp", w: 1440, h: 900, line: "A redesign concept for roport.lol, where you hire Roblox developers who shipped." },
   { key: "audora", name: "Audora", host: "audora-site.vercel.app", img: "/showcase/audora-1440.webp", w: 1440, h: 900, line: "A redesign concept for audora.art: paste a fanfic and hear it performed." },
-  { key: "monid", name: "Monid", host: "monid-site.vercel.app", img: "/sites/monid.webp", w: 960, h: 600, line: "A spec redesign for Monid, one key for every tool an agent needs." },
+  { key: "monid", name: "Monid", host: "monid-site.vercel.app", img: "/sites/monid.webp", tall: "/sites/monid-tall.webp", w: 960, h: 600, line: "A spec redesign for Monid, one key for every tool an agent needs." },
   { key: "pumpgtm", name: "PumpGTM", host: "pumpgtm-site.vercel.app", img: "/sites/pumpgtm.webp", w: 1440, h: 900, line: "A redesign concept for pumpgtm.com, which finds buyers and starts the conversation." },
-  { key: "ropilot", name: "Ropilot", host: "ropilot-site.vercel.app", img: "/sites/ropilot.webp", w: 960, h: 600, line: "Make Roblox games by asking: it writes, models and playtests." },
+  { key: "ropilot", name: "Ropilot", host: "ropilot-site.vercel.app", img: "/sites/ropilot.webp", tall: "/sites/ropilot-tall.webp", w: 960, h: 600, line: "Make Roblox games by asking: it writes, models and playtests." },
 ];
 
-/** The four ads in the ad machine drawer: spec work, unasked, for two browsers and a screenshot app. */
-export const ADS = [
-  { key: "aside-297", src: "/ads/aside-297.webp", w: 880, h: 1100, brand: "Aside", alt: "Aside: 300 tasks on 136 websites. Aside passed 297. A grid of 300 marks, three left open." },
-  { key: "shotbase-timestamp", src: "/ads/shotbase-timestamp.webp", w: 864, h: 1080, brand: "Shotbase", alt: "Shotbase: That's not a name. That's a timestamp. A screenshot named by date, about to get a smart name." },
-  { key: "aside-manifesto", src: "/showcase/aside-manifesto-1080.webp", w: 1080, h: 1350, brand: "Aside", alt: "Aside, in black: Most modern software is just a tab. The apps it holds, drawn in type." },
-  { key: "shotbase-reacted", src: "/ads/shotbase-reacted.webp", w: 864, h: 1080, brand: "Shotbase", alt: "Shotbase: They didn't reply. They all reacted at 0:42. A demo video with reactions stacked on one moment." },
-] as const;
+export type Ad = { src: string; small: string; alt: string; says: string };
+export type AdSet = { key: string; brand: string; says: string; ads: Ad[] };
+
+/** One brand's four ads: what each says, then what it shows (the two make its alt text). */
+const set = (key: string, brand: string, ads: [says: string, shows: string][]): Ad[] =>
+  ads.map(([says, shows], i) => ({ src: `/ads/sets/${key}-${i + 1}.webp`, small: `/ads/sets/${key}-${i + 1}-480.webp`, says, alt: `${brand}: ${says} ${shows}` }));
+
+/** The ad sets, four ads to a brand, each a different idea. Spec work, made unasked. 960 by 1200 copies of the 2160 by
+ *  2700 finals (~/Downloads/ad-carousels, 8 Nov 2026), live with the rest at ignaru-spec-ads.vercel.app. */
+export const SETS: Record<"hoplite" | "shotbase" | "instabox" | "capy" | "browserUse", AdSet> = {
+  hoplite: {
+    key: "hoplite",
+    brand: "Hoplite",
+    says: "Your agent works while you sleep.",
+    ads: set("hoplite", "Hoplite", [
+      ["Your laptop sleeps. Your agents keep coding.", "Black Hoplite marks tiled on red."],
+      ["Your agent codes all night. You merge at seven.", "A night sky over a merged pull request."],
+      ["You slept twice. Your agent opened four PRs.", "Green commit bars between two nights."],
+      ["Close your laptop. Your agent opens the PR.", "A loading spinner around an Open badge."],
+    ]),
+  },
+  shotbase: {
+    key: "shotbase",
+    brand: "Shotbase",
+    says: "Every screenshot, searchable.",
+    ads: set("shotbase", "Shotbase", [
+      ["Three apps. Three buttons.", "A capture bar over a phone and a browser."],
+      ["It zooms for you.", "A glowing yellow search bar over a phone screenshot."],
+      ["Same screenshot. One click.", "The presets menu in late sunlight."],
+      ["Search what was in it.", "A glowing search box over a wall of screenshot names."],
+    ]),
+  },
+  instabox: {
+    key: "instabox",
+    brand: "InstaBox",
+    says: "A cloud machine for every agent.",
+    ads: set("instabox", "InstaBox", [
+      ["Ten AI agents. One laptop. Give each a cloud machine.", "A laptop over a row of black cubes."],
+      ["Every AI agent gets its own cloud machine.", "A black box on mint green."],
+      ["Your AI agents are busy. Your laptop isn't.", "A terminal on a laptop."],
+      ["100 AI agents. Zero new laptops.", "A wall of black cubes."],
+    ]),
+  },
+  capy: {
+    key: "capy",
+    brand: "Capy",
+    says: "Assign it an issue, get a pull request.",
+    ads: set("capy", "Capy", [
+      ["Ask @capy in Slack. A pull request flies back.", "A capybara riding a pelican."],
+      ["Tag @capy in Slack. It writes the PR. You soak.", "A capybara in a bath."],
+      ["Nine Linear issues. Nine Capys. Nine PRs.", "Nine capybaras in nine baths."],
+      ["Assign Capy in Linear. It writes the PR.", "A capybara in a captain's hat."],
+    ]),
+  },
+  browserUse: {
+    key: "browser-use",
+    brand: "Browser Use",
+    says: "A real browser for any AI model.",
+    ads: set("browser-use", "Browser Use", [
+      ["Any AI model. A real browser. Free and open source.", "An agent filling in a flight search."],
+      ["The AI browser agent. Free and open source.", "A Star 120k button on orange."],
+      ["Any model gets a browser. Free, on your machine.", "A stack of import lines."],
+      ["Blocked agents get through.", "An Access Denied page and a shoe shop behind it."],
+    ]),
+  },
+};
+
+/** Aside, in black: the one ad that is all type. */
+export const ASIDE = { src: "/showcase/aside-manifesto-1080.webp", small: "/showcase/aside-manifesto-540.webp", alt: "Aside, in black: Most modern software is just a tab. The apps it holds, drawn in type." };
