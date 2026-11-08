@@ -4,7 +4,7 @@ import { IDENTITY, SKILLS, SOCIALS } from "@/lib/profile";
 // The same who and what as the home page: a design engineer who makes Ignaru, and designs sites and ads for startups.
 const TITLE = `${IDENTITY.properName}, design engineer building Ignaru`;
 const DESCRIPTION =
-  "Design engineer in London. I make Ignaru (ignaru.com), an agent-native design tool: it opens your repo, and your coding agent fixes what you circle. I design sites and ads for startups. Before that, product development intern at Okara and new screens for MenuFit as a client.";
+  "I'm 15, a design engineer in London, building Ignaru (ignaru.com), an agent-native design tool: it opens your repo, and your coding agent fixes what you circle. I design sites and ads for startups. Before that, product development intern at Okara and new screens for MenuFit as a client.";
 import "./globals.css";
 
 export const metadata: Metadata = {

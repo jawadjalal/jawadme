@@ -67,6 +67,28 @@ function Opening() {
   );
 }
 
+const LONDON = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", hour: "2-digit", minute: "2-digit", hour12: false });
+
+/** Under the line: where he is and his time there, in mono. The time fills in after mount (the server's clock would not
+ *  match the reader's), on the minute after that. */
+function Where() {
+  const [now, setNow] = useState<string | null>(null);
+  useEffect(() => {
+    let t = 0;
+    const tick = () => {
+      setNow(LONDON.format(new Date()));
+      t = window.setTimeout(tick, 60_000 - (Date.now() % 60_000) + 50);
+    };
+    tick();
+    return () => window.clearTimeout(t);
+  }, []);
+  return (
+    <span className="rg-where font-mono">
+      London <span className="rg-time">{now ?? "--:--"}</span>
+    </span>
+  );
+}
+
 /** One line, its words rising out of a blur one after another. */
 function Words({ text, rich }: { text: string; rich?: ReactNode }) {
   if (rich) return <>{rich}</>;
@@ -289,6 +311,7 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
           {/* the page's title stays the same for screen readers; the door lines are a picture of the same doors */}
           <h1 className={shown === 0 ? "rg-l rg-h" : "rg-l rg-h is-off"}>
             <Opening />
+            <Where />
           </h1>
           {lines.out !== undefined && lines.out > 0 && lines.out !== lines.k ? (
             <p key={`o${lines.out}`} className="rg-l is-out" aria-hidden="true" onAnimationEnd={(e) => e.target === e.currentTarget && setLines((l) => ({ k: l.k }))}>
