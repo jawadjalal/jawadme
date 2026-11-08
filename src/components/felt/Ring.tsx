@@ -83,7 +83,7 @@ function Where() {
     return () => window.clearTimeout(t);
   }, []);
   return (
-    <span className="rg-where font-mono">
+    <span className="rg-where" aria-hidden="true">
       London <span className="rg-time">{now ?? "--:--"}</span>
     </span>
   );
