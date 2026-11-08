@@ -1,19 +1,21 @@
 "use client";
 
 /*
- * The drawers, built the way ignaru.com's are (components/home/Drawers.tsx and Kit.tsx, #795, #837, #846): one native
+ * The drawers, after ignaru.com's (components/home/Drawers.tsx, Kit.tsx) and wonder.design's bento drawers: one native
  * modal <dialog>, square, a full-height panel on the right that springs in (a full sheet that slides up on a phone and
- * closes with a swipe down from its top). Its top bar is solid with a hairline under it: back, next, where you are, close.
- * Each drawer opens on a claim of two lines and one short line, with its felt piece large and loose beside them; then one
- * idea a block, parted by hairlines and never boxed: the real thing working on a band of the drawer's colour, a capture
- * on the same band, a figure set large, three felt pieces with a phrase each. Five drawers, each short: Ignaru, site design,
- * the ad machine, before (Okara and MenuFit) and contact. The key is ignaru.com's square ink block (#881) at the drawer's
- * bottom right, with a quiet second way beside it. Past a drawer's end (or with a wheel on the page beside it) the next
- * door's drawer comes in. Pictures open full size. Styles: felt.css (`fh-dr`, `kx-`).
+ * closes with a swipe down from its top). Its top bar is solid: back, next, where you are, close.
+ *
+ * Each drawer opens on a claim of two lines with one word given a hand (circled, underlined, set in the serif, or
+ * printed misregistered like a Spider-Verse panel), one short line and a felt piece; then a bento of cells of
+ * different sizes, each holding a real thing: the ads, the live sites, Ignaru's canvas. Five drawers: work (a line
+ * about him, then his ads and sites), ads, sites, Ignaru and contact. The key is the paper ink block in a tray at the
+ * drawer's foot, with email or a call beside it, so the next step is one tap from anywhere in a drawer. Past a drawer's
+ * end (or with a wheel on the page beside it) the next door's drawer comes in. Pictures open full size. Styles:
+ * felt.css (`fh-dr`, `kx-`, `bx-`, `ty-`).
  */
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { dayLink, type Booking } from "./booking";
-import { ADS, BOOK, CV, DRAWERS, EMAIL, SITES, drawerAt, feltSrc, lift, type DrawerId, type Site } from "./copy";
+import { ASIDE, BOOK, CV, DRAWERS, EMAIL, SETS, SITES, drawerAt, feltSrc, lift, type Ad, type AdSet, type DrawerId, type Site } from "./copy";
 import { MeetMark } from "./Meet";
 import { SOCIALS } from "./Socials";
 import { sfx } from "./Sound";
@@ -26,7 +28,7 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
   const ref = useRef<HTMLDialogElement>(null);
   const lb = useRef<HTMLDialogElement>(null);
   const cue = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState<DrawerId>(at ?? "ignaru");
+  const [shown, setShown] = useState<DrawerId>(at ?? "work");
   const [zoom, setZoom] = useState<Zoom>(null);
   const k = drawerAt(shown);
   const next = DRAWERS[k + 1] ?? null;
@@ -47,6 +49,8 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
       sfx("open");
     } else if (at === null && d.open) d.close();
     if (at !== null) d.scrollTop = 0;
+    // a link inside one drawer that opens another removes itself with the old page: keep focus in the drawer
+    if (at !== null && d.open && !d.contains(document.activeElement)) d.focus({ preventScroll: true });
   }, [at]);
   useEffect(() => {
     const d = ref.current;
@@ -215,10 +219,10 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
         <span className="fh-dr-handle" aria-hidden="true" />
         <div className="fh-dr-bar">
           <div className="fh-dr-nav">
-            <button type="button" onClick={() => prev && onGo(prev.id)} disabled={!prev} aria-label={prev ? `Back to ${prev.label}` : "Back"}>
+            <button type="button" onClick={() => prev && onGo(prev.id)} aria-disabled={!prev} aria-label={prev ? `Back to ${prev.label}` : "Back"}>
               <Chev d="M9 3.5 5.5 7 9 10.5" />
             </button>
-            <button type="button" onClick={() => next && onGo(next.id)} disabled={!next} aria-label={next ? `Next, ${next.label}` : "Next"}>
+            <button type="button" onClick={() => next && onGo(next.id)} aria-disabled={!next} aria-label={next ? `Next, ${next.label}` : "Next"}>
               <Chev d="M5 3.5 8.5 7 5 10.5" />
             </button>
             <span className="fh-dr-count" aria-live="polite">
@@ -236,21 +240,10 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
             <h2 id="fh-dr-t">{page.title}</h2>
             <p className="kx-lede">{page.line}</p>
           </div>
-          {page.mark ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img className="kx-top-art kx-top-mark" src={page.mark} alt="" width={120} height={120} />
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img className="kx-top-art" src={`/felt/${s.art}.webp`} alt="" width={300} height={300} />
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className={page.mark ? "kx-top-art kx-top-mark" : "kx-top-art"} src={page.mark ?? `/felt/${s.art}.webp`} alt="" width={300} height={300} />
         </header>
-        <div className="kx-body">
-          {page.body({ booking, z }).filter(Boolean).map((b, i) => (
-            <div key={i} className="kx-blk">
-              {b}
-            </div>
-          ))}
-        </div>
+        <ul className="bx">{page.body({ booking, z, go: onGo })}</ul>
         <div className="kx-tray">
           <Bar {...page.bar(booking)} />
         </div>
@@ -291,12 +284,59 @@ const Out = () => (
   </svg>
 );
 
-/* ---------- the kit: one idea a block ---------- */
+/* ---------- type with a hand: the one word in a claim that gets marked ---------- */
 
+/** A word circled in the drawer's colour by a loose pen; it draws itself once the drawer is open. */
+function Circ({ children }: { children: ReactNode }) {
+  return (
+    <span className="ty-circ">
+      {children}
+      <svg viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path pathLength={1} d="M118 9C70 3 18 10 9 36c-7 22 34 38 92 37 56-1 93-15 90-38C188 13 147 4 92 6 63 7 40 12 27 20" />
+      </svg>
+    </span>
+  );
+}
+
+/** A word underlined by the same pen, a little uneven. */
+function Under({ children }: { children: ReactNode }) {
+  return (
+    <span className="ty-under">
+      {children}
+      <svg viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path pathLength={1} d="M3 9C42 4 88 3 128 6s58 3 69-1" />
+      </svg>
+    </span>
+  );
+}
+
+/** A word in the serif, italic: the one font switch in a line. */
+const Serif = ({ children }: { children: ReactNode }) => <em className="ty-serif">{children}</em>;
+
+/** A word printed like a Spider-Verse panel: the cyan and magenta plates slip off the key, jump a few frames when the
+ *  drawer opens, and jump again under the pointer. The plates are hidden from screen readers. */
+function Sv({ children }: { children: string }) {
+  return (
+    <span className="ty-sv">
+      <span className="ty-sv-p ty-sv-c" aria-hidden="true">
+        {children}
+      </span>
+      <span className="ty-sv-p ty-sv-m" aria-hidden="true">
+        {children}
+      </span>
+      <span className="ty-sv-k">{children}</span>
+    </span>
+  );
+}
+
+/* ---------- the bento: cells of different sizes, a real thing in each ---------- */
+
+type Ctx = { booking: Booking; z: (src: string, alt: string, tall?: boolean) => void; go: (id: DrawerId) => void };
 type BarProps = { href: string; label: string; glyph?: ReactNode; download?: boolean; also?: { href: string; label: string; download?: boolean } };
+type Page = { title: ReactNode; line: ReactNode; mark?: string; bar: (b: Booking) => BarProps; body: (c: Ctx) => ReactNode };
 
-/** The key: an ink pill floating at the drawer's bottom right, the quiet second way beside it. The pill comes first in the
- *  DOM so the keyboard reaches it first; row-reverse puts it in the corner. */
+/** The key: the paper ink block in the tray at the drawer's foot, the quiet second way beside it. The block comes first
+ *  in the DOM so the keyboard reaches it first; row-reverse puts it in the corner. */
 function Bar({ href, label, glyph, download, also }: BarProps) {
   const ext = !href.startsWith("/") && !href.startsWith("mailto:");
   return (
@@ -309,38 +349,58 @@ function Bar({ href, label, glyph, download, also }: BarProps) {
       {also ? (
         <a className="kx-bar-2" href={also.href} {...(also.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})} {...(also.download ? { download: true } : {})}>
           {also.label}
-          <Out />
+          {also.href.startsWith("http") ? <Out /> : null}
         </a>
       ) : null}
     </div>
   );
 }
 
-/** A block's head: a claim of two lines at most, one line, its felt piece loose on the right. */
-function Sh({ title, line, art }: { title: string; line?: ReactNode; art?: string }) {
+type CellProps = { w: 2 | 3 | 4 | 6; tone?: "band" | "light"; title?: ReactNode; line?: ReactNode; more?: ReactNode; side?: boolean; pair?: boolean; className?: string; children: ReactNode };
+
+/** One cell: a short head (what it is, one line, sometimes a way further) and the real thing under it, or beside it
+ *  when `side`. `w` is its width in sixths; `band` grounds it in the drawer's colour. On a phone a third-wide cell
+ *  runs full width, unless `pair` says the one beside it is a third too, so the two share the row. */
+function Cell({ w, tone, title, line, more, side, pair, className = "", children }: CellProps) {
   return (
-    <div className={art ? "kx-sh has-art" : "kx-sh"}>
-      <div>
-        <h3>{title}</h3>
-        {line ? <p className="kx-sp">{line}</p> : null}
-      </div>
-      {art ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img className="kx-sh-art" src={feltSrc(art).src} alt="" width={160} height={160} loading="lazy" decoding="async" />
+    <li className={`bx-c w${w}${tone ? ` is-${tone}` : ""}${side ? " is-side" : ""}${pair ? " is-pair" : ""} ${className}`}>
+      {title || line || more ? (
+        <div className="bx-h">
+          {title ? <h3>{title}</h3> : null}
+          {line ? typeof line === "string" ? <p>{line}</p> : <div className="bx-l">{line}</div> : null}
+          {more}
+        </div>
       ) : null}
-    </div>
+      <div className="bx-v">{children}</div>
+    </li>
   );
 }
 
-/** The thing itself, working, on a band of the drawer's colour that runs edge to edge. */
-const Band = ({ children, paper }: { children: ReactNode; paper?: boolean }) => <div className={paper ? "kx-stage is-paper" : "kx-stage"}>{children}</div>;
+/** A way further, inside a cell: to another drawer, or out to a live page. */
+function More({ label, to, href }: { label: string; to?: () => void; href?: string }) {
+  const inner = (
+    <>
+      {label}
+      <Chev d="M5 3.5 8.5 7 5 10.5" />
+    </>
+  );
+  return href ? (
+    <a className="bx-more" href={href} target="_blank" rel="noreferrer">
+      {inner}
+    </a>
+  ) : (
+    <button type="button" className="bx-more" onClick={to}>
+      {inner}
+    </button>
+  );
+}
 
-/** A capture that opens full size. */
-function Shot({ src, alt, z, w = 1200, h = 750, tall, className = "" }: { src: string; alt: string; z: Ctx["z"]; w?: number; h?: number; tall?: boolean; className?: string }) {
+/** A picture that opens full size. */
+function Shot({ src, small, alt, z, w = 960, h = 1200, tall, sizes, className = "" }: { src: string; small?: string; alt: string; z: Ctx["z"]; w?: number; h?: number; tall?: boolean; sizes?: string; className?: string }) {
   return (
     <button type="button" className={`kx-media ${className}`} onClick={() => z(src, alt, tall)} aria-label={`Open full size: ${alt}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} width={w} height={h} loading="lazy" decoding="async" />
+      <img src={small ?? src} srcSet={small ? `${small} 480w, ${src} 960w` : undefined} sizes={small ? sizes ?? "(max-width: 760px) 50vw, 300px" : undefined} alt={alt} width={w} height={h} loading="lazy" decoding="async" />
       <span className="kx-expand" aria-hidden="true">
         <i />
         expand
@@ -349,41 +409,99 @@ function Shot({ src, alt, z, w = 1200, h = 750, tall, className = "" }: { src: s
   );
 }
 
-/** A real number set very large, and what it counts. */
-function Big({ n, what, line }: { n: string; what: string; line?: string }) {
+/** An ad at full strength, opening full size. */
+const AdShot = ({ a, z, sizes, className }: { a: Ad; z: Ctx["z"]; sizes?: string; className?: string }) => <Shot src={a.src} small={a.small} alt={a.alt} z={z} tall sizes={sizes} className={`bx-ad ${className ?? ""}`} />;
+
+/** A hand of ads from different brands, fanned; they spread under the pointer. The cell's "every set" is the way in. */
+function Fan({ ads }: { ads: Ad[] }) {
   return (
-    <div className="kx-big">
-      <b>{n}</b>
-      <div>
-        <h3>{what}</h3>
-        {line ? <p className="kx-sp">{line}</p> : null}
-      </div>
+    <div className="bx-fan" style={{ "--n": ads.length } as CSSProperties}>
+      {ads.map((a, i) => (
+        <div key={a.src} className="bx-fan-i" style={{ "--i": i } as CSSProperties}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={a.small} srcSet={`${a.small} 480w, ${a.src} 960w`} sizes="(max-width: 760px) 40vw, 220px" alt={a.alt} width={480} height={600} loading="lazy" decoding="async" />
+        </div>
+      ))}
     </div>
   );
 }
 
-/** Three felt pieces in a row, a bold phrase and a few words under each. */
-function Trio({ items }: { items: { art: string; b: string; p: string }[] }) {
+/** A brand's whole set: one ad large, and beside it the four, each by what it says, to pick from (pointing at one shows it). */
+function SetCell({ s, z, w = 6, also }: { s: AdSet; z: Ctx["z"]; w?: 4 | 6; also?: ReactNode }) {
+  const [i, setI] = useState(0);
+  const a = s.ads[i] ?? s.ads[0];
   return (
-    <ul className="kx-trio">
-      {items.map((t, i) => (
-        <li key={t.b} style={{ "--k": i } as CSSProperties}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={feltSrc(t.art).src} alt="" width={160} height={160} loading="lazy" decoding="async" />
-          <b>{t.b}</b>
-          <p>{t.p}</p>
-        </li>
-      ))}
-    </ul>
+    <li className={`bx-c w${w} is-band bx-set`}>
+      <div className="bx-set-big">
+        <AdShot key={a.src} a={a} z={z} sizes="(max-width: 760px) 90vw, 420px" className="bx-set-in" />
+      </div>
+      <div className="bx-set-side">
+        <div className="bx-h">
+          <h3>{s.brand}</h3>
+          <p>{s.says}</p>
+          {also}
+        </div>
+        <ul className="bx-set-pick" aria-label={`${s.brand}: the four ads`}>
+          {s.ads.map((x, k) => (
+            <li key={x.src}>
+              <button type="button" aria-pressed={k === i} onClick={() => setI(k)} onPointerEnter={(e) => e.pointerType === "mouse" && setI(k)}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={x.small} alt="" width={480} height={600} loading="lazy" decoding="async" />
+                <span>{x.says}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </li>
   );
 }
+
+/** A live site in a plain window: its address, the first screen, and (where there is one) the whole page scrolling
+ *  past under the pointer. Opens the site. */
+function Win({ w, narrow, sizes = "(max-width: 760px) 100vw, 560px" }: { w: Site; narrow?: boolean; sizes?: string }) {
+  // a narrow window shows the whole-page capture from its top, where there is one
+  const img = narrow && w.tall ? { src: w.tall, w: 720, h: 1350 } : { src: w.img, w: w.w, h: w.h };
+  return (
+    <a className={`bx-win${w.tall ? " has-tall" : ""}`} href={`https://${w.host}`} target="_blank" rel="noreferrer" style={w.tall ? ({ "--tall": `url(${w.tall})` } as CSSProperties) : undefined}>
+      <span className="bx-win-bar">
+        <span>{w.host}</span>
+        <Out />
+      </span>
+      <span className="bx-win-view">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={img.src} alt={`${w.name}, the first screen`} width={img.w} height={img.h} sizes={sizes} loading="lazy" decoding="async" />
+      </span>
+    </a>
+  );
+}
+
+/** A site's cell: its window, its name, what it is. */
+function SiteCell({ k, w, line, pair }: { k: string; w: 2 | 3 | 4 | 6; line?: boolean; pair?: boolean }) {
+  const site = SITES.find((x) => x.key === k);
+  if (!site) return null;
+  return (
+    <Cell w={w} pair={pair} title={site.name} line={line === false ? undefined : site.line} className={`bx-site${w === 2 ? " is-narrow" : ""}`}>
+      <Win w={site} narrow={w === 2} sizes={w === 6 ? "(max-width: 760px) 100vw, 840px" : w === 2 ? "(max-width: 760px) 50vw, 280px" : "(max-width: 760px) 100vw, 560px"} />
+    </Cell>
+  );
+}
+
+/** A short list, a small square of the drawer's colour to each line. */
+const Dots = ({ items }: { items: ReactNode[] }) => (
+  <ul className="bx-dots">
+    {items.map((t, i) => (
+      <li key={i}>{t}</li>
+    ))}
+  </ul>
+);
 
 /** Copies the address and opens mail, saying so for a moment. */
 function EmailLink() {
   const [got, setGot] = useState(false);
   return (
     <a
-      className="kx-fin-more"
+      className="bx-mail"
       href={`mailto:${EMAIL}`}
       onClick={() => {
         // copying can be refused (no permission, an insecure context): mail still opens, the label just says less
@@ -396,16 +514,11 @@ function EmailLink() {
           .catch(() => undefined);
       }}
     >
-      {got ? "Copied, opening mail" : EMAIL}
+      <span>{got ? "copied, opening mail" : EMAIL}</span>
       <Out />
     </a>
   );
 }
-
-type Ctx = { booking: Booking; z: (src: string, alt: string, tall?: boolean) => void };
-type Page = { title: string; line: string; mark?: string; bar: (b: Booking) => BarProps; body: (c: Ctx) => ReactNode[] };
-
-const call = { href: BOOK, label: "Book a call" };
 
 /** okara.ai's own mark (its `landing-mark` symbol), in the ink of whatever it sits in. */
 function OkaraMark({ size = 18 }: { size?: number }) {
@@ -419,236 +532,225 @@ function OkaraMark({ size = 18 }: { size?: number }) {
   );
 }
 
-/** A company I worked with before Ignaru: its own mark, what I did there, and only the numbers its own pages state. */
-function Past({ mark, name, what, role, facts, src }: { mark: ReactNode; name: string; what: string; role: string; facts: { n: string; k: string }[]; src: { href: string; label: string } }) {
+const call = { href: BOOK, label: "book a call" };
+const mail = { href: `mailto:${EMAIL}`, label: "email me" };
+
+/** Before Ignaru: the two companies, each with its own mark in the line, and the work beside them. */
+function Before({ z }: { z: Ctx["z"] }) {
   return (
-    <div className="fh-past">
-      <div className="fh-past-head">
-        {mark}
-        <div>
-          <h3>
-            {name}
-            <span>, {what}</span>
-          </h3>
-          <p className="kx-sp">{role}</p>
-        </div>
+    <Cell
+      w={6}
+      side
+      title="Before Ignaru."
+      className="bx-before"
+      line={
+        <Dots
+          items={[
+            <>
+              <span className="bx-mk bx-mk-ok">
+                <OkaraMark size={11} />
+              </span>
+              <b>Okara</b>, an AI CMO: product development intern. I got in by taking its dashboard apart, unasked.
+            </>,
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="bx-mk" src="/logos/menufit-bag-128.webp" alt="" width={20} height={22} />
+              <b>MenuFit</b>, for eating out healthy: new screens for the app as a client, in light and dark.
+            </>,
+          ]}
+        />
+      }
+    >
+      <div className="bx-pair">
+        <Shot src="/okara/feed.webp" alt="My Okara proposal: a feed that opens on one real draft to approve" z={z} w={800} h={1127} tall className="kx-tall" />
+        <Shot src="/menufit/the-hack-dark.webp" alt="My MenuFit screen: the same order with three proteins on top, 9g becomes 35g" z={z} w={540} h={1169} tall className="kx-tall" />
       </div>
-      <dl className="fh-past-facts">
-        {facts.map((f) => (
-          <div key={f.k}>
-            <dt>{f.n}</dt>
-            <dd>{f.k}</dd>
-          </div>
-        ))}
-      </dl>
-      <p className="fh-past-src">
-        Numbers from{" "}
-        <a href={src.href} target="_blank" rel="noreferrer">
-          {src.label}
-        </a>
-      </p>
-    </div>
+    </Cell>
   );
 }
 
-/** How an ad gets made, in order. Each step has its own felt piece. */
-const MACHINE = [
-  { art: "circle", b: "Find why buyers pay.", p: "Reviews, threads and sales calls first, until one reason to buy keeps coming back." },
-  { art: "canvas-button", b: "Only the brand's own things.", p: "Its real product, screens, logo and type. Nothing mocked up." },
-  { art: "bezier", b: "Cut it down to four.", p: "Lots of concepts go in. Four come out, as different from each other as they can be." },
-  { art: "circle-cursor", b: "Two seconds with a stranger.", p: "Someone who has never heard of the brand sees each ad for two seconds. If they can't say what it sells, it goes." },
-  { art: "onb-check", b: "Blind judges.", p: "Judges who don't know which ad is whose score whether it would sell. Only the ones that pass are ready." },
-];
-
 const PAGES: Record<DrawerId, Page> = {
-  ignaru: {
-    title: "Ignaru gives your agent taste.",
-    line: "An agent-native design canvas that opens the repo you already have. Circle what looks wrong, and Claude Code, Codex or Cursor fixes it in your files.",
-    mark: "/logos/ignaru.svg",
-    bar: () => ({ href: "https://ignaru.com", label: "Open ignaru.com", also: call }),
-    body: ({ z }) => [
+  work: {
+    title: (
       <>
-        <Band>
-          <Shot src="/ignaru/studio-canvas.webp" alt="Ignaru Studio's canvas: a hero frame with two circled notes, a mood board and a start button, with a teammate's cursor" z={z} w={1100} h={587} />
-        </Band>
-        <p className="kx-cap">Ignaru Studio&apos;s canvas: frames from your own pages, with what you circled numbered on them.</p>
-      </>,
-      // ignaru components/home/copy.ts on origin/main: "Free; Pro is $20 a month."
-      <Trio
-        items={[
-          { art: "claude", b: "Bring your own agent", p: "Claude Code, Codex or Cursor, on your plan." },
-          { art: "more-mac", b: "Free on Mac and web", p: "Pro is $20 a month." },
-          { art: "canvas-phone", b: "Every width at once", p: "Desktop and phone, side by side." },
-        ]}
-      />,
-    ],
-  },
-  sites: {
-    title: "Sites, built by hand.",
-    line: "Concepts and pitch sites for startups, designed and coded by me. Every one is live, so open any of them.",
-    bar: () => ({ href: BOOK, label: "Want one? Book a call", also: { href: `mailto:${EMAIL}`, label: "Email me" } }),
-    body: () => [
-      <ul className="fh-gal" key="gal">
-        {SITES.map((w, i) => (
-          <SiteCard key={w.key} w={w} wide={i === 0} />
-        ))}
-      </ul>,
-    ],
+        Hi, I&apos;m Jawad. Here&apos;s my <Circ>work.</Circ>
+      </>
+    ),
+    line: "15, in London, building Ignaru. I design ads and sites for startups, and everything below is real.",
+    mark: "/felt/jawad-head-320.webp",
+    bar: () => ({ ...call, also: mail }),
+    body: ({ z, go }) => (
+      <>
+        <Cell w={4} tone="band" title="Ads" line="Four to a brand, each a different idea." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
+          <Fan ads={[SETS.hoplite.ads[0], SETS.shotbase.ads[3], SETS.capy.ads[2], SETS.instabox.ads[1]]} />
+        </Cell>
+        <Cell w={2} title="Browser Use" line={SETS.browserUse.says}>
+          <AdShot a={SETS.browserUse.ads[1]} z={z} sizes="(max-width: 760px) 45vw, 260px" />
+        </Cell>
+        <Cell w={6} title="Sites" line="Designed and coded by me. Every one is live, so open it." more={<More label="every site" to={() => go("sites")} />} className="bx-site bx-lead">
+          <Win w={SITES[0]} sizes="(max-width: 760px) 100vw, 840px" />
+        </Cell>
+        <SiteCell k="ropilot" w={2} line={false} />
+        <SiteCell k="audora" w={4} />
+        <Before z={z} />
+      </>
+    ),
   },
   ads: {
-    title: "The ad machine.",
-    line: "I make ads that sell, not ads that only look good. Four very different ads for a brand, each one tested before anyone pays to run it.",
-    bar: () => ({ href: "https://ignaru-spec-ads.vercel.app", label: "See 140 of them", also: { href: BOOK, label: "Ads for your launch" } }),
-    body: ({ z }) => [
+    title: (
       <>
-        <Band>
-          <ul className="kx-ads">
-            {ADS.map((a) => (
-              <li key={a.key}>
-                <Shot src={a.src} alt={a.alt} z={z} w={a.w} h={a.h} tall />
-              </li>
-            ))}
-          </ul>
-        </Band>
-        <p className="kx-cap">Spec ads for Aside and Shotbase. Neither asked; I made them to show what the machine does.</p>
-      </>,
+        Ads that <Sv>sell,</Sv> tested first.
+      </>
+    ),
+    line: "Four ads to a brand, each a different idea. Spec work: none of these brands asked.",
+    bar: () => ({ href: "https://ignaru.com/ads", label: "book ads", also: mail }),
+    body: ({ z }) => (
       <>
-        <Sh title="How one gets made." />
-        <ol className="fh-steps">
-          {MACHINE.map((m, i) => (
-            <li key={m.b} style={{ "--k": i } as CSSProperties}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={feltSrc(m.art).src} alt="" width={72} height={72} loading="lazy" decoding="async" />
-              <div>
-                <b>{m.b}</b>
-                <p>{m.p}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </>,
-      <Big n="140" what="spec ads for seven companies, made in a day with Ignaru." line="None of the seven asked. They are on ignaru-spec-ads.vercel.app." />,
-    ],
+        <SetCell s={SETS.hoplite} z={z} />
+        <Cell w={4} title="Shotbase" line={SETS.shotbase.says}>
+          <div className="bx-pair">
+            <AdShot a={SETS.shotbase.ads[3]} z={z} />
+            <AdShot a={SETS.shotbase.ads[1]} z={z} />
+          </div>
+        </Cell>
+        <Cell w={2} pair title="Capy" line="An issue in, a pull request out.">
+          <AdShot a={SETS.capy.ads[0]} z={z} sizes="(max-width: 760px) 45vw, 260px" />
+        </Cell>
+        <Cell w={2} pair title="InstaBox" line={SETS.instabox.says}>
+          <AdShot a={SETS.instabox.ads[1]} z={z} sizes="(max-width: 760px) 45vw, 260px" />
+        </Cell>
+        <Cell w={4} title="Browser Use" line={SETS.browserUse.says}>
+          <div className="bx-pair">
+            <AdShot a={SETS.browserUse.ads[0]} z={z} />
+            <AdShot a={SETS.browserUse.ads[3]} z={z} />
+          </div>
+        </Cell>
+        <Cell
+          w={6}
+          side
+          tone="light"
+          title={
+            <>
+              How one gets <Serif>made.</Serif>
+            </>
+          }
+          line={
+            <Dots
+              items={[
+                "Find the one reason people buy, in reviews, threads and sales calls.",
+                "Only the brand's real product, screens, logo and type.",
+                <>
+                  A stranger sees each ad for <Under>two seconds.</Under> If they can&apos;t say what it sells, it goes.
+                </>,
+                "Blind judges score the rest. Only the ones that pass are ready.",
+              ]}
+            />
+          }
+          className="bx-how"
+        >
+          <Shot src={ASIDE.src} small={ASIDE.small} alt={ASIDE.alt} z={z} w={1080} h={1350} tall sizes="(max-width: 760px) 60vw, 300px" className="bx-ad" />
+        </Cell>
+        <Cell w={6} side title={<span className="bx-n">140</span>} line="spec ads for seven companies, made in a day with Ignaru." more={<More label="see all 140" href="https://ignaru-spec-ads.vercel.app" />} className="bx-count">
+          <Win w={{ key: "spec", name: "Ignaru spec ads", host: "ignaru-spec-ads.vercel.app", img: "/showcase/ignaru-spec-ads-720.webp", w: 720, h: 450, line: "" }} sizes="(max-width: 760px) 100vw, 480px" />
+        </Cell>
+      </>
+    ),
   },
-  before: {
-    title: "Before Ignaru.",
-    line: "I was a product development intern at Okara, and designed new screens for MenuFit as a client.",
-    bar: () => ({ href: "https://menufit-screens.vercel.app", label: "See the MenuFit screens", also: { href: "https://okara.ai", label: "okara.ai" } }),
-    body: ({ z }) => [
-      // okara.ai/about, read on 8 Nov 2026
-      <Past
-        key="okara"
-        mark={
-          <span className="fh-past-mk fh-past-ok">
-            <OkaraMark size={26} />
-          </span>
-        }
-        name="Okara"
-        what="an AI CMO"
-        role="Product development intern. I got in by taking its dashboard apart, unasked, and proposing what to change."
-        facts={[
-          { n: "150k", k: "websites use it" },
-          { n: "14m", k: "views on its launch" },
-          { n: "10+", k: "agents at work" },
-        ]}
-        src={{ href: "https://okara.ai/about", label: "okara.ai/about" }}
-      />,
-      // menufit.com and the App Store listing, read on 8 Nov 2026
-      <Past
-        key="menufit"
-        mark={
-          // eslint-disable-next-line @next/next/no-img-element
-          <img className="fh-past-mk fh-past-mf" src="/logos/menufit-bag-128.webp" alt="" width={48} height={54} />
-        }
-        name="MenuFit"
-        what="for eating out healthy"
-        role="Client. I designed new screens for the app, in light and dark."
-        facts={[
-          { n: "1.5m+", k: "people use it" },
-          { n: "22.3m+", k: "places on its map" },
-          { n: "4.8", k: "from 54,556 App Store ratings" },
-        ]}
-        src={{ href: "https://menufit.com", label: "menufit.com and the App Store" }}
-      />,
+  sites: {
+    title: (
       <>
-        <Band>
-          <ul className="fh-past-pics">
-            <li>
-              <Shot src="/okara/feed.webp" alt="My Okara proposal: a feed that opens on one real draft to approve" z={z} w={800} h={1127} tall className="kx-tall" />
-            </li>
-            <li>
-              <Shot src="/menufit/the-hack-dark.webp" alt="My MenuFit screen: the same order with three proteins on top, 9g becomes 35g" z={z} w={540} h={1169} tall className="kx-tall" />
-            </li>
-          </ul>
-        </Band>
-        <p className="kx-cap">Left, my Okara proposal: a feed that opens on one draft to approve. Right, a MenuFit screen I designed: the same order, nearly four times the protein.</p>
-      </>,
-    ],
+        Sites, designed and coded <Under>by hand.</Under>
+      </>
+    ),
+    line: "Concepts and pitch sites for startups. Every one is live, so open any of them.",
+    bar: () => ({ ...call, also: mail }),
+    body: () => (
+      <>
+        <SiteCell k="roport" w={6} />
+        <SiteCell k="audora" w={4} />
+        <SiteCell k="ropilot" w={2} pair />
+        <SiteCell k="monid" w={2} pair />
+        <SiteCell k="pumpgtm" w={4} />
+      </>
+    ),
+  },
+  ignaru: {
+    title: (
+      <>
+        Ignaru gives your agent <Serif>taste.</Serif>
+      </>
+    ),
+    line: "A design canvas that opens the repo you already have. Circle what looks wrong, and your agent fixes it in your files.",
+    mark: "/logos/ignaru.svg",
+    bar: () => ({ href: "https://ignaru.com", label: "open ignaru.com", also: call }),
+    body: ({ z }) => (
+      <>
+        {/* ignaru components/home/copy.ts on origin/main: "Free; Pro is $20 a month." */}
+        <Cell w={6} tone="band" title="The canvas" line="Frames from your own pages, with what you circled numbered on them.">
+          <Shot src="/ignaru/studio-canvas.webp" alt="Ignaru Studio's canvas: a hero frame with two circled notes, a mood board and a start button, with a teammate's cursor" z={z} w={1100} h={587} sizes="(max-width: 760px) 100vw, 840px" />
+        </Cell>
+        <Cell w={2} title="Bring your own agent" line="Claude Code, Codex or Cursor, on your plan." className="bx-felt">
+          <div className="bx-felts" aria-hidden="true">
+            {["claude", "openai", "gemini"].map((f, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={f} src={feltSrc(f).src} alt="" width={160} height={160} loading="lazy" decoding="async" style={{ "--k": i } as CSSProperties} />
+            ))}
+          </div>
+        </Cell>
+        <Cell w={4} title="Free on Mac and web" line="Pro is $20 a month." className="bx-site">
+          <Win w={{ key: "ignaru", name: "Ignaru", host: "ignaru.com", img: "/sites/ignaru.webp", tall: "/sites/ignaru-tall.webp", w: 960, h: 600, line: "" }} />
+        </Cell>
+      </>
+    ),
   },
   contact: {
-    title: "Say hello.",
-    line: "Email is quickest. For a site or ads, book a short call and we'll see if it's a fit.",
-    bar: (b) => ({ href: BOOK, label: `Book a call, ${b.minutes} min`, glyph: <MeetMark size={18} />, also: { href: CV, label: "My CV", download: true } }),
-    body: ({ booking: b }) => [
-      <div className="kx-fin" key="mail">
-        <EmailLink />
-      </div>,
+    title: (
       <>
-        <Sh title="Elsewhere." />
-        <ul className="fh-elsewhere">
-          {SOCIALS.map((s) => (
-            <li key={s.label}>
-              <a href={s.href} target="_blank" rel="noreferrer" style={{ "--b": s.color } as CSSProperties}>
-                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d={s.d} fill="currentColor" />
-                </svg>
-                <b>{s.label}</b>
-                <span>{s.handle}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </>,
-      b.slots.length > 0 ? (
-        <>
-          <Sh title="Next free days." line={`${b.minutes} minutes on ${b.where === "meet" ? "Google Meet" : "a video call"}. Pick a day and Cal shows the times.`} art="circle-comment" />
-          <ul className="kx-days">
-            {b.slots.map((x) => (
-              <li key={x.iso}>
-                <a href={dayLink(x.iso)} target="_blank" rel="noreferrer">
-                  <b>{x.day}</b>
-                  <span>from {x.time}</span>
+        Say <Circ>hello.</Circ>
+      </>
+    ),
+    line: "Email is quickest. For ads or a site, book a short call and we'll see if it's a fit.",
+    bar: (b) => ({ href: BOOK, label: `book a call, ${b.minutes} min`, glyph: <MeetMark size={18} />, also: { href: CV, label: "my cv", download: true } }),
+    body: ({ booking: b }) => (
+      <>
+        <Cell w={4} tone="band" side title="Email me." className="bx-mail-c">
+          <EmailLink />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="bx-face" src="/felt/jawad-head-320.webp" alt="" width={320} height={360} loading="lazy" decoding="async" />
+        </Cell>
+        <Cell w={2} title="Next free days" line={`${b.minutes} minutes on ${b.where === "meet" ? "Google Meet" : "a video call"}.`} className="bx-days-c">
+          {b.slots.length > 0 ? (
+            <ul className="bx-days">
+              {b.slots.map((x) => (
+                <li key={x.iso}>
+                  <a href={dayLink(x.iso)} target="_blank" rel="noreferrer">
+                    <b>{x.day}</b>
+                    <span>from {x.time}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="bx-call" src={feltSrc("call").src} alt="" width={160} height={160} loading="lazy" decoding="async" />
+          )}
+        </Cell>
+        <Cell w={6} title="Elsewhere" className="bx-else">
+          <ul className="bx-soc">
+            {SOCIALS.map((m) => (
+              <li key={m.label}>
+                <a href={m.href} target="_blank" rel="noreferrer" style={{ "--b": m.color } as CSSProperties}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d={m.d} fill="currentColor" />
+                  </svg>
+                  <b>{m.label}</b>
+                  <span>{m.handle}</span>
                 </a>
               </li>
             ))}
           </ul>
-        </>
-      ) : null,
-    ],
+        </Cell>
+      </>
+    ),
   },
 };
-
-/* ---------- sites ---------- */
-
-function SiteCard({ w, wide }: { w: Site; wide?: boolean }) {
-  return (
-    <li className={wide ? "is-wide" : undefined}>
-      <a href={`https://${w.host}`} target="_blank" rel="noreferrer" className="fh-site">
-        <span className="fh-site-win">
-          <span className="fh-site-bar" aria-hidden="true">
-            <span>{w.host}</span>
-          </span>
-          <span className="fh-site-view">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={w.img} alt={`${w.name}, the first screen`} width={w.w} height={w.h} loading="lazy" decoding="async" />
-          </span>
-        </span>
-        <span className="fh-site-meta">
-          <b>{w.name}</b>
-          <Chev d="M4.5 9.5l5-5M5.5 4.5h4v4" />
-        </span>
-        {w.line ? <span className="fh-site-line">{w.line}</span> : null}
-      </a>
-    </li>
-  );
-}
