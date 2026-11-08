@@ -238,7 +238,7 @@ html.fh-locked { overflow: hidden; }
 .fh-dr-nav { display: flex; align-items: center; gap: 2px; }
 .fh-dr-bar button { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 2px; background: none; color: var(--ink-3); cursor: pointer; transition: background-color 0.15s, color 0.15s; }
 .fh-dr-bar button:hover, .fh-dr-bar button:focus-visible { background: #1c1c1c; color: var(--ink); }
-.fh-dr-bar button:disabled { opacity: 0.3; pointer-events: none; }
+.fh-dr-bar button[aria-disabled="true"], .fh-dr-bar button[aria-disabled="true"]:hover { opacity: 0.3; background: none; color: var(--ink-3); cursor: default; }
 .fh-dr-count { margin-left: 8px; font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .fh-pg { position: relative; padding: 30px 32px 0; animation: fh-pg-in 0.5s var(--ease) backwards; }
 @keyframes fh-pg-in { from { opacity: 0; translate: 0 18px; } }

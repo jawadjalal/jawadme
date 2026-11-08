@@ -23,7 +23,7 @@ export const LINE = ["I'm Jawad, 15, building Ignaru,", "and designing sites and
  * is the door's turn or under the pointer (under 60 characters; the first door shows the page's line instead).
  */
 export const DRAWERS = [
-  { id: "work", label: "Work", art: "poster", set: ["poster", "palette", "browser"], color: "#1f7ae0", alt: "A blue felt poster", line: "" },
+  { id: "work", label: "Work", art: "poster", set: ["poster", "ship", "code"], color: "#1f7ae0", alt: "A yellow felt card with a face on it", line: "" },
   { id: "ads", label: "Ads", art: "palette", set: ["palette", "bezier", "pen"], color: "#f0454f", alt: "A coral felt palette", line: "Ads that sell, tested on strangers before they run." },
   { id: "sites", label: "Sites", art: "browser", set: ["browser", "canvas", "poster"], color: "#f5b400", alt: "A yellow felt browser window", line: "Sites for startups, designed and built by hand." },
   { id: "ignaru", label: "Ignaru", art: "petal", set: ["petal", "claude", "openai", "gemini", "grok"], color: "#9a4dea", alt: "A purple felt petal, the Ignaru mark", line: "Ignaru, the design tool I'm building." },

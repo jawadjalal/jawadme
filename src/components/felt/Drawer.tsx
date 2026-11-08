@@ -49,6 +49,8 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
       sfx("open");
     } else if (at === null && d.open) d.close();
     if (at !== null) d.scrollTop = 0;
+    // a link inside one drawer that opens another removes itself with the old page: keep focus in the drawer
+    if (at !== null && d.open && !d.contains(document.activeElement)) d.focus({ preventScroll: true });
   }, [at]);
   useEffect(() => {
     const d = ref.current;
@@ -217,10 +219,10 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
         <span className="fh-dr-handle" aria-hidden="true" />
         <div className="fh-dr-bar">
           <div className="fh-dr-nav">
-            <button type="button" onClick={() => prev && onGo(prev.id)} disabled={!prev} aria-label={prev ? `Back to ${prev.label}` : "Back"}>
+            <button type="button" onClick={() => prev && onGo(prev.id)} aria-disabled={!prev} aria-label={prev ? `Back to ${prev.label}` : "Back"}>
               <Chev d="M9 3.5 5.5 7 9 10.5" />
             </button>
-            <button type="button" onClick={() => next && onGo(next.id)} disabled={!next} aria-label={next ? `Next, ${next.label}` : "Next"}>
+            <button type="button" onClick={() => next && onGo(next.id)} aria-disabled={!next} aria-label={next ? `Next, ${next.label}` : "Next"}>
               <Chev d="M5 3.5 8.5 7 5 10.5" />
             </button>
             <span className="fh-dr-count" aria-live="polite">
@@ -347,7 +349,7 @@ function Bar({ href, label, glyph, download, also }: BarProps) {
       {also ? (
         <a className="kx-bar-2" href={also.href} {...(also.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})} {...(also.download ? { download: true } : {})}>
           {also.label}
-          <Out />
+          {also.href.startsWith("http") ? <Out /> : null}
         </a>
       ) : null}
     </div>
