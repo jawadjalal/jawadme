@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { IDENTITY, SUMMARY, SKILLS, SOCIALS } from "@/lib/profile";
+import { IDENTITY, SKILLS, SOCIALS } from "@/lib/profile";
 
-const TITLE = `${IDENTITY.properName}, designer and founder of Ignura`;
+// The same who and what as the home page's line: a design engineer, building Ignaru, and sites for startups.
+const TITLE = `${IDENTITY.properName}, design engineer building Ignaru`;
 const DESCRIPTION =
-  "Designer and founder in London. I run Ignura (ignura.com), a web design agency, build Ignaru (ignaru.com), an agent-native design tool, and design at MenuFit and Okara.";
+  "Design engineer in London. I build Ignaru (ignaru.com), a design canvas for your coding agent, and sites for startups through Ignura (ignura.com), my design studio. I also design MenuFit's screens. Product development intern, Okara.";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     // Built by scripts/og.mjs from the site's own screenshots, so the card
     // shows the work rather than describing it. Rebuild with `npm run og`
     // after changing which projects lead.
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: SUMMARY }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Jawad Jalal, design engineer building Ignaru, with felt pieces from his site" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -46,8 +47,8 @@ const JSON_LD = {
   name: IDENTITY.properName,
   url: IDENTITY.site,
   email: `mailto:${IDENTITY.email}`,
-  jobTitle: IDENTITY.role,
-  description: SUMMARY,
+  jobTitle: "Design engineer",
+  description: DESCRIPTION,
   knowsAbout: SKILLS,
   worksFor: { "@type": "Organization", name: "Ignura", url: "https://ignura.com" },
   sameAs: SOCIALS.filter((s) => /^https:/.test(s.href)).map((s) => s.href),

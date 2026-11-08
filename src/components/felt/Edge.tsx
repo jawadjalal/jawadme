@@ -1,15 +1,17 @@
 "use client";
 
 /*
- * The ground (v10.2, Jawad 6 Nov: "a large halftone, not plain black"): a full-bleed field of round dots on a 9px grid,
- * the slot colours (lilac, coral, yellow, blue) turning slowly round the screen, tiny in the middle where the dial and
- * its line sit, larger towards the edges, breathing on a slow wave. Dots only: no blur, no bloom, no glow. One small
- * WebGL pass at half resolution and 24 fps, started once the page is idle, paused while the tab is hidden, one still
- * frame under reduced motion. Decorative. Styles: felt.css (`fh-edge`, with a still CSS print of the same dots under it, `fh-ground`, for the first paint and for no WebGL). Ported from ignaru.com (components/home/Edge.tsx) unchanged.
+ * The ground, ported from ignaru.com (components/home/Edge.tsx): a full-bleed field of round dots on a 9px grid, the
+ * four felt colours turning slowly round the screen, tiny in the middle where the ring and its line sit, larger towards
+ * the edges, breathing on a slow wave. Dots only: no blur, no bloom, no glow. One small WebGL pass at half resolution and
+ * 24 fps, started once the page is idle, paused while the tab is hidden, one still frame under reduced motion (redrawn
+ * on resize). The canvas marks itself `data-on` once it has drawn, and the still CSS print of the same dots under it
+ * (felt.css `fh-ground`) steps out; if the shader fails to compile or link, or the context is lost, the mark comes off
+ * and the CSS dots come back. Decorative. Styles: felt.css (`fh-edge`).
  */
 import { useEffect, useRef } from "react";
 
-const FRAG = `precision mediump float;
+const FRAG = (p: "highp" | "mediump") => `precision ${p} float;
 uniform vec2 r; uniform float t; uniform float px;
 void main(){
   float cell = 9.0 * px;
@@ -37,20 +39,37 @@ export function Edge() {
     const cv = ref.current;
     if (!cv) return;
     let raf = 0;
-    let stop = false;
+    let gone = false;
+    let idleId = 0;
+    let size: (() => void) | null = null;
+    const off = () => {
+      cancelAnimationFrame(raf);
+      delete cv.dataset.on;
+    };
+    const lost = (e: Event) => {
+      e.preventDefault();
+      off();
+    };
     const begin = () => {
+      if (gone) return;
       const gl = cv.getContext("webgl", { premultipliedAlpha: true, antialias: false, alpha: true });
       if (!gl) return;
+      const hp = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
       const sh = (type: number, src: string) => {
-        const s = gl.createShader(type)!;
+        const s = gl.createShader(type);
+        if (!s) return null;
         gl.shaderSource(s, src);
         gl.compileShader(s);
-        return s;
+        return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
       };
-      const pr = gl.createProgram()!;
-      gl.attachShader(pr, sh(gl.VERTEX_SHADER, VERT));
-      gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FRAG));
+      const vs = sh(gl.VERTEX_SHADER, VERT);
+      const fs = sh(gl.FRAGMENT_SHADER, FRAG(hp && hp.precision > 0 ? "highp" : "mediump"));
+      const pr = gl.createProgram();
+      if (!vs || !fs || !pr) return;
+      gl.attachShader(pr, vs);
+      gl.attachShader(pr, fs);
       gl.linkProgram(pr);
+      if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return;
       gl.useProgram(pr);
       gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
@@ -60,42 +79,50 @@ export function Edge() {
       const uR = gl.getUniformLocation(pr, "r");
       const uT = gl.getUniformLocation(pr, "t");
       const uPx = gl.getUniformLocation(pr, "px");
-      // half as many grains on a phone, where the band is a larger share of the screen
       const k = 0.5;
-      const size = () => {
+      let t = 0;
+      const draw = (ms: number) => {
+        t = ms;
+        gl.uniform1f(uT, ms / 1000);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      };
+      size = () => {
         cv.width = Math.round(cv.clientWidth * k);
         cv.height = Math.round(cv.clientHeight * k);
         gl.viewport(0, 0, cv.width, cv.height);
         gl.uniform2f(uR, cv.width, cv.height);
         gl.uniform1f(uPx, k);
+        // resizing clears the canvas: draw the current frame again at once (the still one under reduced motion)
+        draw(t);
       };
       size();
       window.addEventListener("resize", size);
-      const draw = (ms: number) => {
-        gl.uniform1f(uT, ms / 1000);
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
-      };
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        draw(0);
-        return;
-      }
+      cv.addEventListener("webglcontextlost", lost);
+      cv.dataset.on = "1";
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       let last = 0;
       const loop = (ms: number) => {
-        if (stop) return;
+        if (gone) return;
         raf = requestAnimationFrame(loop);
         if (document.hidden || ms - last < 1000 / 24) return;
         last = ms;
         draw(ms);
       };
       raf = requestAnimationFrame(loop);
-      cv.dataset.on = "1";
     };
-    const idle = () => (typeof window.requestIdleCallback === "function" ? window.requestIdleCallback(begin, { timeout: 3000 }) : setTimeout(begin, 1500));
+    const idle = () => {
+      idleId = typeof window.requestIdleCallback === "function" ? window.requestIdleCallback(begin, { timeout: 3000 }) : window.setTimeout(begin, 1500);
+    };
     if (document.readyState === "complete") idle();
     else window.addEventListener("load", idle, { once: true });
     return () => {
-      stop = true;
+      gone = true;
       cancelAnimationFrame(raf);
+      window.removeEventListener("load", idle);
+      if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleId);
+      window.clearTimeout(idleId);
+      if (size) window.removeEventListener("resize", size);
+      cv.removeEventListener("webglcontextlost", lost);
     };
   }, []);
   return <canvas ref={ref} className="fh-edge" aria-hidden="true" />;

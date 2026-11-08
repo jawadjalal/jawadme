@@ -1,7 +1,7 @@
 // Builds public/og.png, the card that shows when the site is shared.
 //
-// The card is the home page at a glance: the black ground, the four felt objects the home opens with (one per kind of
-// work, in their slot colours), and the name with one line under it. A share card is read at a glance and at a
+// The card is the home page at a glance: the black ground, an arc of the felt doors the home's ring opens with, and the
+// name with the home's own line under it. A share card is read at a glance and at a
 // distance, so it carries one thing to read; the felt does the rest. Nothing here is drawn: the objects are the site's
 // own felt renders (public/felt), inlined so the renderer needs no origin.
 //
@@ -19,12 +19,13 @@ const root = resolve(here, "..");
 
 const b64 = (p) => readFileSync(resolve(root, p)).toString("base64");
 const geist = (w) => b64(`node_modules/geist/dist/fonts/geist-sans/Geist-${w}.woff2`);
-// the four slots' first shapes, in the home's order and tilts (src/components/felt/copy.ts)
+// five of the ring's doors (src/components/felt/copy.ts, DRAWERS), set on an arc: [art, tilt, drop]
 const FELT = [
-  ["petal", -7],
-  ["canvas-dashboard", 5],
-  ["browser", -3],
-  ["code", 8],
+  ["petal", -8, 70],
+  ["ship-merge", 6, 18],
+  ["phone", -3, 0],
+  ["browser", 5, 18],
+  ["call", 8, 70],
 ];
 
 const html = `<!doctype html><meta charset="utf-8">
@@ -34,14 +35,13 @@ const html = `<!doctype html><meta charset="utf-8">
   *{box-sizing:border-box;margin:0}
   body{width:1200px;height:630px;overflow:hidden;background:#050505;color:#f4f1ec;font-family:G,system-ui,sans-serif;
     display:grid;align-content:center;justify-items:center;gap:34px}
-  .row{display:flex;align-items:center;gap:6px}
-  .row img{width:236px;height:236px;filter:drop-shadow(0 18px 20px rgba(0,0,0,.6))}
-  .row img:nth-child(even){translate:0 12px}
+  .row{display:flex;align-items:flex-start;gap:4px;height:250px}
+  .row img{width:196px;height:196px;filter:drop-shadow(0 18px 20px rgba(0,0,0,.6))}
   .name{font-size:76px;font-weight:600;letter-spacing:-.04em;line-height:1}
   .role{margin-top:14px;font-size:30px;font-weight:500;letter-spacing:-.015em;color:#b4afa8;text-align:center}
 </style>
-<div class="row">${FELT.map(([n, t]) => `<img src="data:image/webp;base64,${b64(`public/felt/${n}.webp`)}" style="rotate:${t}deg">`).join("")}</div>
-<div><div class="name">Jawad Jalal</div><div class="role">Design engineer, London</div></div>`;
+<div class="row">${FELT.map(([n, t, y]) => `<img src="data:image/webp;base64,${b64(`public/felt/${n}.webp`)}" style="rotate:${t}deg;translate:0 ${y}px">`).join("")}</div>
+<div><div class="name">Jawad Jalal</div><div class="role">Design engineer. I build Ignaru, and sites for startups.</div></div>`;
 
 const exe = process.env.CHROMIUM_PATH;
 const browser = await chromium.launch(exe ? { executablePath: exe } : {});

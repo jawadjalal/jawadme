@@ -43,17 +43,22 @@ export function Stage({ booking }: { booking: Booking }) {
     const span = w.offsetHeight - window.innerHeight;
     window.scrollTo({ top: w.getBoundingClientRect().top + window.scrollY + (span * to) / (DRAWERS.length - 1), behavior: "instant" });
   }, []);
+  // Opening a drawer adds one history entry, so Back closes it; stepping between drawers replaces that entry. Closing
+  // from the drawer itself goes back past the entry it added, so the next Back leaves the page as usual.
   const go = useCallback(
     (id: DrawerId) => {
-      if (atRef.current) turn(id);
+      if (atRef.current) {
+        turn(id);
+        history.replaceState({ fh: id }, "", `#${id}`);
+      } else history.pushState({ fh: id }, "", `#${id}`);
       setAt(id);
-      if (location.hash !== `#${id}`) history.replaceState(null, "", `#${id}`);
     },
     [turn],
   );
   const close = useCallback(() => {
     setAt(null);
-    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    if ((history.state as { fh?: string } | null)?.fh) history.back();
+    else if (location.hash) history.replaceState(null, "", location.pathname + location.search);
   }, []);
 
   useEffect(() => {
@@ -62,18 +67,27 @@ export function Stage({ booking }: { booking: Booking }) {
       if (isDrawer(id)) go(id);
     };
     addEventListener("fh-open", open);
+    // arriving on /#<drawer>: the plain page goes under it in history, so closing the drawer stays on the site
     const h = location.hash.slice(1);
-    if (isDrawer(h)) window.setTimeout(() => go(h), 300);
-    const hash = () => {
+    if (isDrawer(h)) {
+      history.replaceState(null, "", location.pathname + location.search);
+      window.setTimeout(() => go(h), 300);
+    }
+    const pop = () => {
       const x = location.hash.slice(1);
-      if (isDrawer(x) && x !== atRef.current) go(x);
+      if (isDrawer(x)) {
+        if (x !== atRef.current) {
+          if (atRef.current) turn(x);
+          setAt(x);
+        }
+      } else if (atRef.current) setAt(null);
     };
-    addEventListener("hashchange", hash);
+    addEventListener("popstate", pop);
     return () => {
       removeEventListener("fh-open", open);
-      removeEventListener("hashchange", hash);
+      removeEventListener("popstate", pop);
     };
-  }, [go]);
+  }, [go, turn]);
 
   return (
     <>

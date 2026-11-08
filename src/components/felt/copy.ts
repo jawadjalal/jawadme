@@ -26,11 +26,11 @@ export const DRAWERS = [
   { id: "ignaru", label: "Ignaru", art: "petal", set: ["petal", "claude", "openai", "gemini", "grok"], color: "#9a4dea", alt: "A purple felt petal, the Ignaru mark", line: "" },
   { id: "wayari", label: "Wayari", art: "ship-merge", set: ["ship-merge", "ship-branch", "ship"], color: "#1f7ae0", alt: "A blue felt merge arrow", line: "Wayari takes a prompt to a reviewed pull request." },
   { id: "okara", label: "Okara", art: "canvas-dashboard", set: ["canvas-dashboard", "canvas-button", "canvas"], color: "#f0454f", alt: "A coral felt dashboard", line: "Okara took me on after I pulled its dashboard apart." },
-  { id: "menufit", label: "MenuFit", art: "phone", set: ["phone", "poster", "canvas-phone"], color: "#f5b400", alt: "A yellow felt phone", line: "I design MenuFit's screens, for 1.5 million people." },
+  { id: "menufit", label: "MenuFit", art: "phone", set: ["phone", "poster", "canvas-phone"], color: "#f5b400", alt: "A yellow felt phone", line: "I design MenuFit's screens, for 1.5 million people." }, // profile.ts: "1.5m users"
   { id: "bidframe", label: "Bidframe", art: "onb-check", set: ["onb-check", "circle", "nav-blog"], color: "#3fae63", alt: "A green felt tick", line: "Bidframe finds the clause that loses the bid." },
   { id: "ads", label: "Ads", art: "palette", set: ["palette", "bezier", "pen"], color: "#f0454f", alt: "A coral felt palette", line: "Spec ads for Devin: one line, one picture each." },
   { id: "bevel", label: "Bevel", art: "more-shader", set: ["more-shader", "yarn", "circle-cursor"], color: "#7a5cf0", alt: "A marbled felt ball", line: "Bevel is my 3D art team for game studios." },
-  { id: "sites", label: "Sites", art: "browser", set: ["browser", "canvas", "poster"], color: "#f5b400", alt: "A yellow felt browser window", line: "20 live sites, each one designed and coded by me." },
+  { id: "sites", label: "Sites", art: "browser", set: ["browser", "canvas", "poster"], color: "#f5b400", alt: "A yellow felt browser window", line: "20 live sites I designed and built." },
   { id: "about", label: "About", art: "nav-about", set: ["nav-about", "onb-wave", "onb-spark"], color: "#9a4dea", alt: "A purple felt speech bubble with an i", line: "Design engineer in London. I founded Ignura and Bevel." },
   { id: "book", label: "Book a call", art: "call", set: ["call", "circle-comment", "more-team"], color: "#1f7ae0", alt: "A blue felt calendar", line: "Fifteen minutes about your launch. No prep needed." },
 ] as const;
@@ -103,7 +103,7 @@ export const ADS = [
   { key: "devin-out-of-office", alt: "Out of office until Monday. For anything urgent, @Devin. A Slack thread where Devin fixes a bug." },
   { key: "devin-boarding-pass", alt: "Your backlog is now boarding. A boarding pass from Problem to Merged PR." },
   { key: "devin-wontfix", alt: "Remember wontfix? An old issue where Devin removes the wontfix label and merges the fix." },
-  { key: "devin-laptop-closed", alt: "Laptop closed. Devin keeps working. Devin's sessions list, one at 56 hours." },
+  { key: "devin-laptop-closed", alt: "Laptop closed. Devin keeps working. Devin's sessions list." },
   { key: "devin-merged-pr", alt: "From problem to merged PR. Devin's pull request card for enterprise SSO, with its test recording." },
   // Gojiberry and Context.dev drop in here, as { key: "gojiberry-…" } and { key: "contextdev-…" } with their stills in
   // public/ads, once those pitches have been sent. They are not public yet (Claude outputs/ads/gojiberry, contextdev).

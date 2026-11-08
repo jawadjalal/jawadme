@@ -15,7 +15,10 @@ import { dayLink, type Booking } from "./booking";
 import { ADS, BOOK, CV, DRAWERS, EMAIL, MENUFIT, SITES, drawerAt, feltSrc, lift, type DrawerId, type Site } from "./copy";
 import { MeetMark } from "./Meet";
 import { sfx } from "./Sound";
-import { VerseText } from "../verse-text";
+import dynamic from "next/dynamic";
+
+// the quote's printer is big and only the About drawer uses it: it loads with that drawer, never with the first screen
+const VerseText = dynamic(() => import("../verse-text").then((m) => m.VerseText), { ssr: false, loading: () => <span className="kx-quote-p">I'm a design engineer. I've shipped Ignaru and Wayari, and I build sites for startups.</span> });
 
 type Zoom = { src: string; alt: string; tall?: boolean } | null;
 /** How far past a drawer's end to scroll (or pull, on a phone) before the next one comes in. */
@@ -150,7 +153,8 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
       reset();
     };
     const keys = (e: KeyboardEvent) => {
-      if (lb.current?.open || (e.target as HTMLElement).closest?.("input")) return;
+      // a tab row inside a drawer (agents, modes, light and dark, the sites' groups) keeps its own arrow keys
+      if (lb.current?.open || (e.target as HTMLElement).closest?.('input, [role="tablist"]')) return;
       if (e.key === "ArrowRight" && nextRef.current) onGo(nextRef.current.id);
       if (e.key === "ArrowLeft" && prevRef.current) onGo(prevRef.current.id);
     };
@@ -244,7 +248,9 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
             </div>
           ))}
         </div>
-        <Bar {...page.bar(booking)} />
+        <div className="kx-tray">
+          <Bar {...page.bar(booking)} />
+        </div>
         {next ? (
           <div className="fh-dr-next" ref={cue}>
             <span>
@@ -397,9 +403,14 @@ function EmailLink() {
       className="kx-fin-more"
       href={`mailto:${EMAIL}`}
       onClick={() => {
-        void navigator.clipboard?.writeText(EMAIL);
-        setGot(true);
-        window.setTimeout(() => setGot(false), 1600);
+        // copying can be refused (no permission, an insecure context): mail still opens, the label just says less
+        navigator.clipboard
+          ?.writeText(EMAIL)
+          .then(() => {
+            setGot(true);
+            window.setTimeout(() => setGot(false), 1600);
+          })
+          .catch(() => undefined);
       }}
     >
       {got ? "Copied, opening mail" : EMAIL}
@@ -416,9 +427,10 @@ const call = { href: BOOK, label: "Book a call" };
 
 const RUN = [
   { name: "Ignaru", what: "Founder. A design canvas that opens your repo; your coding agent does the fixing.", href: "https://ignaru.com" },
-  { name: "Ignura", what: "Founder. A web design studio for startups, at six-figure ARR.", href: "https://ignura.com" },
-  { name: "Bevel", what: "Founder. A 3D art team for games, at six-figure ARR.", href: "https://bevel.team" },
+  { name: "Ignura", what: "Founder. A design studio: websites for startups, built from scratch.", href: "https://ignura.com" },
+  { name: "Bevel", what: "Founder. A 3D art team for game studios.", href: "https://bevel.team" },
   { name: "Wayari", what: "Designed and built. Coding agents that go from a prompt to a reviewed pull request.", href: "https://wayari.com" },
+  // profile.ts: menufit "1.5m users"
   { name: "MenuFit", what: "Design. An app for eating out healthy, with 1.5 million users.", href: "https://menufit.com" },
   { name: "Okara", what: "Product development intern. I got in with a teardown of its dashboard.", href: "https://okara.ai" },
   { name: "Bidframe", what: "One of four builders, at a hackathon. It flags what would disqualify a tender bid.", href: "https://bidframe.org" },
@@ -436,14 +448,7 @@ const PAGES: Record<DrawerId, Page> = {
           <CanvasLoop />
         </Band>
       </>,
-      <>
-        <Sh title="Your real site, not a mock." line="The canvas loads your pages from your own code, so what you circle is what ships." art="canvas" />
-        <Band>
-          <Shot src="/sites/ignaru.webp" alt="ignaru.com, the first screen" z={z} w={960} h={600} className="kx-wide" />
-        </Band>
-      </>,
-      // gh search: repo:jawadjalal/ignaru is:pr is:merged, 683 on 7 Nov 2026; the repo was created on 15 Oct
-      <Big n="680+" what="pull requests merged since 15 October." line="The Mac app, the web app and ignaru.com, all designed and built by me." />,
+      // ignaru components/home/copy.ts on origin/main: "Free; Pro is $20 a month."
       <Trio
         items={[
           { art: "claude", b: "Bring your own agent", p: "Claude Code, Codex or Cursor, on your plan." },
@@ -451,6 +456,14 @@ const PAGES: Record<DrawerId, Page> = {
           { art: "canvas-phone", b: "Every width at once", p: "Desktop and phone, side by side." },
         ]}
       />,
+      // gh search: repo:jawadjalal/ignaru is:pr is:merged, 683 on 7 Nov 2026; the repo was created on 15 Oct
+      <Big n="680+" what="pull requests merged since 15 October." line="The Mac app, the web app and ignaru.com, all designed and built by me." />,
+      <>
+        <Sh title="Your real site, not a mock." line="The canvas loads your pages from your own code, so what you circle is what ships." art="canvas" />
+        <Band>
+          <Shot src="/sites/ignaru.webp" alt="ignaru.com, the first screen" z={z} w={960} h={600} className="kx-wide" />
+        </Band>
+      </>,
     ],
   },
   wayari: {
@@ -476,26 +489,26 @@ const PAGES: Record<DrawerId, Page> = {
   },
   okara: {
     title: "How I got into Okara.",
-    line: "I'm a product development intern at Okara, an AI CMO run by four people for 150,000+ businesses. I got in by taking its dashboard apart, unasked.",
+    line: "Product development intern, Okara, an AI CMO. I got the internship by taking its dashboard apart, unasked, and proposing what to change.",
     bar: () => ({ href: "https://okara.ai", label: "Open okara.ai", also: call }),
     body: ({ z }) => [
-      <Big n="14 → 7" what="my credits, overnight, with nothing saying why." line="A week on the free tier, 65 screenshots and every network call. That gap was the finding that landed." />,
+      <Big n="14 → 7" what="credits, and a screen that says where they went." line="My proposal: when a balance moves, show what each action cost, so nobody has to guess." />,
       <>
-        <Sh title="Sell the work, not the count." line="Free users saw placeholder drafts while the real ones sat in the API response. Unlock one real draft per agent." art="canvas-button" />
+        <Sh title="Lead with the work." line="A feed that opens on one real draft to approve, with the rest of the queue behind it." art="canvas-button" />
         <Band>
-          <Shot src="/okara/feed.webp" alt="The agents feed redesign: one real X draft to approve, eight more locked" z={z} w={800} h={1127} tall className="kx-tall" />
+          <Shot src="/okara/feed.webp" alt="The agents feed mockup: one X draft to approve, more in the queue" z={z} w={800} h={1127} tall className="kx-tall" />
         </Band>
       </>,
       <>
-        <Sh title="A morning note, not 54 numbers." line="What happened overnight, the fix that's ready, and an Approve button." />
+        <Sh title="A morning note, not a wall of numbers." line="What happened overnight, the fix that's ready, and an Approve button." />
         <Band>
-          <Shot src="/okara/morning.webp" alt="The morning note redesign: 8 people saw your newest page, none of them clicked" z={z} w={1200} h={749} />
+          <Shot src="/okara/morning.webp" alt="The morning note mockup: what happened overnight and the fix that is ready" z={z} w={1200} h={749} />
         </Band>
       </>,
       <>
-        <Sh title="Put a price on the work." line="What each action costs, and where every credit went. All three were working React mockups, built in a day." />
+        <Sh title="Put a price on the work." line="What each action costs, and where every credit went. All three are working React mockups." />
         <Band>
-          <Shot src="/okara/credits.webp" alt="The credits drawer redesign: 7.00 credits left, what each action costs, what was spent" z={z} w={1200} h={750} />
+          <Shot src="/okara/credits.webp" alt="The credits drawer mockup: what each action costs and what was spent" z={z} w={1200} h={750} />
         </Band>
       </>,
     ],
@@ -529,7 +542,7 @@ const PAGES: Record<DrawerId, Page> = {
   },
   ads: {
     title: "Ads for Devin, made on spec.",
-    line: "Devin isn't a client. I made these to show what I'd do: every claim comes from devin.ai, and nothing is generated.",
+    line: "Devin isn't a client. I made these to show what I'd do, and every line in them comes from devin.ai.",
     bar: () => ({ href: BOOK, label: "Ads for your launch", glyph: <MeetMark size={18} />, also: { href: "/#sites", label: "See the sites" } }),
     body: ({ z }) => [
       <Band>
@@ -549,23 +562,17 @@ const PAGES: Record<DrawerId, Page> = {
     line: "I founded it. Concept to in-game: modelled, rigged and animated, with VFX, for Roblox, Unity and Unreal studios.",
     bar: () => ({ href: "https://bevel.team", label: "Open bevel.team", also: call }),
     body: ({ z }) => [
-      <Band>
-        <Shot src="/sites/bevel.webp" alt="bevel.team, the first screen: our clients have 11,000,000,000+ visits" z={z} w={1440} h={900} />
-      </Band>,
       // bevel.team's own first line, 7 Nov 2026: "our clients have 11,000,000,000+ visits"
-      <Big n="11B+" what="visits on our clients' games." line="Bevel's art shipped into Blade Ball, Fish It!, Build a Base and Steal, Spin a Brainrot and Pizza Delivery." />,
-      <Trio
-        items={[
-          { art: "pen", b: "Concept", p: "Sketches and sheets before a polygon." },
-          { art: "yarn", b: "In-game", p: "Modelled, rigged and animated." },
-          { art: "onb-spark", b: "VFX", p: "The hits, the trails, the loot." },
-        ]}
-      />,
+      <Big n="11B+" what="visits, per bevel.team, across the games its art shipped into." line="Blade Ball, Fish It!, Build a Base and Steal, Spin a Brainrot and Pizza Delivery, as bevel.team lists them." />,
+      <Band>
+        <Shot src="/sites/bevel.webp" alt="bevel.team, the first screen" z={z} w={1440} h={900} />
+      </Band>,
+      <Sh title="Concept to in‑game, one team." line="Sketches first, then modelled, rigged and animated, with the effects on top. Roblox, Unity and Unreal." art="yarn" />,
     ],
   },
   sites: {
     title: `${SITES.length} live sites, all hand-built.`,
-    line: "My products, pitch sites for founders, redesign concepts and templates. Every one designed and coded by me.",
+    line: "My products, pitch sites for founders, redesign concepts and templates. I designed and built each one.",
     bar: () => ({ href: BOOK, label: "Want the next one?", glyph: <MeetMark size={18} />, also: { href: `mailto:${EMAIL}`, label: "Email me" } }),
     body: () => [<Gallery key="gal" />],
   },
@@ -587,7 +594,7 @@ const PAGES: Record<DrawerId, Page> = {
       </>,
       <div className="kx-fin">
         <h3>Say hello.</h3>
-        <p>The quickest way is email. I answer within a day.</p>
+        <p>The quickest way is email.</p>
         <EmailLink />
       </div>,
     ],
@@ -600,6 +607,13 @@ const PAGES: Record<DrawerId, Page> = {
       <Band>
         <Week />
       </Band>,
+      <Trio
+        items={[
+          { art: "code", b: "Real code, in your repo", p: "Next.js and plain CSS, no page builder." },
+          { art: "browser", b: "A live link from day one", p: "You watch it grow." },
+          { art: "onb-check", b: "Yours on day one", p: "You own all of it." },
+        ]}
+      />,
       b.slots.length > 0 ? (
         <>
           <Sh title="Next free days." line={`${b.minutes} minutes on ${b.where === "meet" ? "Google Meet" : "a video call"}. Pick a day and Cal shows the times.`} art="circle-comment" />
@@ -614,14 +628,12 @@ const PAGES: Record<DrawerId, Page> = {
             ))}
           </ul>
         </>
-      ) : null,
-      <Trio
-        items={[
-          { art: "code", b: "Real code, in your repo", p: "Next.js and plain CSS, no page builder." },
-          { art: "browser", b: "A live link from day one", p: "You watch it grow." },
-          { art: "onb-check", b: "Yours on day one", p: "You own all of it." },
-        ]}
-      />,
+      ) : (
+        <div className="kx-fin">
+          <h3>Pick a time on Cal.</h3>
+          <p>{b.minutes} minutes is enough to see if the page is a fit.</p>
+        </div>
+      ),
     ],
   },
 };

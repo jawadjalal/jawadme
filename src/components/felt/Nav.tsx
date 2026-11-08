@@ -20,10 +20,17 @@ const plain = (e: MouseEvent) => e.button === 0 && !e.metaKey && !e.ctrlKey && !
 export function Nav({ at, onGo }: { at: DrawerId | null; onGo: (id: DrawerId) => void }) {
   const [more, setMore] = useState(false);
   const box = useRef<HTMLDivElement>(null);
+  const moreBtn = useRef<HTMLButtonElement>(null);
+  // the sheet moves focus into itself when it opens; Escape closes it and puts focus back on "More"
   useEffect(() => {
     if (!more) return;
+    box.current?.querySelector<HTMLElement>("#fh-more a")?.focus();
     const off = (e: Event) => {
-      if (e instanceof KeyboardEvent ? e.key === "Escape" : !box.current?.contains(e.target as Node)) setMore(false);
+      if (e instanceof KeyboardEvent) {
+        if (e.key !== "Escape") return;
+        setMore(false);
+        moreBtn.current?.focus();
+      } else if (!box.current?.contains(e.target as Node)) setMore(false);
     };
     document.addEventListener("pointerdown", off);
     document.addEventListener("keydown", off);
@@ -76,7 +83,7 @@ export function Nav({ at, onGo }: { at: DrawerId | null; onGo: (id: DrawerId) =>
                 <span>{n.label}</span>
               </a>
             ))}
-            <button type="button" className={`fh-nl fh-nl-more${at && !inMain ? " is-on" : ""}`} aria-expanded={more} aria-controls="fh-more" onClick={() => setMore((m) => !m)}>
+            <button ref={moreBtn} type="button" className={`fh-nl fh-nl-more${at && !inMain ? " is-on" : ""}`} aria-expanded={more} aria-controls="fh-more" onClick={() => setMore((m) => !m)}>
               <span className="fh-dots" aria-hidden="true">
                 <i />
                 <i />
@@ -107,6 +114,8 @@ export function Nav({ at, onGo }: { at: DrawerId | null; onGo: (id: DrawerId) =>
                 onClick={(e) => {
                   if (!plain(e)) return;
                   e.preventDefault();
+                  // the drawer hands focus back to whatever had it when it opened: make that "More", not a link in a sheet that is closing
+                  moreBtn.current?.focus();
                   setMore(false);
                   onGo(d.id);
                 }}

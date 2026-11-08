@@ -10,7 +10,9 @@
  *
  * Every few seconds one or two doors (never the one whose turn it is) change to another felt piece from their own set
  * (copy.ts, `set`), decoded before it shows. A timer and CSS animations only: it stops off screen, in a hidden tab, while
- * a drawer is open and under reduced motion. Under reduced motion the ring stands still and the lines are listed.
+ * a drawer is open and under reduced motion. Under reduced motion the ring stands still and the lines are listed under
+ * it (CSS only, so nothing moves when the page hydrates). The h1 is the same for everyone; the door lines drawn over it
+ * are hidden from screen readers, which read the doors' own labels instead.
  */
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { DRAWERS, LINE, feltSrc, type DrawerId } from "./copy";
@@ -19,7 +21,8 @@ import { sfx } from "./Sound";
 const N = DRAWERS.length;
 /** A waiting door, against the one whose turn it is: its size and its strength. */
 const REST = 0.64;
-const DIM = 0.4;
+/** ignaru.com waits its doors at 0.35 (measured live, 7 Nov); ours wait brighter so every door reads as a door. */
+const DIM = 0.74;
 const smooth = (t: number) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
 const SIZES = "(max-width: 760px) 26vw, 17vw";
 /** The rhythm of the changes, from ignaru.com: a rest of 2 to 3.5 s, now and then a longer breath, sometimes a pair. */
@@ -206,10 +209,10 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
   }, [active, still]);
 
   const textOf = (k: number) => (k <= 0 ? "" : DRAWERS[k]?.line ?? "");
-  const richOf = (k: number) => (k <= 0 ? <Opening /> : undefined);
 
   return (
-    <div ref={wrap} className={`fh-ring${still ? " is-still" : ""}`} style={{ "--n": N } as CSSProperties}>
+    // reduced motion is laid out by CSS (felt.css), so the first paint and the hydrated page are the same height
+    <div ref={wrap} className="fh-ring" style={{ "--n": N } as CSSProperties}>
       <div className={`rg-stage${open ? " is-dim" : ""}`}>
         {DRAWERS.map((d, i) => {
           const art = arts[i] ?? d.art;
@@ -220,7 +223,7 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
               key={d.id}
               ref={(el) => void (objs.current[i] = el)}
               href={`#${d.id}`}
-              className={`rg-obj${i === 0 ? " is-first" : ""}`}
+              className={`rg-obj${i === 0 ? " is-first" : i === N - 1 ? " is-last" : ""}`}
               style={{ "--c": d.color, "--i": i } as CSSProperties}
               aria-haspopup="dialog"
               aria-label={`${d.label}${d.line ? `: ${d.line}` : ""}`}
@@ -275,26 +278,30 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
             </a>
           );
         })}
-        <div className="rg-line" aria-live="polite">
-          {lines.out !== undefined && lines.out !== lines.k ? (
+        <div className="rg-line">
+          {/* the page's title stays the same for screen readers; the door lines are a picture of the same doors */}
+          <h1 className={shown === 0 ? "rg-l rg-h" : "rg-l rg-h is-off"}>
+            <Opening />
+          </h1>
+          {lines.out !== undefined && lines.out > 0 && lines.out !== lines.k ? (
             <p key={`o${lines.out}`} className="rg-l is-out" aria-hidden="true" onAnimationEnd={(e) => e.target === e.currentTarget && setLines((l) => ({ k: l.k }))}>
-              <Words text={textOf(lines.out)} rich={richOf(lines.out)} />
+              <Words text={textOf(lines.out)} />
             </p>
           ) : null}
-          <h1 key={`i${lines.k}`} className="rg-l is-in">
-            <Words text={textOf(lines.k)} rich={richOf(lines.k)} />
-          </h1>
+          {lines.k > 0 ? (
+            <p key={`i${lines.k}`} className="rg-l is-in" aria-hidden="true">
+              <Words text={textOf(lines.k)} />
+            </p>
+          ) : null}
         </div>
       </div>
-      {still ? (
-        <ol className="rg-list">
-          {DRAWERS.slice(1).map((d) => (
-            <li key={d.id}>
-              <b>{d.label}</b> {d.line}
-            </li>
-          ))}
-        </ol>
-      ) : null}
+      <ol className="rg-list">
+        {DRAWERS.slice(1).map((d) => (
+          <li key={d.id}>
+            <b>{d.label}</b> {d.line}
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

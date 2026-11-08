@@ -31,9 +31,9 @@ const font = (w) =>
 const SITE = IDENTITY.site.replace(/^https?:\/\//, "");
 
 const SUMMARY =
-  "Product designer and founder, fifteen, based in London. I design consumer apps used by millions, run two companies at " +
-  "six figure ARR, and build what I design: brand, interface and the production code behind it. Fast, hands on, and " +
-  "happiest owning a product end to end.";
+  "Design engineer and founder, fifteen, based in London. I'm building Ignaru, a design canvas for coding agents, and I " +
+  "design and build sites for startups through Ignura, my studio. I design consumer apps used by millions and write the " +
+  "production code behind what I design. Fast, hands on, and happiest owning a product end to end.";
 
 const NUMBERS = [
   ["1.5M", "people use the app I design"],
@@ -49,10 +49,9 @@ const ROLES = [
     url: "ignura.com",
     title: "Founder",
     when: "2026 to now",
-    line: "Growth agency for startups, pre-seed to Series A",
+    line: "Design studio: websites for startups, built from scratch",
     points: [
-      "Founded and run an agency that finds a startup's growth problem, builds the engine that fixes it and runs it; grew it to **six figure ARR**.",
-      "Designed the offer clients buy: a free 15 minute Growth Check, a **free first version of the fix**, then a four week build with a **minimum result written into the contract**.",
+      "Founded and run a design studio that designs and builds startup websites from scratch, with launch pages live in about a week; grew it to **six figure ARR**.",
       "Delivered launch, design and growth work for **Higgsfield, Okara, Splitting Point, Yummers and hypjam**.",
       "Designed and built ignura.com end to end (Astro, Vercel), including an AI assistant and client growth boards; took mobile Lighthouse from **35 to 90**.",
     ],
@@ -94,9 +93,9 @@ const ROLES = [
     url: "ignaru.com",
     title: "Founder",
     when: "2026 to now",
-    line: "Product for teams that build their own growth systems",
+    line: "A design canvas for your coding agent",
     points: [
-      "Designed and built a full SaaS product: Next.js, Supabase, WorkOS auth, usage based credits, an AI agent on Vercel AI Gateway, and a **Tauri desktop app** for Mac, Windows and Linux.",
+      "Designed and built a full product: a canvas that opens your repo, where you circle what's wrong and your own coding agent fixes it. Next.js, Supabase, WorkOS auth, usage based credits, and a **Tauri desktop app for Mac**.",
     ],
   },
   {
@@ -202,7 +201,7 @@ const html = `<!doctype html><meta charset="utf-8">
 <header>
   <div>
     <h1>Jawad Jalal</h1>
-    <div class="role">Product designer &amp; founder · London</div>
+    <div class="role">Design engineer &amp; founder · London</div>
   </div>
   <div class="contact">
     <b><a href="mailto:${IDENTITY.email}">${esc(IDENTITY.email)}</a></b><br>
