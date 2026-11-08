@@ -54,7 +54,7 @@ export function Nav({ at, onGo }: { at: DrawerId | null; onGo: (id: DrawerId) =>
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/felt/jawad-av-96.webp" srcSet="/felt/jawad-av-96.webp 1x, /felt/jawad-av.webp 2x" alt="" width={28} height={28} />
+            <img src="/felt/jawad-face-96.webp" srcSet="/felt/jawad-face-96.webp 1x, /felt/jawad-face-192.webp 2x, /felt/jawad-face-384.webp 3x" alt="" width={28} height={28} />
             <b>Jawad Jalal</b>
           </a>
           <span className="fh-bar-x" aria-hidden="true">
@@ -70,9 +70,9 @@ export function Nav({ at, onGo }: { at: DrawerId | null; onGo: (id: DrawerId) =>
                 key={n.id}
                 href={n.href}
                 className={`fh-nl${at === n.id ? " is-on" : ""}`}
-                aria-haspopup={n.id === "blog" ? undefined : "dialog"}
+                aria-haspopup={n.id === "about" ? "dialog" : undefined}
                 onClick={(e) => {
-                  if (n.id === "blog" || !plain(e)) return;
+                  if (n.id !== "about" || !plain(e)) return;
                   e.preventDefault();
                   setMore(false);
                   onGo(n.id);

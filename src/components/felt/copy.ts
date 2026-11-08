@@ -9,9 +9,6 @@ export const BOOK = "https://cal.com/jawad-jalal-hesqbk/intro-call-with-ignura";
 export const EMAIL = "hijawadjalal@gmail.com";
 export const CV = "/jawad-jalal-cv.pdf";
 
-/** The line in the ring's centre: who, then what. The break falls after the first sentence where there is room. */
-export const LINE = ["I'm Jawad, a design engineer.", "I build Ignaru, and sites for startups."] as const;
-
 export const feltSrc = (name: string) => ({
   src: `/felt/${name}-1x.webp`,
   srcSet: `/felt/${name}-1x.webp 320w, /felt/${name}.webp 640w`,
@@ -41,9 +38,10 @@ export const drawerAt = (id: DrawerId) => DRAWERS.findIndex((d) => d.id === id);
 /** Ask the page to open one drawer, from anywhere (the bar, the "more" sheet, a link inside another drawer). */
 export const openDrawer = (id: DrawerId) => dispatchEvent(new CustomEvent("fh-open", { detail: id }));
 
-/** The bar's three links, each with its small felt mark, after ignaru.com's: two open drawers, the blog is a page. */
+/** The bar's three links, each with its small felt mark, after ignaru.com's: Work goes down the page to the list,
+ *  About opens its drawer, the blog is a page. */
 export const NAV = [
-  { id: "sites", label: "Work", art: "browser", href: "/#sites" },
+  { id: "work", label: "Work", art: "browser", href: "/#work" },
   { id: "about", label: "About", art: "nav-about", href: "/#about" },
   { id: "blog", label: "Blog", art: "nav-blog", href: "/blog" },
 ] as const;

@@ -239,7 +239,7 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
             <p className="kx-lede">{page.line}</p>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className={s.id === "about" ? "kx-top-art kx-top-me" : "kx-top-art"} src={s.id === "about" ? "/felt/jawad-av.webp" : `/felt/${s.art}.webp`} alt="" width={300} height={300} />
+          <img className={s.id === "about" ? "kx-top-art kx-top-me" : "kx-top-art"} src={s.id === "about" ? "/felt/jawad-face-384.webp" : `/felt/${s.art}.webp`} alt="" width={300} height={300} />
         </header>
         <div className="kx-body">
           {page.body({ booking, z }).filter(Boolean).map((b, i) => (
