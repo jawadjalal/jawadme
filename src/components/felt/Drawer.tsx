@@ -15,7 +15,7 @@
  */
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { dayLink, type Booking } from "./booking";
-import { ASIDE, BOOK, CV, DRAWERS, EMAIL, SETS, SITES, drawerAt, feltSrc, lift, type Ad, type AdSet, type DrawerId, type Site } from "./copy";
+import { ASIDE, BOOK, CV, DRAWERS, EMAIL, FIVE, NEW, SETS, SITES, drawerAt, feltSrc, lift, type Ad, type AdSet, type DrawerId, type Site } from "./copy";
 import { MeetMark } from "./Meet";
 import { SOCIALS } from "./Socials";
 import { sfx } from "./Sound";
@@ -412,14 +412,16 @@ function Shot({ src, small, alt, z, w = 960, h = 1200, tall, sizes, className = 
 /** An ad at full strength, opening full size. */
 const AdShot = ({ a, z, sizes, className }: { a: Ad; z: Ctx["z"]; sizes?: string; className?: string }) => <Shot src={a.src} small={a.small} alt={a.alt} z={z} tall sizes={sizes} className={`bx-ad ${className ?? ""}`} />;
 
-/** A hand of ads from different brands, fanned; they spread under the pointer. The cell's "every set" is the way in. */
+/** A hand of ads from different brands, fanned, the lead in the middle and on top; they spread under the pointer. The
+ *  cell's "every set" is the way in. */
 function Fan({ ads }: { ads: Ad[] }) {
+  const mid = (ads.length - 1) / 2;
   return (
     <div className="bx-fan" style={{ "--n": ads.length } as CSSProperties}>
       {ads.map((a, i) => (
-        <div key={a.src} className="bx-fan-i" style={{ "--i": i } as CSSProperties}>
+        <div key={a.src} className={`bx-fan-i${i === mid ? " is-lead" : ""}`} style={{ "--i": i, zIndex: 10 - Math.abs(i - mid) * 2 } as CSSProperties}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={a.small} srcSet={`${a.small} 480w, ${a.src} 960w`} sizes="(max-width: 760px) 40vw, 220px" alt={a.alt} width={480} height={600} loading="lazy" decoding="async" />
+          <img src={a.small} srcSet={`${a.small} 480w, ${a.src} 960w`} sizes="(max-width: 760px) 45vw, 260px" alt={a.alt} width={480} height={600} loading="lazy" decoding="async" />
         </div>
       ))}
     </div>
@@ -441,13 +443,16 @@ function SetCell({ s, z, w = 6, also }: { s: AdSet; z: Ctx["z"]; w?: 4 | 6; also
           <p>{s.says}</p>
           {also}
         </div>
-        <ul className="bx-set-pick" aria-label={`${s.brand}: the four ads`}>
+        <ul className="bx-set-pick" aria-label={`${s.brand}: ${s.ads.length} ads`}>
           {s.ads.map((x, k) => (
             <li key={x.src}>
               <button type="button" aria-pressed={k === i} onClick={() => setI(k)} onPointerEnter={(e) => e.pointerType === "mouse" && setI(k)}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={x.small} alt="" width={480} height={600} loading="lazy" decoding="async" />
-                <span>{x.says}</span>
+                <span>
+                  {x.brand && x.brand !== s.brand ? <b>{x.brand}</b> : null}
+                  {x.says}
+                </span>
               </button>
             </li>
           ))}
@@ -573,7 +578,7 @@ const PAGES: Record<DrawerId, Page> = {
   work: {
     title: (
       <>
-        Hi, I&apos;m Jawad. Here&apos;s my <Circ>work.</Circ>
+        Hi, I&apos;m Jawad. Here&apos;s my <Circ>work</Circ>.
       </>
     ),
     line: "15, in London, building Ignaru. I design ads and sites for startups, and everything below is real.",
@@ -581,11 +586,11 @@ const PAGES: Record<DrawerId, Page> = {
     bar: () => ({ ...call, also: mail }),
     body: ({ z, go }) => (
       <>
-        <Cell w={4} tone="band" title="Ads" line="Four to a brand, each a different idea." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
-          <Fan ads={[SETS.hoplite.ads[0], SETS.shotbase.ads[3], SETS.capy.ads[2], SETS.instabox.ads[1]]} />
+        <Cell w={4} tone="band" title="Ads" line="For AI startups, one clear idea each." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
+          <Fan ads={[NEW.proto, NEW.hoplite, NEW.capy, NEW.paradev, NEW.clonk]} />
         </Cell>
-        <Cell w={2} title="Browser Use" line={SETS.browserUse.says}>
-          <AdShot a={SETS.browserUse.ads[1]} z={z} sizes="(max-width: 760px) 45vw, 260px" />
+        <Cell w={2} title="Notra" line="Shows who AI picks instead of you.">
+          <AdShot a={NEW.notra} z={z} sizes="(max-width: 760px) 90vw, 260px" />
         </Cell>
         <Cell w={6} title="Sites" line="Designed and coded by me. Every one is live, so open it." more={<More label="every site" to={() => go("sites")} />} className="bx-site bx-lead">
           <Win w={SITES[0]} sizes="(max-width: 760px) 100vw, 840px" />
@@ -602,27 +607,27 @@ const PAGES: Record<DrawerId, Page> = {
         Ads that <Sv>sell,</Sv> tested first.
       </>
     ),
-    line: "Four ads to a brand, each a different idea. Spec work: none of these brands asked.",
+    line: "Spec ads for AI startups, one clear idea each. None of these brands asked.",
     bar: () => ({ href: "https://ignaru.com/ads", label: "book ads", also: mail }),
     body: ({ z }) => (
       <>
-        <SetCell s={SETS.hoplite} z={z} />
+        <SetCell s={FIVE} z={z} />
+        <Cell w={4} title="solidSF" line="Industrial CAD in a browser tab, free to start.">
+          <div className="bx-pair">
+            <AdShot a={NEW.solidsf} z={z} />
+            <AdShot a={NEW.solidsf2} z={z} />
+          </div>
+        </Cell>
+        <Cell w={2} title="Notra" line="Shows who AI picks instead of you.">
+          <AdShot a={NEW.notra} z={z} sizes="(max-width: 760px) 90vw, 260px" />
+        </Cell>
+        <Cell w={2} title="InstaBox" line={SETS.instabox.says}>
+          <AdShot a={SETS.instabox.ads[1]} z={z} sizes="(max-width: 760px) 90vw, 260px" />
+        </Cell>
         <Cell w={4} title="Shotbase" line={SETS.shotbase.says}>
           <div className="bx-pair">
             <AdShot a={SETS.shotbase.ads[3]} z={z} />
             <AdShot a={SETS.shotbase.ads[1]} z={z} />
-          </div>
-        </Cell>
-        <Cell w={2} pair title="Capy" line="An issue in, a pull request out.">
-          <AdShot a={SETS.capy.ads[0]} z={z} sizes="(max-width: 760px) 45vw, 260px" />
-        </Cell>
-        <Cell w={2} pair title="InstaBox" line={SETS.instabox.says}>
-          <AdShot a={SETS.instabox.ads[1]} z={z} sizes="(max-width: 760px) 45vw, 260px" />
-        </Cell>
-        <Cell w={4} title="Browser Use" line={SETS.browserUse.says}>
-          <div className="bx-pair">
-            <AdShot a={SETS.browserUse.ads[0]} z={z} />
-            <AdShot a={SETS.browserUse.ads[3]} z={z} />
           </div>
         </Cell>
         <Cell
@@ -650,7 +655,7 @@ const PAGES: Record<DrawerId, Page> = {
         >
           <Shot src={ASIDE.src} small={ASIDE.small} alt={ASIDE.alt} z={z} w={1080} h={1350} tall sizes="(max-width: 760px) 60vw, 300px" className="bx-ad" />
         </Cell>
-        <Cell w={6} side title={<span className="bx-n">140</span>} line="spec ads for seven companies, made in a day with Ignaru." more={<More label="see all 140" href="https://ignaru-spec-ads.vercel.app" />} className="bx-count">
+        <Cell w={6} side title={<span className="bx-n">140</span>} line="spec ads for seven companies, all in one gallery." more={<More label="see all 140" href="https://ignaru-spec-ads.vercel.app" />} className="bx-count">
           <Win w={{ key: "spec", name: "Ignaru spec ads", host: "ignaru-spec-ads.vercel.app", img: "/showcase/ignaru-spec-ads-720.webp", w: 720, h: 450, line: "" }} sizes="(max-width: 760px) 100vw, 480px" />
         </Cell>
       </>
@@ -706,19 +711,21 @@ const PAGES: Record<DrawerId, Page> = {
   contact: {
     title: (
       <>
-        Say <Circ>hello.</Circ>
+        Say <Circ>hello</Circ>.
       </>
     ),
     line: "Email is quickest. For ads or a site, book a short call and we'll see if it's a fit.",
     bar: (b) => ({ href: BOOK, label: `book a call, ${b.minutes} min`, glyph: <MeetMark size={18} />, also: { href: CV, label: "my cv", download: true } }),
-    body: ({ booking: b }) => (
+    body: ({ booking: b, go }) => (
       <>
-        <Cell w={4} tone="band" side title="Email me." className="bx-mail-c">
-          <EmailLink />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="bx-face" src="/felt/jawad-head-320.webp" alt="" width={320} height={360} loading="lazy" decoding="async" />
-        </Cell>
-        <Cell w={2} title="Next free days" line={`${b.minutes} minutes on ${b.where === "meet" ? "Google Meet" : "a video call"}.`} className="bx-days-c">
+        <Cell
+          w={6}
+          tone="band"
+          side
+          title={`Book a ${b.minutes} minute call.`}
+          line={`On ${b.where === "meet" ? "Google Meet" : "a video call"}. Pick a day and Cal shows the times; we'll see if ads or a site fit.`}
+          className="bx-book"
+        >
           {b.slots.length > 0 ? (
             <ul className="bx-days">
               {b.slots.map((x) => (
@@ -726,14 +733,27 @@ const PAGES: Record<DrawerId, Page> = {
                   <a href={dayLink(x.iso)} target="_blank" rel="noreferrer">
                     <b>{x.day}</b>
                     <span>from {x.time}</span>
+                    <Out />
                   </a>
                 </li>
               ))}
             </ul>
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img className="bx-call" src={feltSrc("call").src} alt="" width={160} height={160} loading="lazy" decoding="async" />
-          )}
+          ) : null}
+          <a className="bx-book-any" href={BOOK} target="_blank" rel="noreferrer">
+            <MeetMark size={16} />
+            {b.slots.length > 0 ? "or any time on cal" : "pick a time on cal"}
+            <Out />
+          </a>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="bx-book-art" src="/felt/circle-comment.webp" alt="" width={640} height={640} loading="lazy" decoding="async" />
+        </Cell>
+        <Cell w={2} title="Email me." line="Quickest for anything short." className="bx-mail-c">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="bx-face" src="/felt/jawad-head-320.webp" alt="" width={320} height={362} loading="lazy" decoding="async" />
+          <EmailLink />
+        </Cell>
+        <Cell w={4} title="What you'd get" line="Ads like these, and sites you can open." more={<More label="see the work" to={() => go("work")} />} className="bx-fan-c bx-recent">
+          <Fan ads={[NEW.notra, NEW.capy, NEW.hoplite]} />
         </Cell>
         <Cell w={6} title="Elsewhere" className="bx-else">
           <ul className="bx-soc">
