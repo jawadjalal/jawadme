@@ -113,7 +113,6 @@ const BUILDS = [
   ["Clicky Graph", "an interactive product demo for heyclicky.com, on a hand rolled renderer of 3,000 elements"],
   ["claude-code-spend", "open source tool that prices every token class in local Claude Code transcripts"],
   ["Client sites", "Splitting Point, Vizzbees, KleoKlaw: design and build, brief to launch"],
-  ["Wayari", "a CLI and desktop app that takes coding agents from a prompt to a reviewed pull request, with 480 PRs merged"],
   ["Bidframe", "one of four builders at a hackathon. It reads a tender pack and flags what would disqualify the bid"],
   ["Weld", "an earlier product I founded: a hiring marketplace for Roblox studios"],
 ];

@@ -42,7 +42,6 @@ export function Edge() {
     let gone = false;
     let idleId = 0;
     let size: (() => void) | null = null;
-    let stopIo = () => {};
     const off = () => {
       cancelAnimationFrame(raf);
       delete cv.dataset.on;
@@ -101,22 +100,11 @@ export function Edge() {
       cv.addEventListener("webglcontextlost", lost);
       cv.dataset.on = "1";
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      // the dots only show under the opening: once Wayari has covered it, stop drawing so scrolling the rest costs no GPU
-      let away = false;
-      const op = document.querySelector(".op-run");
-      if (op && typeof IntersectionObserver === "function") {
-        const io = new IntersectionObserver(([e]) => {
-          away = !e?.isIntersecting;
-          cv.style.visibility = away ? "hidden" : "";
-        });
-        io.observe(op);
-        stopIo = () => io.disconnect();
-      }
       let last = 0;
       const loop = (ms: number) => {
         if (gone) return;
         raf = requestAnimationFrame(loop);
-        if (away || document.hidden || ms - last < 1000 / 24) return;
+        if (document.hidden || ms - last < 1000 / 24) return;
         last = ms;
         draw(ms);
       };
@@ -129,7 +117,6 @@ export function Edge() {
     else window.addEventListener("load", idle, { once: true });
     return () => {
       gone = true;
-      stopIo();
       cancelAnimationFrame(raf);
       window.removeEventListener("load", idle);
       if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleId);

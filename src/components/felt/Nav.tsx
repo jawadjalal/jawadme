@@ -2,8 +2,8 @@
 
 /*
  * The bar, after ignaru.com's (components/home/Dock.tsx, v10.4 to v12.2): a tab hanging flush from the screen's top edge.
- * On the left Jawad's face and name; three links with their own small felt marks (Work and About open drawers, Blog is
- * a page); "more", whose sheet drops down with every drawer; and on the right a quiet email link and one key, Book a
+ * On the left Jawad's face and name (it opens Contact); three links with their own small felt marks, each opening its
+ * drawer; "more", whose sheet drops down with every drawer; and on the right a quiet email link and one key, Book a
  * call. Every link is a real link underneath, so it works without script. With a drawer open the bar recedes into the
  * column beside it and keeps only the name and a drawn "close" (the page under a modal drawer is inert, so a press
  * there lands on the drawer's backdrop, which closes it). The notch at the foot holds the socials and the CV and steps
@@ -46,15 +46,15 @@ export function Nav({ at, onGo }: { at: DrawerId | null; onGo: (id: DrawerId) =>
         <div className="fh-bar-in" ref={box}>
           <a
             className="fh-me"
-            href="/#about"
+            href="/#contact"
             onClick={(e) => {
               if (!plain(e)) return;
               e.preventDefault();
-              onGo("about");
+              onGo("contact");
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/felt/jawad-face-96.webp" srcSet="/felt/jawad-face-96.webp 1x, /felt/jawad-face-192.webp 2x, /felt/jawad-face-384.webp 3x" alt="" width={28} height={28} />
+            <img src="/felt/jawad-head-96.webp" srcSet="/felt/jawad-head-96.webp 1x, /felt/jawad-head-192.webp 2x" alt="" width={28} height={32} />
             <b>Jawad Jalal</b>
           </a>
           <span className="fh-bar-x" aria-hidden="true">
@@ -68,11 +68,11 @@ export function Nav({ at, onGo }: { at: DrawerId | null; onGo: (id: DrawerId) =>
             {NAV.map((n) => (
               <a
                 key={n.id}
-                href={n.href}
+                href={`/#${n.id}`}
                 className={`fh-nl${at === n.id ? " is-on" : ""}`}
-                aria-haspopup={n.id === "about" ? "dialog" : undefined}
+                aria-haspopup="dialog"
                 onClick={(e) => {
-                  if (n.id !== "about" || !plain(e)) return;
+                  if (!plain(e)) return;
                   e.preventDefault();
                   setMore(false);
                   onGo(n.id);

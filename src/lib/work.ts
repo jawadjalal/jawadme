@@ -180,13 +180,6 @@ export const WORK: Work[] = [
     tag: "concept",
     date: "2026-09-20",
   }),
-  w("wayari", {
-    name: "wayari",
-    url: "https://wayari.com",
-    host: "wayari.com",
-    line: "The site for Wayari: give your coding subscriptions superpowers, from a prompt to a reviewed pull request.",
-    date: "2026-08-22",
-  }),
   w("splittingpoint", {
     name: "splitting point",
     url: "https://splittingpoint.com",
