@@ -45,6 +45,16 @@ const NUMBERS = [
 
 const ROLES = [
   {
+    name: "Ignaru",
+    url: "ignaru.com",
+    title: "Founder",
+    when: "2026 to now",
+    line: "A design canvas for your coding agent",
+    points: [
+      "Designed and built a full product: a canvas that opens your repo, where you circle what's wrong and your own coding agent fixes it. Next.js, Supabase, WorkOS auth, usage based credits, and a **Tauri desktop app for Mac**.",
+    ],
+  },
+  {
     name: "Ignura",
     url: "ignura.com",
     title: "Founder",
@@ -60,18 +70,18 @@ const ROLES = [
     name: "MenuFit",
     url: "menufit.com",
     title: "Product Designer",
-    when: "2026 to now",
+    when: "2026",
     line: "The app for eating out healthy · iOS and Android",
     points: [
-      "Design the core product for an app with **1.5 million users** and **seven figure ARR**: a healthy menu for every restaurant, with macros and a fit score on each dish.",
-      "Own screens across iOS and Android, light and dark, and the components they share.",
+      "Designed the core product for an app with **1.5 million users** and **seven figure ARR**: a healthy menu for every restaurant, with macros and a fit score on each dish.",
+      "Owned screens across iOS and Android, light and dark, and the components they share.",
     ],
   },
   {
     name: "Okara",
     url: "okara.ai",
     title: "Product Development Intern",
-    when: "2026 to now",
+    when: "2026",
     line: "AI CMO serving 150,000+ businesses",
     points: [
       "Won the internship with an unsolicited product teardown: a week on the free tier, then a deployed site with **three redesigns built as live React mockups**.",
@@ -86,16 +96,6 @@ const ROLES = [
     points: [
       "Built a 3D art studio that game studios hire by the job at **published rates**; reached **six figure ARR**.",
       "Run the full pipeline from sculpt to textured, game ready asset, plus the brand, site and client relationships.",
-    ],
-  },
-  {
-    name: "Ignaru",
-    url: "ignaru.com",
-    title: "Founder",
-    when: "2026 to now",
-    line: "A design canvas for your coding agent",
-    points: [
-      "Designed and built a full product: a canvas that opens your repo, where you circle what's wrong and your own coding agent fixes it. Next.js, Supabase, WorkOS auth, usage based credits, and a **Tauri desktop app for Mac**.",
     ],
   },
   {
