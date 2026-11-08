@@ -58,7 +58,7 @@ export const SITES: Site[] = [
   { key: "ropilot", name: "Ropilot", host: "ropilot-site.vercel.app", img: "/sites/ropilot.webp", tall: "/sites/ropilot-tall.webp", w: 960, h: 600, line: "Make Roblox games by asking: it writes, models and playtests." },
 ];
 
-export type Ad = { src: string; small: string; alt: string; says: string };
+export type Ad = { src: string; small: string; alt: string; says: string; brand?: string };
 export type AdSet = { key: string; brand: string; says: string; ads: Ad[] };
 
 /** One brand's four ads: what each says, then what it shows (the two make its alt text). */
@@ -124,6 +124,25 @@ export const SETS: Record<"hoplite" | "shotbase" | "instabox" | "capy" | "browse
     ]),
   },
 };
+
+/** One ad from a single launch: its file stem in public/ads/sets, its brand, what it says, what it shows. */
+const one = (key: string, brand: string, says: string, shows: string): Ad => ({ src: `/ads/sets/${key}.webp`, small: `/ads/sets/${key}-480.webp`, brand, says, alt: `${brand}: ${says} ${shows}` });
+
+/** The newest ads (8 Nov 2026, ~/Downloads/ad-carousels/hero-five v3, solidsf and notra), one idea to a brand. The Capy
+ *  manga page and the Hoplite aurora lead. */
+export const NEW = {
+  capy: one("hero-capy", "Capy", "Pile on the tickets. Capy's AI writes the code.", "A manga page: a capybara on a cloud between a Slack thread and a merged pull request."),
+  hoplite: one("hero-hoplite", "Hoplite", "Go to sleep. Your AI agent writes the code.", "The Hoplite mark drawn as a constellation over an aurora."),
+  proto: one("hero-proto", "Proto", "A new design tool. Free as Figma. Exact as Cursor.", "Neon mesh shapes round a pink triangle, one selected."),
+  paradev: one("hero-paradev", "Paradev", "Run ten coding agents. Get pinged when one needs you.", "A list of agents on red silk, one asking for input."),
+  clonk: one("hero-clonk", "Clonk", "No credits. Just your Claude plan. It builds the whole app.", "A phone app in front of a Greek temple on a hill."),
+  solidsf: one("solidsf-1", "solidSF", "Free CAD. Free drawings.", "A drawing of a bank card stamped Card not required."),
+  solidsf2: one("solidsf-4", "solidSF", "Parametric CAD. Free account, no card.", "A dollar sign and a zero drawn in CAD on black."),
+  notra: one("notra-1", "Notra", "ChatGPT named three. Not you.", "A ChatGPT answer naming three rivals, and Notra's scan showing who was left out."),
+} satisfies Record<string, Ad>;
+
+/** The newest five as one set, for the ads drawer's lead cell. */
+export const FIVE: AdSet = { key: "five", brand: "The newest five", says: "One ad each for five AI launches.", ads: [NEW.capy, NEW.hoplite, NEW.proto, NEW.paradev, NEW.clonk] };
 
 /** Aside, in black: the one ad that is all type. */
 export const ASIDE = { src: "/showcase/aside-manifesto-1080.webp", small: "/showcase/aside-manifesto-540.webp", alt: "Aside, in black: Most modern software is just a tab. The apps it holds, drawn in type." };

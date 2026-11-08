@@ -261,7 +261,7 @@ html.fh-locked { overflow: hidden; }
 /* ---------- type with a hand ---------- */
 .ty-circ, .ty-under, .ty-sv { position: relative; display: inline-block; white-space: nowrap; }
 .ty-circ svg, .ty-under svg { position: absolute; overflow: visible; pointer-events: none; }
-.ty-circ svg { left: -11%; top: -16%; width: 122%; height: 136%; }
+.ty-circ svg { left: -9%; top: -13%; width: 118%; height: 130%; }
 .ty-under svg { left: -1%; bottom: -0.16em; width: 102%; height: 0.32em; }
 .ty-circ path, .ty-under path { fill: none; stroke: var(--cl); stroke-width: 2.6px; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: ty-draw 0.95s cubic-bezier(0.6, 0.1, 0.3, 1) 0.45s forwards; }
 .ty-under path { stroke-width: 3px; animation-delay: 0.6s; }
@@ -321,9 +321,13 @@ html.fh-locked { overflow: hidden; }
 /* a hand of ads, fanned from below; they spread under the pointer */
 .bx-fan { position: relative; flex: 1; min-height: 320px; margin: 0 -20px; }
 .bx-fan-c .bx-v { display: flex; flex: 1; flex-direction: column; padding-bottom: 0; }
-.bx-fan-i { --o: calc(var(--i) - (var(--n) - 1) / 2); position: absolute; left: 50%; bottom: 16px; width: 33%; translate: calc(-50% + var(--o) * 52%) calc((var(--o) * var(--o) - 2.25) * 9px); rotate: calc(var(--o) * 5deg); transform-origin: 50% 100%; transition: translate 0.55s var(--spring), rotate 0.55s var(--spring); }
-.bx-fan:hover .bx-fan-i { translate: calc(-50% + var(--o) * 60%) calc((var(--o) * var(--o) - 2.25) * 11px - 8px); rotate: calc(var(--o) * 6deg); }
-.bx-fan-i:hover { z-index: 5; }
+.bx-fan-i { --o: calc(var(--i) - (var(--n) - 1) / 2); position: absolute; left: 50%; bottom: 18px; width: 30%; translate: calc(-50% + var(--o) * 45%) calc((var(--o) * var(--o) - 4) * 6px); rotate: calc(var(--o) * 5deg); transform-origin: 50% 100%; transition: translate 0.55s var(--spring), rotate 0.55s var(--spring), scale 0.55s var(--spring); }
+.bx-fan-i.is-lead { width: 38%; }
+.bx-fan.is-few .bx-fan-i { width: 32%; translate: calc(-50% + var(--o) * 66%) calc((var(--o) * var(--o) - 1) * 8px); }
+.bx-fan.is-few .bx-fan-i.is-lead { width: 38%; }
+.bx-fan:hover .bx-fan-i { translate: calc(-50% + var(--o) * 50%) calc((var(--o) * var(--o) - 4) * 7px - 6px); rotate: calc(var(--o) * 6deg); }
+.bx-fan.is-few:hover .bx-fan-i { translate: calc(-50% + var(--o) * 74%) calc((var(--o) * var(--o) - 1) * 10px - 6px); }
+.bx-fan-i:hover { z-index: 20 !important; scale: 1.04; }
 .bx-fan img { width: 100%; height: auto; border-radius: 3px; box-shadow: 0 -10px 30px -12px rgba(0, 0, 0, 0.6); }
 
 /* a brand's whole set: one ad large, all four under it to pick from */
@@ -335,6 +339,7 @@ html.fh-locked { overflow: hidden; }
 @keyframes bx-swap { from { opacity: 0.4; scale: 0.985; } }
 .bx-set-pick { display: grid; gap: 4px; margin: 0 -8px; }
 .bx-set-pick button { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 14px; width: 100%; padding: 6px 8px; border: 0; border-radius: 3px; background: none; font: inherit; font-size: 15.5px; line-height: 1.3; letter-spacing: -0.01em; text-align: left; color: var(--ink-3); cursor: pointer; transition: background-color 0.2s, color 0.2s; -webkit-tap-highlight-color: transparent; }
+.bx-set-pick b { display: block; margin-bottom: 1px; font-weight: 600; color: var(--ink); }
 .bx-set-pick img { width: 44px; height: 55px; border-radius: 2px; object-fit: cover; opacity: 0.6; transition: opacity 0.2s, rotate 0.35s var(--spring), scale 0.35s var(--spring); }
 .bx-set-pick button:hover, .bx-set-pick button:focus-visible { color: var(--ink-2); background: rgba(255, 255, 255, 0.04); }
 .bx-set-pick button[aria-pressed="true"] { color: var(--ink); background: rgba(255, 255, 255, 0.07); }
@@ -379,21 +384,31 @@ html.fh-locked { overflow: hidden; }
 .bx-felts img { position: absolute; bottom: 16px; left: calc(var(--k) * 25% + 7%); width: 38%; height: auto; rotate: calc(var(--k) * 11deg - 10deg); translate: 0 calc(var(--k) * -14px); filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.5)); transition: translate 0.45s var(--spring), rotate 0.45s var(--spring); }
 .bx-felt:hover .bx-felts img { translate: 0 calc(var(--k) * -14px - 8px); rotate: calc(var(--k) * 8deg - 8deg); }
 
-/* contact */
-.bx-mail-c { min-height: 250px; }
-.bx-mail-c .bx-h h3 { font-size: 30px; letter-spacing: -0.035em; }
-.bx-mail { display: inline-flex; align-items: center; gap: 8px; padding-bottom: 4px; font-size: 26px; font-weight: 600; letter-spacing: -0.03em; color: var(--ink); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--cl) 60%, transparent); text-decoration-thickness: 2px; text-underline-offset: 6px; transition: text-decoration-color 0.2s; }
+/* contact: booking first, its days large; email with his face; the work beside it */
+.bx-c.bx-book { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; min-height: 300px; }
+.bx-book .bx-v { position: static; }
+.bx-book .bx-h { position: relative; z-index: 1; }
+.bx-book .bx-h h3 { font-size: 32px; letter-spacing: -0.04em; }
+.bx-book .bx-h > p { font-size: 16px; color: var(--ink); max-width: 30ch; }
+.bx-book-art { position: absolute; left: 18px; bottom: -40px; width: 170px; height: auto; rotate: -9deg; filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.55)); transition: rotate 0.5s var(--spring), translate 0.5s var(--spring); }
+.bx-book:hover .bx-book-art { rotate: -3deg; translate: 0 -8px; }
+.bx-days { display: grid; gap: 2px; margin: -6px 0 0; }
+.bx-days a { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: baseline; gap: 14px; padding: 12px 14px; border-radius: 3px; transition: background-color 0.2s; }
+.bx-days a:hover, .bx-days a:focus-visible { background: rgba(255, 255, 255, 0.08); }
+.bx-days b { font-size: 21px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+.bx-days span { font-size: 14px; color: var(--ink-2); }
+.bx-days .kx-out { color: var(--ink-3); }
+.bx-days a:hover .kx-out { color: var(--cl); translate: 2px -2px; }
+.bx-book-any { display: inline-flex; align-items: center; gap: 8px; margin: 14px 0 0 14px; font-size: 15px; font-weight: 500; color: var(--ink-2); transition: color 0.2s; }
+.bx-book-any:hover, .bx-book-any:focus-visible { color: var(--ink); }
+.bx-book-any:hover .kx-out { color: var(--cl); translate: 2px -2px; }
+.bx-mail-c .bx-v { padding-bottom: 22px; }
+.bx-face { display: block; width: 112px; height: auto; margin: 0 0 16px auto; rotate: 7deg; filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.55)); transition: rotate 0.5s var(--spring), translate 0.5s var(--spring); }
+.bx-mail-c:hover .bx-face { rotate: -3deg; translate: 0 -6px; }
+.bx-mail { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding-bottom: 4px; font-size: 16.5px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--cl) 60%, transparent); text-decoration-thickness: 2px; text-underline-offset: 5px; transition: text-decoration-color 0.2s; }
+.bx-mail span { min-width: 0; overflow-wrap: anywhere; }
 .bx-mail:hover, .bx-mail:focus-visible { text-decoration-color: var(--cl); }
-.bx-mail-c.is-side { grid-template-columns: minmax(0, 1fr); align-items: start; }
-.bx-mail-c .bx-v { margin-top: auto; padding-right: 150px; }
-.bx-face { position: absolute; right: -6px; bottom: -42px; width: 150px; height: auto; rotate: 7deg; filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.55)); transition: rotate 0.5s var(--spring), translate 0.5s var(--spring); }
-.bx-mail-c:hover .bx-face { rotate: -3deg; translate: 0 -8px; }
-.bx-days { display: grid; gap: 2px; margin: 0 -10px; }
-.bx-days a { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 9px 10px; border-radius: 3px; transition: background-color 0.2s; }
-.bx-days a:hover, .bx-days a:focus-visible { background: rgba(255, 255, 255, 0.06); }
-.bx-days b { font-size: 15.5px; font-weight: 600; color: var(--ink); }
-.bx-days span { font-size: 13px; color: var(--ink-3); }
-.bx-call { width: 120px; margin: 0 0 6px auto; rotate: 8deg; filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.5)); }
+.bx-recent .bx-fan { min-height: 270px; }
 .bx-soc { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 .bx-soc a { display: grid; gap: 3px; padding: 10px 0 4px; color: var(--ink-2); }
 .bx-soc svg { margin-bottom: 10px; color: var(--ink-3); transition: color 0.2s, translate 0.35s var(--spring); }
@@ -494,7 +509,7 @@ html.fh-locked { overflow: hidden; }
   .bx-set .bx-h { order: -1; }
   .bx-set-side .bx-h h3 { font-size: 28px; }
   .bx-fan { min-height: 230px; margin-inline: -14px; }
-  .bx-fan-i { width: 34%; }
+  .bx-fan-i { width: 29%; }
   .bx-felts { width: min(100%, 300px); margin-inline: auto; }
   .bx-before .bx-pair { max-width: none; }
   .bx-before .bx-pair > :last-child { margin-bottom: 0; }
@@ -502,11 +517,19 @@ html.fh-locked { overflow: hidden; }
   .bx-n { font-size: 96px; }
   .bx-count .bx-v { margin-bottom: -18px; }
   .bx-site .bx-v { margin-bottom: -18px; }
-  .bx-mail-c { min-height: 220px; }
-  .bx-mail { font-size: 21px; }
-  .bx-mail-c .bx-v { padding-right: 0; padding-bottom: 18px; }
-  .bx-face { width: 96px; top: 6px; bottom: auto; right: 8px; }
-  .bx-days-c { grid-column: span 2; }
+  .bx-book { min-height: 0; }
+  .bx-book .bx-h { padding-right: 92px; }
+  .bx-book .bx-h h3 { font-size: 27px; }
+  .bx-book-art { left: auto; right: 6px; top: 8px; bottom: auto; width: 96px; }
+  .bx-days a { padding: 11px 6px; }
+  .bx-days b { font-size: 19px; }
+  .bx-book-any { margin-left: 6px; }
+  .bx-mail-c { display: grid; grid-template-columns: minmax(0, 1fr) 96px; align-items: start; }
+  .bx-mail-c .bx-v { display: contents; }
+  .bx-face { grid-column: 2; grid-row: 1; width: 92px; margin: 0; }
+  .bx-mail { grid-column: 1 / -1; margin-bottom: 18px; font-size: 19px; }
+  .bx-site.is-narrow:not(.is-pair) .bx-win-view { aspect-ratio: 16 / 10; }
+  .bx-recent .bx-fan { min-height: 220px; }
   .bx-soc { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; }
   .kx-expand { display: none; }
   .kx-tray { margin: 30px -18px 0; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); }
