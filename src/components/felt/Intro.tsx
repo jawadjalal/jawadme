@@ -17,10 +17,10 @@ import { useEffect, useRef, type MouseEvent } from "react";
 import { sfx } from "./Sound";
 
 const ROWS = [
-  { href: "#wayari", name: "wayari", line: "what i'm building: agents on your branches, one pull request.", mark: "wayari" },
-  { href: "#okara", name: "okara", line: "product intern, at an ai cmo used by 150k websites.", mark: "okara" },
-  { href: "#menufit", name: "menufit", line: "a client. i design the screens 1.5m people use.", mark: "menufit" },
-  { href: "#work", name: "sites and ads", line: "client work, concepts and spec, each labelled.", mark: "work" },
+  { href: "#s-wayari", name: "wayari", line: "what i'm building: agents on your branches, one pull request.", mark: "wayari" },
+  { href: "#s-okara", name: "okara", line: "product intern, at an ai cmo used by 150k websites.", mark: "okara" },
+  { href: "#s-menufit", name: "menufit", line: "a client: i designed new screens for an app 1.5m people use.", mark: "menufit" },
+  { href: "#s-work", name: "sites and ads", line: "client work, concepts and spec, each labelled.", mark: "work" },
 ] as const;
 
 export function OkaraMark({ size = 18 }: { size?: number }) {

@@ -515,7 +515,7 @@ const PAGES: Record<DrawerId, Page> = {
   },
   menufit: {
     title: "MenuFit, for eating out healthy.",
-    line: "Over 1.5 million people use it to find a high-protein order wherever they're eating. I design the screens, in light and dark.",
+    line: "Over 1.5 million people use it to find a high-protein order wherever they're eating. As a client, I designed new screens for it, in light and dark.",
     bar: () => ({ href: "https://menufit-screens.vercel.app", label: "See every screen", also: { href: "https://menufit.com", label: "menufit.com" } }),
     body: ({ z }) => [<Phones key="phones" z={z} />],
   },

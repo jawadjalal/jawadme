@@ -33,7 +33,7 @@ const STEPS = [
 
 export function Wayari() {
   return (
-    <section className="wy" id="wayari" aria-labelledby="wy-h">
+    <section className="wy" id="s-wayari" aria-labelledby="wy-h">
       <div className="wy-sky">
         <div className="wy-paint" aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}

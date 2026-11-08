@@ -230,8 +230,9 @@ img.op-mk { object-fit: contain; }
 @media (max-width: 860px) {
   .fh { --frame: calc(100% - 32px); --gap: 104px; }
   .op { display: flex; flex-direction: column; }
-  .op-face-wrap { position: relative; inset: auto; flex: 1 1 auto; min-height: 0; padding: 64px 16px 18px; }
-  .op-face { --D: min(74vw, 40svh, 380px); }
+  /* the sheet takes the height it needs and the face takes what is left, so nothing clips on a short phone */
+  .op-face-wrap { position: relative; inset: auto; flex: 1 1 0; min-height: 0; padding: 64px 16px 18px; container-type: size; }
+  .op-face { --D: min(74cqw, 100cqh, 380px); }
   .op-dr { position: relative; inset: auto; flex: none; width: auto; margin: 0 8px; border-radius: 2px 2px 0 0; animation-name: op-sheet-in; }
   @keyframes op-sheet-in { from { opacity: 0; translate: 0 72px; } }
   .op-dr-in { height: auto; padding: 26px 22px calc(70px + env(safe-area-inset-bottom)); }
@@ -285,6 +286,22 @@ img.op-mk { object-fit: contain; }
   .op-mk-wk img:last-child { width: 14px; height: 19px; top: 6px; }
   .wy-h { font-size: clamp(28px, 8.3vw, 46px); }
   .wy-key { height: 50px; }
+}
+
+/* a very short screen (a phone on its side): the face and the drawer cannot share one screen, so the opening stops
+   being sticky and runs as tall as it needs, and Wayari follows it instead of rising over it */
+@media (max-height: 600px) {
+  .op-run { height: auto; }
+  .op { position: relative; height: auto; min-height: 100svh; overflow: visible; }
+  .op-face-wrap { flex: none; height: max(260px, 70svh); }
+  .op-dr { position: relative; inset: auto; width: auto; margin: 0 8px; }
+  .wy { margin-top: 0; }
+  .op-face, .op-dr-in { animation: none; }
+}
+@media (max-height: 600px) and (min-width: 861px) {
+  .op { display: grid; grid-template-columns: minmax(0, 1fr) var(--opw); align-items: start; }
+  .op-face-wrap { position: relative; inset: auto; height: 100svh; padding-top: 64px; }
+  .op-dr { margin: 74px 10px 10px 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

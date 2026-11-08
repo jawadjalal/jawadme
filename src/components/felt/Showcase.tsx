@@ -34,7 +34,7 @@ export function Showcase() {
 
   const cur = items[at] ?? items[0];
   return (
-    <section className="sc" id="work" aria-labelledby="sc-h">
+    <section className="sc" id="s-work" aria-labelledby="sc-h">
       <div className="sc-head">
         <h2 id="sc-h" className="sc-h">sites and ads</h2>
         <p className="sc-p">

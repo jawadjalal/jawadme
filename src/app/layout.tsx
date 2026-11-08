@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { IDENTITY, SKILLS, SOCIALS } from "@/lib/profile";
 
-// The same who and what as the home page's line: a design engineer, building Ignaru, and sites for startups.
-const TITLE = `${IDENTITY.properName}, design engineer building Ignaru`;
+// The same who and what as the home page, which leads with Wayari: a design engineer building it, and Ignaru, and
+// sites and ads for startups.
+const TITLE = `${IDENTITY.properName}, design engineer building Wayari`;
 const DESCRIPTION =
-  "Design engineer in London. I build Ignaru (ignaru.com), a design canvas for your coding agent, and sites for startups through Ignura (ignura.com), my design studio. I also design MenuFit's screens. Product development intern, Okara.";
+  "Design engineer in London. I'm building Wayari (wayari.com), which runs coding agents on your own branches and ends in one pull request a person merges, and Ignaru (ignaru.com), a design canvas for your coding agent. I make sites and ads for startups, and designed new screens for MenuFit as a client. Product intern at Okara.";
 import "./globals.css";
 
 export const metadata: Metadata = {

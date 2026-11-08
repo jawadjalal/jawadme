@@ -6,7 +6,7 @@
  *   menufit.com: "Join over 1.5 million happy users", "22.3 Million+ locations". The US App Store listing
  *   (id6746144481): 4.76 average from 54,556 ratings.
  * Logos: okara.ai's own `landing-mark` symbol; menufit.com/logo.webp. The Okara screens are Jawad's own teardown
- * mockups (public/okara); the MenuFit screens are his, from menufit-screens.vercel.app (public/menufit).
+ * mockups (public/okara); the MenuFit screens are his client design pass, from menufit-screens.vercel.app (public/menufit).
  */
 import { OkaraMark } from "./Intro";
 
@@ -31,7 +31,7 @@ const SCREENS = [
 
 export function Okara() {
   return (
-    <section className="ok" id="okara" aria-labelledby="ok-h">
+    <section className="ok" id="s-okara" aria-labelledby="ok-h">
       <div className="ok-in">
         <div className="ok-say">
           <a className="ok-brand" href="https://okara.ai" target="_blank" rel="noreferrer">
@@ -81,7 +81,7 @@ export function Okara() {
 
 export function MenuFit() {
   return (
-    <section className="mf" id="menufit" aria-labelledby="mf-h">
+    <section className="mf" id="s-menufit" aria-labelledby="mf-h">
       <div className="mf-in">
         <div className="mf-say">
           <a className="mf-brand" href="https://menufit.com" target="_blank" rel="noreferrer">
@@ -89,10 +89,10 @@ export function MenuFit() {
             <img src="/logos/menufit-bag-256.webp" alt="" width={46} height={52} loading="lazy" />
             <span>MenuFit</span>
           </a>
-          <h2 id="mf-h" className="mf-h">i design menufit&apos;s screens</h2>
+          <h2 id="mf-h" className="mf-h">new screens for menufit</h2>
           <p className="mf-p">
-            menufit tells you what to order at any restaurant to hit your protein. it&apos;s a client: i drew its hack cards, the macros
-            that fill like liquid, and the rest of the app.
+            menufit tells you what to order at any restaurant to hit your protein. it&apos;s a client, and i designed new screens for
+            it: hack cards, macros that fill like liquid, the hacks library and the week.
           </p>
           <dl className="mf-facts">
             {MENUFIT_FACTS.map((f) => (
