@@ -9,9 +9,6 @@ export const BOOK = "https://cal.com/jawad-jalal-hesqbk/intro-call-with-ignura";
 export const EMAIL = "hijawadjalal@gmail.com";
 export const CV = "/jawad-jalal-cv.pdf";
 
-/** The line in the ring's centre: who, then what. The break falls after the first sentence where there is room. */
-export const LINE = ["I'm Jawad, a design engineer.", "I build Ignaru, and sites for startups."] as const;
-
 export const feltSrc = (name: string) => ({
   src: `/felt/${name}-1x.webp`,
   srcSet: `/felt/${name}-1x.webp 320w, /felt/${name}.webp 640w`,
@@ -26,7 +23,7 @@ export const DRAWERS = [
   { id: "ignaru", label: "Ignaru", art: "petal", set: ["petal", "claude", "openai", "gemini", "grok"], color: "#9a4dea", alt: "A purple felt petal, the Ignaru mark", line: "" },
   { id: "wayari", label: "Wayari", art: "ship-merge", set: ["ship-merge", "ship-branch", "ship"], color: "#1f7ae0", alt: "A blue felt merge arrow", line: "Wayari takes a prompt to a reviewed pull request." },
   { id: "okara", label: "Okara", art: "canvas-dashboard", set: ["canvas-dashboard", "canvas-button", "canvas"], color: "#f0454f", alt: "A coral felt dashboard", line: "Okara took me on after I pulled its dashboard apart." },
-  { id: "menufit", label: "MenuFit", art: "phone", set: ["phone", "poster", "canvas-phone"], color: "#f5b400", alt: "A yellow felt phone", line: "I design MenuFit's screens, for 1.5 million people." }, // profile.ts: "1.5m users"
+  { id: "menufit", label: "MenuFit", art: "phone", set: ["phone", "poster", "canvas-phone"], color: "#f5b400", alt: "A yellow felt phone", line: "I designed new screens for MenuFit, a client." }, // profile.ts: "1.5m users"
   { id: "bidframe", label: "Bidframe", art: "onb-check", set: ["onb-check", "circle", "nav-blog"], color: "#3fae63", alt: "A green felt tick", line: "Bidframe finds the clause that loses the bid." },
   { id: "ads", label: "Ads", art: "palette", set: ["palette", "bezier", "pen"], color: "#f0454f", alt: "A coral felt palette", line: "Spec ads for Devin: one line, one picture each." },
   { id: "bevel", label: "Bevel", art: "more-shader", set: ["more-shader", "yarn", "circle-cursor"], color: "#7a5cf0", alt: "A marbled felt ball", line: "Bevel is my 3D art team for game studios." },
@@ -41,9 +38,10 @@ export const drawerAt = (id: DrawerId) => DRAWERS.findIndex((d) => d.id === id);
 /** Ask the page to open one drawer, from anywhere (the bar, the "more" sheet, a link inside another drawer). */
 export const openDrawer = (id: DrawerId) => dispatchEvent(new CustomEvent("fh-open", { detail: id }));
 
-/** The bar's three links, each with its small felt mark, after ignaru.com's: two open drawers, the blog is a page. */
+/** The bar's three links, each with its small felt mark, after ignaru.com's: Work goes down the page to the list,
+ *  About opens its drawer, the blog is a page. */
 export const NAV = [
-  { id: "sites", label: "Work", art: "browser", href: "/#sites" },
+  { id: "work", label: "Work", art: "browser", href: "/#s-work" },
   { id: "about", label: "About", art: "nav-about", href: "/#about" },
   { id: "blog", label: "Blog", art: "nav-blog", href: "/blog" },
 ] as const;

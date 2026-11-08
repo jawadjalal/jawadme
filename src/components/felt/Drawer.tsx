@@ -239,7 +239,7 @@ export function Drawer({ booking, at, onClose, onGo }: { booking: Booking; at: D
             <p className="kx-lede">{page.line}</p>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className={s.id === "about" ? "kx-top-art kx-top-me" : "kx-top-art"} src={s.id === "about" ? "/felt/jawad-av.webp" : `/felt/${s.art}.webp`} alt="" width={300} height={300} />
+          <img className={s.id === "about" ? "kx-top-art kx-top-me" : "kx-top-art"} src={s.id === "about" ? "/felt/jawad-face-384.webp" : `/felt/${s.art}.webp`} alt="" width={300} height={300} />
         </header>
         <div className="kx-body">
           {page.body({ booking, z }).filter(Boolean).map((b, i) => (
@@ -515,7 +515,7 @@ const PAGES: Record<DrawerId, Page> = {
   },
   menufit: {
     title: "MenuFit, for eating out healthy.",
-    line: "Over 1.5 million people use it to find a high-protein order wherever they're eating. I design the screens, in light and dark.",
+    line: "Over 1.5 million people use it to find a high-protein order wherever they're eating. As a client, I designed new screens for it, in light and dark.",
     bar: () => ({ href: "https://menufit-screens.vercel.app", label: "See every screen", also: { href: "https://menufit.com", label: "menufit.com" } }),
     body: ({ z }) => [<Phones key="phones" z={z} />],
   },
