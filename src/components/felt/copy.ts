@@ -15,7 +15,7 @@ export const feltSrc = (name: string) => ({
 });
 
 /** The page's one line (the h1): who, then what. Ring.tsx sets his face before his name and a felt petal before Ignaru. */
-export const LINE = ["I'm Jawad. I make Ignaru,", "and design sites and ads for startups."] as const;
+export const LINE = ["I'm Jawad, 15, building Ignaru,", "and designing sites and ads for startups."] as const;
 
 /**
  * Every door on the dial, in the order the turn passes along it and the drawer arrows step through it. `art` is the
