@@ -611,6 +611,8 @@ const PAGES: Record<DrawerId, Page> = {
     bar: () => ({ href: "https://ignaru.com/ads", label: "book ads", also: mail }),
     body: ({ z }) => (
       <>
+        <SetCell s={SETS.dreamstate} z={z} />
+        <SetCell s={SETS.cardboard} z={z} />
         <SetCell s={FIVE} z={z} />
         <Cell w={4} title="solidSF" line="Industrial CAD in a browser tab, free to start.">
           <div className="bx-pair">

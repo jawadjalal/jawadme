@@ -36,8 +36,7 @@ export const IDENTITY = {
 export const ROLES = [
   "Founder of Ignura",
   "Building Ignaru",
-  "Design at MenuFit",
-  "Design at Okara",
+  "Designing sites and ads for startups",
 ];
 
 /** The hero's one statement, under the name: two lines, each verb led by a
@@ -58,7 +57,7 @@ export const HERO = {
 /** The About list. Each string is one bullet, and may carry icon tokens. */
 export const ABOUT = [
   "i'm jawad :sparkle:, a :pen:{designer} and founder in london :globe: :rocket:[(yc soon)|https://www.ycombinator.com/]. ~i started making things for money at~ ^hand.orange{thirteen} ~and never really stopped. i'm~ ^circle.pink{fifteen} ~now!~",
-  "~i run~ :rocket:{ignura|https://ignura.com}~, a web design agency. every site is designed and built~ ^u.blue{from scratch}~. launch pages? live in~ ^hl.yellow{about a week}~.~",
+  "~i run~ :rocket:{ignura|https://ignura.com}~, a design studio. every site is designed and built~ ^u.blue{from scratch}~. launch pages? live in~ ^hl.yellow{about a week}~.~",
   "~i build~ :rocket:{ignaru|https://ignaru.com}~, the~ ^hand.violet{agent-native} ~design tool: design and code on one canvas, with~ :claude:{claude code|https://claude.com/claude-code}~,~ :openai:{codex|https://openai.com/codex} ~or~ :cursor:{cursor|https://cursor.com} ~doing the work.~",
   "~i build my own products~ :cube:<end to end>~: the brand, the interface, and the thing that~ ^u.green{actually ships}~.~",
 ];
@@ -148,7 +147,7 @@ export const NOW: Item[] = [
     period: "Since 2026",
     status: "Live",
     blurb:
-      "A web design agency. Every site is designed and built from scratch, and launch pages go live in about a week. 6 figure ARR.",
+      "A design studio. Every site is designed and built from scratch, and launch pages go live in about a week. 6 figure ARR.",
     tags: [
       { label: "Web design" },
       { label: "Site builds" },
@@ -402,9 +401,9 @@ export const VENN = [
  *  here, rather than stitched together from the page's copy. */
 export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
-  "a web design agency at 6 figure ARR, and builds Ignaru (ignaru.com), an agent-native design tool " +
+  "a design studio at 6 figure ARR, and builds Ignaru (ignaru.com), an agent-native design tool " +
   "where design and code share one canvas. He also runs bevel, a 3D art team for games at 6 figure ARR, " +
-  "and does design at Okara and at MenuFit (menufit.com), an app for eating out healthy with 1.5 million users and 7 figure ARR.";
+  "and has designed for Okara and for MenuFit (menufit.com), an app for eating out healthy with 1.5 million users and 7 figure ARR.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [

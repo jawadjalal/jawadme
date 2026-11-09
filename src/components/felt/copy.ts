@@ -67,7 +67,30 @@ const set = (key: string, brand: string, ads: [says: string, shows: string][]): 
 
 /** The ad sets, four ads to a brand, each a different idea. Spec work, made unasked. 960 by 1200 copies of the 2160 by
  *  2700 finals (~/Downloads/ad-carousels, 8 Nov 2026), live with the rest at ignaru-spec-ads.vercel.app. */
-export const SETS: Record<"hoplite" | "shotbase" | "instabox" | "capy" | "browserUse", AdSet> = {
+export const SETS: Record<"dreamstate" | "cardboard" | "hoplite" | "shotbase" | "instabox" | "capy" | "browserUse", AdSet> = {
+  // 9 Nov 2026: one picture and one line each, from ignaru.com/ads/collection (1080 by 1350 finals, 960 by 1200 here)
+  dreamstate: {
+    key: "dreamstate",
+    brand: "Dreamstate",
+    says: "Sales that happen while you sleep.",
+    ads: set("dreamstate", "Dreamstate", [
+      ["Close deals in your sleep.", "A white pillow on an office chair at night."],
+      ["Wake up to a full pipeline.", "A bedside table at first light, a phone face down by a coffee."],
+      ["Your agent works nights.", "A cobalt sleep mask hanging from a dark monitor."],
+      ["Leads don't keep office hours.", "A blank alarm clock on white linen in moonlight."],
+    ]),
+  },
+  cardboard: {
+    key: "cardboard",
+    brand: "Cardboard",
+    says: "A video editor, built from its own name.",
+    ads: set("cardboard", "Cardboard", [
+      ["Make the cut.", "A clapperboard built from corrugated cardboard."],
+      ["Your footage, unboxed.", "Cardboard film strip spilling from a cardboard box."],
+      ["You direct. It edits.", "An empty director's chair built from cardboard."],
+      ["Say it. See it.", "A cardboard megaphone with a play triangle at its mouth."],
+    ]),
+  },
   hoplite: {
     key: "hoplite",
     brand: "Hoplite",
