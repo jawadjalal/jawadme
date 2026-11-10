@@ -171,8 +171,8 @@ html.fh-locked { overflow: hidden; }
 @keyframes rg-l-out { to { opacity: 0; filter: blur(6px); transform: translateY(-0.2em); } }
 /* under the line: what he did before */
 .rg-cred { display: block; margin: 0.9em auto 0; max-width: 80ch; font-size: max(13px, 0.42em); font-weight: 400; line-height: 1.35; letter-spacing: -0.005em; color: color-mix(in oklab, var(--ink) 66%, transparent); text-wrap: balance; }
-/* the spec credit: just above the shelf's tallest ad, centred on the same axis, clear of the bottom dock */
-.rg-spec { position: absolute; left: 50%; bottom: calc(60px + min(12vw, 19dvh, 190px) * 1.25 + 12px); translate: -50% 0; margin: 0; white-space: nowrap; }
+/* the spec credit: just above the shelf's tallest ad, full width and centred so it wraps inside the screen, clear of the bottom dock */
+.rg-cred.rg-spec { position: absolute; left: 0; right: 0; bottom: calc(60px + min(12vw, 19dvh, 190px) * 1.25 + 12px); margin: 0; max-width: none; padding-inline: 16px; text-align: center; }
 /* the shelf: his best work standing along the bottom edge, under the dial; a card rises under the pointer, a press opens its drawer */
 .rg-shelf { position: absolute; left: 50%; bottom: 60px; translate: -50% 0; display: flex; align-items: flex-end; justify-content: center; height: min(27dvh, 250px); padding: 0; margin: 0; list-style: none; pointer-events: none; }
 .rg-shelf li { --o: calc(var(--i) - (var(--n) - 1) / 2); flex: none; margin-inline: calc(var(--sw) * -0.035); translate: 0 calc(var(--o) * var(--o) * 1.1%); rotate: calc(var(--o) * 1.6deg); transform-origin: 50% 120%; z-index: calc(10 - max(var(--o), var(--o) * -1)); transition: translate 0.5s var(--spring), rotate 0.5s var(--spring); animation: rg-shelf-in 0.9s var(--spring) backwards; animation-delay: calc(max(var(--o), var(--o) * -1) * 70ms + 350ms); }
@@ -181,7 +181,7 @@ html.fh-locked { overflow: hidden; }
 @media (min-width: 761px) and (max-aspect-ratio: 1 / 1) {
   .rg-stage { --cy: 45%; }
   .rg-shelf { --sw: min(19vw, 17dvh); bottom: 76px; }
-  .rg-spec { bottom: calc(76px + min(19vw, 17dvh) * 1.25 + 12px); }
+  .rg-cred.rg-spec { bottom: calc(76px + min(19vw, 17dvh) * 1.25 + 12px); }
 }
 .rg-shelf li.is-ad { width: var(--sw); }
 .rg-shelf li.is-site { width: calc(var(--sw) * 1.62); }
@@ -517,7 +517,7 @@ html.fh-locked { overflow: hidden; }
   .rg-stage { --A: min(26vw, 13dvh); --Rx: 37vw; --Ry: min(52vw, 25dvh); --cy: 37%; --half: 128deg; --g: 64deg; }
   .rg-line { top: calc(var(--cy) + var(--Ry) * 0.616 + var(--A) * 0.5 + 20px); font-size: clamp(17px, 4.9vw, 21px); padding-inline: 12px; }
   .rg-shelf { --sw: min(22vw, 12.5dvh); height: 19dvh; bottom: calc(56px + env(safe-area-inset-bottom)); }
-  .rg-spec { bottom: calc(56px + env(safe-area-inset-bottom) + min(22vw, 12.5dvh) * 1.25 + 12px); }
+  .rg-cred.rg-spec { bottom: calc(56px + env(safe-area-inset-bottom) + min(22vw, 12.5dvh) * 1.25 + 12px); }
   .rg-cred { font-size: 13px; max-width: 34ch; }
   .rg-line > * { max-width: 100%; }
   .fh-stage-art { display: none; }
