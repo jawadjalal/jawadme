@@ -61,7 +61,7 @@ export const POSTS: Post[] = [
         <p>
           Ignura is a launch studio for consumer apps, prosumer tools and B2B. Consumer apps are
           the core. We do design, launch films, App Store screenshots, landing pages, UGC and
-          launch-day runs. Past work includes ignaru, Okara and bevel, plus UGC for hypjam.
+          launch-day runs. Past work includes ignaru and bevel, plus UGC for hypjam.
         </p>
         <p>
           Prices are on the table from the start. UGC starts from £3,000. Ignite, the whole

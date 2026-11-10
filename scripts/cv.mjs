@@ -32,14 +32,11 @@ const SITE = IDENTITY.site.replace(/^https?:\/\//, "");
 
 const SUMMARY =
   "Design engineer and founder, fifteen, based in London. I'm building Ignaru, a design canvas for coding agents, and I " +
-  "design and build sites for startups through Ignura, my studio. I design consumer apps used by millions and write the " +
+  "design and build sites for startups through Ignura, my studio. I design consumer apps and write the " +
   "production code behind what I design. Fast, hands on, and happiest owning a product end to end.";
 
 const NUMBERS = [
-  ["1.5M", "people use the app I design"],
-  ["7 fig", "ARR at MenuFit"],
   ["2", "companies I run at 6 figure ARR"],
-  ["14M", "views on Okara's launch, day one"],
   ["13", "age I started selling my work"],
 ];
 
@@ -62,29 +59,8 @@ const ROLES = [
     line: "Design studio: websites for startups, built from scratch",
     points: [
       "Founded and run a design studio that designs and builds startup websites from scratch, with launch pages live in about a week; grew it to **six figure ARR**.",
-      "Delivered launch, design and growth work for **Higgsfield, Okara, Splitting Point, Yummers and hypjam**.",
+      "Delivered launch, design and growth work for **Higgsfield, Splitting Point, Yummers and hypjam**.",
       "Designed and built ignura.com end to end (Astro, Vercel), including an AI assistant and client growth boards; took mobile Lighthouse from **35 to 90**.",
-    ],
-  },
-  {
-    name: "MenuFit",
-    url: "menufit.com",
-    title: "Product Designer",
-    when: "2026",
-    line: "The app for eating out healthy · iOS and Android",
-    points: [
-      "Designed the core product for an app with **1.5 million users** and **seven figure ARR**: a healthy menu for every restaurant, with macros and a fit score on each dish.",
-      "Owned screens across iOS and Android, light and dark, and the components they share.",
-    ],
-  },
-  {
-    name: "Okara",
-    url: "okara.ai",
-    title: "Product Development Intern",
-    when: "2026",
-    line: "AI CMO serving 150,000+ businesses",
-    points: [
-      "Won the internship with an unsolicited product teardown: a week on the free tier, then a deployed site with **three redesigns built as live React mockups**.",
     ],
   },
   {
@@ -127,10 +103,6 @@ const SKILLS = [
 ];
 
 const EARLIER = [
-  ["Acquiblox", "CMO: marketing and community growth"],
-  ["Basket Ent", "acquisitions, then post acquisition liveops"],
-  ["World Ent", "3D artist on live Roblox titles"],
-  ["SOF Agency", "PR, partnerships and crowdfunding for game studios"],
   ["Cosmos Models", "3D commissions"],
 ];
 
@@ -163,7 +135,7 @@ const html = `<!doctype html><meta charset="utf-8">
 
   .summary { margin: 8pt 0 0; font-size: 9.1pt; line-height: 1.45; color: #2b2b2b; letter-spacing: -0.005em; }
 
-  .nums { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4pt; margin: 9pt 0 0; }
+  .nums { display: grid; grid-template-columns: repeat(${NUMBERS.length}, 1fr); gap: 4pt; margin: 9pt 0 0; }
   .num { background: #efefef; border-radius: 6pt; padding: 6pt 7pt 6.5pt; }
   .num b { display: block; font-size: 15pt; line-height: 1; letter-spacing: -0.04em; }
   .num span { display: block; margin-top: 2.5pt; font-size: 7.2pt; line-height: 1.25; color: #4f4f4f; }

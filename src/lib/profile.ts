@@ -8,7 +8,7 @@
 // Prose strings may carry the two tokens `prose.tsx` understands:
 //
 //   :pen:                  a bare icon on the baseline
-//   :pen:{design at menufit} that phrase highlighted, icon in front
+//   :pen:{brand identity} that phrase highlighted, icon in front
 //
 // House style: no em dashes. A comma, a full stop or a colon does the job,
 // and the dash is the one punctuation mark that makes written-by-a-machine
@@ -86,9 +86,7 @@ export const ABOUT_ROLES: {
   href?: string;
 }[] = [
   { key: "ignura", name: "ignura", role: "founder", stat: "6 figure arr", logo: "/logos/ignura.png", logoTile: "#111111", href: "https://ignura.com" },
-  { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 1.5m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
   { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
-  { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
   { key: "ignaru", name: "ignaru", role: "founder", stat: "design tool", logo: "/logos/ignaru.svg", href: "https://ignaru.com" },
 ];
 
@@ -155,26 +153,6 @@ export const NOW: Item[] = [
     ],
   },
   {
-    key: "menufit",
-    ink: "/ink/menufit.webp",
-    roleIcon: "pen",
-    name: "menufit",
-    href: "https://menufit.com",
-    logo: "/logos/menufit.png",
-    shot: "/design/menufit.webp",
-    domain: "menufit.com",
-    role: "Design",
-    period: "Since 2026",
-    status: "Live",
-    blurb: "The app for eating out healthy. 7 figure ARR and 1.5 million users. I design the product.",
-    tags: [
-      { brand: "figmacolour", label: "Product design" },
-      { label: "iOS" },
-      { label: "Android" },
-      { label: "Design system" },
-    ],
-  },
-  {
     key: "bevel",
     ink: "/ink/bevel.webp",
     roleIcon: "cube",
@@ -192,26 +170,6 @@ export const NOW: Item[] = [
       { brand: "zbrush", label: "ZBrush" },
       { brand: "adobe", label: "Substance" },
       { label: "Game ready" },
-    ],
-  },
-  {
-    key: "okara",
-    ink: "/ink/okara.webp",
-    roleIcon: "pen",
-    name: "okara",
-    href: "https://okara.ai",
-    logo: "/logos/okara.png",
-    shot: "/design/okara-card.webp",
-    domain: "okara.ai",
-    role: "Design",
-    period: "Since 2026",
-    status: "Live",
-    blurb: "An AI CMO that drafts and ships marketing work. I design the product. Its launch film did 14M views on X in a day.",
-    tags: [
-      { brand: "figmacolour", label: "Product design" },
-      { brand: "nextdotjs", label: "Next.js" },
-      { brand: "tailwindcss", label: "Tailwind" },
-      { label: "Design system" },
     ],
   },
   {
@@ -253,31 +211,9 @@ export const ELSEWHERE: {
     note: "brand identity, ui/ux and full site builds",
   },
   {
-    name: "acquiblox",
-    href: "https://acquiblox.com",
-    logo: "/logos/acquiblox.png",
-    note: "cmo, marketing and community growth",
-  },
-  {
-    name: "world ent",
-    href: "https://games.worldent.online",
-    note: "3d artist on live roblox titles",
-  },
-  {
-    name: "basket ent",
-    href: "https://basketent.com",
-    logo: "/logos/basketent.png",
-    note: "acquisitions, then post acquisition liveops",
-  },
-  {
     name: "cosmos models",
     href: "https://cosmosmodels.lovable.app",
     note: "3d commissions in zbrush, blender and substance",
-  },
-  {
-    name: "sof agency",
-    href: "https://sof.agency",
-    note: "pr, partnerships and crowdfunding for game studios",
   },
   {
     name: "vizzbees",
@@ -402,8 +338,7 @@ export const VENN = [
 export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
   "a design studio at 6 figure ARR, and builds Ignaru (ignaru.com), an agent-native design tool " +
-  "where design and code share one canvas. He also runs bevel, a 3D art team for games at 6 figure ARR, " +
-  "and has designed for Okara and for MenuFit (menufit.com), an app for eating out healthy with 1.5 million users and 7 figure ARR.";
+  "where design and code share one canvas. He also runs bevel, a 3D art team for games at 6 figure ARR.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [
@@ -426,11 +361,8 @@ export const SKILLS = [
  */
 const PHRASE_TO_KEY: Record<string, string> = {
   ignura: "ignura",
-  menufit: "menufit",
   ignaru: "ignaru",
   bevel: "bevel",
-  okara: "okara",
-  "design at menufit": "menufit",
 };
 
 export function heroFor(phrase: string) {

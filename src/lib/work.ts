@@ -156,14 +156,6 @@ export const WORK: Work[] = [
     tag: "client",
     date: "2026-10-25",
   }),
-  w("menufit", {
-    name: "menufit screens",
-    url: "https://menufit-screens.vercel.app",
-    host: "menufit-screens.vercel.app",
-    line: "MenuFit's meal screens, in light and dark.",
-    tag: "client",
-    date: "2026-10-23",
-  }),
   w("coresrent", {
     name: "coresrent",
     url: "https://coresrent.vercel.app",

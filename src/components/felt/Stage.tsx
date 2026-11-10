@@ -68,7 +68,7 @@ export function Stage({ booking }: { booking: Booking }) {
     };
     addEventListener("fh-open", open);
     // arriving on /#<drawer>: the plain page goes under it in history, so closing the drawer stays on the site
-    // /#before was a drawer until the work drawer took Okara and MenuFit in
+    // /#before was a drawer until the work drawer took it in
     const h = location.hash.slice(1) === "before" ? "work" : location.hash.slice(1);
     if (isDrawer(h)) {
       history.replaceState(null, "", location.pathname + location.search);

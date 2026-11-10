@@ -1,7 +1,7 @@
 // The words and art for the felt home (src/app/page.tsx), after ignaru.com: felt doors on a dial round one line, and a
 // drawer behind each door holding only the main thing. Art: public/felt (transparent squares, 320 and 640 wide; the
 // ship-*, onb-*, circle*, more-*, nav-* and yarn pieces come from ignaru.com's set). Stills: public/sites,
-// public/showcase, public/ignaru, public/ads, public/menufit.
+// public/showcase, public/ignaru, public/ads.
 //
 // Facts only. Each number here was read from a live page or a repo; the source sits beside it.
 

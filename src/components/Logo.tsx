@@ -3,7 +3,7 @@ import Image from "next/image";
 // A brand mark in its tile.
 //
 // The tile is always light, in both themes. Most of these marks are published
-// as black on transparent, and Okara's is nothing but black rules, so on the
+// as black on transparent, and some are nothing but black rules, so on the
 // dark page it disappeared into the background entirely. Pinning the tile
 // light is what a favicon strip does for the same reason, and it means a new
 // logo can be dropped in without first checking whether it survives dark mode.

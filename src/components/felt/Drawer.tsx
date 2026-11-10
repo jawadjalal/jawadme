@@ -525,54 +525,8 @@ function EmailLink() {
   );
 }
 
-/** okara.ai's own mark (its `landing-mark` symbol), in the ink of whatever it sits in. */
-function OkaraMark({ size = 18 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 250 310" width={size} height={(size * 310) / 250} aria-hidden="true" focusable="false">
-      <path
-        fill="currentColor"
-        d="M221.74 259.537H194.023V309.933H166.306V259.537H194.022V209.142H166.305V259.537H138.588V209.142H110.87V259.537H83.1533V309.933H55.4355V259.537H83.1523V209.142H55.4346V259.537H27.7178V181.424H221.74V259.537ZM138.588 309.933H110.87V259.537H138.588V309.933ZM27.7178 181.424H0V55.4355H27.7178V181.424ZM249.458 181.424H221.74V55.4355H249.458V181.424ZM86.9326 136.067H59.2148V80.6328H86.9326V136.067ZM190.243 136.067H162.525V80.6328H190.243V136.067ZM55.4346 55.4355H27.7178V27.7178H55.4346V55.4355ZM194.023 27.7178H221.74V55.4355H194.022V27.7178H55.4355V0H194.023V27.7178Z"
-      />
-    </svg>
-  );
-}
-
 const call = { href: BOOK, label: "book a call" };
 const mail = { href: `mailto:${EMAIL}`, label: "email me" };
-
-/** Before Ignaru: the two companies, each with its own mark in the line, and the work beside them. */
-function Before({ z }: { z: Ctx["z"] }) {
-  return (
-    <Cell
-      w={6}
-      side
-      title="Before Ignaru."
-      className="bx-before"
-      line={
-        <Dots
-          items={[
-            <>
-              <span className="bx-mk bx-mk-ok">
-                <OkaraMark size={11} />
-              </span>
-              <b>Okara</b>, an AI CMO: product development intern. I got in by taking its dashboard apart, unasked.
-            </>,
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="bx-mk" src="/logos/menufit-bag-128.webp" alt="" width={20} height={22} />
-              <b>MenuFit</b>, for eating out healthy: new screens for the app as a client, in light and dark.
-            </>,
-          ]}
-        />
-      }
-    >
-      <div className="bx-pair">
-        <Shot src="/okara/feed.webp" alt="My Okara proposal: a feed that opens on one real draft to approve" z={z} w={800} h={1127} tall className="kx-tall" />
-        <Shot src="/menufit/the-hack-dark.webp" alt="My MenuFit screen: the same order with three proteins on top, 9g becomes 35g" z={z} w={540} h={1169} tall className="kx-tall" />
-      </div>
-    </Cell>
-  );
-}
 
 const PAGES: Record<DrawerId, Page> = {
   work: {
@@ -597,7 +551,6 @@ const PAGES: Record<DrawerId, Page> = {
         </Cell>
         <SiteCell k="ropilot" w={2} line={false} />
         <SiteCell k="audora" w={4} />
-        <Before z={z} />
       </>
     ),
   },
