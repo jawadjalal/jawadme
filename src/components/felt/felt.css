@@ -112,7 +112,7 @@ html.fh-locked { overflow: hidden; }
    sizes, radii and centre are ignaru.com's, measured live at 1440, 1024 and 390 (7 Nov). --half: how far round from the
    top each end reaches (ignaru.com: 110deg for nine; five doors take 112deg); --g: the room either side of the two end
    doors, half of --half, so the five sit evenly at -112, -56, 0, 56 and 112 degrees */
-.rg-stage { --A: min(17vw, 25dvh, 250px); --Rx: min(36vw, 540px); --Ry: min(28dvh, 300px); --cy: 57%; --half: 112deg; --g: 56deg; position: sticky; top: 0; height: 100dvh; overflow: hidden; transition: opacity 0.35s var(--ease); }
+.rg-stage { --A: min(17vw, 25dvh, 250px); --Rx: min(36vw, 540px); --Ry: min(24dvh, 270px); --cy: 43%; --half: 112deg; --g: 56deg; position: sticky; top: 0; height: 100dvh; overflow: hidden; transition: opacity 0.35s var(--ease); }
 /* a drawer is open: the ring steps right out, so nothing ghosts behind the drawer's felt piece */
 .rg-stage.is-dim { opacity: 0; }
 .rg-obj {
@@ -169,6 +169,28 @@ html.fh-locked { overflow: hidden; }
 .rg-w-one { white-space: normal; }
 @keyframes rg-l-in { from { opacity: 0; filter: blur(6px); transform: translateY(0.35em); } }
 @keyframes rg-l-out { to { opacity: 0; filter: blur(6px); transform: translateY(-0.2em); } }
+/* under the line: what he did before */
+.rg-cred { display: block; margin: 0.9em auto 0; max-width: 80ch; font-size: max(13px, 0.42em); font-weight: 400; line-height: 1.35; letter-spacing: -0.005em; color: color-mix(in oklab, var(--ink) 66%, transparent); text-wrap: balance; }
+/* the spec credit: just above the shelf's tallest ad, full width and centred so it wraps inside the screen, clear of the bottom dock */
+.rg-cred.rg-spec { position: absolute; left: 0; right: 0; bottom: calc(60px + min(12vw, 19dvh, 190px) * 1.25 + 12px); margin: 0; max-width: none; padding-inline: 16px; text-align: center; }
+/* the shelf: his best work standing along the bottom edge, under the dial; a card rises under the pointer, a press opens its drawer */
+.rg-shelf { position: absolute; left: 50%; bottom: 60px; translate: -50% 0; display: flex; align-items: flex-end; justify-content: center; height: min(27dvh, 250px); padding: 0; margin: 0; list-style: none; pointer-events: none; }
+.rg-shelf li { --o: calc(var(--i) - (var(--n) - 1) / 2); flex: none; margin-inline: calc(var(--sw) * -0.035); translate: 0 calc(var(--o) * var(--o) * 1.1%); rotate: calc(var(--o) * 1.6deg); transform-origin: 50% 120%; z-index: calc(10 - max(var(--o), var(--o) * -1)); transition: translate 0.5s var(--spring), rotate 0.5s var(--spring); animation: rg-shelf-in 0.9s var(--spring) backwards; animation-delay: calc(max(var(--o), var(--o) * -1) * 70ms + 350ms); }
+.rg-shelf { --sw: min(12vw, 19dvh, 190px); }
+/* a tall screen (a tablet held upright): the dial sits a little lower and the shelf stands larger, running off both edges */
+@media (min-width: 761px) and (max-aspect-ratio: 1 / 1) {
+  .rg-stage { --cy: 45%; }
+  .rg-shelf { --sw: min(19vw, 17dvh); bottom: 76px; }
+  .rg-cred.rg-spec { bottom: calc(76px + min(19vw, 17dvh) * 1.25 + 12px); }
+}
+.rg-shelf li.is-ad { width: var(--sw); }
+.rg-shelf li.is-site { width: calc(var(--sw) * 1.62); }
+.rg-shelf button { display: block; width: 100%; padding: 0; border: 0; border-radius: 4px; background: #111; overflow: hidden; cursor: pointer; pointer-events: auto; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 -14px 34px -10px rgba(0, 0, 0, 0.8); -webkit-tap-highlight-color: transparent; }
+.rg-shelf img { display: block; width: 100%; height: auto; }
+.rg-shelf li:hover, .rg-shelf li:focus-within { translate: 0 -7%; rotate: 0deg; z-index: 20; }
+.rg-shelf button:focus-visible { outline: none; }
+@keyframes rg-shelf-in { from { opacity: 0; translate: 0 70%; } }
+@media (prefers-reduced-motion: reduce) { .rg-shelf li { animation: none; transition: none; } }
 .rg-list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 /* reduced motion, in CSS alone so the server's first paint and the hydrated page match: the ten sit on the ring from
    the start, and their lines are listed under it */
@@ -332,18 +354,27 @@ html.fh-locked { overflow: hidden; }
 
 /* a brand's whole set: one ad large, all four under it to pick from */
 .bx-set { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 26px; padding: 24px; }
-.bx-set-side { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; padding-top: 4px; }
+.bx-set-side { display: flex; flex-direction: column; gap: 18px; padding-top: 4px; }
 .bx-set-side .bx-h h3 { font-size: 34px; letter-spacing: -0.04em; }
 .bx-set-side .bx-h > p { font-size: 17px; color: var(--ink); }
 .bx-set-in { animation: bx-swap 0.42s var(--ease); }
 @keyframes bx-swap { from { opacity: 0.4; scale: 0.985; } }
-.bx-set-pick { display: grid; gap: 4px; margin: 0 -8px; }
-.bx-set-pick button { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 14px; width: 100%; padding: 6px 8px; border: 0; border-radius: 3px; background: none; font: inherit; font-size: 15.5px; line-height: 1.3; letter-spacing: -0.01em; text-align: left; color: var(--ink-3); cursor: pointer; transition: background-color 0.2s, color 0.2s; -webkit-tap-highlight-color: transparent; }
-.bx-set-pick b { display: block; margin-bottom: 1px; font-weight: 600; color: var(--ink); }
-.bx-set-pick img { width: 44px; height: 55px; border-radius: 2px; object-fit: cover; opacity: 0.6; transition: opacity 0.2s, rotate 0.35s var(--spring), scale 0.35s var(--spring); }
-.bx-set-pick button:hover, .bx-set-pick button:focus-visible { color: var(--ink-2); background: rgba(255, 255, 255, 0.04); }
-.bx-set-pick button[aria-pressed="true"] { color: var(--ink); background: rgba(255, 255, 255, 0.07); }
-.bx-set-pick button[aria-pressed="true"] img { opacity: 1; rotate: -4deg; scale: 1.06; }
+.bx-set-pick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: auto; }
+.bx-set-pick.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bx-set-pick.n5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.bx-set-pick button { display: block; width: 100%; padding: 0; border: 0; border-radius: 3px; background: none; overflow: hidden; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.bx-set-pick img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; opacity: 0.42; transition: opacity 0.25s, scale 0.6s var(--ease); }
+.bx-set-pick button:hover img, .bx-set-pick button:focus-visible img { opacity: 0.8; }
+.bx-set-pick button[aria-pressed="true"] img { opacity: 1; scale: 1.03; }
+.bx-set-says { min-height: 3.6em; font-size: 19px; font-weight: 500; line-height: 1.25; letter-spacing: -0.02em; color: var(--ink); text-wrap: balance; animation: bx-swap 0.42s var(--ease); }
+.bx-set-says b { font-weight: 600; }
+.bx-set-says span { display: block; margin-top: 7px; font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; font-weight: 400; letter-spacing: 0.01em; color: var(--ink-3); }
+/* a set as a row: every ad side by side */
+.bx-row { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 8px; }
+.bx-row-c .bx-h h3 { font-size: 26px; letter-spacing: -0.03em; }
+/* the price: the largest words in its drawer */
+.bx-price .bx-h h3 { font-size: 34px; letter-spacing: -0.04em; }
+.bx-price .bx-h > p { margin-top: 8px; font-size: 22px; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
 
 /* a live site in a plain window; it bleeds off the cell's foot */
 .bx-site .bx-v { padding-bottom: 0; margin-bottom: -28px; }
@@ -380,6 +411,7 @@ html.fh-locked { overflow: hidden; }
 .bx-jobs a { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 14px; align-items: start; padding: 9px 10px; border-radius: 3px; color: inherit; text-decoration: none; transition: background-color 0.15s; }
 .bx-jobs a:hover, .bx-jobs a:focus-visible { background: rgba(255, 255, 255, 0.05); outline: none; }
 .bx-jobs img { width: 32px; height: 32px; margin-top: 2px; border-radius: 4px; object-fit: contain; }
+.bx-jobs u { display: grid; place-items: center; width: 32px; height: 32px; margin-top: 2px; border-radius: 4px; background: #232323; font-size: 16px; font-weight: 600; text-decoration: none; color: var(--ink); }
 .bx-jobs span { display: block; min-width: 0; }
 .bx-jobs b { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); }
 .bx-jobs i { display: block; font-style: normal; font-size: 14px; color: var(--ink-3); }
@@ -392,10 +424,6 @@ html.fh-locked { overflow: hidden; }
 .bx-how .bx-h h3 { font-size: 30px; letter-spacing: -0.035em; }
 
 /* a number set very large */
-.bx-n { display: block; font-size: 120px; font-weight: 600; line-height: 0.8; letter-spacing: -0.06em; color: var(--cl); font-variant-numeric: tabular-nums; }
-.bx-count { align-items: center; }
-.bx-count .bx-h > p { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); max-width: 22ch; margin-top: 14px; }
-.bx-count .bx-v { margin-bottom: -24px; align-self: end; }
 
 /* felt pieces, loose, for the things that have no screen */
 .bx-felts { position: relative; height: 170px; }
@@ -486,8 +514,11 @@ html.fh-locked { overflow: hidden; }
   /* a phone: the ring stands taller than it is wide so it fills the screen between the bar and the notch, its ends
      come further round (--half 128deg, so they sit cos(128deg) = 0.616 of --Ry below the centre), and the line sits
      under those two ends */
-  .rg-stage { --A: min(26vw, 14dvh); --Rx: 37vw; --Ry: min(56vw, 30dvh); --cy: 45%; --half: 128deg; --g: 64deg; }
-  .rg-line { top: calc(var(--cy) + var(--Ry) * 0.616 + var(--A) * 0.5 + 24px); font-size: clamp(17px, 4.9vw, 21px); padding-inline: 12px; }
+  .rg-stage { --A: min(26vw, 13dvh); --Rx: 37vw; --Ry: min(52vw, 25dvh); --cy: 37%; --half: 128deg; --g: 64deg; }
+  .rg-line { top: calc(var(--cy) + var(--Ry) * 0.616 + var(--A) * 0.5 + 20px); font-size: clamp(17px, 4.9vw, 21px); padding-inline: 12px; }
+  .rg-shelf { --sw: min(22vw, 12.5dvh); height: 19dvh; bottom: calc(56px + env(safe-area-inset-bottom)); }
+  .rg-cred.rg-spec { bottom: calc(56px + env(safe-area-inset-bottom) + min(22vw, 12.5dvh) * 1.25 + 12px); }
+  .rg-cred { font-size: 13px; max-width: 34ch; }
   .rg-line > * { max-width: 100%; }
   .fh-stage-art { display: none; }
   .rg-tag { font-size: 18px; }
@@ -526,14 +557,17 @@ html.fh-locked { overflow: hidden; }
   .bx-set-side { display: contents; }
   .bx-set .bx-h { order: -1; }
   .bx-set-side .bx-h h3 { font-size: 28px; }
+  .bx-set-pick, .bx-set-pick.n3 { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 0; }
+  .bx-set-pick.n5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .bx-set-says { min-height: 0; font-size: 17px; }
+  .bx-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bx-price .bx-h h3 { font-size: 28px; }
   .bx-fan { min-height: 230px; margin-inline: -14px; }
   .bx-fan-i { width: 29%; }
   .bx-felts { width: min(100%, 300px); margin-inline: auto; }
   .bx-jobs-c .bx-pair { max-width: none; }
   .bx-jobs-c .bx-pair > :last-child { margin-top: 0; }
   .bx-how .bx-v { width: min(100%, 260px); margin-inline: auto; }
-  .bx-n { font-size: 96px; }
-  .bx-count .bx-v { margin-bottom: -18px; }
   .bx-site .bx-v { margin-bottom: -18px; }
   .bx-book { min-height: 0; }
   .bx-book .bx-h { padding-right: 92px; }

@@ -15,7 +15,7 @@
  * are hidden from screen readers, which read the doors' own labels instead.
  */
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { DRAWERS, LINE, feltSrc, type DrawerId } from "./copy";
+import { CRED, DRAWERS, LINE, SHELF, feltSrc, type DrawerId } from "./copy";
 import { sfx } from "./Sound";
 
 const N = DRAWERS.length;
@@ -311,6 +311,7 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
           {/* the page's title stays the same for screen readers; the door lines are a picture of the same doors */}
           <h1 className={shown === 0 ? "rg-l rg-h" : "rg-l rg-h is-off"}>
             <Opening />
+            <span className="rg-cred">{CRED}</span>
             <Where />
           </h1>
           {lines.out !== undefined && lines.out > 0 && lines.out !== lines.k ? (
@@ -324,6 +325,18 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
             </p>
           ) : null}
         </div>
+        {/* his best work, standing along the bottom edge: each card opens the drawer it belongs to */}
+        <ul className="rg-shelf" style={{ "--n": SHELF.length } as CSSProperties} aria-label="Some of my work">
+          {SHELF.map((w, i) => (
+            <li key={w.src} className={w.kind === "ad" ? "is-ad" : "is-site"} style={{ "--i": i } as CSSProperties}>
+              <button type="button" tabIndex={open ? -1 : 0} aria-label={`${w.alt}. ${w.kind === "ad" ? "Spec ad. " : ""}Opens ${w.to === "ads" ? "the ads" : "my work"}.`} onClick={() => { sfx("swap"); onOpen(w.to); }} onPointerEnter={(e) => e.pointerType === "mouse" && sfx("hover")}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={w.src} alt="" width={w.w} height={w.h} decoding="async" draggable={false} />
+              </button>
+            </li>
+          ))}
+        </ul>
+        <p className="rg-cred rg-spec">Spec work by Ignura, not commissioned by these companies.</p>
       </div>
       <ol className="rg-list">
         {DRAWERS.slice(1).map((d) => (
