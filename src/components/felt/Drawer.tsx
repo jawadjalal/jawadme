@@ -15,7 +15,7 @@
  */
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { dayLink, type Booking } from "./booking";
-import { ASIDE, BOOK, CV, DRAWERS, EMAIL, FIVE, NEW, SETS, SITES, drawerAt, feltSrc, lift, type Ad, type AdSet, type DrawerId, type Site } from "./copy";
+import { ASIDE, BOOK, CV, DRAWERS, EMAIL, FIVE, JOBS, MADE, NEW, REAL, SITES, drawerAt, feltSrc, lift, type Ad, type AdSet, type DrawerId, type Site } from "./copy";
 import { MeetMark } from "./Meet";
 import { SOCIALS } from "./Socials";
 import { sfx } from "./Sound";
@@ -482,12 +482,12 @@ function Win({ w, narrow, sizes = "(max-width: 760px) 100vw, 560px" }: { w: Site
 }
 
 /** A site's cell: its window, its name, what it is. */
-function SiteCell({ k, w, line, pair }: { k: string; w: 2 | 3 | 4 | 6; line?: boolean; pair?: boolean }) {
-  const site = SITES.find((x) => x.key === k);
+function SiteCell({ k, w, line, pair, lead, wide, rows }: { k: string; w: 2 | 3 | 4 | 6; line?: boolean; pair?: boolean; lead?: boolean; wide?: boolean; rows?: boolean }) {
+  const site = [...SITES, ...MADE].find((x) => x.key === k);
   if (!site) return null;
   return (
-    <Cell w={w} pair={pair} title={site.name} line={line === false ? undefined : site.line} className={`bx-site${w === 2 ? " is-narrow" : ""}`}>
-      <Win w={site} narrow={w === 2} sizes={w === 6 ? "(max-width: 760px) 100vw, 840px" : w === 2 ? "(max-width: 760px) 50vw, 280px" : "(max-width: 760px) 100vw, 560px"} />
+    <Cell w={w} pair={pair} title={site.name} line={line === false ? undefined : site.line} className={`bx-site${w === 2 && !wide ? " is-narrow" : ""}${lead ? " bx-lead" : ""}${rows ? " bx-rows" : ""}`}>
+      <Win w={site} narrow={w === 2 && !wide} sizes={w === 6 ? "(max-width: 760px) 100vw, 840px" : w === 2 ? "(max-width: 760px) 50vw, 280px" : "(max-width: 760px) 100vw, 560px"} />
     </Cell>
   );
 }
@@ -525,47 +525,13 @@ function EmailLink() {
   );
 }
 
-/** okara.ai's own mark (its `landing-mark` symbol), in the ink of whatever it sits in. */
-function OkaraMark({ size = 18 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 250 310" width={size} height={(size * 310) / 250} aria-hidden="true" focusable="false">
-      <path
-        fill="currentColor"
-        d="M221.74 259.537H194.023V309.933H166.306V259.537H194.022V209.142H166.305V259.537H138.588V209.142H110.87V259.537H83.1533V309.933H55.4355V259.537H83.1523V209.142H55.4346V259.537H27.7178V181.424H221.74V259.537ZM138.588 309.933H110.87V259.537H138.588V309.933ZM27.7178 181.424H0V55.4355H27.7178V181.424ZM249.458 181.424H221.74V55.4355H249.458V181.424ZM86.9326 136.067H59.2148V80.6328H86.9326V136.067ZM190.243 136.067H162.525V80.6328H190.243V136.067ZM55.4346 55.4355H27.7178V27.7178H55.4346V55.4355ZM194.023 27.7178H221.74V55.4355H194.022V27.7178H55.4355V0H194.023V27.7178Z"
-      />
-    </svg>
-  );
-}
-
 const call = { href: BOOK, label: "book a call" };
 const mail = { href: `mailto:${EMAIL}`, label: "email me" };
 
-/** Before Ignaru: the two companies, each with its own mark in the line, and the work beside them. */
-function Before({ z }: { z: Ctx["z"] }) {
+/** Where he has worked: each company by its own mark, the role, one line; his Okara and MenuFit work beside them. */
+function Jobs({ z }: { z: Ctx["z"] }) {
   return (
-    <Cell
-      w={6}
-      side
-      title="Before Ignaru."
-      className="bx-before"
-      line={
-        <Dots
-          items={[
-            <>
-              <span className="bx-mk bx-mk-ok">
-                <OkaraMark size={11} />
-              </span>
-              <b>Okara</b>, an AI CMO: product development intern. I got in by taking its dashboard apart, unasked.
-            </>,
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="bx-mk" src="/logos/menufit-bag-128.webp" alt="" width={20} height={22} />
-              <b>MenuFit</b>, for eating out healthy: new screens for the app as a client, in light and dark.
-            </>,
-          ]}
-        />
-      }
-    >
+    <Cell w={6} side title="Where I've worked." className="bx-jobs-c" line={<JobList />}>
       <div className="bx-pair">
         <Shot src="/okara/feed.webp" alt="My Okara proposal: a feed that opens on one real draft to approve" z={z} w={800} h={1127} tall className="kx-tall" />
         <Shot src="/menufit/the-hack-dark.webp" alt="My MenuFit screen: the same order with three proteins on top, 9g becomes 35g" z={z} w={540} h={1169} tall className="kx-tall" />
@@ -574,6 +540,27 @@ function Before({ z }: { z: Ctx["z"] }) {
   );
 }
 
+const JobList = () => (
+  <ul className="bx-jobs">
+    {JOBS.map((j) => (
+      <li key={j.name}>
+        <a href={j.href} target="_blank" rel="noreferrer">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={j.logo} alt="" width={32} height={32} loading="lazy" decoding="async" style={j.tile ? { background: j.tile } : undefined} />
+          <span>
+            <b>{j.name}</b>
+            <i>
+              {j.role}
+              {j.now ? ", now" : ""}
+            </i>
+            <em>{j.line}</em>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+);
+
 const PAGES: Record<DrawerId, Page> = {
   work: {
     title: (
@@ -581,38 +568,43 @@ const PAGES: Record<DrawerId, Page> = {
         Hi, I&apos;m Jawad. Here&apos;s my <Circ>work</Circ>.
       </>
     ),
-    line: "15, in London, building Ignaru. I design ads and sites for startups, and everything below is real.",
+    line: "15, in London, building Ignaru. I design ads and sites for startups. Below: the ads, the products I started, the sites I built and where I have worked.",
     mark: "/felt/jawad-head-320.webp",
     bar: () => ({ ...call, also: mail }),
     body: ({ z, go }) => (
       <>
-        <Cell w={4} tone="band" title="Ads" line="For AI startups, one clear idea each." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
-          <Fan ads={[NEW.proto, NEW.hoplite, NEW.capy, NEW.paradev, NEW.clonk]} />
+        <Cell w={4} tone="band" title="Ads" line="For startups: one real picture, one line from their own site." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
+          <Fan ads={[REAL.boat.ads[1], REAL.instabox.ads[0], REAL.boat.ads[0], REAL.nebula.ads[0], REAL.nebula.ads[2]]} />
         </Cell>
-        <Cell w={2} title="Notra" line="Shows who AI picks instead of you.">
-          <AdShot a={NEW.notra} z={z} sizes="(max-width: 760px) 90vw, 260px" />
+        <Cell w={2} title="Nebula" line="Their own Approve button, under a cube at a gate.">
+          <AdShot a={REAL.nebula.ads[1]} z={z} sizes="(max-width: 760px) 90vw, 260px" />
         </Cell>
-        <Cell w={6} title="Sites" line="Designed and coded by me. Every one is live, so open it." more={<More label="every site" to={() => go("sites")} />} className="bx-site bx-lead">
-          <Win w={SITES[0]} sizes="(max-width: 760px) 100vw, 840px" />
+        <SiteCell k="bevel" w={6} lead />
+        <SiteCell k="bidframe" w={3} />
+        <SiteCell k="weld" w={3} />
+        <SiteCell k="splittingpoint" w={4} rows />
+        <SiteCell k="kleoklaw" w={2} wide pair />
+        <SiteCell k="vizzbees" w={2} wide pair />
+        <Cell w={6} side title="Concept sites" line="Redesigns I pitch to startups. Every one is live, so open it." more={<More label="every site" to={() => go("sites")} />} className="bx-concept">
+          <Win w={SITES[0]} />
         </Cell>
-        <SiteCell k="ropilot" w={2} line={false} />
-        <SiteCell k="audora" w={4} />
-        <Before z={z} />
+        <Jobs z={z} />
       </>
     ),
   },
   ads: {
     title: (
       <>
-        Ads that <Sv>sell,</Sv> tested first.
+        Ads, shot like <Sv>real life.</Sv>
       </>
     ),
-    line: "Spec ads for AI startups, one clear idea each. None of these brands asked.",
+    line: "Spec ads for startups: a real photograph, their own colour and type, one line from their site. None of these brands asked.",
     bar: () => ({ href: "https://ignaru.com/ads", label: "book ads", also: mail }),
     body: ({ z }) => (
       <>
-        <SetCell s={SETS.dreamstate} z={z} />
-        <SetCell s={SETS.cardboard} z={z} />
+        <SetCell s={REAL.boat} z={z} />
+        <SetCell s={REAL.nebula} z={z} />
+        <SetCell s={REAL.instabox} z={z} />
         <SetCell s={FIVE} z={z} />
         <Cell w={4} title="solidSF" line="Industrial CAD in a browser tab, free to start.">
           <div className="bx-pair">
@@ -622,15 +614,6 @@ const PAGES: Record<DrawerId, Page> = {
         </Cell>
         <Cell w={2} title="Notra" line="Shows who AI picks instead of you.">
           <AdShot a={NEW.notra} z={z} sizes="(max-width: 760px) 90vw, 260px" />
-        </Cell>
-        <Cell w={2} title="InstaBox" line={SETS.instabox.says}>
-          <AdShot a={SETS.instabox.ads[1]} z={z} sizes="(max-width: 760px) 90vw, 260px" />
-        </Cell>
-        <Cell w={4} title="Shotbase" line={SETS.shotbase.says}>
-          <div className="bx-pair">
-            <AdShot a={SETS.shotbase.ads[3]} z={z} />
-            <AdShot a={SETS.shotbase.ads[1]} z={z} />
-          </div>
         </Cell>
         <Cell
           w={6}
@@ -644,12 +627,12 @@ const PAGES: Record<DrawerId, Page> = {
           line={
             <Dots
               items={[
-                "Find the one reason people buy, in reviews, threads and sales calls.",
-                "Only the brand's real product, screens, logo and type.",
+                "Read the company's whole site and its launch posts first.",
+                "Only their real logo, type, colours and words.",
                 <>
-                  A stranger sees each ad for <Under>two seconds.</Under> If they can&apos;t say what it sells, it goes.
+                  One real photograph to an idea, printed in <Under>their colour.</Under>
                 </>,
-                "Blind judges score the rest. Only the ones that pass are ready.",
+                "No two ads in a set share a layout.",
               ]}
             />
           }
@@ -755,7 +738,7 @@ const PAGES: Record<DrawerId, Page> = {
           <EmailLink />
         </Cell>
         <Cell w={4} title="What you'd get" line="Ads like these, and sites you can open." more={<More label="see the work" to={() => go("work")} />} className="bx-fan-c bx-recent">
-          <Fan ads={[NEW.notra, NEW.capy, NEW.hoplite]} />
+          <Fan ads={[REAL.boat.ads[0], REAL.nebula.ads[0], REAL.instabox.ads[0]]} />
         </Cell>
         <Cell w={6} title="Elsewhere" className="bx-else">
           <ul className="bx-soc">

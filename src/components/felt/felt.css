@@ -226,7 +226,8 @@ html.fh-locked { overflow: hidden; }
 }
 .fh-dr[open] { opacity: 1; translate: 0 0; }
 /* wide screens: the drawer takes room for a bento, and the felt piece keeps the rest */
-@media (min-width: 1200px) { .fh, .fh-dr { --dw: min(900px, 62vw); } }
+@media (min-width: 1200px) { .fh, .fh-dr { --dw: min(1000px, 66vw); } }
+@media (min-width: 1700px) { .fh, .fh-dr { --dw: min(1120px, 62vw); } }
 @starting-style { .fh-dr[open] { opacity: 0; translate: 56px 0; } }
 .fh-dr::backdrop { background: rgba(0, 0, 0, 0); transition: background 0.3s, overlay 0.75s allow-discrete, display 0.75s allow-discrete; }
 .fh-dr[open]::backdrop { background: rgba(0, 0, 0, 0.15); }
@@ -365,10 +366,28 @@ html.fh-locked { overflow: hidden; }
 .bx-dots li { position: relative; padding-left: 20px; font-size: 15.5px; line-height: 1.45; color: var(--ink); text-wrap: pretty; }
 .bx-dots li::before { content: ""; position: absolute; left: 2px; top: 0.52em; width: 7px; height: 7px; border-radius: 1px; background: var(--cl); }
 .bx-dots b { font-weight: 600; }
-.bx-mk { display: inline-grid; place-items: center; width: 20px; height: 22px; margin-right: 6px; vertical-align: -5px; object-fit: contain; }
-.bx-mk-ok { height: 20px; border-radius: 4px; background: #fff; color: #000; vertical-align: -4px; }
-.bx-before .bx-pair { max-width: 420px; margin-left: auto; }
-.bx-before .bx-pair > :last-child { margin-bottom: 28px; }
+/* a site that stands two cells tall beside a pair, its window filling what is left; and the concept sites, text beside one window */
+@media (min-width: 761px) {
+  .bx-c.bx-rows { grid-row: span 2; }
+  .bx-rows .bx-v { display: flex; flex: 1; margin-top: 0; }
+  .bx-rows .bx-win { display: flex; flex: 1; flex-direction: column; }
+  .bx-rows .bx-win-view { flex: 1; aspect-ratio: auto; min-height: 280px; }
+}
+.bx-concept.is-side { align-items: center; }
+.bx-concept .bx-h h3 { font-size: 30px; letter-spacing: -0.035em; }
+/* where he has worked: each company's own mark, its name and role on one line, one line under; no boxes, no rules */
+.bx-jobs { display: grid; gap: 4px; margin: 18px -10px 0; }
+.bx-jobs a { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 14px; align-items: start; padding: 9px 10px; border-radius: 3px; color: inherit; text-decoration: none; transition: background-color 0.15s; }
+.bx-jobs a:hover, .bx-jobs a:focus-visible { background: rgba(255, 255, 255, 0.05); outline: none; }
+.bx-jobs img { width: 32px; height: 32px; margin-top: 2px; border-radius: 4px; object-fit: contain; }
+.bx-jobs span { display: block; min-width: 0; }
+.bx-jobs b { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); }
+.bx-jobs i { display: block; font-style: normal; font-size: 14px; color: var(--ink-3); }
+.bx-jobs em { display: block; margin-top: 1px; font-style: normal; font-size: 14.5px; line-height: 1.4; color: var(--ink-2); text-wrap: pretty; }
+.bx-jobs-c.is-side { align-items: start; }
+.bx-jobs-c .bx-h h3 { font-size: 30px; letter-spacing: -0.035em; }
+.bx-jobs-c .bx-pair { max-width: 440px; margin-left: auto; }
+.bx-jobs-c .bx-pair > :last-child { margin-top: 36px; }
 .bx-how .bx-v { width: min(100%, 300px); margin-left: auto; }
 .bx-how .bx-h h3 { font-size: 30px; letter-spacing: -0.035em; }
 
@@ -510,8 +529,8 @@ html.fh-locked { overflow: hidden; }
   .bx-fan { min-height: 230px; margin-inline: -14px; }
   .bx-fan-i { width: 29%; }
   .bx-felts { width: min(100%, 300px); margin-inline: auto; }
-  .bx-before .bx-pair { max-width: none; }
-  .bx-before .bx-pair > :last-child { margin-bottom: 0; }
+  .bx-jobs-c .bx-pair { max-width: none; }
+  .bx-jobs-c .bx-pair > :last-child { margin-top: 0; }
   .bx-how .bx-v { width: min(100%, 260px); margin-inline: auto; }
   .bx-n { font-size: 96px; }
   .bx-count .bx-v { margin-bottom: -18px; }
