@@ -428,14 +428,15 @@ function Fan({ ads }: { ads: Ad[] }) {
   );
 }
 
-/** A brand's whole set: one ad large, and beside it the four, each by what it says, to pick from (pointing at one shows it). */
+/** A brand's whole set: one ad large; beside it every ad as a thumbnail to pick from (pointing at one shows it), the
+ *  chosen ad's line, and the site the line was read from. */
 function SetCell({ s, z, w = 6, also }: { s: AdSet; z: Ctx["z"]; w?: 4 | 6; also?: ReactNode }) {
   const [i, setI] = useState(0);
   const a = s.ads[i] ?? s.ads[0];
   return (
     <li className={`bx-c w${w} is-band bx-set`}>
       <div className="bx-set-big">
-        <AdShot key={a.src} a={a} z={z} sizes="(max-width: 760px) 90vw, 420px" className="bx-set-in" />
+        <AdShot key={a.src} a={a} z={z} sizes="(max-width: 760px) 90vw, 460px" className="bx-set-in" />
       </div>
       <div className="bx-set-side">
         <div className="bx-h">
@@ -443,22 +444,36 @@ function SetCell({ s, z, w = 6, also }: { s: AdSet; z: Ctx["z"]; w?: 4 | 6; also
           <p>{s.says}</p>
           {also}
         </div>
-        <ul className="bx-set-pick" aria-label={`${s.brand}: ${s.ads.length} ads`}>
+        <ul className={`bx-set-pick n${s.ads.length}`} aria-label={`${s.brand}: ${s.ads.length} ads`}>
           {s.ads.map((x, k) => (
             <li key={x.src}>
-              <button type="button" aria-pressed={k === i} onClick={() => setI(k)} onPointerEnter={(e) => e.pointerType === "mouse" && setI(k)}>
+              <button type="button" aria-pressed={k === i} aria-label={`${x.brand && x.brand !== s.brand ? `${x.brand}: ` : ""}${x.says}`} onClick={() => setI(k)} onPointerEnter={(e) => e.pointerType === "mouse" && setI(k)}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={x.small} alt="" width={480} height={600} loading="lazy" decoding="async" />
-                <span>
-                  {x.brand && x.brand !== s.brand ? <b>{x.brand}</b> : null}{" "}
-                  {x.says}
-                </span>
               </button>
             </li>
           ))}
         </ul>
+        <p className="bx-set-says" key={a.src}>
+          {a.brand && a.brand !== s.brand ? <b>{a.brand}. </b> : null}
+          {a.says}
+          {s.from ? <span>their line, from {s.from}</span> : null}
+        </p>
       </div>
     </li>
+  );
+}
+
+/** A set as a row: every ad side by side, each opening full size. */
+function AdRow({ s, z, w, title, cols }: { s: AdSet; z: Ctx["z"]; w: 2 | 3 | 4 | 6; title?: string; cols?: number }) {
+  return (
+    <Cell w={w} title={title ?? s.brand} line={s.says} className="bx-row-c">
+      <div className="bx-row" style={{ "--cols": cols ?? s.ads.length } as CSSProperties}>
+        {s.ads.map((x) => (
+          <AdShot key={x.src} a={x} z={z} sizes="(max-width: 760px) 45vw, 240px" />
+        ))}
+      </div>
+    </Cell>
   );
 }
 
@@ -546,7 +561,7 @@ const JobList = () => (
       <li key={j.name}>
         <a href={j.href} target="_blank" rel="noreferrer">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={j.logo} alt="" width={32} height={32} loading="lazy" decoding="async" style={j.tile ? { background: j.tile } : undefined} />
+          {j.logo ? <img src={j.logo} alt="" width={32} height={32} loading="lazy" decoding="async" style={j.tile ? { background: j.tile } : undefined} /> : <u aria-hidden="true">{j.name[0]}</u>}
           <span>
             <b>{j.name}</b>
             <i>
@@ -573,11 +588,11 @@ const PAGES: Record<DrawerId, Page> = {
     bar: () => ({ ...call, also: mail }),
     body: ({ z, go }) => (
       <>
-        <Cell w={4} tone="band" title="Ads" line="For startups: one real picture, one line from their own site." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
-          <Fan ads={[REAL.boat.ads[1], REAL.instabox.ads[0], REAL.boat.ads[0], REAL.nebula.ads[0], REAL.nebula.ads[2]]} />
+        <Cell w={4} tone="band" title="Ads" line="Spec ads for startups: one real picture, one line from their own site." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
+          <Fan ads={[REAL.cursor.ads[2], REAL.treg.ads[0], REAL.outpace.ads[0], REAL.nebula.ads[0], REAL.stan.ads[1]]} />
         </Cell>
-        <Cell w={2} title="Nebula" line="Their own Approve button, under a cube at a gate.">
-          <AdShot a={REAL.nebula.ads[1]} z={z} sizes="(max-width: 760px) 90vw, 260px" />
+        <Cell w={2} title="Outpace" line="Spec. Their own line, over a finish tape.">
+          <AdShot a={REAL.outpace.ads[3]} z={z} sizes="(max-width: 760px) 90vw, 260px" />
         </Cell>
         <SiteCell k="bevel" w={6} lead />
         <SiteCell k="bidframe" w={3} />
@@ -598,23 +613,20 @@ const PAGES: Record<DrawerId, Page> = {
         Ads, shot like <Sv>real life.</Sv>
       </>
     ),
-    line: "Spec ads for startups: a real photograph, their own colour and type, one line from their site. None of these brands asked.",
+    line: "Spec work: none of these companies asked. Each ad is a real photograph in their own colour and type, with a line from their own site.",
     bar: () => ({ href: "https://ignaru.com/ads", label: "book ads", also: mail }),
     body: ({ z }) => (
       <>
-        <SetCell s={REAL.boat} z={z} />
+        <SetCell s={REAL.outpace} z={z} />
+        <SetCell s={REAL.cursor} z={z} />
+        <SetCell s={REAL.treg} z={z} />
         <SetCell s={REAL.nebula} z={z} />
-        <SetCell s={REAL.instabox} z={z} />
+        <AdRow s={REAL.sideshift} z={z} w={6} />
+        <AdRow s={REAL.dreamstate} z={z} w={3} cols={2} />
+        <AdRow s={REAL.stan} z={z} w={3} cols={2} />
+        <AdRow s={REAL.boat} z={z} w={4} />
+        <AdRow s={REAL.instabox} z={z} w={2} cols={1} />
         <SetCell s={FIVE} z={z} />
-        <Cell w={4} title="solidSF" line="Industrial CAD in a browser tab, free to start.">
-          <div className="bx-pair">
-            <AdShot a={NEW.solidsf} z={z} />
-            <AdShot a={NEW.solidsf2} z={z} />
-          </div>
-        </Cell>
-        <Cell w={2} title="Notra" line="Shows who AI picks instead of you.">
-          <AdShot a={NEW.notra} z={z} sizes="(max-width: 760px) 90vw, 260px" />
-        </Cell>
         <Cell
           w={6}
           side
@@ -639,9 +651,6 @@ const PAGES: Record<DrawerId, Page> = {
           className="bx-how"
         >
           <Shot src={ASIDE.src} small={ASIDE.small} alt={ASIDE.alt} z={z} w={1080} h={1350} tall sizes="(max-width: 760px) 60vw, 300px" className="bx-ad" />
-        </Cell>
-        <Cell w={6} side title={<span className="bx-n">140</span>} line="spec ads for seven companies, live on one page." more={<More label="see all 140" href="https://ignaru-spec-ads.vercel.app" />} className="bx-count">
-          <Win w={{ key: "spec", name: "Ignaru spec ads", host: "ignaru-spec-ads.vercel.app", img: "/showcase/ignaru-spec-ads-720.webp", w: 720, h: 450, line: "" }} sizes="(max-width: 760px) 100vw, 480px" />
         </Cell>
       </>
     ),
@@ -687,7 +696,7 @@ const PAGES: Record<DrawerId, Page> = {
             ))}
           </div>
         </Cell>
-        <Cell w={4} title="Free on Mac and web" line="Pro is $20 a month." className="bx-site">
+        <Cell w={4} title="Free on Mac and web." line="Pro is $20 a month." className="bx-site bx-price">
           <Win w={{ key: "ignaru", name: "Ignaru", host: "ignaru.com", img: "/sites/ignaru.webp", tall: "/sites/ignaru-tall.webp", w: 960, h: 600, line: "" }} />
         </Cell>
       </>
@@ -738,7 +747,7 @@ const PAGES: Record<DrawerId, Page> = {
           <EmailLink />
         </Cell>
         <Cell w={4} title="What you'd get" line="Ads like these, and sites you can open." more={<More label="see the work" to={() => go("work")} />} className="bx-fan-c bx-recent">
-          <Fan ads={[REAL.boat.ads[0], REAL.nebula.ads[0], REAL.instabox.ads[0]]} />
+          <Fan ads={[REAL.cursor.ads[2], REAL.outpace.ads[0], REAL.nebula.ads[0]]} />
         </Cell>
         <Cell w={6} title="Elsewhere" className="bx-else">
           <ul className="bx-soc">

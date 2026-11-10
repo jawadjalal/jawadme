@@ -59,7 +59,7 @@ export const SITES: Site[] = [
 ];
 
 export type Ad = { src: string; small: string; alt: string; says: string; brand?: string };
-export type AdSet = { key: string; brand: string; says: string; ads: Ad[] };
+export type AdSet = { key: string; brand: string; says: string; ads: Ad[]; /** the site its lines were read from */ from?: string };
 
 /** One brand's four ads: what each says, then what it shows (the two make its alt text). */
 const set = (key: string, brand: string, ads: [says: string, shows: string][]): Ad[] =>
@@ -131,9 +131,46 @@ const real = (key: string, brand: string, says: string, shows: string): Ad => ({
 
 /** The real-life sets. Every line is the company's own, or a fact from its site (boat.dev, instabox.sh, nebula.gg). */
 export const REAL = {
+  outpace: {
+    key: "outpace",
+    brand: "Outpace",
+    from: "outpacestudios.com",
+    says: "A design and development studio for startups. Their orange is a running track, so the ads are shot on one.",
+    ads: [
+      real("outpace-1", "Outpace", "No fluff. No 90-day timelines.", "Starting blocks on a running track, their mark painted on the lane."),
+      real("outpace-2", "Outpace", "We work inside your team. Not around it.", "A relay baton lying across a lane line."),
+      real("outpace-3", "Outpace", "Most requests land in 1-3 business days.", "Three frames: starting blocks, a baton, a finish tape. Day one, day two, day three."),
+      real("outpace-4", "Outpace", "Our clients raised $200M+. Yours could be next.", "A finish tape breaking over an orange track."),
+    ],
+  },
+  cursor: {
+    key: "cursor",
+    brand: "Cursor",
+    from: "cursor.com",
+    says: "The coding agent. Their site sets the product in painted landscapes, so the agents work in one.",
+    ads: [
+      real("cursor-1", "Cursor", "Launch fleets of agents that work in parallel.", "Rows of white kites flying over a hillside."),
+      real("cursor-2", "Cursor", "Hand off the task. Keep the decisions.", "An empty chair facing a house frame, beside a desk with a computer in a meadow."),
+      real("cursor-3", "Cursor", "Stay on the frontier.", "A lit glass cube on a hill at dusk."),
+      real("cursor-4", "Cursor", "Ambitious tasks, for hours or days.", "A desk with a lit screen in a meadow under the Milky Way."),
+    ],
+  },
+  treg: {
+    key: "treg",
+    brand: "treg",
+    from: "treg.to",
+    says: "OpenRouter for agent tools: one token, pay per call.",
+    ads: [
+      real("treg-1", "treg", "Seats you'd never buy for one agent run.", "An empty theatre with one seat in a spotlight."),
+      real("treg-2", "treg", "The task, not the tool.", "A pegboard wall of hand tools with one outline lit."),
+      real("treg-3", "treg", "Fractions of a cent per call.", "A coin payphone on a concrete wall."),
+      real("treg-4", "treg", "One base URL, one token.", "A heavy ring of keys, then one key set in a glass block."),
+    ],
+  },
   boat: {
     key: "boat",
     brand: "boat.dev",
+    from: "boat.dev",
     says: "Cloud computers for agents. They call one a boat, so the ads are real boats.",
     ads: [
       real("boat-hire", "boat.dev", "Boats for hire.", "A boat hire hut whose price board reads $0.036 an hour, printed in blue."),
@@ -144,6 +181,7 @@ export const REAL = {
   nebula: {
     key: "nebula",
     brand: "Nebula",
+    from: "nebula.gg",
     says: "A workspace for teams and agents. Their launch film's blue cube, photographed.",
     ads: [
       real("nebula-multiplayer", "Nebula", "multiplayer", "White chairs gathered round a blue glass cube on grass."),
@@ -154,16 +192,53 @@ export const REAL = {
   instabox: {
     key: "instabox",
     brand: "InstaBox",
+    from: "instabox.sh",
     says: "A cloud machine for every agent, shot as a real black box.",
     ads: [
       real("instabox-desks", "InstaBox", "Give every agent a machine.", "An empty office at night with a black cube on every desk."),
       real("instabox-pause", "InstaBox", "It pauses itself.", "Three frames of one black cube going dark: working, idle, paused."),
     ],
   },
+  sideshift: {
+    key: "sideshift",
+    brand: "SideShift",
+    from: "sideshift.app",
+    says: "The UGC platform for brands.",
+    ads: [
+      real("sideshift-1", "SideShift", "Get hundreds of creator applications overnight.", "Envelopes heaped under a letterbox in the morning."),
+      real("sideshift-2", "SideShift", "Run your creator program in-house.", "A ring light set up in an ordinary office."),
+      real("sideshift-3", "SideShift", "Your budget. Your approval.", "A rubber stamp beside a print stamped with a tick."),
+      real("sideshift-4", "SideShift", "Your creator campaigns, handled.", "Three instant prints on green: letters, a ring light, a tick."),
+    ],
+  },
+  dreamstate: {
+    key: "dreamstate",
+    brand: "Dreamstate",
+    from: "trydreamstate.com",
+    says: "An AI Head of Growth that asks before it sends.",
+    ads: [
+      real("dreamstate-1", "Dreamstate", "Your head of growth is in.", "An office door ajar with blue light behind it."),
+      real("dreamstate-2", "Dreamstate", "You only do the last one.", "Four small frames: binoculars, a typewriter, a sealed letter, a blue button."),
+      real("dreamstate-3", "Dreamstate", "It does the work. You press approve.", "A blue button on a desk, beside their own Actions card."),
+      real("dreamstate-4", "Dreamstate", "Written. Sealed. Waiting for your yes.", "A tray of letters sealed in blue wax."),
+    ],
+  },
+  stan: {
+    key: "stan",
+    brand: "Stan",
+    from: "stan.store",
+    says: "A creator store that lives in your link-in-bio.",
+    ads: [
+      real("stan-1", "Stan", "Sell what you know.", "Four prints on purple: a ring light, books, a microphone, a calendar."),
+      real("stan-2", "Stan", "Keep the whole pie.", "A whole uncut pie on purple."),
+      real("stan-3", "Stan", "Stan brings it all home.", "One key on a long rack built for many."),
+      real("stan-4", "Stan", "A whole store, one link wide.", "A shop one door wide, with the Stan sign over it."),
+    ],
+  },
 } satisfies Record<string, AdSet>;
 
-/** Products I started and sites I built for clients, each a real capture of its own first screen (public/design,
- *  1400 wide). Facts as profile.ts and the CV have them; Bidframe and Weld ended in 2026. */
+/** Products I made and sites I built for clients, each a real capture of its own first screen (public/design, 1400
+ *  wide). Roles as he gave them on 10 Nov 2026: Bevel and Weld founder, Bidframe one of four builders at a hackathon. */
 export const MADE: Site[] = [
   { key: "bevel", name: "Bevel", host: "bevel.team", img: "/design/bevel-team.webp", w: 1600, h: 1000, line: "Founder. A 3D art team you can hire by the job, at published rates." },
   { key: "bidframe", name: "Bidframe", host: "bidframe.org", img: "/design/bidframe.webp", w: 1400, h: 875, line: "One of four builders, hackathon. Reads a tender and flags what would disqualify your bid." },
@@ -173,15 +248,32 @@ export const MADE: Site[] = [
   { key: "kleoklaw", name: "Kleoklaw", host: "kleoklaw.com", img: "/design/kleoklaw.webp", w: 1400, h: 788, line: "Client. The site for a mobile product." },
 ];
 
-export type Job = { name: string; logo: string; tile?: string; role: string; line: string; href: string; now?: boolean };
+export type Job = { name: string; /** its own mark, where the site has a proper one; otherwise the name is set in type */ logo?: string; tile?: string; role: string; line: string; href: string; now?: boolean };
 
 /** Where he has worked, newest first. Roles and lines as profile.ts and the CV have them; MenuFit's 1.5 million users
  *  is his own confirmed number (9 Nov 2026). He has left Okara and MenuFit. */
 export const JOBS: Job[] = [
   { name: "Ignaru", logo: "/logos/ignaru.png", role: "Founder", line: "The design tool I'm building.", href: "https://ignaru.com", now: true },
-  { name: "Ignura", logo: "/logos/ignura.png", role: "Founder", line: "A design studio.", href: "https://ignura.com", now: true },
+  { name: "Ignura", role: "Founder", line: "A design studio.", href: "https://ignura.com", now: true },
   { name: "Okara", logo: "/logos/okara.png", tile: "#fff", role: "Product development intern", line: "An AI CMO. I got in by taking its dashboard apart, unasked.", href: "https://okara.ai" },
   { name: "MenuFit", logo: "/logos/menufit-bag-128.webp", role: "Product Designer", line: "Eating out healthy, 1.5 million users. New screens for the app.", href: "https://menufit.com" },
-  { name: "SOF Agency", logo: "/logos/sof.png", role: "PR and partnerships", line: "PR, partnerships and crowdfunding for game studios.", href: "https://sof.agency" },
+  { name: "SOF Agency", role: "PR and partnerships", line: "PR, partnerships and crowdfunding for game studios.", href: "https://sof.agency" },
   { name: "Basket Ent", logo: "/logos/basketent.png", role: "Acquisitions and liveops", line: "Acquisitions, then liveops after each one.", href: "https://basketent.com" },
 ];
+
+export type ShelfItem = { kind: "ad" | "site"; src: string; w: number; h: number; alt: string; to: DrawerId };
+
+/** The first screen's shelf: his best work standing along the bottom edge, under the dial. Ads open the ads drawer,
+ *  sites the work drawer. Order is left to right; the middle one stands tallest. */
+export const SHELF: ShelfItem[] = [
+  { kind: "site", src: "/design/kleoklaw-720.webp", w: 720, h: 405, alt: "Kleoklaw, a client site: its first screen", to: "work" },
+  { kind: "ad", src: REAL.cursor.ads[2].small, w: 480, h: 600, alt: REAL.cursor.ads[2].alt, to: "ads" },
+  { kind: "ad", src: REAL.treg.ads[0].small, w: 480, h: 600, alt: REAL.treg.ads[0].alt, to: "ads" },
+  { kind: "ad", src: REAL.outpace.ads[0].small, w: 480, h: 600, alt: REAL.outpace.ads[0].alt, to: "ads" },
+  { kind: "ad", src: REAL.nebula.ads[0].small, w: 480, h: 600, alt: REAL.nebula.ads[0].alt, to: "ads" },
+  { kind: "ad", src: REAL.stan.ads[1].small, w: 480, h: 600, alt: REAL.stan.ads[1].alt, to: "ads" },
+  { kind: "site", src: "/design/splittingpoint-720.webp", w: 720, h: 467, alt: "Splitting Point, a client landing page: its first screen", to: "work" },
+];
+
+/** Under the home line: what he did before, in one line. MenuFit's number is his own (9 Nov 2026). */
+export const CRED = "Before: Product Designer at MenuFit (1.5M users), intern at Okara, founder of Bevel.";
