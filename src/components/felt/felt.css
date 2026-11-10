@@ -366,8 +366,6 @@ html.fh-locked { overflow: hidden; }
 .bx-dots li { position: relative; padding-left: 20px; font-size: 15.5px; line-height: 1.45; color: var(--ink); text-wrap: pretty; }
 .bx-dots li::before { content: ""; position: absolute; left: 2px; top: 0.52em; width: 7px; height: 7px; border-radius: 1px; background: var(--cl); }
 .bx-dots b { font-weight: 600; }
-.bx-mk { display: inline-grid; place-items: center; width: 20px; height: 22px; margin-right: 6px; vertical-align: -5px; object-fit: contain; }
-.bx-mk-ok { height: 20px; border-radius: 4px; background: #fff; color: #000; vertical-align: -4px; }
 /* a site that stands two cells tall beside a pair, its window filling what is left; and the concept sites, text beside one window */
 @media (min-width: 761px) {
   .bx-c.bx-rows { grid-row: span 2; }
@@ -384,7 +382,7 @@ html.fh-locked { overflow: hidden; }
 .bx-jobs img { width: 32px; height: 32px; margin-top: 2px; border-radius: 4px; object-fit: contain; }
 .bx-jobs span { display: block; min-width: 0; }
 .bx-jobs b { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); }
-.bx-jobs i { margin-left: 8px; font-style: normal; font-size: 14px; color: var(--ink-3); }
+.bx-jobs i { display: block; font-style: normal; font-size: 14px; color: var(--ink-3); }
 .bx-jobs em { display: block; margin-top: 1px; font-style: normal; font-size: 14.5px; line-height: 1.4; color: var(--ink-2); text-wrap: pretty; }
 .bx-jobs-c.is-side { align-items: start; }
 .bx-jobs-c .bx-h h3 { font-size: 30px; letter-spacing: -0.035em; }

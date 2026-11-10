@@ -166,8 +166,8 @@ export const REAL = {
  *  1400 wide). Facts as profile.ts and the CV have them; Bidframe and Weld ended in 2026. */
 export const MADE: Site[] = [
   { key: "bevel", name: "Bevel", host: "bevel.team", img: "/design/bevel-team.webp", w: 1600, h: 1000, line: "Founder. A 3D art team you can hire by the job, at published rates." },
-  { key: "bidframe", name: "Bidframe", host: "bidframe.org", img: "/design/bidframe.webp", w: 1400, h: 875, line: "Founder, ended 2026. Reads a tender and flags what would disqualify your bid." },
-  { key: "weld", name: "Weld", host: "weldroblox.com", img: "/design/weld.webp", w: 1400, h: 663, line: "Founder, ended 2026. A marketplace for how Roblox studios hire developers." },
+  { key: "bidframe", name: "Bidframe", host: "bidframe.org", img: "/design/bidframe.webp", w: 1400, h: 875, line: "One of four builders, hackathon. Reads a tender and flags what would disqualify your bid." },
+  { key: "weld", name: "Weld", host: "weldroblox.com", img: "/design/weld.webp", w: 1400, h: 663, line: "Founder. A marketplace for how Roblox studios hire developers." },
   { key: "splittingpoint", name: "Splitting Point", host: "splittingpoint.com", img: "/design/splittingpoint.webp", w: 1400, h: 909, line: "Client. The landing page for a Roblox games studio." },
   { key: "vizzbees", name: "Vizzbees", host: "vizzbees.com", img: "/design/vizzbees.webp", w: 1400, h: 788, line: "Client. A SaaS site build." },
   { key: "kleoklaw", name: "Kleoklaw", host: "kleoklaw.com", img: "/design/kleoklaw.webp", w: 1400, h: 788, line: "Client. The site for a mobile product." },
@@ -181,7 +181,7 @@ export const JOBS: Job[] = [
   { name: "Ignaru", logo: "/logos/ignaru.png", role: "Founder", line: "The design tool I'm building.", href: "https://ignaru.com", now: true },
   { name: "Ignura", logo: "/logos/ignura.png", role: "Founder", line: "A design studio.", href: "https://ignura.com", now: true },
   { name: "Okara", logo: "/logos/okara.png", tile: "#fff", role: "Product development intern", line: "An AI CMO. I got in by taking its dashboard apart, unasked.", href: "https://okara.ai" },
-  { name: "MenuFit", logo: "/logos/menufit-bag-128.webp", role: "Design, as a client", line: "Eating out healthy, 1.5 million users. New screens for the app.", href: "https://menufit.com" },
+  { name: "MenuFit", logo: "/logos/menufit-bag-128.webp", role: "Product Designer", line: "Eating out healthy, 1.5 million users. New screens for the app.", href: "https://menufit.com" },
   { name: "SOF Agency", logo: "/logos/sof.png", role: "PR and partnerships", line: "PR, partnerships and crowdfunding for game studios.", href: "https://sof.agency" },
   { name: "Basket Ent", logo: "/logos/basketent.png", role: "Acquisitions and liveops", line: "Acquisitions, then liveops after each one.", href: "https://basketent.com" },
 ];
