@@ -589,7 +589,7 @@ const PAGES: Record<DrawerId, Page> = {
     body: ({ z, go }) => (
       <>
         <Cell w={4} tone="band" title="Ads" line="Spec ads for startups: one real picture, one line from their own site." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
-          <Fan ads={[REAL.cursor.ads[2], REAL.treg.ads[0], REAL.outpace.ads[0], REAL.nebula.ads[0], REAL.stan.ads[1]]} />
+          <Fan ads={[REAL.cursor.ads[2], REAL.treg.ads[0], REAL.outpace.ads[0], REAL.nebula.ads[0], REAL.stan.ads[0]]} />
         </Cell>
         <Cell w={2} title="Outpace" line="Spec. Their own line, over a finish tape.">
           <AdShot a={REAL.outpace.ads[3]} z={z} sizes="(max-width: 760px) 90vw, 260px" />
