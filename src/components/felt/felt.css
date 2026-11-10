@@ -171,6 +171,8 @@ html.fh-locked { overflow: hidden; }
 @keyframes rg-l-out { to { opacity: 0; filter: blur(6px); transform: translateY(-0.2em); } }
 /* under the line: what he did before */
 .rg-cred { display: block; margin: 0.9em auto 0; max-width: 80ch; font-size: max(13px, 0.42em); font-weight: 400; line-height: 1.35; letter-spacing: -0.005em; color: color-mix(in oklab, var(--ink) 66%, transparent); text-wrap: balance; }
+/* the spec credit: under the shelf, centred on the same axis */
+.rg-spec { position: absolute; left: 50%; bottom: 30px; translate: -50% 0; margin: 0; white-space: nowrap; }
 /* the shelf: his best work standing along the bottom edge, under the dial; a card rises under the pointer, a press opens its drawer */
 .rg-shelf { position: absolute; left: 50%; bottom: 60px; translate: -50% 0; display: flex; align-items: flex-end; justify-content: center; height: min(27dvh, 250px); padding: 0; margin: 0; list-style: none; pointer-events: none; }
 .rg-shelf li { --o: calc(var(--i) - (var(--n) - 1) / 2); flex: none; margin-inline: calc(var(--sw) * -0.035); translate: 0 calc(var(--o) * var(--o) * 1.1%); rotate: calc(var(--o) * 1.6deg); transform-origin: 50% 120%; z-index: calc(10 - max(var(--o), var(--o) * -1)); transition: translate 0.5s var(--spring), rotate 0.5s var(--spring); animation: rg-shelf-in 0.9s var(--spring) backwards; animation-delay: calc(max(var(--o), var(--o) * -1) * 70ms + 350ms); }

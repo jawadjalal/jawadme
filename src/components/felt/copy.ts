@@ -129,7 +129,7 @@ export const ASIDE = { src: "/showcase/aside-manifesto-1080.webp", small: "/show
  *  960 by 1200 copies of the 1080 by 1350 finals. Spec work, made unasked. */
 const real = (key: string, brand: string, says: string, shows: string): Ad => ({ src: `/ads/sets/real-${key}.webp`, small: `/ads/sets/real-${key}-480.webp`, brand, says, alt: `${brand}: ${says} ${shows}` });
 
-/** The real-life sets. Every line is the company's own, or a fact from its site (boat.dev, instabox.sh, nebula.gg). */
+/** The real-life sets. Lines are written by Ignura from facts on each company's site (boat.dev, instabox.sh, nebula.gg). */
 export const REAL = {
   outpace: {
     key: "outpace",
@@ -271,9 +271,8 @@ export const SHELF: ShelfItem[] = [
   { kind: "ad", src: REAL.treg.ads[0].small, w: 480, h: 600, alt: REAL.treg.ads[0].alt, to: "ads" },
   { kind: "ad", src: REAL.outpace.ads[0].small, w: 480, h: 600, alt: REAL.outpace.ads[0].alt, to: "ads" },
   { kind: "ad", src: REAL.nebula.ads[0].small, w: 480, h: 600, alt: REAL.nebula.ads[0].alt, to: "ads" },
-  { kind: "ad", src: REAL.stan.ads[1].small, w: 480, h: 600, alt: REAL.stan.ads[1].alt, to: "ads" },
   { kind: "site", src: "/design/splittingpoint-720.webp", w: 720, h: 467, alt: "Splitting Point, a client landing page: its first screen", to: "work" },
 ];
 
 /** Under the home line: what he did before, in one line. MenuFit's number is his own (9 Nov 2026). */
-export const CRED = "Before: Product Designer at MenuFit (1.5M users), intern at Okara, founder of Bevel.";
+export const CRED = "Before: Product Designer at MenuFit (1.5M users), intern at Okara. Now: founder of Bevel.";

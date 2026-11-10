@@ -329,13 +329,14 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
         <ul className="rg-shelf" style={{ "--n": SHELF.length } as CSSProperties} aria-label="Some of my work">
           {SHELF.map((w, i) => (
             <li key={w.src} className={w.kind === "ad" ? "is-ad" : "is-site"} style={{ "--i": i } as CSSProperties}>
-              <button type="button" tabIndex={open ? -1 : 0} aria-label={`${w.alt}. Opens ${w.to === "ads" ? "the ads" : "my work"}.`} onClick={() => { sfx("swap"); onOpen(w.to); }} onPointerEnter={(e) => e.pointerType === "mouse" && sfx("hover")}>
+              <button type="button" tabIndex={open ? -1 : 0} aria-label={`${w.alt}. ${w.kind === "ad" ? "Spec ad. " : ""}Opens ${w.to === "ads" ? "the ads" : "my work"}.`} onClick={() => { sfx("swap"); onOpen(w.to); }} onPointerEnter={(e) => e.pointerType === "mouse" && sfx("hover")}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={w.src} alt="" width={w.w} height={w.h} decoding="async" draggable={false} />
               </button>
             </li>
           ))}
         </ul>
+        <p className="rg-cred rg-spec">Spec work by Ignura, not commissioned by these companies.</p>
       </div>
       <ol className="rg-list">
         {DRAWERS.slice(1).map((d) => (

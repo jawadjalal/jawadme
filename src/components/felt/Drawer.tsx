@@ -457,7 +457,7 @@ function SetCell({ s, z, w = 6, also }: { s: AdSet; z: Ctx["z"]; w?: 4 | 6; also
         <p className="bx-set-says" key={a.src}>
           {a.brand && a.brand !== s.brand ? <b>{a.brand}. </b> : null}
           {a.says}
-          {s.from ? <span>their line, from {s.from}</span> : null}
+          {s.from ? <span>Spec ad by Ignura, facts from {s.from}</span> : null}
         </p>
       </div>
     </li>
