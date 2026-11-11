@@ -119,7 +119,7 @@ html.fh-locked { overflow: hidden; }
   position: absolute; left: 50%; top: var(--cy); width: var(--A); aspect-ratio: 1; margin: calc(var(--A) / -2) 0 0 calc(var(--A) / -2);
   display: block; cursor: pointer; -webkit-tap-highlight-color: transparent;
   translate: calc(sin(var(--a)) * var(--Rx)) calc(cos(var(--a)) * var(--Ry) * -1);
-  opacity: 0.8; will-change: opacity;
+  opacity: 0.9; will-change: opacity;
   animation: rg-in 1s var(--spring) backwards; animation-delay: calc(var(--i) * 55ms + 80ms);
 }
 .rg-obj.is-first { opacity: 1; }
@@ -129,9 +129,10 @@ html.fh-locked { overflow: hidden; }
 .rg-obj:hover, .rg-obj:focus-visible { opacity: 1 !important; z-index: 6; }
 .rg-obj:hover .rg-fig, .rg-obj:focus-visible .rg-fig { translate: 0 -6px; scale: 1.05; }
 .rg-obj:active .rg-fig { scale: 0.96; transition-duration: 0.1s; }
-.rg-tag { position: absolute; left: 50%; top: calc(100% + 2px); translate: -50% 0; display: flex; font-size: 22px; font-weight: 600; line-height: 1; letter-spacing: -0.03em; white-space: nowrap; color: var(--ink); pointer-events: none; }
-.rg-tag i { font-style: normal; opacity: 0; translate: 0 8px; filter: blur(5px); transition: opacity 0.2s ease-out, translate 0.2s ease-out, filter 0.2s ease-out; }
-.rg-obj:hover .rg-tag i, .rg-obj:focus-visible .rg-tag i { opacity: 1; translate: 0 0; filter: blur(0); transition-duration: 0.38s; transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--k) * 26ms); }
+.rg-tag { position: absolute; left: 50%; top: calc(100% + 6px); translate: -50% 0; display: flex; font-size: 16px; font-weight: 500; line-height: 1; letter-spacing: -0.015em; white-space: nowrap; color: var(--ink-2); pointer-events: none; transition: color 0.2s; }
+.rg-tag i { font-style: normal; display: inline-block; transition: translate 0.3s var(--spring); }
+.rg-obj:hover .rg-tag, .rg-obj:focus-visible .rg-tag, .rg-obj.is-turn .rg-tag { color: var(--ink); }
+.rg-obj:hover .rg-tag i, .rg-obj:focus-visible .rg-tag i { translate: 0 -2px; transition-delay: calc(var(--k) * 22ms); }
 
 /* ---------- a felt piece in glyphs (FeltGlyph.tsx): the glyphs over the felt, a round window between them ---------- */
 @property --mr { syntax: "<percentage>"; inherits: true; initial-value: 0%; }
@@ -146,28 +147,30 @@ html.fh-locked { overflow: hidden; }
   mask: radial-gradient(circle at var(--mx) var(--my), transparent calc(var(--mr) - 16%), #000 var(--mr)); }
 /* before the engine has drawn (no script, or no canvas yet) the felt picture shows whole */
 .fg:has(.fg-glyphs[data-state="fallback"]) .fg-img { -webkit-mask: none; mask: none; }
-/* touch has no pointer to open the window: the door whose turn it is shows its felt */
-@media (hover: none) { .rg-obj.is-turn .fg { --mr: 170%; } }
 
 /* ---------- the line: two lines set large, his face and the Ignaru petal inside them; a quiet line and the capsule under ---------- */
 .rg-line { position: absolute; left: 50%; top: var(--cy); translate: -50% -50%; width: min(calc(1.9 * var(--Rx) - var(--A) - 48px), 1100px); display: grid; justify-items: center; text-align: center; pointer-events: none; }
-.rg-say { display: grid; width: 100%; font-size: clamp(34px, min(6.6vw, 10.2svh), 112px); }
-.rg-say > * { grid-area: 1 / 1; align-self: center; font-size: 1em; font-weight: 700; line-height: 0.94; letter-spacing: -0.052em; text-wrap: balance; color: var(--ink); }
+.rg-say { width: 100%; margin: 0; font-size: clamp(34px, min(6.6vw, 10.2svh), 112px); font-weight: 700; line-height: 0.94; letter-spacing: -0.052em; text-wrap: balance; color: var(--ink); }
 .rg-row { display: block; white-space: nowrap; }
 .rg-me { white-space: nowrap; }
 .rg-me img { display: inline-block; width: 0.8em; height: auto; margin: 0 0.06em 0 0; vertical-align: -0.12em; }
 .rg-hi { white-space: nowrap; color: #c9a2f7; }
-.rg-mark { display: inline-block; width: 0.92em; height: 0.92em; margin: 0 0.08em 0 0.02em; vertical-align: -0.12em; }
-.rg-say p.rg-l { font-size: 0.62em; line-height: 1.05; letter-spacing: -0.04em; max-width: 16em; }
-.rg-l.is-out { animation: rg-l-out 240ms ease forwards; }
-.rg-l.is-in { position: relative; z-index: 1; }
-.rg-h { transition: opacity 0.24s ease, filter 0.24s ease; }
-.rg-h.is-off { opacity: 0; filter: blur(6px); }
+.rg-mark { display: inline-block; width: 0.9em; height: 0.9em; margin: 0 0.08em 0 0.02em; vertical-align: -0.12em; }
+.rg-hi .ty-sv-k { color: #c9a2f7; }
+/* the Spider-Verse plates, slipped less at headline size so the word still reads first */
+.rg-hi .ty-sv-c { translate: -0.022em 0.012em; }
+.rg-hi .ty-sv-m { translate: 0.022em -0.01em; }
 .rg-w { display: inline-block; white-space: pre; animation: rg-l-in 420ms cubic-bezier(0.2, 0.7, 0.1, 1) backwards; animation-delay: calc(var(--j, 0) * 28ms); }
 .rg-w-one { white-space: normal; }
 @keyframes rg-l-in { from { opacity: 0; filter: blur(6px); transform: translateY(0.35em); } }
 @keyframes rg-l-out { to { opacity: 0; filter: blur(6px); transform: translateY(-0.2em); } }
-.rg-sub { margin-top: clamp(14px, 2.2svh, 24px); font-size: clamp(16px, 1.45vw, 21px); font-weight: 500; line-height: 1.3; letter-spacing: -0.015em; color: var(--ink-2); }
+/* the quiet line under the headline; a door's line takes its place, same size, so nothing above it moves */
+.rg-subs { display: grid; width: 100%; margin-top: clamp(14px, 2.2svh, 24px); }
+.rg-subs > * { grid-area: 1 / 1; }
+.rg-sub { font-size: clamp(16px, 1.45vw, 21px); font-weight: 500; line-height: 1.3; letter-spacing: -0.015em; color: var(--ink-2); text-wrap: balance; transition: opacity 0.24s ease, filter 0.24s ease; }
+.rg-sub.is-off { opacity: 0; filter: blur(5px); }
+.rg-sub.rg-l.is-in { color: var(--ink); }
+.rg-l.is-out { animation: rg-l-out 240ms ease forwards; }
 
 /* where he has worked: a dark capsule, the label fixed at its left, the names running through it */
 .wk { display: flex; align-items: center; width: min(100%, 720px); height: 50px; margin-top: clamp(16px, 2.6svh, 28px); padding: 0 0 0 20px; border-radius: 999px; background: #121212; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); overflow: hidden; pointer-events: auto; }
@@ -205,10 +208,7 @@ html.fh-locked { overflow: hidden; }
   .fh-ring .rg-list b { font-weight: 600; color: var(--ink); }
 }
 /* touch: no hover to spell a door's name, so every door wears it, small, under its felt */
-@media (hover: none) {
-  .rg-tag { font-size: 14px; font-weight: 500; letter-spacing: -0.01em; color: var(--ink-2); }
-  .rg-tag i { opacity: 1; translate: none; filter: none; }
-}
+@media (hover: none) { .rg-tag { font-size: 14px; } }
 
 /* the open drawer's felt piece, on the stage beside it */
 .fh-stage-art { position: fixed; z-index: 1; left: 0; top: 0; bottom: 0; right: calc(var(--dw) + 10px); display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity 0.3s var(--ease); }
@@ -521,6 +521,7 @@ html.fh-locked { overflow: hidden; }
   .rg-line { top: calc(var(--cy) + var(--A) * 0.5 + 48px); translate: -50% 0; width: calc(100vw - 32px); }
   .rg-say { font-size: min(10.2vw, 5.6svh); }
   .rg-sub { font-size: 16px; }
+  .bx-mail-c { order: -1; }
   .wk { height: 44px; padding-left: 14px; }
   .wk-label { font-size: 12px; padding-right: 10px; }
   .wk-row { gap: 22px; }
@@ -533,7 +534,8 @@ html.fh-locked { overflow: hidden; }
   @media (max-height: 760px) {
     .rg-frame { --A: 9.5svh; --Ry: 18svh; --cy: 32%; }
     .rg-line { top: calc(var(--cy) + var(--A) * 0.5 + 26px); }
-    .rg-sub { margin-top: 10px; font-size: 15px; }
+    .rg-subs { margin-top: 10px; }
+    .rg-sub { font-size: 15px; }
     .wk { margin-top: 12px; height: 40px; }
     .rg-shelf { --sw: min(30vw, 14svh); }
     .rg-spec { bottom: calc(76px + env(safe-area-inset-bottom) + min(30vw, 14svh) * 1.25 + 10px); font-size: 11.5px; }

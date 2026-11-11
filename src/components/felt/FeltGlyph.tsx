@@ -137,7 +137,10 @@ export function FeltGlyph({ art, alt, reveal = false, cell = 6, className, prior
         const G = c ? (c[i * 4 + 1] ?? 0) : 255;
         const B = c ? (c[i * 4 + 2] ?? 0) : 255;
         // shade, not fill: mid tones thin out so the felt's own light and shadow draw the form
-        const lum = Math.pow(f.tones[i] ?? 0, 1.7);
+        // cream and white felt (low chroma, light) would fill in solid: it draws as sparse light glyphs instead
+        const chroma = (Math.max(R, G, B) - Math.min(R, G, B)) / 255;
+        const pale = chroma < 0.18 && (R + G + B) / 765 > 0.55 ? 0.45 : 1;
+        const lum = Math.pow(f.tones[i] ?? 0, 1.5) * pale;
         const wave = 0.07 * Math.sin(x * 0.5 + y * 0.32 - time * 1.3);
         let tone = (a / 255) * (0.06 + 0.94 * lum) + wave + near * 0.2;
         tone = Math.max(0.06, Math.min(1, tone));
@@ -147,8 +150,8 @@ export function FeltGlyph({ art, alt, reveal = false, cell = 6, className, prior
         if (front || (near > 0.35 && hash(x + step, y) < near * 0.5)) g = SCRAMBLE[Math.floor(hash(x, y + step) * SCRAMBLE.length)] ?? "+";
         // the felt's own colour, a little richer, brighter where the glyph is dense
         const L = 0.299 * R + 0.587 * G + 0.114 * B;
-        const lift = 0.8 + 0.7 * tone + near * 0.5;
-        const sat = (v: number) => Math.max(0, Math.min(255, (L + (v - L) * 1.35) * lift));
+        const lift = 1 + 0.6 * tone + near * 0.5;
+        const sat = (v: number) => Math.max(0, Math.min(255, (L + (v - L) * 1.6) * lift));
         frame.put(x, y, g, [sat(R), sat(G), sat(B), 255]);
       }
     }

@@ -3,7 +3,7 @@
 /*
  * The first screen, after ignaru.com's dial (components/home/Arc.tsx): five felt doors on an arc over the line, from
  * the left of it, over the top, to the right of it. Each door is its felt piece drawn in glyphs (FeltGlyph); pointing at
- * one opens a window onto the felt itself and spells its name under it; a press opens its drawer. As the page scrolls
+ * one opens a window onto the felt itself; its name sits under it; a press opens its drawer. As the page scrolls
  * the turn passes along the arc: the door whose turn it is comes up to full strength and the line changes with it,
  * word by word. The places come from CSS (sin and cos of each door's angle, felt.css `fh-ring`), so the first paint is
  * already the arc; one rAF only writes each door's strength.
@@ -24,7 +24,7 @@ import { sfx } from "./Sound";
 
 const N = DRAWERS.length;
 /** A waiting door's strength, against the one whose turn it is. Every door is the same size. */
-const DIM = 0.8;
+const DIM = 0.9;
 const smooth = (t: number) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
 /** The rhythm of the changes, from ignaru.com: a rest of 2.5 to 4 s, now and then a longer breath. */
 const REST_MIN = 2500;
@@ -49,8 +49,13 @@ function Opening() {
       <span className="rg-row">
         {b.split("Ignaru")[0]}
         <span className="rg-hi">
-          <FeltGlyph art="petal" alt="" cell={4} className="rg-mark" />
-          Ignaru
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="rg-mark" src="/felt/petal-1x.webp" srcSet="/felt/petal-1x.webp 1x, /felt/petal.webp 2x" alt="" width={96} height={96} decoding="async" />
+          <span className="ty-sv">
+            <span className="ty-sv-p ty-sv-c" aria-hidden="true">Ignaru</span>
+            <span className="ty-sv-p ty-sv-m" aria-hidden="true">Ignaru</span>
+            <span className="ty-sv-k">Ignaru</span>
+          </span>
         </span>
         {b.split("Ignaru")[1]}
       </span>
@@ -221,7 +226,7 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
               onFocus={() => setHover(i)}
               onBlur={() => setHover(null)}
             >
-              <FeltGlyph art={arts[i] ?? d.art} alt={d.alt} reveal={hover === i} priority={i === 0} className="rg-fig" />
+              <FeltGlyph art={arts[i] ?? d.art} alt={d.alt} reveal={hover === i} priority={i === 0} cell={9} className="rg-fig" />
               <span className="rg-tag" aria-hidden="true">
                 {[...d.label].map((ch, k) => (
                   <i key={k} style={{ "--k": k } as CSSProperties}>
@@ -232,23 +237,23 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
             </a>
           ))}
           <div className="rg-line">
-            <div className="rg-say">
-              {/* the page's title stays the same for screen readers; the door lines are a picture of the same doors */}
-              <h1 className={shown === 0 ? "rg-l rg-h" : "rg-l rg-h is-off"}>
-                <Opening />
-              </h1>
+            {/* the page's title stays put; a door's line takes the place of the quiet line under it */}
+            <h1 className="rg-say">
+              <Opening />
+            </h1>
+            <div className="rg-subs">
+              <p className={shown === 0 ? "rg-sub" : "rg-sub is-off"}>And designing sites and ads for startups.</p>
               {lines.out !== undefined && lines.out > 0 && lines.out !== lines.k ? (
-                <p key={`o${lines.out}`} className="rg-l is-out" aria-hidden="true" onAnimationEnd={(e) => e.target === e.currentTarget && setLines((l) => ({ k: l.k }))}>
+                <p key={`o${lines.out}`} className="rg-sub rg-l is-out" aria-hidden="true" onAnimationEnd={(e) => e.target === e.currentTarget && setLines((l) => ({ k: l.k }))}>
                   <Words text={textOf(lines.out)} />
                 </p>
               ) : null}
               {lines.k > 0 ? (
-                <p key={`i${lines.k}`} className="rg-l is-in" aria-hidden="true">
+                <p key={`i${lines.k}`} className="rg-sub rg-l is-in" aria-hidden="true">
                   <Words text={textOf(lines.k)} />
                 </p>
               ) : null}
             </div>
-            <p className="rg-sub">And designing sites and ads for startups.</p>
             <Worked />
           </div>
           {/* his best ads, by his own scores, standing along the bottom edge: each opens the ads drawer */}
