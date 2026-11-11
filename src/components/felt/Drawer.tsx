@@ -15,7 +15,7 @@
  */
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { dayLink, type Booking } from "./booking";
-import { ASIDE, BOOK, CV, DRAWERS, EMAIL, FIVE, JOBS, MADE, NEW, REAL, SITES, drawerAt, feltSrc, lift, type Ad, type AdSet, type DrawerId, type Site } from "./copy";
+import { ASIDE, BEST, BEST_SETS, BOOK, CV, DRAWERS, EMAIL, FIVE, JOBS, MADE, REAL, SITES, drawerAt, feltSrc, lift, type Ad, type AdSet, type DrawerId, type Site } from "./copy";
 import { MeetMark } from "./Meet";
 import { SOCIALS } from "./Socials";
 import { sfx } from "./Sound";
@@ -588,11 +588,11 @@ const PAGES: Record<DrawerId, Page> = {
     bar: () => ({ ...call, also: mail }),
     body: ({ z, go }) => (
       <>
-        <Cell w={4} tone="band" title="Ads" line="Spec ads for startups: one real picture, one line from their own site." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
-          <Fan ads={[REAL.cursor.ads[2], REAL.treg.ads[0], REAL.outpace.ads[0], REAL.nebula.ads[0], REAL.stan.ads[0]]} />
+        <Cell w={4} tone="band" title="Ads" line="Spec ads for startups, made unasked: one picture, one line from their own site." more={<More label="every set" to={() => go("ads")} />} className="bx-fan-c bx-lead">
+          <Fan ads={[BEST.income, BEST.scale, BEST.corners, BEST.told, BEST.seen]} />
         </Cell>
-        <Cell w={2} title="Outpace" line="Spec. Their own line, over a finish tape.">
-          <AdShot a={REAL.outpace.ads[3]} z={z} sizes="(max-width: 760px) 90vw, 260px" />
+        <Cell w={2} title="Outpace" line="Spec. A relay baton across their lane.">
+          <AdShot a={BEST.team} z={z} sizes="(max-width: 760px) 90vw, 260px" />
         </Cell>
         <SiteCell k="bevel" w={6} lead />
         <SiteCell k="bidframe" w={3} />
@@ -613,17 +613,24 @@ const PAGES: Record<DrawerId, Page> = {
         Ads, shot like <Sv>real life.</Sv>
       </>
     ),
-    line: "Spec work: none of these companies asked. Each ad is a real photograph in their own colour and type, with a line from their own site.",
+    line: "Spec work, made unasked: none of these companies is a client. Best first, by my own scores. Each ad uses their own colour, type and words.",
     bar: () => ({ href: "https://ignaru.com/ads", label: "book ads", also: mail }),
     body: ({ z }) => (
       <>
-        <SetCell s={REAL.outpace} z={z} />
-        <SetCell s={REAL.cursor} z={z} />
+        {BEST_SETS.map((x) => (
+          <SetCell key={x.key} s={x} z={z} />
+        ))}
+        <Cell w={2} title="Outpace" line="The same track, upright for stories." className="bx-row-c">
+          <Shot src={BEST.momentum.src} small={BEST.momentum.small} alt={BEST.momentum.alt} z={z} w={960} h={1707} tall sizes="(max-width: 760px) 60vw, 260px" className="bx-ad" />
+        </Cell>
+        <Cell w={4} title="Cursor and Dreamstate" line="One idea each, from a line on their own site." className="bx-row-c">
+          <div className="bx-row" style={{ "--cols": 2 } as CSSProperties}>
+            <AdShot a={BEST.review} z={z} sizes="(max-width: 760px) 45vw, 300px" />
+            <AdShot a={BEST.found} z={z} sizes="(max-width: 760px) 45vw, 300px" />
+          </div>
+        </Cell>
         <SetCell s={REAL.treg} z={z} />
         <SetCell s={REAL.nebula} z={z} />
-        <AdRow s={REAL.sideshift} z={z} w={6} />
-        <AdRow s={REAL.dreamstate} z={z} w={3} cols={2} />
-        <AdRow s={REAL.stan} z={z} w={3} cols={2} />
         <AdRow s={REAL.boat} z={z} w={4} />
         <AdRow s={REAL.instabox} z={z} w={2} cols={1} />
         <SetCell s={FIVE} z={z} />
@@ -747,7 +754,7 @@ const PAGES: Record<DrawerId, Page> = {
           <EmailLink />
         </Cell>
         <Cell w={4} title="What you'd get" line="Ads like these, and sites you can open." more={<More label="see the work" to={() => go("work")} />} className="bx-fan-c bx-recent">
-          <Fan ads={[REAL.cursor.ads[2], REAL.outpace.ads[0], REAL.nebula.ads[0]]} />
+          <Fan ads={[BEST.scale, BEST.corners, BEST.income]} />
         </Cell>
         <Cell w={6} title="Elsewhere" className="bx-else">
           <ul className="bx-soc">

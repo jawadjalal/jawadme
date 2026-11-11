@@ -14,8 +14,9 @@ export const feltSrc = (name: string) => ({
   srcSet: `/felt/${name}-1x.webp 320w, /felt/${name}.webp 640w`,
 });
 
-/** The page's one line (the h1): who, then what. Ring.tsx sets his face before his name and a felt petal before Ignaru. */
-export const LINE = ["I'm Jawad, 15, building Ignaru,", "and designing sites and ads for startups."] as const;
+/** The page's one line (the h1), in two: who, then what. Ring.tsx sets his face before his name and the Ignaru petal, in
+ *  glyphs, before Ignaru; the line under it says the rest (sites and ads for startups). */
+export const LINE = ["I'm Jawad, 15,", "building Ignaru."] as const;
 
 /**
  * Every door on the dial, in the order the turn passes along it and the drawer arrows step through it. `art` is the
@@ -261,18 +262,49 @@ export const JOBS: Job[] = [
   { name: "Basket Ent", logo: "/logos/basketent.png", role: "Acquisitions and liveops", line: "Acquisitions, then liveops after each one.", href: "https://basketent.com" },
 ];
 
-export type ShelfItem = { kind: "ad" | "site"; src: string; w: number; h: number; alt: string; to: DrawerId };
+/** One of his best ads (scored 6 or more by him, 11 Nov 2026; ~/night/real/picks-scores and panel-scores). 960 by 1200
+ *  copies of the 1080 by 1350 finals, and 480 wide for small places. Spec work, made unasked. */
+const best = (key: string, brand: string, says: string, shows: string, score: number, h = 1200): Ad & { score: number; h: number } => ({ src: `/ads/best/${key}.webp`, small: `/ads/best/${key}-480.webp`, brand, says, alt: `${brand}: ${says} ${shows}`, score, h });
 
-/** The first screen's shelf: his best work standing along the bottom edge, under the dial. Ads open the ads drawer,
- *  sites the work drawer. Order is left to right; the middle one stands tallest. */
-export const SHELF: ShelfItem[] = [
-  { kind: "site", src: "/design/kleoklaw-720.webp", w: 720, h: 405, alt: "Kleoklaw, a client site: its first screen", to: "work" },
-  { kind: "ad", src: REAL.cursor.ads[2].small, w: 480, h: 600, alt: REAL.cursor.ads[2].alt, to: "ads" },
-  { kind: "ad", src: REAL.treg.ads[0].small, w: 480, h: 600, alt: REAL.treg.ads[0].alt, to: "ads" },
-  { kind: "ad", src: REAL.outpace.ads[0].small, w: 480, h: 600, alt: REAL.outpace.ads[0].alt, to: "ads" },
-  { kind: "ad", src: REAL.nebula.ads[0].small, w: 480, h: 600, alt: REAL.nebula.ads[0].alt, to: "ads" },
-  { kind: "site", src: "/design/splittingpoint-720.webp", w: 720, h: 467, alt: "Splitting Point, a client landing page: its first screen", to: "work" },
+export const BEST = {
+  corners: best("outpace-corners", "Outpace", "No corners cut.", "A running track drawn as an arch in Outpace orange, the line set in the dark lane inside it.", 8),
+  scale: best("shown-scale", "Shown Media", "Get your brand shown at scale.", "The Shown mark lit up on an old drive-in screen at dusk.", 7),
+  seen: best("shown-seen", "Shown Media", "One job. Get you seen.", "A close-up of an eye with the Shown mark in the pupil.", 7),
+  told: best("shown-told", "Shown Media", "Shown, not told.", "The word shown lit on a billboard at night.", 7),
+  income: best("whop-income", "Whop", "To deliver everyone a sustainable income.", "A halftone street with a tall orange Whop banner: Bet on yourself.", 7),
+  team: best("outpace-team", "Outpace", "We work inside your team. Not around it.", "A relay baton lying across a lane line.", 7),
+  momentum: best("outpace-momentum", "Outpace", "Here's what momentum looks like.", "The track's lanes curving into an arch on orange.", 7, 1707),
+  review: best("cursor-review", "Cursor", "Ready for review.", "A field half ploughed, half green, with the diff counts between.", 6),
+  found: best("dreamstate-found", "Dreamstate", "Found one.", "A lone swimmer seen from above, boxed and tagged Buyer found.", 6),
+  fluff: best("outpace-fluff", "Outpace", "No fluff. No 90-day timelines.", "Starting blocks on a running track, their mark painted on the lane.", 6),
+  raised: best("outpace-raised", "Outpace", "Our clients raised $200M+. Yours could be next.", "A finish tape breaking over an orange track.", 6),
+  ship: best("outpace-ship", "Outpace", "Ship fast. Look credible.", "The Outpace mark laid out as a running track on green.", 6),
+  headed: best("outpace-headed", "Outpace", "Tell us where you're headed.", "A red running track leading into trees and hills.", 6),
+  liftoff: best("shown-liftoff", "Shown Media", "Liftoff is the easy part.", "A rocket launch watched by a crowd, 100M+ views on a board.", 6),
+  economy: best("whop-economy", "Whop", "The new economy.", "An old shop window painted with sale signs, a Get started tag on it.", 6),
+  fly: best("whop-fly", "Whop", "Your agent runs the business. You fly.", "A pilot in a visor, mountains reflected in it.", 6),
+  list: best("whop-list", "Whop", "Free to list. 22M+ people a month.", "Garage sale signs nailed to a tree, a Join marketplace tag on them.", 6),
+};
+
+/** His best ads as sets, for the ads drawer, best first. */
+export const BEST_SETS: AdSet[] = [
+  { key: "outpace-best", brand: "Outpace", from: "outpacestudios.com", says: "A design and development studio for startups. Their orange is a running track, so every ad is one.", ads: [BEST.corners, BEST.team, BEST.ship, BEST.headed, BEST.fluff, BEST.raised] },
+  { key: "shown-best", brand: "Shown Media", says: "Launch videos for tech and AI. Their mark is a play button, so it goes where things get shown.", ads: [BEST.scale, BEST.seen, BEST.told, BEST.liftoff] },
+  { key: "whop-best", brand: "Whop", from: "whop.com", says: "Their own lines, in their orange, on real photographs.", ads: [BEST.income, BEST.economy, BEST.fly, BEST.list] },
 ];
 
-/** Under the home line: what he did before, in one line. MenuFit's number is his own (9 Nov 2026). */
-export const CRED = "Before: Product Designer at MenuFit (1.5M users), intern at Okara. Now: founder of Bevel.";
+export type ShelfItem = { src: string; big: string; alt: string };
+
+/** The first screen's shelf: only ads he scored 7 or 8, the 8 in the middle. Each opens the ads drawer. */
+export const SHELF: ShelfItem[] = [BEST.told, BEST.income, BEST.corners, BEST.scale, BEST.team, BEST.seen].map((a) => ({ src: a.small, big: a.src, alt: a.alt }));
+
+/** Where he has worked, for the capsule under the home line: his own two first, then the jobs. Facts as JOBS, profile.ts
+ *  and the CV have them (MenuFit's 1.5M users is his own number, 9 Nov 2026). */
+export const WORKED: { name: string; role: string; logo?: string; tile?: string }[] = [
+  { name: "Ignaru", role: "founder", logo: "/logos/ignaru.png" },
+  { name: "Bevel", role: "founder", logo: "/logos/bevel.png" },
+  { name: "MenuFit", role: "product designer, 1.5M users", logo: "/logos/menufit-bag-128.webp" },
+  { name: "Okara", role: "intern", logo: "/logos/okara.png", tile: "#fff" },
+  { name: "SOF Agency", role: "PR and partnerships" },
+  { name: "Basket Ent", role: "acquisitions and liveops", logo: "/logos/basketent.png" },
+];

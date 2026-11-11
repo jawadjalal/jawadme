@@ -10,10 +10,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Booking } from "./booking";
 import { DRAWERS, drawerAt, type DrawerId } from "./copy";
 import { Drawer } from "./Drawer";
+import { FeltGlyph } from "./FeltGlyph";
 import { Nav } from "./Nav";
 import { Ring } from "./Ring";
 
-/** The open drawer's felt piece, large on the screen beside it (desktop only). */
+/** The open drawer's felt piece, large on the screen beside it (desktop only), drawn in glyphs that lean away from the
+ *  cursor. (The drawer is modal, so the page beside it takes no hover: the felt stays in glyphs here.) */
 function StageArt({ at }: { at: DrawerId | null }) {
   const d = DRAWERS.find((x) => x.id === at);
   const [last, setLast] = useState(d);
@@ -22,8 +24,9 @@ function StageArt({ at }: { at: DrawerId | null }) {
   if (!show) return null;
   return (
     <div className={`fh-stage-art${d ? " is-on" : ""}`} aria-hidden="true">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img key={show.id} src={`/felt/${show.art}.webp`} alt="" width={640} height={640} decoding="async" />
+      <div key={show.id} className="fh-stage-fg">
+        <FeltGlyph art={show.art} alt="" cell={8} />
+      </div>
     </div>
   );
 }
