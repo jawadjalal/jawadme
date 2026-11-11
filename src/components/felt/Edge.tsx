@@ -104,7 +104,8 @@ export function Edge() {
       const loop = (ms: number) => {
         if (gone) return;
         raf = requestAnimationFrame(loop);
-        if (document.hidden || ms - last < 1000 / 24) return;
+        // nothing moves behind an open drawer (Drawer.tsx marks the page html.fh-locked while one is open)
+        if (document.hidden || document.documentElement.classList.contains("fh-locked") || ms - last < 1000 / 24) return;
         last = ms;
         draw(ms);
       };

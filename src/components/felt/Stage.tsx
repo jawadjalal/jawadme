@@ -13,11 +13,17 @@ import { Drawer } from "./Drawer";
 import { Nav } from "./Nav";
 import { Ring } from "./Ring";
 
-/** The open drawer's felt piece, large on the screen beside it (desktop only). */
+/** The open drawer's felt piece, large on the screen beside it (desktop only). It stays for its fade out after the
+ *  drawer closes, then unmounts. */
 function StageArt({ at }: { at: DrawerId | null }) {
   const d = DRAWERS.find((x) => x.id === at);
   const [last, setLast] = useState(d);
   if (d && d !== last) setLast(d);
+  useEffect(() => {
+    if (d) return;
+    const t = window.setTimeout(() => setLast(undefined), 400);
+    return () => window.clearTimeout(t);
+  }, [d]);
   const show = d ?? last;
   if (!show) return null;
   return (

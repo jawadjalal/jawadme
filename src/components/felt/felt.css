@@ -76,16 +76,15 @@ html.fh-locked { overflow: hidden; }
 .fh-quiet:hover, .fh-quiet:focus-visible { color: var(--ink); }
 .fh-arrow { flex: none; transition: translate 0.12s ease-out; }
 .fh-quiet:hover .fh-arrow { translate: 2px -2px; }
-/* the key: pressed felt, a white body, a 2px ledge the press closes (ignaru.com's .h8-key-a) */
+/* the key: a round white button, flat, at glasa.io's measure (40px tall, 16px sides, 15px medium; 11 Nov) */
 .fh-key {
   display: inline-flex; align-items: center; gap: 8px;
-  height: 40px; margin-bottom: 2px; padding: 0 16px 0 14px; border-radius: 11px;
-  background: #fff; color: #111; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; white-space: nowrap;
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.06), 0 2px 0 #4a4a4a, 0 6px 14px rgba(0, 0, 0, 0.5);
-  transition: background-color 0.14s var(--ease), box-shadow 0.12s var(--ease), translate 0.12s var(--ease);
+  height: 40px; padding: 0 18px 0 14px; border-radius: 999px;
+  background: #fff; color: #111; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap;
+  transition: background-color 0.14s var(--ease), scale 0.12s var(--ease);
 }
-.fh-key:hover, .fh-key:focus-visible { background: #f4f1ec; }
-.fh-key:active { translate: 0 2px; box-shadow: 0 0 0 transparent, 0 2px 6px rgba(0, 0, 0, 0.5); }
+.fh-key:hover, .fh-key:focus-visible { background: #e9e5df; }
+.fh-key:active { scale: 0.97; }
 /* "more": every drawer, and the blog, in a sheet that drops from the bar */
 .fh-more { position: absolute; top: calc(100% + 10px); right: 150px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: min(340px, calc(100vw - 20px)); padding: 8px; border-radius: 16px; background: #111; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 24px 50px -10px #000; animation: fh-down 0.45s var(--spring); }
 .fh-more[hidden] { display: none; }
@@ -99,101 +98,127 @@ html.fh-locked { overflow: hidden; }
 .fh-soc { display: flex; align-items: center; gap: 0; }
 .fh-soc a { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; color: #8a847c; transition: color 0.2s, background-color 0.2s; }
 .fh-soc a:hover, .fh-soc a:focus-visible { color: var(--b); background: rgba(255, 255, 255, 0.05); }
-.fh-notch-cv { display: inline-flex; align-items: center; gap: 6px; height: 34px; margin-left: 4px; padding: 0 12px; border-radius: 10px; background: #1b1b1b; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); font-size: 13px; font-weight: 500; color: var(--ink); transition: background-color 0.2s; }
+.fh-notch-cv { display: inline-flex; align-items: center; gap: 6px; height: 34px; margin-left: 4px; padding: 0 14px; border-radius: 999px; background: #1b1b1b; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); font-size: 13px; font-weight: 500; color: var(--ink); transition: background-color 0.2s; }
 .fh-notch-cv:hover, .fh-notch-cv:focus-visible { background: #242424; }
 .fh-corner { position: fixed; z-index: 4; right: 0; bottom: 0; padding: 0 14px 14px 0; }
 .fh-sound { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 10px; background: transparent; color: var(--ink-3); cursor: pointer; transition: color 0.2s, background-color 0.2s; }
 .fh-sound:hover, .fh-sound:focus-visible { color: var(--ink); background: rgba(255, 255, 255, 0.06); }
 
-/* ---------- the ring (Ring.tsx): the page scrolls under a sticky stage; the turn passes from door to door ---------- */
+/* ---------- the arc (Ring.tsx): the page scrolls under a sticky stage; the turn passes from door to door ---------- */
 .fh-main { position: relative; z-index: 1; }
 .fh-ring { position: relative; height: calc(100dvh + var(--n) * 38dvh); }
-/* --A: the door whose turn it is; --Rx, --Ry: the ring's radii (wider than tall); --cy: its centre from the top. The
-   sizes, radii and centre are ignaru.com's, measured live at 1440, 1024 and 390 (7 Nov). --half: how far round from the
-   top each end reaches (ignaru.com: 110deg for nine; five doors take 112deg); --g: the room either side of the two end
-   doors, half of --half, so the five sit evenly at -112, -56, 0, 56 and 112 degrees */
-.rg-stage { --A: min(17vw, 25dvh, 250px); --Rx: min(36vw, 540px); --Ry: min(24dvh, 270px); --cy: 43%; --half: 112deg; --g: 56deg; position: sticky; top: 0; height: 100dvh; overflow: hidden; transition: opacity 0.35s var(--ease); }
-/* a drawer is open: the ring steps right out, so nothing ghosts behind the drawer's felt piece */
+.rg-stage { position: sticky; top: 0; height: 100dvh; overflow: hidden; transition: opacity 0.35s var(--ease); }
+/* a drawer is open: the arc steps right out, so nothing ghosts behind the drawer's felt piece */
 .rg-stage.is-dim { opacity: 0; }
+/* the composition lives in a frame no taller than 980px, centred in the screen, so a very tall window keeps it together.
+   --A: every door's size (one size for all five); --Rx, --Ry: the arc's radii; --cy: its centre, level with the line;
+   --half: how far round from the top each end door sits (80deg: beside the line, a little above its middle) */
+.rg-frame { --A: min(11.5vw, 17.5svh, 188px); --Rx: min(43vw, 640px); --Ry: min(31svh, 290px); --cy: 48%; --half: 82deg; position: absolute; left: 0; right: 0; top: 50%; height: min(100%, 980px); translate: 0 -50%; }
 .rg-obj {
-  --a: calc(var(--half) * -1 + var(--g) + (var(--i) - 1) * (var(--half) * 2 - var(--g) * 2) / (var(--n) - 3));
+  --a: calc(var(--half) * -1 + var(--i) * var(--half) * 2 / (var(--n) - 1));
   position: absolute; left: 50%; top: var(--cy); width: var(--A); aspect-ratio: 1; margin: calc(var(--A) / -2) 0 0 calc(var(--A) / -2);
   display: block; cursor: pointer; -webkit-tap-highlight-color: transparent;
   translate: calc(sin(var(--a)) * var(--Rx)) calc(cos(var(--a)) * var(--Ry) * -1);
-  scale: 0.64; opacity: 0.74; will-change: scale, opacity;
+  opacity: 0.9; will-change: opacity;
   animation: rg-in 1s var(--spring) backwards; animation-delay: calc(var(--i) * 55ms + 80ms);
 }
-.rg-obj.is-first { --a: calc(var(--half) * -1); scale: 1; opacity: 1; }
-.rg-obj.is-last { --a: var(--half); }
-@keyframes rg-in { from { opacity: 0; } }
-.rg-fig { position: relative; display: block; width: 100%; height: 100%; }
-.rg-fig img { width: 100%; height: auto; user-select: none; -webkit-user-drag: none; filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55)); transition: translate 0.35s var(--spring), scale 0.35s var(--spring); }
-/* a door changing: the old piece lifts a hair, sinks and blurs away; the new one drops in from a blur and lands with a squash */
-.rg-fig img.is-out { position: absolute; left: 0; top: 0; pointer-events: none; animation: rg-out 440ms cubic-bezier(0.45, 0, 0.75, 0.35) forwards; }
-.rg-fig img.is-in { animation: rg-swap 940ms 120ms cubic-bezier(0.25, 0.7, 0.3, 1) backwards; }
-@keyframes rg-out {
-  22% { transform: translateY(-3%) scale(1.03); }
-  to { opacity: 0; transform: translateY(9%) scale(0.78) rotate(calc(var(--r, 0deg) * -0.6)); filter: blur(7px); }
-}
+.rg-obj.is-first { opacity: 1; }
+@keyframes rg-in { from { opacity: 0; translate: calc(sin(var(--a)) * var(--Rx)) calc(cos(var(--a)) * var(--Ry) * -1 + 24px); } }
+.rg-fig { width: 100%; height: 100%; transition: translate 0.35s var(--spring), scale 0.35s var(--spring); }
+/* hover: the door lifts a little, comes up to full strength, and its name rises under it letter by letter */
+.rg-obj:hover, .rg-obj:focus-visible { opacity: 1 !important; z-index: 6; }
+.rg-obj:hover .rg-fig, .rg-obj:focus-visible .rg-fig { translate: 0 -6px; scale: 1.05; }
+.rg-obj:active .rg-fig { scale: 0.96; transition-duration: 0.1s; }
+.rg-tag { position: absolute; left: 50%; top: calc(100% + 6px); translate: -50% 0; display: flex; font-size: 16px; font-weight: 500; line-height: 1; letter-spacing: -0.015em; white-space: nowrap; color: var(--ink-2); pointer-events: none; transition: color 0.2s; }
+.rg-tag i { font-style: normal; display: inline-block; transition: translate 0.3s var(--spring); }
+.rg-obj:hover .rg-tag, .rg-obj:focus-visible .rg-tag, .rg-obj.is-turn .rg-tag { color: var(--ink); }
+.rg-obj:hover .rg-tag i, .rg-obj:focus-visible .rg-tag i { translate: 0 -2px; transition-delay: calc(var(--k) * 22ms); }
+
+/* a door's felt piece; when a door changes, the new piece drops in from a blur and lands with a squash */
+.rg-fig { position: relative; display: block; }
+.rg-img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55)); }
+.rg-img.is-in { animation: rg-swap 900ms cubic-bezier(0.25, 0.7, 0.3, 1) backwards; }
 @keyframes rg-swap {
-  from { opacity: 0; transform: translateY(-24%) scale(0.88) rotate(var(--r, 0deg)); filter: blur(10px); }
-  36% { opacity: 1; transform: translateY(4%) scale(1.07, 0.92) rotate(calc(var(--r, 0deg) * -0.3)); filter: blur(0) drop-shadow(0 8px 10px rgba(0, 0, 0, 0.65)); }
-  57% { transform: translateY(-2%) scale(0.97, 1.03) rotate(calc(var(--r, 0deg) * 0.15)); }
-  78% { transform: translateY(0.6%) scale(1.01, 0.99) rotate(0deg); }
+  from { opacity: 0; transform: translateY(-18%) scale(0.88); filter: blur(10px) drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55)); }
+  40% { opacity: 1; transform: translateY(3%) scale(1.06, 0.93); filter: blur(0) drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55)); }
+  70% { transform: translateY(-1%) scale(0.98, 1.02); }
 }
-/* hover: the door lifts and grows a little, comes up to full strength, and its name rises under it letter by letter */
-.rg-obj:hover, .rg-obj:focus-visible { opacity: 1 !important; z-index: 6 !important; }
-.rg-obj:hover .rg-fig img, .rg-obj:focus-visible .rg-fig img { translate: 0 -8px; scale: 1.07; }
-.rg-obj:active .rg-fig img { scale: 0.96; transition-duration: 0.1s; }
-.rg-tag { position: absolute; left: 50%; top: calc(100% - 2px); translate: -50% 0; display: flex; font-size: 34px; font-weight: 600; line-height: 1; letter-spacing: -0.045em; white-space: nowrap; color: var(--ink); pointer-events: none; }
-.rg-tag i { font-style: normal; opacity: 0; translate: 0 10px; filter: blur(6px); transition: opacity 0.2s ease-out, translate 0.2s ease-out, filter 0.2s ease-out; }
-.rg-obj:hover .rg-tag i, .rg-obj:focus-visible .rg-tag i { opacity: 1; translate: 0 0; filter: blur(0); transition-duration: 0.38s; transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--k) * 26ms); }
-.rg-puff { position: absolute; z-index: 2; left: 50%; top: 46%; width: 58%; height: auto; pointer-events: none; }
-/* the line, in the ring's bowl, where ignaru.com sets its own (level with where its ends sit), at ignaru.com's headline
-   size: it follows the room between the dial's two ends (1.88 Rx, less the active door and 40px each side) */
-.rg-line { position: absolute; left: 0; right: 0; top: calc(var(--cy) + var(--Ry) * 0.375 - 1.22em); display: grid; justify-items: center; padding-inline: 16px; font-size: clamp(20px, calc((1.88 * var(--Rx) - var(--A) - 80px) / 17.6), 38px); pointer-events: none; }
-.rg-line > * { grid-area: 1 / 1; max-width: min(800px, 56vw); font-size: 1em; font-weight: 500; line-height: 1.2; letter-spacing: -0.028em; text-align: center; text-wrap: balance; color: var(--ink); }
-/* his face, small before his name: the cut-out head, no disc behind it */
+@media (prefers-reduced-motion: reduce) { .rg-img.is-in { animation: none; } }
+
+/* ---------- the line: two lines set large, his face and the Ignaru petal inside them; a quiet line and the capsule under ---------- */
+.rg-line { position: absolute; left: 50%; top: var(--cy); translate: -50% -50%; width: min(calc(1.9 * var(--Rx) - var(--A) - 48px), 1100px); display: grid; justify-items: center; text-align: center; pointer-events: none; }
+.rg-say { width: 100%; margin: 0; font-size: clamp(34px, min(6.6vw, 10.2svh), 112px); font-weight: 700; line-height: 0.94; letter-spacing: -0.052em; text-wrap: balance; color: var(--ink); }
+.rg-row { display: block; white-space: nowrap; }
 .rg-me { white-space: nowrap; }
-.rg-me img { display: inline-block; width: 0.98em; height: auto; margin: 0 0.14em 0 0.02em; vertical-align: -0.2em; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.45)); }
-.rg-hi { white-space: nowrap; color: #c9a2f7; font-weight: 600; }
-.rg-hi img { display: inline-block; width: 1.05em; height: 1.05em; margin: 0 0.16em 0 0.04em; vertical-align: -0.18em; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.5)); }
-.rg-l.is-out { animation: rg-l-out 240ms ease forwards; }
-.rg-l.is-in { position: relative; z-index: 1; }
-/* the h1 stays in the page for screen readers; while a door's line shows, it steps back visually */
-.rg-where { display: block; font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; margin-top: 0.7em; font-size: max(12px, 0.36em); font-weight: 400; letter-spacing: 0.02em; line-height: 1; color: color-mix(in oklab, var(--ink) 58%, transparent); }
-.rg-time { font-variant-numeric: tabular-nums; color: color-mix(in oklab, var(--ink) 82%, transparent); }
-.rg-h { transition: opacity 0.24s ease, filter 0.24s ease; }
-.rg-h.is-off { opacity: 0; filter: blur(6px); }
+.rg-me img { display: inline-block; width: 0.8em; height: auto; margin: 0 0.06em 0 0; vertical-align: -0.12em; }
+.rg-hi { white-space: nowrap; color: #c9a2f7; }
+.rg-mark { display: inline-block; width: 0.9em; height: 0.9em; margin: 0 0.08em 0 0.02em; vertical-align: -0.12em; }
+.rg-hi .ty-sv-k { color: #c9a2f7; }
+/* the Spider-Verse plates, slipped less at headline size so the word still reads first */
+.rg-hi .ty-sv-c { translate: -0.022em 0.012em; }
+.rg-hi .ty-sv-m { translate: 0.022em -0.01em; }
 .rg-w { display: inline-block; white-space: pre; animation: rg-l-in 420ms cubic-bezier(0.2, 0.7, 0.1, 1) backwards; animation-delay: calc(var(--j, 0) * 28ms); }
 .rg-w-one { white-space: normal; }
 @keyframes rg-l-in { from { opacity: 0; filter: blur(6px); transform: translateY(0.35em); } }
 @keyframes rg-l-out { to { opacity: 0; filter: blur(6px); transform: translateY(-0.2em); } }
-/* under the line: what he did before */
-.rg-cred { display: block; margin: 0.9em auto 0; max-width: 80ch; font-size: max(13px, 0.42em); font-weight: 400; line-height: 1.35; letter-spacing: -0.005em; color: color-mix(in oklab, var(--ink) 66%, transparent); text-wrap: balance; }
-/* the spec credit: just above the shelf's tallest ad, full width and centred so it wraps inside the screen, clear of the bottom dock */
-.rg-cred.rg-spec { position: absolute; left: 0; right: 0; bottom: calc(60px + min(12vw, 19dvh, 190px) * 1.25 + 12px); margin: 0; max-width: none; padding-inline: 16px; text-align: center; }
-/* the shelf: his best work standing along the bottom edge, under the dial; a card rises under the pointer, a press opens its drawer */
-.rg-shelf { position: absolute; left: 50%; bottom: 60px; translate: -50% 0; display: flex; align-items: flex-end; justify-content: center; height: min(27dvh, 250px); padding: 0; margin: 0; list-style: none; pointer-events: none; }
-.rg-shelf li { --o: calc(var(--i) - (var(--n) - 1) / 2); flex: none; margin-inline: calc(var(--sw) * -0.035); translate: 0 calc(var(--o) * var(--o) * 1.1%); rotate: calc(var(--o) * 1.6deg); transform-origin: 50% 120%; z-index: calc(10 - max(var(--o), var(--o) * -1)); transition: translate 0.5s var(--spring), rotate 0.5s var(--spring); animation: rg-shelf-in 0.9s var(--spring) backwards; animation-delay: calc(max(var(--o), var(--o) * -1) * 70ms + 350ms); }
-.rg-shelf { --sw: min(12vw, 19dvh, 190px); }
-/* a tall screen (a tablet held upright): the dial sits a little lower and the shelf stands larger, running off both edges */
-@media (min-width: 761px) and (max-aspect-ratio: 1 / 1) {
-  .rg-stage { --cy: 45%; }
-  .rg-shelf { --sw: min(19vw, 17dvh); bottom: 76px; }
-  .rg-cred.rg-spec { bottom: calc(76px + min(19vw, 17dvh) * 1.25 + 12px); }
+/* the quiet line under the headline; a door's line takes its place, same size, so nothing above it moves */
+.rg-subs { display: grid; width: 100%; margin-top: clamp(14px, 2.2svh, 24px); }
+.rg-subs > * { grid-area: 1 / 1; }
+.rg-sub { font-size: clamp(16px, 1.45vw, 21px); font-weight: 500; line-height: 1.3; letter-spacing: -0.015em; color: var(--ink-2); text-wrap: balance; transition: opacity 0.24s ease, filter 0.24s ease; }
+.rg-sub.is-off { opacity: 0; filter: blur(5px); }
+.rg-sub.rg-l.is-in { color: var(--ink); }
+.rg-l.is-out { animation: rg-l-out 240ms ease forwards; }
+
+/* where he has worked: a dark capsule, the label fixed at its left, the names running through it */
+.wk { display: flex; align-items: center; width: min(100%, 720px); height: 50px; margin-top: clamp(16px, 2.6svh, 28px); padding: 0 0 0 20px; border-radius: 999px; background: #121212; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); overflow: hidden; pointer-events: auto; }
+.wk-label { flex: none; padding-right: 16px; font-size: 13px; font-weight: 500; line-height: 1; color: var(--ink-3); white-space: nowrap; }
+.wk-track { position: relative; flex: 1; min-width: 0; height: 100%; overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 40px), transparent);
+  mask: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 40px), transparent); }
+.wk-run { display: flex; width: max-content; height: 100%; animation: wk-run 38s linear infinite; }
+.wk:hover .wk-run, .wk:focus-within .wk-run, .wk.is-held .wk-run, html.fh-locked .wk-run { animation-play-state: paused; }
+html.fh-locked .rg-shelf li, html.fh-locked .rg-img { animation-play-state: paused; }
+@keyframes wk-run { to { transform: translateX(-50%); } }
+.wk-row { display: flex; align-items: center; gap: 30px; height: 100%; padding: 0 15px; margin: 0; list-style: none; }
+.wk-row li { display: flex; align-items: center; gap: 8px; white-space: nowrap; font-size: 15px; line-height: 1; }
+.wk-row img { width: 22px; height: 22px; border-radius: 5px; object-fit: contain; }
+.wk-row b { font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+.wk-row span { color: var(--ink-3); }
+/* reduced motion: no run; the strip scrolls sideways instead (by touch, trackpad, or arrow keys once it has focus),
+   and the second copy goes, so every name is reachable once */
+@media (prefers-reduced-motion: reduce) {
+  .wk-track { overflow-x: auto; scrollbar-width: none; }
+  .wk-track::-webkit-scrollbar { display: none; }
+  .wk-run { animation: none; }
+  .wk-row[aria-hidden] { display: none; }
 }
-.rg-shelf li.is-ad { width: var(--sw); }
-.rg-shelf li.is-site { width: calc(var(--sw) * 1.62); }
-.rg-shelf button { display: block; width: 100%; padding: 0; border: 0; border-radius: 4px; background: #111; overflow: hidden; cursor: pointer; pointer-events: auto; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 -14px 34px -10px rgba(0, 0, 0, 0.8); -webkit-tap-highlight-color: transparent; }
+
+
+/* the pile: his six best ads staged with depth at the foot. Each card is placed from the centre in card widths (--x),
+   lowered or raised by a share of its own height (--y), turned (--r), sized (--s) and drifts with the pointer by its
+   depth (--d). The hero, the 8, sits in front, largest. A card under the pointer straightens, rises and comes forward. */
+.rg-shelf { --sw: min(10vw, 14.5svh, 168px); --px: 0; --py: 0; position: absolute; left: 50%; bottom: 66px; width: 0; height: calc(var(--sw) * 1.25 * 1.3); margin: 0; padding: 0; list-style: none; pointer-events: none; }
+.rg-shelf li {
+  position: absolute; left: 0; bottom: 0; width: var(--sw);
+  translate: calc(-50% + var(--x) * var(--sw) + var(--px) * var(--d) * 14px) calc(var(--y) + var(--py) * var(--d) * 8px);
+  rotate: var(--r); scale: var(--s); transform-origin: 50% 100%;
+  transition: translate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), rotate 0.45s var(--spring), scale 0.45s var(--spring);
+  animation: rg-deal 1s cubic-bezier(0.2, 0.8, 0.2, 1.08) backwards; animation-delay: calc(300ms + var(--i) * 80ms);
+}
+.rg-shelf li.is-hero { animation-delay: 760ms; }
+.rg-shelf button { display: block; width: 100%; padding: 0; border: 0; border-radius: 6px; background: #111; overflow: hidden; cursor: pointer; pointer-events: auto; box-shadow: 0 calc(10px + var(--d) * 14px) calc(24px + var(--d) * 20px) -8px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.06); -webkit-tap-highlight-color: transparent; transition: box-shadow 0.45s var(--ease); }
 .rg-shelf img { display: block; width: 100%; height: auto; }
-.rg-shelf li:hover, .rg-shelf li:focus-within { translate: 0 -7%; rotate: 0deg; z-index: 20; }
+.rg-shelf li:hover, .rg-shelf li:focus-within { z-index: 20 !important; rotate: 0deg; scale: calc(var(--s) * 1.08); translate: calc(-50% + var(--x) * var(--sw)) calc(var(--y) - 7%); }
+.rg-shelf li:hover button, .rg-shelf li:focus-within button { box-shadow: 0 34px 60px -12px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.1); }
 .rg-shelf button:focus-visible { outline: none; }
-@keyframes rg-shelf-in { from { opacity: 0; translate: 0 70%; } }
-@media (prefers-reduced-motion: reduce) { .rg-shelf li { animation: none; transition: none; } }
+@keyframes rg-deal { from { opacity: 0; translate: calc(-50% + var(--x) * var(--sw) * 0.3) 60%; rotate: calc(var(--r) * -2); } }
+/* a short desktop window: the pile steps down a size so the hero clears the capsule */
+@media (min-width: 761px) and (max-height: 760px) { .rg-shelf { --sw: min(10vw, 12.5svh, 168px); } }
+@media (prefers-reduced-motion: reduce) { .rg-shelf li { animation: none; transition: none; translate: calc(-50% + var(--x) * var(--sw)) var(--y); } }
+/* the spec note, once, small, in the bottom right corner clear of the dock */
+.rg-spec { position: absolute; left: 24px; bottom: 20px; max-width: 32ch; font-size: 12px; line-height: 1.35; color: var(--ink-3); }
 .rg-list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-/* reduced motion, in CSS alone so the server's first paint and the hydrated page match: the ten sit on the ring from
-   the start, and their lines are listed under it */
+/* reduced motion, in CSS alone so the server's first paint and the hydrated page match */
 @media (prefers-reduced-motion: reduce) {
   .fh-ring { height: auto; }
   .fh-ring .rg-stage { position: relative; }
@@ -201,10 +226,7 @@ html.fh-locked { overflow: hidden; }
   .fh-ring .rg-list b { font-weight: 600; color: var(--ink); }
 }
 /* touch: no hover to spell a door's name, so every door wears it, small, under its felt */
-@media (hover: none) {
-  .rg-tag { top: calc(100% + 1px); font-size: 17px; font-weight: 500; letter-spacing: -0.01em; color: var(--ink-2); }
-  .rg-tag i { opacity: 1; translate: none; filter: none; }
-}
+@media (hover: none) { .rg-tag { font-size: 14px; } }
 
 /* the open drawer's felt piece, on the stage beside it */
 .fh-stage-art { position: fixed; z-index: 1; left: 0; top: 0; bottom: 0; right: calc(var(--dw) + 10px); display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity 0.3s var(--ease); }
@@ -362,13 +384,14 @@ html.fh-locked { overflow: hidden; }
 .bx-set-pick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: auto; }
 .bx-set-pick.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .bx-set-pick.n5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.bx-set-pick.n6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .bx-set-pick button { display: block; width: 100%; padding: 0; border: 0; border-radius: 3px; background: none; overflow: hidden; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .bx-set-pick img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; opacity: 0.42; transition: opacity 0.25s, scale 0.6s var(--ease); }
 .bx-set-pick button:hover img, .bx-set-pick button:focus-visible img { opacity: 0.8; }
 .bx-set-pick button[aria-pressed="true"] img { opacity: 1; scale: 1.03; }
 .bx-set-says { min-height: 3.6em; font-size: 19px; font-weight: 500; line-height: 1.25; letter-spacing: -0.02em; color: var(--ink); text-wrap: balance; animation: bx-swap 0.42s var(--ease); }
 .bx-set-says b { font-weight: 600; }
-.bx-set-says span { display: block; margin-top: 7px; font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; font-weight: 400; letter-spacing: 0.01em; color: var(--ink-3); }
+.bx-set-says span { display: block; margin-top: 7px; font-size: 13px; font-weight: 400; letter-spacing: -0.005em; color: var(--ink-3); }
 /* a set as a row: every ad side by side */
 .bx-row { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 8px; }
 .bx-row-c .bx-h h3 { font-size: 26px; letter-spacing: -0.03em; }
@@ -465,9 +488,9 @@ html.fh-locked { overflow: hidden; }
 /* the key: the paper ink block, alone at the drawer's bottom right, in a solid tray that stays at the drawer's foot */
 .kx-tray { position: sticky; bottom: 0; z-index: 6; display: flex; justify-content: flex-end; margin: 40px -32px 0; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: #0c0c0c; }
 .kx-bar { position: relative; display: flex; flex-direction: row-reverse; align-items: center; gap: 18px; width: fit-content; max-width: 100%; margin: 0; }
-.kx-ink { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 6px 14px; border-radius: 4px; background: var(--ink); font-size: 15px; font-weight: 500; letter-spacing: -0.01em; color: #0c0c0c; white-space: nowrap; transition: background-color 0.15s var(--ease), translate 0.1s var(--ease); }
+.kx-ink { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 18px; border-radius: 999px; background: var(--ink); font-size: 15px; font-weight: 500; letter-spacing: -0.01em; color: #0c0c0c; white-space: nowrap; transition: background-color 0.15s var(--ease), translate 0.1s var(--ease); }
 .kx-ink:hover, .kx-ink:focus-visible { background: #fff; }
-.kx-ink:active { translate: 0 1px; }
+.kx-ink:active { scale: 0.97; }
 .kx-out { flex: none; transition: translate 0.2s var(--spring); }
 .kx-ink:hover .kx-out, .kx-bar-2:hover .kx-out { translate: 2px -2px; }
 .kx-bar-2 { display: inline-flex; flex: none; align-items: center; gap: 6px; height: 40px; padding: 0 2px; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; color: var(--ink-2); white-space: nowrap; transition: color 0.2s; }
@@ -511,19 +534,30 @@ html.fh-locked { overflow: hidden; }
   .fh-notch { padding-left: 6px; }
   .fh-corner { padding: 0 6px 8px 0; }
   .fh-ring { height: calc(100dvh + var(--n) * 30dvh); }
-  /* a phone: the ring stands taller than it is wide so it fills the screen between the bar and the notch, its ends
-     come further round (--half 128deg, so they sit cos(128deg) = 0.616 of --Ry below the centre), and the line sits
-     under those two ends */
-  .rg-stage { --A: min(26vw, 13dvh); --Rx: 37vw; --Ry: min(52vw, 25dvh); --cy: 37%; --half: 128deg; --g: 64deg; }
-  .rg-line { top: calc(var(--cy) + var(--Ry) * 0.616 + var(--A) * 0.5 + 20px); font-size: clamp(17px, 4.9vw, 21px); padding-inline: 12px; }
-  .rg-shelf { --sw: min(22vw, 12.5dvh); height: 19dvh; bottom: calc(56px + env(safe-area-inset-bottom)); }
-  .rg-cred.rg-spec { bottom: calc(56px + env(safe-area-inset-bottom) + min(22vw, 12.5dvh) * 1.25 + 12px); }
-  .rg-cred { font-size: 13px; max-width: 34ch; }
-  .rg-line > * { max-width: 100%; }
+  /* a phone: the arc sits in the top half, the line under it, the shelf at the foot over the dock */
+  .rg-frame { --A: min(23vw, 11.5svh); --Rx: 36vw; --Ry: min(46vw, 22svh); --cy: 33%; --half: 84deg; }
+  .rg-line { top: calc(var(--cy) + var(--A) * 0.5 + 48px); translate: -50% 0; width: calc(100vw - 32px); }
+  .rg-say { font-size: min(10.2vw, 5.6svh); }
+  .rg-sub { font-size: 16px; }
+  .bx-mail-c { order: -1; }
+  .wk { height: 44px; padding-left: 14px; }
+  .wk-label { font-size: 12px; padding-right: 10px; }
+  .wk-row { gap: 22px; }
+  .wk-row li { font-size: 14px; }
+  .wk-row img { width: 20px; height: 20px; }
+  .rg-shelf { --sw: min(23vw, 13svh); bottom: calc(74px + env(safe-area-inset-bottom)); }
+  .rg-spec { right: 0; left: 0; bottom: calc(74px + env(safe-area-inset-bottom) + min(23vw, 13svh) * 1.25 * 1.36 + 10px); max-width: none; padding-inline: 16px; text-align: center; }
   .fh-stage-art { display: none; }
-  .rg-tag { font-size: 18px; }
-  /* touch shows every door's name, so the line steps down past the one under the first door */
-  @media (hover: none) { .rg-line { margin-top: 22px; } }
+  /* a short phone (an SE, or a browser with its bars out): everything steps in so the shelf clears the capsule */
+  @media (max-height: 760px) {
+    .rg-frame { --A: 9.5svh; --Ry: 18svh; --cy: 32%; }
+    .rg-line { top: calc(var(--cy) + var(--A) * 0.5 + 26px); }
+    .rg-subs { margin-top: 10px; }
+    .rg-sub { font-size: 15px; }
+    .wk { margin-top: 12px; height: 40px; }
+    .rg-shelf { --sw: min(22vw, 11svh); }
+    .rg-spec { bottom: calc(74px + env(safe-area-inset-bottom) + min(22vw, 11svh) * 1.25 * 1.36 + 8px); font-size: 11.5px; }
+  }
 
   .fh-dr { inset: max(8px, env(safe-area-inset-top)) 0 0 0; width: 100%; height: auto; border-radius: 2px 2px 0 0; translate: 0 100%; opacity: 1; scroll-padding-bottom: 84px; transition: translate 0.55s cubic-bezier(0.22, 1, 0.36, 1), overlay 0.55s allow-discrete, display 0.55s allow-discrete; }
   .fh-dr[open] { translate: 0 var(--drag, 0px); }
@@ -559,6 +593,7 @@ html.fh-locked { overflow: hidden; }
   .bx-set-side .bx-h h3 { font-size: 28px; }
   .bx-set-pick, .bx-set-pick.n3 { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 0; }
   .bx-set-pick.n5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.bx-set-pick.n6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .bx-set-says { min-height: 0; font-size: 17px; }
   .bx-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .bx-price .bx-h h3 { font-size: 28px; }
@@ -596,8 +631,7 @@ html.fh-locked { overflow: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rg-fig img.is-in, .rg-fig img.is-out, .rg-obj, .fh-more, .fh-stage-art.is-on img, .fh-pg, .bx-c, .bx-set-in, .kx-top-art, .ty-sv-p, .fh-lb img, .fh-bar.is-drawn .fh-bar-in { animation: none; }
-  .rg-fig img.is-out { display: none; }
+  .rg-obj, .fh-more, .fh-stage-art.is-on img, .fh-pg, .bx-c, .bx-set-in, .kx-top-art, .ty-sv-p, .fh-lb img, .fh-bar.is-drawn .fh-bar-in { animation: none; }
   .rg-tag i { translate: none; filter: none; transition: opacity 0.2s; }
   .rg-obj:hover .rg-tag i { transition-delay: 0s; }
   .fh-dr, .fh-dr::backdrop, .fh-bar, .fh-notch, .kx-media > img, .bx-fan-i, .bx-felts img, .bx-face, .bx-win, .bx-win-view img, .fh-nl img, .fh-lb, .fh-ground { transition: none; }
