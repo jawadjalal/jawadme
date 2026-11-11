@@ -518,7 +518,7 @@ html.fh-locked { overflow: hidden; }
   .fh-ring { height: calc(100dvh + var(--n) * 30dvh); }
   /* a phone: the arc sits in the top half, the line under it, the shelf at the foot over the dock */
   .rg-frame { --A: min(23vw, 11.5svh); --Rx: 36vw; --Ry: min(46vw, 22svh); --cy: 33%; --half: 84deg; }
-  .rg-line { top: calc(var(--cy) + var(--A) * 0.5 + 34px); translate: -50% 0; width: calc(100vw - 32px); }
+  .rg-line { top: calc(var(--cy) + var(--A) * 0.5 + 48px); translate: -50% 0; width: calc(100vw - 32px); }
   .rg-say { font-size: min(10.2vw, 5.6svh); }
   .rg-sub { font-size: 16px; }
   .wk { height: 44px; padding-left: 14px; }
@@ -526,9 +526,18 @@ html.fh-locked { overflow: hidden; }
   .wk-row { gap: 22px; }
   .wk-row li { font-size: 14px; }
   .wk-row img { width: 20px; height: 20px; }
-  .rg-shelf { --sw: min(29vw, 17svh); bottom: calc(76px + env(safe-area-inset-bottom)); }
-  .rg-spec { right: 0; left: 0; bottom: calc(76px + env(safe-area-inset-bottom) + min(29vw, 17svh) * 1.25 + 14px); max-width: none; padding-inline: 16px; text-align: center; }
+  .rg-shelf { --sw: min(30vw, 17.5svh); bottom: calc(76px + env(safe-area-inset-bottom)); }
+  .rg-spec { right: 0; left: 0; bottom: calc(76px + env(safe-area-inset-bottom) + min(30vw, 17.5svh) * 1.25 + 14px); max-width: none; padding-inline: 16px; text-align: center; }
   .fh-stage-art { display: none; }
+  /* a short phone (an SE, or a browser with its bars out): everything steps in so the shelf clears the capsule */
+  @media (max-height: 760px) {
+    .rg-frame { --A: 9.5svh; --Ry: 18svh; --cy: 32%; }
+    .rg-line { top: calc(var(--cy) + var(--A) * 0.5 + 26px); }
+    .rg-sub { margin-top: 10px; font-size: 15px; }
+    .wk { margin-top: 12px; height: 40px; }
+    .rg-shelf { --sw: min(30vw, 14svh); }
+    .rg-spec { bottom: calc(76px + env(safe-area-inset-bottom) + min(30vw, 14svh) * 1.25 + 10px); font-size: 11.5px; }
+  }
 
   .fh-dr { inset: max(8px, env(safe-area-inset-top)) 0 0 0; width: 100%; height: auto; border-radius: 2px 2px 0 0; translate: 0 100%; opacity: 1; scroll-padding-bottom: 84px; transition: translate 0.55s cubic-bezier(0.22, 1, 0.36, 1), overlay 0.55s allow-discrete, display 0.55s allow-discrete; }
   .fh-dr[open] { translate: 0 var(--drag, 0px); }
