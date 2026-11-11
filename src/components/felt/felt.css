@@ -32,8 +32,8 @@ html.fh-locked { overflow: hidden; }
 .fh :focus-visible, .fh-dr :focus-visible { outline: none; }
 .fh-dr:focus { outline: none; }
 
-/* ---------- the ground: glyphs in the four felt colours (Edge.tsx), empty in the middle, filling towards the edges ---------- */
-.fh .fh-edge { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
+/* ---------- the ground: a halftone of the four felt colours, tiny in the middle, larger towards the edges ---------- */
+.fh-edge { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
 /* the same dots, printed still in CSS, for the first paint and where there is no WebGL; it steps out once the shader runs */
 .fh-ground {
   position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.5;
@@ -44,7 +44,7 @@ html.fh-locked { overflow: hidden; }
   mask-composite: intersect;
   transition: opacity 1.2s var(--ease);
 }
-.fh:has(.fh-edge:is([data-state="running"], [data-state="paused"], [data-state="static"])) .fh-ground { opacity: 0; }
+.fh:has(.fh-edge[data-on]) .fh-ground { opacity: 0; }
 
 /* ---------- the bar: a tab hanging flush from the top edge (ignaru.com, v10.4) ---------- */
 .fh-bar { position: fixed; z-index: 5; inset: 0 0 auto; display: grid; justify-items: center; padding: 0 16px; pointer-events: none; transition: padding 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -113,7 +113,7 @@ html.fh-locked { overflow: hidden; }
 /* the composition lives in a frame no taller than 980px, centred in the screen, so a very tall window keeps it together.
    --A: every door's size (one size for all five); --Rx, --Ry: the arc's radii; --cy: its centre, level with the line;
    --half: how far round from the top each end door sits (80deg: beside the line, a little above its middle) */
-.rg-frame { --A: min(11.5vw, 17.5svh, 188px); --Rx: min(43vw, 640px); --Ry: min(37svh, 340px); --cy: 52%; --half: 82deg; position: absolute; left: 0; right: 0; top: 50%; height: min(100%, 980px); translate: 0 -50%; }
+.rg-frame { --A: min(11.5vw, 17.5svh, 188px); --Rx: min(43vw, 640px); --Ry: min(31svh, 290px); --cy: 48%; --half: 82deg; position: absolute; left: 0; right: 0; top: 50%; height: min(100%, 980px); translate: 0 -50%; }
 .rg-obj {
   --a: calc(var(--half) * -1 + var(--i) * var(--half) * 2 / (var(--n) - 1));
   position: absolute; left: 50%; top: var(--cy); width: var(--A); aspect-ratio: 1; margin: calc(var(--A) / -2) 0 0 calc(var(--A) / -2);
@@ -134,19 +134,16 @@ html.fh-locked { overflow: hidden; }
 .rg-obj:hover .rg-tag, .rg-obj:focus-visible .rg-tag, .rg-obj.is-turn .rg-tag { color: var(--ink); }
 .rg-obj:hover .rg-tag i, .rg-obj:focus-visible .rg-tag i { translate: 0 -2px; transition-delay: calc(var(--k) * 22ms); }
 
-/* ---------- a felt piece in glyphs (FeltGlyph.tsx): the glyphs over the felt, a round window between them ---------- */
-@property --mr { syntax: "<percentage>"; inherits: true; initial-value: 0%; }
-.fg { --mx: 50%; --my: 50%; --mr: 0%; position: relative; display: block; aspect-ratio: 1; transition: --mr 0.55s cubic-bezier(0.3, 0.7, 0.2, 1); }
-.fg.is-open { --mr: 170%; transition-duration: 0.7s; }
-.fg .fg-img, .fg .fg-glyphs { position: absolute; inset: 0; width: 100%; height: 100%; }
-.fg-img { object-fit: contain; user-select: none; -webkit-user-drag: none;
-  -webkit-mask: radial-gradient(circle at var(--mx) var(--my), #000 calc(var(--mr) - 16%), transparent var(--mr));
-  mask: radial-gradient(circle at var(--mx) var(--my), #000 calc(var(--mr) - 16%), transparent var(--mr)); }
-.fg-glyphs {
-  -webkit-mask: radial-gradient(circle at var(--mx) var(--my), transparent calc(var(--mr) - 16%), #000 var(--mr));
-  mask: radial-gradient(circle at var(--mx) var(--my), transparent calc(var(--mr) - 16%), #000 var(--mr)); }
-/* before the engine has drawn (no script, or no canvas yet) the felt picture shows whole */
-.fg:has(.fg-glyphs[data-state="fallback"]) .fg-img { -webkit-mask: none; mask: none; }
+/* a door's felt piece; when a door changes, the new piece drops in from a blur and lands with a squash */
+.rg-fig { position: relative; display: block; }
+.rg-img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55)); }
+.rg-img.is-in { animation: rg-swap 900ms cubic-bezier(0.25, 0.7, 0.3, 1) backwards; }
+@keyframes rg-swap {
+  from { opacity: 0; transform: translateY(-18%) scale(0.88); filter: blur(10px) drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55)); }
+  40% { opacity: 1; transform: translateY(3%) scale(1.06, 0.93); filter: blur(0) drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55)); }
+  70% { transform: translateY(-1%) scale(0.98, 1.02); }
+}
+@media (prefers-reduced-motion: reduce) { .rg-img.is-in { animation: none; } }
 
 /* ---------- the line: two lines set large, his face and the Ignaru petal inside them; a quiet line and the capsule under ---------- */
 .rg-line { position: absolute; left: 50%; top: var(--cy); translate: -50% -50%; width: min(calc(1.9 * var(--Rx) - var(--A) - 48px), 1100px); display: grid; justify-items: center; text-align: center; pointer-events: none; }
@@ -179,24 +176,45 @@ html.fh-locked { overflow: hidden; }
   -webkit-mask: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 40px), transparent);
   mask: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 40px), transparent); }
 .wk-run { display: flex; width: max-content; height: 100%; animation: wk-run 38s linear infinite; }
-.wk:hover .wk-run { animation-play-state: paused; }
+.wk:hover .wk-run, .wk:focus-within .wk-run, .wk.is-held .wk-run, html.fh-locked .wk-run { animation-play-state: paused; }
+html.fh-locked .rg-shelf li, html.fh-locked .rg-img { animation-play-state: paused; }
 @keyframes wk-run { to { transform: translateX(-50%); } }
 .wk-row { display: flex; align-items: center; gap: 30px; height: 100%; padding: 0 15px; margin: 0; list-style: none; }
 .wk-row li { display: flex; align-items: center; gap: 8px; white-space: nowrap; font-size: 15px; line-height: 1; }
 .wk-row img { width: 22px; height: 22px; border-radius: 5px; object-fit: contain; }
 .wk-row b { font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
 .wk-row span { color: var(--ink-3); }
-@media (prefers-reduced-motion: reduce) { .wk-run { animation: none; } .wk-track { overflow-x: auto; scrollbar-width: none; } }
+/* reduced motion: no run; the strip scrolls sideways instead (by touch, trackpad, or arrow keys once it has focus),
+   and the second copy goes, so every name is reachable once */
+@media (prefers-reduced-motion: reduce) {
+  .wk-track { overflow-x: auto; scrollbar-width: none; }
+  .wk-track::-webkit-scrollbar { display: none; }
+  .wk-run { animation: none; }
+  .wk-row[aria-hidden] { display: none; }
+}
 
-/* the shelf: his best ads standing along the bottom edge, fanned, the 8 in the middle; a card rises under the pointer */
-.rg-shelf { --sw: min(10vw, 17svh, 170px); position: absolute; left: 50%; bottom: 66px; translate: -50% 0; display: flex; align-items: flex-end; justify-content: center; padding: 0; margin: 0; list-style: none; pointer-events: none; }
-.rg-shelf li { --o: calc(var(--i) - (var(--n) - 1) / 2); --d: max(var(--o), var(--o) * -1); flex: none; width: var(--sw); margin-inline: calc(var(--sw) * -0.04); translate: 0 calc(var(--d) * var(--d) * 3.2%); rotate: calc(var(--o) * 2.2deg); transform-origin: 50% 120%; z-index: calc(10 - var(--d) * 2); transition: translate 0.5s var(--spring), rotate 0.5s var(--spring); animation: rg-shelf-in 0.9s var(--spring) backwards; animation-delay: calc(var(--d) * 70ms + 350ms); }
-.rg-shelf button { display: block; width: 100%; padding: 0; border: 0; border-radius: 6px; background: #111; overflow: hidden; cursor: pointer; pointer-events: auto; box-shadow: 0 -18px 40px -14px rgba(0, 0, 0, 0.9); -webkit-tap-highlight-color: transparent; }
+
+/* the pile: his six best ads staged with depth at the foot. Each card is placed from the centre in card widths (--x),
+   lowered or raised by a share of its own height (--y), turned (--r), sized (--s) and drifts with the pointer by its
+   depth (--d). The hero, the 8, sits in front, largest. A card under the pointer straightens, rises and comes forward. */
+.rg-shelf { --sw: min(10vw, 14.5svh, 168px); --px: 0; --py: 0; position: absolute; left: 50%; bottom: 66px; width: 0; height: calc(var(--sw) * 1.25 * 1.3); margin: 0; padding: 0; list-style: none; pointer-events: none; }
+.rg-shelf li {
+  position: absolute; left: 0; bottom: 0; width: var(--sw);
+  translate: calc(-50% + var(--x) * var(--sw) + var(--px) * var(--d) * 14px) calc(var(--y) + var(--py) * var(--d) * 8px);
+  rotate: var(--r); scale: var(--s); transform-origin: 50% 100%;
+  transition: translate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), rotate 0.45s var(--spring), scale 0.45s var(--spring);
+  animation: rg-deal 1s cubic-bezier(0.2, 0.8, 0.2, 1.08) backwards; animation-delay: calc(300ms + var(--i) * 80ms);
+}
+.rg-shelf li.is-hero { animation-delay: 760ms; }
+.rg-shelf button { display: block; width: 100%; padding: 0; border: 0; border-radius: 6px; background: #111; overflow: hidden; cursor: pointer; pointer-events: auto; box-shadow: 0 calc(10px + var(--d) * 14px) calc(24px + var(--d) * 20px) -8px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.06); -webkit-tap-highlight-color: transparent; transition: box-shadow 0.45s var(--ease); }
 .rg-shelf img { display: block; width: 100%; height: auto; }
-.rg-shelf li:hover, .rg-shelf li:focus-within { translate: 0 -6%; rotate: 0deg; z-index: 20; }
+.rg-shelf li:hover, .rg-shelf li:focus-within { z-index: 20 !important; rotate: 0deg; scale: calc(var(--s) * 1.08); translate: calc(-50% + var(--x) * var(--sw)) calc(var(--y) - 7%); }
+.rg-shelf li:hover button, .rg-shelf li:focus-within button { box-shadow: 0 34px 60px -12px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.1); }
 .rg-shelf button:focus-visible { outline: none; }
-@keyframes rg-shelf-in { from { opacity: 0; translate: 0 90%; } }
-@media (prefers-reduced-motion: reduce) { .rg-shelf li { animation: none; transition: none; } }
+@keyframes rg-deal { from { opacity: 0; translate: calc(-50% + var(--x) * var(--sw) * 0.3) 60%; rotate: calc(var(--r) * -2); } }
+/* a short desktop window: the pile steps down a size so the hero clears the capsule */
+@media (min-width: 761px) and (max-height: 760px) { .rg-shelf { --sw: min(10vw, 12.5svh, 168px); } }
+@media (prefers-reduced-motion: reduce) { .rg-shelf li { animation: none; transition: none; translate: calc(-50% + var(--x) * var(--sw)) var(--y); } }
 /* the spec note, once, small, in the bottom right corner clear of the dock */
 .rg-spec { position: absolute; left: 24px; bottom: 20px; max-width: 32ch; font-size: 12px; line-height: 1.35; color: var(--ink-3); }
 .rg-list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -213,8 +231,8 @@ html.fh-locked { overflow: hidden; }
 /* the open drawer's felt piece, on the stage beside it */
 .fh-stage-art { position: fixed; z-index: 1; left: 0; top: 0; bottom: 0; right: calc(var(--dw) + 10px); display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity 0.3s var(--ease); }
 .fh-stage-art.is-on { opacity: 1; }
-.fh-stage-fg { width: min(28vw, 420px); }
-.fh-stage-art.is-on .fh-stage-fg { animation: fh-stage-in 0.9s var(--spring) backwards; }
+.fh-stage-art img { width: min(28vw, 400px); height: auto; rotate: -6deg; filter: drop-shadow(0 40px 40px rgba(0, 0, 0, 0.7)); }
+.fh-stage-art.is-on img { animation: fh-stage-in 0.9s var(--spring) backwards; }
 @keyframes fh-stage-in { from { opacity: 0; translate: 0 50px; rotate: -16deg; scale: 0.8; } }
 
 /* ---------- with a drawer open: the bar recedes to the name and a drawn close, centred over the page beside it ---------- */
@@ -527,8 +545,8 @@ html.fh-locked { overflow: hidden; }
   .wk-row { gap: 22px; }
   .wk-row li { font-size: 14px; }
   .wk-row img { width: 20px; height: 20px; }
-  .rg-shelf { --sw: min(30vw, 17.5svh); bottom: calc(76px + env(safe-area-inset-bottom)); }
-  .rg-spec { right: 0; left: 0; bottom: calc(76px + env(safe-area-inset-bottom) + min(30vw, 17.5svh) * 1.25 + 14px); max-width: none; padding-inline: 16px; text-align: center; }
+  .rg-shelf { --sw: min(23vw, 13svh); bottom: calc(74px + env(safe-area-inset-bottom)); }
+  .rg-spec { right: 0; left: 0; bottom: calc(74px + env(safe-area-inset-bottom) + min(23vw, 13svh) * 1.25 * 1.36 + 10px); max-width: none; padding-inline: 16px; text-align: center; }
   .fh-stage-art { display: none; }
   /* a short phone (an SE, or a browser with its bars out): everything steps in so the shelf clears the capsule */
   @media (max-height: 760px) {
@@ -537,8 +555,8 @@ html.fh-locked { overflow: hidden; }
     .rg-subs { margin-top: 10px; }
     .rg-sub { font-size: 15px; }
     .wk { margin-top: 12px; height: 40px; }
-    .rg-shelf { --sw: min(30vw, 14svh); }
-    .rg-spec { bottom: calc(76px + env(safe-area-inset-bottom) + min(30vw, 14svh) * 1.25 + 10px); font-size: 11.5px; }
+    .rg-shelf { --sw: min(22vw, 11svh); }
+    .rg-spec { bottom: calc(74px + env(safe-area-inset-bottom) + min(22vw, 11svh) * 1.25 * 1.36 + 8px); font-size: 11.5px; }
   }
 
   .fh-dr { inset: max(8px, env(safe-area-inset-top)) 0 0 0; width: 100%; height: auto; border-radius: 2px 2px 0 0; translate: 0 100%; opacity: 1; scroll-padding-bottom: 84px; transition: translate 0.55s cubic-bezier(0.22, 1, 0.36, 1), overlay 0.55s allow-discrete, display 0.55s allow-discrete; }
@@ -613,7 +631,7 @@ html.fh-locked { overflow: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rg-obj, .fh-more, .fh-stage-art.is-on .fh-stage-fg, .fh-pg, .bx-c, .bx-set-in, .kx-top-art, .ty-sv-p, .fh-lb img, .fh-bar.is-drawn .fh-bar-in { animation: none; }
+  .rg-obj, .fh-more, .fh-stage-art.is-on img, .fh-pg, .bx-c, .bx-set-in, .kx-top-art, .ty-sv-p, .fh-lb img, .fh-bar.is-drawn .fh-bar-in { animation: none; }
   .rg-tag i { translate: none; filter: none; transition: opacity 0.2s; }
   .rg-obj:hover .rg-tag i { transition-delay: 0s; }
   .fh-dr, .fh-dr::backdrop, .fh-bar, .fh-notch, .kx-media > img, .bx-fan-i, .bx-felts img, .bx-face, .bx-win, .bx-win-view img, .fh-nl img, .fh-lb, .fh-ground { transition: none; }

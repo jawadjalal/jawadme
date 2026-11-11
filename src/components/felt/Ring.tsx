@@ -2,24 +2,25 @@
 
 /*
  * The first screen, after ignaru.com's dial (components/home/Arc.tsx): five felt doors on an arc over the line, from
- * the left of it, over the top, to the right of it. Each door is its felt piece drawn in glyphs (FeltGlyph); pointing at
- * one opens a window onto the felt itself; its name sits under it; a press opens its drawer. As the page scrolls
+ * the left of it, over the top, to the right of it. Each door is its felt piece with its name under it; pointing at one
+ * lifts it, a press opens its drawer. As the page scrolls
  * the turn passes along the arc: the door whose turn it is comes up to full strength and the line changes with it,
  * word by word. The places come from CSS (sin and cos of each door's angle, felt.css `fh-ring`), so the first paint is
  * already the arc; one rAF only writes each door's strength.
  *
  * Every few seconds one door (never the one whose turn it is) changes to another felt piece from its own set (copy.ts,
- * `set`): the glyphs flip over to the new picture. A timer only: it stops off screen, in a hidden tab, while a drawer is
+ * `set`): the new piece drops in and lands with a squash. A timer only: it stops off screen, in a hidden tab, while a drawer is
  * open and under reduced motion. Under reduced motion the arc stands still and the lines are listed under it (CSS only).
  * The h1 is the same for everyone; the door lines drawn over it are hidden from screen readers, which read the doors'
  * own labels instead.
  *
- * Under the line: the places he has worked, in a dark capsule that runs like a marquee. At the foot: his best ads, by
- * his own scores (copy.ts, SHELF), shown clean.
+ * Under the line: the places he has worked, in a dark capsule that runs like a marquee. At the foot: his six best ads
+ * (copy.ts, SHELF) as a staged pile with depth: the 8 large and in front, the others smaller, turned and further back.
+ * They deal in on load, drift a little with the pointer (nearer cards further), and one lifts to the front under the
+ * pointer. Under reduced motion they hold still.
  */
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { DRAWERS, LINE, SHELF, WORKED, type DrawerId } from "./copy";
-import { FeltGlyph } from "./FeltGlyph";
+import { DRAWERS, LINE, SHELF, WORKED, feltSrc, type DrawerId } from "./copy";
 import { sfx } from "./Sound";
 
 const N = DRAWERS.length;
@@ -31,6 +32,19 @@ const REST_MIN = 2500;
 const REST_SPAN = 1500;
 const BREATH = 0.22;
 const COOL = 7000;
+
+/** Where each shelf ad sits in the pile, in the order of SHELF (told, income, corners, scale, team, seen): x in card
+ *  widths from the centre, y as a share of its own height (down is positive), turn, size, depth (how far it drifts with
+ *  the pointer) and stacking. The 8, "No corners cut.", is the hero: largest, nearly straight, in front. */
+type Place = { x: number; y: number; r: number; s: number; d: number; z: number; hero?: boolean };
+const PILE: Place[] = [
+  { x: -2.05, y: 14, r: -9, s: 0.86, d: 0.45, z: 2 },
+  { x: -1.08, y: 3, r: -4, s: 1, d: 0.8, z: 4 },
+  { x: 0, y: -3, r: 1.5, s: 1.3, d: 1.2, z: 8, hero: true },
+  { x: 1.1, y: 5, r: 5, s: 1.02, d: 0.85, z: 5 },
+  { x: 2.08, y: 17, r: -3, s: 0.86, d: 0.45, z: 3 },
+  { x: 1.62, y: -32, r: 10, s: 0.88, d: 0.25, z: 1 },
+];
 
 /** The opening line, in two: who, then what. His face sits before his name; the Ignaru petal, in glyphs, before Ignaru. */
 function Opening() {
@@ -77,8 +91,11 @@ function Words({ text, rich }: { text: string; rich?: ReactNode }) {
   );
 }
 
-/** Where he has worked, in a dark capsule: the label stays, the names run. Two copies so the loop has no seam. */
+/** Where he has worked, in a dark capsule: the label stays, the names run. Two copies so the loop has no seam. It pauses
+ *  under the pointer, with keyboard focus inside, and on a tap; under reduced motion it holds still and scrolls
+ *  sideways instead, so every name can be reached. */
 function Worked() {
+  const [held, setHeld] = useState(false);
   const row = (copy: number) => (
     <ul className="wk-row" aria-hidden={copy > 0 ? true : undefined}>
       {WORKED.map((w) => (
@@ -94,9 +111,9 @@ function Worked() {
     </ul>
   );
   return (
-    <div className="wk" role="group" aria-label="Where I've worked">
+    <div className={`wk${held ? " is-held" : ""}`} role="group" aria-label="Where I've worked" onClick={() => setHeld((h) => !h)}>
       <span className="wk-label">Where I&apos;ve worked</span>
-      <div className="wk-track">
+      <div className="wk-track" tabIndex={0} aria-label="Places I've worked, scrolls sideways">
         <div className="wk-run">
           {row(0)}
           {row(1)}
@@ -108,6 +125,7 @@ function Worked() {
 
 export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: DrawerId) => void }) {
   const wrap = useRef<HTMLDivElement>(null);
+  const pile = useRef<HTMLUListElement>(null);
   const objs = useRef<(HTMLAnchorElement | null)[]>([]);
   const [active, setActive] = useState(0);
   const [hover, setHover] = useState<number | null>(null);
@@ -195,6 +213,29 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
     };
   }, []);
 
+  // the pile drifts a little with the pointer, nearer cards further (desktop pointers only, never under reduced motion)
+  useEffect(() => {
+    if (window.matchMedia("(hover: none), (prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    let px = 0;
+    let py = 0;
+    const set = () => {
+      raf = 0;
+      pile.current?.style.setProperty("--px", px.toFixed(3));
+      pile.current?.style.setProperty("--py", py.toFixed(3));
+    };
+    const move = (e: PointerEvent) => {
+      px = (e.clientX / window.innerWidth) * 2 - 1;
+      py = (e.clientY / window.innerHeight) * 2 - 1;
+      if (!raf) raf = requestAnimationFrame(set);
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", move);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   const textOf = (k: number) => (k <= 0 ? "" : DRAWERS[k]?.line ?? "");
 
   return (
@@ -226,7 +267,22 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
               onFocus={() => setHover(i)}
               onBlur={() => setHover(null)}
             >
-              <FeltGlyph art={arts[i] ?? d.art} alt={d.alt} reveal={hover === i} priority={i === 0} cell={9} className="rg-fig" />
+              <span className="rg-fig">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  key={arts[i] ?? d.art}
+                  className={`rg-img${(arts[i] ?? d.art) !== d.art ? " is-in" : ""}`}
+                  src={feltSrc(arts[i] ?? d.art).src}
+                  srcSet={feltSrc(arts[i] ?? d.art).srcSet}
+                  sizes="(max-width: 760px) 26vw, 190px"
+                  alt={(arts[i] ?? d.art) === d.art ? d.alt : ""}
+                  width={320}
+                  height={320}
+                  fetchPriority={i === 0 ? "high" : "auto"}
+                  decoding="async"
+                  draggable={false}
+                />
+              </span>
               <span className="rg-tag" aria-hidden="true">
                 {[...d.label].map((ch, k) => (
                   <i key={k} style={{ "--k": k } as CSSProperties}>
@@ -256,16 +312,19 @@ export function Ring({ open, onOpen }: { open: DrawerId | null; onOpen: (id: Dra
             </div>
             <Worked />
           </div>
-          {/* his best ads, by his own scores, standing along the bottom edge: each opens the ads drawer */}
-          <ul className="rg-shelf" style={{ "--n": SHELF.length } as CSSProperties} aria-label="My best ads">
-            {SHELF.map((w, i) => (
-              <li key={w.src} style={{ "--i": i } as CSSProperties}>
-                <button type="button" tabIndex={open ? -1 : 0} aria-label={`${w.alt} Spec ad. Opens the ads.`} onClick={() => { sfx("swap"); onOpen("ads"); }} onPointerEnter={(e) => e.pointerType === "mouse" && sfx("hover")}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={w.src} srcSet={`${w.src} 480w, ${w.big} 960w`} sizes="(max-width: 760px) 30vw, 190px" alt="" width={480} height={600} decoding="async" draggable={false} />
-                </button>
-              </li>
-            ))}
+          {/* his best ads, staged as a pile: each opens the ads drawer */}
+          <ul ref={pile} className="rg-shelf" aria-label="My best ads">
+            {SHELF.map((w, i) => {
+              const p = PILE[i] ?? PILE[0];
+              return (
+                <li key={w.src} className={p.hero ? "is-hero" : undefined} style={{ "--x": p.x, "--y": `${p.y}%`, "--r": `${p.r}deg`, "--s": p.s, "--d": p.d, "--i": i, zIndex: p.z } as CSSProperties}>
+                  <button type="button" tabIndex={open ? -1 : 0} aria-label={`${w.alt} Spec ad. Opens the ads.`} onClick={() => { sfx("swap"); onOpen("ads"); }} onPointerEnter={(e) => e.pointerType === "mouse" && sfx("hover")}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={w.src} srcSet={`${w.src} 480w, ${w.big} 960w`} sizes={p.hero ? "(max-width: 760px) 40vw, 260px" : "(max-width: 760px) 30vw, 200px"} alt="" width={480} height={600} decoding="async" draggable={false} />
+                  </button>
+                </li>
+              );
+            })}
           </ul>
           <p className="rg-spec">Spec ads, made unasked. None of these companies is a client.</p>
         </div>
