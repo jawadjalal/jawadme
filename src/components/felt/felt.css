@@ -394,6 +394,14 @@ html.fh-locked .rg-shelf li, html.fh-locked .rg-img { animation-play-state: paus
 .bx-set-says span { display: block; margin-top: 7px; font-size: 13px; font-weight: 400; letter-spacing: -0.005em; color: var(--ink-3); }
 /* a set as a row: every ad side by side */
 .bx-row { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 8px; }
+/* the wall: many ads at once in columns, each at its own shape; the boards: one across, then three of equal height */
+.bx-wall-c .bx-h h3 { font-size: 26px; letter-spacing: -0.03em; }
+.bx-wall { columns: 4; column-gap: 8px; }
+.bx-wall .bx-piece { margin-bottom: 8px; break-inside: avoid; }
+.bx-piece { background: #1d1d1d; }
+.bx-piece > img { width: 100%; height: 100%; object-fit: cover; }
+.bx-boards { display: grid; gap: 8px; }
+.bx-boards-row { display: grid; grid-template-columns: 1.7778fr 1fr 1fr; gap: 8px; align-items: start; }
 .bx-row-c .bx-h h3 { font-size: 26px; letter-spacing: -0.03em; }
 /* the price: the largest words in its drawer */
 .bx-price .bx-h h3 { font-size: 34px; letter-spacing: -0.04em; }
@@ -596,6 +604,10 @@ html.fh-locked .rg-shelf li, html.fh-locked .rg-img { animation-play-state: paus
 .bx-set-pick.n6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .bx-set-says { min-height: 0; font-size: 17px; }
   .bx-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bx-wall { columns: 2; }
+  .bx-wall-c .bx-h h3 { font-size: 22px; }
+  .bx-boards-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bx-boards-row > :first-child { grid-column: 1 / -1; }
   .bx-price .bx-h h3 { font-size: 28px; }
   .bx-fan { min-height: 230px; margin-inline: -14px; }
   .bx-fan-i { width: 29%; }
