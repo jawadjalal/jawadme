@@ -293,6 +293,55 @@ export const BEST_SETS: AdSet[] = [
   { key: "whop-best", brand: "Whop", from: "whop.com", says: "Their own lines, in their orange, on real photographs.", ads: [BEST.income, BEST.economy, BEST.fly, BEST.list] },
 ];
 
+/** A piece on the wall: three widths of one picture (440, 880 and the full file), its size, and what it is. */
+export type Piece = { key: string; brand: string; alt: string; small: string; mid: string; src: string; w: number; h: number };
+
+const piece = (dir: string, key: string, brand: string, says: string, shows: string, w = 1080, h = 1350): Piece => ({
+  key,
+  brand,
+  alt: `${brand}: ${says} ${shows}`.trim(),
+  small: `${dir}/${key}-440.webp`,
+  mid: `${dir}/${key}-880.webp`,
+  src: `${dir}/${key}.webp`,
+  w,
+  h,
+});
+const more = (key: string, brand: string, says: string, shows: string, w?: number, h?: number) => piece("/ads/more", key, brand, says, shows, w, h);
+
+/** The newest ads (11 and 12 Nov 2026): his top twenty (~/Desktop/top-20, less those already in the drawers and two held
+ *  back) and the 12 Nov sets (~/night/real/set-*-n12). Spec work, made unasked: none of these companies is a client.
+ *  The Jam ad leads (his favourite of the night). */
+export const MORE: Piece[] = [
+  more("jam", "Jam", "What AI reads before it answers.", "Four old books stacked, their spines printed in Jam's colours."),
+  more("offense", "Offense", "Give your agent a swarm.", "A red swarm of points over a desert at night."),
+  more("hyperspell", "Hyperspell", "A brain for your company.", "An office block at dusk, its windows lit pink."),
+  more("click-land", "Click", "Land instantly.", "A runway at night, its lights in Click blue."),
+  more("whop-blimp", "Whop", "The fastest path to your next dollar.", "An orange Whop blimp over a crowd, in halftone.", 1600, 900),
+  more("simular-walk", "Simular", "Give it a task, then walk away.", "Sai's mark in green, pressed into raked sand."),
+  more("grokbot", "Grok Bot", "AI teammates that work 24/7.", "A tower at night, lit blue, under a full moon."),
+  more("instabox-box", "InstaBox", "Every agent gets its own box.", "A stack of shipping containers painted InstaBox green."),
+  more("outpace-marathon", "Outpace", "Marathon. Your design and dev team, month to month.", "A running track curling round the line on orange."),
+  more("launchpoint", "Launchpoint", "Copied videos don't get paid.", "The same purple poster pasted twice on a wall."),
+  more("outpace-field", "Outpace", "Momentum.", "An orange track in a green field, the word painted round its bend, seen from above.", 1080, 1920),
+  more("serveros", "ServerOS", "Stop babysitting your servers.", "A man fishing off a jetty, a list of fixed outages above him."),
+  more("simular-click", "Simular", "If you can click it, Sai can.", "A green bar standing in black ridges."),
+  more("click-market", "Click", "Every market. Every screen.", "Towers at night, one outlined in Click blue."),
+  more("whop-tower", "Whop", "The new economy.", "A black and white tower block with a tall orange Whop banner."),
+  more("instabox-address", "InstaBox", "Every box gets an address.", "A long row of green letterboxes."),
+  more("outpace-ideation", "Outpace", "From ideation to hand-off.", "A track winding across the poster on green."),
+];
+
+/** Brand studies, unasked (each says so in its own corner): the Outpace and Fish Audio boards, Launchpoint and Suna's
+ *  lead pieces. 2000 wide copies of the 2400 finals (~/night/real/brand-*). Chosen over the Shown, Monid and Dreamstate
+ *  boards, which read as kits rather than worlds. */
+const board = (key: string, brand: string, says: string, w: number, h: number) => piece("/design/boards", key, brand, says, "", w, h);
+export const BOARDS = {
+  outpace: board("outpace-board", "Outpace Studios", "A brand study: their orange as a running track, on posters, a ticket, a stopwatch and their own site.", 2000, 1125),
+  fish: board("fishaudio-board", "Fish Audio", "A brand study: engraved fish and an ear in their lilac and coral, with their own lines.", 2000, 1125),
+  launchpoint: board("launchpoint-hero", "Launchpoint", "Trust every number. Fine lines drawn into one flare.", 2000, 2000),
+  suna: board("suna-hero", "Suna", "Finally understand your gut. A stippled sun over the name.", 2000, 2000),
+} satisfies Record<string, Piece>;
+
 export type ShelfItem = { src: string; big: string; alt: string };
 
 /** The first screen's shelf: only ads he scored 7 or 8, the 8 in the middle. Each opens the ads drawer. */

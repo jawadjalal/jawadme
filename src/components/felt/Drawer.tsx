@@ -15,7 +15,7 @@
  */
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from "react";
 import { dayLink, type Booking } from "./booking";
-import { ASIDE, BEST, BEST_SETS, BOOK, CV, DRAWERS, EMAIL, FIVE, JOBS, MADE, REAL, SITES, drawerAt, feltSrc, lift, type Ad, type AdSet, type DrawerId, type Site } from "./copy";
+import { ASIDE, BEST, BEST_SETS, BOARDS, BOOK, CV, DRAWERS, EMAIL, FIVE, JOBS, MADE, MORE, REAL, SITES, drawerAt, feltSrc, lift, type Ad, type AdSet, type DrawerId, type Piece, type Site } from "./copy";
 import { MeetMark } from "./Meet";
 import { SOCIALS } from "./Socials";
 import { sfx } from "./Sound";
@@ -477,6 +477,43 @@ function AdRow({ s, z, w, title, cols }: { s: AdSet; z: Ctx["z"]; w: 2 | 3 | 4 |
   );
 }
 
+/** One piece on the wall or among the boards: three widths, its own proportions held before it loads, opening full size. */
+function PieceShot({ p, z, sizes }: { p: Piece; z: Ctx["z"]; sizes: string }) {
+  return (
+    <button type="button" className="kx-media bx-piece" onClick={() => z(p.src, p.alt, p.h > p.w)} aria-label={`Open full size: ${p.alt}`} style={{ aspectRatio: `${p.w} / ${p.h}` }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={p.mid} srcSet={`${p.small} 440w, ${p.mid} 880w`} sizes={sizes} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async" />
+      <span className="kx-expand" aria-hidden="true">
+        <i />
+        {p.brand}
+      </span>
+    </button>
+  );
+}
+
+/** Many ads at once, fast to scan: columns that keep each ad's own shape (the tall Outpace, the wide Whop blimp), no
+ *  crops, no frames. Four across on a desktop, two on a phone. */
+const Wall = ({ items, z }: { items: Piece[]; z: Ctx["z"] }) => (
+  <div className="bx-wall">
+    {items.map((p) => (
+      <PieceShot key={p.key} p={p} z={z} sizes="(max-width: 760px) 46vw, 240px" />
+    ))}
+  </div>
+);
+
+/** The brand studies: the Outpace board across the cell, then Fish Audio's board and two lead pieces in one row of equal
+ *  height (the columns are set in proportion to each picture, so nothing is cropped). */
+const Boards = ({ z }: { z: Ctx["z"] }) => (
+  <div className="bx-boards">
+    <PieceShot p={BOARDS.outpace} z={z} sizes="(max-width: 760px) 100vw, 920px" />
+    <div className="bx-boards-row">
+      <PieceShot p={BOARDS.fish} z={z} sizes="(max-width: 760px) 100vw, 460px" />
+      <PieceShot p={BOARDS.launchpoint} z={z} sizes="(max-width: 760px) 46vw, 260px" />
+      <PieceShot p={BOARDS.suna} z={z} sizes="(max-width: 760px) 46vw, 260px" />
+    </div>
+  </div>
+);
+
 /** A live site in a plain window: its address, the first screen, and (where there is one) the whole page scrolling
  *  past under the pointer. Opens the site. */
 function Win({ w, narrow, sizes = "(max-width: 760px) 100vw, 560px" }: { w: Site; narrow?: boolean; sizes?: string }) {
@@ -583,7 +620,7 @@ const PAGES: Record<DrawerId, Page> = {
         Hi, I&apos;m Jawad. Here&apos;s my <Circ>work</Circ>.
       </>
     ),
-    line: "15, in London, building Ignaru. I design ads and sites for startups. Below: the ads, the products I started, the sites I built and where I have worked.",
+    line: "15, in London, building Ignaru. I design ads and sites for startups. Below: the ads and brand studies, the products I started, the sites I built and where I have worked.",
     mark: "/felt/jawad-head-320.webp",
     bar: () => ({ ...call, also: mail }),
     body: ({ z, go }) => (
@@ -593,6 +630,12 @@ const PAGES: Record<DrawerId, Page> = {
         </Cell>
         <Cell w={2} title="Outpace" line="Spec. A relay baton across their lane.">
           <AdShot a={BEST.team} z={z} sizes="(max-width: 760px) 90vw, 260px" />
+        </Cell>
+        <Cell w={6} title="Newest ads" line="The newest eight. Spec, like every ad here: none of these companies is a client." more={<More label={`all ${MORE.length}`} to={() => go("ads")} />} className="bx-wall-c">
+          <Wall items={MORE.slice(0, 8)} z={z} />
+        </Cell>
+        <Cell w={6} title="Brand studies" line="A whole look for one company, from its own colours and words. Unasked, and each says so in its corner." className="bx-wall-c">
+          <Boards z={z} />
         </Cell>
         <SiteCell k="bevel" w={6} lead />
         <SiteCell k="bidframe" w={3} />
@@ -617,6 +660,9 @@ const PAGES: Record<DrawerId, Page> = {
     bar: () => ({ href: "https://ignaru.com/ads", label: "book ads", also: mail }),
     body: ({ z }) => (
       <>
+        <Cell w={6} title="Newest first" line={`The ${MORE.length} newest, before the sets. Open any one full size.`} className="bx-wall-c bx-lead">
+          <Wall items={MORE} z={z} />
+        </Cell>
         {BEST_SETS.map((x) => (
           <SetCell key={x.key} s={x} z={z} />
         ))}
