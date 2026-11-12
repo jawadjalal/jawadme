@@ -17,10 +17,10 @@ export const metadata: Metadata = {
     url: IDENTITY.site,
     siteName: IDENTITY.properName,
     type: "profile",
-    // Built by scripts/og.mjs from the site's own screenshots, so the card
-    // shows the work rather than describing it. Rebuild with `npm run og`
-    // after changing which projects lead.
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Jawad Jalal, design engineer building Ignaru, with felt pieces from his site" }],
+    // Built by scripts/og.mjs: the name, the hero's own line and one felt
+    // petal on black. Rebuild with `npm run og` after changing the hero
+    // line.
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Jawad Jalal. Building Ignaru. And designing sites and ads for startups." }],
   },
   twitter: {
     card: "summary_large_image",
