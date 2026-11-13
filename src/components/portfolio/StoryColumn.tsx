@@ -193,36 +193,38 @@ export function StoryColumn({
           </p>
         </div>
 
-        <p className="col-does">
-          {does.map((d, i) => (
-            <span key={d}>
-              {i ? (
-                <>
-                  <span className="pf-sr">, </span>
-                  <span className="col-does-dot" aria-hidden="true">·</span>
-                </>
-              ) : null}
-              {d}
-            </span>
-          ))}
-        </p>
+        <div className="col-who">
+          <p className="col-does">
+            {does.map((d, i) => (
+              <span key={d}>
+                {i ? (
+                  <>
+                    <span className="pf-sr">, </span>
+                    <span className="col-does-dot" aria-hidden="true">·</span>
+                  </>
+                ) : null}
+                {d}
+              </span>
+            ))}
+          </p>
 
-        <ul className="col-own" aria-label="My companies">
-          {timeline.map((j) => (
-            <li key={j.name}>
-              <a href={j.href} target="_blank" rel="noopener">
-                <img src={j.logo} alt="" width={30} height={30} />
-                <span className="col-own-t">
-                  <b>{j.name}</b>
-                  <span>{j.role}</span>
-                </span>
-                <span className="col-own-go" aria-hidden="true">
-                  →
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
+          <ul className="col-own" aria-label="My companies">
+            {timeline.map((j) => (
+              <li key={j.name}>
+                <a href={j.href} target="_blank" rel="noopener">
+                  <img src={j.logo} alt="" width={30} height={30} />
+                  <span className="col-own-t">
+                    <b>{j.name}</b>
+                    <span>{j.role}</span>
+                  </span>
+                  <span className="col-own-go" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <Past past={past} />
