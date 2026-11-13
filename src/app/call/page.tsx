@@ -1,0 +1,60 @@
+import type { Metadata } from "next";
+import { CallEmbed } from "@/components/portfolio/CallEmbed";
+import { DriftWall } from "@/components/portfolio/DriftWall";
+import { Sticker } from "@/components/portfolio/Sticker";
+import { WorkFeed } from "@/components/portfolio/WorkFeed";
+import { print, sans } from "@/components/portfolio/fonts";
+import { getBooking } from "@/components/felt/booking";
+import { FEED } from "@/content/feed";
+import { BOOKING, CLOSING, SECOND } from "@/content/story";
+import "@/components/portfolio/portfolio.css";
+
+// jawadjalal.com/call: the booking calendar in the left column, the same endless wall of his work on the right. The
+// call's length and where it happens come from Cal.com's public API (components/felt/booking), rebuilt every 30 minutes.
+
+export const revalidate = 1800;
+
+export const metadata: Metadata = {
+  title: "Call Jawad",
+  description: "Book a short video call with Jawad Jalal about ads, brands and design for your startup.",
+  alternates: { canonical: "/call" },
+  openGraph: { title: "Call Jawad", description: "Book a short video call with Jawad Jalal.", url: "/call", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", title: "Call Jawad", description: "Book a short video call with Jawad Jalal.", images: ["/og.png"] },
+};
+
+const MEMOJI = { pic: "/design/jawad-die.webp", alt: "Jawad's memoji", cut: true, w: 697, h: 781, tilt: 5 } as const;
+
+export default async function Call() {
+  const b = await getBooking();
+  const where = b.where === "meet" ? "on Google Meet" : "on video";
+  return (
+    <div className={`pf pf-call ${sans.variable} ${print.variable}`}>
+      <aside className="col col-call">
+        <div className="col-top">
+          <div className="col-h1">
+            <p className="col-lead">
+              <span className="col-line">
+                Let&apos;s talk. <Sticker s={MEMOJI} eager />
+              </span>
+            </p>
+            <h1 className="col-main">
+              <span className="col-line">
+                {b.minutes} minutes, {where}.
+              </span>
+            </h1>
+          </div>
+        </div>
+        <CallEmbed booking={BOOKING} email={SECOND.address} />
+      </aside>
+      <main className="pf-main" id="work">
+        <h2 className="pf-sr">Work</h2>
+        <div className="wall-drift">
+          <DriftWall entries={FEED} href={BOOKING} />
+        </div>
+        <div className="wall-flow">
+          <WorkFeed entries={FEED} href={BOOKING} closing={CLOSING} name="Jawad Jalal" />
+        </div>
+      </main>
+    </div>
+  );
+}

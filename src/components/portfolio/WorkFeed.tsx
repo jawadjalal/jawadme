@@ -103,7 +103,9 @@ export function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
         />
       )}
       <figcaption className="tile-cap">
-        <b>{p.brand}</b> {p.what}
+        <b>{p.brand}</b>
+        {p.kind === "product" ? ", " : " "}
+        {p.what}
         {p.unsolicited ? ", unsolicited" : ""}
       </figcaption>
     </figure>
