@@ -39,19 +39,30 @@ function LiveFrame({ p }: { p: Extract<Piece, { embed: string }> }) {
       phone.removeEventListener("change", measure);
     };
   }, [p.stage, p.ratio]);
+  // the live page is mounted only while its frame is on screen (or about to be), so off-screen components, the hidden
+  // copy of a drifting column and the wall that is not shown at this width cost nothing
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setOn(e.isIntersecting), { rootMargin: "160px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   return (
     <div ref={box} className="live-box" style={{ aspectRatio: String(p.ratio), background: p.ground }}>
-      <iframe
-        src={`/components/${p.embed}.html`}
-        title={p.name}
-        loading="lazy"
-        style={fit ? { width: fit.w, height: fit.h, transform: `scale(${fit.s})`, background: p.ground } : { background: p.ground }}
-      />
+      {on ? (
+        <iframe
+          src={`/components/${p.embed}.html`}
+          title={p.name}
+          style={fit ? { width: fit.w, height: fit.h, transform: `scale(${fit.s})`, background: p.ground } : { background: p.ground }}
+        />
+      ) : null}
     </div>
   );
 }
 
-function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
+export function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
   const r = ratio(p);
   if ("embed" in p) {
     return (
@@ -65,20 +76,35 @@ function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
   const wide = r > 1.2;
   return (
     <figure className="tile" data-kind={p.kind} style={{ flexGrow: r }}>
-      <img
-        src={`${base}.webp`}
-        srcSet={`${base}-sm.webp ${Math.round(p.w / 2)}w, ${base}.webp ${p.w}w`}
-        sizes={wide ? "(max-width: 760px) 100vw, 70vw" : "(max-width: 760px) 100vw, 36vw"}
-        width={p.w}
-        height={p.h}
-        alt={p.alt}
-        loading={eager ? "eager" : "lazy"}
-        decoding="async"
-        {...(eager ? { fetchPriority: "high" as const } : {})}
-      />
-      <figcaption className="tile-tag">
-        {p.brand}
-        {p.unsolicited ? <span>unsolicited</span> : null}
+      {p.video ? (
+        <video
+          data-loop=""
+          src={`/work/2026-11/${p.video}`}
+          poster={`${base}.webp`}
+          width={p.w}
+          height={p.h}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-label={p.alt}
+        />
+      ) : (
+        <img
+          src={`${base}.webp`}
+          srcSet={`${base}-sm.webp ${Math.round(p.w / 2)}w, ${base}.webp ${p.w}w`}
+          sizes={wide ? "(max-width: 760px) 100vw, 70vw" : "(max-width: 760px) 100vw, 36vw"}
+          width={p.w}
+          height={p.h}
+          alt={p.alt}
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          {...(eager ? { fetchPriority: "high" as const } : {})}
+        />
+      )}
+      <figcaption className="tile-cap">
+        <b>{p.brand}</b> {p.what}
+        {p.unsolicited ? ", unsolicited" : ""}
       </figcaption>
     </figure>
   );
@@ -95,10 +121,17 @@ function Rows({ rows, href, look, storyFrom = 0 }: { rows: Row[]; href: string; 
           return <StoryLine key={row.key} text={st.story} cta={st.cta} pic={st.pic} at={st.at} href={href} look={look} index={n} />;
         }
         return (
-          <div key={row.key} className="row" data-count={row.pieces.length} data-family={row.pieces[0].kind}>
-            {row.pieces.map((p) => (
-              <Tile key={"file" in p ? p.file : p.embed} p={p} eager={storyFrom === 0 && i === 0} />
-            ))}
+          <div key={row.key} className="row-wrap">
+            <div className="row" data-count={row.pieces.length} data-family={row.pieces[0].kind}>
+              {row.pieces.map((p) => (
+                <Tile key={"file" in p ? p.file : p.embed} p={p} eager={storyFrom === 0 && i === 0} />
+              ))}
+            </div>
+            {row.pieces[0].kind === "icon" ? (
+              <p className="row-cap">
+                <b>App icons</b>, live: {row.pieces.map((p) => ("name" in p ? p.name.replace(" app icon", "") : "")).join(", ")}
+              </p>
+            ) : null}
           </div>
         );
       })}
@@ -143,6 +176,24 @@ export function WorkFeed({ entries, href, closing, name }: { entries: Entry[]; h
     for (const t of el.querySelectorAll<HTMLElement>("[data-wait]:not([data-in])")) io.observe(t);
     return () => io.disconnect();
   }, [passes.length, look]);
+
+  // video loops play only while they are on screen, and never with reduced motion
+  useEffect(() => {
+    const el = root.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      (seen) => {
+        for (const e of seen) {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) v.play().catch(() => {});
+          else v.pause();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    for (const v of el.querySelectorAll<HTMLVideoElement>("video[data-loop]")) io.observe(v);
+    return () => io.disconnect();
+  }, [passes.length]);
 
   useEffect(() => {
     const el = end.current;

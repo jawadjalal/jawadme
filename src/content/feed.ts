@@ -6,20 +6,29 @@
 // that); their sizes are in feed-sizes.json, written by the converter. Live components are self-contained pages in
 // public/components.
 //
-// `unsolicited: true` marks work made unasked for a company that is not a client: the wall says so on the piece.
+// Every piece carries a one-line caption under it: whose it is and what it is. `unsolicited: true` marks work made
+// unasked for a company that is not a client, and its caption says "unsolicited".
+//
+// A video loop is a picture with `video`: the poster is <file>.webp as usual, the clip is public/work/2026-11/<video>
+// (an mp4, muted). It plays only while it is on screen, and never with reduced motion. To add an Ignaru panel recording:
+//   clip("panel-rename", "panel-rename.mp4", "Ignaru", "the rename panel, recorded", "Renaming a frame in Ignaru."),
 // Sources: the ads he posted on X himself (~/night/refs/his-posts-n13), the twenty he picked for his 13 Nov post
 // (~/Desktop/mega-post-2), and the ads, brand studies and sites already on this site.
 
 import sizes from "./feed-sizes.json";
 import type { StickerPic } from "@/components/portfolio/Sticker";
 
-export type Kind = "ad" | "brand" | "site" | "component" | "icon";
+export type Kind = "ad" | "brand" | "site" | "product" | "component" | "icon";
 
 export type Picture = {
-  kind: "ad" | "brand" | "site";
+  kind: "ad" | "brand" | "site" | "product";
   file: string;
-  /** whose it is, shown on hover */
+  /** whose it is, first word of the caption */
   brand: string;
+  /** what it is, the rest of the caption ("ad", "brand study", "site concept") */
+  what: string;
+  /** a muted loop shown in place of the picture, which becomes its poster */
+  video?: string;
   alt: string;
   caption?: string;
   unsolicited?: boolean;
@@ -55,9 +64,13 @@ const size = (file: string) => {
 };
 
 /** an ad made unasked for a company */
-const ad = (file: string, brand: string, alt: string): Picture => ({ kind: "ad", file, brand, alt: `${brand} ad: ${alt}`, unsolicited: true, ...size(file) });
-const brand = (file: string, name: string, alt: string): Picture => ({ kind: "brand", file, brand: name, alt: `${name} brand study: ${alt}`, unsolicited: true, ...size(file) });
-const site = (file: string, name: string, alt: string, unsolicited = false): Picture => ({ kind: "site", file, brand: name, alt: `${name} site: ${alt}`, unsolicited, ...size(file) });
+const ad = (file: string, brand: string, alt: string): Picture => ({ kind: "ad", file, brand, what: "ad", alt: `${brand} ad: ${alt}`, unsolicited: true, ...size(file) });
+const brand = (file: string, name: string, alt: string): Picture => ({ kind: "brand", file, brand: name, what: "brand study", alt: `${name} brand study: ${alt}`, unsolicited: true, ...size(file) });
+const site = (file: string, name: string, what: string, alt: string, unsolicited = false): Picture => ({ kind: "site", file, brand: name, what, alt: `${name} ${what}: ${alt}`, unsolicited, ...size(file) });
+/** his own product */
+const own = (file: string, name: string, what: string, alt: string): Picture => ({ kind: "product", file, brand: name, what, alt: `${name}, ${what}: ${alt}`, ...size(file) });
+/** a muted loop (an Ignaru panel recording, say), with <file>.webp as its poster */
+export const clip = (file: string, video: string, name: string, what: string, alt: string): Picture => ({ kind: "product", file, video, brand: name, what, alt, ...size(file) });
 const live = (embed: string, name: string, ratio: number, stage: number, caption: string): Live => ({ kind: "component", embed, name, ratio, stage, caption, ground: "#111213" });
 const icon = (embed: string, name: string): Live => ({ kind: "icon", embed, name, ratio: 1, stage: 360, ground: "#000" });
 
@@ -66,6 +79,7 @@ const logo = (pic: string, alt: string, tilt: number): StickerPic => ({ pic, alt
 // The first pass, strongest first. The packer sets wide pieces alone at full width and everything else two to a row,
 // and an odd one left over shares a row with the wide piece beside it.
 export const FEED: Entry[] = [
+  own("ignaru-canvas", "Ignaru", "the design tool I'm building", "the Ignaru canvas: a landing page frame with numbered comments, a mood board and a start button beside it."),
   ad("whop-blimp", "Whop", "an orange Whop blimp over a crowd, in halftone. The fastest path to your next dollar."),
   ad("outpace-corners", "Outpace", "No corners cut. A running track drawn as an arch in Outpace orange."),
   ad("offense-swarm", "Offense", "Give your agent a swarm. A red swarm of points over a desert at night."),
@@ -79,7 +93,7 @@ export const FEED: Entry[] = [
 
   { story: "Making things for money since thirteen.", pic: { pic: "/work/2026-11/sticker-swarm.webp", alt: "a crop of his Offense ad: a red swarm of points at night", w: 160, h: 160, tilt: -7 }, at: 3 },
 
-  site("site-menufit", "MenuFit", "app screens for eating out healthy, light and dark."),
+  site("site-menufit", "MenuFit", "app screens", "app screens for eating out healthy, light and dark."),
   ad("standout-door", "Standout", "Get introduced to your dream role. A green door in a hedge."),
   ad("superlog-missing", "Superlog", "See what's missing. A stack of numbered logs with one gap."),
   ad("dreamstate-receipt", "Dreamstate", "Tools you stop paying for, as a receipt totalled up to one plan."),
@@ -92,7 +106,7 @@ export const FEED: Entry[] = [
   ad("hyperspell-books", "Hyperspell", "Your agent read every book but yours. A shelf of encyclopaedias and one pink spine."),
   ad("capy-manga", "Capy", "Pile on the tickets. Capy's AI writes the code. A manga page."),
 
-  { story: "Took Okara's dashboard apart, unasked. Got in.", pic: logo("/logos/okara.png", "the Okara mark", 6), at: 1 },
+  { story: "Took apart Okara's dashboard. Got in.", pic: logo("/logos/okara.png", "the Okara mark", 6), at: 2 },
 
   brand("fishaudio-board", "Fish Audio", "engraved fish and an ear in their lilac and coral, with their own lines."),
   ad("fish-ai", "Fish Audio", "AI that sounds like AI doesn't. A curved concert hall lit pink."),
@@ -109,7 +123,7 @@ export const FEED: Entry[] = [
 
   { story: "Now I run Ignura, a design studio.", cta: true, pic: logo("/logos/ignura.png", "the Ignura mark", -8), at: 3 },
 
-  site("site-roport", "Roport", "a redesign concept for roport.lol, where you hire Roblox developers who shipped.", true),
+  site("site-roport", "Roport", "site concept", "a redesign concept for roport.lol, where you hire Roblox developers who shipped.", true),
   ad("offense-key", "Offense", "Scan for secrets. A key on a red tag dropped on a doormat."),
   ad("jam-flags", "Jam", "Every page each answer cites, as coloured tabs on an iron door."),
   ad("shown-eye", "Shown Media", "One job. Get you seen. The Shown mark in the pupil of an eye."),
@@ -126,7 +140,7 @@ export const FEED: Entry[] = [
 
   { story: "And I'm building Ignaru, a design tool.", pic: logo("/logos/ignaru.png", "the Ignaru mark", 7), at: 3 },
 
-  site("site-audora", "Audora", "a redesign concept for audora.art: paste a fanfic and hear it performed.", true),
+  site("site-audora", "Audora", "site concept", "a redesign concept for audora.art: paste a fanfic and hear it performed.", true),
   ad("offense-tube", "Offense", "Find the hole before they do. A pipe with one hole circled in red."),
   ad("serveros-fishing", "ServerOS", "Stop babysitting your servers. A man fishing off a jetty."),
   ad("dreamstate-favourite", "Dreamstate", "ChatGPT has a favourite. Make it you. A shop front with a blue sign."),
@@ -134,7 +148,7 @@ export const FEED: Entry[] = [
   ad("click-market", "Click", "Every market. Every screen. Towers at night, one outlined in blue."),
   ad("serveros-babysit", "ServerOS", "Stop babysitting your servers. Yellow shards over green hills."),
   ad("simular-walk", "Simular", "Give it a task, then walk away. The mark pressed into raked sand."),
-  site("site-mercy", "Mercy", "a dark first screen with the live phone app."),
+  site("site-mercy", "Mercy", "site", "a dark first screen with the live phone app."),
   ad("aside-manifesto", "Aside", "Most modern software is just a tab. The apps it holds, drawn in type."),
   ad("whop-fly", "Whop", "Your agent runs the business. You fly. A pilot's visor reflecting mountains."),
   ad("shown-liftoff", "Shown Media", "Liftoff is the easy part. A rocket launch watched by a crowd."),
