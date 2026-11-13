@@ -5,30 +5,16 @@
 import { BOOK, EMAIL } from "@/components/felt/copy";
 
 /*
-  Headline options. A hook with a turn, from facts already on the site (lib/profile.ts, components/felt/copy.ts): he is
-  fifteen, he founded Ignaru and Ignura, he designed MenuFit's app, which has 1.5 million users. Nothing else. The grey
-  half sets up the age, the ink half turns it; stickers of his own work sit in the type.
-  1. "Fifteen [face] years old." / "Designed for 1.5M MenuFit [bag] users. [ad][icon]"
-  2. "Fifteen [face] years old." / "Founder of Ignaru [icon] and Ignura. [ad]"
-  3. "Fifteen [face], two companies in." / "One app [bag] with 1.5M users. [ad]"
-  Used: 1. The number does the turning: a small one, then a big one, and the founder lines are in the timeline below.
+  Headline: his words (13 Nov, after seeing it live): two lines, "Fifteen years old." / "Design mastermind.", both in
+  ink, his memoji stuck into the first line. Earlier options, kept for reference:
+  1. "Fifteen years old." / "Designed for 1.5M MenuFit users."
+  2. "Fifteen years old." / "Founder of Ignaru and Ignura."
 */
 /** One array per line of type; the lines are set as given, never rewrapped. A picture is a sticker: `cut` is a
  *  cut-out with its own outline, otherwise a square card. */
 export const HEADLINE = {
-  lead: [
-    [{ t: "Fifteen" }, { pic: "/design/jawad-cut.webp", alt: "Jawad's memoji", cut: true, w: 640, h: 723, tilt: -7 }],
-    [{ t: "years old." }],
-  ],
-  main: [
-    [{ t: "Designed for 1.5M" }],
-    [
-      { t: "MenuFit" },
-      { pic: "/work/2026-11/sticker-menufit.webp", alt: "the MenuFit app mark, a paper bag", cut: true, w: 140, h: 159, tilt: 8 },
-      { t: "users." },
-      { pic: "/work/2026-11/inline-ad.webp", alt: "a crop of his Shown Media ad: an eye", w: 128, h: 128, tilt: 7 },
-    ],
-  ],
+  lead: [[{ t: "Fifteen" }, { pic: "/design/jawad-cut.webp", alt: "Jawad's memoji", cut: true, w: 640, h: 723, tilt: -7 }, { t: "years old." }]],
+  main: [[{ t: "Design mastermind." }]],
 } as const;
 
 export type Bit = { t: string } | { pic: string; alt: string; w: number; h: number; tilt: number; cut?: boolean; tuck?: boolean };
@@ -36,17 +22,17 @@ export type Bit = { t: string } | { pic: string; alt: string; w: number; h: numb
 export const HIRE = BOOK;
 export const SECOND = { label: "or email me", href: `mailto:${EMAIL}?subject=Hiring%20you` };
 
-/** Newest first, with each place's own mark from public/logos. `when` is what the CV says ("2026 to now" is now);
- *  SOF Agency and Basket Ent are from before. `role` is one short phrase. */
-/** `logo` is the place's own mark; `tile` is a plain initial on its colour, for a place with no mark in the repo
- *  (public/logos/sof.png is only a red square). */
-export const TIMELINE: { when: string; name: string; role: string; logo?: string; tile?: string; href: string; now?: boolean }[] = [
-  { when: "Now", name: "Ignaru", role: "founder, design tool", logo: "/logos/ignaru.png", href: "https://ignaru.com", now: true },
-  { when: "Now", name: "Ignura", role: "founder, design studio", logo: "/logos/ignura.png", href: "https://ignura.com", now: true },
-  { when: "2026", name: "Okara", role: "product intern", logo: "/logos/okara.png", href: "https://okara.ai" },
-  { when: "2026", name: "MenuFit", role: "product designer", logo: "/logos/menufit-bag-128.webp", href: "https://menufit.com" },
-  { when: "Before", name: "SOF Agency", role: "PR, partnerships", tile: "#e01b1b", href: "https://sof.agency" },
-  { when: "Before", name: "Basket Ent", role: "acquisitions, liveops", logo: "/logos/basketent.png", href: "https://basketent.com" },
+/** Newest first, a timeline. `logo` is the place's own mark (Ignaru's is the orange app icon from the ignaru repo);
+ *  `tile` is a plain initial on its colour where the repo has no real mark (public/logos/sof.png is only a red square).
+ *  `when` only where the site sources it: lib/profile.ts has "Since 2026" for Okara and MenuFit, both since left;
+ *  nothing dates SOF Agency or Basket Ent, so they carry no date. */
+export const TIMELINE: { name: string; role: string; when?: string; logo?: string; tile?: string; href: string; now?: boolean }[] = [
+  { name: "Ignaru", role: "founder, design tool", when: "now", logo: "/logos/ignaru-mark.png", href: "https://ignaru.com", now: true },
+  { name: "Ignura", role: "founder, design studio", when: "now", logo: "/logos/ignura.png", href: "https://ignura.com", now: true },
+  { name: "Okara", role: "product intern", when: "2026", logo: "/logos/okara.png", href: "https://okara.ai" },
+  { name: "MenuFit", role: "product designer", when: "2026", logo: "/logos/menufit-bag-128.webp", href: "https://menufit.com" },
+  { name: "SOF Agency", role: "PR, partnerships", tile: "#e01b1b", href: "https://sof.agency" },
+  { name: "Basket Ent", role: "acquisitions, liveops", logo: "/logos/basketent.png", href: "https://basketent.com" },
 ];
 
 /** Public replies on X to his ad posts, verbatim. */
