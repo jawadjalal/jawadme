@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Darkroom icon</title>
+<style>
+:root{--ground:#000;--ground-tint:#1A0204}
+:root[data-theme=light]{--ground:#ECEBE8}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--ground)}
+body{display:grid;place-items:center;overflow:hidden}
+[data-component]{width:min(1024px,86vw,86vh);aspect-ratio:1;cursor:default;transition:transform .5s cubic-bezier(.2,.8,.2,1);outline:none}
+[data-component] svg{width:100%;height:100%;display:block;overflow:visible}
+[data-component][data-state=hover]{transform:scale(1.015) rotate(-.6deg)}
+[data-component][data-state=pressed]{transform:scale(.97);transition-duration:.12s}
+.look{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+[data-state=hover] .look{transform:translate(var(--lx,0),var(--ly,0))}
+.blink{transform-box:view-box}
+
+    .dr-print,.dr-neg{transform-box:view-box}
+    .dr-print{animation:dr-sw 5s ease-in-out infinite}
+    .dr-neg{animation:dr-sw 5s ease-in-out infinite;animation-delay:-1.6s}
+    @keyframes dr-sw{0%,100%{transform:rotate(0)}25%{transform:rotate(2.2deg)}75%{transform:rotate(-2.2deg)}}
+    .dr-img{animation:dr-dev 5s linear infinite}
+    @keyframes dr-dev{0%,60%{opacity:1}72%,76%{opacity:.06}100%{opacity:1}}
+    [data-state=hover] .dr-print{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div data-component="darkroom" data-state="idle" tabindex="0" role="img" aria-label="Darkroom app icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" data-part="icon">
+<defs>
+  <clipPath id="da-clip"><path d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z"/></clipPath>
+  <linearGradient id="da-base" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#B0222E"/><stop offset="1" stop-color="#3A060B"/></linearGradient>
+  <linearGradient id="da-rim" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".22" stop-color="#fff" stop-opacity=".14"/>
+    <stop offset=".8" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".22"/></linearGradient>
+  <linearGradient id="da-hi" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="da-sh" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset=".62" stop-color="#1A0204" stop-opacity="0"/><stop offset="1" stop-color="#1A0204" stop-opacity=".32"/></linearGradient>
+  <filter id="da-b10" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="10"/></filter>
+  <filter id="da-b28" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="28"/></filter>
+  <filter id="da-obj" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+    <feOffset in="SourceAlpha" dy="22" result="d1"/><feGaussianBlur in="d1" stdDeviation="20" result="d2"/>
+    <feFlood flood-color="#1A0204" flood-opacity="0.45"/><feComposite in2="d2" operator="in" result="drop"/>
+    <feOffset in="SourceAlpha" dy="9" result="o1"/><feGaussianBlur in="o1" stdDeviation="5" result="o2"/>
+    <feComposite in="SourceAlpha" in2="o2" operator="out" result="topband"/>
+    <feFlood flood-color="#fff" flood-opacity=".6"/><feComposite in2="topband" operator="in" result="hl"/>
+    <feOffset in="SourceAlpha" dy="-14" result="u1"/><feGaussianBlur in="u1" stdDeviation="9" result="u2"/>
+    <feComposite in="SourceAlpha" in2="u2" operator="out" result="botband"/>
+    <feFlood flood-color="#1A0204" flood-opacity=".32"/><feComposite in2="botband" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="drop"/><feMergeNode in="SourceGraphic"/><feMergeNode in="hl"/><feMergeNode in="sh"/></feMerge>
+  </filter><linearGradient id="da-paper" x1="0" y1="340" x2="0" y2="900" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFE6E1"/><stop offset="1" stop-color="#F1B4AC"/></linearGradient><linearGradient id="da-photo" x1="0" y1="380" x2="0" y2="770" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#D9646A"/><stop offset="1" stop-color="#8E2530"/></linearGradient><linearGradient id="da-neg" x1="0" y1="340" x2="0" y2="940" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2A060B"/><stop offset="1" stop-color="#140205"/></linearGradient><linearGradient id="da-peg" x1="0" y1="296" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFD9BE"/><stop offset="1" stop-color="#E7A98A"/></linearGradient><radialGradient id="da-wash" cx="512" cy="40" r="760" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF7A6A" stop-opacity=".5"/><stop offset="1" stop-color="#FF7A6A" stop-opacity="0"/></radialGradient><filter id="da-obj2" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+    <feOffset in="SourceAlpha" dy="8" result="d1"/><feGaussianBlur in="d1" stdDeviation="6" result="d2"/>
+    <feFlood flood-color="#1A0204" flood-opacity="0.5"/><feComposite in2="d2" operator="in" result="drop"/>
+    <feOffset in="SourceAlpha" dy="9" result="o1"/><feGaussianBlur in="o1" stdDeviation="5" result="o2"/>
+    <feComposite in="SourceAlpha" in2="o2" operator="out" result="topband"/>
+    <feFlood flood-color="#fff" flood-opacity=".6"/><feComposite in2="topband" operator="in" result="hl"/>
+    <feOffset in="SourceAlpha" dy="-14" result="u1"/><feGaussianBlur in="u1" stdDeviation="9" result="u2"/>
+    <feComposite in="SourceAlpha" in2="u2" operator="out" result="botband"/>
+    <feFlood flood-color="#1A0204" flood-opacity=".32"/><feComposite in2="botband" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="drop"/><feMergeNode in="SourceGraphic"/><feMergeNode in="hl"/><feMergeNode in="sh"/></feMerge>
+  </filter></defs>
+<path data-part="tile" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="url(#da-base)"/>
+  <g clip-path="url(#da-clip)">
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#da-wash)"/>
+    <path data-part="line" d="M-20 282 Q512 372 1044 282" fill="none" stroke="#2A0509" stroke-width="12" stroke-linecap="round"/>
+    <g data-part="negative" class="dr-neg" style="transform-origin:238px 320px">
+      <g filter="url(#da-obj)"><rect x="166" y="344" width="144" height="600" rx="8" fill="url(#da-neg)"/></g>
+      <rect x="176" y="362" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="406" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="450" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="494" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="538" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="582" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="626" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="670" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="714" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="758" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="802" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="846" width="16" height="22" rx="4" fill="#6E1820"/><rect x="176" y="890" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="362" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="406" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="450" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="494" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="538" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="582" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="626" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="670" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="714" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="758" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="802" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="846" width="16" height="22" rx="4" fill="#6E1820"/><rect x="284" y="890" width="16" height="22" rx="4" fill="#6E1820"/>
+      <rect x="204" y="376" width="68" height="160" rx="4" fill="#5C1019"/>
+      <rect x="204" y="556" width="68" height="160" rx="4" fill="#5C1019"/>
+      <rect x="204" y="736" width="68" height="160" rx="4" fill="#5C1019"/>
+      <g filter="url(#da-obj2)"><rect x="218" y="296" width="40" height="96" rx="10" fill="url(#da-peg)"/>
+    <rect x="218" y="336" width="40" height="10" fill="#C98466" opacity=".7"/></g>
+    </g>
+    <g data-part="print" class="dr-print" style="transform-origin:592px 340px">
+      <g filter="url(#da-obj)"><rect x="372" y="344" width="440" height="556" rx="10" fill="url(#da-paper)"/></g>
+      <g data-part="image" class="dr-img">
+        <rect x="408" y="380" width="368" height="390" rx="4" fill="url(#da-photo)"/>
+        <g class="blink" style="transform-origin:592px 575px">
+          <g class="look"><rect x="503" y="519" width="66" height="112" rx="33" fill="#2A0509"/><ellipse cx="525.44" cy="548.12" rx="11.22" ry="13.200000000000001" fill="#fff" opacity=".9"/><rect x="615" y="519" width="66" height="112" rx="33" fill="#2A0509"/><ellipse cx="637.44" cy="548.12" rx="11.22" ry="13.200000000000001" fill="#fff" opacity=".9"/></g>
+        </g>
+      </g>
+      <g filter="url(#da-obj2)"><rect x="572" y="304" width="40" height="96" rx="10" fill="url(#da-peg)"/>
+    <rect x="572" y="344" width="40" height="10" fill="#C98466" opacity=".7"/></g>
+    </g>
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#da-sh)"/>
+    <path data-part="highlight" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#da-hi)" stroke-width="40" filter="url(#da-b10)"/>
+    <path data-part="rim" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#da-rim)" stroke-width="7"/>
+  </g>
+</svg>
+</div>
+<script>
+(()=>{
+const root=document.querySelector('[data-component]'), svg=root.querySelector('svg');
+const P=5, BLINK=[0.3];
+const loopFns=[];
+const blinks=[...svg.querySelectorAll('.blink')];
+const now=()=>window.__T!==undefined?window.__T*1000:performance.now();
+
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){
+  const ph=((now()/1000)%P)/P;
+  loopFns.forEach(f=>f(reduce?0:ph));
+  blinks.forEach((b,i)=>{const at=BLINK[i]??BLINK[0];let s=1;
+    if(at!==undefined&&!reduce){const d=Math.abs(ph-at)*P;if(d<.09)s=.1+.9*(d/.09);}
+    b.style.transform='scaleY('+s.toFixed(3)+')';});
+  if(window.__T===undefined) requestAnimationFrame(frame);
+}
+window.__render=frame; frame();
+root.addEventListener('pointerenter',()=>root.dataset.state='hover');
+root.addEventListener('pointerleave',()=>{root.dataset.state='idle';root.style.removeProperty('--lx');root.style.removeProperty('--ly')});
+root.addEventListener('pointerdown',()=>root.dataset.state='pressed');
+root.addEventListener('pointerup',()=>root.dataset.state='hover');
+root.addEventListener('pointermove',e=>{const r=root.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  root.style.setProperty('--lx',(x*22).toFixed(1)+'px');root.style.setProperty('--ly',(y*22).toFixed(1)+'px');});
+root.addEventListener('keydown',e=>{if(e.key==='t'){const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark'}});
+})();
+</script>
+</body></html>
