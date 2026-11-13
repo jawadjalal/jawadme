@@ -10,7 +10,7 @@ html:has(.pf) body {
 .pf {
   --ink: #0a0a0a;
   --ink-2: #5e5e5e;
-  --ink-3: #8d8d8d;
+  --ink-3: #737373;
   --ground: #fff;
   --tint: #f4f4f3;
   --rule: #ececec;
@@ -194,7 +194,7 @@ html:has(.pf) body {
    opens the pill's role */
 .col-past { margin: 0 calc(-1 * var(--edge)); }
 .mq { display: flex; overflow: hidden; padding: 8px 0 10px var(--edge); -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--edge), #000 calc(100% - 64px), transparent); mask-image: linear-gradient(90deg, transparent, #000 var(--edge), #000 calc(100% - 64px), transparent); }
-.mq-run { flex: none; display: flex; gap: 10px; margin: 0; padding: 0 10px 0 0; list-style: none; animation: mq-slide 26s linear infinite; }
+.mq-run { flex: none; display: flex; gap: 10px; margin: 0; padding: 0 10px 0 0; list-style: none; animation: mq-slide 34s linear infinite; }
 .mq:hover .mq-run { animation-play-state: paused; }
 @keyframes mq-slide { to { transform: translateX(-100%); } }
 .mq-pill {
