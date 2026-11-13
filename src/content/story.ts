@@ -26,7 +26,7 @@ export const HEADLINE = {
       { t: "MenuFit" },
       { pic: "/work/2026-11/sticker-menufit.webp", alt: "the MenuFit app mark, a paper bag", cut: true, w: 140, h: 159, tilt: 8 },
       { t: "users." },
-      { pic: "/work/2026-11/inline-icon.webp", alt: "his billboard app icon", w: 128, h: 128, tilt: 7 },
+      { pic: "/work/2026-11/inline-ad.webp", alt: "a crop of his Shown Media ad: an eye", w: 128, h: 128, tilt: 7 },
     ],
   ],
 } as const;

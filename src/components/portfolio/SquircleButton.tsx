@@ -5,7 +5,7 @@
 type Size = "md" | "sm";
 
 const SIZES: Record<Size, { w: number; h: number }> = {
-  md: { w: 116, h: 46 },
+  md: { w: 108, h: 42 },
   sm: { w: 104, h: 42 },
 };
 

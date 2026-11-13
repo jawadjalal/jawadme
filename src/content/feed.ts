@@ -77,7 +77,7 @@ export const FEED: Entry[] = [
   live("exploded-view", "Exploded view", 1.1, 320, "Exploded view, a live component. Press assemble."),
   live("effort-switch", "Effort switch", 1.1, 520, "Effort switch, live. Drag it."),
 
-  { story: "Making things for money since thirteen.", pic: { pic: "/work/2026-11/inline-ad.webp", alt: "a crop of his Shown Media ad: an eye", w: 128, h: 128, tilt: -7 }, at: 3 },
+  { story: "Making things for money since thirteen.", pic: { pic: "/work/2026-11/sticker-outpace.webp", alt: "a crop of his Outpace ad: a running track", w: 160, h: 160, tilt: -7 }, at: 3 },
 
   site("site-menufit", "MenuFit", "app screens for eating out healthy, light and dark."),
   ad("standout-door", "Standout", "Get introduced to your dream role. A green door in a hedge."),

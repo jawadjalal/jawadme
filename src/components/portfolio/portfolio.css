@@ -196,28 +196,28 @@ html:has(.pf) body {
 /* app icons: three to a strip, one piece on one black ground */
 .row[data-family="icon"] { gap: 0; padding: 0 3%; background: #000; border-radius: 3px; overflow: hidden; }
 .row[data-family="icon"] .live-box { border-radius: 0; }
+/* who it is for, shown on hover as plain type over a neutral scrim at the picture's foot (no chip) */
 .tile-tag {
   position: absolute;
-  left: 12px;
-  bottom: 12px;
-  display: inline-flex;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
   gap: 6px;
-  padding: 5px 9px;
-  border-radius: 4px;
-  background: rgb(255 255 255 / 0.95);
-  color: var(--ink);
+  padding: 40px 14px 12px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0)); /* taste-skill-ignore: a neutral scrim under text on a photo */
+  color: #fff;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: -0.01em;
   white-space: nowrap;
-  max-width: calc(100% - 24px);
   opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+  transition: opacity 220ms var(--ease);
   pointer-events: none;
 }
-.tile-tag span { font-weight: 400; color: var(--ink-2); }
-.tile:hover .tile-tag { opacity: 1; transform: none; }
+.tile-tag span { font-weight: 400; color: rgb(255 255 255 / 0.75); }
+.tile:hover .tile-tag { opacity: 1; }
 .tile-live figcaption { margin-top: 8px; font-size: 13px; color: var(--ink-2); }
 
 /* entrances, once: a piece below the fold waits, then fades up and settles as it arrives (the script marks it) */
@@ -383,8 +383,9 @@ html:has(.pf) body {
   .row:not([data-family="icon"]) { flex-direction: column; }
   .row:not([data-family="icon"]) .tile { flex: none !important; width: 100%; }
   .row .tile { transition-delay: 0ms !important; }
-  .tile-live[data-kind="component"] .live-box { aspect-ratio: 4 / 5 !important; }
-  .tile-tag { position: static; display: flex; opacity: 1; transform: none; padding: 7px 0 0; background: none; font-size: 12.5px; border-radius: 0; }
+  .tile-tag { position: static; display: flex; opacity: 1; padding: 7px 0 0; background: none; color: var(--ink); font-size: 12.5px; border-radius: 0; }
+  .tile-tag span { color: var(--ink-2); }
+  .tile-live[data-kind="component"] .live-box { aspect-ratio: 1.1 !important; }
   .story-cta { display: none !important; }
   .story-line, .story[data-look="print"] .sl { font-size: clamp(50px, 15vw, 72px); }
   .story[data-look="sticker"] .sl { font-size: clamp(36px, 10.2vw, 44px); text-wrap: pretty; }
