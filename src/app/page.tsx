@@ -5,6 +5,7 @@ import { FEED } from "@/content/feed";
 import { CLOSING, DOES, HEADLINE, HEADLINE_ALT, HIRE, PAST, REPLIES, SECOND, TIMELINE, X_HANDLE } from "@/content/story";
 import { print, sans } from "@/components/portfolio/fonts";
 import "@/components/portfolio/portfolio.css";
+import { profilePage } from "@/lib/seo";
 
 // jawadjalal.com, after jacobtrebacki.com: a fixed column on the left says who he is, what he does, his companies and how
 // to hire him; the rest of the screen is an endless wall of his ads, brand studies, sites, live components and app
@@ -14,6 +15,7 @@ import "@/components/portfolio/portfolio.css";
 export default function Home() {
   return (
     <div className={`pf ${sans.variable} ${print.variable}`}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePage()) }} />
       <StoryColumn headline={HEADLINE} headlineAlt={HEADLINE_ALT} hire={HIRE} second={SECOND} timeline={TIMELINE} past={PAST} replies={REPLIES} xHandle={X_HANDLE} does={DOES} />
       <main className="pf-main" id="work">
         <h2 className="pf-sr">Work</h2>

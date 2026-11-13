@@ -9,7 +9,6 @@ import { IDENTITY } from "@/lib/profile";
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh">
-      <ContactModal />
       <SiteNav home={false} />
 
       <main id="main" className="mx-auto w-full max-w-column px-4 pt-24 sm:px-6 sm:pt-28">
@@ -18,6 +17,8 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
           <Link href="/" className="rp-link">{IDENTITY.properName}</Link>, designer and founder in London.
         </footer>
       </main>
+      {/* after the page, so its heading never comes before the page's h1; a dialog draws in the top layer wherever it sits */}
+      <ContactModal />
     </div>
   );
 }

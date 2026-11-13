@@ -1,19 +1,16 @@
 import type { Metadata } from "next";
-import { IDENTITY, SKILLS, SOCIALS } from "@/lib/profile";
+import { IDENTITY } from "@/lib/profile";
+import { HOME_DESCRIPTION, HOME_TITLE, siteGraph } from "@/lib/seo";
 
-// The same who and what as the home page: a design engineer who makes Ignaru, and designs sites and ads for startups.
-const TITLE = `${IDENTITY.properName}, design engineer building Ignaru`;
-const DESCRIPTION =
-  "I'm 15, a design engineer in London, building Ignaru (ignaru.com), an agent-native design tool: it opens your repo, and your coding agent fixes what you circle. I design sites and ads for startups. Before that, product development intern at Okara and new screens for MenuFit as a client.";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(IDENTITY.site),
-  title: TITLE,
-  description: DESCRIPTION,
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
   openGraph: {
-    title: TITLE,
-    description: DESCRIPTION,
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
     url: IDENTITY.site,
     siteName: IDENTITY.properName,
     type: "profile",
@@ -24,6 +21,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     creator: "@jawadmakes",
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
     images: ["/og.png"],
   },
   alternates: { canonical: IDENTITY.site },
@@ -40,25 +39,6 @@ try {
 } catch (e) {}
 `;
 
-const JSON_LD = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: IDENTITY.properName,
-  url: IDENTITY.site,
-  email: `mailto:${IDENTITY.email}`,
-  jobTitle: "Design engineer",
-  description: DESCRIPTION,
-  knowsAbout: SKILLS,
-  worksFor: { "@type": "Organization", name: "Ignura", url: "https://ignura.com" },
-  sameAs: SOCIALS.filter((s) => /^https:/.test(s.href)).map((s) => s.href),
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: IDENTITY.locality,
-    addressRegion: IDENTITY.region,
-    addressCountry: IDENTITY.country,
-  },
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -66,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph()) }}
         />
       </head>
       <body className="min-h-dvh font-sans antialiased">
