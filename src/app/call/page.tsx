@@ -8,6 +8,7 @@ import { getBooking } from "@/components/felt/booking";
 import { FEED } from "@/content/feed";
 import { BOOKING, CLOSING, SECOND } from "@/content/story";
 import "@/components/portfolio/portfolio.css";
+import { CALL_DESCRIPTION, CALL_TITLE, callPage } from "@/lib/seo";
 
 // jawadjalal.com/call: the booking calendar in the left column, the same endless wall of his work on the right. The
 // call's length and where it happens come from Cal.com's public API (components/felt/booking), rebuilt every 30 minutes.
@@ -15,11 +16,18 @@ import "@/components/portfolio/portfolio.css";
 export const revalidate = 1800;
 
 export const metadata: Metadata = {
-  title: "Call Jawad",
-  description: "Book a short video call with Jawad Jalal about ads, brands and design for your startup.",
+  title: CALL_TITLE,
+  description: CALL_DESCRIPTION,
   alternates: { canonical: "/call" },
-  openGraph: { title: "Call Jawad", description: "Book a short video call with Jawad Jalal.", url: "/call", images: ["/og.png"] },
-  twitter: { card: "summary_large_image", title: "Call Jawad", description: "Book a short video call with Jawad Jalal.", images: ["/og.png"] },
+  openGraph: {
+    title: CALL_TITLE,
+    description: CALL_DESCRIPTION,
+    url: "/call",
+    siteName: "Jawad Jalal",
+    type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Jawad Jalal. I design ads, brands and sites for startups. Beside it, a wall of his ads." }],
+  },
+  twitter: { card: "summary_large_image", creator: "@jawadmakes", title: CALL_TITLE, description: CALL_DESCRIPTION, images: ["/og.png"] },
 };
 
 const MEMOJI = { pic: "/design/jawad-die.webp", alt: "Jawad's memoji", cut: true, w: 697, h: 781, tilt: 5 } as const;
@@ -29,6 +37,7 @@ export default async function Call() {
   const where = b.where === "meet" ? "on Google Meet" : "on video";
   return (
     <div className={`pf pf-call ${sans.variable} ${print.variable}`}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(callPage()) }} />
       <aside className="col col-call">
         <div className="col-top">
           <div className="col-h1">
