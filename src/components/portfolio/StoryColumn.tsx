@@ -1,18 +1,17 @@
 "use client";
 
-// The fixed left column, one composed stack: the two-line headline with his memoji stuck into it, the squircle hire
-// button and one quiet second action, a slim timeline of where he has worked, what the wall holds, and one reply from
-// X at a time, set as an X post, pinned at the foot. On a phone it becomes the header block over the wall: the
-// timeline folds behind one tap, and a small hire button stays at the bottom of the screen once the header's own has
-// gone.
+// The fixed left column, one composed stack: the two-line headline with his stickers in it, the two squircle buttons,
+// what he does, his two companies linked out, a slow marquee of the places he worked before, and one reply from X at
+// a time, set as an X post. On a phone it becomes the header block over the wall, and a small hire button stays at
+// the bottom of the screen once the header's own has gone.
 
 import { useEffect, useRef, useState } from "react";
 import { SquircleButton } from "./SquircleButton";
 import { Sticker, type StickerPic } from "./Sticker";
 
 type Bit = { t: string } | StickerPic;
-type Job = { name: string; role: string; logo?: string; tile?: string; href: string; now?: boolean };
-type Reply = { quote: string; name: string; handle: string };
+type Job = { name: string; role: string; logo: string; href: string };
+type Reply = { quote: string; name: string; handle: string; avatar?: string };
 
 /** How long one reply stays up, in ms. The progress bar under the post is this long, and its end moves to the next. */
 const DWELL = 5600;
@@ -47,9 +46,9 @@ function XMark() {
   );
 }
 
-/** One reply at a time, set as an X post: an initial for the avatar (there are no avatar files), name, handle, the X
- *  mark and the reply. A bar under it fills while it is up; it pauses while the pointer is on it, and a click moves on. */
-function Replies({ replies }: { replies: Reply[] }) {
+/** One reply at a time, set the way X shows a post: profile picture, name, handle, the X mark, who it replied to, and
+ *  the reply. A bar along the card's foot fills while it is up; it pauses while the pointer is on it, a click moves on. */
+function Replies({ replies, to }: { replies: Reply[]; to: string }) {
   const [n, setN] = useState(0);
   const [paused, setPaused] = useState(false);
   const next = () => setN((x) => (x + 1) % replies.length);
@@ -74,17 +73,22 @@ function Replies({ replies }: { replies: Reply[] }) {
           {replies.map((r, i) => (
             <figure key={r.handle} className="xpost-item" data-on={i === n} aria-hidden={i !== n}>
               <figcaption className="xpost-head">
-                <span className="xpost-av" aria-hidden="true">
-                  {r.name.replace(/[^A-Za-z]/g, "")[0]?.toUpperCase() ?? "?"}
-                </span>
-                <span className="xpost-who">
+                <a className="xpost-av" href={`https://x.com/${r.handle}`} target="_blank" rel="noopener" tabIndex={-1} aria-hidden="true">
+                  {r.avatar ? (
+                    <img src={r.avatar} alt="" width={40} height={40} loading="lazy" decoding="async" />
+                  ) : (
+                    (r.name.replace(/[^A-Za-z]/g, "")[0]?.toUpperCase() ?? "?")
+                  )}
+                </a>
+                <a className="xpost-who" href={`https://x.com/${r.handle}`} target="_blank" rel="noopener" tabIndex={i === n ? 0 : -1}>
                   <b>{r.name}</b>
-                  <a href={`https://x.com/${r.handle}`} target="_blank" rel="noopener" tabIndex={i === n ? 0 : -1}>
-                    @{r.handle}
-                  </a>
-                </span>
+                  <span>@{r.handle}</span>
+                </a>
                 <XMark />
               </figcaption>
+              <p className="xpost-to">
+                Replying to <a href={`https://x.com/${to}`} target="_blank" rel="noopener" tabIndex={i === n ? 0 : -1}>@{to}</a>
+              </p>
               <blockquote>{r.quote}</blockquote>
             </figure>
           ))}
@@ -97,14 +101,41 @@ function Replies({ replies }: { replies: Reply[] }) {
   );
 }
 
+/** The places he worked before, as soft squircle pills drifting sideways. Pointing at one stops the drift and opens
+ *  its role beside the name. The list is drawn twice so the loop has no seam. */
+function Past({ past }: { past: Job[] }) {
+  const run = [...past, ...past];
+  return (
+    <section className="col-past" aria-label="Where I worked before">
+      <div className="mq">
+        {[0, 1].map((copy) => (
+          <ul key={copy} className="mq-run" aria-hidden={copy === 1}>
+            {run.map((j, i) => (
+              <li key={i}>
+                <a className="mq-pill" href={j.href} target="_blank" rel="noopener" tabIndex={copy === 1 || i >= past.length ? -1 : 0}>
+                  <img src={j.logo} alt="" width={20} height={20} />
+                  <span className="mq-name">{j.name}</span>
+                  <span className="mq-role">{j.role}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function StoryColumn({
   headline,
   headlineAlt,
   hire,
   second,
   timeline,
+  past,
   replies,
-  made,
+  xHandle,
+  does,
 }: {
   headline: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
   /** the earlier headline, shown with ?h=alt so the two can be compared on the real page */
@@ -112,11 +143,13 @@ export function StoryColumn({
   hire: string;
   second: { label: string; href: string; address: string };
   timeline: Job[];
+  past: Job[];
   replies: Reply[];
-  /** what is on the wall, counted from the manifest: [label, count] */
-  made: [string, number][];
+  /** his X handle, which every reply was posted under */
+  xHandle: string;
+  /** what he does, in a few words each */
+  does: readonly string[];
 }) {
-  const [open, setOpen] = useState(false);
   const [stuck, setStuck] = useState(false);
   const [addr, setAddr] = useState(false);
   const [alt, setAlt] = useState(false);
@@ -160,49 +193,43 @@ export function StoryColumn({
           </p>
         </div>
 
-        <section className="col-sec col-time" data-open={open}>
-          <button type="button" className="col-time-toggle" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-            <span>Where I&apos;ve worked</span>
-            <svg viewBox="0 0 12 12" aria-hidden="true">
-              <path d="M2.5 4.5 6 8l3.5-3.5" />
-            </svg>
-          </button>
-          <h2 className="col-sec-h">Where I&apos;ve worked</h2>
-          <ul className="col-work">
-            {timeline.map((j) => (
-              <li key={j.name} data-now={j.now ? "" : undefined}>
-                <a href={j.href} target="_blank" rel="noopener">
-                  {j.logo ? (
-                    <img src={j.logo} alt="" width={16} height={16} />
-                  ) : (
-                    <span className="col-tile" style={{ background: j.tile }} aria-hidden="true">
-                      {j.name[0]}
-                    </span>
-                  )}
-                  <span className="col-name">{j.name}</span>
-                  <span className="col-role">{j.role}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <p className="col-does">
+          {does.map((d, i) => (
+            <span key={d}>
+              {i ? (
+                <>
+                  <span className="pf-sr">, </span>
+                  <span className="col-does-dot" aria-hidden="true">·</span>
+                </>
+              ) : null}
+              {d}
+            </span>
+          ))}
+        </p>
 
-        <section className="col-sec col-made" aria-label="On the wall">
-          <h2 className="col-sec-h">On the wall</h2>
-          <ul>
-            {made.map(([label, c]) => (
-              <li key={label}>
-                <span className="col-made-n">{c}</span>
-                {label}
-              </li>
-            ))}
-          </ul>
-        </section>
+        <ul className="col-own" aria-label="My companies">
+          {timeline.map((j) => (
+            <li key={j.name}>
+              <a href={j.href} target="_blank" rel="noopener">
+                <img src={j.logo} alt="" width={30} height={30} />
+                <span className="col-own-t">
+                  <b>{j.name}</b>
+                  <span>{j.role}</span>
+                </span>
+                <span className="col-own-go" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div className="col-foot">
-        <Replies replies={replies} />
-      </div>
+      <Past past={past} />
+
+      <section className="col-reps">
+        <Replies replies={replies} to={xHandle} />
+      </section>
 
       <div className="col-float" data-on={stuck} inert={!stuck}>
         <SquircleButton href={hire} size="sm" icon="phone" label="Call me: book a call">
