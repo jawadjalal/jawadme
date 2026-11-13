@@ -35,7 +35,7 @@ export const personNode = () => ({
   name: IDENTITY.properName,
   url: SITE_URL,
   email: `mailto:${EMAIL}`,
-  image: `${SITE_URL}/og.png`,
+  image: `${SITE_URL}/design/jawad-die.webp`,
   description: "Designer and founder. Brand design, ads and design engineering for startups.",
   knowsAbout: [...DOES],
   sameAs: [X_URL],
@@ -54,8 +54,7 @@ export const websiteNode = () => ({
 
 export const siteGraph = () => ({ "@context": "https://schema.org", "@graph": [personNode(), websiteNode()] });
 
-export const profilePage = () => ({
-  "@context": "https://schema.org",
+const profileNode = () => ({
   "@type": "ProfilePage",
   "@id": `${SITE_URL}/#profile`,
   url: SITE_URL,
@@ -67,6 +66,9 @@ export const profilePage = () => ({
   mainEntity: { "@id": PERSON_ID },
   primaryImageOfPage: { "@type": "ImageObject", url: `${SITE_URL}/og.png`, width: 1200, height: 630 },
 });
+
+/** The profile page with the person inline in the same graph, so `mainEntity` resolves on its own. */
+export const profilePage = () => ({ "@context": "https://schema.org", "@graph": [profileNode(), personNode()] });
 
 export const callPage = () => ({
   "@context": "https://schema.org",

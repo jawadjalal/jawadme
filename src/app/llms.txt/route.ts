@@ -1,4 +1,3 @@
-import { IDENTITY } from "@/lib/profile";
 import { BOOK, EMAIL } from "@/components/felt/copy";
 import { DOES, PAST, TIMELINE, X_HANDLE } from "@/content/story";
 import { POSTS } from "@/lib/posts";
@@ -17,9 +16,9 @@ export function GET() {
     .map((p) => `- [${p.title}](${SITE_URL}/blog/${p.slug}): ${p.description}`)
     .join("\n");
 
-  const body = `# ${IDENTITY.properName}
+  const body = `# Jawad Jalal
 
-> ${IDENTITY.properName} is a designer and founder. He does ${list(DOES.map((d) => d.toLowerCase()))} for startups. He runs Ignura, an ad and brand studio, and is building Ignaru, a design tool. This site is his portfolio: a wall of his ads, brand studies, sites and components. Ads and studies of companies that did not ask for them are labelled unsolicited, and none of those companies is a client.
+> Jawad Jalal is a designer and founder. He does ${list(DOES.map((d) => d.toLowerCase()))} for startups. He runs Ignura, an ad and brand studio, and is building Ignaru, a design tool. This site is his portfolio: a wall of his ads, brand studies, sites and components. Ads and studies of companies that did not ask for them are labelled unsolicited, and none of those companies is a client.
 
 ## Pages
 
@@ -27,7 +26,6 @@ export function GET() {
 - [Call](${SITE_URL}/call): book a short video call with him.
 - [Magnitude](${SITE_URL}/magnitude): a game he made, an incremental RPG on an endless canvas.
 - [Blog](${SITE_URL}/blog): notes on design, building products and launching apps.
-- [CV](${SITE_URL}${IDENTITY.cv}): his CV as a PDF.
 
 ## His companies
 

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     type: "profile",
     // Built by scripts/og.mjs: the name and one line on black beside a
     // wall of his ads. Rebuild with `npm run og` after changing either.
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Jawad Jalal. I design ads, brands and sites for startups. Beside it, eight of his ads." }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Jawad Jalal. I design ads, brands and sites for startups. Beside it, a wall of his ads." }],
   },
   twitter: {
     card: "summary_large_image",

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     url: "/call",
     siteName: "Jawad Jalal",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Jawad Jalal. I design ads, brands and sites for startups. Beside it, eight of his ads." }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Jawad Jalal. I design ads, brands and sites for startups. Beside it, a wall of his ads." }],
   },
   twitter: { card: "summary_large_image", creator: "@jawadmakes", title: CALL_TITLE, description: CALL_DESCRIPTION, images: ["/og.png"] },
 };
