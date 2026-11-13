@@ -8,14 +8,15 @@
 import { useEffect, useRef, useState } from "react";
 import type { Entry, Piece } from "@/content/feed";
 import { pack, ratio, reshuffle, type Row } from "./pack";
-import { StoryLine, type Tone } from "./StoryLine";
+import { StoryLine, type Look } from "./StoryLine";
 import { SquircleButton } from "./SquircleButton";
 
 const MAX_PASSES = 6;
-const TONES: Tone[] = ["red", "cyan", "yellow"];
+const LOOK: Look = "sticker";
+const LOOKS: Look[] = ["print", "sticker", "typed"];
 
-/** A live component in a frame. Each one is laid out for a small window (`stage` px wide), then scaled to fill its
- *  tile, so its type and controls read at the tile's size instead of floating small in a big empty frame. On a phone
+/** A live component in a frame of its own ground colour. Each one is laid out for a small window (`stage` px wide),
+ *  then scaled to fill its tile, so the component fills most of the frame instead of floating small in it. On a phone
  *  the frame is the phone's own width at 4:5 and nothing is scaled. */
 function LiveFrame({ p }: { p: Extract<Piece, { embed: string }> }) {
   const box = useRef<HTMLDivElement>(null);
@@ -39,12 +40,12 @@ function LiveFrame({ p }: { p: Extract<Piece, { embed: string }> }) {
     };
   }, [p.stage, p.ratio]);
   return (
-    <div ref={box} className="live-box" style={{ aspectRatio: String(p.ratio) }}>
+    <div ref={box} className="live-box" style={{ aspectRatio: String(p.ratio), background: p.ground }}>
       <iframe
         src={`/components/${p.embed}.html`}
         title={p.name}
         loading="lazy"
-        style={fit ? { width: fit.w, height: fit.h, transform: `scale(${fit.s})` } : undefined}
+        style={fit ? { width: fit.w, height: fit.h, transform: `scale(${fit.s})`, background: p.ground } : { background: p.ground }}
       />
     </div>
   );
@@ -83,14 +84,15 @@ function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
   );
 }
 
-function Rows({ rows, href, storyFrom = 0 }: { rows: Row[]; href: string; storyFrom?: number }) {
+function Rows({ rows, href, look, storyFrom = 0 }: { rows: Row[]; href: string; look: Look; storyFrom?: number }) {
   let s = storyFrom;
   return (
     <>
       {rows.map((row, i) => {
         if (row.type === "story") {
           const n = s++;
-          return <StoryLine key={row.key} text={row.story.story} cta={row.story.cta} href={href} tone={TONES[n % TONES.length]} index={n} />;
+          const st = row.story;
+          return <StoryLine key={row.key} text={st.story} cta={st.cta} pic={st.pic} at={st.at} href={href} look={look} index={n} />;
         }
         return (
           <div key={row.key} className="row" data-count={row.pieces.length} data-family={row.pieces[0].kind}>
@@ -107,8 +109,40 @@ function Rows({ rows, href, storyFrom = 0 }: { rows: Row[]; href: string; storyF
 export function WorkFeed({ entries, href, closing, name }: { entries: Entry[]; href: string; closing: string; name: string }) {
   const first = pack(entries, "p0");
   const [passes, setPasses] = useState<Row[][]>([]);
+  const [look, setLook] = useState<Look>(LOOK);
+  const root = useRef<HTMLDivElement>(null);
   const end = useRef<HTMLDivElement>(null);
   const done = passes.length >= MAX_PASSES;
+
+  // ?lines=print|sticker|typed shows the other looks of the story lines, so they can be compared on the real page
+  useEffect(() => {
+    const q = new URLSearchParams(location.search).get("lines") as Look | null;
+    if (q && LOOKS.includes(q)) setLook(q);
+  }, []);
+
+  // pieces fade and settle in once as they first enter; anything already on screen stays as it is
+  useEffect(() => {
+    const el = root.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      (seen) => {
+        for (const e of seen) {
+          if (!e.isIntersecting) continue;
+          (e.target as HTMLElement).dataset.in = "";
+          io.unobserve(e.target);
+        }
+      },
+      { rootMargin: "0px 0px -6% 0px" },
+    );
+    for (const t of el.querySelectorAll<HTMLElement>(".tile:not([data-seen]), .story:not([data-seen])")) {
+      t.dataset.seen = "";
+      if (t.getBoundingClientRect().top < innerHeight) continue;
+      t.dataset.wait = "";
+    }
+    // everything still waiting (from this run or one before it) is watched again
+    for (const t of el.querySelectorAll<HTMLElement>("[data-wait]:not([data-in])")) io.observe(t);
+    return () => io.disconnect();
+  }, [passes.length, look]);
 
   useEffect(() => {
     const el = end.current;
@@ -121,7 +155,7 @@ export function WorkFeed({ entries, href, closing, name }: { entries: Entry[]; h
           const n = prev.length + 1;
           // every other pass carries one line with the hire button, so a long scroll is never far from it
           const order: Entry[] = reshuffle(entries);
-          if (n % 2 === 1) order.splice(Math.floor(order.length / 2), 0, { story: closing, cta: true });
+          if (n % 2 === 1) order.splice(Math.floor(order.length / 2) & ~1, 0, { story: closing, cta: true });
           return [...prev, pack(order, `p${n}`)];
         });
       },
@@ -134,10 +168,10 @@ export function WorkFeed({ entries, href, closing, name }: { entries: Entry[]; h
   const storiesInFirst = first.filter((r) => r.type === "story").length;
 
   return (
-    <div className="feed">
-      <Rows rows={first} href={href} />
+    <div className="feed" ref={root}>
+      <Rows rows={first} href={href} look={look} />
       {passes.map((rows, i) => (
-        <Rows key={i} rows={rows} href={href} storyFrom={storiesInFirst + i} />
+        <Rows key={i} rows={rows} href={href} look={look} storyFrom={storiesInFirst + i} />
       ))}
       <div ref={end} className="feed-end" aria-hidden="true" />
       {done ? (

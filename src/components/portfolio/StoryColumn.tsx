@@ -1,15 +1,16 @@
 "use client";
 
-// The fixed left column: a two-tone headline with tiny pictures set in the line, the squircle hire button and one quiet
-// second action, a timeline of where he has worked (newest first), one reply from X at a time, and the marks of the
-// places he has worked at the foot. On a phone it becomes the header block over the wall: the timeline folds behind one
-// tap, and a small hire button stays at the bottom of the screen once the header's own has scrolled away.
+// The fixed left column, one composed stack: the headline with stickers of his work in the type, the squircle hire
+// button and one quiet second action, the places he has worked (each with its own mark, the two current ones in ink),
+// and one reply from X at a time pinned at the foot. On a phone it becomes the header block over the wall: the places
+// fold behind one tap, and a small hire button stays at the bottom of the screen once the header's own has gone.
 
 import { useEffect, useRef, useState } from "react";
 import { SquircleButton } from "./SquircleButton";
+import { Sticker, type StickerPic } from "./Sticker";
 
-type Bit = { t: string } | { pic: string; alt: string };
-type Job = { when: string; name: string; line: string; href: string; now?: boolean };
+type Bit = { t: string } | StickerPic;
+type Job = { when: string; name: string; role: string; logo: string; href: string; now?: boolean };
 type Reply = { quote: string; name: string; handle: string };
 
 function Lines({ lines }: { lines: readonly (readonly Bit[])[] }) {
@@ -21,9 +22,9 @@ function Lines({ lines }: { lines: readonly (readonly Bit[])[] }) {
             "t" in b ? (
               <span key={i}>{i ? " " : ""}{b.t}</span>
             ) : (
-              <span key={i} className="col-pic" data-n={(l + i) % 3}>
+              <span key={i}>
                 {" "}
-                <img src={b.pic} alt={b.alt} width={64} height={64} />
+                <Sticker s={b} eager />
               </span>
             ),
           )}
@@ -33,6 +34,7 @@ function Lines({ lines }: { lines: readonly (readonly Bit[])[] }) {
   );
 }
 
+/** One reply at a time, crossfading every few seconds; the count steps to the next one by hand. */
 function Replies({ replies }: { replies: Reply[] }) {
   const [n, setN] = useState(0);
   const paused = useRef(false);
@@ -42,7 +44,6 @@ function Replies({ replies }: { replies: Reply[] }) {
     }, 5200);
     return () => clearInterval(id);
   }, [replies.length]);
-  const r = replies[n];
   return (
     <section
       className="col-replies"
@@ -50,16 +51,25 @@ function Replies({ replies }: { replies: Reply[] }) {
       onMouseEnter={() => (paused.current = true)}
       onMouseLeave={() => (paused.current = false)}
     >
-      <h2>Replies on X</h2>
-      <figure key={n} className="col-reply" aria-live="polite">
-        <blockquote>{r.quote}</blockquote>
-        <figcaption>
-          {r.name}{" "}
-          <a href={`https://x.com/${r.handle}`} target="_blank" rel="noopener">
-            @{r.handle}
-          </a>
-        </figcaption>
-      </figure>
+      <div className="col-replies-head">
+        <h2>Replies on X</h2>
+        <button type="button" className="col-count" onClick={() => setN((x) => (x + 1) % replies.length)} aria-label="Next reply">
+          {n + 1} / {replies.length}
+        </button>
+      </div>
+      <div className="col-reply-stack" aria-live="polite">
+        {replies.map((r, i) => (
+          <figure key={r.handle} className="col-reply" data-on={i === n} aria-hidden={i !== n}>
+            <blockquote>{r.quote}</blockquote>
+            <figcaption>
+              {r.name}{" "}
+              <a href={`https://x.com/${r.handle}`} target="_blank" rel="noopener" tabIndex={i === n ? 0 : -1}>
+                @{r.handle}
+              </a>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
     </section>
   );
 }
@@ -70,14 +80,12 @@ export function StoryColumn({
   second,
   timeline,
   replies,
-  marks,
 }: {
   headline: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
   hire: string;
   second: { label: string; href: string };
   timeline: Job[];
   replies: Reply[];
-  marks: { name: string; logo: string }[];
 }) {
   const [open, setOpen] = useState(false);
   const [stuck, setStuck] = useState(false);
@@ -119,32 +127,23 @@ export function StoryColumn({
             </svg>
           </button>
           <h2 className="col-time-h">Where I&apos;ve worked</h2>
-          <ol className="col-tl">
+          <ul className="col-places">
             {timeline.map((j) => (
               <li key={j.name} data-now={j.now ? "" : undefined}>
-                <span className="col-when">{j.when}</span>
-                <span className="col-job">
-                  <a href={j.href} target="_blank" rel="noopener">
-                    {j.name}
-                  </a>
-                  <span>{j.line}</span>
-                </span>
+                <a href={j.href} target="_blank" rel="noopener">
+                  <img src={j.logo} alt="" width={22} height={22} />
+                  <span className="col-name">{j.name}</span>
+                  <span className="col-role">{j.role}</span>
+                  <span className="col-when">{j.when}</span>
+                </a>
               </li>
             ))}
-          </ol>
+          </ul>
         </section>
       </div>
 
       <div className="col-foot">
         <Replies replies={replies} />
-        <ul className="col-marks" aria-label="Places I have worked">
-          {marks.map((m) => (
-            <li key={m.name}>
-              <img src={m.logo} alt="" width={20} height={20} />
-              {m.name}
-            </li>
-          ))}
-        </ul>
       </div>
 
       <div className="col-float" data-on={stuck} inert={!stuck}>

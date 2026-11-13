@@ -1,45 +1,101 @@
-// One line of the story, set big across the wall of work like a caption box in a comic: hand-lettered display type,
-// tilted a little, printed slightly off register (a red and a cyan pass under the black, overprinted), on a block of
-// halftone dots that thin out towards its edges, with a stroke drawn under it by hand. Used rarely, so each one lands
-// against the white page. `tone` picks the ink of the dots; `cta` puts the squircle hire button beside the line.
+"use client";
 
-import { useId } from "react";
+// One line of his story, set big across the wall of work. Three looks, one markup:
+//   print   Spider-Verse print done properly: Archivo extra condensed black italic, set huge and tight, printed as
+//           plates. A magenta plate of Ben-Day dots sits off register as the shadow, a cyan plate slips the other
+//           way, and the black key overprints both (multiply), so where they cross the inks mix as they do on paper.
+//   sticker The column's voice at wall size: ink grotesque, tight, with one sticker of his work stuck into the line.
+//   typed   The line types itself in once as it enters the screen, with a block caret.
+// The line sits still and complete without script; motion only adds the entrance, once.
+
+import { useEffect, useRef, useState } from "react";
 import { SquircleButton } from "./SquircleButton";
+import { Sticker, type StickerPic } from "./Sticker";
 
-export type Tone = "red" | "cyan" | "yellow";
+export type Look = "print" | "sticker" | "typed";
 
-const UNDERLINES = [
-  "M4 14 C 60 6, 140 4, 220 9 S 380 16, 436 7",
-  "M6 9 C 80 15, 170 15, 250 8 S 390 3, 434 12",
-  "M3 12 C 90 4, 160 13, 240 10 S 360 5, 437 10",
-];
+export function StoryLine({
+  text,
+  cta,
+  href,
+  pic,
+  at,
+  look,
+  index = 0,
+}: {
+  text: string;
+  cta?: boolean;
+  href: string;
+  pic?: StickerPic;
+  at?: number;
+  look: Look;
+  index?: number;
+}) {
+  const words = text.split(" ");
+  const ref = useRef<HTMLDivElement>(null);
+  const [typed, setTyped] = useState<number | null>(null);
 
-/** Dot radius per band, left to right across the block: small, growing to full in the middle, then smaller again. A printed halftone, not a fade. */
-const BANDS = [1.1, 1.8, 2.7, 2.7, 2.1, 1.3];
+  // typed: count the characters in once the line is well on screen
+  useEffect(() => {
+    if (look !== "typed") return setTyped(null);
+    const el = ref.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const r = el.getBoundingClientRect();
+    if (r.top < innerHeight * 0.8) return; // already in view on arrival: show it whole
+    setTyped(0);
+    let timer = 0;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        let n = 0;
+        timer = window.setInterval(() => {
+          n += 1;
+          setTyped(n);
+          if (n >= text.length) window.clearInterval(timer);
+        }, 42);
+      },
+      { rootMargin: "0px 0px -25% 0px" },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      window.clearInterval(timer);
+    };
+  }, [look, text]);
 
-export function StoryLine({ text, cta, href, tone = "red", index = 0 }: { text: string; cta?: boolean; href: string; tone?: Tone; index?: number }) {
-  const id = useId().replace(/[^a-zA-Z0-9]/g, "");
+  let seen = 0;
+  const shown = typed ?? text.length;
   return (
-    <div className="story" data-tone={tone} data-side={index % 2 ? "right" : "left"}>
-      <p className="story-line">
-        <svg className="story-dots" aria-hidden="true">
-          <defs>
-            {BANDS.map((r, i) => (
-              <pattern key={i} id={`${id}d${i}`} width="9" height="9" patternUnits="userSpaceOnUse">
-                <circle cx="4.5" cy="4.5" r={r} />
-              </pattern>
-            ))}
-          </defs>
-          {BANDS.map((_, i) => (
-            <rect key={i} x={`${(i * 100) / BANDS.length}%`} y="0" width={`${100 / BANDS.length + 0.5}%`} height="100%" fill={`url(#${id}d${i})`} />
-          ))}
-        </svg>
-        <span className="story-text" data-text={text}>
-          {text}
+    <div ref={ref} className="story" data-look={look} data-side={index % 2 ? "right" : "left"}>
+      <p className="sl">
+        <span className="sl-words" data-text={text}>
+          {words.map((w, i) => {
+            const start = seen;
+            seen += w.length + 1;
+            const vis = Math.max(0, Math.min(w.length, shown - start));
+            const caretHere = typed !== null && shown >= start && shown <= start + w.length && shown < text.length;
+            return (
+              <span key={i}>
+                {i ? " " : ""}
+                <span className={pic && at === i ? "sl-bind" : undefined}>
+                <span className="sl-w">
+                  {w.slice(0, vis)}
+                  {caretHere ? <span className="sl-caret" aria-hidden="true" /> : null}
+                  {vis < w.length ? <span className="sl-ghost">{w.slice(vis)}</span> : null}
+                </span>
+                {pic && at === i ? (
+                  <span className="sl-stk">
+                    {" "}
+                    <Sticker s={pic} />
+                  </span>
+                ) : null}
+                </span>
+              </span>
+            );
+          })}
+          {typed !== null && shown >= text.length ? <span className="sl-caret sl-caret-end" aria-hidden="true" /> : null}
         </span>
-        <svg className="story-stroke" viewBox="0 0 440 20" preserveAspectRatio="none" aria-hidden="true">
-          <path d={UNDERLINES[index % UNDERLINES.length]} />
-        </svg>
       </p>
       {cta ? <SquircleButton href={href} className="story-cta" /> : null}
     </div>
