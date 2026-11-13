@@ -170,7 +170,7 @@ html:has(.pf) body {
 .col-reply[data-on="true"] { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
 .col-reply blockquote {
   margin: 0;
-  font-size: 30px;
+  font-size: clamp(28px, 3.7vh, 34px);
   font-weight: 600;
   line-height: 1.02;
   letter-spacing: -0.045em;
@@ -318,6 +318,8 @@ html:has(.pf) body {
 @keyframes sl-blink { 50% { opacity: 0; } }
 
 .story-cta { transform: rotate(var(--tilt)); }
+/* a line with the hire button: the button follows the line closely, as its last word */
+.story:has(.story-cta) { gap: 22px; }
 .story[data-wait]:not([data-in]) .story-cta { opacity: 0; transform: translateY(16px) rotate(var(--tilt)); }
 .story .story-cta { transition-delay: 300ms; }
 
@@ -354,7 +356,7 @@ html:has(.pf) body {
   .col-time-h { display: none; }
   .col-time[data-open="false"] .col-places { display: none; }
   .col-time[data-open="true"] .col-places { margin-top: 10px; }
-  .col-foot { margin: 0 calc(-1 * var(--edge)); padding: 16px var(--edge) 20px; }
+  .col-foot { margin: 0 calc(-1 * var(--edge)); padding: 8px var(--edge) 20px; border-top: 0; }
   .pf-main { margin-left: 0; padding: 0 var(--edge) 132px; }
   .story { padding: 64px 0 56px; gap: 22px; }
   .col-float {
