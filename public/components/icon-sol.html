@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sol icon</title>
+<style>
+:root{--ground:#000;--ground-tint:#04203A}
+:root[data-theme=light]{--ground:#ECEBE8}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--ground)}
+body{display:grid;place-items:center;overflow:hidden}
+[data-component]{width:min(1024px,86vw,86vh);aspect-ratio:1;cursor:default;transition:transform .5s cubic-bezier(.2,.8,.2,1);outline:none}
+[data-component] svg{width:100%;height:100%;display:block;overflow:visible}
+[data-component][data-state=hover]{transform:scale(1.015) rotate(-.6deg)}
+[data-component][data-state=pressed]{transform:scale(.97);transition-duration:.12s}
+.look{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+[data-state=hover] .look{transform:translate(var(--lx,0),var(--ly,0))}
+.blink{transform-box:view-box}
+
+    .sol-bob{animation:sol-bob 2.4s steps(1) infinite}
+    @keyframes sol-bob{0%,25%{transform:translateY(0)}25.01%,50%{transform:translateY(12px)}50.01%,75%{transform:translateY(0)}75.01%,100%{transform:translateY(12px)}}
+    .sol-eyes{animation:sol-blink 2.4s steps(1) infinite}
+    @keyframes sol-blink{0%,82%{opacity:1}82.01%,88%{opacity:0}88.01%,100%{opacity:1}}
+    .sol-glint{opacity:0;animation:sol-glint 2.4s steps(1) infinite}
+    @keyframes sol-glint{0%,40%{opacity:0;transform:translateY(0)}40.01%,48%{opacity:1;transform:translateY(0)}48.01%,56%{opacity:1;transform:translateY(72px)}56.01%,64%{opacity:1;transform:translateY(144px)}64.01%,100%{opacity:0}}
+    .sol-sword{transition:transform .25s steps(2)}
+    [data-state=hover] .sol-sword{transform:translateY(-36px)}
+    .sol-sun{transform-box:fill-box;transform-origin:center;animation:sol-sun 2.4s ease-in-out infinite}
+    @keyframes sol-sun{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div data-component="sol" data-state="idle" tabindex="0" role="img" aria-label="Sol app icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" data-part="icon">
+<defs>
+  <clipPath id="so-clip"><path d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z"/></clipPath>
+  <linearGradient id="so-base" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#4CCBE3"/><stop offset="1" stop-color="#1A84B8"/></linearGradient>
+  <linearGradient id="so-rim" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".22" stop-color="#fff" stop-opacity=".14"/>
+    <stop offset=".8" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".22"/></linearGradient>
+  <linearGradient id="so-hi" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="so-sh" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset=".62" stop-color="#08365A" stop-opacity="0"/><stop offset="1" stop-color="#08365A" stop-opacity=".32"/></linearGradient>
+  <filter id="so-b10" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="10"/></filter>
+  <filter id="so-b28" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="28"/></filter>
+  <filter id="so-obj" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+    <feOffset in="SourceAlpha" dy="22" result="d1"/><feGaussianBlur in="d1" stdDeviation="20" result="d2"/>
+    <feFlood flood-color="#08365A" flood-opacity="0.45"/><feComposite in2="d2" operator="in" result="drop"/>
+    <feOffset in="SourceAlpha" dy="9" result="o1"/><feGaussianBlur in="o1" stdDeviation="5" result="o2"/>
+    <feComposite in="SourceAlpha" in2="o2" operator="out" result="topband"/>
+    <feFlood flood-color="#fff" flood-opacity=".6"/><feComposite in2="topband" operator="in" result="hl"/>
+    <feOffset in="SourceAlpha" dy="-14" result="u1"/><feGaussianBlur in="u1" stdDeviation="9" result="u2"/>
+    <feComposite in="SourceAlpha" in2="u2" operator="out" result="botband"/>
+    <feFlood flood-color="#08365A" flood-opacity=".32"/><feComposite in2="botband" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="drop"/><feMergeNode in="SourceGraphic"/><feMergeNode in="hl"/><feMergeNode in="sh"/></feMerge>
+  </filter><linearGradient id="so-sun" x1="0" y1="150" x2="0" y2="740" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFEFA3"/><stop offset="1" stop-color="#FFBE2E"/></linearGradient><linearGradient id="so-hill" x1="0" y1="760" x2="0" y2="1024" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4FCB72"/><stop offset="1" stop-color="#1C8A44"/></linearGradient></defs>
+<path data-part="tile" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="url(#so-base)"/>
+  <g clip-path="url(#so-clip)">
+    <circle data-part="sun" class="sol-sun" cx="512" cy="430" r="300" fill="url(#so-sun)" filter="url(#so-obj)"/>
+    <g data-part="hill" filter="url(#so-obj)"><ellipse cx="512" cy="1080" rx="720" ry="300" fill="url(#so-hill)"/></g>
+    <ellipse data-part="shadow" class="sol-shadow" cx="494" cy="790" rx="190" ry="26" fill="#0E5A2C" opacity=".45"/>
+    <g data-part="sol" class="sol-bob">
+      <g data-part="body"><path d="M422 280h36v36h-36zM458 280h36v36h-36zM494 280h36v36h-36zM530 280h36v36h-36zM386 316h36v36h-36zM566 316h36v36h-36zM350 352h36v36h-36zM602 352h36v36h-36zM350 388h36v36h-36zM602 388h36v36h-36zM350 424h36v36h-36zM602 424h36v36h-36zM350 460h36v36h-36zM602 460h36v36h-36zM350 496h36v36h-36zM602 496h36v36h-36zM386 532h36v36h-36zM422 532h36v36h-36zM458 532h36v36h-36zM494 532h36v36h-36zM530 532h36v36h-36zM566 532h36v36h-36zM350 568h36v36h-36zM602 568h36v36h-36zM314 604h36v36h-36zM602 604h36v36h-36zM314 640h36v36h-36zM386 640h36v36h-36zM566 640h36v36h-36zM638 640h36v36h-36zM350 676h36v36h-36zM602 676h36v36h-36zM350 712h36v36h-36zM458 712h36v36h-36zM494 712h36v36h-36zM602 712h36v36h-36zM350 748h36v36h-36zM386 748h36v36h-36zM422 748h36v36h-36zM530 748h36v36h-36zM566 748h36v36h-36zM602 748h36v36h-36z" fill="#1B2142" shape-rendering="crispEdges"/><path d="M422 316h36v36h-36zM494 316h36v36h-36zM530 316h36v36h-36zM386 352h36v36h-36zM422 352h36v36h-36zM458 352h36v36h-36zM494 352h36v36h-36zM530 352h36v36h-36zM566 352h36v36h-36zM422 388h36v36h-36zM458 388h36v36h-36zM494 388h36v36h-36zM530 388h36v36h-36z" fill="#FFC53D" shape-rendering="crispEdges"/><path d="M458 316h36v36h-36z" fill="#FFF0B0" shape-rendering="crispEdges"/><path d="M386 388h36v36h-36zM566 388h36v36h-36z" fill="#E0931C" shape-rendering="crispEdges"/><path d="M386 424h36v36h-36zM422 424h36v36h-36zM458 424h36v36h-36zM494 424h36v36h-36zM530 424h36v36h-36zM566 424h36v36h-36zM386 460h36v36h-36zM458 460h36v36h-36zM494 460h36v36h-36zM566 460h36v36h-36zM386 496h36v36h-36zM422 496h36v36h-36zM458 496h36v36h-36zM494 496h36v36h-36zM530 496h36v36h-36zM566 496h36v36h-36zM350 604h36v36h-36zM638 604h36v36h-36zM674 604h36v36h-36zM350 640h36v36h-36zM602 640h36v36h-36z" fill="#FFD7B5" shape-rendering="crispEdges"/><path d="M386 568h36v36h-36zM422 568h36v36h-36zM458 568h36v36h-36zM494 568h36v36h-36zM530 568h36v36h-36zM566 568h36v36h-36zM386 604h36v36h-36zM458 604h36v36h-36zM494 604h36v36h-36zM566 604h36v36h-36zM386 676h36v36h-36zM422 676h36v36h-36zM458 676h36v36h-36zM494 676h36v36h-36zM530 676h36v36h-36zM566 676h36v36h-36z" fill="#E8433A" shape-rendering="crispEdges"/><path d="M422 604h36v36h-36zM530 604h36v36h-36z" fill="#B52C2A" shape-rendering="crispEdges"/><path d="M422 640h36v36h-36zM458 640h36v36h-36zM494 640h36v36h-36zM530 640h36v36h-36z" fill="#6B3A1E" shape-rendering="crispEdges"/><path d="M386 712h36v36h-36zM422 712h36v36h-36zM530 712h36v36h-36zM566 712h36v36h-36z" fill="#4B2F20" shape-rendering="crispEdges"/><path d="M422 460h36v36h-36zM530 460h36v36h-36z" fill="#FFD7B5" shape-rendering="crispEdges"/></g>
+      <g data-part="eyes" class="sol-eyes"><path d="M422 460h36v36h-36zM530 460h36v36h-36z" fill="#1B2142" shape-rendering="crispEdges"/></g>
+      <g data-part="sword" class="sol-sword"><path d="M674 316h36v36h-36zM674 352h36v36h-36zM746 352h36v36h-36zM674 388h36v36h-36zM746 388h36v36h-36zM674 424h36v36h-36zM746 424h36v36h-36zM674 460h36v36h-36zM746 460h36v36h-36zM674 496h36v36h-36zM746 496h36v36h-36zM674 532h36v36h-36zM746 532h36v36h-36zM710 640h36v36h-36z" fill="#1B2142" shape-rendering="crispEdges"/><path d="M710 352h36v36h-36zM710 388h36v36h-36zM710 424h36v36h-36zM710 460h36v36h-36zM710 496h36v36h-36zM710 532h36v36h-36z" fill="#EEF4FF" shape-rendering="crispEdges"/><path d="M674 568h36v36h-36zM710 568h36v36h-36zM746 568h36v36h-36z" fill="#8A5A2B" shape-rendering="crispEdges"/><path d="M710 604h36v36h-36z" fill="#6B3A1E" shape-rendering="crispEdges"/>
+        <rect class="sol-glint" x="718" y="352" width="20" height="20" fill="#fff"/></g>
+    </g>
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#so-sh)"/>
+    <path data-part="highlight" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#so-hi)" stroke-width="40" filter="url(#so-b10)"/>
+    <path data-part="rim" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#so-rim)" stroke-width="7"/>
+  </g>
+</svg>
+</div>
+<script>
+(()=>{
+const root=document.querySelector('[data-component]'), svg=root.querySelector('svg');
+const P=2.4, BLINK=[];
+const loopFns=[];
+const blinks=[...svg.querySelectorAll('.blink')];
+const now=()=>window.__T!==undefined?window.__T*1000:performance.now();
+
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){
+  const ph=((now()/1000)%P)/P;
+  loopFns.forEach(f=>f(reduce?0:ph));
+  blinks.forEach((b,i)=>{const at=BLINK[i]??BLINK[0];let s=1;
+    if(at!==undefined&&!reduce){const d=Math.abs(ph-at)*P;if(d<.09)s=.1+.9*(d/.09);}
+    b.style.transform='scaleY('+s.toFixed(3)+')';});
+  if(window.__T===undefined) requestAnimationFrame(frame);
+}
+window.__render=frame; frame();
+root.addEventListener('pointerenter',()=>root.dataset.state='hover');
+root.addEventListener('pointerleave',()=>{root.dataset.state='idle';root.style.removeProperty('--lx');root.style.removeProperty('--ly')});
+root.addEventListener('pointerdown',()=>root.dataset.state='pressed');
+root.addEventListener('pointerup',()=>root.dataset.state='hover');
+root.addEventListener('pointermove',e=>{const r=root.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  root.style.setProperty('--lx',(x*22).toFixed(1)+'px');root.style.setProperty('--ly',(y*22).toFixed(1)+'px');});
+root.addEventListener('keydown',e=>{if(e.key==='t'){const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark'}});
+})();
+</script>
+</body></html>

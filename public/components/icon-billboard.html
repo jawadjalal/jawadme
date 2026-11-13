@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Billboard icon</title>
+<style>
+:root{--ground:#000;--ground-tint:#2A1A00}
+:root[data-theme=light]{--ground:#ECEBE8}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--ground)}
+body{display:grid;place-items:center;overflow:hidden}
+[data-component]{width:min(1024px,86vw,86vh);aspect-ratio:1;cursor:default;transition:transform .5s cubic-bezier(.2,.8,.2,1);outline:none}
+[data-component] svg{width:100%;height:100%;display:block;overflow:visible}
+[data-component][data-state=hover]{transform:scale(1.015) rotate(-.6deg)}
+[data-component][data-state=pressed]{transform:scale(.97);transition-duration:.12s}
+.look{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+[data-state=hover] .look{transform:translate(var(--lx,0),var(--ly,0))}
+.blink{transform-box:view-box}
+
+    .bb-board{transform-box:view-box;transform-origin:512px 1000px;animation:bb-sway 4s ease-in-out infinite}
+    @keyframes bb-sway{0%,100%{transform:rotate(0)}50%{transform:rotate(.5deg)}}
+    .bb-iris{transform-box:view-box;animation:bb-look 4s cubic-bezier(.6,0,.3,1) infinite}
+    @keyframes bb-look{0%,12%{transform:translate(0,0)}20%,42%{transform:translate(-86px,-6px)}52%,74%{transform:translate(86px,4px)}84%,100%{transform:translate(0,0)}}
+    [data-state=hover] .bb-iris{animation:none}
+    [data-state=hover] .bb-board .look{transform:translate(calc(var(--lx,0px)*4),calc(var(--ly,0px)*2.5))}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div data-component="billboard" data-state="idle" tabindex="0" role="img" aria-label="Billboard app icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" data-part="icon">
+<defs>
+  <clipPath id="bi-clip"><path d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z"/></clipPath>
+  <linearGradient id="bi-base" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#FFDE5C"/><stop offset="1" stop-color="#F0AE00"/></linearGradient>
+  <linearGradient id="bi-rim" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".22" stop-color="#fff" stop-opacity=".14"/>
+    <stop offset=".8" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".22"/></linearGradient>
+  <linearGradient id="bi-hi" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="bi-sh" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset=".62" stop-color="#7A4A00" stop-opacity="0"/><stop offset="1" stop-color="#7A4A00" stop-opacity=".32"/></linearGradient>
+  <filter id="bi-b10" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="10"/></filter>
+  <filter id="bi-b28" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="28"/></filter>
+  <filter id="bi-obj" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+    <feOffset in="SourceAlpha" dy="22" result="d1"/><feGaussianBlur in="d1" stdDeviation="20" result="d2"/>
+    <feFlood flood-color="#7A4A00" flood-opacity="0.45"/><feComposite in2="d2" operator="in" result="drop"/>
+    <feOffset in="SourceAlpha" dy="9" result="o1"/><feGaussianBlur in="o1" stdDeviation="5" result="o2"/>
+    <feComposite in="SourceAlpha" in2="o2" operator="out" result="topband"/>
+    <feFlood flood-color="#fff" flood-opacity=".6"/><feComposite in2="topband" operator="in" result="hl"/>
+    <feOffset in="SourceAlpha" dy="-14" result="u1"/><feGaussianBlur in="u1" stdDeviation="9" result="u2"/>
+    <feComposite in="SourceAlpha" in2="u2" operator="out" result="botband"/>
+    <feFlood flood-color="#7A4A00" flood-opacity=".32"/><feComposite in2="botband" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="drop"/><feMergeNode in="SourceGraphic"/><feMergeNode in="hl"/><feMergeNode in="sh"/></feMerge>
+  </filter><linearGradient id="bi-frame" x1="0" y1="220" x2="0" y2="660" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2E2A23"/><stop offset="1" stop-color="#14120E"/></linearGradient><linearGradient id="bi-post" x1="0" y1="600" x2="0" y2="1024" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3A342B"/><stop offset="1" stop-color="#1A1712"/></linearGradient><linearGradient id="bi-poster" x1="0" y1="246" x2="0" y2="614" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2D57F2"/><stop offset="1" stop-color="#1B37B8"/></linearGradient><linearGradient id="bi-moon" x1="0" y1="300" x2="0" y2="560" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCE2F2"/></linearGradient><linearGradient id="bi-next" x1="0" y1="246" x2="0" y2="420" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FF5A48"/><stop offset="1" stop-color="#D42F28"/></linearGradient><linearGradient id="bi-flap" x1="688" y1="246" x2="760" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F4F1EA"/><stop offset="1" stop-color="#C9C4B8"/></linearGradient>
+    <linearGradient id="bi-beam" x1="0" y1="190" x2="0" y2="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF6D6" stop-opacity=".22"/><stop offset="1" stop-color="#FFF6D6" stop-opacity="0"/></linearGradient>
+    <clipPath id="bi-eyeclip"><path d="M262 430 Q512 236 762 430 Q512 624 262 430 Z"/></clipPath>
+    <clipPath id="bi-pclip"><rect x="186" y="246" width="652" height="368" rx="8"/></clipPath><clipPath id="bi-peelclip"><path d="M0 0 L688 0 L688 246 L838 396 L1024 396 L1024 1024 L0 1024 Z"/></clipPath></defs>
+<path data-part="tile" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="url(#bi-base)"/>
+  <g clip-path="url(#bi-clip)">
+    <g data-part="posts" filter="url(#bi-obj)">
+      <rect x="318" y="600" width="50" height="460" fill="url(#bi-post)"/>
+      <rect x="656" y="600" width="50" height="460" fill="url(#bi-post)"/>
+      <rect x="196" y="650" width="632" height="24" rx="6" fill="#2A261F"/>
+    </g>
+    <g data-part="board" class="bb-board">
+      <g filter="url(#bi-obj)"><rect x="160" y="220" width="704" height="420" rx="24" fill="url(#bi-frame)"/></g>
+      <g clip-path="url(#bi-pclip)">
+        <rect data-part="next-poster" x="186" y="246" width="652" height="368" fill="url(#bi-next)"/>
+        <g data-part="poster" class="bb-poster" clip-path="url(#bi-peelclip)">
+          <rect x="186" y="246" width="652" height="368" fill="url(#bi-poster)"/>
+          <g data-part="picture" class="blink" style="transform-origin:512px 430px">
+            <path d="M262 430 Q512 236 762 430 Q512 624 262 430 Z" fill="url(#bi-moon)"/>
+            <g clip-path="url(#bi-eyeclip)"><g class="look"><g class="bb-iris">
+              <circle cx="512" cy="436" r="112" fill="#12141A"/>
+              <circle cx="474" cy="398" r="30" fill="#fff" opacity=".92"/></g></g></g>
+          </g>
+        </g>
+      </g>
+      <path data-part="peel" class="bb-flap" d="M688 246 L838 396 Q790 401.4 688 396 Q681.25 321 688 246 Z" fill="url(#bi-flap)" filter="url(#bi-obj)"/>
+      <g data-part="lamp">
+      <rect x="324" y="178" width="12" height="46" fill="#1A1712"/>
+      <path d="M284 168 L376 168 L360 196 L300 196 Z" fill="#2A261F"/>
+      <rect x="296" y="192" width="68" height="8" rx="4" fill="#FFF3C4"/></g><g data-part="lamp">
+      <rect x="688" y="178" width="12" height="46" fill="#1A1712"/>
+      <path d="M648 168 L740 168 L724 196 L664 196 Z" fill="#2A261F"/>
+      <rect x="660" y="192" width="68" height="8" rx="4" fill="#FFF3C4"/></g>
+    </g>
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#bi-sh)"/>
+    <path data-part="highlight" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#bi-hi)" stroke-width="40" filter="url(#bi-b10)"/>
+    <path data-part="rim" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#bi-rim)" stroke-width="7"/>
+  </g>
+</svg>
+</div>
+<script>
+(()=>{
+const root=document.querySelector('[data-component]'), svg=root.querySelector('svg');
+const P=4, BLINK=[0.9];
+const loopFns=[];
+const blinks=[...svg.querySelectorAll('.blink')];
+const now=()=>window.__T!==undefined?window.__T*1000:performance.now();
+
+    const poster=svg.querySelector('.bb-poster'), flap=svg.querySelector('.bb-flap');
+    let target=0, hov=0;
+    const pc=svg.querySelector('#bi-peelclip path');
+    function peel(s){
+      const ax=838-s, by=246+s, k=s*.18;
+      pc.setAttribute('d','M0 0 L'+ax+' 0 L'+ax+' 246 L838 '+by+' L1024 '+by+' L1024 1024 L0 1024 Z');
+      flap.setAttribute('d','M'+ax+' 246 L838 '+by+' Q'+(ax+s*.5+k)+' '+(by+k*.2)+' '+ax+' '+by+' Q'+(ax-k*.25)+' '+(246+s*.5)+' '+ax+' 246 Z');
+    }
+    root.addEventListener('pointerenter',()=>hov=1); root.addEventListener('pointerleave',()=>hov=0);
+    let cur=0;
+    loopFns.push(ph=>{ // 4s flutter in the wind
+      const w=Math.sin(ph*Math.PI*2), w2=Math.sin(ph*Math.PI*6);
+      const base=150+18*w+7*w2;
+      cur+=((hov?250:0)-cur)*.08; if(window.__T!==undefined) cur=hov?250:0;
+      peel(base+cur);
+    });
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){
+  const ph=((now()/1000)%P)/P;
+  loopFns.forEach(f=>f(reduce?0:ph));
+  blinks.forEach((b,i)=>{const at=BLINK[i]??BLINK[0];let s=1;
+    if(at!==undefined&&!reduce){const d=Math.abs(ph-at)*P;if(d<.09)s=.1+.9*(d/.09);}
+    b.style.transform='scaleY('+s.toFixed(3)+')';});
+  if(window.__T===undefined) requestAnimationFrame(frame);
+}
+window.__render=frame; frame();
+root.addEventListener('pointerenter',()=>root.dataset.state='hover');
+root.addEventListener('pointerleave',()=>{root.dataset.state='idle';root.style.removeProperty('--lx');root.style.removeProperty('--ly')});
+root.addEventListener('pointerdown',()=>root.dataset.state='pressed');
+root.addEventListener('pointerup',()=>root.dataset.state='hover');
+root.addEventListener('pointermove',e=>{const r=root.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  root.style.setProperty('--lx',(x*22).toFixed(1)+'px');root.style.setProperty('--ly',(y*22).toFixed(1)+'px');});
+root.addEventListener('keydown',e=>{if(e.key==='t'){const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark'}});
+})();
+</script>
+</body></html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Frames icon</title>
+<style>
+:root{--ground:#000;--ground-tint:#0A1A4A}
+:root[data-theme=light]{--ground:#ECEBE8}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--ground)}
+body{display:grid;place-items:center;overflow:hidden}
+[data-component]{width:min(1024px,86vw,86vh);aspect-ratio:1;cursor:default;transition:transform .5s cubic-bezier(.2,.8,.2,1);outline:none}
+[data-component] svg{width:100%;height:100%;display:block;overflow:visible}
+[data-component][data-state=hover]{transform:scale(1.015) rotate(-.6deg)}
+[data-component][data-state=pressed]{transform:scale(.97);transition-duration:.12s}
+.look{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+[data-state=hover] .look{transform:translate(var(--lx,0),var(--ly,0))}
+.blink{transform-box:view-box}
+
+    .fr-card{transition:transform .5s cubic-bezier(.2,.8,.2,1);transform-box:view-box}
+    [data-state=hover] .fr-card{transform:translateY(-10px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div data-component="frames" data-state="idle" tabindex="0" role="img" aria-label="Frames app icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" data-part="icon">
+<defs>
+  <clipPath id="fr-clip"><path d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z"/></clipPath>
+  <linearGradient id="fr-base" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#5C93FF"/><stop offset="1" stop-color="#1D49CF"/></linearGradient>
+  <linearGradient id="fr-rim" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".22" stop-color="#fff" stop-opacity=".14"/>
+    <stop offset=".8" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".22"/></linearGradient>
+  <linearGradient id="fr-hi" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="fr-sh" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset=".62" stop-color="#0B2370" stop-opacity="0"/><stop offset="1" stop-color="#0B2370" stop-opacity=".32"/></linearGradient>
+  <filter id="fr-b10" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="10"/></filter>
+  <filter id="fr-b28" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="28"/></filter>
+  <filter id="fr-obj" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+    <feOffset in="SourceAlpha" dy="22" result="d1"/><feGaussianBlur in="d1" stdDeviation="20" result="d2"/>
+    <feFlood flood-color="#0B2370" flood-opacity="0.45"/><feComposite in2="d2" operator="in" result="drop"/>
+    <feOffset in="SourceAlpha" dy="9" result="o1"/><feGaussianBlur in="o1" stdDeviation="5" result="o2"/>
+    <feComposite in="SourceAlpha" in2="o2" operator="out" result="topband"/>
+    <feFlood flood-color="#fff" flood-opacity=".6"/><feComposite in2="topband" operator="in" result="hl"/>
+    <feOffset in="SourceAlpha" dy="-14" result="u1"/><feGaussianBlur in="u1" stdDeviation="9" result="u2"/>
+    <feComposite in="SourceAlpha" in2="u2" operator="out" result="botband"/>
+    <feFlood flood-color="#0B2370" flood-opacity=".32"/><feComposite in2="botband" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="drop"/><feMergeNode in="SourceGraphic"/><feMergeNode in="hl"/><feMergeNode in="sh"/></feMerge>
+  </filter><linearGradient id="fr-card" x1="0" y1="290" x2="0" y2="720" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCE6FF"/></linearGradient><linearGradient id="fr-back" x1="0" y1="170" x2="0" y2="560" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#B9D0FF"/><stop offset="1" stop-color="#7FA3F5"/></linearGradient><linearGradient id="fr-cur" x1="0" y1="0" x2="0" y2="340" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2E333D"/><stop offset="1" stop-color="#0F1115"/></linearGradient></defs>
+<path data-part="tile" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="url(#fr-base)"/>
+  <g clip-path="url(#fr-clip)">
+    <g data-part="back-frame" filter="url(#fr-obj)"><rect x="336" y="170" width="480" height="380" rx="26" fill="url(#fr-back)"/></g>
+    <g data-part="frame" class="fr-card">
+      <g filter="url(#fr-obj)"><rect x="196" y="290" width="540" height="430" rx="26" fill="url(#fr-card)"/></g>
+      <rect x="196" y="290" width="540" height="430" rx="26" fill="none" stroke="#2753E8" stroke-width="9"/>
+      <rect x="174" y="268" width="44" height="44" rx="6" fill="#fff" stroke="#2753E8" stroke-width="9"/><rect x="714" y="268" width="44" height="44" rx="6" fill="#fff" stroke="#2753E8" stroke-width="9"/><rect x="174" y="698" width="44" height="44" rx="6" fill="#fff" stroke="#2753E8" stroke-width="9"/><rect x="714" y="698" width="44" height="44" rx="6" fill="#fff" stroke="#2753E8" stroke-width="9"/>
+      <path data-part="stroke" class="fr-stroke" d="M 282 600 C 300 470, 400 430, 432 520 S 520 640, 580 560 S 640 470, 610 446" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="0"
+        fill="none" stroke="#FF3D6E" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <g data-part="cursor" class="fr-cursor" transform="translate(610 446)"><g transform="scale(1.16)">
+      <g filter="url(#fr-obj)">
+        <path d="M0 0 L0 300 L74 230 L126 344 Q132 356 145 351 L192 331 Q204 325 198 313 L146 202 L242 202 Z"
+          fill="url(#fr-cur)" stroke="#fff" stroke-width="16" stroke-linejoin="round" paint-order="stroke"/>
+      </g>
+      <g data-part="eyes" class="blink" style="transform-origin:80px 150px">
+        <ellipse cx="50" cy="150" rx="21" ry="30" fill="#fff"/><ellipse cx="104" cy="150" rx="21" ry="30" fill="#fff"/>
+        <g class="look"><circle cx="54" cy="156" r="12" fill="#0F1115"/><circle cx="108" cy="156" r="12" fill="#0F1115"/></g>
+      </g>
+    </g></g>
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#fr-sh)"/>
+    <path data-part="highlight" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#fr-hi)" stroke-width="40" filter="url(#fr-b10)"/>
+    <path data-part="rim" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#fr-rim)" stroke-width="7"/>
+  </g>
+</svg>
+</div>
+<script>
+(()=>{
+const root=document.querySelector('[data-component]'), svg=root.querySelector('svg');
+const P=4, BLINK=[0.08,0.66];
+const loopFns=[];
+const blinks=[...svg.querySelectorAll('.blink')];
+const now=()=>window.__T!==undefined?window.__T*1000:performance.now();
+
+    const st=svg.querySelector('.fr-stroke'), cur=svg.querySelector('.fr-cursor'), L=st.getTotalLength();
+    const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    loopFns.push(ph=>{ // 4s: hold drawn, undo back to the start, hold, draw again, hold
+      let f;
+      if(ph<.16) f=1; else if(ph<.46) f=1-ease((ph-.16)/.3); else if(ph<.56) f=0; else if(ph<.9) f=ease((ph-.56)/.34); else f=1;
+      st.style.strokeDashoffset=(1-f).toFixed(4);
+      const pt=st.getPointAtLength(Math.max(.001,f)*L);
+      cur.setAttribute('transform','translate('+pt.x.toFixed(1)+' '+pt.y.toFixed(1)+')');
+    });
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){
+  const ph=((now()/1000)%P)/P;
+  loopFns.forEach(f=>f(reduce?0:ph));
+  blinks.forEach((b,i)=>{const at=BLINK[i]??BLINK[0];let s=1;
+    if(at!==undefined&&!reduce){const d=Math.abs(ph-at)*P;if(d<.09)s=.1+.9*(d/.09);}
+    b.style.transform='scaleY('+s.toFixed(3)+')';});
+  if(window.__T===undefined) requestAnimationFrame(frame);
+}
+window.__render=frame; frame();
+root.addEventListener('pointerenter',()=>root.dataset.state='hover');
+root.addEventListener('pointerleave',()=>{root.dataset.state='idle';root.style.removeProperty('--lx');root.style.removeProperty('--ly')});
+root.addEventListener('pointerdown',()=>root.dataset.state='pressed');
+root.addEventListener('pointerup',()=>root.dataset.state='hover');
+root.addEventListener('pointermove',e=>{const r=root.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  root.style.setProperty('--lx',(x*22).toFixed(1)+'px');root.style.setProperty('--ly',(y*22).toFixed(1)+'px');});
+root.addEventListener('keydown',e=>{if(e.key==='t'){const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark'}});
+})();
+</script>
+</body></html>

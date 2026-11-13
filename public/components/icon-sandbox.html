@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sandbox icon</title>
+<style>
+:root{--ground:#000;--ground-tint:#03141A}
+:root[data-theme=light]{--ground:#ECEBE8}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--ground)}
+body{display:grid;place-items:center;overflow:hidden}
+[data-component]{width:min(1024px,86vw,86vh);aspect-ratio:1;cursor:default;transition:transform .5s cubic-bezier(.2,.8,.2,1);outline:none}
+[data-component] svg{width:100%;height:100%;display:block;overflow:visible}
+[data-component][data-state=hover]{transform:scale(1.015) rotate(-.6deg)}
+[data-component][data-state=pressed]{transform:scale(.97);transition-duration:.12s}
+.look{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+[data-state=hover] .look{transform:translate(var(--lx,0),var(--ly,0))}
+.blink{transform-box:view-box}
+
+    .sb-breath{transform-box:view-box;transform-origin:512px 740px;animation:sb-br 4s ease-in-out infinite}
+    @keyframes sb-br{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,1.05)}}
+    .sb-cloud{transform-box:view-box;transition:transform .6s cubic-bezier(.3,1.4,.4,1)}
+    [data-state=hover] .sb-cloud{transform:translateY(-70px)}
+    .sb-paused,.sb-awake{transform-box:fill-box;transform-origin:center;transition:transform .3s cubic-bezier(.3,1.4,.4,1),opacity .2s}
+    .sb-awake{opacity:0;transform:scaleY(.2)}
+    [data-state=hover] .sb-awake{opacity:1;transform:none}
+    [data-state=hover] .sb-paused{opacity:0;transform:scaleY(.3)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div data-component="sandbox" data-state="idle" tabindex="0" role="img" aria-label="Sandbox app icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" data-part="icon">
+<defs>
+  <clipPath id="sa-clip"><path d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z"/></clipPath>
+  <linearGradient id="sa-base" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#2A7C8E"/><stop offset="1" stop-color="#0A2A33"/></linearGradient>
+  <linearGradient id="sa-rim" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".22" stop-color="#fff" stop-opacity=".14"/>
+    <stop offset=".8" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".22"/></linearGradient>
+  <linearGradient id="sa-hi" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sa-sh" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset=".62" stop-color="#03141A" stop-opacity="0"/><stop offset="1" stop-color="#03141A" stop-opacity=".32"/></linearGradient>
+  <filter id="sa-b10" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="10"/></filter>
+  <filter id="sa-b28" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="28"/></filter>
+  <filter id="sa-obj" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+    <feOffset in="SourceAlpha" dy="22" result="d1"/><feGaussianBlur in="d1" stdDeviation="20" result="d2"/>
+    <feFlood flood-color="#03141A" flood-opacity="0.45"/><feComposite in2="d2" operator="in" result="drop"/>
+    <feOffset in="SourceAlpha" dy="9" result="o1"/><feGaussianBlur in="o1" stdDeviation="5" result="o2"/>
+    <feComposite in="SourceAlpha" in2="o2" operator="out" result="topband"/>
+    <feFlood flood-color="#fff" flood-opacity=".6"/><feComposite in2="topband" operator="in" result="hl"/>
+    <feOffset in="SourceAlpha" dy="-14" result="u1"/><feGaussianBlur in="u1" stdDeviation="9" result="u2"/>
+    <feComposite in="SourceAlpha" in2="u2" operator="out" result="botband"/>
+    <feFlood flood-color="#03141A" flood-opacity=".32"/><feComposite in2="botband" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="drop"/><feMergeNode in="SourceGraphic"/><feMergeNode in="hl"/><feMergeNode in="sh"/></feMerge>
+  </filter><linearGradient id="sa-cloud" x1="0" y1="270" x2="0" y2="680" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#CFE3EA"/></linearGradient><linearGradient id="sa-box" x1="0" y1="676" x2="0" y2="912" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#49AFC3"/><stop offset="1" stop-color="#1E6E82"/></linearGradient><linearGradient id="sa-inside" x1="0" y1="560" x2="0" y2="620" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0C3540"/><stop offset="1" stop-color="#13505E"/></linearGradient></defs>
+<path data-part="tile" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="url(#sa-base)"/>
+  <g clip-path="url(#sa-clip)">
+    <rect data-part="box-back" x="196" y="636" width="632" height="60" rx="18" fill="url(#sa-inside)"/>
+    <g data-part="cloud" class="sb-cloud">
+      <g class="sb-breath">
+        <g filter="url(#sa-obj)" fill="url(#sa-cloud)">
+          <circle cx="318" cy="590" r="150"/><circle cx="512" cy="470" r="222"/><circle cx="712" cy="584" r="160"/>
+          <rect x="260" y="560" width="510" height="190" rx="70"/>
+        </g>
+        <g data-part="eyes" class="sb-eyes">
+          <g class="sb-paused"><rect x="424" y="470" width="68" height="160" rx="18" fill="#0A2A33"/><rect x="532" y="470" width="68" height="160" rx="18" fill="#0A2A33"/></g>
+          <g class="sb-awake" opacity="0"><rect x="427" y="505" width="62" height="90" rx="31" fill="#0A2A33"/><ellipse cx="448.08" cy="528.4" rx="10.540000000000001" ry="12.4" fill="#fff" opacity=".9"/><rect x="535" y="505" width="62" height="90" rx="31" fill="#0A2A33"/><ellipse cx="556.08" cy="528.4" rx="10.540000000000001" ry="12.4" fill="#fff" opacity=".9"/></g>
+        </g>
+      </g>
+    </g>
+    <g data-part="box" filter="url(#sa-obj)"><rect x="164" y="676" width="696" height="236" rx="40" fill="url(#sa-box)"/></g>
+    <rect x="204" y="690" width="616" height="10" rx="5" fill="#fff" opacity=".3"/>
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#sa-sh)"/>
+    <path data-part="highlight" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#sa-hi)" stroke-width="40" filter="url(#sa-b10)"/>
+    <path data-part="rim" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#sa-rim)" stroke-width="7"/>
+  </g>
+</svg>
+</div>
+<script>
+(()=>{
+const root=document.querySelector('[data-component]'), svg=root.querySelector('svg');
+const P=4, BLINK=[];
+const loopFns=[];
+const blinks=[...svg.querySelectorAll('.blink')];
+const now=()=>window.__T!==undefined?window.__T*1000:performance.now();
+
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){
+  const ph=((now()/1000)%P)/P;
+  loopFns.forEach(f=>f(reduce?0:ph));
+  blinks.forEach((b,i)=>{const at=BLINK[i]??BLINK[0];let s=1;
+    if(at!==undefined&&!reduce){const d=Math.abs(ph-at)*P;if(d<.09)s=.1+.9*(d/.09);}
+    b.style.transform='scaleY('+s.toFixed(3)+')';});
+  if(window.__T===undefined) requestAnimationFrame(frame);
+}
+window.__render=frame; frame();
+root.addEventListener('pointerenter',()=>root.dataset.state='hover');
+root.addEventListener('pointerleave',()=>{root.dataset.state='idle';root.style.removeProperty('--lx');root.style.removeProperty('--ly')});
+root.addEventListener('pointerdown',()=>root.dataset.state='pressed');
+root.addEventListener('pointerup',()=>root.dataset.state='hover');
+root.addEventListener('pointermove',e=>{const r=root.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  root.style.setProperty('--lx',(x*22).toFixed(1)+'px');root.style.setProperty('--ly',(y*22).toFixed(1)+'px');});
+root.addEventListener('keydown',e=>{if(e.key==='t'){const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark'}});
+})();
+</script>
+</body></html>

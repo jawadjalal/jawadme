@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agents icon</title>
+<style>
+:root{--ground:#000;--ground-tint:#1A2600}
+:root[data-theme=light]{--ground:#ECEBE8}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--ground)}
+body{display:grid;place-items:center;overflow:hidden}
+[data-component]{width:min(1024px,86vw,86vh);aspect-ratio:1;cursor:default;transition:transform .5s cubic-bezier(.2,.8,.2,1);outline:none}
+[data-component] svg{width:100%;height:100%;display:block;overflow:visible}
+[data-component][data-state=hover]{transform:scale(1.015) rotate(-.6deg)}
+[data-component][data-state=pressed]{transform:scale(.97);transition-duration:.12s}
+.look{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+[data-state=hover] .look{transform:translate(var(--lx,0),var(--ly,0))}
+.blink{transform-box:view-box}
+
+    .ag-a,.ag-b{transform-box:fill-box;transform-origin:50% 100%}
+    .ag-a{animation:ag-hop 4s cubic-bezier(.3,0,.3,1) infinite}
+    .ag-b{animation:ag-hop 4s cubic-bezier(.3,0,.3,1) infinite;animation-delay:-2s}
+    @keyframes ag-hop{0%,48%,100%{transform:translateY(0) scale(1)}6%{transform:translateY(0) scale(1.04,.95)}
+      13%{transform:translateY(-26px) scale(.98,1.03)}20%{transform:translateY(0) scale(1.03,.97)}
+      26%{transform:translateY(-14px) scale(1)}32%{transform:translateY(0) scale(1)}}
+    .ag-look-a{animation:ag-la 4s ease-in-out infinite}
+    @keyframes ag-la{0%,44%{transform:translate(0,0)}52%,94%{transform:translate(12px,8px)}100%{transform:translate(0,0)}}
+    .ag-look-b{animation:ag-lb 4s ease-in-out infinite}
+    @keyframes ag-lb{0%,4%{transform:translate(0,0)}10%,44%{transform:translate(-14px,-10px)}52%,100%{transform:translate(0,0)}}
+    [data-state=hover] .ag-look-a,[data-state=hover] .ag-look-b{animation:none;transform:translate(var(--lx),var(--ly))}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div data-component="agents" data-state="idle" tabindex="0" role="img" aria-label="Agents app icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" data-part="icon">
+<defs>
+  <clipPath id="ag-clip"><path d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z"/></clipPath>
+  <linearGradient id="ag-base" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#DDF768"/><stop offset="1" stop-color="#9ACB22"/></linearGradient>
+  <linearGradient id="ag-rim" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".22" stop-color="#fff" stop-opacity=".14"/>
+    <stop offset=".8" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".22"/></linearGradient>
+  <linearGradient id="ag-hi" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="ag-sh" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+    <stop offset=".62" stop-color="#3E5A05" stop-opacity="0"/><stop offset="1" stop-color="#3E5A05" stop-opacity=".32"/></linearGradient>
+  <filter id="ag-b10" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="10"/></filter>
+  <filter id="ag-b28" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="28"/></filter>
+  <filter id="ag-obj" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+    <feOffset in="SourceAlpha" dy="22" result="d1"/><feGaussianBlur in="d1" stdDeviation="20" result="d2"/>
+    <feFlood flood-color="#3E5A05" flood-opacity="0.45"/><feComposite in2="d2" operator="in" result="drop"/>
+    <feOffset in="SourceAlpha" dy="9" result="o1"/><feGaussianBlur in="o1" stdDeviation="5" result="o2"/>
+    <feComposite in="SourceAlpha" in2="o2" operator="out" result="topband"/>
+    <feFlood flood-color="#fff" flood-opacity=".6"/><feComposite in2="topband" operator="in" result="hl"/>
+    <feOffset in="SourceAlpha" dy="-14" result="u1"/><feGaussianBlur in="u1" stdDeviation="9" result="u2"/>
+    <feComposite in="SourceAlpha" in2="u2" operator="out" result="botband"/>
+    <feFlood flood-color="#3E5A05" flood-opacity=".32"/><feComposite in2="botband" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="drop"/><feMergeNode in="SourceGraphic"/><feMergeNode in="hl"/><feMergeNode in="sh"/></feMerge>
+  </filter><linearGradient id="ag-ink" x1="0" y1="140" x2="0" y2="740" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2B3038"/><stop offset="1" stop-color="#0E1013"/></linearGradient><linearGradient id="ag-white" x1="0" y1="380" x2="0" y2="900" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E3E8EC"/></linearGradient></defs>
+<path data-part="tile" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="url(#ag-base)"/>
+  <g clip-path="url(#ag-clip)">
+    <g data-part="bot-a" class="ag-a">
+      <g filter="url(#ag-obj)" fill="url(#ag-ink)">
+        <rect x="390" y="150" width="18" height="100" rx="9"/><circle cx="399" cy="142" r="32"/>
+        <rect x="160" y="236" width="480" height="386" rx="170"/>
+        <path d="M232 560 L176 712 L352 610 Z" stroke="url(#ag-ink)" stroke-width="20" stroke-linejoin="round"/>
+      </g>
+      <g data-part="eyes-a" class="blink" style="transform-origin:400px 420px">
+        <ellipse cx="338" cy="420" rx="40" ry="56" fill="#fff"/><ellipse cx="464" cy="420" rx="40" ry="56" fill="#fff"/>
+        <g class="look ag-look-a"><circle cx="346" cy="424" r="22" fill="#0E1013"/><circle cx="472" cy="424" r="22" fill="#0E1013"/></g>
+      </g>
+    </g>
+    <g data-part="bot-b" class="ag-b">
+      <g filter="url(#ag-obj)" fill="url(#ag-white)">
+        <rect x="640" y="380" width="18" height="92" rx="9"/><circle cx="649" cy="372" r="30"/>
+        <rect x="430" y="460" width="440" height="356" rx="160"/>
+        <path d="M790 760 L860 890 L690 800 Z" stroke="url(#ag-white)" stroke-width="20" stroke-linejoin="round"/>
+      </g>
+      <g data-part="eyes-b" class="blink b2" style="transform-origin:650px 630px">
+        <g class="look ag-look-b"><rect x="570" y="590" width="48" height="80" rx="24" fill="#0E1013"/><ellipse cx="586.32" cy="610.8" rx="8.16" ry="9.600000000000001" fill="#fff" opacity=".9"/><rect x="684" y="590" width="48" height="80" rx="24" fill="#0E1013"/><ellipse cx="700.32" cy="610.8" rx="8.16" ry="9.600000000000001" fill="#fff" opacity=".9"/></g>
+      </g>
+    </g>
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#ag-sh)"/>
+    <path data-part="highlight" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#ag-hi)" stroke-width="40" filter="url(#ag-b10)"/>
+    <path data-part="rim" d="M306.8 0 H717.2 C941.4 0 1024 82.6 1024 306.8 V717.2 C1024 941.4 941.4 1024 717.2 1024 H306.8 C82.6 1024 0 941.4 0 717.2 V306.8 C0 82.6 82.6 0 306.8 0 Z" fill="none" stroke="url(#ag-rim)" stroke-width="7"/>
+  </g>
+</svg>
+</div>
+<script>
+(()=>{
+const root=document.querySelector('[data-component]'), svg=root.querySelector('svg');
+const P=4, BLINK=[0.62,0.2];
+const loopFns=[];
+const blinks=[...svg.querySelectorAll('.blink')];
+const now=()=>window.__T!==undefined?window.__T*1000:performance.now();
+
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){
+  const ph=((now()/1000)%P)/P;
+  loopFns.forEach(f=>f(reduce?0:ph));
+  blinks.forEach((b,i)=>{const at=BLINK[i]??BLINK[0];let s=1;
+    if(at!==undefined&&!reduce){const d=Math.abs(ph-at)*P;if(d<.09)s=.1+.9*(d/.09);}
+    b.style.transform='scaleY('+s.toFixed(3)+')';});
+  if(window.__T===undefined) requestAnimationFrame(frame);
+}
+window.__render=frame; frame();
+root.addEventListener('pointerenter',()=>root.dataset.state='hover');
+root.addEventListener('pointerleave',()=>{root.dataset.state='idle';root.style.removeProperty('--lx');root.style.removeProperty('--ly')});
+root.addEventListener('pointerdown',()=>root.dataset.state='pressed');
+root.addEventListener('pointerup',()=>root.dataset.state='hover');
+root.addEventListener('pointermove',e=>{const r=root.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  root.style.setProperty('--lx',(x*22).toFixed(1)+'px');root.style.setProperty('--ly',(y*22).toFixed(1)+'px');});
+root.addEventListener('keydown',e=>{if(e.key==='t'){const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark'}});
+})();
+</script>
+</body></html>
