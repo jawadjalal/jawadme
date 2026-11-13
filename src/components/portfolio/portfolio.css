@@ -138,6 +138,8 @@ html:has(.pf) body {
 }
 .col-places a:hover, .col-places a:focus-visible { background: var(--tint); }
 .col-places img { width: 24px; height: 24px; border-radius: 6px; object-fit: contain; }
+.col-tile { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; color: #fff; font-size: 13px; font-weight: 700; }
+.col-places li:not([data-now]) .col-tile { filter: saturate(0.55); opacity: 0.9; }
 .col-name { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; white-space: nowrap; }
 .col-role { font-size: 14px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.01em; }
 .col-when { font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
@@ -168,13 +170,10 @@ html:has(.pf) body {
 .col-reply[data-on="true"] { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
 .col-reply blockquote {
   margin: 0;
-  font-family: var(--pf-print), var(--pf-sans), sans-serif;
-  font-style: italic;
-  font-weight: 800;
-  font-variation-settings: "wdth" 72;
-  font-size: 36px;
-  line-height: 0.98;
-  letter-spacing: -0.01em;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
   text-wrap: balance;
 }
 .col-reply blockquote::before { content: "\201C"; }
@@ -327,13 +326,13 @@ html:has(.pf) body {
 .feed-close-name { margin: 0; font-size: clamp(56px, 9vw, 150px); font-weight: 600; letter-spacing: -0.055em; line-height: 0.85; }
 
 /* short laptop screens: the column tightens so the whole stack and its foot fit without scrolling */
-@media (min-width: 821px) and (max-height: 780px) {
+@media (min-width: 821px) and (max-height: 720px) {
   .col-top { --beat: 18px; }
   .col-h1 { font-size: min(36px, 9.4cqi); }
   .col-places a { padding-block: 4px; }
   .col-places li[data-now] + li:not([data-now]) { margin-top: 6px; }
   .col-foot { padding-block: 12px 16px; }
-  .col-reply blockquote { font-size: 30px; }
+  .col-reply blockquote { font-size: 26px; }
 }
 
 /* ── Phones and narrow windows: the column becomes the header ─────────── */
@@ -388,7 +387,7 @@ html:has(.pf) body {
   .tile-tag { position: static; display: flex; opacity: 1; transform: none; padding: 7px 0 0; background: none; font-size: 12.5px; border-radius: 0; }
   .story-cta { display: none !important; }
   .story-line, .story[data-look="print"] .sl { font-size: clamp(50px, 15vw, 72px); }
-  .story[data-look="sticker"] .sl { font-size: clamp(38px, 11vw, 52px); }
+  .story[data-look="sticker"] .sl { font-size: clamp(36px, 10.2vw, 44px); text-wrap: pretty; }
   .story[data-look="typed"] .sl { font-size: clamp(36px, 10.4vw, 48px); }
 }
 

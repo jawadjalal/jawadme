@@ -10,7 +10,7 @@ import { SquircleButton } from "./SquircleButton";
 import { Sticker, type StickerPic } from "./Sticker";
 
 type Bit = { t: string } | StickerPic;
-type Job = { when: string; name: string; role: string; logo: string; href: string; now?: boolean };
+type Job = { when: string; name: string; role: string; logo?: string; tile?: string; href: string; now?: boolean };
 type Reply = { quote: string; name: string; handle: string };
 
 function Lines({ lines }: { lines: readonly (readonly Bit[])[] }) {
@@ -131,7 +131,13 @@ export function StoryColumn({
             {timeline.map((j) => (
               <li key={j.name} data-now={j.now ? "" : undefined}>
                 <a href={j.href} target="_blank" rel="noopener">
-                  <img src={j.logo} alt="" width={22} height={22} />
+                  {j.logo ? (
+                    <img src={j.logo} alt="" width={24} height={24} />
+                  ) : (
+                    <span className="col-tile" style={{ background: j.tile }} aria-hidden="true">
+                      {j.name[0]}
+                    </span>
+                  )}
                   <span className="col-name">{j.name}</span>
                   <span className="col-role">{j.role}</span>
                   <span className="col-when">{j.when}</span>

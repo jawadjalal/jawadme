@@ -26,8 +26,7 @@ export const HEADLINE = {
       { t: "MenuFit" },
       { pic: "/work/2026-11/sticker-menufit.webp", alt: "the MenuFit app mark, a paper bag", cut: true, w: 140, h: 159, tilt: 8 },
       { t: "users." },
-      { pic: "/work/2026-11/inline-ad.webp", alt: "a crop of his Shown Media ad: an eye", w: 128, h: 128, tilt: -6, tuck: true },
-      { pic: "/work/2026-11/inline-icon.webp", alt: "his billboard app icon", w: 128, h: 128, tilt: 9, tuck: true },
+      { pic: "/work/2026-11/inline-icon.webp", alt: "his billboard app icon", w: 128, h: 128, tilt: 7 },
     ],
   ],
 } as const;
@@ -39,12 +38,14 @@ export const SECOND = { label: "or email me", href: `mailto:${EMAIL}?subject=Hir
 
 /** Newest first, with each place's own mark from public/logos. `when` is what the CV says ("2026 to now" is now);
  *  SOF Agency and Basket Ent are from before. `role` is one short phrase. */
-export const TIMELINE: { when: string; name: string; role: string; logo: string; href: string; now?: boolean }[] = [
+/** `logo` is the place's own mark; `tile` is a plain initial on its colour, for a place with no mark in the repo
+ *  (public/logos/sof.png is only a red square). */
+export const TIMELINE: { when: string; name: string; role: string; logo?: string; tile?: string; href: string; now?: boolean }[] = [
   { when: "Now", name: "Ignaru", role: "founder, design tool", logo: "/logos/ignaru.png", href: "https://ignaru.com", now: true },
   { when: "Now", name: "Ignura", role: "founder, design studio", logo: "/logos/ignura.png", href: "https://ignura.com", now: true },
   { when: "2026", name: "Okara", role: "product intern", logo: "/logos/okara.png", href: "https://okara.ai" },
   { when: "2026", name: "MenuFit", role: "product designer", logo: "/logos/menufit-bag-128.webp", href: "https://menufit.com" },
-  { when: "Before", name: "SOF Agency", role: "PR, partnerships", logo: "/logos/sof.png", href: "https://sof.agency" },
+  { when: "Before", name: "SOF Agency", role: "PR, partnerships", tile: "#e01b1b", href: "https://sof.agency" },
   { when: "Before", name: "Basket Ent", role: "acquisitions, liveops", logo: "/logos/basketent.png", href: "https://basketent.com" },
 ];
 
