@@ -106,7 +106,7 @@ export const FEED: Entry[] = [
   ad("hyperspell-books", "Hyperspell", "Your agent read every book but yours. A shelf of encyclopaedias and one pink spine."),
   ad("capy-manga", "Capy", "Pile on the tickets. Capy's AI writes the code. A manga page."),
 
-  { story: "Took Okara's dashboard apart, unasked. Got in.", pic: logo("/logos/okara.png", "the Okara mark", 6), at: 1 },
+  { story: "Took apart Okara's dashboard. Got in.", pic: logo("/logos/okara.png", "the Okara mark", 6), at: 2 },
 
   brand("fishaudio-board", "Fish Audio", "engraved fish and an ear in their lilac and coral, with their own lines."),
   ad("fish-ai", "Fish Audio", "AI that sounds like AI doesn't. A curved concert hall lit pink."),

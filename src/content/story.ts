@@ -5,22 +5,29 @@
 import { BOOK, EMAIL } from "@/components/felt/copy";
 
 /*
-  Headline: his words (13 Nov, after seeing it live): two lines, "Fifteen years old." / "Design mastermind.", both in
-  ink, his memoji stuck into the first line. Earlier options, kept for reference:
-  1. "Fifteen years old." / "Designed for 1.5M MenuFit users."
-  2. "Fifteen years old." / "Founder of Ignaru and Ignura."
+  Headline, his words (13 Nov, after seeing it live): "Too young to drive," / "but I'm a design mastermind." Exactly
+  two lines at every width, both in ink, the first a touch lighter. His memoji on line one, and one more sticker that
+  means something: an L plate. The earlier two-sentence version is kept as HEADLINE_ALT and shows with ?h=alt.
 */
-/** One array per line of type; the lines are set as given, never rewrapped. A picture is a sticker: `cut` is a
- *  cut-out with its own outline, otherwise a square card. */
+const MEMOJI = { pic: "/design/jawad-cut.webp", alt: "Jawad's memoji", cut: true, w: 640, h: 723, tilt: 6 } as const;
+const LPLATE = { pic: "/work/2026-11/sticker-lplate.svg", alt: "an L plate", w: 120, h: 120, tilt: -8 } as const;
+
+/** One array per line of type; each line is set on one line, never rewrapped. A picture is a sticker: `cut` is a
+ *  cut-out with its own outline, otherwise a die-cut card with a white edge. */
 export const HEADLINE = {
-  lead: [[{ t: "Fifteen" }, { pic: "/design/jawad-cut.webp", alt: "Jawad's memoji", cut: true, w: 640, h: 723, tilt: -7 }, { t: "years old." }]],
-  main: [[{ t: "Design mastermind." }]],
+  lead: [[{ t: "Too young" }, LPLATE, { t: "to drive," }, MEMOJI]],
+  main: [[{ t: "but I'm a design mastermind." }]],
+} as const;
+
+export const HEADLINE_ALT = {
+  lead: [[{ t: "Too young" }, LPLATE, { t: "to drive." }, MEMOJI]],
+  main: [[{ t: "Old enough to be a design mastermind." }]],
 } as const;
 
 export type Bit = { t: string } | { pic: string; alt: string; w: number; h: number; tilt: number; cut?: boolean; tuck?: boolean };
 
 export const HIRE = BOOK;
-export const SECOND = { label: "or email me", href: `mailto:${EMAIL}?subject=Hiring%20you` };
+export const SECOND = { label: "email me", href: `mailto:${EMAIL}?subject=Hiring%20you`, address: EMAIL };
 
 /** Newest first, a timeline. `logo` is the place's own mark (Ignaru's is the orange app icon from the ignaru repo);
  *  `tile` is a plain initial on its colour where the repo has no real mark (public/logos/sof.png is only a red square).

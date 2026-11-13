@@ -11,7 +11,7 @@ import { SquircleButton } from "./SquircleButton";
 import { Sticker, type StickerPic } from "./Sticker";
 
 type Bit = { t: string } | StickerPic;
-type Job = { name: string; role: string; when?: string; logo?: string; tile?: string; href: string; now?: boolean };
+type Job = { name: string; role: string; logo?: string; tile?: string; href: string; now?: boolean };
 type Reply = { quote: string; name: string; handle: string };
 
 /** How long one reply stays up, in ms. The progress bar under the post is this long, and its end moves to the next. */
@@ -99,6 +99,7 @@ function Replies({ replies }: { replies: Reply[] }) {
 
 export function StoryColumn({
   headline,
+  headlineAlt,
   hire,
   second,
   timeline,
@@ -106,8 +107,10 @@ export function StoryColumn({
   made,
 }: {
   headline: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
+  /** the earlier headline, shown with ?h=alt so the two can be compared on the real page */
+  headlineAlt?: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
   hire: string;
-  second: { label: string; href: string };
+  second: { label: string; href: string; address: string };
   timeline: Job[];
   replies: Reply[];
   /** what is on the wall, counted from the manifest: [label, count] */
@@ -115,6 +118,10 @@ export function StoryColumn({
 }) {
   const [open, setOpen] = useState(false);
   const [stuck, setStuck] = useState(false);
+  const [addr, setAddr] = useState(false);
+  const [alt, setAlt] = useState(false);
+  useEffect(() => setAlt(new URLSearchParams(location.search).get("h") === "alt"), []);
+  const h = alt && headlineAlt ? headlineAlt : headline;
   const cta = useRef<HTMLDivElement>(null);
 
   // the phone's floating hire button shows once the header's own has left the screen
@@ -131,34 +138,42 @@ export function StoryColumn({
       <div className="col-top">
         <div className="col-h1">
           <p className="col-lead">
-            <Lines lines={headline.lead} />
+            <Lines lines={h.lead} />
           </p>
           <h1 className="col-main">
-            <Lines lines={headline.main} />
+            <Lines lines={h.main} />
           </h1>
         </div>
 
-        <div className="col-actions" ref={cta}>
-          <SquircleButton href={hire} label="Hire me: book a call" />
-          <a className="col-second" href={second.href}>
-            {second.label}
-          </a>
+        <div className="col-act">
+          <div className="col-actions" ref={cta}>
+            <SquircleButton href={hire} icon="phone" label="Call me: book a call">
+              call me
+            </SquircleButton>
+            <SquircleButton href={second.href} icon="mail" className="sq-soft" label={`Email me at ${second.address}`} onClick={() => setAddr(true)}>
+              {second.label}
+            </SquircleButton>
+          </div>
+          {/* the address, to copy by hand, once the email button has been pressed */}
+          <p className="col-addr" data-on={addr} aria-hidden={!addr}>
+            {second.address}
+          </p>
         </div>
 
-        <section className="col-time" data-open={open}>
+        <section className="col-sec col-time" data-open={open}>
           <button type="button" className="col-time-toggle" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
             <span>Where I&apos;ve worked</span>
             <svg viewBox="0 0 12 12" aria-hidden="true">
               <path d="M2.5 4.5 6 8l3.5-3.5" />
             </svg>
           </button>
-          <h2 className="col-time-h">Where I&apos;ve worked</h2>
-          <ol className="col-tl">
+          <h2 className="col-sec-h">Where I&apos;ve worked</h2>
+          <ul className="col-work">
             {timeline.map((j) => (
               <li key={j.name} data-now={j.now ? "" : undefined}>
                 <a href={j.href} target="_blank" rel="noopener">
                   {j.logo ? (
-                    <img src={j.logo} alt="" width={18} height={18} />
+                    <img src={j.logo} alt="" width={16} height={16} />
                   ) : (
                     <span className="col-tile" style={{ background: j.tile }} aria-hidden="true">
                       {j.name[0]}
@@ -166,15 +181,14 @@ export function StoryColumn({
                   )}
                   <span className="col-name">{j.name}</span>
                   <span className="col-role">{j.role}</span>
-                  <span className="col-when">{j.when ?? ""}</span>
                 </a>
               </li>
             ))}
-          </ol>
+          </ul>
         </section>
 
-        <section className="col-made" aria-label="On the wall">
-          <h2 className="col-time-h">On the wall</h2>
+        <section className="col-sec col-made" aria-label="On the wall">
+          <h2 className="col-sec-h">On the wall</h2>
           <ul>
             {made.map(([label, c]) => (
               <li key={label}>
@@ -191,7 +205,9 @@ export function StoryColumn({
       </div>
 
       <div className="col-float" data-on={stuck} inert={!stuck}>
-        <SquircleButton href={hire} size="sm" label="Hire me: book a call" />
+        <SquircleButton href={hire} size="sm" icon="phone" label="Call me: book a call">
+          call me
+        </SquircleButton>
       </div>
     </aside>
   );

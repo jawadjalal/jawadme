@@ -3,7 +3,7 @@ import { StoryColumn } from "@/components/portfolio/StoryColumn";
 import { WorkFeed } from "@/components/portfolio/WorkFeed";
 import { DriftWall } from "@/components/portfolio/DriftWall";
 import { FEED, type Piece } from "@/content/feed";
-import { CLOSING, HEADLINE, HIRE, REPLIES, SECOND, TIMELINE } from "@/content/story";
+import { CLOSING, HEADLINE, HEADLINE_ALT, HIRE, REPLIES, SECOND, TIMELINE } from "@/content/story";
 import "@/components/portfolio/portfolio.css";
 
 // jawadjalal.com, after jacobtrebacki.com: a fixed column on the left says who he is, where he has worked and how to
@@ -33,7 +33,7 @@ function made(): [string, number][] {
 export default function Home() {
   return (
     <div className={`pf ${sans.variable} ${print.variable}`}>
-      <StoryColumn headline={HEADLINE} hire={HIRE} second={SECOND} timeline={TIMELINE} replies={REPLIES} made={made()} />
+      <StoryColumn headline={HEADLINE} headlineAlt={HEADLINE_ALT} hire={HIRE} second={SECOND} timeline={TIMELINE} replies={REPLIES} made={made()} />
       <main className="pf-main" id="work">
         <h2 className="pf-sr">Work</h2>
         <div className="wall-drift">
