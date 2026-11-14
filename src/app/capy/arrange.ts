@@ -36,6 +36,7 @@ export type Cluster = Rect & { kind: string; name: string; count: number; title:
 export type Board = Rect & { pieces: Piece[]; clusters: Cluster[]; labels: Label[] };
 
 export const KIND_NAME: Record<string, string> = {
+  sponsors: "Capy posters v3, with every sponsor",
   strips: "Manga strips",
   rebuilds: "Level-up rebuilds",
   posters: "Posters",
@@ -52,6 +53,7 @@ export const kindName = (k: string) => KIND_NAME[k] ?? k.charAt(0).toUpperCase()
 
 /** Row height per kind, in world units: the strips lead and are set largest. */
 const ROW: Record<string, number> = {
+  sponsors: 2400,
   strips: 2400,
   rebuilds: 1700,
   posters: 1700,
@@ -65,7 +67,7 @@ const ROW: Record<string, number> = {
   motion: 1080,
 };
 /** How wide each cluster is allowed to run, as a share of its square-ish packing: strips run wide, the rest stack. */
-const ASPECT: Record<string, number> = { strips: 2.1, rebuilds: 1.8, banners: 1.9, stickers: 1.9, slides: 1.9, signs: 1.8, badges: 1.8 };
+const ASPECT: Record<string, number> = { sponsors: 2.1, strips: 2.1, rebuilds: 1.8, banners: 1.9, stickers: 1.9, slides: 1.9, signs: 1.8, badges: 1.8 };
 
 const typeRank = { video: 0, image: 1, gif: 2 } as const;
 /** One frame per shape: a sticker at 1024 and 2048, or a loop as MP4 and GIF, is one piece. */
