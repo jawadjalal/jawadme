@@ -161,8 +161,8 @@ html:has(.pf) body {
 .col-h1 .stk:not([data-cut]) img { border: 0; border-radius: 0.1em; box-shadow: 0 0.01em 0.02em rgb(0 0 0 / 0.2), 0 0.06em 0.12em rgb(0 0 0 / 0.12); }
 /* the car: a cut-out like the memoji but sized to the caps, sitting on the baseline; pointed at, it rolls forward and
    back on a little bounce */
-.col-h1 .stk[data-kind="car"] { width: calc(0.84em * var(--ar)); height: 0.84em; vertical-align: -0.1em; margin: -0.1em 0.02em -0.1em 0.06em; transform-origin: 50% 100%; }
-.col-h1 .stk[data-kind="car"]:hover { animation: car-drive 900ms var(--ease); }
+.col-h1 .stk[data-cut][data-kind="car"] { width: calc(0.84em * var(--ar)); height: 0.84em; vertical-align: -0.1em; margin: -0.1em 0.02em -0.1em 0.06em; transform-origin: 50% 100%; }
+.col-h1 .stk[data-cut][data-kind="car"]:hover { animation: car-drive 900ms var(--ease); }
 @keyframes car-drive {
   0% { transform: rotate(var(--tilt)); }
   18% { transform: translateX(-0.04em) rotate(calc(var(--tilt) + 3deg)); }
@@ -251,10 +251,10 @@ html:has(.pf) body {
   transition: translate 460ms var(--spring), opacity 200ms var(--ease), scale 340ms var(--spring);
   pointer-events: none;
 }
-.past:has(.past-it:hover, .past-it:focus-within) .past-glow { opacity: 1; scale: 1; }
-.past:has(.past-it:nth-child(2):is(:hover, :focus-within)) .past-glow { --at: 0; }
-.past:has(.past-it:nth-child(3):is(:hover, :focus-within)) .past-glow { --at: 1; }
-.past:has(.past-it:nth-child(4):is(:hover, :focus-within)) .past-glow { --at: 2; }
+.past:has(.past-it a:hover, .past-it a:focus-visible) .past-glow { opacity: 1; scale: 1; }
+.past:has(.past-it:nth-child(2) a:is(:hover, :focus-visible)) .past-glow { --at: 0; }
+.past:has(.past-it:nth-child(3) a:is(:hover, :focus-visible)) .past-glow { --at: 1; }
+.past:has(.past-it:nth-child(4) a:is(:hover, :focus-visible)) .past-glow { --at: 2; }
 .past-it { position: relative; min-width: 0; }
 .past-it a { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 8px; }
 .past-it img { flex: none; width: 22px; height: 22px; border-radius: 6px; object-fit: contain; transition: transform 460ms var(--spring); }
@@ -591,7 +591,7 @@ html:has(.pf) body {
 @media (prefers-reduced-motion: reduce) {
   .past-glow, .past-role, .past-it img, .past-name { transition: none !important; }
   .col-actions .sq::after { display: none; }
-  .col-h1 .stk[data-kind="car"]:hover { animation: none; }
+  .col-h1 .stk[data-cut][data-kind="car"]:hover { animation: none; }
   .cal-wait { animation: none; }
   .xpost, .xpost-item, .sq, .stk, .col-float, .tile, .tile img, .tile-cap, .story .sl, .story-cta { transition: none !important; }
   .xpost-bar { animation-duration: 9000ms !important; }
