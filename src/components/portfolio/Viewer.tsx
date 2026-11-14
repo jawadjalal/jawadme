@@ -67,6 +67,7 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
       show(t.dataset.file!);
     };
     const onKey = (e: KeyboardEvent) => {
+      if ("viewer" in document.documentElement.dataset) return;
       const t = (e.target as HTMLElement).closest?.<HTMLElement>(".tile[data-file]");
       if (t && (e.key === "Enter" || e.key === " ")) {
         e.preventDefault();
@@ -91,6 +92,9 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
   // while open: the address is the piece's own, the page under it does not scroll or drift, keys work
   useEffect(() => {
     const root = document.documentElement;
+    // the page behind the viewer takes no focus while it is open
+    const behind = document.querySelectorAll<HTMLElement>(".pf > :not(.vw)");
+    behind.forEach((el) => (el.inert = !!p));
     if (!p) {
       delete root.dataset.viewer;
       if (location.pathname.startsWith("/w/")) history.replaceState(null, "", "/");

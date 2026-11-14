@@ -117,7 +117,7 @@ export function DriftWall({ entries, href }: { entries: Entry[]; href: string })
     const onKey = (e: KeyboardEvent) => {
       if ("viewer" in document.documentElement.dataset) return;
       const steps: Record<string, number> = { ArrowDown: 90, ArrowUp: -90, PageDown: innerHeight * 0.8, PageUp: -innerHeight * 0.8, " ": innerHeight * 0.8 };
-      if (e.key in steps && !(e.target as HTMLElement).closest?.("input, textarea, button, a")) {
+      if (e.key in steps && !(e.target as HTMLElement).closest?.("input, textarea, button, a, .tile[data-file]")) {
         pending += steps[e.key];
         e.preventDefault();
       }
