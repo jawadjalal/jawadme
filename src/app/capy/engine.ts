@@ -159,7 +159,7 @@ class Pictures {
   /** 0 to 1: how far the first picture of a piece has popped in */
   pop(i: number) {
     const t = this.tex[i][0];
-    if (t.state !== ST.ready || !t.at) return this.tex[i].some((x) => x.state === ST.ready) ? 1 : 0;
+    if (t.state !== ST.ready || !t.at) return 1;
     return Math.min(1, (performance.now() - t.at) / 320);
   }
   ready(i: number, l: number) {
@@ -521,6 +521,7 @@ export class Engine {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     this.touched = true;
     this.canvas.setPointerCapture(e.pointerId);
+    if (this.miniDrag) return; // a second finger while dragging the minimap is ignored
     this.pointers.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
     this.stopMotion();
     if (this.pointers.size === 1 && this.inMini(e.offsetX, e.offsetY)) {
@@ -590,6 +591,7 @@ export class Engine {
     this.pointers.delete(e.pointerId);
     if (this.miniDrag) {
       this.miniDrag = false;
+      this.pinch = null;
       return;
     }
     if (this.pinch) {
@@ -697,7 +699,16 @@ export class Engine {
     }
     if (this.impact && now - this.impact.t0 < 360) this.dirty = true;
     if (performance.now() - this.pics.last < 400) this.dirty = true;
-    for (const [i, l] of this.lift) if ((i === this.hover ? 1 : 0) !== l) this.dirty = true;
+    // hover lift: ease every lifted piece toward its target here, so a piece that leaves the screen still settles
+    if (this.hover >= 0 && !this.lift.has(this.hover)) this.lift.set(this.hover, 0);
+    for (const [i, l] of this.lift) {
+      const want = i === this.hover ? 1 : 0;
+      let v = this.calm ? want : l + (want - l) * Math.min(1, dt / 60);
+      if (Math.abs(want - v) < 0.01) v = want;
+      if (v !== l) this.dirty = true;
+      if (v === 0 && want === 0) this.lift.delete(i);
+      else this.lift.set(i, v);
+    }
     if (this.dirty) {
       this.dirty = false;
       this.draw(this.ctx, this.view, this.vw, this.vh, this.dpr, true);
@@ -758,6 +769,7 @@ export class Engine {
   /** Draws the board for `view` into `ctx`. `live` also asks for sharper pictures and draws the chrome on the canvas. */
   draw(ctx: CanvasRenderingContext2D, view: View, vw: number, vh: number, dpr: number, live: boolean) {
     const now = this.now();
+    if (live) this.mini = null; // set again by drawMini only when the minimap is really on screen
     // the landing punch: a quick zoom pump and a small shake, gone in a third of a second
     let punch = 0;
     if (live && this.impact) {
@@ -837,24 +849,15 @@ export class Engine {
         if (lvl > 0) this.pics.request(p.i, lvl, dist + 200 * lvl);
       }
       // pop in when the first picture lands; lift toward the cursor on hover
-      const pop = live && this.manual === null ? this.pics.pop(p.i) : 1;
-      let lf = this.lift.get(p.i) ?? 0;
-      if (live) {
-        const want = p.i === this.hover ? 1 : 0;
-        lf += (want - lf) * 0.25;
-        if (Math.abs(want - lf) < 0.01) lf = want;
-        if (lf) this.lift.set(p.i, lf);
-        else this.lift.delete(p.i);
-      }
+      // a picture that just arrived fades in over its tile; the lift (eased in tick) raises it toward the cursor
+      const pop = live && this.manual === null && !this.calm ? this.pics.pop(p.i) : 1;
+      const lf = live ? (this.lift.get(p.i) ?? 0) : 0;
       const ink = clamp(w * 0.012, 0.6, 5);
       const lift = lf * clamp(w * 0.012, 0, 6);
-      const e = EASE.out(pop);
-      const sc = 0.94 + 0.06 * e;
-      const dx = x + (w * (1 - sc)) / 2 - lift;
-      const dy = y + (h * (1 - sc)) / 2 - lift;
-      const dw = w * sc;
-      const dh = h * sc;
-      if (pop < 1) ctx.globalAlpha = e;
+      const dx = x - lift;
+      const dy = y - lift;
+      const dw = w;
+      const dh = h;
       // a hard ink shadow, offset like a printed panel
       if (w > 5) {
         ctx.fillStyle = INK;
@@ -871,7 +874,13 @@ export class Engine {
       }
       if (!drawn) {
         const img = this.pics.best(p.i, lvl, now);
-        if (img) ctx.drawImage(img, dx, dy, dw, dh);
+        if (img && pop < 1) {
+          ctx.fillStyle = TILE;
+          ctx.fillRect(dx, dy, dw, dh);
+          ctx.globalAlpha = EASE.out(pop);
+          ctx.drawImage(img, dx, dy, dw, dh);
+          ctx.globalAlpha = 1;
+        } else if (img) ctx.drawImage(img, dx, dy, dw, dh);
         else {
           ctx.fillStyle = TILE;
           ctx.fillRect(dx, dy, dw, dh);
@@ -993,7 +1002,6 @@ export class Engine {
 
   /** A game-style minimap: the clusters, every piece as a fleck, and the camera's frame. Click or drag it to travel. */
   private drawMini(ctx: CanvasRenderingContext2D, view: View, vw: number, vh: number) {
-    this.mini = null;
     if (this.hidden || vw < 900) return;
     const b = this.board;
     const W = 168;
