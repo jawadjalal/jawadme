@@ -279,6 +279,8 @@ export class Engine {
   private speed = 0;
   /** screen-space pan velocity, px per ms, smoothed: points the action lines on a spin */
   private pan = { x: 0, y: 0 };
+  /** a hand spin (a drag, or a throw coasting out) rather than a flight: picks action lines over focus lines */
+  private spun = false;
   private prevView: View | null = null;
   /** the punch when a flight lands on a piece */
   private impact: { t0: number } | null = null;
@@ -816,6 +818,7 @@ export class Engine {
       // flights and the tour, and spins too: a drag, a throw coasting out
       const spinning = (this.drag?.mode === "pan" && this.drag.moved > 4) || Math.abs(this.vel.x) + Math.abs(this.vel.y) > 0.01;
       const moving = !!(this.flight || this.tour) || spinning;
+      this.spun = spinning && !this.flight && !this.tour;
       const k = Math.min(1, dt / 70);
       this.speed += ((moving ? raw : 0) - this.speed) * k;
       this.pan.x += ((moving ? px / dt : 0) - this.pan.x) * k;
@@ -1096,7 +1099,7 @@ export class Engine {
       const pv = Math.hypot(this.pan.x, this.pan.y);
       const seed = 1 + (Math.floor(now / 50) % 997);
       // a spin streaks with the motion (a brisk flick is enough); a zoom or a flight rushes in toward the middle
-      if (pv > this.speed * 0.7 && pv > 0) this.actionLines(ctx, vw, vh, clamp((this.speed - 0.6) / 2.6, 0, 1) * 0.85, this.pan.x / pv, this.pan.y / pv, seed);
+      if (this.spun && pv > 0) this.actionLines(ctx, vw, vh, clamp((this.speed - 0.6) / 2.6, 0, 1) * 0.85, this.pan.x / pv, this.pan.y / pv, seed);
       else this.speedLines(ctx, vw, vh, clamp((this.speed - 0.9) / 3.5, 0, 1) * 0.85, seed);
     }
     if (live && punch > 0.35) this.speedLines(ctx, vw, vh, (punch - 0.35) * 1.1, 7 + Math.floor(now / 40));
