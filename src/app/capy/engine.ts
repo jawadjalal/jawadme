@@ -1270,7 +1270,7 @@ export class Engine {
     if (t < TITLE_CARD.out + 500) {
       const a = t < TITLE_CARD.out ? 1 : 1 - EASE.out(clamp((t - TITLE_CARD.out) / 500, 0, 1));
       const rise = 1 - EASE.out(clamp(t / 700, 0, 1));
-      ctx.fillStyle = `rgba(243,240,232,${0.86 * a})`;
+      ctx.fillStyle = `rgba(255,255,255,${0.86 * a})`;
       ctx.fillRect(0, 0, vw, vh);
       this.bigType(ctx, ["CAPY HACKATHON", "ASSETS"], vw / 2, vh / 2 + rise * u * 0.04, u * 0.115, a, "center");
       ctx.globalAlpha = a * clamp((t - 250) / 500, 0, 1);
@@ -1334,7 +1334,7 @@ export class Engine {
     // end card
     if (t > END_CARD) {
       const a = EASE.out(clamp((t - END_CARD) / 600, 0, 1));
-      ctx.fillStyle = `rgba(243,240,232,${0.8 * a})`;
+      ctx.fillStyle = `rgba(255,255,255,${0.8 * a})`;
       ctx.fillRect(0, 0, vw, vh);
       this.bigType(ctx, ["JAWADJALAL.COM/CAPY"], vw / 2, vh / 2 + (1 - a) * u * 0.03, u * 0.085, a, "center");
       ctx.globalAlpha = a;
