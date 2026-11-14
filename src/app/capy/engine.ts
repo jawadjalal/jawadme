@@ -422,6 +422,7 @@ export class Engine {
   }
   stopTour() {
     this.tour = null;
+    this.back = null;
     this.dirty = true;
   }
   private shotView(s: Shot): View {
@@ -463,7 +464,7 @@ export class Engine {
     } else {
       // the hold: keep drifting in, slowing, so the frame never stops dead
       const h = s.hold ? clamp((lt - s.move) / s.hold, 0, 1) : 1;
-      const d = s.drift ?? 0.05;
+      const d = this.calm ? 0 : (s.drift ?? 0.05);
       this.view = { ...T.target, z: T.target.z * (1 + d * EASE.out(h)) };
     }
     this.dirty = true;
