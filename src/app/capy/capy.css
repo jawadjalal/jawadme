@@ -163,13 +163,15 @@ html:has(.capy) body {
 video.cp-media, .cp-media[data-loaded] { opacity: 1; transform: none; }
 .cp-frame:hover .cp-media, .cp-frame:focus-visible .cp-media { transform: scale(1.015); }
 
-.cp-cap { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 10px; min-height: 40px; }
-/* a narrow tile puts its size above its actions */
-@container (max-width: 196px) {
-  .cp-cap { flex-direction: column; align-items: flex-start; gap: 6px; }
-  .cp-actions { flex: 0 1 auto; flex-wrap: wrap; gap: 6px 12px; }
+/* one line under every tile: the name or size, then the two actions; it never wraps or stacks */
+.cp-cap { display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 10px; padding-top: 10px; min-height: 40px; }
+.cp-size { flex: 1 1 0; font-size: 13px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+/* a narrow tile keeps only its actions; the size is in the large view and the image's alt text */
+@container (max-width: 200px) {
+  .cp-size { display: none; }
+  .cp-cap { justify-content: flex-start; }
+  .cp-actions { gap: 12px; }
 }
-.cp-size { font-size: 13px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 
 /* the actions: one ink block, one plain word */
 .cp-actions { display: inline-flex; align-items: center; gap: 14px; flex: none; }
@@ -254,6 +256,10 @@ video.cp-media, .cp-media[data-loaded] { opacity: 1; transform: none; }
 .cp-empty { padding: 40px var(--edge) 160px; font-size: 19px; }
 
 /* ── Narrower ─────────────────────────────────────────────────────────── */
+/* with every kind in the filter, the file count only fits on a wide screen */
+@media (max-width: 1600px) {
+  .cp-count { display: none; }
+}
 @media (max-width: 1100px) {
   .capy { --row: 280px; }
 }
@@ -269,7 +275,6 @@ video.cp-media, .cp-media[data-loaded] { opacity: 1; transform: none; }
   .cp-count { display: none; }
   .cp-rows { gap: 22px 12px; }
   .cp-tile { min-width: 140px; }
-  .cp-cap { flex-wrap: wrap; gap: 6px 10px; }
   .cp-lb-foot { flex-direction: column; align-items: stretch; gap: 14px; }
   .cp-lb-actions { justify-content: space-between; }
   .cp-actions[data-big] .cp-copy { height: 44px; }

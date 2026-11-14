@@ -13,15 +13,16 @@ const sans = Inter({ subsets: ["latin"], display: "swap", variable: "--cp-sans" 
 const print = Archivo({ subsets: ["latin"], style: ["italic"], axes: ["wdth"], display: "swap", variable: "--cp-print" });
 
 const ASSETS = data.assets as Asset[];
-const KIND_ORDER = ["posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
+const KIND_ORDER = ["strips", "rebuilds", "posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
 const kinds = [...new Set(ASSETS.map((a) => a.kind))].sort((a, b) => {
   const r = (k: string) => (KIND_ORDER.indexOf(k) < 0 ? 99 : KIND_ORDER.indexOf(k));
   return r(a) - r(b);
 });
 
-/** "Posters, banners, stickers and more": the kinds the page really holds, in order. */
+/** "Manga strips, posters, banners and more": the kinds the page really holds, in order. */
 function kindList(): string {
-  const names = kinds.length ? kinds : ["posters"];
+  // the rebuilds are posters too, so the line names the strips and the kinds of thing
+  const names = (kinds.length ? kinds : ["posters"]).filter((k) => k !== "rebuilds").map((k) => (k === "strips" ? "manga strips" : k));
   // three kinds at most, so the line stays two lines long
   const t =
     names.length > 3

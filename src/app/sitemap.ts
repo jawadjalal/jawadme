@@ -10,6 +10,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: "https://jawadjalal.com/capy",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    {
       url: "https://jawadjalal.com/blog",
       lastModified: new Date(),
       changeFrequency: "weekly",

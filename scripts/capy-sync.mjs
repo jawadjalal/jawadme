@@ -3,12 +3,15 @@
 //
 //   node scripts/capy-sync.mjs [--src /Users/jawadjalal/night/real/capyhack]
 //
-// Scans elite/<idea>/, packs/<pack>/, final/posters/<name>/ and banners/ under the source folder, and for every
-// finished file writes into public/capy/:
+// Scans, in page order, strip2/ and strip3/ (the manga strips), v2/<idea>/ (the level-up rebuilds), elite/<idea>/,
+// final/posters/<name>/, banners/ and packs/<pack>/ under the source folder, and for every finished file writes into
+// public/capy/:
 //   <kind>/<id>.webp   the web preview, long edge 1400, under ~300 KB (alpha kept, so stickers stay cut out)
-//   <kind>/<id>.png    the copy and download original, long edge capped at 4000
+//   <kind>/<id>.jpg    the copy and download original, long edge capped at 2400, JPEG at quality 92
+//   <kind>/<id>.png    the same for stickers, badges and anything transparent
 //   <kind>/<id>.mp4    videos and GIFs as they are, under 8 MB
-//   <kind>/<id>.pdf    the print PDF for that size, only when under 12 MB
+// No PDFs. Over 250 MB, the heaviest originals outside the strips shrink first, then GIFs that repeat an MP4 go,
+// then the first elite round.
 // then rewrites src/app/capy/assets.json and public/capy/og.jpg. Re-running is safe: a file is only rebuilt when its
 // source is newer, and files whose source has gone are removed. Mac only (sips, cwebp, ffmpeg); no npm deps.
 
@@ -25,16 +28,15 @@ const JSON_OUT = path.join(ROOT, "src/app/capy/assets.json");
 
 const PREVIEW_EDGE = 1400;
 const PREVIEW_BYTES = 300 * 1024;
-const ORIGINAL_EDGE = 4000;
+const ORIGINAL_EDGE = 2400;
 const MEDIA_MAX = 8 * 1024 * 1024;
-const PDF_MAX = 12 * 1024 * 1024;
 const BUDGET = 245 * 1024 * 1024; // 250 MB is the cap; 5 MB of room for the OG image and rounding
 
 const SKIP_DIRS = new Set(["src", "work", "assets", "fonts", "node_modules", ".git", "refs", "site"]);
 const IMAGE = /\.(png|jpe?g|webp)$/i;
 const VIDEO = /\.(mp4|mov|webm)$/i;
 const GIF = /\.gif$/i;
-const KINDS = ["posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
+const KINDS = ["strips", "rebuilds", "posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
 
 const has = (bin) => {
   try {
@@ -93,59 +95,32 @@ function dims(file) {
 
 // ── finding the assets ──────────────────────────────────────────────────────
 
-/** Paper sizes by aspect (w/h), so a PNG can find its PDF when the names do not say. */
-const PAPER = { a4: 210 / 297, a3: 297 / 420, "11x17": 11 / 17, "18x24": 18 / 24, "24x36": 24 / 36 };
-function pdfAspect(name) {
-  const n = name.toLowerCase();
-  for (const [k, r] of Object.entries(PAPER)) if (n.includes(k)) return r;
-  return null;
-}
-
-/** Picks the print PDF for one PNG: same size key in the name first, then the nearest paper aspect. Trim over bleed. */
-function pickPdf(dir, key, w, h, pdfs) {
-  if (!pdfs.length) return null;
-  const rank = (p) => (/-trim/i.test(p) ? 2 : /-bleed/i.test(p) ? 0 : 1);
-  const order = (arr) => [...arr].sort((a, b) => rank(b) - rank(a));
-  const k = key.toLowerCase();
-  const byName = pdfs.filter((p) => {
-    const base = p.toLowerCase().replace(/\.pdf$/, "").replace(/-(trim|bleed)$/, "");
-    return base === k || base === `poster-${k}` || base.endsWith(`-${k}`);
-  });
-  if (byName.length) return path.join(dir, order(byName)[0]);
-  const r = w / h;
-  const near = pdfs
-    .map((p) => ({ p, d: pdfAspect(p) == null ? 9 : Math.abs(pdfAspect(p) - r) / r }))
-    .filter((x) => x.d < 0.02)
-    .sort((a, b) => a.d - b.d || rank(b.p) - rank(a.p));
-  return near.length ? path.join(dir, near[0].p) : null;
-}
-
-const skipFile = (f) => /sheet|contact|^_|thumb/i.test(f);
+const skipFile = (f) => /sheet|contact|overview|^_|thumb/i.test(f);
 
 /** One idea folder (elite/<idea> or final/posters/<name>): each PNG is a size, v2-/v3- prefixes are variations. */
 function scanIdea(dir, kind, idea, out) {
   const files = list(dir).filter((f) => !isDir(path.join(dir, f)));
-  const pdfs = files.filter((f) => /\.pdf$/i.test(f));
   for (const f of files) {
     if (!IMAGE.test(f) || skipFile(f)) continue;
     const variant = f.match(/^(v\d+)[-_]/i)?.[1]?.toLowerCase() ?? "";
     const rest = variant ? f.slice(variant.length + 1) : f;
     let key = rest.replace(/\.[a-z]+$/i, "").replace(/-?preview-?/i, "") || "poster";
+    // "tankobon-15-social-1080x1920" in tankobon-15/ is the "social-1080x1920" size
+    if (key.toLowerCase().startsWith(`${idea.toLowerCase()}-`)) key = key.slice(idea.length + 1);
     if (key === "") key = "poster";
-    const vPdfs = pdfs.filter((p) => (variant ? p.toLowerCase().startsWith(`${variant}-`) : !/^v\d+[-_]/i.test(p)));
     out.push({
       src: path.join(dir, f), kind, set: slug(`${idea}${variant ? `-${variant}` : ""}`),
-      setTitle: titleCase(idea) + (variant ? ` ${variant}` : ""), key, pdfs: vPdfs, dir,
+      setTitle: titleCase(idea) + (variant ? ` ${variant}` : ""), key,
     });
   }
 }
 
 /** Files of a pack or the banners folder, recursively, minus the working folders. */
-function walk(dir, acc = []) {
+function walk(dir, acc = [], skip = SKIP_DIRS) {
   for (const f of list(dir)) {
     const p = path.join(dir, f);
     if (isDir(p)) {
-      if (!SKIP_DIRS.has(f.toLowerCase()) && !f.startsWith("_")) walk(p, acc);
+      if (!skip.has(f.toLowerCase()) && !f.startsWith("_")) walk(p, acc, skip);
     } else if ((IMAGE.test(f) || VIDEO.test(f) || GIF.test(f)) && !skipFile(f)) acc.push(p);
   }
   return acc;
@@ -173,17 +148,18 @@ function readManifest(dir) {
   return map;
 }
 
-const SIZED = /^(.*?)[-_@]((?:(?:banner|poster|post|story|square|wide|tall|strip|rollup|hanger|tent|phone|desktop)-)?\d+(?:\.\d+)?x\d+(?:\.\d+)?|\d{3,4}(?:px)?|phone|desktop|square|story|wide|tall|a\d)$/i;
+const SIZED = /^(.*?)[-_@]((?:(?:banner|poster|post|story|square|wide|tall|strip|rollup|hanger|tent)-)?\d+(?:\.\d+)?x\d+(?:\.\d+)?|\d{3,4}(?:px)?|phone|desktop|square|story|wide|tall|a\d)$/i;
 
-const GENERIC = /^(preview|phone|desktop|poster|final|image|cover|main|full|print|web|mobile|index|square|story|wide|tall)$/i;
+const GENERIC = /^(preview|phone|desktop|poster|rollup|fourfive|final|image|cover|main|full|print|web|mobile|index|square|story|wide|tall)$/i;
 
 /** A pack or the banners: "<name>-<size>.png" files in one folder are one design in sizes; anything else stands alone. */
-function scanLoose(dir, kind, out) {
+function scanLoose(dir, kind, out, { tag = "", skip = SKIP_DIRS } = {}) {
   const manifest = readManifest(dir);
-  for (const p of walk(dir)) {
+  for (const p of walk(dir, [], skip)) {
     const m = manifest.get(p) ?? {};
     const here = path.dirname(p);
-    const base = path.basename(p).replace(/\.[a-z0-9]+$/i, "");
+    // "cover-24x36-preview", "preview-banner-33.5x80" and "x-header-1500x500-2x" name their size without the extras
+    const base = path.basename(p).replace(/\.[a-z0-9]+$/i, "").replace(/-preview$|^preview-/i, "").replace(/-\d+x$/i, "");
     let sized = base.match(SIZED);
     let name = String(m.group ?? m.set ?? (sized ? sized[1] : base));
     // "banners/03-manga-day/preview.png": a generic file name takes its folder's name, and the file name is its size
@@ -191,26 +167,49 @@ function scanLoose(dir, kind, out) {
       name = path.basename(here).replace(/^\d+[-_]/, "");
       sized = [base, name, /^(preview|final|image|main|full|print|web|index)$/i.test(base) ? "" : base];
     }
-    const pdfs = list(here).filter((f) => /\.pdf$/i.test(f) && slug(f).startsWith(slug(name)));
-    // "capy-sticker-go" in the stickers pack is just "go"
+    // "capy-sticker-go" in the stickers pack is just "go"; "b-s3-countdown" in a strip's posts shows as "Countdown"
     name = name.replace(new RegExp(`^capy[-_]${kind.replace(/s$/, "")}[-_]`, "i"), "");
+    const shown = name.replace(/^b-s\d+-/i, "").replace(/^sticker-\d+-/i, "sticker-").replace(/^[a-c][-_](?=[a-z]{2})/i, "");
     out.push({
-      src: p, kind, set: slug(`${kind}-${name}`),
+      src: p, kind, set: slug(`${kind}-${tag ? `${tag}-` : ""}${name}`),
       // "a-home-screen" is idea A, "Home screen"
-      setTitle: typeof (m.title ?? m.name) === "string" ? m.title ?? m.name : titleCase(name.replace(/^[a-z][-_](?=[a-z]{2})/i, "")),
-      key: sized ? sized[2] : typeof m.size === "string" ? m.size : "", pdfs, dir: here,
+      setTitle: typeof (m.title ?? m.name) === "string" ? m.title ?? m.name : titleCase(shown),
+      key: sized ? sized[2] : typeof m.size === "string" ? m.size : "",
     });
   }
 }
 
 const found = [];
+const hasPng = (d) => list(d).some((f) => /\.png$/i.test(f) && !skipFile(f));
+// the manga strips lead the page: strip2 and strip3, minus their plates, sources, renders in progress and PDFs
+const STRIP_SKIP = new Set([...SKIP_DIRS, "plates", "out", "gen"]);
+for (const [folder, tag] of [["strip2", "s2"], ["strip3", "s3"]]) {
+  const d = path.join(SRC, folder);
+  if (isDir(d)) scanLoose(d, "strips", found, { tag, skip: STRIP_SKIP });
+}
+// the level-up rebuilds come second
+const rebuilt = new Set();
+for (const idea of list(path.join(SRC, "v2"))) {
+  const d = path.join(SRC, "v2", idea);
+  if (!isDir(d) || !hasPng(d)) continue;
+  rebuilt.add(idea);
+  scanIdea(d, "rebuilds", idea, found);
+}
+// the first elite round; an idea that has a rebuild is left out, and the rest goes first when the budget is tight
+const ELITE = new Set();
 for (const idea of list(path.join(SRC, "elite"))) {
   const d = path.join(SRC, "elite", idea);
-  if (isDir(d)) scanIdea(d, "posters", idea, found);
+  if (!isDir(d) || rebuilt.has(idea)) continue;
+  const before = found.length;
+  scanIdea(d, "posters", idea, found);
+  for (const a of found.slice(before)) ELITE.add(a.src);
 }
 for (const name of list(path.join(SRC, "final/posters"))) {
   const d = path.join(SRC, "final/posters", name);
-  if (isDir(d)) scanIdea(d, "posters", name, found);
+  if (!isDir(d)) continue;
+  const before = found.length;
+  scanIdea(d, "posters", name, found);
+  for (const a of found.slice(before)) ELITE.add(a.src);
 }
 if (isDir(path.join(SRC, "banners"))) scanLoose(path.join(SRC, "banners"), "banners", found);
 for (const pack of list(path.join(SRC, "packs"))) {
@@ -244,14 +243,16 @@ function makePreview(src, out, w, h) {
   if (fs.existsSync(tmp)) fs.rmSync(tmp);
 }
 
+/** Stickers, badges and anything named transparent keep their alpha as PNG; everything else is a JPEG at quality 92. */
+const needsAlpha = (a) => /stickers|badges/.test(a.kind) || /sticker|transparent|cutout/i.test(a.src);
+
 function makeOriginal(src, out, w, h) {
   if (fresh(out, src)) return;
-  if (/\.png$/i.test(src) && Math.max(w, h) <= ORIGINAL_EDGE) fs.copyFileSync(src, out);
-  else {
-    const args = ["-s", "format", "png"];
-    if (Math.max(w, h) > ORIGINAL_EDGE) args.push("-Z", String(ORIGINAL_EDGE));
-    run("sips", [...args, src, "--out", out]);
-  }
+  const png = /\.png$/i.test(out);
+  if (png && /\.png$/i.test(src) && Math.max(w, h) <= ORIGINAL_EDGE) return fs.copyFileSync(src, out);
+  const args = png ? ["-s", "format", "png"] : ["-s", "format", "jpeg", "-s", "formatOptions", "92"];
+  if (Math.max(w, h) > ORIGINAL_EDGE) args.push("-Z", String(ORIGINAL_EDGE));
+  run("sips", [...args, src, "--out", out]);
 }
 
 function videoPoster(src, out) {
@@ -264,6 +265,7 @@ function videoPoster(src, out) {
 }
 
 const usedIds = new Set();
+const elite = new Set();
 for (const a of found) {
   try {
     const { w, h } = dims(a.src);
@@ -303,22 +305,18 @@ for (const a of found) {
       Object.assign(entry, { type: ext === "mp4" ? "video" : "gif", preview: rel(`${id}.webp`), original: rel(`${id}.${ext}`) });
     } else {
       const prev = path.join(dir, `${id}.webp`);
-      const orig = path.join(dir, `${id}.png`);
+      const ext = needsAlpha(a) ? "png" : "jpg";
+      const orig = path.join(dir, `${id}.${ext}`);
       makePreview(a.src, prev, w, h);
       makeOriginal(a.src, orig, w, h);
       keep.add(prev).add(orig);
-      Object.assign(entry, { preview: rel(`${id}.webp`), original: rel(`${id}.png`) });
+      if (ELITE.has(a.src)) elite.add(id);
+      Object.assign(entry, { preview: rel(`${id}.webp`), original: rel(`${id}.${ext}`) });
       if (Math.max(w, h) > ORIGINAL_EDGE) {
         const s = ORIGINAL_EDGE / Math.max(w, h);
         Object.assign(entry, { w: Math.round(w * s), h: Math.round(h * s) });
       }
-      const pdf = pickPdf(a.dir, a.key, w, h, a.pdfs);
-      if (pdf && bytes(pdf) <= PDF_MAX) {
-        const out = path.join(dir, `${id}.pdf`);
-        if (!fresh(out, pdf)) fs.copyFileSync(pdf, out);
-        keep.add(out);
-        entry.pdf = rel(`${id}.pdf`);
-      }
+      // no PDFs on the page: the print files stay in the night folders
     }
     assets.push(entry);
   } catch (e) {
@@ -334,41 +332,54 @@ for (const a of assets) {
   if (n) problems.push(`duplicate id ${a.id}`);
 }
 
-// ── the budget: shrink the heaviest originals (2560, then 2048, then 1600 on the long edge), then drop the largest PDFs ──
+// ── the budget: shrink the heaviest originals outside the strips (2048, then 1600), drop GIFs that repeat an MP4,
+// then drop the first elite round, largest first ──
 const total = () => [...keep].reduce((s, p) => s + (fs.existsSync(p) ? bytes(p) : 0), 0);
-// each pass brings the heaviest originals above that edge down to it, until the folder fits
-for (const edge of [2560, 2048, 1600]) {
+const file = (a) => path.join(ROOT, "public", a.original);
+for (const edge of [2048, 1600]) {
   if (total() <= BUDGET) break;
   const big = assets
-    .filter((a) => a.type === "image" && Math.max(a.w, a.h) > edge)
-    .sort((a, b) => bytes(path.join(ROOT, "public", b.original)) - bytes(path.join(ROOT, "public", a.original)));
+    .filter((a) => a.type === "image" && a.kind !== "strips" && Math.max(a.w, a.h) > edge)
+    .sort((a, b) => (elite.has(b.id) ? 1 : 0) - (elite.has(a.id) ? 1 : 0) || bytes(file(b)) - bytes(file(a)));
   for (const a of big) {
     if (total() <= BUDGET) break;
-    run("sips", ["-Z", String(edge), path.join(ROOT, "public", a.original)]);
-    const s = edge / Math.max(a.w, a.h);
-    Object.assign(a, { w: Math.round(a.w * s), h: Math.round(a.h * s) });
+    run("sips", ["-Z", String(edge), file(a)]);
   }
 }
+// a GIF whose loop is also here as an MP4 is the weaker copy
+if (total() > BUDGET) {
+  const dup = assets
+    .filter((a) => a.type === "gif" && assets.some((b) => b.group === a.group && b.type === "video"))
+    .sort((a, b) => bytes(file(b)) - bytes(file(a)));
+  for (const a of dup) {
+    if (total() <= BUDGET) break;
+    keep.delete(file(a));
+    keep.delete(path.join(ROOT, "public", a.preview));
+    a.dropped = true;
+  }
+}
+if (total() > BUDGET) {
+  const old = assets.filter((a) => elite.has(a.id)).sort((a, b) => bytes(file(b)) - bytes(file(a)));
+  for (const a of old) {
+    if (total() <= BUDGET) break;
+    keep.delete(file(a));
+    keep.delete(path.join(ROOT, "public", a.preview));
+    a.dropped = true;
+  }
+}
+for (let i = assets.length - 1; i >= 0; i--) if (assets[i].dropped) assets.splice(i, 1);
 // an original shrunk on an earlier run stays shrunk; read its real size back
 for (const a of assets) {
   if (a.type !== "image") continue;
-  const d = dims(path.join(ROOT, "public", a.original));
+  const d = dims(file(a));
   Object.assign(a, { w: d.w, h: d.h });
 }
-if (total() > BUDGET) {
-  const pdfs = assets.filter((a) => a.pdf).sort((a, b) => bytes(path.join(ROOT, "public", b.pdf)) - bytes(path.join(ROOT, "public", a.pdf)));
-  for (const a of pdfs) {
-    if (total() <= BUDGET) break;
-    keep.delete(path.join(ROOT, "public", a.pdf));
-    delete a.pdf;
-  }
-}
-if (total() > BUDGET) problems.push("still over budget after dropping PDFs: lower ORIGINAL_EDGE");
+if (total() > BUDGET) problems.push("still over budget: lower ORIGINAL_EDGE");
 
 // ── the OG image: the widest-ratio asset nearest 1.91:1, covered into 1200×630 ──
 const og = path.join(OUT, "og.jpg");
-const ogPick = assets
-  .filter((a) => a.type === "image")
+const ogPool = assets.filter((a) => a.type === "image" && a.kind === "strips");
+const ogPick = (ogPool.length ? ogPool : assets.filter((a) => a.type === "image"))
   .sort((a, b) => Math.abs(a.w / a.h - 1.905) - Math.abs(b.w / b.h - 1.905) || b.w - a.w)[0];
 if (ogPick) {
   const src = path.join(ROOT, "public", ogPick.original);
@@ -392,7 +403,26 @@ prune(OUT);
 
 // order: kinds in page order, then set, then the largest size first within a set
 const kindRank = (k) => (KINDS.indexOf(k) < 0 ? 99 : KINDS.indexOf(k));
-assets.sort((a, b) => kindRank(a.kind) - kindRank(b.kind) || a.group.localeCompare(b.group) || b.w * b.h - a.w * a.h);
+const groupRank = new Map();
+for (const a of assets) if (!groupRank.has(a.group)) groupRank.set(a.group, groupRank.size);
+assets.sort((a, b) => kindRank(a.kind) - kindRank(b.kind) || groupRank.get(a.group) - groupRank.get(b.group) || b.w * b.h - a.w * a.h);
+// two designs with one name in a kind take the word that sets them apart ("Crew pile, phone"), or else a number
+const titles = new Map();
+for (const g of groupRank.keys()) {
+  const first = assets.find((a) => a.group === g);
+  if (!first) continue;
+  const k = `${first.kind}:${first.title}`;
+  const before = titles.get(k);
+  if (!before) {
+    titles.set(k, [g]);
+    continue;
+  }
+  before.push(g);
+  const mine = g.split("-");
+  const word = mine.find((t) => /^(phone|desktop|mobile|blue|white|black|dark|light)$/.test(t) && !before[0].split("-").includes(t));
+  const tag = word ?? (mine.includes("s3") && !before[0].split("-").includes("s3") ? "strip 3" : String(before.length));
+  for (const a of assets) if (a.group === g) a.title = word || tag === "strip 3" ? `${a.title}, ${tag}` : `${a.title} ${tag}`;
+}
 
 fs.mkdirSync(path.dirname(JSON_OUT), { recursive: true });
 fs.writeFileSync(JSON_OUT, `${JSON.stringify({ og: ogPick ? "/capy/og.jpg" : null, assets }, null, 1)}\n`);
