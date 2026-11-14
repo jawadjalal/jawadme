@@ -243,7 +243,7 @@ export class Engine {
   dpr = 1;
   /** screen insets the chrome covers, so fits and flights frame things in the clear part */
   inset = { t: 72, r: 24, b: 88, l: 24 };
-  /** the globe's radius in world units: the board's edge sits about 80 degrees round it */
+  /** the globe's radius in world units: the board's far corners sit about 86 degrees round it */
   R = 1;
   pics: Pictures;
   selected: number[] = [];
@@ -286,12 +286,14 @@ export class Engine {
   /** prefers-reduced-motion: flights cut, no throw, no drift */
   calm = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
   private off: (() => void)[] = [];
+  private born = performance.now();
 
   constructor(canvas: HTMLCanvasElement, board: Board) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d")!;
     this.board = board;
-    this.R = Math.max(board.w, board.h) / 2 / 1.4;
+    // the board's corners stay just this side of the horizon at the whole-board view
+    this.R = Math.max(1, Math.hypot(board.w, board.h) / 2 / 1.5);
     this.pics = new Pictures(board.pieces, () => (this.dirty = true));
     this.videoBox = document.createElement("div");
     this.videoBox.style.cssText = "position:fixed;left:0;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none";
@@ -336,7 +338,8 @@ export class Engine {
     const m = pad === 1 ? 0.06 : 0.1;
     // on the globe a rect's half-width w shows as R sin(w / R): a big rect curves away and needs less room
     const ext = (half: number) => 2 * this.R * Math.sin(Math.min(half / this.R, HALF_PI));
-    const z = Math.min((aw * (1 - m * 2)) / ext(r.w / 2), (ah * (1 - m * 2)) / ext(r.h / 2), Z_MAX);
+    // the whole board frames the whole globe, rim and all: that is the shot that reads as a planet
+    const z = r === this.board ? (Math.min(aw, ah) * (1 - m * 2)) / (2 * this.R) : Math.min((aw * (1 - m * 2)) / ext(r.w / 2), (ah * (1 - m * 2)) / ext(r.h / 2), Z_MAX);
     // shift the centre so the rect sits in the middle of the clear area, not of the whole screen
     const cx = r.x + r.w / 2 - (inset.l - inset.r) / 2 / z;
     const cy = r.y + r.h / 2 - (inset.t - inset.b) / 2 / z;
@@ -356,15 +359,29 @@ export class Engine {
   zoomAt(sx: number, sy: number, k: number) {
     const w = this.toWorld(sx, sy);
     const z = clamp(this.view.z * k, this.zMin, Z_MAX);
-    // keep the world point under the cursor: a few steps, since the lens bends the plain answer
+    const off = Math.hypot(sx - this.vw / 2, sy - this.vh / 2);
+    if (off >= 0.97 * this.R * this.view.z) {
+      // the cursor is off the globe (or on its very rim): no point there to hold, so zoom about the centre
+      this.view = { ...this.view, z };
+      this.dirty = true;
+      return;
+    }
+    // keep the world point under the cursor: a damped solve, since the lens squeezes moves near the rim by cos(th)
     const v = { x: w.x - (sx - this.vw / 2) / z, y: w.y - (sy - this.vh / 2) / z, z };
-    if (Math.abs(sx - this.vw / 2) + Math.abs(sy - this.vh / 2) > 0.5)
-      for (let n = 0; n < 6; n++) {
+    let best = { ...v };
+    let bestE = Infinity;
+    if (off > 0.5)
+      for (let n = 0; n < 12; n++) {
         const o = proj(this.lens(v), w.x, w.y);
-        v.x += (o.x - sx) / z;
-        v.y += (o.y - sy) / z;
+        const e = Math.hypot(o.x - sx, o.y - sy);
+        if (e < bestE) (bestE = e), (best = { ...v });
+        if (e < 0.5 || o.th >= HALF_PI) break;
+        const k = z * Math.max(Math.cos(o.th), 0.25);
+        v.x += (o.x - sx) / k;
+        v.y += (o.y - sy) / k;
       }
-    this.view = v;
+    else best = v;
+    this.view = best;
     this.dirty = true;
   }
   pieceAt(sx: number, sy: number) {
@@ -633,8 +650,10 @@ export class Engine {
       const d = Math.hypot(a.x - b.x, a.y - b.y);
       const cx = (a.x + b.x) / 2;
       const cy = (a.y + b.y) / 2;
-      this.view.x -= (cx - this.pinch.cx) / this.view.z;
-      this.view.y -= (cy - this.pinch.cy) / this.view.z;
+      const w0 = this.toWorld(this.pinch.cx, this.pinch.cy);
+      const w1 = this.toWorld(cx, cy);
+      this.view.x += w0.x - w1.x;
+      this.view.y += w0.y - w1.y;
       this.zoomAt(cx, cy, d / this.pinch.d);
       this.pinch = { d, cx, cy };
       return;
@@ -729,8 +748,11 @@ export class Engine {
       // a mouse wheel's notches zoom toward the cursor
       this.zoomAt(e.offsetX, e.offsetY, Math.exp(-dy * 0.0021));
     } else {
-      this.view.x += dx / this.view.z;
-      this.view.y += dy / this.view.z;
+      // pan through the lens, so the content under the cursor tracks the fingers
+      const a = this.toWorld(e.offsetX, e.offsetY);
+      const b = this.toWorld(e.offsetX - dx, e.offsetY - dy);
+      this.view.x += a.x - b.x;
+      this.view.y += a.y - b.y;
       this.dirty = true;
     }
   }
@@ -757,15 +779,18 @@ export class Engine {
       }
       this.dirty = true;
     } else if (Math.abs(this.vel.x) + Math.abs(this.vel.y) > 0.01) {
-      this.view.x -= (this.vel.x * dt) / this.view.z;
-      this.view.y -= (this.vel.y * dt) / this.view.z;
+      const a = this.toWorld(this.vw / 2, this.vh / 2);
+      const b = this.toWorld(this.vw / 2 + this.vel.x * dt, this.vh / 2 + this.vel.y * dt);
+      this.view.x += a.x - b.x;
+      this.view.y += a.y - b.y;
       const k = Math.exp(-dt / 325);
       this.vel.x *= k;
       this.vel.y *= k;
       this.dirty = true;
     }
     // until anyone touches it, the globe turns slowly on its own
-    if (!this.touched && !this.tour && !this.flight && this.manual === null && !this.calm) {
+    // (for the first minute, so a page left open goes quiet)
+    if (!this.touched && !this.tour && !this.flight && this.manual === null && !this.calm && now - this.born < 60000) {
       const f = this.fitView(this.board);
       const a = (now / 52000) * Math.PI * 2;
       this.view = { x: f.x + Math.cos(a) * this.R * 0.3, y: f.y + Math.sin(a) * this.R * 0.18, z: f.z };
