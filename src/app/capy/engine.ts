@@ -3,6 +3,10 @@
 //
 // Camera: (x, y) is the world point at the centre of the screen, z is screen pixels per world unit. World units are
 // close to the files' own pixels, so z = 1 reads as 100%.
+//
+// The globe: the flat board is seen through an orthographic globe lens centred on the camera. A world point at distance
+// d from the camera sits at angle d / R round a sphere of radius R, so zoomed out the board is a planet with its edges
+// curving away, and zoomed in (where d is tiny next to R) it is flat again. Panning spins the globe.
 
 import type { Board, Piece, Rect } from "./arrange";
 import { sized } from "./exporters";
@@ -23,9 +27,55 @@ type Flight = { t0: number; dur: number; at: (t: number) => View; ease: (t: numb
 
 const BLUE = "#3b5de8";
 const INK = "#0a0a0a";
-export const GROUND = "#f3f0e8";
+export const GROUND = "#ffffff";
 const TILE = "#e2ded3";
 const Z_MAX = 6;
+const HALF_PI = Math.PI / 2;
+
+/** One frame's globe lens: the camera centre, the scale, where the centre lands on screen, and the globe's radius. */
+type Lens = { vx: number; vy: number; z: number; cx: number; cy: number; R: number };
+type Pt = { x: number; y: number; th: number; f: number };
+/** World to screen through the lens. `th` is the angle round the globe (past pi/2 is the far side), `f` the shrink there. */
+function proj(L: Lens, wx: number, wy: number, o: Pt = { x: 0, y: 0, th: 0, f: 1 }): Pt {
+  const dx = wx - L.vx;
+  const dy = wy - L.vy;
+  const d = Math.hypot(dx, dy);
+  const th = d / L.R;
+  const f = d < 1e-9 ? 1 : (L.R * Math.sin(Math.min(th, HALF_PI))) / d;
+  o.x = L.cx + dx * f * L.z;
+  o.y = L.cy + dy * f * L.z;
+  o.th = th;
+  o.f = f;
+  return o;
+}
+/** Screen to world through the lens. Off the globe it continues flat from the rim, so pans never stall there. */
+function unproj(L: Lens, sx: number, sy: number) {
+  const ux = (sx - L.cx) / L.z;
+  const uy = (sy - L.cy) / L.z;
+  const r = Math.hypot(ux, uy);
+  if (r < 1e-9) return { x: L.vx, y: L.vy };
+  // past the rim the world carries on flat, so a drag or a pan that starts off the globe still moves 1:1
+  const k = (r < L.R ? Math.asin(r / L.R) * L.R : L.R * HALF_PI + (r - L.R)) / r;
+  return { x: L.vx + ux * k, y: L.vy + uy * k };
+}
+/** A rect's screen box through the lens: its corners and edge midpoints, boxed. `th` is the angle at its centre. */
+const RP: Pt = { x: 0, y: 0, th: 0, f: 1 };
+function projRect(L: Lens, r: Rect) {
+  let x0 = Infinity;
+  let y0 = Infinity;
+  let x1 = -Infinity;
+  let y1 = -Infinity;
+  for (let i = 0; i < 9; i++) {
+    proj(L, r.x + (r.w * (i % 3)) / 2, r.y + (r.h * Math.floor(i / 3)) / 2, RP);
+    if (i === 4) continue;
+    if (RP.x < x0) x0 = RP.x;
+    if (RP.x > x1) x1 = RP.x;
+    if (RP.y < y0) y0 = RP.y;
+    if (RP.y > y1) y1 = RP.y;
+  }
+  proj(L, r.x + r.w / 2, r.y + r.h / 2, RP);
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0, th: RP.th, f: RP.f };
+}
 
 // ── easing ────────────────────────────────────────────────────────────────
 const EASE = {
@@ -194,6 +244,8 @@ export class Engine {
   dpr = 1;
   /** screen insets the chrome covers, so fits and flights frame things in the clear part */
   inset = { t: 72, r: 24, b: 88, l: 24 };
+  /** the globe's radius in world units: the board's far corners sit about 86 degrees round it */
+  R = 1;
   pics: Pictures;
   selected: number[] = [];
   hover = -1;
@@ -216,6 +268,7 @@ export class Engine {
   private pointers = new Map<number, { x: number; y: number }>();
   private drag: { x: number; y: number; t: number; moved: number; samples: { x: number; y: number; t: number }[]; mode: "pan" | "marquee"; add: boolean } | null = null;
   private pinch: { d: number; cx: number; cy: number } | null = null;
+  /** the marquee, in screen px */
   private marquee: Rect | null = null;
   private back: View | null = null;
   private videos = new Map<number, HTMLVideoElement>();
@@ -234,11 +287,14 @@ export class Engine {
   /** prefers-reduced-motion: flights cut, no throw, no drift */
   calm = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
   private off: (() => void)[] = [];
+  private born = performance.now();
 
   constructor(canvas: HTMLCanvasElement, board: Board) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d")!;
     this.board = board;
+    // the board's corners stay just this side of the horizon at the whole-board view
+    this.R = Math.max(1, Math.hypot(board.w, board.h) / 2 / 1.5);
     this.pics = new Pictures(board.pieces, () => (this.dirty = true));
     this.videoBox = document.createElement("div");
     this.videoBox.style.cssText = "position:fixed;left:0;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none";
@@ -281,36 +337,70 @@ export class Engine {
     const aw = Math.max(40, this.vw - inset.l - inset.r);
     const ah = Math.max(40, this.vh - inset.t - inset.b);
     const m = pad === 1 ? 0.06 : 0.1;
-    const z = Math.min((aw * (1 - m * 2)) / r.w, (ah * (1 - m * 2)) / r.h, Z_MAX);
+    // on the globe a rect's half-width w shows as R sin(w / R): a big rect curves away and needs less room
+    const ext = (half: number) => 2 * this.R * Math.sin(Math.min(half / this.R, HALF_PI));
+    // the whole board frames the whole globe, rim and all: that is the shot that reads as a planet
+    const z = r === this.board ? (Math.min(aw, ah) * (1 - m * 2)) / (2 * this.R) : Math.min((aw * (1 - m * 2)) / ext(r.w / 2), (ah * (1 - m * 2)) / ext(r.h / 2), Z_MAX);
+    // the globe is drawn about the screen centre, so the whole board keeps the camera on its own centre
+    if (r === this.board) return { x: r.x + r.w / 2, y: r.y + r.h / 2, z };
     // shift the centre so the rect sits in the middle of the clear area, not of the whole screen
     const cx = r.x + r.w / 2 - (inset.l - inset.r) / 2 / z;
     const cy = r.y + r.h / 2 - (inset.t - inset.b) / 2 / z;
     return { x: cx, y: cy, z };
   }
+  lens(view: View = this.view, cx = this.vw / 2, cy = this.vh / 2, z = view.z): Lens {
+    return { vx: view.x, vy: view.y, z, cx, cy, R: this.R };
+  }
+  /** How far the world reaches from the centre for `s` screen px: past the globe's rim it stops at a quarter turn. */
+  half(s: number, z = this.view.z) {
+    const q = s / (z * this.R);
+    return q >= 1 ? this.R * HALF_PI : this.R * Math.asin(q);
+  }
   toWorld(sx: number, sy: number) {
-    const { x, y, z } = this.view;
-    return { x: x + (sx - this.vw / 2) / z, y: y + (sy - this.vh / 2) / z };
+    return unproj(this.lens(), sx, sy);
   }
   zoomAt(sx: number, sy: number, k: number) {
     const w = this.toWorld(sx, sy);
     const z = clamp(this.view.z * k, this.zMin, Z_MAX);
-    this.view = { z, x: w.x - (sx - this.vw / 2) / z, y: w.y - (sy - this.vh / 2) / z };
+    const off = Math.hypot(sx - this.vw / 2, sy - this.vh / 2);
+    if (off >= 0.97 * this.R * this.view.z) {
+      // the cursor is off the globe (or on its very rim): no point there to hold, so zoom about the centre
+      this.view = { ...this.view, z };
+      this.dirty = true;
+      return;
+    }
+    // keep the world point under the cursor: a damped solve, since the lens squeezes moves near the rim by cos(th)
+    const v = { x: w.x - (sx - this.vw / 2) / z, y: w.y - (sy - this.vh / 2) / z, z };
+    let best = { ...v };
+    let bestE = Infinity;
+    if (off > 0.5)
+      for (let n = 0; n < 12; n++) {
+        const o = proj(this.lens(v), w.x, w.y);
+        const e = Math.hypot(o.x - sx, o.y - sy);
+        if (e < bestE) (bestE = e), (best = { ...v });
+        if (e < 0.5 || o.th >= HALF_PI) break;
+        const k = z * Math.max(Math.cos(o.th), 0.25);
+        v.x += (o.x - sx) / k;
+        v.y += (o.y - sy) / k;
+      }
+    else best = v;
+    this.view = best;
     this.dirty = true;
   }
   pieceAt(sx: number, sy: number) {
-    const w = this.toWorld(sx, sy);
+    const L = this.lens();
     const ps = this.board.pieces;
     for (let i = ps.length - 1; i >= 0; i--) {
-      const p = ps[i];
-      if (w.x >= p.x && w.x <= p.x + p.w && w.y >= p.y && w.y <= p.y + p.h) return i;
+      const r = projRect(L, ps[i]);
+      if (r.th < HALF_PI && sx >= r.x && sx <= r.x + r.w && sy >= r.y && sy <= r.y + r.h) return i;
     }
     return -1;
   }
   /** The cluster with the most of itself on screen. */
   activeCluster() {
-    const { x, y, z } = this.view;
-    const hw = this.vw / 2 / z;
-    const hh = this.vh / 2 / z;
+    const { x, y } = this.view;
+    const hw = this.half(this.vw / 2);
+    const hh = this.half(this.vh / 2);
     let best = 0;
     let bi = 0;
     this.board.clusters.forEach((c, i) => {
@@ -322,9 +412,9 @@ export class Engine {
     return bi;
   }
   visiblePieces(): Piece[] {
-    const { x, y, z } = this.view;
-    const hw = this.vw / 2 / z;
-    const hh = this.vh / 2 / z;
+    const { x, y } = this.view;
+    const hw = this.half(this.vw / 2);
+    const hh = this.half(this.vh / 2);
     return this.board.pieces.filter((p) => p.x < x + hw && p.x + p.w > x - hw && p.y < y + hh && p.y + p.h > y - hh);
   }
 
@@ -563,8 +653,10 @@ export class Engine {
       const d = Math.hypot(a.x - b.x, a.y - b.y);
       const cx = (a.x + b.x) / 2;
       const cy = (a.y + b.y) / 2;
-      this.view.x -= (cx - this.pinch.cx) / this.view.z;
-      this.view.y -= (cy - this.pinch.cy) / this.view.z;
+      const w0 = this.toWorld(this.pinch.cx, this.pinch.cy);
+      const w1 = this.toWorld(cx, cy);
+      this.view.x += w0.x - w1.x;
+      this.view.y += w0.y - w1.y;
       this.zoomAt(cx, cy, d / this.pinch.d);
       this.pinch = { d, cx, cy };
       return;
@@ -575,15 +667,16 @@ export class Engine {
     const dy = e.offsetY - prev.y;
     g.moved += Math.abs(dx) + Math.abs(dy);
     if (g.mode === "pan") {
-      this.view.x -= dx / this.view.z;
-      this.view.y -= dy / this.view.z;
+      // the grabbed point stays under the finger, so dragging spins the globe
+      const a = this.toWorld(prev.x, prev.y);
+      const b = this.toWorld(e.offsetX, e.offsetY);
+      this.view.x += a.x - b.x;
+      this.view.y += a.y - b.y;
       const t = performance.now();
       g.samples.push({ x: e.offsetX, y: e.offsetY, t });
       while (g.samples.length > 2 && t - g.samples[0].t > 90) g.samples.shift();
     } else {
-      const a = this.toWorld(g.x, g.y);
-      const b = this.toWorld(e.offsetX, e.offsetY);
-      this.marquee = { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(a.x - b.x), h: Math.abs(a.y - b.y) };
+      this.marquee = { x: Math.min(g.x, e.offsetX), y: Math.min(g.y, e.offsetY), w: Math.abs(g.x - e.offsetX), h: Math.abs(g.y - e.offsetY) };
     }
     this.dirty = true;
   }
@@ -610,7 +703,13 @@ export class Engine {
       const m = this.marquee;
       this.marquee = null;
       if (m && g.moved > 4) {
-        const hit = this.board.pieces.filter((p) => p.x < m.x + m.w && p.x + p.w > m.x && p.y < m.y + m.h && p.y + p.h > m.y).map((p) => p.i);
+        const L = this.lens();
+        const hit = this.board.pieces
+          .filter((p) => {
+            const r = projRect(L, p);
+            return r.th < HALF_PI && r.x < m.x + m.w && r.x + r.w > m.x && r.y < m.y + m.h && r.y + r.h > m.y;
+          })
+          .map((p) => p.i);
         this.select(g.add ? [...new Set([...this.selected, ...hit])] : hit, false);
       } else {
         const i = this.pieceAt(e.offsetX, e.offsetY);
@@ -652,8 +751,11 @@ export class Engine {
       // a mouse wheel's notches zoom toward the cursor
       this.zoomAt(e.offsetX, e.offsetY, Math.exp(-dy * 0.0021));
     } else {
-      this.view.x += dx / this.view.z;
-      this.view.y += dy / this.view.z;
+      // pan through the lens, so the content under the cursor tracks the fingers
+      const a = this.toWorld(e.offsetX, e.offsetY);
+      const b = this.toWorld(e.offsetX - dx, e.offsetY - dy);
+      this.view.x += a.x - b.x;
+      this.view.y += a.y - b.y;
       this.dirty = true;
     }
   }
@@ -680,13 +782,27 @@ export class Engine {
       }
       this.dirty = true;
     } else if (Math.abs(this.vel.x) + Math.abs(this.vel.y) > 0.01) {
-      this.view.x -= (this.vel.x * dt) / this.view.z;
-      this.view.y -= (this.vel.y * dt) / this.view.z;
+      const a = this.toWorld(this.vw / 2, this.vh / 2);
+      const b = this.toWorld(this.vw / 2 + this.vel.x * dt, this.vh / 2 + this.vel.y * dt);
+      this.view.x += a.x - b.x;
+      this.view.y += a.y - b.y;
       const k = Math.exp(-dt / 325);
       this.vel.x *= k;
       this.vel.y *= k;
       this.dirty = true;
     }
+    // until anyone touches it, the globe turns slowly on its own
+    // (for the first minute, so a page left open goes quiet)
+    if (!this.touched && !this.tour && !this.flight && this.manual === null && !this.calm && now - this.born < 60000) {
+      const f = this.fitView(this.board);
+      const a = (now / 52000) * Math.PI * 2;
+      this.view = { x: f.x + Math.cos(a) * this.R * 0.3, y: f.y + Math.sin(a) * this.R * 0.18, z: f.z };
+      this.dirty = true;
+    }
+    // the camera never leaves the board, so the globe never turns to an empty face
+    const b = this.board;
+    this.view.x = clamp(this.view.x, b.x, b.x + b.w);
+    this.view.y = clamp(this.view.y, b.y, b.y + b.h);
     if (this.videos.size) this.dirty = true;
     // camera speed for the speed lines: pan in screen px plus zoom rate, per ms, eased
     if (dt > 0) {
@@ -727,21 +843,6 @@ export class Engine {
   }
 
   // ── drawing ─────────────────────────────────────────────────────────────
-  /** The screentone layer (a DOM element behind the transparent canvas), slid by the compositor, never repainted. */
-  tone: HTMLElement | null = null;
-  private toneAt = "";
-  /**
-   * The paper: a manga screentone behind the board that slides at a third of the camera's speed, a parallax layer like
-   * a game's far background. It is a CSS layer moved with a transform, so it costs the renderer nothing.
-   */
-  private dots(ox: number, oy: number) {
-    if (!this.tone) return;
-    const n = 16;
-    const m = (v: number) => ((v % n) + n) % n;
-    const t = `translate3d(${(m(ox * 0.33) - n).toFixed(2)}px,${(m(oy * 0.33) - n).toFixed(2)}px,0)`;
-    if (t !== this.toneAt) this.tone.style.transform = this.toneAt = t;
-  }
-
   /** Manga focus lines: thin ink wedges from the screen edge toward a clear centre, as strong as the camera is fast. */
   private speedLines(ctx: CanvasRenderingContext2D, vw: number, vh: number, k: number, seed: number) {
     if (k <= 0.01) return;
@@ -780,27 +881,31 @@ export class Engine {
     }
     const z = view.z * (1 + 0.03 * (punch > 0 ? Math.sin(Math.PI * (1 - punch)) : 0));
     const shake = punch * punch * 5;
-    const ox = vw / 2 - view.x * z + Math.sin(now * 0.11) * shake;
-    const oy = vh / 2 - view.y * z + Math.cos(now * 0.13) * shake;
+    const L = this.lens(view, vw / 2 + Math.sin(now * 0.11) * shake, vh / 2 + Math.cos(now * 0.13) * shake, z);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (live && this.tone) {
-      ctx.clearRect(0, 0, vw, vh);
-      this.dots(ox, oy);
-    } else {
-      ctx.fillStyle = GROUND;
-      ctx.fillRect(0, 0, vw, vh);
-    }
+    ctx.fillStyle = GROUND;
+    ctx.fillRect(0, 0, vw, vh);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
 
     const b = this.board;
+    const P: Pt = { x: 0, y: 0, th: 0, f: 1 };
+    /** how much a world size shrinks at a point: the mean of the squeeze toward the rim and round it */
+    const local = (q: Pt) => Math.sqrt(q.f * Math.max(0, Math.cos(Math.min(q.th, HALF_PI))));
+    /** things fade as they turn over the horizon */
+    const fade = (th: number) => clamp((HALF_PI - th) / 0.22, 0, 1);
+    this.drawGlobe(ctx, L, vw, vh, true);
+
     // cluster titles, in the print face with the blue plate a hair off register
     for (const c of b.clusters) {
-      const size = c.title * z;
-      if (size < 7) continue;
-      const x = c.x * z + ox;
-      const y = c.y * z + oy + size * 0.95;
-      if (y < -size || y - size > vh || x > vw) continue;
+      proj(L, c.x, c.y + c.title * 0.95, P);
+      const al = fade(P.th);
+      const size = c.title * z * local(P);
+      if (size < 7 || al <= 0) continue;
+      const x = P.x;
+      const y = P.y;
+      if (y < -size || y - size > vh || x > vw || x < -size * 30) continue;
+      ctx.globalAlpha = al;
       ctx.font = `italic 900 ${size}px ${this.fonts.print}`;
       setStretch(ctx, "extra-condensed");
       ctx.textBaseline = "alphabetic";
@@ -827,49 +932,52 @@ export class Engine {
         ctx.fillStyle = "#6f6f6f";
         ctx.fillText(String(c.count), x + w + size * 0.08, y - size * 0.62);
       }
+      ctx.globalAlpha = 1;
     }
 
-    // the pieces
+    // the pieces, each boxed through the lens: squeezed toward the rim, gone over the horizon
     const vids = new Set<number>();
     const cx = vw / 2;
     const cy = vh / 2;
+    const boxes: (ReturnType<typeof projRect> | null)[] = new Array(b.pieces.length).fill(null);
     for (const p of b.pieces) {
-      const x = p.x * z + ox;
-      const y = p.y * z + oy;
-      const w = p.w * z;
-      const h = p.h * z;
-      if (x > vw || y > vh || x + w < 0 || y + h < 0) {
+      // far side of the globe: skip without boxing it
+      proj(L, p.x + p.w / 2, p.y + p.h / 2, P);
+      if (P.th > HALF_PI + Math.hypot(p.w, p.h) / 2 / this.R) continue;
+      const r = projRect(L, p);
+      const al = fade(r.th);
+      const { x, y, w, h } = r;
+      if (al <= 0 || x > vw || y > vh || x + w < 0 || y + h < 0) {
         // just off screen: warm the smallest picture so a pan never shows a blank tile
-        if (live && x < vw * 1.6 && y < vh * 1.6 && x + w > -vw * 0.6 && y + h > -vh * 0.6) this.pics.request(p.i, 0, 1e6 + Math.hypot(x + w / 2 - cx, y + h / 2 - cy));
+        if (live && al > 0 && x < vw * 1.6 && y < vh * 1.6 && x + w > -vw * 0.6 && y + h > -vh * 0.6) this.pics.request(p.i, 0, 1e6 + Math.hypot(x + w / 2 - cx, y + h / 2 - cy));
         continue;
       }
+      boxes[p.i] = r;
       const dist = Math.hypot(x + w / 2 - cx, y + h / 2 - cy);
       const lvl = this.pics.want(p.i, w * dpr);
       if (live) {
         this.pics.request(p.i, 0, dist);
         if (lvl > 0) this.pics.request(p.i, lvl, dist + 200 * lvl);
       }
-      // pop in when the first picture lands; lift toward the cursor on hover
       // a picture that just arrived fades in over its tile; the lift (eased in tick) raises it toward the cursor
       const pop = live && this.manual === null && !this.calm ? this.pics.pop(p.i) : 1;
       const lf = live ? (this.lift.get(p.i) ?? 0) : 0;
-      const ink = clamp(w * 0.012, 0.6, 5);
+      const ink = clamp(Math.min(w, h * 1.5) * 0.012, 0.6, 5);
       const lift = lf * clamp(w * 0.012, 0, 6);
       const dx = x - lift;
       const dy = y - lift;
-      const dw = w;
-      const dh = h;
+      ctx.globalAlpha = al;
       // a hard ink shadow, offset like a printed panel
       if (w > 5) {
         ctx.fillStyle = INK;
-        ctx.fillRect(dx + ink + lift * 1.6, dy + ink + lift * 1.6, dw, dh);
+        ctx.fillRect(dx + ink + lift * 1.6, dy + ink + lift * 1.6, w, h);
       }
       let drawn = false;
       if (live && p.a.type === "video" && w > 140) {
         const v = this.video(p.i);
         vids.add(p.i);
         if (v.readyState >= 2) {
-          ctx.drawImage(v, dx, dy, dw, dh);
+          ctx.drawImage(v, dx, dy, w, h);
           drawn = true;
         }
       }
@@ -877,34 +985,40 @@ export class Engine {
         const img = this.pics.best(p.i, lvl, now);
         if (img && pop < 1) {
           ctx.fillStyle = TILE;
-          ctx.fillRect(dx, dy, dw, dh);
-          ctx.globalAlpha = EASE.out(pop);
-          ctx.drawImage(img, dx, dy, dw, dh);
-          ctx.globalAlpha = 1;
-        } else if (img) ctx.drawImage(img, dx, dy, dw, dh);
+          ctx.fillRect(dx, dy, w, h);
+          ctx.globalAlpha = al * EASE.out(pop);
+          ctx.drawImage(img, dx, dy, w, h);
+          ctx.globalAlpha = al;
+        } else if (img) ctx.drawImage(img, dx, dy, w, h);
         else {
           ctx.fillStyle = TILE;
-          ctx.fillRect(dx, dy, dw, dh);
+          ctx.fillRect(dx, dy, w, h);
         }
       }
       if (w > 4) {
         ctx.strokeStyle = INK;
         ctx.lineWidth = Math.max(0.75, ink * 0.55);
-        ctx.strokeRect(dx, dy, dw, dh);
+        ctx.strokeRect(dx, dy, w, h);
       }
       ctx.globalAlpha = 1;
     }
     if (live) this.prune(vids);
 
+    // the light on the globe: a soft shade toward the rim, over the pieces so they curve with it
+    this.drawGlobe(ctx, L, vw, vh, false);
+
     // design titles (world-scaled) and frame names (screen-sized, like a design tool)
     ctx.textBaseline = "alphabetic";
     for (const l of b.labels) {
       if (l.kind === "design") {
-        const s = l.size * z;
-        if (s < 9) continue;
-        const x = l.x * z + ox;
-        const y = l.y * z + oy;
+        proj(L, l.x, l.y, P);
+        const al = fade(P.th);
+        const s = l.size * z * local(P);
+        if (s < 9 || al <= 0) continue;
+        const x = P.x;
+        const y = P.y;
         if (y < -s || y > vh + s || x > vw) continue;
+        ctx.globalAlpha = al;
         ctx.font = `650 ${s}px ${this.fonts.sans}`;
         ctx.fillStyle = INK;
         ctx.fillText(l.text, x, y);
@@ -914,20 +1028,20 @@ export class Engine {
           ctx.fillStyle = "#7a7a7a";
           ctx.fillText(l.note, x + w + s * 0.4, y);
         }
+        ctx.globalAlpha = 1;
       }
     }
     const sel = new Set(this.selected);
     ctx.font = `500 11px ${this.fonts.sans}`;
     for (const p of b.pieces) {
-      const w = p.w * z;
-      if (w < 70) continue;
-      const x = p.x * z + ox;
-      const y = p.y * z + oy;
-      if (x > vw || y - 20 > vh || x + w < 0 || y < -2) continue;
+      const r = boxes[p.i];
+      if (!r || r.w < 70 || r.y < -2 || r.y - 20 > vh) continue;
       const on = live && (sel.has(p.i) || p.i === this.hover);
+      ctx.globalAlpha = fade(r.th);
       ctx.fillStyle = on ? BLUE : "#6f6f6f";
-      ctx.fillText(clip(ctx, p.label, w), x, y - 6);
+      ctx.fillText(clip(ctx, p.label, r.w), r.x, r.y - 6);
     }
+    ctx.globalAlpha = 1;
 
     if (live && !this.calm) this.speedLines(ctx, vw, vh, clamp((this.speed - 0.9) / 3.5, 0, 1) * 0.85, 1 + (Math.floor(now / 50) % 997));
     if (live && punch > 0.35) this.speedLines(ctx, vw, vh, (punch - 0.35) * 1.1, 7 + Math.floor(now / 40));
@@ -939,36 +1053,128 @@ export class Engine {
 
     // hover, selection and marquee: screen-space, crisp at any zoom
     if (this.hover >= 0 && !sel.has(this.hover)) {
-      const p = b.pieces[this.hover];
+      const r = projRect(L, b.pieces[this.hover]);
       ctx.strokeStyle = BLUE;
       ctx.lineWidth = 1.5;
-      ctx.strokeRect(p.x * z + ox, p.y * z + oy, p.w * z, p.h * z);
+      ctx.strokeRect(r.x, r.y, r.w, r.h);
     }
-    if (this.selected.length) this.drawSelection(ctx, ox, oy, z);
+    if (this.selected.length) this.drawSelection(ctx, L);
     this.drawMini(ctx, view, vw, vh);
     if (this.marquee) {
       const m = this.marquee;
       ctx.fillStyle = "rgba(59,93,232,0.08)";
-      ctx.fillRect(m.x * z + ox, m.y * z + oy, m.w * z, m.h * z);
+      ctx.fillRect(m.x, m.y, m.w, m.h);
       ctx.strokeStyle = BLUE;
       ctx.lineWidth = 1;
-      ctx.strokeRect(Math.round(m.x * z + ox) + 0.5, Math.round(m.y * z + oy) + 0.5, Math.round(m.w * z), Math.round(m.h * z));
+      ctx.strokeRect(Math.round(m.x) + 0.5, Math.round(m.y) + 0.5, Math.round(m.w), Math.round(m.h));
     }
   }
 
-  private drawSelection(ctx: CanvasRenderingContext2D, ox: number, oy: number, z: number) {
+  /**
+   * The globe itself, in two passes. Under the pieces: a soft shadow on the ground, the white sphere, its graticule turning
+   * with the board. Over them: a shade toward the rim and the ink outline. It all fades out as you zoom in and the
+   * board goes flat.
+   */
+  private sprites: { shade: HTMLCanvasElement; shadow: HTMLCanvasElement } | null = null;
+  /** The shade and the cast shadow, painted once and scaled per frame: a big radial gradient every frame is slow. */
+  private globeSprites() {
+    if (this.sprites) return this.sprites;
+    const make = (w: number, h: number, paint: (c: CanvasRenderingContext2D) => void) => {
+      const cv = document.createElement("canvas");
+      cv.width = w;
+      cv.height = h;
+      paint(cv.getContext("2d")!);
+      return cv;
+    };
+    const S = 512;
+    const shade = make(S, S, (c) => {
+      const r = S / 2;
+      const g = c.createRadialGradient(r - r * 0.35, r - r * 0.4, r * 0.1, r, r, r);
+      g.addColorStop(0, "rgba(255,255,255,0)");
+      g.addColorStop(0.72, "rgba(10,10,10,0.015)");
+      g.addColorStop(1, "rgba(10,10,10,0.13)");
+      c.fillStyle = g;
+      c.beginPath();
+      c.arc(r, r, r, 0, Math.PI * 2);
+      c.fill();
+    });
+    const shadow = make(S, S / 4, (c) => {
+      c.scale(1, 0.25);
+      const g = c.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+      g.addColorStop(0, "rgba(10,10,10,0.16)");
+      g.addColorStop(1, "rgba(10,10,10,0)");
+      c.fillStyle = g;
+      c.fillRect(0, 0, S, S);
+    });
+    return (this.sprites = { shade, shadow });
+  }
+  private drawGlobe(ctx: CanvasRenderingContext2D, L: Lens, vw: number, vh: number, under: boolean) {
+    const rad = L.R * L.z;
+    const big = Math.max(vw, vh);
+    const show = clamp(1.7 - rad / big, 0, 1);
+    if (show <= 0) return;
+    const { cx, cy } = L;
+    ctx.save();
+    // the sprites are soft gradients: the cheap filter looks the same and scales far faster
+    ctx.imageSmoothingQuality = "low";
+    if (under) {
+      ctx.globalAlpha = show;
+      // the shadow it casts, a flat ellipse below
+      if (cy + rad * 0.9 < vh && rad < big) ctx.drawImage(this.globeSprites().shadow, cx - rad * 0.9, cy + rad * 1.04 - rad * 0.225, rad * 1.8, rad * 0.45);
+      // the graticule: the world's own grid, so it turns as the board does
+      const step = (L.R * Math.PI) / 12;
+      const reach = L.R * HALF_PI;
+      const P: Pt = { x: 0, y: 0, th: 0, f: 1 };
+      ctx.strokeStyle = "rgba(10,10,10,0.09)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (const vert of [true, false]) {
+        const c0 = vert ? L.vx : L.vy;
+        const o0 = vert ? L.vy : L.vx;
+        for (let g0 = Math.ceil((c0 - reach) / step) * step; g0 <= c0 + reach; g0 += step) {
+          const span = Math.sqrt(Math.max(0, reach * reach - (g0 - c0) ** 2));
+          let pen = false;
+          for (let k = 0; k <= 40; k++) {
+            const t = o0 - span + (2 * span * k) / 40;
+            proj(L, vert ? g0 : t, vert ? t : g0, P);
+            if (P.th > HALF_PI) {
+              pen = false;
+              continue;
+            }
+            if (pen) ctx.lineTo(P.x, P.y);
+            else ctx.moveTo(P.x, P.y);
+            pen = true;
+          }
+        }
+      }
+      ctx.stroke();
+    } else {
+      // the shade toward the rim, lit from the top left: only while the rim is in view
+      ctx.globalAlpha = show;
+      if (rad < big * 0.8) ctx.drawImage(this.globeSprites().shade, cx - rad, cy - rad, rad * 2, rad * 2);
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  private drawSelection(ctx: CanvasRenderingContext2D, L: Lens) {
     const ps = this.selected.map((i) => this.board.pieces[i]);
     ctx.strokeStyle = BLUE;
+    const boxes = ps.map((p) => projRect(L, p));
     if (ps.length > 1)
-      for (const p of ps) {
+      for (const r of boxes) {
         ctx.lineWidth = 1;
-        ctx.strokeRect(p.x * z + ox, p.y * z + oy, p.w * z, p.h * z);
+        ctx.strokeRect(r.x, r.y, r.w, r.h);
       }
-    const r = unionRect(ps);
-    const x = Math.round(r.x * z + ox) + 0.5;
-    const y = Math.round(r.y * z + oy) + 0.5;
-    const w = Math.round(r.w * z);
-    const h = Math.round(r.h * z);
+    const r = unionRect(boxes);
+    const x = Math.round(r.x) + 0.5;
+    const y = Math.round(r.y) + 0.5;
+    const w = Math.round(r.w);
+    const h = Math.round(r.h);
     ctx.lineWidth = 1.5;
     ctx.strokeRect(x, y, w, h);
     // corner handles
@@ -1025,10 +1231,12 @@ export class Engine {
     });
     ctx.fillStyle = "rgba(10,10,10,0.55)";
     for (const p of b.pieces) ctx.fillRect(x + p.x * k, y + p.y * k, Math.max(0.8, p.w * k), Math.max(0.8, p.h * k));
-    const vwW = (vw / view.z) * k;
-    const vhW = (vh / view.z) * k;
-    const fx = x + (view.x - vw / 2 / view.z) * k;
-    const fy = y + (view.y - vh / 2 / view.z) * k;
+    const hw = this.half(vw / 2, view.z);
+    const hh = this.half(vh / 2, view.z);
+    const vwW = hw * 2 * k;
+    const vhW = hh * 2 * k;
+    const fx = x + (view.x - hw) * k;
+    const fy = y + (view.y - hh) * k;
     ctx.save();
     ctx.beginPath();
     ctx.rect(x - 6, y - 6, W + 12, H + 12);
@@ -1062,7 +1270,7 @@ export class Engine {
     if (t < TITLE_CARD.out + 500) {
       const a = t < TITLE_CARD.out ? 1 : 1 - EASE.out(clamp((t - TITLE_CARD.out) / 500, 0, 1));
       const rise = 1 - EASE.out(clamp(t / 700, 0, 1));
-      ctx.fillStyle = `rgba(243,240,232,${0.86 * a})`;
+      ctx.fillStyle = `rgba(255,255,255,${0.86 * a})`;
       ctx.fillRect(0, 0, vw, vh);
       this.bigType(ctx, ["CAPY HACKATHON", "ASSETS"], vw / 2, vh / 2 + rise * u * 0.04, u * 0.115, a, "center");
       ctx.globalAlpha = a * clamp((t - 250) / 500, 0, 1);
@@ -1126,7 +1334,7 @@ export class Engine {
     // end card
     if (t > END_CARD) {
       const a = EASE.out(clamp((t - END_CARD) / 600, 0, 1));
-      ctx.fillStyle = `rgba(243,240,232,${0.8 * a})`;
+      ctx.fillStyle = `rgba(255,255,255,${0.8 * a})`;
       ctx.fillRect(0, 0, vw, vh);
       this.bigType(ctx, ["JAWADJALAL.COM/CAPY"], vw / 2, vh / 2 + (1 - a) * u * 0.03, u * 0.085, a, "center");
       ctx.globalAlpha = a;
