@@ -206,6 +206,7 @@ export function StoryColumn({
             ))}
           </p>
 
+          <h2 className="past-h">Now</h2>
           <ul className="col-own" aria-label="My companies">
             {timeline.map((j) => (
               <li key={j.name}>
@@ -222,10 +223,10 @@ export function StoryColumn({
               </li>
             ))}
           </ul>
+
+          <Past past={past} />
         </div>
       </div>
-
-      <Past past={past} />
 
       <section className="col-reps">
         <Replies replies={replies} to={xHandle} />
