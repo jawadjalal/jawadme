@@ -3,16 +3,20 @@ import { Archivo, Inter } from "next/font/google";
 import Link from "next/link";
 import data from "./assets.json";
 import { Gallery, type Asset } from "./Gallery";
+import { Board } from "./Board";
+import { LEFT_OUT } from "./arrange";
 import "./capy.css";
+import "./board.css";
 
-// jawadjalal.com/capy: every asset Jawad made for The Consumer Mobile Hackathon (Capy, 15 November), each one
+// jawadjalal.com/capy: an explorable board (Board.tsx) of every asset Jawad made for The Consumer Mobile Hackathon (Capy, 15 November), each one
 // copyable to the clipboard and downloadable. The list is assets.json, written by scripts/capy-sync.mjs.
 
 const sans = Inter({ subsets: ["latin"], display: "swap", variable: "--cp-sans" });
 /** The home page's print face: Archivo's black italic, taken down to extra condensed. */
 const print = Archivo({ subsets: ["latin"], style: ["italic"], axes: ["wdth"], display: "swap", variable: "--cp-print" });
 
-const ASSETS = data.assets as Asset[];
+// the posters built around a giant numeral 15 are left off
+const ASSETS = (data.assets as Asset[]).filter((a) => !LEFT_OUT.test(a.id));
 const KIND_ORDER = ["strips", "rebuilds", "posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
 const kinds = [...new Set(ASSETS.map((a) => a.kind))].sort((a, b) => {
   const r = (k: string) => (KIND_ORDER.indexOf(k) < 0 ? 99 : KIND_ORDER.indexOf(k));
@@ -54,6 +58,7 @@ export default function CapyPage() {
   const sets = new Set(ASSETS.map((a) => a.group)).size;
   return (
     <div className={`capy ${sans.variable} ${print.variable}`}>
+      <Board assets={ASSETS} kinds={kinds}>
       <header className="cp-head">
         <Link href="/" className="cp-name">
           Jawad Jalal
@@ -75,6 +80,7 @@ export default function CapyPage() {
         <Link href="/">jawadjalal.com</Link>
         <a href="https://x.com/jawadmakes">@jawadmakes</a>
       </footer>
+      </Board>
     </div>
   );
 }
