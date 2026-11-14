@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   title: "Call Jawad",
   description: "Book a short video call with Jawad Jalal about ads, brands and design for your startup.",
   alternates: { canonical: "/call" },
-  openGraph: { title: "Call Jawad", description: "Book a short video call with Jawad Jalal.", url: "/call", images: ["/og.png"] },
-  twitter: { card: "summary_large_image", title: "Call Jawad", description: "Book a short video call with Jawad Jalal.", images: ["/og.png"] },
+  openGraph: { title: "Call Jawad", description: "Book a short video call with Jawad Jalal.", url: "/call", images: [{ url: "/og/call.png", width: 1200, height: 630, alt: "Let's make yours. Book a call with Jawad Jalal." }] },
+  twitter: { card: "summary_large_image", title: "Call Jawad", description: "Book a short video call with Jawad Jalal.", images: [{ url: "/og/call.png", width: 1200, height: 630, alt: "Let's make yours. Book a call with Jawad Jalal." }] },
 };
 
 const MEMOJI = { pic: "/design/jawad-die.webp", alt: "Jawad's memoji", cut: true, w: 697, h: 781, tilt: 5 } as const;

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "cv": "node --experimental-strip-types scripts/cv.mjs",
-    "og": "node --experimental-strip-types scripts/og.mjs"
+    "og": "node --experimental-strip-types scripts/og.mjs",
+    "og:cards": "node scripts/og-cards.mjs"
   },
   "dependencies": {
     "geist": "^1.3.1",

@@ -20,7 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!p) return {};
   const title = `${captionOf(p)}, by Jawad Jalal`;
   const description = p.slides ? `${p.alt} ${p.slides.length + 1} slides.` : p.alt;
-  const image = { url: `/work/2026-11/${p.file}.webp`, width: p.w, height: p.h, alt: p.alt };
+  // the clean card from scripts/og-cards.mjs: the piece on white, whose it is and what it is beside it
+  const image = { url: `/og/w-${p.file}.jpg`, width: 1200, height: 630, alt: p.alt };
   return {
     title,
     description,

@@ -29,9 +29,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       publishedTime: post.date,
       authors: [IDENTITY.properName],
-      images: [{ url: "/og.png", width: 1200, height: 630, alt: post.title }],
+      images: [{ url: `/og/blog-${post.slug}.png`, width: 1200, height: 630, alt: post.title }],
     },
-    twitter: { card: "summary_large_image", creator: "@jawadmakes", images: ["/og.png"] },
+    twitter: { card: "summary_large_image", creator: "@jawadmakes", images: [`/og/blog-${post.slug}.png`] },
   };
 }
 
@@ -53,7 +53,7 @@ export default async function PostPage({ params }: Props) {
       publisher: author,
       url,
       mainEntityOfPage: url,
-      image: `${IDENTITY.site}/og.png`,
+      image: `${IDENTITY.site}/og/blog-${post.slug}.png`,
     },
     {
       "@context": "https://schema.org",

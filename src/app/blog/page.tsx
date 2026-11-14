@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     url: URL,
     siteName: IDENTITY.properName,
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: TITLE }],
+    images: [{ url: "/og/blog.png", width: 1200, height: 630, alt: TITLE }],
   },
-  twitter: { card: "summary_large_image", creator: "@jawadmakes", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", creator: "@jawadmakes", images: ["/og/blog.png"] },
 };
 
 const JSON_LD = {
