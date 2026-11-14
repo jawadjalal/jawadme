@@ -156,13 +156,38 @@ html:has(.pf) body {
 .col-lead { font-weight: 500; color: #8f8f8f; }
 .col-main { font-weight: 620; color: var(--ink); }
 /* stickers sit on the baseline at about cap height and lean a few degrees, so the words keep their spacing */
-/* the L plate: a white plate, crisp red L, a hairline edge and a soft two-layer shadow */
+/* a square card sticker: a plate with a hairline edge and a soft two-layer shadow */
 .col-h1 .stk:not([data-cut]) { width: 0.74em; height: 0.74em; vertical-align: -0.02em; margin: 0 0.04em 0 0.06em; }
 .col-h1 .stk:not([data-cut]) img { border: 0; border-radius: 0.1em; box-shadow: 0 0.01em 0.02em rgb(0 0 0 / 0.2), 0 0.06em 0.12em rgb(0 0 0 / 0.12); }
+/* the car: a cut-out like the memoji but sized to the caps, sitting on the baseline; pointed at, it rolls forward and
+   back on a little bounce */
+.col-h1 .stk[data-kind="car"] { width: calc(0.84em * var(--ar)); height: 0.84em; vertical-align: -0.1em; margin: -0.1em 0.02em -0.1em 0.06em; transform-origin: 50% 100%; }
+.col-h1 .stk[data-kind="car"]:hover { animation: car-drive 900ms var(--ease); }
+@keyframes car-drive {
+  0% { transform: rotate(var(--tilt)); }
+  18% { transform: translateX(-0.04em) rotate(calc(var(--tilt) + 3deg)); }
+  48% { transform: translateX(0.14em) rotate(calc(var(--tilt) - 3deg)) translateY(-0.03em); }
+  70% { transform: translateX(0.06em) rotate(var(--tilt)); }
+  100% { transform: rotate(var(--tilt)); }
+}
 /* the memoji: the die-cut sticker, a head taller than the caps, hanging below the baseline a little, never moving the line */
 .col-h1 .stk[data-cut] { width: calc(1.18em * var(--ar)); height: 1.18em; vertical-align: -0.2em; margin: -0.4em 0 -0.2em 0.1em; transform-origin: 40% 100%; }
 
-.col-actions { display: flex; align-items: center; gap: 10px; }
+/* the two buttons share the column's width evenly, so "+ you" opens inside each one and never shoves its neighbour */
+.col-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.col-actions .sq { --sq: 18px; height: 56px; padding: 0 18px; font-size: 16.5px; }
+/* a soft band of light crosses the dark button when it is pointed at */
+.col-actions .sq:not(.sq-soft) { position: relative; overflow: hidden; isolation: isolate; }
+.col-actions .sq:not(.sq-soft)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.14) 48%, transparent 66%); /* taste-skill-ignore: a light sweep, not a colour gradient */
+  translate: -110% 0;
+  pointer-events: none;
+}
+.col-actions .sq:not(.sq-soft):is(:hover, :focus-visible)::after { translate: 110% 0; transition: translate 760ms var(--ease); }
 .col-addr { margin: 10px 0 0; font-size: 13px; color: var(--ink-2); user-select: all; max-height: 0; opacity: 0; transform: translateY(-4px); transition: opacity 200ms var(--ease), transform 260ms var(--spring), max-height 260ms var(--ease); }
 .col-addr[data-on="true"] { max-height: 2em; opacity: 1; transform: none; }
 .col-second { font-size: 15px; font-weight: 500; color: var(--ink-2) !important; transition: color 160ms; }
@@ -190,37 +215,80 @@ html:has(.pf) body {
 .col-own a:hover img, .col-own a:focus-visible img { transform: rotate(-7deg) scale(1.1); }
 .col-own a:hover .col-own-go, .col-own a:focus-visible .col-own-go { opacity: 1; transform: none; }
 
-/* where he worked before: soft squircle pills drifting sideways, faded at both edges; pointing stops the drift and
-   opens the pill's role */
-.col-past { margin: 0 calc(-1 * var(--edge)); }
-.mq { display: flex; overflow: hidden; padding: 8px 0 10px var(--edge); -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--edge), #000 calc(100% - 64px), transparent); mask-image: linear-gradient(90deg, transparent, #000 var(--edge), #000 calc(100% - 64px), transparent); }
-.mq-run { flex: none; display: flex; gap: 10px; margin: 0; padding: 0 10px 0 0; list-style: none; animation: mq-slide 34s linear infinite; }
-.mq:hover .mq-run { animation-play-state: paused; }
-@keyframes mq-slide { to { transform: translateX(-100%); } }
-.mq-pill {
-  --sq: 13px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 38px;
-  padding: 0 15px 0 10px;
+/* where he worked before: one big squircle pill split three ways. A soft highlight slides under the name being
+   pointed at (it springs from one to the next), the logo tips, and the role rises out of the pill as a dark tag, laid
+   over everything so nothing beside it moves. */
+.col-past { display: grid; gap: 10px; }
+.past-h { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: -0.005em; color: var(--ink-3); }
+.past {
+  --sq: 18px;
+  --pad: 5px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  margin: 0;
+  padding: var(--pad);
+  list-style: none;
   border-radius: calc(var(--sq) * 1.6);
   corner-shape: squircle;
   background: #fff;
-  white-space: nowrap;
-  font-size: 14.5px;
-  font-weight: 560;
-  letter-spacing: -0.012em;
-  box-shadow: inset 0 1px 0 #fff, inset 0 -2px 0 rgb(0 0 0 / 0.07), 0 0 0 1px rgb(0 0 0 / 0.09), 0 1px 1px rgb(0 0 0 / 0.08), 0 4px 10px -4px rgb(0 0 0 / 0.18);
-  transition: scale 250ms cubic-bezier(0.34, 1.45, 0.64, 1), translate 250ms cubic-bezier(0.34, 1.45, 0.64, 1), box-shadow 250ms var(--ease), background-color 150ms;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -2px 0 rgb(0 0 0 / 0.07), 0 0 0 1px rgb(0 0 0 / 0.09), 0 1px 1px rgb(0 0 0 / 0.08), 0 6px 14px -6px rgb(0 0 0 / 0.18);
 }
-.mq-pill img { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; }
-.mq-role { max-width: 0; overflow: hidden; opacity: 0; margin-left: -8px; color: var(--ink-3); font-weight: 450; transition: max-width 380ms cubic-bezier(0.34, 1.2, 0.64, 1), margin 380ms cubic-bezier(0.34, 1.2, 0.64, 1), opacity 180ms; }
-.mq-pill img { transition: transform 420ms var(--spring); }
-.mq-pill:hover, .mq-pill:focus-visible { scale: 1.04; translate: 0 -2px; background: #fcfcfc; box-shadow: inset 0 1px 0 #fff, inset 0 -2px 0 rgb(0 0 0 / 0.07), 0 0 0 1px rgb(0 0 0 / 0.1), 0 2px 2px rgb(0 0 0 / 0.08), 0 10px 18px -8px rgb(0 0 0 / 0.28); }
-.mq-pill:hover img, .mq-pill:focus-visible img { transform: rotate(-12deg) scale(1.12); }
-.mq-pill:active { translate: 0 0; scale: 1; }
-.mq-pill:hover .mq-role, .mq-pill:focus-visible .mq-role { max-width: 16em; margin-left: 0; opacity: 1; }
+@supports not (corner-shape: squircle) { .past { border-radius: var(--sq); } }
+.past-glow {
+  --at: 1;
+  position: absolute;
+  top: var(--pad);
+  bottom: var(--pad);
+  left: var(--pad);
+  width: calc((100% - 2 * var(--pad)) / var(--n));
+  border-radius: calc(var(--sq) - var(--pad));
+  background: var(--tint);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), inset 0 0 0 1px rgb(0 0 0 / 0.04);
+  opacity: 0;
+  scale: 0.86;
+  translate: calc(var(--at) * 100%) 0;
+  transition: translate 460ms var(--spring), opacity 200ms var(--ease), scale 340ms var(--spring);
+  pointer-events: none;
+}
+.past:has(.past-it:hover, .past-it:focus-within) .past-glow { opacity: 1; scale: 1; }
+.past:has(.past-it:nth-child(2):is(:hover, :focus-within)) .past-glow { --at: 0; }
+.past:has(.past-it:nth-child(3):is(:hover, :focus-within)) .past-glow { --at: 1; }
+.past:has(.past-it:nth-child(4):is(:hover, :focus-within)) .past-glow { --at: 2; }
+.past-it { position: relative; min-width: 0; }
+.past-it a { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 8px; }
+.past-it img { flex: none; width: 22px; height: 22px; border-radius: 6px; object-fit: contain; transition: transform 460ms var(--spring); }
+.past-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: 580; letter-spacing: -0.015em; transition: transform 380ms var(--spring); }
+.past-it a:hover img, .past-it a:focus-visible img { transform: rotate(-12deg) scale(1.16); }
+.past-it a:hover .past-name, .past-it a:focus-visible .past-name { transform: translateX(1px); }
+.past-it a:active img { transform: rotate(-6deg) scale(0.96); transition-duration: 120ms; }
+.past-role {
+  position: absolute;
+  z-index: 4;
+  bottom: calc(100% + var(--pad) + 8px);
+  left: 50%;
+  padding: 7px 11px;
+  border-radius: 10px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px -6px rgb(0 0 0 / 0.4);
+  opacity: 0;
+  translate: -50% 6px;
+  scale: 0.9;
+  transform-origin: 50% 100%;
+  transition: opacity 160ms var(--ease), translate 380ms var(--spring), scale 380ms var(--spring);
+  pointer-events: none;
+}
+/* the ends keep their tag inside the column */
+.past-it:nth-child(2) .past-role { left: 0; translate: 0 6px; transform-origin: 20% 100%; }
+.past-it:last-child .past-role { left: auto; right: 0; translate: 0 6px; transform-origin: 80% 100%; }
+.past-it a:hover .past-role, .past-it a:focus-visible .past-role { opacity: 1; scale: 1; translate: -50% 0; }
+.past-it:nth-child(2) a:is(:hover, :focus-visible) .past-role, .past-it:last-child a:is(:hover, :focus-visible) .past-role { translate: 0 0; }
 
 /* the column is one stack on an even rhythm: head and companies, the marquee, then the reply at the foot */
 @media (min-width: 821px) {
@@ -521,8 +589,9 @@ html:has(.pf) body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mq-run { animation: none; }
-  .mq { overflow-x: auto; scrollbar-width: none; }
+  .past-glow, .past-role, .past-it img, .past-name { transition: none !important; }
+  .col-actions .sq::after { display: none; }
+  .col-h1 .stk[data-kind="car"]:hover { animation: none; }
   .cal-wait { animation: none; }
   .xpost, .xpost-item, .sq, .stk, .col-float, .tile, .tile img, .tile-cap, .story .sl, .story-cta { transition: none !important; }
   .xpost-bar { animation-duration: 9000ms !important; }
