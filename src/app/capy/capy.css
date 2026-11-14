@@ -127,7 +127,8 @@ html:has(.capy) body {
   vertical-align: 0.5em;
 }
 .cp-set-title span { vertical-align: 0.1em; margin-left: 8px; }
-.cp-kind-title span { vertical-align: 0.4em; }
+.cp-kind-title span { vertical-align: 0.4em; white-space: nowrap; }
+.cp-set-title span { white-space: nowrap; }
 
 .cp-set + .cp-set { margin-top: clamp(64px, 7vw, 112px); }
 .cp-set-title { margin: 0 0 16px; font-size: 22px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.2; }
@@ -270,6 +271,8 @@ video.cp-media, .cp-media[data-loaded] { opacity: 1; transform: none; }
   .cp-intro { max-width: 34em; }
 }
 @media (max-width: 760px) {
+  /* the count sits on its own line under the heading, whole, instead of breaking after "91" */
+  .cp-kind-title span { display: block; margin: 10px 0 0; vertical-align: baseline; }
   .capy { --row: 190px; }
   .cp-lead { font-size: 17px; }
   .cp-count { display: none; }

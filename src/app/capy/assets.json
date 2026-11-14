@@ -1166,6 +1166,78 @@
    "original": "/capy/rebuilds/180-phones-banner-33-5x80.jpg"
   },
   {
+   "id": "180-phones-v2-24x36",
+   "title": "180 phones v2",
+   "group": "180-phones-v2",
+   "kind": "rebuilds",
+   "size": "24 × 36 in",
+   "w": 1065,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/180-phones-v2-24x36.webp",
+   "original": "/capy/rebuilds/180-phones-v2-24x36.jpg"
+  },
+  {
+   "id": "180-phones-v2-social-1080x1350",
+   "title": "180 phones v2",
+   "group": "180-phones-v2",
+   "kind": "rebuilds",
+   "size": "Social, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/180-phones-v2-social-1080x1350.webp",
+   "original": "/capy/rebuilds/180-phones-v2-social-1080x1350.jpg"
+  },
+  {
+   "id": "180-phones-v2-social-1600x900",
+   "title": "180 phones v2",
+   "group": "180-phones-v2",
+   "kind": "rebuilds",
+   "size": "Social, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/180-phones-v2-social-1600x900.webp",
+   "original": "/capy/rebuilds/180-phones-v2-social-1600x900.jpg"
+  },
+  {
+   "id": "180-phones-v3-24x36",
+   "title": "180 phones v3",
+   "group": "180-phones-v3",
+   "kind": "rebuilds",
+   "size": "24 × 36 in",
+   "w": 1065,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/180-phones-v3-24x36.webp",
+   "original": "/capy/rebuilds/180-phones-v3-24x36.jpg"
+  },
+  {
+   "id": "180-phones-v3-social-1080x1350",
+   "title": "180 phones v3",
+   "group": "180-phones-v3",
+   "kind": "rebuilds",
+   "size": "Social, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/180-phones-v3-social-1080x1350.webp",
+   "original": "/capy/rebuilds/180-phones-v3-social-1080x1350.jpg"
+  },
+  {
+   "id": "180-phones-v3-social-1600x900",
+   "title": "180 phones v3",
+   "group": "180-phones-v3",
+   "kind": "rebuilds",
+   "size": "Social, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/180-phones-v3-social-1600x900.webp",
+   "original": "/capy/rebuilds/180-phones-v3-social-1600x900.jpg"
+  },
+  {
    "id": "manga-page-poster-24x36",
    "title": "Manga page",
    "group": "manga-page",
@@ -1236,6 +1308,78 @@
    "type": "image",
    "preview": "/capy/rebuilds/manga-page-banner-33-5x80.webp",
    "original": "/capy/rebuilds/manga-page-banner-33-5x80.jpg"
+  },
+  {
+   "id": "manga-page-v2-poster-24x36",
+   "title": "Manga page v2",
+   "group": "manga-page-v2",
+   "kind": "rebuilds",
+   "size": "Poster, 24 × 36 in",
+   "w": 1066,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/manga-page-v2-poster-24x36.webp",
+   "original": "/capy/rebuilds/manga-page-v2-poster-24x36.jpg"
+  },
+  {
+   "id": "manga-page-v2-portrait-1080x1350",
+   "title": "Manga page v2",
+   "group": "manga-page-v2",
+   "kind": "rebuilds",
+   "size": "Portrait, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/manga-page-v2-portrait-1080x1350.webp",
+   "original": "/capy/rebuilds/manga-page-v2-portrait-1080x1350.jpg"
+  },
+  {
+   "id": "manga-page-v2-wide-1600x900",
+   "title": "Manga page v2",
+   "group": "manga-page-v2",
+   "kind": "rebuilds",
+   "size": "Wide, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/manga-page-v2-wide-1600x900.webp",
+   "original": "/capy/rebuilds/manga-page-v2-wide-1600x900.jpg"
+  },
+  {
+   "id": "manga-page-v3-poster-24x36",
+   "title": "Manga page v3",
+   "group": "manga-page-v3",
+   "kind": "rebuilds",
+   "size": "Poster, 24 × 36 in",
+   "w": 1066,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/manga-page-v3-poster-24x36.webp",
+   "original": "/capy/rebuilds/manga-page-v3-poster-24x36.jpg"
+  },
+  {
+   "id": "manga-page-v3-portrait-1080x1350",
+   "title": "Manga page v3",
+   "group": "manga-page-v3",
+   "kind": "rebuilds",
+   "size": "Portrait, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/manga-page-v3-portrait-1080x1350.webp",
+   "original": "/capy/rebuilds/manga-page-v3-portrait-1080x1350.jpg"
+  },
+  {
+   "id": "manga-page-v3-wide-1600x900",
+   "title": "Manga page v3",
+   "group": "manga-page-v3",
+   "kind": "rebuilds",
+   "size": "Wide, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/manga-page-v3-wide-1600x900.webp",
+   "original": "/capy/rebuilds/manga-page-v3-wide-1600x900.jpg"
   },
   {
    "id": "phone-macro-24x36",
@@ -1310,6 +1454,78 @@
    "original": "/capy/rebuilds/phone-macro-banner-33-5x80.jpg"
   },
   {
+   "id": "phone-macro-v2-24x36",
+   "title": "Phone macro v2",
+   "group": "phone-macro-v2",
+   "kind": "rebuilds",
+   "size": "24 × 36 in",
+   "w": 1066,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-macro-v2-24x36.webp",
+   "original": "/capy/rebuilds/phone-macro-v2-24x36.jpg"
+  },
+  {
+   "id": "phone-macro-v2-post-1080x1350",
+   "title": "Phone macro v2",
+   "group": "phone-macro-v2",
+   "kind": "rebuilds",
+   "size": "Post, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-macro-v2-post-1080x1350.webp",
+   "original": "/capy/rebuilds/phone-macro-v2-post-1080x1350.jpg"
+  },
+  {
+   "id": "phone-macro-v2-wide-1600x900",
+   "title": "Phone macro v2",
+   "group": "phone-macro-v2",
+   "kind": "rebuilds",
+   "size": "Wide, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-macro-v2-wide-1600x900.webp",
+   "original": "/capy/rebuilds/phone-macro-v2-wide-1600x900.jpg"
+  },
+  {
+   "id": "phone-macro-v3-24x36",
+   "title": "Phone macro v3",
+   "group": "phone-macro-v3",
+   "kind": "rebuilds",
+   "size": "24 × 36 in",
+   "w": 1066,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-macro-v3-24x36.webp",
+   "original": "/capy/rebuilds/phone-macro-v3-24x36.jpg"
+  },
+  {
+   "id": "phone-macro-v3-post-1080x1350",
+   "title": "Phone macro v3",
+   "group": "phone-macro-v3",
+   "kind": "rebuilds",
+   "size": "Post, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-macro-v3-post-1080x1350.webp",
+   "original": "/capy/rebuilds/phone-macro-v3-post-1080x1350.jpg"
+  },
+  {
+   "id": "phone-macro-v3-wide-1600x900",
+   "title": "Phone macro v3",
+   "group": "phone-macro-v3",
+   "kind": "rebuilds",
+   "size": "Wide, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-macro-v3-wide-1600x900.webp",
+   "original": "/capy/rebuilds/phone-macro-v3-wide-1600x900.jpg"
+  },
+  {
    "id": "phone-thrust-poster-24x36",
    "title": "Phone thrust",
    "group": "phone-thrust",
@@ -1382,12 +1598,84 @@
    "original": "/capy/rebuilds/phone-thrust-banner-33-5x80.jpg"
   },
   {
+   "id": "phone-thrust-v2-poster-24x36",
+   "title": "Phone thrust v2",
+   "group": "phone-thrust-v2",
+   "kind": "rebuilds",
+   "size": "Poster, 24 × 36 in",
+   "w": 1065,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-thrust-v2-poster-24x36.webp",
+   "original": "/capy/rebuilds/phone-thrust-v2-poster-24x36.jpg"
+  },
+  {
+   "id": "phone-thrust-v2-social-1080x1350",
+   "title": "Phone thrust v2",
+   "group": "phone-thrust-v2",
+   "kind": "rebuilds",
+   "size": "Social, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-thrust-v2-social-1080x1350.webp",
+   "original": "/capy/rebuilds/phone-thrust-v2-social-1080x1350.jpg"
+  },
+  {
+   "id": "phone-thrust-v2-social-1600x900",
+   "title": "Phone thrust v2",
+   "group": "phone-thrust-v2",
+   "kind": "rebuilds",
+   "size": "Social, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-thrust-v2-social-1600x900.webp",
+   "original": "/capy/rebuilds/phone-thrust-v2-social-1600x900.jpg"
+  },
+  {
+   "id": "phone-thrust-v3-poster-24x36",
+   "title": "Phone thrust v3",
+   "group": "phone-thrust-v3",
+   "kind": "rebuilds",
+   "size": "Poster, 24 × 36 in",
+   "w": 1065,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-thrust-v3-poster-24x36.webp",
+   "original": "/capy/rebuilds/phone-thrust-v3-poster-24x36.jpg"
+  },
+  {
+   "id": "phone-thrust-v3-social-1080x1350",
+   "title": "Phone thrust v3",
+   "group": "phone-thrust-v3",
+   "kind": "rebuilds",
+   "size": "Social, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-thrust-v3-social-1080x1350.webp",
+   "original": "/capy/rebuilds/phone-thrust-v3-social-1080x1350.jpg"
+  },
+  {
+   "id": "phone-thrust-v3-social-1600x900",
+   "title": "Phone thrust v3",
+   "group": "phone-thrust-v3",
+   "kind": "rebuilds",
+   "size": "Social, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/phone-thrust-v3-social-1600x900.webp",
+   "original": "/capy/rebuilds/phone-thrust-v3-social-1600x900.jpg"
+  },
+  {
    "id": "stampede-poster-24x36",
    "title": "Stampede",
    "group": "stampede",
    "kind": "rebuilds",
    "size": "Poster, 24 × 36 in",
-   "w": 1066,
+   "w": 1065,
    "h": 1600,
    "type": "image",
    "preview": "/capy/rebuilds/stampede-poster-24x36.webp",
@@ -1447,7 +1735,7 @@
    "group": "stampede",
    "kind": "rebuilds",
    "size": "Banner, 33.5 × 80 in",
-   "w": 669,
+   "w": 668,
    "h": 1600,
    "type": "image",
    "preview": "/capy/rebuilds/stampede-banner-33-5x80.webp",
@@ -1459,7 +1747,7 @@
    "group": "stampede-v2",
    "kind": "rebuilds",
    "size": "Poster, 24 × 36 in",
-   "w": 1066,
+   "w": 1065,
    "h": 1600,
    "type": "image",
    "preview": "/capy/rebuilds/stampede-v2-poster-24x36.webp",
@@ -1495,7 +1783,7 @@
    "group": "stampede-v3",
    "kind": "rebuilds",
    "size": "Poster, 24 × 36 in",
-   "w": 1066,
+   "w": 1065,
    "h": 1600,
    "type": "image",
    "preview": "/capy/rebuilds/stampede-v3-poster-24x36.webp",
@@ -1598,12 +1886,84 @@
    "original": "/capy/rebuilds/tankobon-15-banner-33-5x80.jpg"
   },
   {
+   "id": "tankobon-15-v2-poster-24x36",
+   "title": "Tankobon 15 v2",
+   "group": "tankobon-15-v2",
+   "kind": "rebuilds",
+   "size": "Poster, 24 × 36 in",
+   "w": 1065,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/tankobon-15-v2-poster-24x36.webp",
+   "original": "/capy/rebuilds/tankobon-15-v2-poster-24x36.jpg"
+  },
+  {
+   "id": "tankobon-15-v2-social-1080x1350",
+   "title": "Tankobon 15 v2",
+   "group": "tankobon-15-v2",
+   "kind": "rebuilds",
+   "size": "Social, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/tankobon-15-v2-social-1080x1350.webp",
+   "original": "/capy/rebuilds/tankobon-15-v2-social-1080x1350.jpg"
+  },
+  {
+   "id": "tankobon-15-v2-social-1600x900",
+   "title": "Tankobon 15 v2",
+   "group": "tankobon-15-v2",
+   "kind": "rebuilds",
+   "size": "Social, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/tankobon-15-v2-social-1600x900.webp",
+   "original": "/capy/rebuilds/tankobon-15-v2-social-1600x900.jpg"
+  },
+  {
+   "id": "tankobon-15-v3-poster-24x36",
+   "title": "Tankobon 15 v3",
+   "group": "tankobon-15-v3",
+   "kind": "rebuilds",
+   "size": "Poster, 24 × 36 in",
+   "w": 1065,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/rebuilds/tankobon-15-v3-poster-24x36.webp",
+   "original": "/capy/rebuilds/tankobon-15-v3-poster-24x36.jpg"
+  },
+  {
+   "id": "tankobon-15-v3-social-1080x1350",
+   "title": "Tankobon 15 v3",
+   "group": "tankobon-15-v3",
+   "kind": "rebuilds",
+   "size": "Social, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/rebuilds/tankobon-15-v3-social-1080x1350.webp",
+   "original": "/capy/rebuilds/tankobon-15-v3-social-1080x1350.jpg"
+  },
+  {
+   "id": "tankobon-15-v3-social-1600x900",
+   "title": "Tankobon 15 v3",
+   "group": "tankobon-15-v3",
+   "kind": "rebuilds",
+   "size": "Social, 1600 × 900",
+   "w": 1600,
+   "h": 900,
+   "type": "image",
+   "preview": "/capy/rebuilds/tankobon-15-v3-social-1600x900.webp",
+   "original": "/capy/rebuilds/tankobon-15-v3-social-1600x900.jpg"
+  },
+  {
    "id": "blue-field-poster",
    "title": "Blue field",
    "group": "blue-field",
    "kind": "posters",
    "size": "Poster",
-   "w": 1065,
+   "w": 1066,
    "h": 1600,
    "type": "image",
    "preview": "/capy/posters/blue-field-poster.webp",
@@ -1651,7 +2011,7 @@
    "group": "blue-field",
    "kind": "posters",
    "size": "Tall",
-   "w": 718,
+   "w": 719,
    "h": 1600,
    "type": "image",
    "preview": "/capy/posters/blue-field-tall.webp",
@@ -1664,7 +2024,7 @@
    "kind": "posters",
    "size": "Wide",
    "w": 1600,
-   "h": 672,
+   "h": 674,
    "type": "image",
    "preview": "/capy/posters/blue-field-wide.webp",
    "original": "/capy/posters/blue-field-wide.jpg"
@@ -1675,7 +2035,7 @@
    "group": "blue-field",
    "kind": "posters",
    "size": "Roll-up",
-   "w": 668,
+   "w": 669,
    "h": 1600,
    "type": "image",
    "preview": "/capy/posters/blue-field-rollup.webp",
@@ -1706,276 +2066,12 @@
    "original": "/capy/posters/blue-field-strip.jpg"
   },
   {
-   "id": "cursor-a4",
-   "title": "Cursor",
-   "group": "cursor",
-   "kind": "posters",
-   "size": "A4",
-   "w": 1129,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/cursor-a4.webp",
-   "original": "/capy/posters/cursor-a4.jpg"
-  },
-  {
-   "id": "cursor-poster",
-   "title": "Cursor",
-   "group": "cursor",
-   "kind": "posters",
-   "size": "Poster",
-   "w": 1065,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/cursor-poster.webp",
-   "original": "/capy/posters/cursor-poster.jpg"
-  },
-  {
-   "id": "cursor-post-1080x1350",
-   "title": "Cursor",
-   "group": "cursor",
-   "kind": "posters",
-   "size": "Post, 1080 × 1350",
-   "w": 1080,
-   "h": 1350,
-   "type": "image",
-   "preview": "/capy/posters/cursor-post-1080x1350.webp",
-   "original": "/capy/posters/cursor-post-1080x1350.jpg"
-  },
-  {
-   "id": "cursor-story-1080x1920",
-   "title": "Cursor",
-   "group": "cursor",
-   "kind": "posters",
-   "size": "Story, 1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/cursor-story-1080x1920.webp",
-   "original": "/capy/posters/cursor-story-1080x1920.jpg"
-  },
-  {
-   "id": "cursor-square-1080x1080",
-   "title": "Cursor",
-   "group": "cursor",
-   "kind": "posters",
-   "size": "Square, 1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/posters/cursor-square-1080x1080.webp",
-   "original": "/capy/posters/cursor-square-1080x1080.jpg"
-  },
-  {
-   "id": "cursor-tall-1080x2400",
-   "title": "Cursor",
-   "group": "cursor",
-   "kind": "posters",
-   "size": "Tall, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/cursor-tall-1080x2400.webp",
-   "original": "/capy/posters/cursor-tall-1080x2400.jpg"
-  },
-  {
-   "id": "cursor-wide-2560x1080",
-   "title": "Cursor",
-   "group": "cursor",
-   "kind": "posters",
-   "size": "Wide, 2560 × 1080",
-   "w": 1600,
-   "h": 672,
-   "type": "image",
-   "preview": "/capy/posters/cursor-wide-2560x1080.webp",
-   "original": "/capy/posters/cursor-wide-2560x1080.jpg"
-  },
-  {
-   "id": "cursor-rollup",
-   "title": "Cursor",
-   "group": "cursor",
-   "kind": "posters",
-   "size": "Roll-up",
-   "w": 668,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/cursor-rollup.webp",
-   "original": "/capy/posters/cursor-rollup.jpg"
-  },
-  {
-   "id": "cursor-strip",
-   "title": "Cursor",
-   "group": "cursor",
-   "kind": "posters",
-   "size": "Strip",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/cursor-strip.webp",
-   "original": "/capy/posters/cursor-strip.jpg"
-  },
-  {
-   "id": "icon-grid-strip-1080x2400",
-   "title": "Icon grid",
-   "group": "icon-grid",
-   "kind": "posters",
-   "size": "Strip, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/icon-grid-strip-1080x2400.webp",
-   "original": "/capy/posters/icon-grid-strip-1080x2400.jpg"
-  },
-  {
-   "id": "icon-grid-wide-2560x1080",
-   "title": "Icon grid",
-   "group": "icon-grid",
-   "kind": "posters",
-   "size": "Wide, 2560 × 1080",
-   "w": 1600,
-   "h": 672,
-   "type": "image",
-   "preview": "/capy/posters/icon-grid-wide-2560x1080.webp",
-   "original": "/capy/posters/icon-grid-wide-2560x1080.jpg"
-  },
-  {
-   "id": "icon-grid-banner-33-5x80",
-   "title": "Icon grid",
-   "group": "icon-grid",
-   "kind": "posters",
-   "size": "Banner, 33.5 × 80 in",
-   "w": 668,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/icon-grid-banner-33-5x80.webp",
-   "original": "/capy/posters/icon-grid-banner-33-5x80.jpg"
-  },
-  {
-   "id": "icon-grid-strip-12x36",
-   "title": "Icon grid",
-   "group": "icon-grid",
-   "kind": "posters",
-   "size": "Strip, 12 × 36 in",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/icon-grid-strip-12x36.webp",
-   "original": "/capy/posters/icon-grid-strip-12x36.jpg"
-  },
-  {
-   "id": "number-15-a4",
-   "title": "Number 15",
-   "group": "number-15",
-   "kind": "posters",
-   "size": "A4",
-   "w": 1129,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/number-15-a4.webp",
-   "original": "/capy/posters/number-15-a4.jpg"
-  },
-  {
-   "id": "number-15-poster-24x36",
-   "title": "Number 15",
-   "group": "number-15",
-   "kind": "posters",
-   "size": "Poster, 24 × 36 in",
-   "w": 1065,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/number-15-poster-24x36.webp",
-   "original": "/capy/posters/number-15-poster-24x36.jpg"
-  },
-  {
-   "id": "number-15-social-1080x1350",
-   "title": "Number 15",
-   "group": "number-15",
-   "kind": "posters",
-   "size": "Social, 1080 × 1350",
-   "w": 1080,
-   "h": 1350,
-   "type": "image",
-   "preview": "/capy/posters/number-15-social-1080x1350.webp",
-   "original": "/capy/posters/number-15-social-1080x1350.jpg"
-  },
-  {
-   "id": "number-15-story-1080x1920",
-   "title": "Number 15",
-   "group": "number-15",
-   "kind": "posters",
-   "size": "Story, 1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/number-15-story-1080x1920.webp",
-   "original": "/capy/posters/number-15-story-1080x1920.jpg"
-  },
-  {
-   "id": "number-15-square-1080x1080",
-   "title": "Number 15",
-   "group": "number-15",
-   "kind": "posters",
-   "size": "Square, 1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/posters/number-15-square-1080x1080.webp",
-   "original": "/capy/posters/number-15-square-1080x1080.jpg"
-  },
-  {
-   "id": "number-15-strip-1080x2400",
-   "title": "Number 15",
-   "group": "number-15",
-   "kind": "posters",
-   "size": "Strip, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/number-15-strip-1080x2400.webp",
-   "original": "/capy/posters/number-15-strip-1080x2400.jpg"
-  },
-  {
-   "id": "number-15-wide-2560x1080",
-   "title": "Number 15",
-   "group": "number-15",
-   "kind": "posters",
-   "size": "Wide, 2560 × 1080",
-   "w": 1600,
-   "h": 672,
-   "type": "image",
-   "preview": "/capy/posters/number-15-wide-2560x1080.webp",
-   "original": "/capy/posters/number-15-wide-2560x1080.jpg"
-  },
-  {
-   "id": "number-15-rollup-33-5x80",
-   "title": "Number 15",
-   "group": "number-15",
-   "kind": "posters",
-   "size": "Roll-up, 33.5 × 80 in",
-   "w": 668,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/number-15-rollup-33-5x80.webp",
-   "original": "/capy/posters/number-15-rollup-33-5x80.jpg"
-  },
-  {
-   "id": "number-15-strip-12x36",
-   "title": "Number 15",
-   "group": "number-15",
-   "kind": "posters",
-   "size": "Strip, 12 × 36 in",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/number-15-strip-12x36.webp",
-   "original": "/capy/posters/number-15-strip-12x36.jpg"
-  },
-  {
    "id": "number-15-v2-poster-24x36",
    "title": "Number 15 v2",
    "group": "number-15-v2",
    "kind": "posters",
    "size": "Poster, 24 × 36 in",
-   "w": 1065,
+   "w": 1066,
    "h": 1600,
    "type": "image",
    "preview": "/capy/posters/number-15-v2-poster-24x36.webp",
@@ -1999,7 +2095,7 @@
    "group": "number-15-v2",
    "kind": "posters",
    "size": "Strip, 1080 × 2400",
-   "w": 718,
+   "w": 719,
    "h": 1600,
    "type": "image",
    "preview": "/capy/posters/number-15-v2-strip-1080x2400.webp",
@@ -2011,7 +2107,7 @@
    "group": "number-15-v3",
    "kind": "posters",
    "size": "Poster, 24 × 36 in",
-   "w": 1065,
+   "w": 1066,
    "h": 1600,
    "type": "image",
    "preview": "/capy/posters/number-15-v3-poster-24x36.webp",
@@ -2035,143 +2131,11 @@
    "group": "number-15-v3",
    "kind": "posters",
    "size": "Strip, 1080 × 2400",
-   "w": 718,
+   "w": 719,
    "h": 1600,
    "type": "image",
    "preview": "/capy/posters/number-15-v3-strip-1080x2400.webp",
    "original": "/capy/posters/number-15-v3-strip-1080x2400.jpg"
-  },
-  {
-   "id": "phone-tower-24x36",
-   "title": "Phone tower",
-   "group": "phone-tower",
-   "kind": "posters",
-   "size": "24 × 36 in",
-   "w": 1066,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-24x36.webp",
-   "original": "/capy/posters/phone-tower-24x36.jpg"
-  },
-  {
-   "id": "phone-tower-social-1080x1350",
-   "title": "Phone tower",
-   "group": "phone-tower",
-   "kind": "posters",
-   "size": "Social, 1080 × 1350",
-   "w": 1080,
-   "h": 1350,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-social-1080x1350.webp",
-   "original": "/capy/posters/phone-tower-social-1080x1350.jpg"
-  },
-  {
-   "id": "phone-tower-social-1080x1920",
-   "title": "Phone tower",
-   "group": "phone-tower",
-   "kind": "posters",
-   "size": "Social, 1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-social-1080x1920.webp",
-   "original": "/capy/posters/phone-tower-social-1080x1920.jpg"
-  },
-  {
-   "id": "phone-tower-social-1080x1080",
-   "title": "Phone tower",
-   "group": "phone-tower",
-   "kind": "posters",
-   "size": "Social, 1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-social-1080x1080.webp",
-   "original": "/capy/posters/phone-tower-social-1080x1080.jpg"
-  },
-  {
-   "id": "phone-tower-strip-1080x2400",
-   "title": "Phone tower",
-   "group": "phone-tower",
-   "kind": "posters",
-   "size": "Strip, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-strip-1080x2400.webp",
-   "original": "/capy/posters/phone-tower-strip-1080x2400.jpg"
-  },
-  {
-   "id": "phone-tower-social-2560x1080",
-   "title": "Phone tower",
-   "group": "phone-tower",
-   "kind": "posters",
-   "size": "Social, 2560 × 1080",
-   "w": 1600,
-   "h": 672,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-social-2560x1080.webp",
-   "original": "/capy/posters/phone-tower-social-2560x1080.jpg"
-  },
-  {
-   "id": "phone-tower-rollup",
-   "title": "Phone tower",
-   "group": "phone-tower",
-   "kind": "posters",
-   "size": "Roll-up",
-   "w": 668,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-rollup.webp",
-   "original": "/capy/posters/phone-tower-rollup.jpg"
-  },
-  {
-   "id": "phone-tower-12x36",
-   "title": "Phone tower",
-   "group": "phone-tower",
-   "kind": "posters",
-   "size": "12 × 36 in",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-12x36.webp",
-   "original": "/capy/posters/phone-tower-12x36.jpg"
-  },
-  {
-   "id": "phone-tower-v2-24x36",
-   "title": "Phone tower v2",
-   "group": "phone-tower-v2",
-   "kind": "posters",
-   "size": "24 × 36 in",
-   "w": 1066,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-v2-24x36.webp",
-   "original": "/capy/posters/phone-tower-v2-24x36.jpg"
-  },
-  {
-   "id": "phone-tower-v2-social-1080x1350",
-   "title": "Phone tower v2",
-   "group": "phone-tower-v2",
-   "kind": "posters",
-   "size": "Social, 1080 × 1350",
-   "w": 1080,
-   "h": 1350,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-v2-social-1080x1350.webp",
-   "original": "/capy/posters/phone-tower-v2-social-1080x1350.jpg"
-  },
-  {
-   "id": "phone-tower-v2-strip-1080x2400",
-   "title": "Phone tower v2",
-   "group": "phone-tower-v2",
-   "kind": "posters",
-   "size": "Strip, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/phone-tower-v2-strip-1080x2400.webp",
-   "original": "/capy/posters/phone-tower-v2-strip-1080x2400.jpg"
   },
   {
    "id": "phone-tower-v3-24x36",
@@ -2186,520 +2150,28 @@
    "original": "/capy/posters/phone-tower-v3-24x36.jpg"
   },
   {
+   "id": "phone-tower-v3-social-1080x1350",
+   "title": "Phone tower v3",
+   "group": "phone-tower-v3",
+   "kind": "posters",
+   "size": "Social, 1080 × 1350",
+   "w": 1080,
+   "h": 1350,
+   "type": "image",
+   "preview": "/capy/posters/phone-tower-v3-social-1080x1350.webp",
+   "original": "/capy/posters/phone-tower-v3-social-1080x1350.jpg"
+  },
+  {
    "id": "phone-tower-v3-strip-1080x2400",
    "title": "Phone tower v3",
    "group": "phone-tower-v3",
    "kind": "posters",
    "size": "Strip, 1080 × 2400",
-   "w": 718,
+   "w": 719,
    "h": 1600,
    "type": "image",
    "preview": "/capy/posters/phone-tower-v3-strip-1080x2400.webp",
    "original": "/capy/posters/phone-tower-v3-strip-1080x2400.jpg"
-  },
-  {
-   "id": "speech-a4",
-   "title": "Speech",
-   "group": "speech",
-   "kind": "posters",
-   "size": "A4",
-   "w": 1129,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/speech-a4.webp",
-   "original": "/capy/posters/speech-a4.jpg"
-  },
-  {
-   "id": "speech-poster-24x36",
-   "title": "Speech",
-   "group": "speech",
-   "kind": "posters",
-   "size": "Poster, 24 × 36 in",
-   "w": 1065,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/speech-poster-24x36.webp",
-   "original": "/capy/posters/speech-poster-24x36.jpg"
-  },
-  {
-   "id": "speech-feed-1080x1350",
-   "title": "Speech",
-   "group": "speech",
-   "kind": "posters",
-   "size": "Feed, 1080 × 1350",
-   "w": 1080,
-   "h": 1350,
-   "type": "image",
-   "preview": "/capy/posters/speech-feed-1080x1350.webp",
-   "original": "/capy/posters/speech-feed-1080x1350.jpg"
-  },
-  {
-   "id": "speech-story-1080x1920",
-   "title": "Speech",
-   "group": "speech",
-   "kind": "posters",
-   "size": "Story, 1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/speech-story-1080x1920.webp",
-   "original": "/capy/posters/speech-story-1080x1920.jpg"
-  },
-  {
-   "id": "speech-square-1080x1080",
-   "title": "Speech",
-   "group": "speech",
-   "kind": "posters",
-   "size": "Square, 1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/posters/speech-square-1080x1080.webp",
-   "original": "/capy/posters/speech-square-1080x1080.jpg"
-  },
-  {
-   "id": "speech-strip-1080x2400",
-   "title": "Speech",
-   "group": "speech",
-   "kind": "posters",
-   "size": "Strip, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/speech-strip-1080x2400.webp",
-   "original": "/capy/posters/speech-strip-1080x2400.jpg"
-  },
-  {
-   "id": "speech-wide-2560x1080",
-   "title": "Speech",
-   "group": "speech",
-   "kind": "posters",
-   "size": "Wide, 2560 × 1080",
-   "w": 1600,
-   "h": 672,
-   "type": "image",
-   "preview": "/capy/posters/speech-wide-2560x1080.webp",
-   "original": "/capy/posters/speech-wide-2560x1080.jpg"
-  },
-  {
-   "id": "speech-banner-33-5x80",
-   "title": "Speech",
-   "group": "speech",
-   "kind": "posters",
-   "size": "Banner, 33.5 × 80 in",
-   "w": 668,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/speech-banner-33-5x80.webp",
-   "original": "/capy/posters/speech-banner-33-5x80.jpg"
-  },
-  {
-   "id": "speech-strip-12x36",
-   "title": "Speech",
-   "group": "speech",
-   "kind": "posters",
-   "size": "Strip, 12 × 36 in",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/speech-strip-12x36.webp",
-   "original": "/capy/posters/speech-strip-12x36.jpg"
-  },
-  {
-   "id": "strip-tall",
-   "title": "Strip",
-   "group": "strip",
-   "kind": "posters",
-   "size": "Tall",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/strip-tall.webp",
-   "original": "/capy/posters/strip-tall.jpg"
-  },
-  {
-   "id": "strip-wide",
-   "title": "Strip",
-   "group": "strip",
-   "kind": "posters",
-   "size": "Wide",
-   "w": 1600,
-   "h": 672,
-   "type": "image",
-   "preview": "/capy/posters/strip-wide.webp",
-   "original": "/capy/posters/strip-wide.jpg"
-  },
-  {
-   "id": "strip-rollup",
-   "title": "Strip",
-   "group": "strip",
-   "kind": "posters",
-   "size": "Roll-up",
-   "w": 668,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/strip-rollup.webp",
-   "original": "/capy/posters/strip-rollup.jpg"
-  },
-  {
-   "id": "strip-strip",
-   "title": "Strip",
-   "group": "strip",
-   "kind": "posters",
-   "size": "Strip",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/strip-strip.webp",
-   "original": "/capy/posters/strip-strip.jpg"
-  },
-  {
-   "id": "by-dinner-poster",
-   "title": "By dinner",
-   "group": "by-dinner",
-   "kind": "posters",
-   "size": "Poster",
-   "w": 1200,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/by-dinner-poster.webp",
-   "original": "/capy/posters/by-dinner-poster.jpg"
-  },
-  {
-   "id": "by-dinner-a4",
-   "title": "By dinner",
-   "group": "by-dinner",
-   "kind": "posters",
-   "size": "A4",
-   "w": 1129,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/by-dinner-a4.webp",
-   "original": "/capy/posters/by-dinner-a4.jpg"
-  },
-  {
-   "id": "by-dinner-social-1080x1350",
-   "title": "By dinner",
-   "group": "by-dinner",
-   "kind": "posters",
-   "size": "Social, 1080 × 1350",
-   "w": 1080,
-   "h": 1350,
-   "type": "image",
-   "preview": "/capy/posters/by-dinner-social-1080x1350.webp",
-   "original": "/capy/posters/by-dinner-social-1080x1350.jpg"
-  },
-  {
-   "id": "by-dinner-social-1080x1920",
-   "title": "By dinner",
-   "group": "by-dinner",
-   "kind": "posters",
-   "size": "Social, 1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/by-dinner-social-1080x1920.webp",
-   "original": "/capy/posters/by-dinner-social-1080x1920.jpg"
-  },
-  {
-   "id": "by-dinner-social-1080x2400",
-   "title": "By dinner",
-   "group": "by-dinner",
-   "kind": "posters",
-   "size": "Social, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/by-dinner-social-1080x2400.webp",
-   "original": "/capy/posters/by-dinner-social-1080x2400.jpg"
-  },
-  {
-   "id": "by-dinner-12x36",
-   "title": "By dinner",
-   "group": "by-dinner",
-   "kind": "posters",
-   "size": "12 × 36 in",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/by-dinner-12x36.webp",
-   "original": "/capy/posters/by-dinner-12x36.jpg"
-  },
-  {
-   "id": "empty-slot-poster",
-   "title": "Empty slot",
-   "group": "empty-slot",
-   "kind": "posters",
-   "size": "Poster",
-   "w": 1200,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/empty-slot-poster.webp",
-   "original": "/capy/posters/empty-slot-poster.jpg"
-  },
-  {
-   "id": "empty-slot-a4",
-   "title": "Empty slot",
-   "group": "empty-slot",
-   "kind": "posters",
-   "size": "A4",
-   "w": 1129,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/empty-slot-a4.webp",
-   "original": "/capy/posters/empty-slot-a4.jpg"
-  },
-  {
-   "id": "empty-slot-social-1080x1920",
-   "title": "Empty slot",
-   "group": "empty-slot",
-   "kind": "posters",
-   "size": "Social, 1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/empty-slot-social-1080x1920.webp",
-   "original": "/capy/posters/empty-slot-social-1080x1920.jpg"
-  },
-  {
-   "id": "empty-slot-social-1600x900",
-   "title": "Empty slot",
-   "group": "empty-slot",
-   "kind": "posters",
-   "size": "Social, 1600 × 900",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/posters/empty-slot-social-1600x900.webp",
-   "original": "/capy/posters/empty-slot-social-1600x900.jpg"
-  },
-  {
-   "id": "empty-slot-social-1080x2400",
-   "title": "Empty slot",
-   "group": "empty-slot",
-   "kind": "posters",
-   "size": "Social, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/empty-slot-social-1080x2400.webp",
-   "original": "/capy/posters/empty-slot-social-1080x2400.jpg"
-  },
-  {
-   "id": "empty-slot-12x36",
-   "title": "Empty slot",
-   "group": "empty-slot",
-   "kind": "posters",
-   "size": "12 × 36 in",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/empty-slot-12x36.webp",
-   "original": "/capy/posters/empty-slot-12x36.jpg"
-  },
-  {
-   "id": "request-poster",
-   "title": "Request",
-   "group": "request",
-   "kind": "posters",
-   "size": "Poster",
-   "w": 1200,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/request-poster.webp",
-   "original": "/capy/posters/request-poster.jpg"
-  },
-  {
-   "id": "request-a4",
-   "title": "Request",
-   "group": "request",
-   "kind": "posters",
-   "size": "A4",
-   "w": 1129,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/request-a4.webp",
-   "original": "/capy/posters/request-a4.jpg"
-  },
-  {
-   "id": "request-social-1080x1350",
-   "title": "Request",
-   "group": "request",
-   "kind": "posters",
-   "size": "Social, 1080 × 1350",
-   "w": 1080,
-   "h": 1350,
-   "type": "image",
-   "preview": "/capy/posters/request-social-1080x1350.webp",
-   "original": "/capy/posters/request-social-1080x1350.jpg"
-  },
-  {
-   "id": "request-social-1080x1920",
-   "title": "Request",
-   "group": "request",
-   "kind": "posters",
-   "size": "Social, 1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/request-social-1080x1920.webp",
-   "original": "/capy/posters/request-social-1080x1920.jpg"
-  },
-  {
-   "id": "request-social-1600x900",
-   "title": "Request",
-   "group": "request",
-   "kind": "posters",
-   "size": "Social, 1600 × 900",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/posters/request-social-1600x900.webp",
-   "original": "/capy/posters/request-social-1600x900.jpg"
-  },
-  {
-   "id": "request-social-1080x2400",
-   "title": "Request",
-   "group": "request",
-   "kind": "posters",
-   "size": "Social, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/request-social-1080x2400.webp",
-   "original": "/capy/posters/request-social-1080x2400.jpg"
-  },
-  {
-   "id": "request-12x36",
-   "title": "Request",
-   "group": "request",
-   "kind": "posters",
-   "size": "12 × 36 in",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/request-12x36.webp",
-   "original": "/capy/posters/request-12x36.jpg"
-  },
-  {
-   "id": "takeover-poster",
-   "title": "Takeover",
-   "group": "takeover",
-   "kind": "posters",
-   "size": "Poster",
-   "w": 1200,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/takeover-poster.webp",
-   "original": "/capy/posters/takeover-poster.jpg"
-  },
-  {
-   "id": "takeover-a4",
-   "title": "Takeover",
-   "group": "takeover",
-   "kind": "posters",
-   "size": "A4",
-   "w": 1129,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/takeover-a4.webp",
-   "original": "/capy/posters/takeover-a4.jpg"
-  },
-  {
-   "id": "takeover-social-1080x1350",
-   "title": "Takeover",
-   "group": "takeover",
-   "kind": "posters",
-   "size": "Social, 1080 × 1350",
-   "w": 1080,
-   "h": 1350,
-   "type": "image",
-   "preview": "/capy/posters/takeover-social-1080x1350.webp",
-   "original": "/capy/posters/takeover-social-1080x1350.jpg"
-  },
-  {
-   "id": "takeover-social-1080x1920",
-   "title": "Takeover",
-   "group": "takeover",
-   "kind": "posters",
-   "size": "Social, 1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/takeover-social-1080x1920.webp",
-   "original": "/capy/posters/takeover-social-1080x1920.jpg"
-  },
-  {
-   "id": "takeover-social-1600x900",
-   "title": "Takeover",
-   "group": "takeover",
-   "kind": "posters",
-   "size": "Social, 1600 × 900",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/posters/takeover-social-1600x900.webp",
-   "original": "/capy/posters/takeover-social-1600x900.jpg"
-  },
-  {
-   "id": "takeover-social-1080x2400",
-   "title": "Takeover",
-   "group": "takeover",
-   "kind": "posters",
-   "size": "Social, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/takeover-social-1080x2400.webp",
-   "original": "/capy/posters/takeover-social-1080x2400.jpg"
-  },
-  {
-   "id": "takeover-12x36",
-   "title": "Takeover",
-   "group": "takeover",
-   "kind": "posters",
-   "size": "12 × 36 in",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/takeover-12x36.webp",
-   "original": "/capy/posters/takeover-12x36.jpg"
-  },
-  {
-   "id": "ten-to-six-a4",
-   "title": "Ten to six",
-   "group": "ten-to-six",
-   "kind": "posters",
-   "size": "A4",
-   "w": 1129,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/ten-to-six-a4.webp",
-   "original": "/capy/posters/ten-to-six-a4.jpg"
-  },
-  {
-   "id": "ten-to-six-social-1080x2400",
-   "title": "Ten to six",
-   "group": "ten-to-six",
-   "kind": "posters",
-   "size": "Social, 1080 × 2400",
-   "w": 718,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/ten-to-six-social-1080x2400.webp",
-   "original": "/capy/posters/ten-to-six-social-1080x2400.jpg"
-  },
-  {
-   "id": "ten-to-six-12x36",
-   "title": "Ten to six",
-   "group": "ten-to-six",
-   "kind": "posters",
-   "size": "12 × 36 in",
-   "w": 533,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/posters/ten-to-six-12x36.webp",
-   "original": "/capy/posters/ten-to-six-12x36.jpg"
   },
   {
    "id": "banners-home-screen-main",
@@ -3007,7 +2479,7 @@
    "group": "banners-a-home-screen",
    "kind": "banners",
    "size": "1080 × 2520",
-   "w": 683,
+   "w": 684,
    "h": 1600,
    "type": "image",
    "preview": "/capy/banners/banners-a-home-screen-1080x2520.webp",
@@ -3020,7 +2492,7 @@
    "kind": "banners",
    "size": "2560 × 1080",
    "w": 1600,
-   "h": 672,
+   "h": 673,
    "type": "image",
    "preview": "/capy/banners/banners-a-home-screen-2560x1080.webp",
    "original": "/capy/banners/banners-a-home-screen-2560x1080.jpg"
@@ -3151,7 +2623,7 @@
    "group": "banners-b-manga-day",
    "kind": "banners",
    "size": "1080 × 2520",
-   "w": 683,
+   "w": 684,
    "h": 1600,
    "type": "image",
    "preview": "/capy/banners/banners-b-manga-day-1080x2520.webp",
@@ -3164,7 +2636,7 @@
    "kind": "banners",
    "size": "2560 × 1080",
    "w": 1600,
-   "h": 672,
+   "h": 673,
    "type": "image",
    "preview": "/capy/banners/banners-b-manga-day-2560x1080.webp",
    "original": "/capy/banners/banners-b-manga-day-2560x1080.jpg"
@@ -3295,7 +2767,7 @@
    "group": "banners-c-ship-it",
    "kind": "banners",
    "size": "1080 × 2520",
-   "w": 683,
+   "w": 684,
    "h": 1600,
    "type": "image",
    "preview": "/capy/banners/banners-c-ship-it-1080x2520.webp",
@@ -3308,7 +2780,7 @@
    "kind": "banners",
    "size": "2560 × 1080",
    "w": 1600,
-   "h": 672,
+   "h": 673,
    "type": "image",
    "preview": "/capy/banners/banners-c-ship-it-2560x1080.webp",
    "original": "/capy/banners/banners-c-ship-it-2560x1080.jpg"
@@ -3326,6 +2798,198 @@
    "original": "/capy/banners/banners-c-ship-it-1500x500.jpg"
   },
   {
+   "id": "stickers-m-sticker-01-taka-taka-1200x1200",
+   "title": "Taka taka",
+   "group": "stickers-m-sticker-01-taka-taka",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-01-taka-taka-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-01-taka-taka-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-02-chomp-1200x1200",
+   "title": "Chomp",
+   "group": "stickers-m-sticker-02-chomp",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-02-chomp-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-02-chomp-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-03-boom-1200x1200",
+   "title": "Boom",
+   "group": "stickers-m-sticker-03-boom",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-03-boom-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-03-boom-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-04-zzz-1200x1200",
+   "title": "Zzz",
+   "group": "stickers-m-sticker-04-zzz",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-04-zzz-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-04-zzz-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-05-bzzz-1200x1200",
+   "title": "Bzzz",
+   "group": "stickers-m-sticker-05-bzzz",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-05-bzzz-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-05-bzzz-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-06-tick-tock-1200x1200",
+   "title": "Tick tock",
+   "group": "stickers-m-sticker-06-tick-tock",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-06-tick-tock-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-06-tick-tock-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-07-pop-1200x1200",
+   "title": "Pop",
+   "group": "stickers-m-sticker-07-pop",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-07-pop-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-07-pop-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-08-whoosh-1200x1200",
+   "title": "Whoosh",
+   "group": "stickers-m-sticker-08-whoosh",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-08-whoosh-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-08-whoosh-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-09-ding-1200x1200",
+   "title": "Ding",
+   "group": "stickers-m-sticker-09-ding",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-09-ding-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-09-ding-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-10-click-1200x1200",
+   "title": "Click",
+   "group": "stickers-m-sticker-10-click",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-10-click-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-10-click-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-11-slurp-1200x1200",
+   "title": "Slurp",
+   "group": "stickers-m-sticker-11-slurp",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-11-slurp-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-11-slurp-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-12-crash-1200x1200",
+   "title": "Crash",
+   "group": "stickers-m-sticker-12-crash",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-12-crash-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-12-crash-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-13-ship-it-1200x1200",
+   "title": "Ship it",
+   "group": "stickers-m-sticker-13-ship-it",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-13-ship-it-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-13-ship-it-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-14-ring-ring-1200x1200",
+   "title": "Ring ring",
+   "group": "stickers-m-sticker-14-ring-ring",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-14-ring-ring-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-14-ring-ring-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-15-wow-1200x1200",
+   "title": "Wow",
+   "group": "stickers-m-sticker-15-wow",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-15-wow-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-15-wow-1200x1200.png"
+  },
+  {
+   "id": "stickers-m-sticker-16-knock-knock-1200x1200",
+   "title": "Knock knock",
+   "group": "stickers-m-sticker-16-knock-knock",
+   "kind": "stickers",
+   "size": "1200 × 1200",
+   "w": 1200,
+   "h": 1200,
+   "type": "image",
+   "preview": "/capy/stickers/stickers-m-sticker-16-knock-knock-1200x1200.webp",
+   "original": "/capy/stickers/stickers-m-sticker-16-knock-knock-1200x1200.png"
+  },
+  {
    "id": "stickers-badge-15-2048",
    "title": "The red 15 badge",
    "group": "stickers-badge-15",
@@ -3336,18 +3000,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-badge-15-2048.webp",
    "original": "/capy/stickers/stickers-badge-15-2048.png"
-  },
-  {
-   "id": "stickers-badge-15-1024",
-   "title": "The red 15 badge",
-   "group": "stickers-badge-15",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-badge-15-1024.webp",
-   "original": "/capy/stickers/stickers-badge-15-1024.png"
   },
   {
    "id": "stickers-blue-cursor-2048",
@@ -3362,18 +3014,6 @@
    "original": "/capy/stickers/stickers-blue-cursor-2048.png"
   },
   {
-   "id": "stickers-blue-cursor-1024",
-   "title": "The blue cursor",
-   "group": "stickers-blue-cursor",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-blue-cursor-1024.webp",
-   "original": "/capy/stickers/stickers-blue-cursor-1024.png"
-  },
-  {
    "id": "stickers-by-dinner-2048",
    "title": "By dinner",
    "group": "stickers-by-dinner",
@@ -3384,18 +3024,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-by-dinner-2048.webp",
    "original": "/capy/stickers/stickers-by-dinner-2048.png"
-  },
-  {
-   "id": "stickers-by-dinner-1024",
-   "title": "By dinner",
-   "group": "stickers-by-dinner",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-by-dinner-1024.webp",
-   "original": "/capy/stickers/stickers-by-dinner-1024.png"
   },
   {
    "id": "stickers-capy-app-15-2048",
@@ -3410,18 +3038,6 @@
    "original": "/capy/stickers/stickers-capy-app-15-2048.png"
   },
   {
-   "id": "stickers-capy-app-15-1024",
-   "title": "Capy app with a 15 badge",
-   "group": "stickers-capy-app-15",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-capy-app-15-1024.webp",
-   "original": "/capy/stickers/stickers-capy-app-15-1024.png"
-  },
-  {
    "id": "stickers-capy-mark-2048",
    "title": "The Capy mark",
    "group": "stickers-capy-mark",
@@ -3432,18 +3048,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-capy-mark-2048.webp",
    "original": "/capy/stickers/stickers-capy-mark-2048.png"
-  },
-  {
-   "id": "stickers-capy-mark-1024",
-   "title": "The Capy mark",
-   "group": "stickers-capy-mark",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-capy-mark-1024.webp",
-   "original": "/capy/stickers/stickers-capy-mark-1024.png"
   },
   {
    "id": "stickers-city-captain-2048",
@@ -3458,18 +3062,6 @@
    "original": "/capy/stickers/stickers-city-captain-2048.png"
   },
   {
-   "id": "stickers-city-captain-1024",
-   "title": "Captain over the city",
-   "group": "stickers-city-captain",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-city-captain-1024.webp",
-   "original": "/capy/stickers/stickers-city-captain-1024.png"
-  },
-  {
    "id": "stickers-demo-time-2048",
    "title": "Demo time",
    "group": "stickers-demo-time",
@@ -3480,18 +3072,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-demo-time-2048.webp",
    "original": "/capy/stickers/stickers-demo-time-2048.png"
-  },
-  {
-   "id": "stickers-demo-time-1024",
-   "title": "Demo time",
-   "group": "stickers-demo-time",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-demo-time-1024.webp",
-   "original": "/capy/stickers/stickers-demo-time-1024.png"
   },
   {
    "id": "stickers-empty-slot-2048",
@@ -3506,18 +3086,6 @@
    "original": "/capy/stickers/stickers-empty-slot-2048.png"
   },
   {
-   "id": "stickers-empty-slot-1024",
-   "title": "An empty app slot",
-   "group": "stickers-empty-slot",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-empty-slot-1024.webp",
-   "original": "/capy/stickers/stickers-empty-slot-1024.png"
-  },
-  {
    "id": "stickers-every-day-2048",
    "title": "Every day",
    "group": "stickers-every-day",
@@ -3528,18 +3096,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-every-day-2048.webp",
    "original": "/capy/stickers/stickers-every-day-2048.png"
-  },
-  {
-   "id": "stickers-every-day-1024",
-   "title": "Every day",
-   "group": "stickers-every-day",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-every-day-1024.webp",
-   "original": "/capy/stickers/stickers-every-day-1024.png"
   },
   {
    "id": "stickers-found-it-2048",
@@ -3554,18 +3110,6 @@
    "original": "/capy/stickers/stickers-found-it-2048.png"
   },
   {
-   "id": "stickers-found-it-1024",
-   "title": "Found it",
-   "group": "stickers-found-it",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-found-it-1024.webp",
-   "original": "/capy/stickers/stickers-found-it-1024.png"
-  },
-  {
    "id": "stickers-go-2048",
    "title": "Go",
    "group": "stickers-go",
@@ -3576,18 +3120,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-go-2048.webp",
    "original": "/capy/stickers/stickers-go-2048.png"
-  },
-  {
-   "id": "stickers-go-1024",
-   "title": "Go",
-   "group": "stickers-go",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-go-1024.webp",
-   "original": "/capy/stickers/stickers-go-1024.png"
   },
   {
    "id": "stickers-home-screen-2048",
@@ -3602,18 +3134,6 @@
    "original": "/capy/stickers/stickers-home-screen-2048.png"
   },
   {
-   "id": "stickers-home-screen-1024",
-   "title": "Home screen",
-   "group": "stickers-home-screen",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-home-screen-1024.webp",
-   "original": "/capy/stickers/stickers-home-screen-1024.png"
-  },
-  {
    "id": "stickers-lgtm-2048",
    "title": "LGTM",
    "group": "stickers-lgtm",
@@ -3624,18 +3144,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-lgtm-2048.webp",
    "original": "/capy/stickers/stickers-lgtm-2048.png"
-  },
-  {
-   "id": "stickers-lgtm-1024",
-   "title": "LGTM",
-   "group": "stickers-lgtm",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-lgtm-1024.webp",
-   "original": "/capy/stickers/stickers-lgtm-1024.png"
   },
   {
    "id": "stickers-nov-15-2048",
@@ -3650,18 +3158,6 @@
    "original": "/capy/stickers/stickers-nov-15-2048.png"
   },
   {
-   "id": "stickers-nov-15-1024",
-   "title": "November 15",
-   "group": "stickers-nov-15",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-nov-15-1024.webp",
-   "original": "/capy/stickers/stickers-nov-15-1024.png"
-  },
-  {
    "id": "stickers-on-us-2048",
    "title": "On us",
    "group": "stickers-on-us",
@@ -3672,18 +3168,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-on-us-2048.webp",
    "original": "/capy/stickers/stickers-on-us-2048.png"
-  },
-  {
-   "id": "stickers-on-us-1024",
-   "title": "On us",
-   "group": "stickers-on-us",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-on-us-1024.webp",
-   "original": "/capy/stickers/stickers-on-us-1024.png"
   },
   {
    "id": "stickers-one-eighty-2048",
@@ -3698,18 +3182,6 @@
    "original": "/capy/stickers/stickers-one-eighty-2048.png"
   },
   {
-   "id": "stickers-one-eighty-1024",
-   "title": "180 builders",
-   "group": "stickers-one-eighty",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-one-eighty-1024.webp",
-   "original": "/capy/stickers/stickers-one-eighty-1024.png"
-  },
-  {
    "id": "stickers-one-more-build-2048",
    "title": "One more build",
    "group": "stickers-one-more-build",
@@ -3720,18 +3192,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-one-more-build-2048.webp",
    "original": "/capy/stickers/stickers-one-more-build-2048.png"
-  },
-  {
-   "id": "stickers-one-more-build-1024",
-   "title": "One more build",
-   "group": "stickers-one-more-build",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-one-more-build-1024.webp",
-   "original": "/capy/stickers/stickers-one-more-build-1024.png"
   },
   {
    "id": "stickers-peli-burst-2048",
@@ -3746,18 +3206,6 @@
    "original": "/capy/stickers/stickers-peli-burst-2048.png"
   },
   {
-   "id": "stickers-peli-burst-1024",
-   "title": "Peli",
-   "group": "stickers-peli-burst",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-peli-burst-1024.webp",
-   "original": "/capy/stickers/stickers-peli-burst-1024.png"
-  },
-  {
    "id": "stickers-real-phone-2048",
    "title": "A real phone",
    "group": "stickers-real-phone",
@@ -3770,20 +3218,8 @@
    "original": "/capy/stickers/stickers-real-phone-2048.png"
   },
   {
-   "id": "stickers-real-phone-1024",
-   "title": "A real phone",
-   "group": "stickers-real-phone",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-real-phone-1024.webp",
-   "original": "/capy/stickers/stickers-real-phone-1024.png"
-  },
-  {
    "id": "stickers-ship-it-2048",
-   "title": "Ship it",
+   "title": "Ship it 2",
    "group": "stickers-ship-it",
    "kind": "stickers",
    "size": "2048 × 2048",
@@ -3792,18 +3228,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-ship-it-2048.webp",
    "original": "/capy/stickers/stickers-ship-it-2048.png"
-  },
-  {
-   "id": "stickers-ship-it-1024",
-   "title": "Ship it",
-   "group": "stickers-ship-it",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-ship-it-1024.webp",
-   "original": "/capy/stickers/stickers-ship-it-1024.png"
   },
   {
    "id": "stickers-shipped-2048",
@@ -3818,18 +3242,6 @@
    "original": "/capy/stickers/stickers-shipped-2048.png"
   },
   {
-   "id": "stickers-shipped-1024",
-   "title": "Shipped",
-   "group": "stickers-shipped",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-shipped-1024.webp",
-   "original": "/capy/stickers/stickers-shipped-1024.png"
-  },
-  {
    "id": "stickers-solo-ok-2048",
    "title": "Solo ok",
    "group": "stickers-solo-ok",
@@ -3840,18 +3252,6 @@
    "type": "image",
    "preview": "/capy/stickers/stickers-solo-ok-2048.webp",
    "original": "/capy/stickers/stickers-solo-ok-2048.png"
-  },
-  {
-   "id": "stickers-solo-ok-1024",
-   "title": "Solo ok",
-   "group": "stickers-solo-ok",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-solo-ok-1024.webp",
-   "original": "/capy/stickers/stickers-solo-ok-1024.png"
   },
   {
    "id": "stickers-stampede-2048",
@@ -3866,18 +3266,6 @@
    "original": "/capy/stickers/stickers-stampede-2048.png"
   },
   {
-   "id": "stickers-stampede-1024",
-   "title": "The capy stampede",
-   "group": "stickers-stampede",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-stampede-1024.webp",
-   "original": "/capy/stickers/stickers-stampede-1024.png"
-  },
-  {
    "id": "stickers-yuzu-2048",
    "title": "Yuzu",
    "group": "stickers-yuzu",
@@ -3890,18 +3278,6 @@
    "original": "/capy/stickers/stickers-yuzu-2048.png"
   },
   {
-   "id": "stickers-yuzu-1024",
-   "title": "Yuzu",
-   "group": "stickers-yuzu",
-   "kind": "stickers",
-   "size": "1024 × 1024",
-   "w": 1024,
-   "h": 1024,
-   "type": "image",
-   "preview": "/capy/stickers/stickers-yuzu-1024.webp",
-   "original": "/capy/stickers/stickers-yuzu-1024.png"
-  },
-  {
    "id": "stickers-capy-stickers-preview-2400x3000",
    "title": "Preview sheet, all 24 on capy blue",
    "group": "stickers-capy-stickers-preview",
@@ -3911,667 +3287,463 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/stickers/stickers-capy-stickers-preview-2400x3000.webp",
-   "original": "/capy/stickers/stickers-capy-stickers-preview-2400x3000.png"
+   "original": "/capy/stickers/stickers-capy-stickers-preview-2400x3000.jpg"
   },
   {
-   "id": "wallpapers-desktop-crew-pile-2560x1440",
-   "title": "Crew pile",
-   "group": "wallpapers-desktop-crew-pile",
+   "id": "wallpapers-m-wallpaper-desktop-1-2560x1440",
+   "title": "Desktop 1",
+   "group": "wallpapers-m-wallpaper-desktop-1",
    "kind": "wallpapers",
    "size": "2560 × 1440",
    "w": 1600,
    "h": 900,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-crew-pile-2560x1440.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-crew-pile-2560x1440.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-1-2560x1440.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-1-2560x1440.jpg"
   },
   {
-   "id": "wallpapers-desktop-crew-pile-3840x2160",
-   "title": "Crew pile",
-   "group": "wallpapers-desktop-crew-pile",
-   "kind": "wallpapers",
-   "size": "3840 × 2160",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-crew-pile-3840x2160.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-crew-pile-3840x2160.jpg"
-  },
-  {
-   "id": "wallpapers-desktop-cursor-2560x1440",
-   "title": "Blue cursor",
-   "group": "wallpapers-desktop-cursor",
+   "id": "wallpapers-m-wallpaper-desktop-2-2560x1440",
+   "title": "Desktop 2",
+   "group": "wallpapers-m-wallpaper-desktop-2",
    "kind": "wallpapers",
    "size": "2560 × 1440",
    "w": 1600,
    "h": 900,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-cursor-2560x1440.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-cursor-2560x1440.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-2-2560x1440.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-2-2560x1440.jpg"
   },
   {
-   "id": "wallpapers-desktop-cursor-3840x2160",
-   "title": "Blue cursor",
-   "group": "wallpapers-desktop-cursor",
-   "kind": "wallpapers",
-   "size": "3840 × 2160",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-cursor-3840x2160.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-cursor-3840x2160.jpg"
-  },
-  {
-   "id": "wallpapers-desktop-falling-2560x1440",
-   "title": "Falling capybara",
-   "group": "wallpapers-desktop-falling",
+   "id": "wallpapers-m-wallpaper-desktop-3-2560x1440",
+   "title": "Desktop 3",
+   "group": "wallpapers-m-wallpaper-desktop-3",
    "kind": "wallpapers",
    "size": "2560 × 1440",
    "w": 1600,
    "h": 900,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-falling-2560x1440.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-falling-2560x1440.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-3-2560x1440.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-3-2560x1440.jpg"
   },
   {
-   "id": "wallpapers-desktop-falling-3840x2160",
-   "title": "Falling capybara",
-   "group": "wallpapers-desktop-falling",
-   "kind": "wallpapers",
-   "size": "3840 × 2160",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-falling-3840x2160.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-falling-3840x2160.jpg"
-  },
-  {
-   "id": "wallpapers-desktop-manga-page-2560x1440",
-   "title": "Manga page",
-   "group": "wallpapers-desktop-manga-page",
+   "id": "wallpapers-m-wallpaper-desktop-4-2560x1440",
+   "title": "Desktop 4",
+   "group": "wallpapers-m-wallpaper-desktop-4",
    "kind": "wallpapers",
    "size": "2560 × 1440",
    "w": 1600,
    "h": 900,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-manga-page-2560x1440.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-manga-page-2560x1440.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-4-2560x1440.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-4-2560x1440.jpg"
   },
   {
-   "id": "wallpapers-desktop-manga-page-3840x2160",
-   "title": "Manga page",
-   "group": "wallpapers-desktop-manga-page",
-   "kind": "wallpapers",
-   "size": "3840 × 2160",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-manga-page-3840x2160.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-manga-page-3840x2160.jpg"
-  },
-  {
-   "id": "wallpapers-desktop-speech-bubble-2560x1440",
-   "title": "Speech bubble",
-   "group": "wallpapers-desktop-speech-bubble",
+   "id": "wallpapers-m-wallpaper-desktop-5-2560x1440",
+   "title": "Desktop 5",
+   "group": "wallpapers-m-wallpaper-desktop-5",
    "kind": "wallpapers",
    "size": "2560 × 1440",
    "w": 1600,
    "h": 900,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-speech-bubble-2560x1440.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-speech-bubble-2560x1440.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-5-2560x1440.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-5-2560x1440.jpg"
   },
   {
-   "id": "wallpapers-desktop-speech-bubble-3840x2160",
-   "title": "Speech bubble",
-   "group": "wallpapers-desktop-speech-bubble",
-   "kind": "wallpapers",
-   "size": "3840 × 2160",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-speech-bubble-3840x2160.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-speech-bubble-3840x2160.jpg"
-  },
-  {
-   "id": "wallpapers-desktop-stampede-2560x1440",
-   "title": "Stampede",
-   "group": "wallpapers-desktop-stampede",
+   "id": "wallpapers-m-wallpaper-desktop-6-2560x1440",
+   "title": "Desktop 6",
+   "group": "wallpapers-m-wallpaper-desktop-6",
    "kind": "wallpapers",
    "size": "2560 × 1440",
    "w": 1600,
    "h": 900,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-stampede-2560x1440.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-stampede-2560x1440.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-6-2560x1440.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-desktop-6-2560x1440.jpg"
   },
   {
-   "id": "wallpapers-desktop-stampede-3840x2160",
-   "title": "Stampede",
-   "group": "wallpapers-desktop-stampede",
+   "id": "wallpapers-m-wallpaper-phone-1-1179x2556",
+   "title": "Phone 1",
+   "group": "wallpapers-m-wallpaper-phone-1",
    "kind": "wallpapers",
-   "size": "3840 × 2160",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-desktop-stampede-3840x2160.webp",
-   "original": "/capy/wallpapers/wallpapers-desktop-stampede-3840x2160.jpg"
-  },
-  {
-   "id": "wallpapers-phone-crew-pile-1290x2796",
-   "title": "Crew pile, phone",
-   "group": "wallpapers-phone-crew-pile",
-   "kind": "wallpapers",
-   "size": "1290 × 2796",
+   "size": "1179 × 2556",
    "w": 736,
    "h": 1600,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-phone-crew-pile-1290x2796.webp",
-   "original": "/capy/wallpapers/wallpapers-phone-crew-pile-1290x2796.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-phone-1-1179x2556.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-phone-1-1179x2556.jpg"
   },
   {
-   "id": "wallpapers-phone-cursor-1290x2796",
-   "title": "Blue cursor, phone",
-   "group": "wallpapers-phone-cursor",
+   "id": "wallpapers-m-wallpaper-phone-2-1179x2556",
+   "title": "Phone 2",
+   "group": "wallpapers-m-wallpaper-phone-2",
    "kind": "wallpapers",
-   "size": "1290 × 2796",
+   "size": "1179 × 2556",
    "w": 736,
    "h": 1600,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-phone-cursor-1290x2796.webp",
-   "original": "/capy/wallpapers/wallpapers-phone-cursor-1290x2796.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-phone-2-1179x2556.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-phone-2-1179x2556.jpg"
   },
   {
-   "id": "wallpapers-phone-falling-1290x2796",
-   "title": "Falling capybara, phone",
-   "group": "wallpapers-phone-falling",
+   "id": "wallpapers-m-wallpaper-phone-3-1179x2556",
+   "title": "Phone 3",
+   "group": "wallpapers-m-wallpaper-phone-3",
    "kind": "wallpapers",
-   "size": "1290 × 2796",
+   "size": "1179 × 2556",
    "w": 736,
    "h": 1600,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-phone-falling-1290x2796.webp",
-   "original": "/capy/wallpapers/wallpapers-phone-falling-1290x2796.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-phone-3-1179x2556.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-phone-3-1179x2556.jpg"
   },
   {
-   "id": "wallpapers-phone-fifteen-1290x2796",
-   "title": "November 15",
-   "group": "wallpapers-phone-fifteen",
+   "id": "wallpapers-m-wallpaper-phone-4-1179x2556",
+   "title": "Phone 4",
+   "group": "wallpapers-m-wallpaper-phone-4",
    "kind": "wallpapers",
-   "size": "1290 × 2796",
+   "size": "1179 × 2556",
    "w": 736,
    "h": 1600,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-phone-fifteen-1290x2796.webp",
-   "original": "/capy/wallpapers/wallpapers-phone-fifteen-1290x2796.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-phone-4-1179x2556.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-phone-4-1179x2556.jpg"
   },
   {
-   "id": "wallpapers-phone-manga-page-1290x2796",
-   "title": "Manga page, phone",
-   "group": "wallpapers-phone-manga-page",
+   "id": "wallpapers-m-wallpaper-phone-5-1179x2556",
+   "title": "Phone 5",
+   "group": "wallpapers-m-wallpaper-phone-5",
    "kind": "wallpapers",
-   "size": "1290 × 2796",
+   "size": "1179 × 2556",
    "w": 736,
    "h": 1600,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-phone-manga-page-1290x2796.webp",
-   "original": "/capy/wallpapers/wallpapers-phone-manga-page-1290x2796.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-phone-5-1179x2556.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-phone-5-1179x2556.jpg"
   },
   {
-   "id": "wallpapers-phone-mark-1290x2796",
-   "title": "Big mark",
-   "group": "wallpapers-phone-mark",
+   "id": "wallpapers-m-wallpaper-phone-6-1179x2556",
+   "title": "Phone 6",
+   "group": "wallpapers-m-wallpaper-phone-6",
    "kind": "wallpapers",
-   "size": "1290 × 2796",
+   "size": "1179 × 2556",
    "w": 736,
    "h": 1600,
    "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-phone-mark-1290x2796.webp",
-   "original": "/capy/wallpapers/wallpapers-phone-mark-1290x2796.jpg"
+   "preview": "/capy/wallpapers/wallpapers-m-wallpaper-phone-6-1179x2556.webp",
+   "original": "/capy/wallpapers/wallpapers-m-wallpaper-phone-6-1179x2556.jpg"
   },
   {
-   "id": "wallpapers-phone-speech-bubble-1290x2796",
-   "title": "Speech bubble, phone",
-   "group": "wallpapers-phone-speech-bubble",
-   "kind": "wallpapers",
-   "size": "1290 × 2796",
-   "w": 736,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-phone-speech-bubble-1290x2796.webp",
-   "original": "/capy/wallpapers/wallpapers-phone-speech-bubble-1290x2796.jpg"
-  },
-  {
-   "id": "wallpapers-phone-stampede-1290x2796",
-   "title": "Stampede, phone",
-   "group": "wallpapers-phone-stampede",
-   "kind": "wallpapers",
-   "size": "1290 × 2796",
-   "w": 736,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/wallpapers/wallpapers-phone-stampede-1290x2796.webp",
-   "original": "/capy/wallpapers/wallpapers-phone-stampede-1290x2796.jpg"
-  },
-  {
-   "id": "social-hacking-at-blue-1080x1350",
-   "title": "I am hacking at, blue style",
-   "group": "social-hacking-at-blue",
+   "id": "social-m-social-am10-1080x1350",
+   "title": "10 am",
+   "group": "social-m-social-am10",
    "kind": "social",
    "size": "1080 × 1350",
    "w": 1080,
    "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-hacking-at-blue-1080x1350.webp",
-   "original": "/capy/social/social-hacking-at-blue-1080x1350.jpg"
+   "preview": "/capy/social/social-m-social-am10-1080x1350.webp",
+   "original": "/capy/social/social-m-social-am10-1080x1350.jpg"
   },
   {
-   "id": "social-hacking-at-ink-1080x1350",
-   "title": "I am hacking at, ink style",
-   "group": "social-hacking-at-ink",
+   "id": "social-m-social-am10-1080x1920",
+   "title": "10 am",
+   "group": "social-m-social-am10",
+   "kind": "social",
+   "size": "1080 × 1920",
+   "w": 900,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/social/social-m-social-am10-1080x1920.webp",
+   "original": "/capy/social/social-m-social-am10-1080x1920.jpg"
+  },
+  {
+   "id": "social-m-social-am8-1080x1350",
+   "title": "8 am",
+   "group": "social-m-social-am8",
    "kind": "social",
    "size": "1080 × 1350",
    "w": 1080,
    "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-hacking-at-ink-1080x1350.webp",
-   "original": "/capy/social/social-hacking-at-ink-1080x1350.jpg"
+   "preview": "/capy/social/social-m-social-am8-1080x1350.webp",
+   "original": "/capy/social/social-m-social-am8-1080x1350.jpg"
   },
   {
-   "id": "social-hacking-at-lines-1080x1350",
-   "title": "I am hacking at, lines style",
-   "group": "social-hacking-at-lines",
+   "id": "social-m-social-am8-1080x1920",
+   "title": "8 am",
+   "group": "social-m-social-am8",
+   "kind": "social",
+   "size": "1080 × 1920",
+   "w": 900,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/social/social-m-social-am8-1080x1920.webp",
+   "original": "/capy/social/social-m-social-am8-1080x1920.jpg"
+  },
+  {
+   "id": "social-m-social-b180-1080x1350",
+   "title": "B180",
+   "group": "social-m-social-b180",
    "kind": "social",
    "size": "1080 × 1350",
    "w": 1080,
    "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-hacking-at-lines-1080x1350.webp",
-   "original": "/capy/social/social-hacking-at-lines-1080x1350.jpg"
+   "preview": "/capy/social/social-m-social-b180-1080x1350.webp",
+   "original": "/capy/social/social-m-social-b180-1080x1350.jpg"
   },
   {
-   "id": "social-hacking-at-plate-1080x1350",
-   "title": "I am hacking at, plate style",
-   "group": "social-hacking-at-plate",
+   "id": "social-m-social-b180-1080x1920",
+   "title": "B180",
+   "group": "social-m-social-b180",
+   "kind": "social",
+   "size": "1080 × 1920",
+   "w": 900,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/social/social-m-social-b180-1080x1920.webp",
+   "original": "/capy/social/social-m-social-b180-1080x1920.jpg"
+  },
+  {
+   "id": "social-m-social-pm1230-1080x1350",
+   "title": "12:30 pm",
+   "group": "social-m-social-pm1230",
    "kind": "social",
    "size": "1080 × 1350",
    "w": 1080,
    "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-hacking-at-plate-1080x1350.webp",
-   "original": "/capy/social/social-hacking-at-plate-1080x1350.jpg"
+   "preview": "/capy/social/social-m-social-pm1230-1080x1350.webp",
+   "original": "/capy/social/social-m-social-pm1230-1080x1350.jpg"
   },
   {
-   "id": "social-linkedin-everyday-1200x627",
-   "title": "Build an app people open every day",
-   "group": "social-linkedin-everyday",
-   "kind": "social",
-   "size": "1200 × 627",
-   "w": 1200,
-   "h": 627,
-   "type": "image",
-   "preview": "/capy/social/social-linkedin-everyday-1200x627.webp",
-   "original": "/capy/social/social-linkedin-everyday-1200x627.jpg"
-  },
-  {
-   "id": "social-linkedin-presented-1200x627",
-   "title": "Title page with presenters",
-   "group": "social-linkedin-presented",
-   "kind": "social",
-   "size": "1200 × 627",
-   "w": 1200,
-   "h": 627,
-   "type": "image",
-   "preview": "/capy/social/social-linkedin-presented-1200x627.webp",
-   "original": "/capy/social/social-linkedin-presented-1200x627.jpg"
-  },
-  {
-   "id": "social-linkedin-stampede-1200x627",
-   "title": "Stampede, November 15",
-   "group": "social-linkedin-stampede",
-   "kind": "social",
-   "size": "1200 × 627",
-   "w": 1200,
-   "h": 627,
-   "type": "image",
-   "preview": "/capy/social/social-linkedin-stampede-1200x627.webp",
-   "original": "/capy/social/social-linkedin-stampede-1200x627.jpg"
-  },
-  {
-   "id": "social-luma-cover-dinner-1920x1080",
-   "title": "Ship it by dinner",
-   "group": "social-luma-cover-dinner",
-   "kind": "social",
-   "size": "1920 × 1080",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/social/social-luma-cover-dinner-1920x1080.webp",
-   "original": "/capy/social/social-luma-cover-dinner-1920x1080.jpg"
-  },
-  {
-   "id": "social-luma-cover-presented-1920x1080",
-   "title": "Title page with presenters 2",
-   "group": "social-luma-cover-presented",
-   "kind": "social",
-   "size": "1920 × 1080",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/social/social-luma-cover-presented-1920x1080.webp",
-   "original": "/capy/social/social-luma-cover-presented-1920x1080.jpg"
-  },
-  {
-   "id": "social-luma-cover-stampede-1920x1080",
-   "title": "Stampede, November 15 2",
-   "group": "social-luma-cover-stampede",
-   "kind": "social",
-   "size": "1920 × 1080",
-   "w": 1600,
-   "h": 900,
-   "type": "image",
-   "preview": "/capy/social/social-luma-cover-stampede-1920x1080.webp",
-   "original": "/capy/social/social-luma-cover-stampede-1920x1080.jpg"
-  },
-  {
-   "id": "social-square-crew-1080x1080",
-   "title": "Teams of up to 3",
-   "group": "social-square-crew",
-   "kind": "social",
-   "size": "1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/social/social-square-crew-1080x1080.webp",
-   "original": "/capy/social/social-square-crew-1080x1080.jpg"
-  },
-  {
-   "id": "social-square-dinner-1080x1080",
-   "title": "Ship it by dinner 2",
-   "group": "social-square-dinner",
-   "kind": "social",
-   "size": "1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/social/social-square-dinner-1080x1080.webp",
-   "original": "/capy/social/social-square-dinner-1080x1080.jpg"
-  },
-  {
-   "id": "social-square-everyday-1080x1080",
-   "title": "Build an app people open every day 2",
-   "group": "social-square-everyday",
-   "kind": "social",
-   "size": "1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/social/social-square-everyday-1080x1080.webp",
-   "original": "/capy/social/social-square-everyday-1080x1080.jpg"
-  },
-  {
-   "id": "social-square-oneeighty-1080x1080",
-   "title": "180 builders, one day",
-   "group": "social-square-oneeighty",
-   "kind": "social",
-   "size": "1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/social/social-square-oneeighty-1080x1080.webp",
-   "original": "/capy/social/social-square-oneeighty-1080x1080.jpg"
-  },
-  {
-   "id": "social-square-scratch-1080x1080",
-   "title": "Start from scratch",
-   "group": "social-square-scratch",
-   "kind": "social",
-   "size": "1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/social/social-square-scratch-1080x1080.webp",
-   "original": "/capy/social/social-square-scratch-1080x1080.jpg"
-  },
-  {
-   "id": "social-square-stampede-1080x1080",
-   "title": "Stampede, November 15 3",
-   "group": "social-square-stampede",
-   "kind": "social",
-   "size": "1080 × 1080",
-   "w": 1080,
-   "h": 1080,
-   "type": "image",
-   "preview": "/capy/social/social-square-stampede-1080x1080.webp",
-   "original": "/capy/social/social-square-stampede-1080x1080.jpg"
-  },
-  {
-   "id": "social-story-crew-1080x1920",
-   "title": "Teams of up to 3 2",
-   "group": "social-story-crew",
+   "id": "social-m-social-pm1230-1080x1920",
+   "title": "12:30 pm",
+   "group": "social-m-social-pm1230",
    "kind": "social",
    "size": "1080 × 1920",
    "w": 900,
    "h": 1600,
    "type": "image",
-   "preview": "/capy/social/social-story-crew-1080x1920.webp",
-   "original": "/capy/social/social-story-crew-1080x1920.jpg"
+   "preview": "/capy/social/social-m-social-pm1230-1080x1920.webp",
+   "original": "/capy/social/social-m-social-pm1230-1080x1920.jpg"
   },
   {
-   "id": "social-story-dinner-1080x1920",
-   "title": "Ship it by dinner 3",
-   "group": "social-story-dinner",
-   "kind": "social",
-   "size": "1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/social/social-story-dinner-1080x1920.webp",
-   "original": "/capy/social/social-story-dinner-1080x1920.jpg"
-  },
-  {
-   "id": "social-story-everyday-1080x1920",
-   "title": "Build an app people open every day 3",
-   "group": "social-story-everyday",
-   "kind": "social",
-   "size": "1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/social/social-story-everyday-1080x1920.webp",
-   "original": "/capy/social/social-story-everyday-1080x1920.jpg"
-  },
-  {
-   "id": "social-story-oneeighty-1080x1920",
-   "title": "180 builders, one day 2",
-   "group": "social-story-oneeighty",
-   "kind": "social",
-   "size": "1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/social/social-story-oneeighty-1080x1920.webp",
-   "original": "/capy/social/social-story-oneeighty-1080x1920.jpg"
-  },
-  {
-   "id": "social-story-scratch-1080x1920",
-   "title": "Start from scratch 2",
-   "group": "social-story-scratch",
-   "kind": "social",
-   "size": "1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/social/social-story-scratch-1080x1920.webp",
-   "original": "/capy/social/social-story-scratch-1080x1920.jpg"
-  },
-  {
-   "id": "social-story-stampede-1080x1920",
-   "title": "Stampede, November 15 4",
-   "group": "social-story-stampede",
-   "kind": "social",
-   "size": "1080 × 1920",
-   "w": 900,
-   "h": 1600,
-   "type": "image",
-   "preview": "/capy/social/social-story-stampede-1080x1920.webp",
-   "original": "/capy/social/social-story-stampede-1080x1920.jpg"
-  },
-  {
-   "id": "social-we-shipped-1080x1350",
-   "title": "We shipped",
-   "group": "social-we-shipped",
+   "id": "social-m-social-pm6-1080x1350",
+   "title": "6 pm",
+   "group": "social-m-social-pm6",
    "kind": "social",
    "size": "1080 × 1350",
    "w": 1080,
    "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-we-shipped-1080x1350.webp",
-   "original": "/capy/social/social-we-shipped-1080x1350.jpg"
+   "preview": "/capy/social/social-m-social-pm6-1080x1350.webp",
+   "original": "/capy/social/social-m-social-pm6-1080x1350.jpg"
   },
   {
-   "id": "social-we-shipped-1080x1920",
-   "title": "We shipped",
-   "group": "social-we-shipped",
+   "id": "social-m-social-pm6-1080x1920",
+   "title": "6 pm",
+   "group": "social-m-social-pm6",
    "kind": "social",
    "size": "1080 × 1920",
    "w": 900,
    "h": 1600,
    "type": "image",
-   "preview": "/capy/social/social-we-shipped-1080x1920.webp",
-   "original": "/capy/social/social-we-shipped-1080x1920.jpg"
+   "preview": "/capy/social/social-m-social-pm6-1080x1920.webp",
+   "original": "/capy/social/social-m-social-pm6-1080x1920.jpg"
   },
   {
-   "id": "social-we-shipped-1080x1080",
-   "title": "We shipped",
-   "group": "social-we-shipped",
+   "id": "social-m-social-pm8-1080x1350",
+   "title": "8 pm",
+   "group": "social-m-social-pm8",
    "kind": "social",
-   "size": "1080 × 1080",
+   "size": "1080 × 1350",
    "w": 1080,
-   "h": 1080,
+   "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-we-shipped-1080x1080.webp",
-   "original": "/capy/social/social-we-shipped-1080x1080.jpg"
+   "preview": "/capy/social/social-m-social-pm8-1080x1350.webp",
+   "original": "/capy/social/social-m-social-pm8-1080x1350.jpg"
   },
   {
-   "id": "social-x-header-crew-1500x500",
-   "title": "Teams of up to 3 3",
-   "group": "social-x-header-crew",
+   "id": "social-m-social-pm8-1080x1920",
+   "title": "8 pm",
+   "group": "social-m-social-pm8",
    "kind": "social",
-   "size": "1500 × 500",
-   "w": 1500,
-   "h": 500,
+   "size": "1080 × 1920",
+   "w": 900,
+   "h": 1600,
    "type": "image",
-   "preview": "/capy/social/social-x-header-crew-1500x500.webp",
-   "original": "/capy/social/social-x-header-crew-1500x500.jpg"
+   "preview": "/capy/social/social-m-social-pm8-1080x1920.webp",
+   "original": "/capy/social/social-m-social-pm8-1080x1920.jpg"
   },
   {
-   "id": "social-x-header-dinner-1500x500",
-   "title": "Ship it by dinner 4",
-   "group": "social-x-header-dinner",
+   "id": "social-m-social-scratch-1080x1350",
+   "title": "Scratch",
+   "group": "social-m-social-scratch",
    "kind": "social",
-   "size": "1500 × 500",
-   "w": 1500,
-   "h": 500,
+   "size": "1080 × 1350",
+   "w": 1080,
+   "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-x-header-dinner-1500x500.webp",
-   "original": "/capy/social/social-x-header-dinner-1500x500.jpg"
+   "preview": "/capy/social/social-m-social-scratch-1080x1350.webp",
+   "original": "/capy/social/social-m-social-scratch-1080x1350.jpg"
   },
   {
-   "id": "social-x-header-oneeighty-1500x500",
-   "title": "180 builders, one day 3",
-   "group": "social-x-header-oneeighty",
+   "id": "social-m-social-scratch-1080x1920",
+   "title": "Scratch",
+   "group": "social-m-social-scratch",
    "kind": "social",
-   "size": "1500 × 500",
-   "w": 1500,
-   "h": 500,
+   "size": "1080 × 1920",
+   "w": 900,
+   "h": 1600,
    "type": "image",
-   "preview": "/capy/social/social-x-header-oneeighty-1500x500.webp",
-   "original": "/capy/social/social-x-header-oneeighty-1500x500.jpg"
+   "preview": "/capy/social/social-m-social-scratch-1080x1920.webp",
+   "original": "/capy/social/social-m-social-scratch-1080x1920.jpg"
   },
   {
-   "id": "social-x-header-stampede-1500x500",
-   "title": "Stampede, November 15 5",
-   "group": "social-x-header-stampede",
+   "id": "social-m-social-team3-1080x1350",
+   "title": "Team3",
+   "group": "social-m-social-team3",
    "kind": "social",
-   "size": "1500 × 500",
-   "w": 1500,
-   "h": 500,
+   "size": "1080 × 1350",
+   "w": 1080,
+   "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-x-header-stampede-1500x500.webp",
-   "original": "/capy/social/social-x-header-stampede-1500x500.jpg"
+   "preview": "/capy/social/social-m-social-team3-1080x1350.webp",
+   "original": "/capy/social/social-m-social-team3-1080x1350.jpg"
   },
   {
-   "id": "social-x-post-crew-1600x900",
-   "title": "Teams of up to 3 4",
-   "group": "social-x-post-crew",
+   "id": "social-m-social-team3-1080x1920",
+   "title": "Team3",
+   "group": "social-m-social-team3",
    "kind": "social",
-   "size": "1600 × 900",
-   "w": 1600,
-   "h": 900,
+   "size": "1080 × 1920",
+   "w": 900,
+   "h": 1600,
    "type": "image",
-   "preview": "/capy/social/social-x-post-crew-1600x900.webp",
-   "original": "/capy/social/social-x-post-crew-1600x900.jpg"
+   "preview": "/capy/social/social-m-social-team3-1080x1920.webp",
+   "original": "/capy/social/social-m-social-team3-1080x1920.jpg"
   },
   {
-   "id": "social-x-post-dinner-1600x900",
-   "title": "Ship it by dinner 5",
-   "group": "social-x-post-dinner",
+   "id": "social-m-social-today-1080x1350",
+   "title": "Today",
+   "group": "social-m-social-today",
    "kind": "social",
-   "size": "1600 × 900",
-   "w": 1600,
-   "h": 900,
+   "size": "1080 × 1350",
+   "w": 1080,
+   "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-x-post-dinner-1600x900.webp",
-   "original": "/capy/social/social-x-post-dinner-1600x900.jpg"
+   "preview": "/capy/social/social-m-social-today-1080x1350.webp",
+   "original": "/capy/social/social-m-social-today-1080x1350.jpg"
   },
   {
-   "id": "social-x-post-everyday-1600x900",
-   "title": "Build an app people open every day 4",
-   "group": "social-x-post-everyday",
+   "id": "social-m-social-today-1080x1920",
+   "title": "Today",
+   "group": "social-m-social-today",
    "kind": "social",
-   "size": "1600 × 900",
-   "w": 1600,
-   "h": 900,
+   "size": "1080 × 1920",
+   "w": 900,
+   "h": 1600,
    "type": "image",
-   "preview": "/capy/social/social-x-post-everyday-1600x900.webp",
-   "original": "/capy/social/social-x-post-everyday-1600x900.jpg"
+   "preview": "/capy/social/social-m-social-today-1080x1920.webp",
+   "original": "/capy/social/social-m-social-today-1080x1920.jpg"
   },
   {
-   "id": "social-x-post-oneeighty-1600x900",
-   "title": "180 builders, one day 4",
-   "group": "social-x-post-oneeighty",
+   "id": "social-m-social-tomorrow-1080x1350",
+   "title": "Tomorrow",
+   "group": "social-m-social-tomorrow",
    "kind": "social",
-   "size": "1600 × 900",
-   "w": 1600,
-   "h": 900,
+   "size": "1080 × 1350",
+   "w": 1080,
+   "h": 1350,
    "type": "image",
-   "preview": "/capy/social/social-x-post-oneeighty-1600x900.webp",
-   "original": "/capy/social/social-x-post-oneeighty-1600x900.jpg"
+   "preview": "/capy/social/social-m-social-tomorrow-1080x1350.webp",
+   "original": "/capy/social/social-m-social-tomorrow-1080x1350.jpg"
   },
   {
-   "id": "social-x-post-scratch-1600x900",
-   "title": "Start from scratch 3",
-   "group": "social-x-post-scratch",
+   "id": "social-m-social-tomorrow-1080x1920",
+   "title": "Tomorrow",
+   "group": "social-m-social-tomorrow",
    "kind": "social",
-   "size": "1600 × 900",
-   "w": 1600,
-   "h": 900,
+   "size": "1080 × 1920",
+   "w": 900,
+   "h": 1600,
    "type": "image",
-   "preview": "/capy/social/social-x-post-scratch-1600x900.webp",
-   "original": "/capy/social/social-x-post-scratch-1600x900.jpg"
+   "preview": "/capy/social/social-m-social-tomorrow-1080x1920.webp",
+   "original": "/capy/social/social-m-social-tomorrow-1080x1920.jpg"
   },
   {
-   "id": "social-x-post-stampede-1600x900",
-   "title": "Stampede, November 15 6",
-   "group": "social-x-post-stampede",
-   "kind": "social",
-   "size": "1600 × 900",
-   "w": 1600,
-   "h": 900,
+   "id": "badges-m-badge-builder-4x6in",
+   "title": "Builder",
+   "group": "badges-m-badge-builder",
+   "kind": "badges",
+   "size": "4 × 6 in",
+   "w": 1066,
+   "h": 1600,
    "type": "image",
-   "preview": "/capy/social/social-x-post-stampede-1600x900.webp",
-   "original": "/capy/social/social-x-post-stampede-1600x900.jpg"
+   "preview": "/capy/badges/badges-m-badge-builder-4x6in.webp",
+   "original": "/capy/badges/badges-m-badge-builder-4x6in.jpg"
+  },
+  {
+   "id": "badges-m-badge-judge-4x6in",
+   "title": "Judge",
+   "group": "badges-m-badge-judge",
+   "kind": "badges",
+   "size": "4 × 6 in",
+   "w": 1066,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/badges/badges-m-badge-judge-4x6in.webp",
+   "original": "/capy/badges/badges-m-badge-judge-4x6in.jpg"
+  },
+  {
+   "id": "badges-m-badge-mentor-4x6in",
+   "title": "Mentor",
+   "group": "badges-m-badge-mentor",
+   "kind": "badges",
+   "size": "4 × 6 in",
+   "w": 1066,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/badges/badges-m-badge-mentor-4x6in.webp",
+   "original": "/capy/badges/badges-m-badge-mentor-4x6in.jpg"
+  },
+  {
+   "id": "badges-m-badge-press-4x6in",
+   "title": "Press",
+   "group": "badges-m-badge-press",
+   "kind": "badges",
+   "size": "4 × 6 in",
+   "w": 1066,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/badges/badges-m-badge-press-4x6in.webp",
+   "original": "/capy/badges/badges-m-badge-press-4x6in.jpg"
+  },
+  {
+   "id": "badges-m-badge-sponsor-4x6in",
+   "title": "Sponsor",
+   "group": "badges-m-badge-sponsor",
+   "kind": "badges",
+   "size": "4 × 6 in",
+   "w": 1066,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/badges/badges-m-badge-sponsor-4x6in.webp",
+   "original": "/capy/badges/badges-m-badge-sponsor-4x6in.jpg"
+  },
+  {
+   "id": "badges-m-badge-staff-4x6in",
+   "title": "Staff",
+   "group": "badges-m-badge-staff",
+   "kind": "badges",
+   "size": "4 × 6 in",
+   "w": 1066,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/badges/badges-m-badge-staff-4x6in.webp",
+   "original": "/capy/badges/badges-m-badge-staff-4x6in.jpg"
   },
   {
    "id": "badges-badge-back-4x6in-preview-guest-main",
@@ -4583,7 +3755,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-back-4x6in-preview-guest-main.webp",
-   "original": "/capy/badges/badges-badge-back-4x6in-preview-guest-main.png"
+   "original": "/capy/badges/badges-badge-back-4x6in-preview-guest-main.jpg"
   },
   {
    "id": "badges-badge-back-4x6in-preview-hacker-main",
@@ -4595,7 +3767,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-back-4x6in-preview-hacker-main.webp",
-   "original": "/capy/badges/badges-badge-back-4x6in-preview-hacker-main.png"
+   "original": "/capy/badges/badges-badge-back-4x6in-preview-hacker-main.jpg"
   },
   {
    "id": "badges-badge-back-4x6in-preview-judge-main",
@@ -4607,7 +3779,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-back-4x6in-preview-judge-main.webp",
-   "original": "/capy/badges/badges-badge-back-4x6in-preview-judge-main.png"
+   "original": "/capy/badges/badges-badge-back-4x6in-preview-judge-main.jpg"
   },
   {
    "id": "badges-badge-back-4x6in-preview-mentor-main",
@@ -4619,7 +3791,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-back-4x6in-preview-mentor-main.webp",
-   "original": "/capy/badges/badges-badge-back-4x6in-preview-mentor-main.png"
+   "original": "/capy/badges/badges-badge-back-4x6in-preview-mentor-main.jpg"
   },
   {
    "id": "badges-badge-back-4x6in-preview-staff-main",
@@ -4631,7 +3803,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-back-4x6in-preview-staff-main.webp",
-   "original": "/capy/badges/badges-badge-back-4x6in-preview-staff-main.png"
+   "original": "/capy/badges/badges-badge-back-4x6in-preview-staff-main.jpg"
   },
   {
    "id": "badges-badge-front-4x6in-preview-guest-main",
@@ -4643,7 +3815,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-front-4x6in-preview-guest-main.webp",
-   "original": "/capy/badges/badges-badge-front-4x6in-preview-guest-main.png"
+   "original": "/capy/badges/badges-badge-front-4x6in-preview-guest-main.jpg"
   },
   {
    "id": "badges-badge-front-4x6in-preview-hacker-main",
@@ -4655,7 +3827,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-front-4x6in-preview-hacker-main.webp",
-   "original": "/capy/badges/badges-badge-front-4x6in-preview-hacker-main.png"
+   "original": "/capy/badges/badges-badge-front-4x6in-preview-hacker-main.jpg"
   },
   {
    "id": "badges-badge-front-4x6in-preview-judge-main",
@@ -4667,7 +3839,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-front-4x6in-preview-judge-main.webp",
-   "original": "/capy/badges/badges-badge-front-4x6in-preview-judge-main.png"
+   "original": "/capy/badges/badges-badge-front-4x6in-preview-judge-main.jpg"
   },
   {
    "id": "badges-badge-front-4x6in-preview-mentor-main",
@@ -4679,7 +3851,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-front-4x6in-preview-mentor-main.webp",
-   "original": "/capy/badges/badges-badge-front-4x6in-preview-mentor-main.png"
+   "original": "/capy/badges/badges-badge-front-4x6in-preview-mentor-main.jpg"
   },
   {
    "id": "badges-badge-front-4x6in-preview-staff-main",
@@ -4691,19 +3863,19 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-badge-front-4x6in-preview-staff-main.webp",
-   "original": "/capy/badges/badges-badge-front-4x6in-preview-staff-main.png"
+   "original": "/capy/badges/badges-badge-front-4x6in-preview-staff-main.jpg"
   },
   {
-   "id": "badges-lanyard-0-75x36in-main",
+   "id": "badges-lanyard-0-75x36in",
    "title": "Lanyard strip, 7.2 in repeat",
-   "group": "badges-lanyard-0-75x36in",
+   "group": "badges-lanyard",
    "kind": "badges",
-   "size": "6912 × 144",
+   "size": "0.75 × 36 in",
    "w": 1600,
    "h": 33,
    "type": "image",
-   "preview": "/capy/badges/badges-lanyard-0-75x36in-main.webp",
-   "original": "/capy/badges/badges-lanyard-0-75x36in-main.png"
+   "preview": "/capy/badges/badges-lanyard-0-75x36in.webp",
+   "original": "/capy/badges/badges-lanyard-0-75x36in.jpg"
   },
   {
    "id": "badges-lanyard-0-75x36in-print-300dpi-main",
@@ -4715,7 +3887,7 @@
    "h": 33,
    "type": "image",
    "preview": "/capy/badges/badges-lanyard-0-75x36in-print-300dpi-main.webp",
-   "original": "/capy/badges/badges-lanyard-0-75x36in-print-300dpi-main.png"
+   "original": "/capy/badges/badges-lanyard-0-75x36in-print-300dpi-main.jpg"
   },
   {
    "id": "badges-pin-1-25in-preview-180",
@@ -4727,7 +3899,7 @@
    "h": 975,
    "type": "image",
    "preview": "/capy/badges/badges-pin-1-25in-preview-180.webp",
-   "original": "/capy/badges/badges-pin-1-25in-preview-180.png"
+   "original": "/capy/badges/badges-pin-1-25in-preview-180.jpg"
   },
   {
    "id": "badges-pin-1-25in-preview-captain-main",
@@ -4739,7 +3911,7 @@
    "h": 975,
    "type": "image",
    "preview": "/capy/badges/badges-pin-1-25in-preview-captain-main.webp",
-   "original": "/capy/badges/badges-pin-1-25in-preview-captain-main.png"
+   "original": "/capy/badges/badges-pin-1-25in-preview-captain-main.jpg"
   },
   {
    "id": "badges-pin-1-25in-preview-cursor-main",
@@ -4751,7 +3923,7 @@
    "h": 975,
    "type": "image",
    "preview": "/capy/badges/badges-pin-1-25in-preview-cursor-main.webp",
-   "original": "/capy/badges/badges-pin-1-25in-preview-cursor-main.png"
+   "original": "/capy/badges/badges-pin-1-25in-preview-cursor-main.jpg"
   },
   {
    "id": "badges-pin-1-25in-preview-date-main",
@@ -4763,7 +3935,7 @@
    "h": 975,
    "type": "image",
    "preview": "/capy/badges/badges-pin-1-25in-preview-date-main.webp",
-   "original": "/capy/badges/badges-pin-1-25in-preview-date-main.png"
+   "original": "/capy/badges/badges-pin-1-25in-preview-date-main.jpg"
   },
   {
    "id": "badges-pin-1-25in-preview-detective-main",
@@ -4775,7 +3947,7 @@
    "h": 975,
    "type": "image",
    "preview": "/capy/badges/badges-pin-1-25in-preview-detective-main.webp",
-   "original": "/capy/badges/badges-pin-1-25in-preview-detective-main.png"
+   "original": "/capy/badges/badges-pin-1-25in-preview-detective-main.jpg"
   },
   {
    "id": "badges-pin-1-25in-preview-glasses-main",
@@ -4787,7 +3959,7 @@
    "h": 975,
    "type": "image",
    "preview": "/capy/badges/badges-pin-1-25in-preview-glasses-main.webp",
-   "original": "/capy/badges/badges-pin-1-25in-preview-glasses-main.png"
+   "original": "/capy/badges/badges-pin-1-25in-preview-glasses-main.jpg"
   },
   {
    "id": "badges-pin-1-25in-preview-mark-main",
@@ -4799,7 +3971,7 @@
    "h": 975,
    "type": "image",
    "preview": "/capy/badges/badges-pin-1-25in-preview-mark-main.webp",
-   "original": "/capy/badges/badges-pin-1-25in-preview-mark-main.png"
+   "original": "/capy/badges/badges-pin-1-25in-preview-mark-main.jpg"
   },
   {
    "id": "badges-pin-1-25in-preview-peli-main",
@@ -4811,7 +3983,7 @@
    "h": 975,
    "type": "image",
    "preview": "/capy/badges/badges-pin-1-25in-preview-peli-main.webp",
-   "original": "/capy/badges/badges-pin-1-25in-preview-peli-main.png"
+   "original": "/capy/badges/badges-pin-1-25in-preview-peli-main.jpg"
   },
   {
    "id": "badges-tote-12x12in-3600x3600-transparent-main",
@@ -4835,7 +4007,7 @@
    "h": 1200,
    "type": "image",
    "preview": "/capy/badges/badges-tote-12x12in-preview-on-black-main.webp",
-   "original": "/capy/badges/badges-tote-12x12in-preview-on-black-main.png"
+   "original": "/capy/badges/badges-tote-12x12in-preview-on-black-main.jpg"
   },
   {
    "id": "badges-tote-12x12in-preview-on-white-main",
@@ -4847,7 +4019,7 @@
    "h": 1200,
    "type": "image",
    "preview": "/capy/badges/badges-tote-12x12in-preview-on-white-main.webp",
-   "original": "/capy/badges/badges-tote-12x12in-preview-on-white-main.png"
+   "original": "/capy/badges/badges-tote-12x12in-preview-on-white-main.jpg"
   },
   {
    "id": "badges-tshirt-back-15x18in-4500x5400-transparent-main",
@@ -4871,7 +4043,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-tshirt-back-15x18in-preview-on-black-main.webp",
-   "original": "/capy/badges/badges-tshirt-back-15x18in-preview-on-black-main.png"
+   "original": "/capy/badges/badges-tshirt-back-15x18in-preview-on-black-main.jpg"
   },
   {
    "id": "badges-tshirt-back-15x18in-preview-on-white-main",
@@ -4883,7 +4055,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-tshirt-back-15x18in-preview-on-white-main.webp",
-   "original": "/capy/badges/badges-tshirt-back-15x18in-preview-on-white-main.png"
+   "original": "/capy/badges/badges-tshirt-back-15x18in-preview-on-white-main.jpg"
   },
   {
    "id": "badges-tshirt-front-15x18in-4500x5400-transparent-main",
@@ -4907,7 +4079,7 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-tshirt-front-15x18in-preview-on-black-main.webp",
-   "original": "/capy/badges/badges-tshirt-front-15x18in-preview-on-black-main.png"
+   "original": "/capy/badges/badges-tshirt-front-15x18in-preview-on-black-main.jpg"
   },
   {
    "id": "badges-tshirt-front-15x18in-preview-on-white-main",
@@ -4919,19 +4091,115 @@
    "h": 1600,
    "type": "image",
    "preview": "/capy/badges/badges-tshirt-front-15x18in-preview-on-white-main.webp",
-   "original": "/capy/badges/badges-tshirt-front-15x18in-preview-on-white-main.png"
+   "original": "/capy/badges/badges-tshirt-front-15x18in-preview-on-white-main.jpg"
   },
   {
-   "id": "badges-wristband-1x10in-main",
+   "id": "badges-wristband-1x10in",
    "title": "Wristband, left 1.5 in is the adhesive tab",
-   "group": "badges-wristband-1x10in",
+   "group": "badges-wristband",
    "kind": "badges",
-   "size": "3000 × 300",
+   "size": "1 × 10 in",
    "w": 1600,
-   "h": 158,
+   "h": 159,
    "type": "image",
-   "preview": "/capy/badges/badges-wristband-1x10in-main.webp",
-   "original": "/capy/badges/badges-wristband-1x10in-main.png"
+   "preview": "/capy/badges/badges-wristband-1x10in.webp",
+   "original": "/capy/badges/badges-wristband-1x10in.jpg"
+  },
+  {
+   "id": "signs-m-sign-01-hacking-floor-18x24",
+   "title": "Hacking floor",
+   "group": "signs-m-sign-01-hacking-floor",
+   "kind": "signs",
+   "size": "18 × 24 in",
+   "w": 1200,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/signs/signs-m-sign-01-hacking-floor-18x24.webp",
+   "original": "/capy/signs/signs-m-sign-01-hacking-floor-18x24.jpg"
+  },
+  {
+   "id": "signs-m-sign-02-demos-18x24",
+   "title": "Demos",
+   "group": "signs-m-sign-02-demos",
+   "kind": "signs",
+   "size": "18 × 24 in",
+   "w": 1200,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/signs/signs-m-sign-02-demos-18x24.webp",
+   "original": "/capy/signs/signs-m-sign-02-demos-18x24.jpg"
+  },
+  {
+   "id": "signs-m-sign-03-food-18x24",
+   "title": "Food",
+   "group": "signs-m-sign-03-food",
+   "kind": "signs",
+   "size": "18 × 24 in",
+   "w": 1200,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/signs/signs-m-sign-03-food-18x24.webp",
+   "original": "/capy/signs/signs-m-sign-03-food-18x24.jpg"
+  },
+  {
+   "id": "signs-m-sign-04-quiet-room-18x24",
+   "title": "Quiet room",
+   "group": "signs-m-sign-04-quiet-room",
+   "kind": "signs",
+   "size": "18 × 24 in",
+   "w": 1200,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/signs/signs-m-sign-04-quiet-room-18x24.webp",
+   "original": "/capy/signs/signs-m-sign-04-quiet-room-18x24.jpg"
+  },
+  {
+   "id": "signs-m-sign-05-restrooms-18x24",
+   "title": "Restrooms",
+   "group": "signs-m-sign-05-restrooms",
+   "kind": "signs",
+   "size": "18 × 24 in",
+   "w": 1200,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/signs/signs-m-sign-05-restrooms-18x24.webp",
+   "original": "/capy/signs/signs-m-sign-05-restrooms-18x24.jpg"
+  },
+  {
+   "id": "signs-m-sign-06-registration-18x24",
+   "title": "Registration",
+   "group": "signs-m-sign-06-registration",
+   "kind": "signs",
+   "size": "18 × 24 in",
+   "w": 1200,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/signs/signs-m-sign-06-registration-18x24.webp",
+   "original": "/capy/signs/signs-m-sign-06-registration-18x24.jpg"
+  },
+  {
+   "id": "signs-m-sign-07-this-way-left-18x24",
+   "title": "This way left",
+   "group": "signs-m-sign-07-this-way-left",
+   "kind": "signs",
+   "size": "18 × 24 in",
+   "w": 1200,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/signs/signs-m-sign-07-this-way-left-18x24.webp",
+   "original": "/capy/signs/signs-m-sign-07-this-way-left-18x24.jpg"
+  },
+  {
+   "id": "signs-m-sign-08-this-way-right-18x24",
+   "title": "This way right",
+   "group": "signs-m-sign-08-this-way-right",
+   "kind": "signs",
+   "size": "18 × 24 in",
+   "w": 1200,
+   "h": 1600,
+   "type": "image",
+   "preview": "/capy/signs/signs-m-sign-08-this-way-right-18x24.webp",
+   "original": "/capy/signs/signs-m-sign-08-this-way-right-18x24.jpg"
   },
   {
    "id": "signs-door-hanger-4x11",
