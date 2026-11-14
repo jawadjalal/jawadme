@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // /capy asks the optimizer for 256 and 640 wide copies of its pictures; keep them a month so each is made once
-    minimumCacheTTL: 2678400,
+    // /capy asks the optimizer for 256 and 640 wide copies of its pictures; keep them a week
+    minimumCacheTTL: 604800,
     remotePatterns: [
       { protocol: "https", hostname: "www.google.com" },
       { protocol: "https", hostname: "icons.duckduckgo.com" },

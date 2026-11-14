@@ -66,6 +66,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     return () => {
       e.destroy();
       eng.current = null;
+      delete w.__capy;
     };
   }, [board, list]);
 
@@ -163,7 +164,9 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
         return;
       }
       const k = ev.key;
+      if (ev.repeat && /^[tThHeE?]$/.test(k)) return ev.preventDefault();
       let used = true;
+      if (e.tour && k.startsWith("Arrow")) e.stopTour();
       if (k === "Escape") {
         if (exp || help || clustersOpen) {
           setExp(false);
@@ -209,7 +212,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   const c = board.clusters[st.cluster];
   const one = selPieces.length === 1 ? selPieces[0] : null;
   const oneCluster = one ? board.clusters[one.cluster] : null;
-  const pct = Math.round(st.z * 100);
+  const pct = st.z >= 0.1 ? Math.round(st.z * 100) : Math.round(st.z * 1000) / 10;
   const e = eng.current;
 
   return (
@@ -235,6 +238,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
                 onClick={() => {
                   setClustersOpen(false);
                   e?.stopMotion();
+                  e?.forget();
                   e?.select([], false);
                   e?.flyTo(e.fitView(k, 0));
                 }}

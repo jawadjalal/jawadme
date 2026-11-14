@@ -33,7 +33,7 @@ export const TOUR: Shot[] = [
   { to: { piece: "strips-s2-clock-a4", frac: [0, 0.02, 1, 0.38] }, move: 750, hold: 850, ease: "glide", rho: 0.4 },
   { to: { piece: "strips-s2-clock-a4", frac: [0, 0.33, 1, 0.69] }, move: 700, hold: 850, ease: "glide", rho: 0.2 },
   { to: { piece: "strips-s2-clock-a4", frac: [0, 0.63, 1, 0.99] }, move: 700, hold: 650, ease: "glide", rho: 0.2 },
-  { to: { cluster: "rebuilds" }, move: 1150, hold: 350, ease: "whip", rho: 1.2, caption: { n: "02", title: "Posters", sub: "72 rebuilds, every size" } },
+  { to: { cluster: "rebuilds" }, move: 1150, hold: 350, ease: "whip", rho: 1.2, caption: { n: "02", title: "Rebuilds", sub: "72 posters, every size" } },
   { to: { piece: "tankobon-15-poster-24x36" }, move: 800, hold: 900, ease: "glide", rho: 0.8 },
   { to: { cluster: "stickers" }, move: 1000, hold: 300, ease: "whip", rho: 1.2, caption: { n: "03", title: "Stickers", sub: "41 die-cuts" } },
   { to: { piece: "stickers-m-sticker-03-boom-1200x1200" }, move: 700, hold: 750, ease: "glide", rho: 0.8 },

@@ -10,7 +10,7 @@ html:has(.cb) body {
 .cb {
   --ink: #0a0a0a;
   --ink-2: #5e5e5e;
-  --ink-3: #8d8d8d;
+  --ink-3: #6b6b6b;
   --blue: #3b5de8;
   --ground: #ecebe7;
   --panel: rgba(255, 255, 255, 0.92);
@@ -41,6 +41,8 @@ html:has(.cb) body {
 .cb-off .cb-head, .cb-off .cb-clusters, .cb-off .cb-bar, .cb-off .cb-info, .cb-off .cb-hint, .cb-off .cb-exp, .cb-off .cb-help {
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
+  transition: opacity 260ms var(--ease), transform 260ms var(--ease), visibility 0s 260ms;
 }
 .cb-off .cb-bar { transform: translate(-50%, 8px); }
 
@@ -109,6 +111,7 @@ html:has(.cb) body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   white-space: nowrap;
+  max-width: calc(100vw - 16px);
 }
 .cb-bar > button { height: 34px; min-width: 34px; padding: 0 11px; border-radius: 8px; font-size: 13px; font-weight: 550; letter-spacing: -0.005em; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: background 120ms, color 120ms; }
 .cb-bar > button:hover { background: rgba(10, 10, 10, 0.05); }
@@ -156,7 +159,7 @@ html:has(.cb) body {
   .cb-clusters { display: none; left: 50%; top: auto; bottom: 72px; transform: translateX(-50%); width: min(280px, calc(100vw - 32px)); }
   .cb-clusters.cb-open { display: block; }
   .cb-clusters ol { max-height: 50vh; overflow: auto; }
-  .cb-mob { display: inline-flex !important; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+  .cb-mob { display: inline-flex !important; max-width: 96px; overflow: hidden; text-overflow: ellipsis; }
   .cb-wide { display: none !important; }
   .cb-hint { display: none; }
   .cb-bar { bottom: 14px; }

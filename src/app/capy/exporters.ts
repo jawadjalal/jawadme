@@ -195,7 +195,7 @@ export async function viewPng(
   ctx.fillRect(0, 0, w, h);
   draw(ctx);
   ctx.font = "500 12px ui-sans-serif, system-ui, sans-serif";
-  ctx.fillStyle = "#8a8a8a";
+  ctx.fillStyle = "#3a3a3a";
   ctx.textBaseline = "bottom";
   ctx.fillText(FAN_LINE, 16, h - 14);
   return new Promise((ok, no) => c.toBlob((b) => (b ? ok(b) : no(new Error("toBlob"))), "image/png"));
@@ -222,7 +222,8 @@ export async function pngSheet(ps: Piece[], max = 8000): Promise<Blob> {
   const box = bounds(ps);
   const W = box.w + pad * 2;
   const H = box.h + pad * 2;
-  const k = Math.min(1, max / Math.max(W, H));
+  // under about 16 megapixels too, the most a phone's canvas will hold
+  const k = Math.min(1, max / Math.max(W, H), Math.sqrt(16e6 / (W * H)));
   const c = document.createElement("canvas");
   c.width = Math.round(W * k);
   c.height = Math.round(H * k + 40);
@@ -233,13 +234,16 @@ export async function pngSheet(ps: Piece[], max = 8000): Promise<Blob> {
     const px = p.w * k;
     return px <= 256 ? sized(p.a.preview, 256) : px <= 640 ? sized(p.a.preview, 640) : p.a.preview;
   };
-  await Promise.all(
-    ps.map(async (p) => {
+  // eight at a time, so a whole board does not fetch and decode 376 pictures at once
+  const todo = [...ps];
+  const worker = async () => {
+    for (let p = todo.shift(); p; p = todo.shift()) {
       const bmp = await createImageBitmap(await blobOf(want(p)));
       ctx.drawImage(bmp, (p.x - box.x + pad) * k, (p.y - box.y + pad) * k, p.w * k, p.h * k);
       bmp.close();
-    }),
-  );
+    }
+  };
+  await Promise.all(Array.from({ length: 8 }, worker));
   ctx.font = "500 14px ui-sans-serif, system-ui, sans-serif";
   ctx.fillStyle = "#6b6b6b";
   ctx.textBaseline = "bottom";

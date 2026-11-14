@@ -130,6 +130,7 @@ class Pictures {
         .then(() => {
           t.img = img;
           t.state = ST.ready;
+          t.used = performance.now();
           this.evict(l);
           this.onReady();
         })
@@ -159,7 +160,10 @@ class Pictures {
     const held = this.tex.map((ts, i) => ({ i, t: ts[l] })).filter((x) => x.t.state === ST.ready);
     if (held.length <= BUDGET[l]) return;
     held.sort((a, b) => a.t.used - b.t.used);
+    // the oldest go; a picture drawn in the last half second is on screen and stays
+    const recent = performance.now() - 500;
     for (const { t } of held.slice(0, held.length - BUDGET[l])) {
+      if (t.used > recent) continue;
       t.img = null;
       t.state = ST.none;
     }
@@ -208,6 +212,9 @@ export class Engine {
   private videos = new Map<number, HTMLVideoElement>();
   private videoBox: HTMLDivElement;
   private lastState = "";
+  private lastDx = 0;
+  /** prefers-reduced-motion: flights cut, no throw, no drift */
+  calm = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
   private off: (() => void)[] = [];
 
   constructor(canvas: HTMLCanvasElement, board: Board) {
@@ -228,7 +235,7 @@ export class Engine {
   destroy() {
     cancelAnimationFrame(this.raf);
     this.off.forEach((f) => f());
-    this.videos.forEach((v) => v.pause());
+    this.prune(new Set());
     this.videoBox.remove();
   }
 
@@ -313,7 +320,7 @@ export class Engine {
     this.touched = true;
     const from = { ...this.view };
     const p = zoomPath([from.x, from.y, this.vw / from.z], [target.x, target.y, this.vw / target.z], opts.rho ?? 1.1);
-    const dur = opts.dur ?? clamp(Math.abs(p.S) * 230, 500, 700);
+    const dur = this.calm ? 1 : (opts.dur ?? clamp(Math.abs(p.S) * 230, 500, 700));
     this.flight = {
       t0: this.now(),
       dur,
@@ -353,6 +360,10 @@ export class Engine {
   focus(i: number) {
     if (!this.back) this.back = { ...this.view };
     this.select([i]);
+  }
+  /** Leaves any focus: Esc after this fits the board rather than returning to an old view. */
+  forget() {
+    this.back = null;
   }
   escape() {
     if (this.tour) return this.stopTour();
@@ -398,6 +409,7 @@ export class Engine {
   // ── tour ────────────────────────────────────────────────────────────────
   startTour() {
     this.flight = null;
+    this.touched = true;
     this.vel = { x: 0, y: 0 };
     this.selected = [];
     this.back = null;
@@ -468,6 +480,9 @@ export class Engine {
     on(c, "pointermove", (e) => this.move(e));
     on(c, "pointerup", (e) => this.up(e));
     on(c, "pointercancel", (e) => this.up(e));
+    on(c, "lostpointercapture", (e) => {
+      if (this.pointers.has(e.pointerId)) this.up(e);
+    });
     on(c, "pointerleave", () => {
       if (this.hover !== -1) (this.hover = -1), (this.dirty = true);
     });
@@ -477,6 +492,7 @@ export class Engine {
     on(window, "resize", () => this.resize());
   }
   private down(e: PointerEvent) {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
     this.touched = true;
     this.canvas.setPointerCapture(e.pointerId);
     this.pointers.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
@@ -574,7 +590,7 @@ export class Engine {
       const a = s[0];
       const b = s[s.length - 1];
       const dt = Math.max(8, b.t - a.t);
-      if (performance.now() - b.t < 60) this.vel = { x: (b.x - a.x) / dt, y: (b.y - a.y) / dt };
+      if (!this.calm && performance.now() - b.t < 60) this.vel = { x: (b.x - a.x) / dt, y: (b.y - a.y) / dt };
     }
   }
   private wheel(e: WheelEvent) {
@@ -583,11 +599,12 @@ export class Engine {
     this.stopMotion();
     let dy = e.deltaY;
     let dx = e.deltaX;
+    if (dx !== 0) this.lastDx = performance.now();
     if (e.deltaMode === 1) (dy *= 16), (dx *= 16);
     if (e.ctrlKey || e.metaKey) {
       // trackpad pinch (the browser reports it as ctrl + wheel), or cmd-scroll
       this.zoomAt(e.offsetX, e.offsetY, Math.exp(-dy * 0.0105));
-    } else if (e.deltaMode === 1 || (dx === 0 && Math.abs(dy) >= 50 && Number.isInteger(dy))) {
+    } else if (e.deltaMode === 1 || (dx === 0 && (Math.abs(dy) % 120 === 0 || Math.abs(dy) % 100 === 0) && Math.abs(dy) >= 100 && performance.now() - this.lastDx > 400)) {
       // a mouse wheel's notches zoom toward the cursor
       this.zoomAt(e.offsetX, e.offsetY, Math.exp(-dy * 0.0021));
     } else {
