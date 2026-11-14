@@ -330,6 +330,7 @@ function Lightbox({ a, sizes, onPick, onClose }: { a: Asset; sizes: Asset[]; onP
 }
 
 const KIND_NAME: Record<string, string> = {
+  clean: "Clean text posters",
   sponsors: "Capy posters v3, with every sponsor",
   strips: "Manga strips",
   rebuilds: "Level-up rebuilds",

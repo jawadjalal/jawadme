@@ -37,7 +37,7 @@ const SKIP_DIRS = new Set(["src", "work", "assets", "fonts", "node_modules", ".g
 const IMAGE = /\.(png|jpe?g|webp)$/i;
 const VIDEO = /\.(mp4|mov|webm)$/i;
 const GIF = /\.gif$/i;
-const KINDS = ["sponsors", "strips", "rebuilds", "posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
+const KINDS = ["clean", "sponsors", "strips", "rebuilds", "posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
 
 const has = (bin) => {
   try {
@@ -301,6 +301,11 @@ function videoPoster(src, out) {
   fs.rmSync(frame, { force: true });
 }
 
+// the cut (scripts/capy-cut.json): whole kinds and single designs that stay off the page, each with its reason;
+// nothing on disk is deleted, the page just stops showing them. The clean text posters lead as their own group.
+const CUT = JSON.parse(fs.readFileSync(path.join(ROOT, "scripts/capy-cut.json"), "utf8"));
+for (let i = found.length - 1; i >= 0; i--) if (CUT.kinds[found[i].kind] || CUT.groups[found[i].set]) found.splice(i, 1);
+for (const a of found) if (a.kind === "sponsors" && a.set.startsWith("sponsors-clean-")) a.kind = "clean";
 const usedIds = new Set();
 const elite = new Set();
 const oldPack = new Set();
@@ -467,12 +472,13 @@ if (total() > BUDGET) problems.push("still over budget: lower ORIGINAL_EDGE");
 
 // ── the OG image: the widest-ratio asset nearest 1.91:1, covered into 1200×630 ──
 const og = path.join(OUT, "og.jpg");
-const ogPool = assets.filter((a) => a.type === "image" && a.kind === "strips");
+const ogPool = assets.filter((a) => a.type === "image" && a.kind === "clean");
 const ogPick = (ogPool.length ? ogPool : assets.filter((a) => a.type === "image"))
   .sort((a, b) => Math.abs(a.w / a.h - 1.905) - Math.abs(b.w / b.h - 1.905) || b.w - a.w)[0];
 if (ogPick) {
   const src = path.join(ROOT, "public", ogPick.original);
-  if (!fresh(og, src) || !fs.existsSync(`${og}`)) {
+  // always re-made: the pick can change while its file stays older than the last OG image
+  {
     run("ffmpeg", ["-v", "error", "-y", "-i", src, "-vf", "scale=1200:630:force_original_aspect_ratio=increase,crop=1200:630", "-q:v", "3", og]);
   }
   keep.add(og);
