@@ -277,6 +277,10 @@ export class Engine {
   private lastDx = 0;
   /** camera speed in screen px per ms, smoothed: drives the speed lines */
   private speed = 0;
+  /** screen-space pan velocity, px per ms, smoothed: points the action lines on a spin */
+  private pan = { x: 0, y: 0 };
+  /** a hand spin (a drag, or a throw coasting out) rather than a flight: picks action lines over focus lines */
+  private spun = false;
   private prevView: View | null = null;
   /** the punch when a flight lands on a piece */
   private impact: { t0: number } | null = null;
@@ -808,9 +812,17 @@ export class Engine {
     if (dt > 0) {
       const pv = this.prevView ?? this.view;
       const v = this.view;
-      const raw = (Math.hypot((v.x - pv.x) * v.z, (v.y - pv.y) * v.z) + Math.abs(Math.log(v.z / pv.z)) * this.vw * 0.6) / dt;
-      const moving = !!(this.flight || this.tour);
-      this.speed += ((moving ? raw : 0) - this.speed) * Math.min(1, dt / 70);
+      const px = (pv.x - v.x) * v.z;
+      const py = (pv.y - v.y) * v.z;
+      const raw = (Math.hypot(px, py) + Math.abs(Math.log(v.z / pv.z)) * this.vw * 0.6) / dt;
+      // flights and the tour, and spins too: a drag, a throw coasting out
+      const spinning = (this.drag?.mode === "pan" && this.drag.moved > 4) || Math.abs(this.vel.x) + Math.abs(this.vel.y) > 0.01;
+      const moving = !!(this.flight || this.tour) || spinning;
+      if (moving) this.spun = spinning && !this.flight && !this.tour; // keep the style while the lines fade out
+      const k = Math.min(1, dt / 70);
+      this.speed += ((moving ? raw : 0) - this.speed) * k;
+      this.pan.x += ((moving ? px / dt : 0) - this.pan.x) * k;
+      this.pan.y += ((moving ? py / dt : 0) - this.pan.y) * k;
       this.prevView = { ...v };
       if (this.speed > 0.05) this.dirty = true;
     }
@@ -868,6 +880,44 @@ export class Engine {
     ctx.fill();
   }
 
+  /**
+   * Manga action lines for a spin: long thin ink streaks running with the motion, thick at the trailing edge,
+   * kept off a clear band through the middle so the work stays readable.
+   */
+  private actionLines(ctx: CanvasRenderingContext2D, vw: number, vh: number, k: number, ux: number, uy: number, seed: number) {
+    if (k <= 0.01) return;
+    let r = seed;
+    const rnd = () => ((r = (r * 16807) % 2147483647) / 2147483647);
+    const cx = vw / 2;
+    const cy = vh / 2;
+    const D = Math.hypot(vw, vh) / 2;
+    // the perpendicular, across which the streaks are spread
+    const nx = -uy;
+    const ny = ux;
+    // how far the screen reaches across the motion and along it
+    const across = Math.abs(nx) * vw * 0.5 + Math.abs(ny) * vh * 0.5;
+    const reach = Math.abs(ux) * vw * 0.5 + Math.abs(uy) * vh * 0.5;
+    ctx.fillStyle = `rgba(10,10,10,${0.8 * k})`;
+    ctx.beginPath();
+    const N = 56;
+    for (let i = 0; i < N; i++) {
+      const o = (rnd() * 2 - 1) * across;
+      // a clear band through the middle, wider when the spin is gentle
+      if (Math.abs(o) < across * (0.42 - 0.17 * k)) continue;
+      const len = D * (0.3 + rnd() * 0.6) * (0.5 + k * 0.6);
+      const along = (rnd() * 2 - 1) * reach + len * 0.4;
+      const w = (0.6 + rnd() * 2.2) * (0.5 + k);
+      const hx = cx + nx * o + ux * along;
+      const hy = cy + ny * o + uy * along;
+      // a wedge: sharp at the head, w wide at the tail behind it
+      ctx.moveTo(hx, hy);
+      ctx.lineTo(hx - ux * len + nx * w, hy - uy * len + ny * w);
+      ctx.lineTo(hx - ux * len - nx * w, hy - uy * len - ny * w);
+      ctx.closePath();
+    }
+    ctx.fill();
+  }
+
   /** Draws the board for `view` into `ctx`. `live` also asks for sharper pictures and draws the chrome on the canvas. */
   draw(ctx: CanvasRenderingContext2D, view: View, vw: number, vh: number, dpr: number, live: boolean) {
     const now = this.now();
@@ -885,6 +935,8 @@ export class Engine {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.fillStyle = GROUND;
     ctx.fillRect(0, 0, vw, vh);
+    // screentone in the corners of the page, like the edge of a printed panel
+    if (live) ctx.drawImage(this.cornerTone(vw, vh, dpr), 0, 0, vw, vh);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
 
@@ -894,7 +946,7 @@ export class Engine {
     const local = (q: Pt) => Math.sqrt(q.f * Math.max(0, Math.cos(Math.min(q.th, HALF_PI))));
     /** things fade as they turn over the horizon */
     const fade = (th: number) => clamp((HALF_PI - th) / 0.22, 0, 1);
-    this.drawGlobe(ctx, L, vw, vh, true);
+    this.drawGlobe(ctx, L, vw, vh, dpr, true);
 
     // cluster titles, in the print face with the blue plate a hair off register
     for (const c of b.clusters) {
@@ -1005,7 +1057,7 @@ export class Engine {
     if (live) this.prune(vids);
 
     // the light on the globe: a soft shade toward the rim, over the pieces so they curve with it
-    this.drawGlobe(ctx, L, vw, vh, false);
+    this.drawGlobe(ctx, L, vw, vh, dpr, false);
 
     // design titles (world-scaled) and frame names (screen-sized, like a design tool)
     ctx.textBaseline = "alphabetic";
@@ -1043,7 +1095,13 @@ export class Engine {
     }
     ctx.globalAlpha = 1;
 
-    if (live && !this.calm) this.speedLines(ctx, vw, vh, clamp((this.speed - 0.9) / 3.5, 0, 1) * 0.85, 1 + (Math.floor(now / 50) % 997));
+    if (live && !this.calm) {
+      const pv = Math.hypot(this.pan.x, this.pan.y);
+      const seed = 1 + (Math.floor(now / 50) % 997);
+      // a spin streaks with the motion (a brisk flick is enough); a zoom or a flight rushes in toward the middle
+      if (this.spun && pv > 0) this.actionLines(ctx, vw, vh, clamp((this.speed - 0.6) / 2.6, 0, 1) * 0.85, this.pan.x / pv, this.pan.y / pv, seed);
+      else this.speedLines(ctx, vw, vh, clamp((this.speed - 0.9) / 3.5, 0, 1) * 0.85, seed);
+    }
     if (live && punch > 0.35) this.speedLines(ctx, vw, vh, (punch - 0.35) * 1.1, 7 + Math.floor(now / 40));
 
     if (!live || this.tour) {
@@ -1075,52 +1133,99 @@ export class Engine {
    * with the board. Over them: a shade toward the rim and the ink outline. It all fades out as you zoom in and the
    * board goes flat.
    */
-  private sprites: { shade: HTMLCanvasElement; shadow: HTMLCanvasElement } | null = null;
-  /** The shade and the cast shadow, painted once and scaled per frame: a big radial gradient every frame is slow. */
-  private globeSprites() {
-    if (this.sprites) return this.sprites;
-    const make = (w: number, h: number, paint: (c: CanvasRenderingContext2D) => void) => {
+  /** Screentone: dot sheets in two weights, as patterns at device resolution so the dots stay crisp. */
+  private tones: { key: string; light: CanvasPattern; dark: CanvasPattern } | null = null;
+  private tone(ctx: CanvasRenderingContext2D, dpr: number) {
+    const key = `${dpr}`;
+    if (this.tones?.key === key) return this.tones;
+    const sheet = (pitch: number, r: number) => {
+      const n = Math.max(2, Math.round(pitch * dpr));
       const cv = document.createElement("canvas");
-      cv.width = w;
-      cv.height = h;
-      paint(cv.getContext("2d")!);
-      return cv;
+      cv.width = cv.height = n;
+      const c = cv.getContext("2d")!;
+      c.fillStyle = INK;
+      // two dots per tile on a diagonal, like a real tone sheet's 45 degree screen
+      for (const [x, y] of [[0.25, 0.25], [0.75, 0.75]]) {
+        c.beginPath();
+        c.arc(x * n, y * n, r * dpr, 0, Math.PI * 2);
+        c.fill();
+      }
+      const pat = ctx.createPattern(cv, "repeat")!;
+      pat.setTransform(new DOMMatrix([1 / dpr, 0, 0, 1 / dpr, 0, 0]));
+      return pat;
     };
-    const S = 512;
-    const shade = make(S, S, (c) => {
-      const r = S / 2;
-      const g = c.createRadialGradient(r - r * 0.35, r - r * 0.4, r * 0.1, r, r, r);
-      g.addColorStop(0, "rgba(255,255,255,0)");
-      g.addColorStop(0.72, "rgba(10,10,10,0.015)");
-      g.addColorStop(1, "rgba(10,10,10,0.13)");
-      c.fillStyle = g;
-      c.beginPath();
-      c.arc(r, r, r, 0, Math.PI * 2);
-      c.fill();
-    });
-    const shadow = make(S, S / 4, (c) => {
-      c.scale(1, 0.25);
-      const g = c.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
-      g.addColorStop(0, "rgba(10,10,10,0.16)");
-      g.addColorStop(1, "rgba(10,10,10,0)");
-      c.fillStyle = g;
-      c.fillRect(0, 0, S, S);
-    });
-    return (this.sprites = { shade, shadow });
+    return (this.tones = { key, light: sheet(7, 0.95), dark: sheet(7, 1.75) });
   }
-  private drawGlobe(ctx: CanvasRenderingContext2D, L: Lens, vw: number, vh: number, under: boolean) {
+  /** The page-corner tone, painted once per size: dots that swell toward each corner. */
+  private corner: { key: string; cv: HTMLCanvasElement } | null = null;
+  private cornerTone(vw: number, vh: number, dpr: number) {
+    const key = `${vw}x${vh}x${dpr}`;
+    if (this.corner?.key === key) return this.corner.cv;
+    const cv = document.createElement("canvas");
+    cv.width = Math.max(1, Math.round(vw * dpr));
+    cv.height = Math.max(1, Math.round(vh * dpr));
+    const c = cv.getContext("2d")!;
+    c.scale(dpr, dpr);
+    c.fillStyle = "rgba(10,10,10,0.3)";
+    const pitch = 8;
+    c.beginPath();
+    for (let y = pitch / 2, row = 0; y < vh; y += pitch / 2, row++) {
+      for (let x = (row % 2) * (pitch / 2); x < vw; x += pitch) {
+        // only on the right: the left edge carries the title, the list and the notes
+        const dx = (x - vw / 2) / (vw / 2);
+        const dy = Math.abs(y - vh / 2) / (vh / 2);
+        const t = clamp((dx * dy - 0.6) / 0.4, 0, 1);
+        if (t <= 0.02) continue;
+        const r = pitch * 0.36 * Math.sqrt(t);
+        c.moveTo(x + r, y);
+        c.arc(x, y, r, 0, Math.PI * 2);
+      }
+    }
+    c.fill();
+    this.corner = { key, cv };
+    return cv;
+  }
+  private drawGlobe(ctx: CanvasRenderingContext2D, L: Lens, vw: number, vh: number, dpr: number, under: boolean) {
     const rad = L.R * L.z;
     const big = Math.max(vw, vh);
     const show = clamp(1.7 - rad / big, 0, 1);
     if (show <= 0) return;
     const { cx, cy } = L;
+    const T = this.tone(ctx, dpr);
+    // the brush weight of the outline, heavier on a bigger globe
+    const t = clamp(rad * 0.008, 1.5, 6);
+    /** the shadow side, lit from the top left: the globe minus a lit disc shifted toward the light */
+    const crescent = (shift: number, grow: number) => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.beginPath();
+      ctx.rect(cx - rad - 2, cy - rad - 2, rad * 2 + 4, rad * 2 + 4);
+      ctx.moveTo(cx - rad * shift * 0.8 + rad * grow, cy - rad * shift);
+      ctx.arc(cx - rad * shift * 0.8, cy - rad * shift, rad * grow, 0, Math.PI * 2);
+      ctx.fill("evenodd");
+      ctx.restore();
+    };
     ctx.save();
-    // the sprites are soft gradients: the cheap filter looks the same and scales far faster
-    ctx.imageSmoothingQuality = "low";
+    ctx.globalAlpha = show;
     if (under) {
-      ctx.globalAlpha = show;
-      // the shadow it casts, a flat ellipse below
-      if (cy + rad * 0.9 < vh && rad < big) ctx.drawImage(this.globeSprites().shadow, cx - rad * 0.9, cy + rad * 1.04 - rad * 0.225, rad * 1.8, rad * 0.45);
+      // the shadow it casts: hard, in tone, with a solid core where it meets the ground
+      if (cy + rad * 0.9 < vh && rad < big) {
+        ctx.fillStyle = T.light;
+        ctx.beginPath();
+        ctx.ellipse(cx + rad * 0.1, cy + rad * 1.05, rad * 0.68, rad * 0.075, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = INK;
+        ctx.beginPath();
+        ctx.ellipse(cx + rad * 0.05, cy + rad * 1.03, rad * 0.3, rad * 0.022, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // the white sphere over the page tone and the shadow
+      ctx.fillStyle = GROUND;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+      ctx.fill();
       // the graticule: the world's own grid, so it turns as the board does
       const step = (L.R * Math.PI) / 12;
       const reach = L.R * HALF_PI;
@@ -1135,8 +1240,8 @@ export class Engine {
           const span = Math.sqrt(Math.max(0, reach * reach - (g0 - c0) ** 2));
           let pen = false;
           for (let k = 0; k <= 40; k++) {
-            const t = o0 - span + (2 * span * k) / 40;
-            proj(L, vert ? g0 : t, vert ? t : g0, P);
+            const tt = o0 - span + (2 * span * k) / 40;
+            proj(L, vert ? g0 : tt, vert ? tt : g0, P);
             if (P.th > HALF_PI) {
               pen = false;
               continue;
@@ -1148,15 +1253,24 @@ export class Engine {
         }
       }
       ctx.stroke();
+      // the shading in two tone sheets: a broad light band, a dark one hugging the rim
+      ctx.fillStyle = T.light;
+      crescent(0.2, 1.02);
+      ctx.fillStyle = T.dark;
+      crescent(0.09, 1.0);
     } else {
-      // the shade toward the rim, lit from the top left: only while the rim is in view
+      // over the pieces: the darkest tone again near the rim, so the work curves away under it
+      ctx.globalAlpha = show * 0.55;
+      ctx.fillStyle = T.dark;
+      crescent(0.06, 1.0);
       ctx.globalAlpha = show;
-      if (rad < big * 0.8) ctx.drawImage(this.globeSprites().shade, cx - rad, cy - rad, rad * 2, rad * 2);
-      ctx.strokeStyle = INK;
-      ctx.lineWidth = 1.5;
+      // the outline as one brush stroke, heavy on the shadow side and thin toward the light
+      ctx.fillStyle = INK;
       ctx.beginPath();
-      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
-      ctx.stroke();
+      ctx.arc(cx, cy, rad + t, 0, Math.PI * 2);
+      ctx.moveTo(cx - t * 0.55 + rad, cy - t * 0.55);
+      ctx.arc(cx - t * 0.55, cy - t * 0.55, rad, 0, Math.PI * 2);
+      ctx.fill("evenodd");
     }
     ctx.restore();
   }
