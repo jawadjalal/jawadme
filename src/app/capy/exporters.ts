@@ -228,7 +228,7 @@ export async function pngSheet(ps: Piece[], max = 8000): Promise<Blob> {
   c.width = Math.round(W * k);
   c.height = Math.round(H * k + 40);
   const ctx = c.getContext("2d")!;
-  ctx.fillStyle = "#ecebe7";
+  ctx.fillStyle = "#f3f0e8";
   ctx.fillRect(0, 0, c.width, c.height);
   const want = (p: Piece) => {
     const px = p.w * k;

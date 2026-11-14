@@ -17,6 +17,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   const board = useMemo(() => layoutBoard(assets, kinds), [assets, kinds]);
   const root = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const tone = useRef<HTMLDivElement>(null);
   const eng = useRef<Engine | null>(null);
   const [st, setSt] = useState<EngineState>({ z: 0, selected: [], cluster: 0, touring: false, hover: -1 });
   const [hidden, setHidden] = useState(false);
@@ -38,6 +39,8 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     if (list || !canvas.current) return;
     const e = new Engine(canvas.current, board);
     eng.current = e;
+    e.tone = tone.current;
+    e.redraw();
     e.onChange = setSt;
     const cs = getComputedStyle(root.current!);
     const sans = cs.getPropertyValue("--cp-sans").trim();
@@ -217,6 +220,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
 
   return (
     <div ref={root} className={`cb${chromeOff ? " cb-off" : ""}${st.selected.length ? " cb-has-sel" : ""}`}>
+      <div className="cb-tone" ref={tone} aria-hidden />
       <canvas ref={canvas} className="cb-canvas" role="img" aria-label={`A board of ${board.pieces.length} Capy hackathon assets in ${board.clusters.length} clusters. Drag to pan, scroll or pinch to zoom, click a piece to fly to it.`} />
 
       <header className="cb-head">

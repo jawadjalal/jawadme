@@ -23,8 +23,8 @@ type Flight = { t0: number; dur: number; at: (t: number) => View; ease: (t: numb
 
 const BLUE = "#3b5de8";
 const INK = "#0a0a0a";
-export const GROUND = "#ecebe7";
-const TILE = "#dddbd5";
+export const GROUND = "#f3f0e8";
+const TILE = "#e2ded3";
 const Z_MAX = 6;
 
 // ── easing ────────────────────────────────────────────────────────────────
@@ -73,7 +73,7 @@ function zoomPath(a: [number, number, number], b: [number, number, number], rho:
 // ── pictures ──────────────────────────────────────────────────────────────
 // Level 0 and 1 are 256 and 640 wide copies from the image optimizer, 2 is the site's web preview (about 1200 on the
 // long side), 3 is the original file. A piece asks for the smallest level that is sharp at its size on screen.
-type Tex = { img: HTMLImageElement | null; state: 0 | 1 | 2 | 3; used: number };
+type Tex = { img: HTMLImageElement | null; state: 0 | 1 | 2 | 3; used: number; at?: number };
 const ST = { none: 0, loading: 1, ready: 2, failed: 3 } as const;
 const BUDGET = [Infinity, 160, 48, 6];
 
@@ -82,6 +82,8 @@ class Pictures {
   queue: { i: number; l: number; pri: number }[] = [];
   inflight = 0;
   max = 8;
+  /** when the last picture arrived, so the board keeps drawing while new ones pop in */
+  last = 0;
   onReady: () => void;
   constructor(
     private pieces: Piece[],
@@ -131,6 +133,8 @@ class Pictures {
           t.img = img;
           t.state = ST.ready;
           t.used = performance.now();
+          t.at = performance.now();
+          this.last = t.at;
           this.evict(l);
           this.onReady();
         })
@@ -151,6 +155,12 @@ class Pictures {
     for (let k = l; k >= 0; k--) if (ts[k].state === ST.ready) return (ts[k].used = now), ts[k].img;
     for (let k = l + 1; k < 4; k++) if (ts[k].state === ST.ready) return (ts[k].used = now), ts[k].img;
     return null;
+  }
+  /** 0 to 1: how far the first picture of a piece has popped in */
+  pop(i: number) {
+    const t = this.tex[i][0];
+    if (t.state !== ST.ready || !t.at) return this.tex[i].some((x) => x.state === ST.ready) ? 1 : 0;
+    return Math.min(1, (performance.now() - t.at) / 320);
   }
   ready(i: number, l: number) {
     const s = this.tex[i][l].state;
@@ -188,7 +198,7 @@ export class Engine {
   selected: number[] = [];
   hover = -1;
   flight: Flight | null = null;
-  tour: { t0: number; i: number; shotT0: number; path: ((t: number) => View) | null; from: View; target: View } | null = null;
+  tour: { t0: number; i: number; shotT0: number; path: ((t: number) => View) | null; from: View; target: View; landed?: boolean } | null = null;
   hidden = false;
   /** true once anyone has moved the camera; until then a resize or a chrome change refits the board */
   touched = false;
@@ -208,18 +218,26 @@ export class Engine {
   private pinch: { d: number; cx: number; cy: number } | null = null;
   private marquee: Rect | null = null;
   private back: View | null = null;
-  private patterns = new Map<number, CanvasPattern>();
   private videos = new Map<number, HTMLVideoElement>();
   private videoBox: HTMLDivElement;
   private lastState = "";
   private lastDx = 0;
+  /** camera speed in screen px per ms, smoothed: drives the speed lines */
+  private speed = 0;
+  private prevView: View | null = null;
+  /** the punch when a flight lands on a piece */
+  private impact: { t0: number } | null = null;
+  /** hover lift, eased per piece */
+  private lift = new Map<number, number>();
+  private mini: { x: number; y: number; w: number; h: number; k: number } | null = null;
+  private miniDrag = false;
   /** prefers-reduced-motion: flights cut, no throw, no drift */
   calm = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
   private off: (() => void)[] = [];
 
   constructor(canvas: HTMLCanvasElement, board: Board) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d", { alpha: false })!;
+    this.ctx = canvas.getContext("2d")!;
     this.board = board;
     this.pics = new Pictures(board.pieces, () => (this.dirty = true));
     this.videoBox = document.createElement("div");
@@ -316,7 +334,7 @@ export class Engine {
     this.vel = { x: 0, y: 0 };
     if (this.tour) this.stopTour();
   }
-  flyTo(target: View, opts: { dur?: number; rho?: number; ease?: (t: number) => number; done?: () => void } = {}) {
+  flyTo(target: View, opts: { dur?: number; rho?: number; ease?: (t: number) => number; done?: () => void; punch?: boolean } = {}) {
     this.touched = true;
     const from = { ...this.view };
     const p = zoomPath([from.x, from.y, this.vw / from.z], [target.x, target.y, this.vw / target.z], opts.rho ?? 1.1);
@@ -329,7 +347,10 @@ export class Engine {
         const [x, y, w] = p.at(t);
         return { x, y, z: this.vw / w };
       },
-      done: opts.done,
+      done: () => {
+        if (opts.punch && !this.calm) this.impact = { t0: this.now() };
+        opts.done?.();
+      },
     };
     this.dirty = true;
   }
@@ -352,7 +373,7 @@ export class Engine {
     this.selected = ids;
     if (fly && ids.length) {
       const r = ids.length === 1 ? this.board.pieces[ids[0]] : unionRect(ids.map((i) => this.board.pieces[i]));
-      this.flyTo(this.fitView(r, 0));
+      this.flyTo(this.fitView(r, 0), { punch: ids.length === 1 });
     }
     this.dirty = true;
   }
@@ -449,6 +470,7 @@ export class Engine {
     const s = TOUR[i];
     if (i !== T.i) {
       T.i = i;
+      T.landed = false;
       T.shotT0 = T.t0 + acc;
       T.from = { ...this.view };
       T.target = this.shotView(s);
@@ -459,6 +481,9 @@ export class Engine {
       };
     }
     const lt = now - T.shotT0;
+    const landed = lt >= s.move;
+    if (landed && !T.landed && "piece" in s.to && !s.to.frac && !this.calm) this.impact = { t0: T.shotT0 + s.move };
+    T.landed = landed;
     if (lt < s.move && s.move > 0) {
       this.view = T.path!(EASE[s.ease ?? "glide"](lt / s.move));
     } else {
@@ -498,6 +523,11 @@ export class Engine {
     this.canvas.setPointerCapture(e.pointerId);
     this.pointers.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
     this.stopMotion();
+    if (this.pointers.size === 1 && this.inMini(e.offsetX, e.offsetY)) {
+      this.miniDrag = true;
+      this.miniTo(e.offsetX, e.offsetY, true);
+      return;
+    }
     if (this.pointers.size === 2) {
       const [a, b] = [...this.pointers.values()];
       this.pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2 };
@@ -512,6 +542,11 @@ export class Engine {
   private move(e: PointerEvent) {
     const prev = this.pointers.get(e.pointerId);
     if (!prev) {
+      if (this.inMini(e.offsetX, e.offsetY)) {
+        this.canvas.style.cursor = "pointer";
+        if (this.hover !== -1) (this.hover = -1), (this.dirty = true);
+        return;
+      }
       const h = this.pieceAt(e.offsetX, e.offsetY);
       if (h !== this.hover) {
         this.hover = h;
@@ -521,6 +556,7 @@ export class Engine {
       return;
     }
     this.pointers.set(e.pointerId, { x: e.offsetX, y: e.offsetY });
+    if (this.miniDrag) return this.miniTo(e.offsetX, e.offsetY, false);
     if (this.pinch && this.pointers.size >= 2) {
       const [a, b] = [...this.pointers.values()];
       const d = Math.hypot(a.x - b.x, a.y - b.y);
@@ -552,6 +588,10 @@ export class Engine {
   }
   private up(e: PointerEvent) {
     this.pointers.delete(e.pointerId);
+    if (this.miniDrag) {
+      this.miniDrag = false;
+      return;
+    }
     if (this.pinch) {
       if (this.pointers.size < 2) this.pinch = null;
       // the finger left on the glass carries on as a pan
@@ -645,6 +685,19 @@ export class Engine {
       this.dirty = true;
     }
     if (this.videos.size) this.dirty = true;
+    // camera speed for the speed lines: pan in screen px plus zoom rate, per ms, eased
+    if (dt > 0) {
+      const pv = this.prevView ?? this.view;
+      const v = this.view;
+      const raw = (Math.hypot((v.x - pv.x) * v.z, (v.y - pv.y) * v.z) + Math.abs(Math.log(v.z / pv.z)) * this.vw * 0.6) / dt;
+      const moving = !!(this.flight || this.tour);
+      this.speed += ((moving ? raw : 0) - this.speed) * Math.min(1, dt / 70);
+      this.prevView = { ...v };
+      if (this.speed > 0.05) this.dirty = true;
+    }
+    if (this.impact && now - this.impact.t0 < 360) this.dirty = true;
+    if (performance.now() - this.pics.last < 400) this.dirty = true;
+    for (const [i, l] of this.lift) if ((i === this.hover ? 1 : 0) !== l) this.dirty = true;
     if (this.dirty) {
       this.dirty = false;
       this.draw(this.ctx, this.view, this.vw, this.vh, this.dpr, true);
@@ -662,42 +715,68 @@ export class Engine {
   }
 
   // ── drawing ─────────────────────────────────────────────────────────────
-  private dots(ctx: CanvasRenderingContext2D, ox: number, oy: number, z: number, vw: number, vh: number) {
-    // a dot grid whose world spacing doubles as you zoom out, so on screen it stays 20 to 40 px apart
-    let s = 50;
-    while (s * z < 20) s *= 2;
-    while (s * z > 40) s /= 2;
-    const px = s * z;
-    const key = Math.round(px * 4);
-    let pat = this.patterns.get(key);
-    if (!pat) {
-      const c = document.createElement("canvas");
-      const n = Math.max(2, Math.round(px * this.dpr));
-      c.width = c.height = n;
-      const g = c.getContext("2d")!;
-      g.fillStyle = "rgba(10,10,10,0.13)";
-      const r = Math.max(1, this.dpr);
-      g.fillRect(0, 0, r, r);
-      pat = ctx.createPattern(c, "repeat")!;
-      this.patterns.set(key, pat);
-      if (this.patterns.size > 64) this.patterns.delete(this.patterns.keys().next().value!);
+  /** The screentone layer (a DOM element behind the transparent canvas), slid by the compositor, never repainted. */
+  tone: HTMLElement | null = null;
+  private toneAt = "";
+  /**
+   * The paper: a manga screentone behind the board that slides at a third of the camera's speed, a parallax layer like
+   * a game's far background. It is a CSS layer moved with a transform, so it costs the renderer nothing.
+   */
+  private dots(ox: number, oy: number) {
+    if (!this.tone) return;
+    const n = 16;
+    const m = (v: number) => ((v % n) + n) % n;
+    const t = `translate3d(${(m(ox * 0.33) - n).toFixed(2)}px,${(m(oy * 0.33) - n).toFixed(2)}px,0)`;
+    if (t !== this.toneAt) this.tone.style.transform = this.toneAt = t;
+  }
+
+  /** Manga focus lines: thin ink wedges from the screen edge toward a clear centre, as strong as the camera is fast. */
+  private speedLines(ctx: CanvasRenderingContext2D, vw: number, vh: number, k: number, seed: number) {
+    if (k <= 0.01) return;
+    const cx = vw / 2;
+    const cy = vh / 2;
+    const R = Math.hypot(vw, vh) * 0.62;
+    const inner = Math.min(vw, vh) * (0.62 - 0.22 * k);
+    let r = seed;
+    const rnd = () => ((r = (r * 16807) % 2147483647) / 2147483647);
+    ctx.fillStyle = `rgba(10,10,10,${0.5 * k})`;
+    ctx.beginPath();
+    const N = 80;
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * Math.PI * 2 + rnd() * 0.05;
+      const w = (0.002 + rnd() * 0.009) * (0.6 + k);
+      const r0 = inner * (0.85 + rnd() * 0.5);
+      if (rnd() < 0.25) continue;
+      ctx.moveTo(cx + Math.cos(a - w) * R, cy + Math.sin(a - w) * R);
+      ctx.lineTo(cx + Math.cos(a) * r0 * (vw / Math.min(vw, vh)) * 0.75, cy + Math.sin(a) * r0 * 0.75);
+      ctx.lineTo(cx + Math.cos(a + w) * R, cy + Math.sin(a + w) * R);
+      ctx.closePath();
     }
-    const n = Math.max(2, Math.round(px * this.dpr)) / this.dpr;
-    pat.setTransform(new DOMMatrix([px / n / this.dpr, 0, 0, px / n / this.dpr, ((ox % px) + px) % px, ((oy % px) + px) % px]));
-    ctx.fillStyle = pat;
-    ctx.fillRect(0, 0, vw, vh);
+    ctx.fill();
   }
 
   /** Draws the board for `view` into `ctx`. `live` also asks for sharper pictures and draws the chrome on the canvas. */
   draw(ctx: CanvasRenderingContext2D, view: View, vw: number, vh: number, dpr: number, live: boolean) {
     const now = this.now();
-    const { z } = view;
-    const ox = vw / 2 - view.x * z;
-    const oy = vh / 2 - view.y * z;
+    // the landing punch: a quick zoom pump and a small shake, gone in a third of a second
+    let punch = 0;
+    if (live && this.impact) {
+      const p = (now - this.impact.t0) / 340;
+      if (p >= 0 && p < 1) punch = 1 - p;
+      else if (p >= 1) this.impact = null;
+    }
+    const z = view.z * (1 + 0.03 * (punch > 0 ? Math.sin(Math.PI * (1 - punch)) : 0));
+    const shake = punch * punch * 5;
+    const ox = vw / 2 - view.x * z + Math.sin(now * 0.11) * shake;
+    const oy = vh / 2 - view.y * z + Math.cos(now * 0.13) * shake;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = GROUND;
-    ctx.fillRect(0, 0, vw, vh);
-    this.dots(ctx, ox, oy, z, vw, vh);
+    if (live && this.tone) {
+      ctx.clearRect(0, 0, vw, vh);
+      this.dots(ox, oy);
+    } else {
+      ctx.fillStyle = GROUND;
+      ctx.fillRect(0, 0, vw, vh);
+    }
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
 
@@ -713,11 +792,21 @@ export class Engine {
       setStretch(ctx, "extra-condensed");
       ctx.textBaseline = "alphabetic";
       const t = c.name.toUpperCase();
-      ctx.fillStyle = BLUE;
-      ctx.fillText(t, x + size * 0.035, y + size * 0.03);
-      ctx.fillStyle = INK;
-      ctx.fillText(t, x, y);
       const w = ctx.measureText(t).width;
+      // lettered like a sound effect: a slight tilt, a white knockout stroke, the blue plate off register, black on top
+      const tilt = (c.kind.length % 3) - 1;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate((tilt * 1.6 - 1.2) * (Math.PI / 180));
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = size * 0.11;
+      ctx.strokeText(t, size * 0.02, size * 0.015);
+      ctx.fillStyle = BLUE;
+      ctx.fillText(t, size * 0.045, size * 0.04);
+      ctx.fillStyle = INK;
+      ctx.fillText(t, 0, 0);
+      ctx.restore();
       setStretch(ctx, "normal");
       const ns = Math.max(9, size * 0.16);
       if (ns < 60) {
@@ -747,33 +836,53 @@ export class Engine {
         this.pics.request(p.i, 0, dist);
         if (lvl > 0) this.pics.request(p.i, lvl, dist + 200 * lvl);
       }
-      // a soft contact shadow, one cheap rect
-      if (w > 6) {
-        ctx.fillStyle = "rgba(0,0,0,0.07)";
-        ctx.fillRect(x, y + Math.max(1, Math.min(4, w * 0.012)), w, h);
+      // pop in when the first picture lands; lift toward the cursor on hover
+      const pop = live && this.manual === null ? this.pics.pop(p.i) : 1;
+      let lf = this.lift.get(p.i) ?? 0;
+      if (live) {
+        const want = p.i === this.hover ? 1 : 0;
+        lf += (want - lf) * 0.25;
+        if (Math.abs(want - lf) < 0.01) lf = want;
+        if (lf) this.lift.set(p.i, lf);
+        else this.lift.delete(p.i);
+      }
+      const ink = clamp(w * 0.012, 0.6, 5);
+      const lift = lf * clamp(w * 0.012, 0, 6);
+      const e = EASE.out(pop);
+      const sc = 0.94 + 0.06 * e;
+      const dx = x + (w * (1 - sc)) / 2 - lift;
+      const dy = y + (h * (1 - sc)) / 2 - lift;
+      const dw = w * sc;
+      const dh = h * sc;
+      if (pop < 1) ctx.globalAlpha = e;
+      // a hard ink shadow, offset like a printed panel
+      if (w > 5) {
+        ctx.fillStyle = INK;
+        ctx.fillRect(dx + ink + lift * 1.6, dy + ink + lift * 1.6, dw, dh);
       }
       let drawn = false;
       if (live && p.a.type === "video" && w > 140) {
         const v = this.video(p.i);
         vids.add(p.i);
         if (v.readyState >= 2) {
-          ctx.drawImage(v, x, y, w, h);
+          ctx.drawImage(v, dx, dy, dw, dh);
           drawn = true;
         }
       }
       if (!drawn) {
         const img = this.pics.best(p.i, lvl, now);
-        if (img) ctx.drawImage(img, x, y, w, h);
+        if (img) ctx.drawImage(img, dx, dy, dw, dh);
         else {
           ctx.fillStyle = TILE;
-          ctx.fillRect(x, y, w, h);
+          ctx.fillRect(dx, dy, dw, dh);
         }
       }
       if (w > 4) {
-        ctx.strokeStyle = "rgba(0,0,0,0.1)";
-        ctx.lineWidth = 1;
-        ctx.strokeRect(Math.round(x) + 0.5, Math.round(y) + 0.5, Math.round(w) - 1, Math.round(h) - 1);
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = Math.max(0.75, ink * 0.55);
+        ctx.strokeRect(dx, dy, dw, dh);
       }
+      ctx.globalAlpha = 1;
     }
     if (live) this.prune(vids);
 
@@ -810,6 +919,9 @@ export class Engine {
       ctx.fillText(clip(ctx, p.label, w), x, y - 6);
     }
 
+    if (live && !this.calm) this.speedLines(ctx, vw, vh, clamp((this.speed - 0.9) / 3.5, 0, 1) * 0.85, 1 + (Math.floor(now / 50) % 997));
+    if (live && punch > 0.35) this.speedLines(ctx, vw, vh, (punch - 0.35) * 1.1, 7 + Math.floor(now / 40));
+
     if (!live || this.tour) {
       if (live && this.tour) this.drawTourOverlay(ctx, vw, vh, now - this.tour.t0);
       return;
@@ -823,6 +935,7 @@ export class Engine {
       ctx.strokeRect(p.x * z + ox, p.y * z + oy, p.w * z, p.h * z);
     }
     if (this.selected.length) this.drawSelection(ctx, ox, oy, z);
+    this.drawMini(ctx, view, vw, vh);
     if (this.marquee) {
       const m = this.marquee;
       ctx.fillStyle = "rgba(59,93,232,0.08)";
@@ -878,6 +991,61 @@ export class Engine {
     ctx.textBaseline = "alphabetic";
   }
 
+  /** A game-style minimap: the clusters, every piece as a fleck, and the camera's frame. Click or drag it to travel. */
+  private drawMini(ctx: CanvasRenderingContext2D, view: View, vw: number, vh: number) {
+    this.mini = null;
+    if (this.hidden || vw < 900) return;
+    const b = this.board;
+    const W = 168;
+    const k = W / b.w;
+    const H = b.h * k;
+    const x = vw - W - 22;
+    const y = vh - H - 22;
+    this.mini = { x, y, w: W, h: H, k };
+    ctx.fillStyle = INK;
+    ctx.fillRect(x - 6 + 3, y - 6 + 3, W + 12, H + 12);
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(x - 6, y - 6, W + 12, H + 12);
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(x - 6, y - 6, W + 12, H + 12);
+    const act = this.activeCluster();
+    b.clusters.forEach((c, i) => {
+      ctx.fillStyle = i === act ? "rgba(59,93,232,0.14)" : "rgba(10,10,10,0.04)";
+      ctx.fillRect(x + c.x * k, y + c.y * k, c.w * k, c.h * k);
+    });
+    ctx.fillStyle = "rgba(10,10,10,0.55)";
+    for (const p of b.pieces) ctx.fillRect(x + p.x * k, y + p.y * k, Math.max(0.8, p.w * k), Math.max(0.8, p.h * k));
+    const vwW = (vw / view.z) * k;
+    const vhW = (vh / view.z) * k;
+    const fx = x + (view.x - vw / 2 / view.z) * k;
+    const fy = y + (view.y - vh / 2 / view.z) * k;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x - 6, y - 6, W + 12, H + 12);
+    ctx.clip();
+    ctx.strokeStyle = BLUE;
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(fx, fy, Math.max(3, vwW), Math.max(3, vhW));
+    ctx.fillStyle = "rgba(59,93,232,0.08)";
+    ctx.fillRect(fx, fy, Math.max(3, vwW), Math.max(3, vhW));
+    ctx.restore();
+  }
+  private inMini(sx: number, sy: number) {
+    const m = this.mini;
+    return m && sx >= m.x - 6 && sx <= m.x + m.w + 6 && sy >= m.y - 6 && sy <= m.y + m.h + 6 ? m : null;
+  }
+  private miniTo(sx: number, sy: number, fly: boolean) {
+    const m = this.mini!;
+    const t = { x: (sx - m.x) / m.k, y: (sy - m.y) / m.k, z: this.view.z };
+    if (fly) this.flyTo(t, { dur: 420, rho: 0.6 });
+    else {
+      this.flight = null;
+      this.view = t;
+      this.dirty = true;
+    }
+  }
+
   /** The tour's title card, captions, end card: drawn on the canvas so the recording and the live page match. */
   private drawTourOverlay(ctx: CanvasRenderingContext2D, vw: number, vh: number, t: number) {
     const u = Math.min(vw, vh * 1.6);
@@ -885,7 +1053,7 @@ export class Engine {
     if (t < TITLE_CARD.out + 500) {
       const a = t < TITLE_CARD.out ? 1 : 1 - EASE.out(clamp((t - TITLE_CARD.out) / 500, 0, 1));
       const rise = 1 - EASE.out(clamp(t / 700, 0, 1));
-      ctx.fillStyle = `rgba(236,235,231,${0.86 * a})`;
+      ctx.fillStyle = `rgba(243,240,232,${0.86 * a})`;
       ctx.fillRect(0, 0, vw, vh);
       this.bigType(ctx, ["CAPY HACKATHON", "ASSETS"], vw / 2, vh / 2 + rise * u * 0.04, u * 0.115, a, "center");
       ctx.globalAlpha = a * clamp((t - 250) / 500, 0, 1);
@@ -949,7 +1117,7 @@ export class Engine {
     // end card
     if (t > END_CARD) {
       const a = EASE.out(clamp((t - END_CARD) / 600, 0, 1));
-      ctx.fillStyle = `rgba(236,235,231,${0.8 * a})`;
+      ctx.fillStyle = `rgba(243,240,232,${0.8 * a})`;
       ctx.fillRect(0, 0, vw, vh);
       this.bigType(ctx, ["JAWADJALAL.COM/CAPY"], vw / 2, vh / 2 + (1 - a) * u * 0.03, u * 0.085, a, "center");
       ctx.globalAlpha = a;
