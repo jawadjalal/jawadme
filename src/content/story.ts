@@ -7,24 +7,24 @@ import { BOOK, EMAIL } from "@/components/felt/copy";
 /*
   Headline, his words (13 Nov, after seeing it live): "Too young to drive," / "but I'm a design mastermind." Exactly
   two lines at every width, both in ink, the first a touch lighter. His memoji on line one, and one more sticker that
-  means something: an L plate. The earlier two-sentence version is kept as HEADLINE_ALT and shows with ?h=alt.
+  means something: a little red car (his pick, 14 Nov, over the L plate it replaced). The earlier two-sentence version is kept as HEADLINE_ALT and shows with ?h=alt.
 */
 const MEMOJI = { pic: "/design/jawad-die.webp", alt: "Jawad's memoji", cut: true, w: 697, h: 781, tilt: 5 } as const;
-const LPLATE = { pic: "/work/2026-11/sticker-lplate.svg", alt: "an L plate", w: 120, h: 120, tilt: -5 } as const;
+const CAR = { pic: "/work/2026-11/sticker-car.svg", alt: "a little red car", w: 156, h: 90, tilt: -4, cut: true, kind: "car" } as const;
 
 /** One array per line of type; each line is set on one line, never rewrapped. A picture is a sticker: `cut` is a
  *  cut-out with its own outline, otherwise a die-cut card with a white edge. */
 export const HEADLINE = {
-  lead: [[{ t: "Too young" }, LPLATE, { t: "to drive," }, MEMOJI]],
+  lead: [[{ t: "Too young" }, CAR, { t: "to drive," }, MEMOJI]],
   main: [[{ t: "but I'm a design mastermind." }]],
 } as const;
 
 export const HEADLINE_ALT = {
-  lead: [[{ t: "Too young" }, LPLATE, { t: "to drive." }, MEMOJI]],
+  lead: [[{ t: "Too young" }, CAR, { t: "to drive." }, MEMOJI]],
   main: [[{ t: "Old enough to be a design mastermind." }]],
 } as const;
 
-export type Bit = { t: string } | { pic: string; alt: string; w: number; h: number; tilt: number; cut?: boolean; tuck?: boolean };
+export type Bit = { t: string } | { pic: string; alt: string; w: number; h: number; tilt: number; cut?: boolean; tuck?: boolean; kind?: string };
 
 /** "call me" goes to the call page, which holds the booking calendar; BOOKING is the Cal.com page itself, the
  *  fallback inside it. */
@@ -42,7 +42,7 @@ export const TIMELINE: { name: string; role: string; logo: string; href: string 
   { name: "Ignura", role: "founder, ad and brand studio", logo: "/logos/ignura.png", href: "https://ignura.com" },
 ];
 
-/** Places he has worked before, drifting past in the column's marquee. Roles as he gave them; Bevel's in his words. */
+/** Places he has worked before, set side by side in one pill in the column. Roles as he gave them; Bevel's in his words. */
 export const PAST: { name: string; role: string; logo: string; href: string }[] = [
   { name: "Okara", role: "product intern", logo: "/logos/okara.png", href: "https://okara.ai" },
   { name: "MenuFit", role: "product designer", logo: "/logos/menufit-bag-128.webp", href: "https://menufit.com" },

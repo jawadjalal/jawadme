@@ -1,7 +1,7 @@
 "use client";
 
 // The fixed left column, one composed stack: the two-line headline with his stickers in it, the two squircle buttons,
-// what he does, his two companies linked out, a slow marquee of the places he worked before, and one reply from X at
+// what he does, his two companies linked out, one big pill of the places he worked before, and one reply from X at
 // a time, set as an X post. On a phone it becomes the header block over the wall, and a small hire button stays at
 // the bottom of the screen once the header's own has gone.
 
@@ -101,27 +101,25 @@ function Replies({ replies, to }: { replies: Reply[]; to: string }) {
   );
 }
 
-/** The places he worked before, as soft squircle pills drifting sideways. Pointing at one stops the drift and opens
- *  its role beside the name. The list is drawn twice so the loop has no seam. */
+/** The places he worked before, in one big squircle pill split three ways. A soft highlight slides under whichever
+ *  name is pointed at (pure CSS, :has), its logo tips, and its role rises out of the pill as a small dark tag, so
+ *  nothing beside it ever moves. Nothing drifts. */
 function Past({ past }: { past: Job[] }) {
-  const run = [...past, ...past];
   return (
     <section className="col-past" aria-label="Where I worked before">
-      <div className="mq">
-        {[0, 1].map((copy) => (
-          <ul key={copy} className="mq-run" aria-hidden={copy === 1}>
-            {run.map((j, i) => (
-              <li key={i}>
-                <a className="mq-pill" href={j.href} target="_blank" rel="noopener" tabIndex={copy === 1 || i >= past.length ? -1 : 0}>
-                  <img src={j.logo} alt="" width={20} height={20} />
-                  <span className="mq-name">{j.name}</span>
-                  <span className="mq-role">{j.role}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+      <h2 className="past-h">Before</h2>
+      <ul className="past" style={{ "--n": past.length } as React.CSSProperties}>
+        <li className="past-glow" aria-hidden="true" />
+        {past.map((j) => (
+          <li key={j.name} className="past-it">
+            <a href={j.href} target="_blank" rel="noopener" aria-label={`${j.name}, ${j.role}`}>
+              <img src={j.logo} alt="" width={22} height={22} />
+              <span className="past-name">{j.name}</span>
+              <span className="past-role" aria-hidden="true">{j.role}</span>
+            </a>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

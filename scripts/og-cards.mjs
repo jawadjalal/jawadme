@@ -33,7 +33,7 @@ const data = (p) => {
 };
 const FONT = b64("scripts/fonts/instrument-sans-latin.woff2");
 const MEMOJI = data("public/design/jawad-die.webp");
-const LPLATE = data("public/work/2026-11/sticker-lplate.svg");
+const CAR = data("public/work/2026-11/sticker-car.svg");
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 const BASE = `
@@ -47,7 +47,7 @@ const BASE = `
   .me{display:flex;align-items:center;gap:12px}
   .me img{width:44px;height:auto;transform:rotate(5deg)}
   .stk{display:inline-block;vertical-align:-.12em;height:.9em;width:auto;margin:0 .06em}
-  .stk.lp{transform:rotate(-5deg);height:.78em;vertical-align:-.04em;filter:drop-shadow(0 2px 3px rgb(0 0 0/.14))}
+  .stk.car{transform:rotate(-4deg);height:.8em;vertical-align:-.06em;margin:0 .04em;filter:drop-shadow(0 1px 1px rgb(0 0 0/.2)) drop-shadow(0 4px 6px rgb(0 0 0/.12))}
   .stk.mj{transform:rotate(5deg);height:1.02em;vertical-align:-.18em}
   .pill{display:inline-flex;align-items:center;gap:14px;height:76px;padding:0 34px;border-radius:24px;background:#1a1a1a;color:#fff;
     font-size:30px;font-weight:500;letter-spacing:-.01em;box-shadow:inset 0 1px 0 rgb(255 255 255/.16),inset 0 -3px 0 rgb(0 0 0/.45),0 8px 20px -8px rgb(0 0 0/.35)}
@@ -106,7 +106,7 @@ const pieceCard = (p) => {
   );
 };
 
-const HEADLINE = `<span class="lead">Too young <img class="stk lp" src="${LPLATE}" alt=""> to drive, <img class="stk mj" src="${MEMOJI}" alt=""></span>but I'm a design mastermind.`;
+const HEADLINE = `<span class="lead">Too young <img class="stk car" src="${CAR}" alt=""> to drive, <img class="stk mj" src="${MEMOJI}" alt=""></span>but I'm a design mastermind.`;
 
 const cards = [
   {
