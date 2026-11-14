@@ -48,13 +48,14 @@ function proj(L: Lens, wx: number, wy: number, o: Pt = { x: 0, y: 0, th: 0, f: 1
   o.f = f;
   return o;
 }
-/** Screen to world through the lens (a point off the globe maps to its rim). */
+/** Screen to world through the lens. Off the globe it continues flat from the rim, so pans never stall there. */
 function unproj(L: Lens, sx: number, sy: number) {
   const ux = (sx - L.cx) / L.z;
   const uy = (sy - L.cy) / L.z;
   const r = Math.hypot(ux, uy);
   if (r < 1e-9) return { x: L.vx, y: L.vy };
-  const k = (Math.asin(Math.min(r / L.R, 0.9999)) * L.R) / r;
+  // past the rim the world carries on flat, so a drag or a pan that starts off the globe still moves 1:1
+  const k = (r < L.R ? Math.asin(r / L.R) * L.R : L.R * HALF_PI + (r - L.R)) / r;
   return { x: L.vx + ux * k, y: L.vy + uy * k };
 }
 /** A rect's screen box through the lens: its corners and edge midpoints, boxed. `th` is the angle at its centre. */
@@ -340,6 +341,8 @@ export class Engine {
     const ext = (half: number) => 2 * this.R * Math.sin(Math.min(half / this.R, HALF_PI));
     // the whole board frames the whole globe, rim and all: that is the shot that reads as a planet
     const z = r === this.board ? (Math.min(aw, ah) * (1 - m * 2)) / (2 * this.R) : Math.min((aw * (1 - m * 2)) / ext(r.w / 2), (ah * (1 - m * 2)) / ext(r.h / 2), Z_MAX);
+    // the globe is drawn about the screen centre, so the whole board keeps the camera on its own centre
+    if (r === this.board) return { x: r.x + r.w / 2, y: r.y + r.h / 2, z };
     // shift the centre so the rect sits in the middle of the clear area, not of the whole screen
     const cx = r.x + r.w / 2 - (inset.l - inset.r) / 2 / z;
     const cy = r.y + r.h / 2 - (inset.t - inset.b) / 2 / z;
