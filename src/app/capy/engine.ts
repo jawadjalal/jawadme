@@ -818,7 +818,7 @@ export class Engine {
       // flights and the tour, and spins too: a drag, a throw coasting out
       const spinning = (this.drag?.mode === "pan" && this.drag.moved > 4) || Math.abs(this.vel.x) + Math.abs(this.vel.y) > 0.01;
       const moving = !!(this.flight || this.tour) || spinning;
-      this.spun = spinning && !this.flight && !this.tour;
+      if (moving) this.spun = spinning && !this.flight && !this.tour; // keep the style while the lines fade out
       const k = Math.min(1, dt / 70);
       this.speed += ((moving ? raw : 0) - this.speed) * k;
       this.pan.x += ((moving ? px / dt : 0) - this.pan.x) * k;
