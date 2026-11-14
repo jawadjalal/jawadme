@@ -17,14 +17,13 @@ export const metadata: Metadata = {
     url: IDENTITY.site,
     siteName: IDENTITY.properName,
     type: "profile",
-    // Built by scripts/og.mjs: the name and one line on black beside a
-    // wall of his ads. Rebuild with `npm run og` after changing either.
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Jawad Jalal. I design ads, brands and sites for startups. Beside it, eight of his ads." }],
+    // Built by scripts/og-cards.mjs (npm run og:cards): the home page's own headline on white.
+    images: [{ url: "/og/home.png", width: 1200, height: 630, alt: "Too young to drive, but I'm a design mastermind. Jawad Jalal: brand design, ads, design engineering." }],
   },
   twitter: {
     card: "summary_large_image",
     creator: "@jawadmakes",
-    images: ["/og.png"],
+    images: ["/og/home.png"],
   },
   alternates: { canonical: IDENTITY.site },
 };
