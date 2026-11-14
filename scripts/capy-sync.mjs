@@ -3,15 +3,16 @@
 //
 //   node scripts/capy-sync.mjs [--src /Users/jawadjalal/night/real/capyhack]
 //
-// Scans, in page order, strip2/ and strip3/ (the manga strips), v2/<idea>/ (the level-up rebuilds), elite/<idea>/,
+// Scans, in page order, sponsors-v3/ (the v3 set with all seven sponsor marks), strip2/ and strip3/ (the manga strips), v2/<idea>/ (the level-up rebuilds), elite/<idea>/,
 // final/posters/<name>/, banners/, packs2/<pack>/ and packs/<pack>/ under the source folder, and for every finished file writes into
 // public/capy/:
 //   <kind>/<id>.webp   the web preview, long edge 1400 for strips and 1200 for the rest (alpha kept for stickers)
 //   <kind>/<id>.jpg    the copy and download original, long edge capped at 2400, JPEG (92 for strips, 86 the rest)
 //   <kind>/<id>.png    the same for stickers, badges and anything transparent
 //   <kind>/<id>.mp4    videos and GIFs as they are, under 8 MB
-// No PDFs. Over 250 MB, the heaviest originals outside the strips shrink first (the first elite round and the first
-// flat packs before the rest), then GIFs that repeat an MP4 go, then the first elite round.
+// No PDFs. Over 250 MB, the heaviest originals outside the strips and the v3 set shrink first (the first elite round and the first
+// flat packs before the rest), then the first strips (shown again in v3), then the v3 originals, then GIFs that
+// repeat an MP4 go, then the first elite round.
 // then rewrites src/app/capy/assets.json and public/capy/og.jpg. Re-running is safe: a file is only rebuilt when its
 // source is newer, and files whose source has gone are removed. Mac only (sips, cwebp, ffmpeg); no npm deps.
 
@@ -36,7 +37,7 @@ const SKIP_DIRS = new Set(["src", "work", "assets", "fonts", "node_modules", ".g
 const IMAGE = /\.(png|jpe?g|webp)$/i;
 const VIDEO = /\.(mp4|mov|webm)$/i;
 const GIF = /\.gif$/i;
-const KINDS = ["strips", "rebuilds", "posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
+const KINDS = ["sponsors", "strips", "rebuilds", "posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
 
 const has = (bin) => {
   try {
@@ -71,7 +72,7 @@ function sizeLabel(key) {
   const k = key.toLowerCase();
   const named = {
     poster: "Poster", preview: "Poster", square: "Square", story: "Story", tall: "Tall", wide: "Wide", strip: "Strip",
-    rollup: "Roll-up", fourfive: "4:5", banner: "Banner", phone: "Phone", desktop: "Desktop",
+    rollup: "Roll-up", post: "Square", fourfive: "4:5", banner: "Banner", phone: "Phone", desktop: "Desktop",
   };
   if (named[k]) return named[k];
   if (/^a\d$/.test(k)) return k.toUpperCase();
@@ -95,7 +96,7 @@ function dims(file) {
 
 // ── finding the assets ──────────────────────────────────────────────────────
 
-const skipFile = (f) => /sheet|contact|overview|^_|thumb/i.test(f);
+const skipFile = (f) => /sheet|contact|overview|^_|thumb|bleed-preview|-vec\./i.test(f);
 
 /** One idea folder (elite/<idea> or final/posters/<name>): each PNG is a size, v2-/v3- prefixes are variations. */
 function scanIdea(dir, kind, idea, out) {
@@ -150,7 +151,7 @@ function readManifest(dir) {
 
 const SIZED = /^(.*?)[-_@]((?:(?:banner|poster|post|story|square|wide|tall|strip|rollup|hanger|tent)-)?\d+(?:\.\d+)?x\d+(?:\.\d+)?(?:in)?|\d{3,4}(?:px)?|phone|desktop|square|story|wide|tall|a\d)$/i;
 
-const GENERIC = /^(preview|phone|desktop|poster|rollup|fourfive|final|image|cover|main|full|print|web|mobile|index|square|story|wide|tall)$/i;
+const GENERIC = /^(preview|phone|desktop|poster|rollup|fourfive|post|final|image|cover|main|full|print|web|mobile|index|square|story|wide|tall)$/i;
 
 /** A pack or the banners: "<name>-<size>.png" files in one folder are one design in sizes; anything else stands alone. */
 function scanLoose(dir, kind, out, { tag = "", skip = SKIP_DIRS } = {}) {
@@ -186,7 +187,23 @@ function scanLoose(dir, kind, out, { tag = "", skip = SKIP_DIRS } = {}) {
 
 const found = [];
 const hasPng = (d) => list(d).some((f) => /\.png$/i.test(f) && !skipFile(f));
-// the manga strips lead the page: strip2 and strip3, minus their plates, sources, renders in progress and PDFs
+// the v3 set leads the page: every family rebuilt with the seven-sponsor band (clean text posters, the manga strips,
+// the level-up rebuilds and the banners), minus sources, renders in progress, logo files and PDFs
+const V3 = path.join(SRC, "sponsors-v3");
+const V3_SKIP = new Set([...SKIP_DIRS, "plates", "out", "gen", "logos", "shared", "marks", "tools", "prep", "render-check", "capy"]);
+for (const [folder, tag] of [["clean", "clean"], ["strip3", "s3"], ["strip2", "s2"], ["v2", "v2"], ["banners", "b"]]) {
+  const d = path.join(V3, folder);
+  if (!isDir(d)) continue;
+  // the rebuilds keep one flat folder per idea, files named by size: each idea is its own design
+  if (folder === "v2") for (const idea of list(d)) {
+    if (!isDir(path.join(d, idea)) || idea === "tankobon-15") continue; // the giant-15 cover on a blue field stays out of v3
+    const before = found.length;
+    scanIdea(path.join(d, idea), "sponsors", idea, found);
+    for (const a of found.slice(before)) a.set = `sponsors-v2-${a.set}`; // apart from the same idea in the rebuilds
+  }
+  else scanLoose(d, "sponsors", found, { tag, skip: V3_SKIP });
+}
+// then the manga strips: strip2 and strip3, minus their plates, sources, renders in progress and PDFs
 const STRIP_SKIP = new Set([...SKIP_DIRS, "plates", "out", "gen"]);
 for (const [folder, tag] of [["strip2", "s2"], ["strip3", "s3"]]) {
   const d = path.join(SRC, folder);
@@ -363,11 +380,42 @@ const weak = (a) => (elite.has(a.id) ? 2 : oldPack.has(a.id) ? 1 : 0);
 for (const edge of [2048, 1600]) {
   if (total() <= BUDGET) break;
   const big = assets
-    .filter((a) => a.type === "image" && a.kind !== "strips" && Math.max(a.w, a.h) > edge)
+    .filter((a) => a.type === "image" && a.kind !== "strips" && a.kind !== "sponsors" && Math.max(a.w, a.h) > edge)
     .sort((a, b) => weak(b) - weak(a) || bytes(file(b)) - bytes(file(a)));
   for (const a of big) {
     if (total() <= BUDGET) break;
     run("sips", ["-Z", String(edge), file(a)]);
+  }
+}
+// the first manga strips and the v2 rebuilds are shown again, with the sponsor band, in the v3 set that leads the page:
+// their originals give way next (1600, then 1200), and only then the v3 originals themselves (2048, then 1600)
+for (const [kind, edge] of [["strips", 1600], ["strips", 1200], ["rebuilds", 1600], ["rebuilds", 1200], ["strips", 1000], ["rebuilds", 1000], ["sponsors", 2048], ["sponsors", 1600], ["sponsors", 1350]]) {
+  if (total() <= BUDGET) break;
+  const big = assets.filter((a) => a.type === "image" && a.kind === kind && Math.max(a.w, a.h) > edge).sort((a, b) => bytes(file(b)) - bytes(file(a)));
+  for (const a of big) {
+    if (total() <= BUDGET) break;
+    run("sips", ["-Z", String(edge), file(a)]);
+  }
+}
+// a smaller edge saves little on files already near 1080 px: re-encode JPEG originals at a lower quality instead,
+// heaviest first; the first strips and the v2 rebuilds (shown again in v3) before the v3 set itself
+for (const [kind, q] of [["strips", 76], ["rebuilds", 76], ["sponsors", 76], ["sponsors", 68]]) {
+  if (total() <= BUDGET) break;
+  const heavy = assets
+    .filter((a) => a.type === "image" && a.kind === kind && /\.jpe?g$/i.test(a.original))
+    .sort((a, b) => bytes(file(b)) - bytes(file(a)));
+  for (const a of heavy) {
+    if (total() <= BUDGET) break;
+    run("sips", ["-s", "format", "jpeg", "-s", "formatOptions", String(q), file(a), "--out", file(a)]);
+  }
+}
+// the first strips keep their larger previews (1400, 220 KB) only while there is room: past the budget they are
+// re-made from their (already shrunk) originals at quality 72
+if (total() > BUDGET) {
+  const strips = assets.filter((a) => a.type === "image" && a.kind === "strips").sort((a, b) => bytes(path.join(ROOT, "public", b.preview)) - bytes(path.join(ROOT, "public", a.preview)));
+  for (const a of strips) {
+    if (total() <= BUDGET) break;
+    run("cwebp", ["-quiet", "-q", "72", "-m", "5", file(a), "-o", path.join(ROOT, "public", a.preview)]);
   }
 }
 // in the first flat packs, a smaller copy of the same picture (a sticker at 1024 beside its 2048) is the weaker copy
