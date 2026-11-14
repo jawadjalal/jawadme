@@ -17,7 +17,7 @@ const print = Archivo({ subsets: ["latin"], style: ["italic"], axes: ["wdth"], d
 
 // the posters built around a giant numeral 15 are left off
 const ASSETS = (data.assets as Asset[]).filter((a) => !LEFT_OUT.test(a.id));
-const KIND_ORDER = ["sponsors", "strips", "rebuilds", "posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
+const KIND_ORDER = ["clean", "sponsors", "strips", "rebuilds", "posters", "banners", "stickers", "wallpapers", "social", "badges", "signs", "slides", "motion"];
 const kinds = [...new Set(ASSETS.map((a) => a.kind))].sort((a, b) => {
   const r = (k: string) => (KIND_ORDER.indexOf(k) < 0 ? 99 : KIND_ORDER.indexOf(k));
   return r(a) - r(b);
@@ -26,7 +26,7 @@ const kinds = [...new Set(ASSETS.map((a) => a.kind))].sort((a, b) => {
 /** "Manga strips, posters, banners and more": the kinds the page really holds, in order. */
 function kindList(): string {
   // the rebuilds are posters too, so the line names the strips and the kinds of thing
-  const names = (kinds.length ? kinds : ["posters"]).filter((k) => k !== "rebuilds" && k !== "sponsors").map((k) => (k === "strips" ? "manga strips" : k));
+  const names = (kinds.length ? kinds : ["posters"]).filter((k) => k !== "rebuilds" && k !== "sponsors" && k !== "clean").map((k) => (k === "strips" ? "manga strips" : k));
   // three kinds at most, so the line stays two lines long
   const t =
     names.length > 3
