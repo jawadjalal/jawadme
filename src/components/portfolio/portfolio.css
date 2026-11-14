@@ -194,14 +194,17 @@ html:has(.pf) body {
 .col-second:hover, .col-second:focus-visible { color: var(--ink) !important; }
 
 /* what he does, then his two companies right under it, as one block */
-.col-who { display: grid; gap: 14px; }
+.col-who { display: grid; }
+/* what he does, then "Now" (his two companies) and "Before" (where he worked), each a small label over its list */
+.col-who > .col-does { margin-bottom: 26px; }
+.col-who > .past-h { margin-bottom: 6px; }
 /* what he does: one plain line of three terms */
 .col-does { margin: 0; font-size: 15px; font-weight: 500; letter-spacing: -0.012em; color: var(--ink); }
 .col-does-dot { margin: 0 0.32em; color: var(--ink-3); }
 
 /* his two companies, linked out: mark, name, one-line role; on hover the row tints, the mark nudges and an arrow
    slides in from the left of the right edge */
-.col-own { list-style: none; margin: -6px -10px; padding: 0; display: grid; gap: 2px; }
+.col-own { list-style: none; margin: 0 -10px; padding: 0; display: grid; gap: 0; }
 .col-own a { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; transition: background-color 200ms var(--ease); }
 .col-own img { flex: none; width: 30px; height: 30px; border-radius: 8px; object-fit: contain; transition: transform 380ms var(--spring); }
 .col-own-t { display: grid; line-height: 1.25; min-width: 0; }
@@ -218,8 +221,8 @@ html:has(.pf) body {
 /* where he worked before: one big squircle pill split three ways. A soft highlight slides under the name being
    pointed at (it springs from one to the next), the logo tips, and the role rises out of the pill as a dark tag, laid
    over everything so nothing beside it moves. */
-.col-past { display: grid; gap: 10px; }
-.past-h { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: -0.005em; color: var(--ink-3); }
+.col-past { display: grid; gap: 8px; margin-top: 22px; }
+.past-h { margin: 0; font-size: 12.5px; font-weight: 500; letter-spacing: 0; color: var(--ink-3); }
 .past {
   --sq: 18px;
   --pad: 5px;
@@ -231,8 +234,8 @@ html:has(.pf) body {
   list-style: none;
   border-radius: calc(var(--sq) * 1.6);
   corner-shape: squircle;
-  background: #fff;
-  box-shadow: inset 0 1px 0 #fff, inset 0 -2px 0 rgb(0 0 0 / 0.07), 0 0 0 1px rgb(0 0 0 / 0.09), 0 1px 1px rgb(0 0 0 / 0.08), 0 6px 14px -6px rgb(0 0 0 / 0.18);
+  background: var(--tint);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.04);
 }
 @supports not (corner-shape: squircle) { .past { border-radius: var(--sq); } }
 .past-glow {
@@ -243,8 +246,8 @@ html:has(.pf) body {
   left: var(--pad);
   width: calc((100% - 2 * var(--pad)) / var(--n));
   border-radius: calc(var(--sq) - var(--pad));
-  background: var(--tint);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), inset 0 0 0 1px rgb(0 0 0 / 0.04);
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.06), 0 4px 10px -4px rgb(0 0 0 / 0.12);
   opacity: 0;
   scale: 0.86;
   translate: calc(var(--at) * 100%) 0;
@@ -256,9 +259,9 @@ html:has(.pf) body {
 .past:has(.past-it:nth-child(3) a:is(:hover, :focus-visible)) .past-glow { --at: 1; }
 .past:has(.past-it:nth-child(4) a:is(:hover, :focus-visible)) .past-glow { --at: 2; }
 .past-it { position: relative; min-width: 0; }
-.past-it a { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 8px; }
-.past-it img { flex: none; width: 22px; height: 22px; border-radius: 6px; object-fit: contain; transition: transform 460ms var(--spring); }
-.past-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: 580; letter-spacing: -0.015em; transition: transform 380ms var(--spring); }
+.past-it a { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; padding: 0 8px; }
+.past-it img { flex: none; width: 20px; height: 20px; border-radius: 5px; object-fit: contain; transition: transform 460ms var(--spring); }
+.past-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14.5px; font-weight: 560; letter-spacing: -0.015em; transition: transform 380ms var(--spring); }
 .past-it a:hover img, .past-it a:focus-visible img { transform: rotate(-12deg) scale(1.16); }
 .past-it a:hover .past-name, .past-it a:focus-visible .past-name { transform: translateX(1px); }
 .past-it a:active img { transform: rotate(-6deg) scale(0.96); transition-duration: 120ms; }

@@ -99,12 +99,18 @@ const logo = (pic: string, alt: string, tilt: number): StickerPic => ({ pic, alt
 // and an odd one left over shares a row with the wide piece beside it.
 export const FEED: Entry[] = [
   // 14 Nov: the x post kit (~/night/real/xpost-n14) and four breakdowns (~/night/real/breakdowns-n14) lead
+  // 14 Nov evening: jawadjalal.com/capy as a manga globe (the tour and stills), and the Ignaru canvas with an ad set on it
+  { ...clip("capy-globe-tour", "capy-globe-tour.mp4", "Capy", "hackathon assets, a 577 piece manga globe", "A 21 second tour of jawadjalal.com/capy: the Capy hackathon assets on a manga globe, flying to the rebuilds, stickers, signs and manga strips."), kind: "brand", unsolicited: true },
   clip("reel-n14", "reel-n14.mp4", "Ignura", "this week's ads, one reel", "A 12 second reel of this week's unsolicited ads: PostHog, Mastra, InstaBox, Rainbrand, a Capy hackathon poster and brand boards."),
+  own("ignaru-canvas-ads", "Ignaru", "the canvas, a whole ad set on it", "the Ignaru canvas: an ad engine run laid out as frames, the layers list on the left and the composer at the foot."),
   ad("rainbrand-press", "Rainbrand", "On-brand, on repeat. A real offset press, its rollers inked in their five colours."),
   breakdown("ad-anatomy", "PostHog", "ad, taken apart", "the till ad slide by slide: the line read off posthog.com, the before and after crop, the type, four sizes."),
   ad("mastra-lightning", "Mastra", "Your agents can now respond to real-world events. Lightning drawn in their orange."),
   breakdown("site-rebuild", "jawadjalal.com", "taken apart", "the fixed column, the type, the stickers, the squircle buttons and the drifting wall, measured.", false),
   ad("instabox-midrun", "InstaBox", "Fork a machine, mid-run. LA traffic at night, one lane splitting off in their green."),
+  { kind: "brand", file: "capy-globe-spin", brand: "Capy", what: "hackathon assets, the globe up close", alt: "jawadjalal.com/capy turned close: the posters, wallpapers and level-up rebuilds clustered on the globe.", unsolicited: true, ...size("capy-globe-spin") },
+  own("ignaru-canvas-zoom", "Ignaru", "the canvas, zoomed into one ad", "the Ignaru canvas zoomed into one ad: a creator marketing poster with a receipt, stamps and a chart."),
+  { kind: "brand", file: "capy-globe-stickers", brand: "Capy", what: "hackathon stickers, 41 die-cuts", alt: "the stickers chapter of jawadjalal.com/capy: 41 manga die-cut stickers for the Capy hackathon.", unsolicited: true, ...size("capy-globe-stickers") },
   breakdown("capy-poster", "Capy", "hackathon poster, taken apart", "a poster built from capy.ai's own CSS: the colours, the app tiles, the one empty slot, five sizes."),
   poster("capyhack-180", "180 builders take over the YC office, the numeral drawn in Capy app tiles."),
   breakdown("boat-system", "boat.dev", "hackathon system, taken apart", "one event, one system: the poster, the deck sign, the badges and the kit banner, with the grid and the type."),
