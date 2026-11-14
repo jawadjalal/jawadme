@@ -588,8 +588,9 @@ export class Engine {
     this.dirty = true;
   }
   private up(e: PointerEvent) {
-    this.pointers.delete(e.pointerId);
+    const known = this.pointers.delete(e.pointerId);
     if (this.miniDrag) {
+      if (!known) return; // an ignored second finger lifting does not end the minimap drag
       this.miniDrag = false;
       this.pinch = null;
       return;
