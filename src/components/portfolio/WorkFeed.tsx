@@ -75,7 +75,16 @@ export function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
   const base = `/work/2026-11/${p.file}`;
   const wide = r > 1.2;
   return (
-    <figure className="tile" data-kind={p.kind} style={{ flexGrow: r }}>
+    <figure
+      className="tile"
+      data-kind={p.kind}
+      data-file={p.file}
+      data-slides={p.slides ? p.slides.length + 1 : undefined}
+      tabIndex={0}
+      role="button"
+      aria-label={`Open: ${p.alt}`}
+      style={{ flexGrow: r }}
+    >
       {p.video ? (
         <video
           data-loop=""
@@ -102,6 +111,17 @@ export function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
           {...(eager ? { fetchPriority: "high" as const } : {})}
         />
       )}
+      {p.slides ? (
+        <span className="tile-badge" aria-hidden="true">
+          <i />
+          {p.slides.length + 1} slides
+        </span>
+      ) : p.video ? (
+        <span className="tile-badge" aria-hidden="true">
+          <i data-play="" />
+          reel
+        </span>
+      ) : null}
       <figcaption className="tile-cap">
         <b>{p.brand}</b>
         {p.kind === "product" ? ", " : " "}

@@ -32,6 +32,8 @@ export type Picture = {
   alt: string;
   caption?: string;
   unsolicited?: boolean;
+  /** a breakdown: the cover is `file`, these are the slides after it (files in public/work/2026-11), opened in the viewer */
+  slides?: string[];
   w: number;
   h: number;
 };
@@ -55,6 +57,9 @@ export type Live = {
 export type Story = { story: string; cta?: boolean; pic?: StickerPic; at?: number };
 
 export type Piece = Picture | Live;
+
+/** a picture's one-line caption: whose it is and what it is */
+export const captionOf = (p: Picture) => `${p.brand}${p.kind === "product" ? ", " : " "}${p.what}${p.unsolicited ? ", unsolicited" : ""}`;
 export type Entry = Piece | Story;
 
 const size = (file: string) => {
@@ -76,11 +81,34 @@ export const clip = (file: string, video: string, name: string, what: string, al
 const live = (embed: string, name: string, ratio: number, stage: number, caption: string): Live => ({ kind: "component", embed, name, ratio, stage, caption, ground: "#111213" });
 const icon = (embed: string, name: string): Live => ({ kind: "icon", embed, name, ratio: 1, stage: 360, ground: "#000" });
 
+/** a breakdown carousel (cover plus four 4:5 slides), made from the finished piece: how one ad, poster or site was built */
+const breakdown = (key: string, name: string, what: string, alt: string, unsolicited = true): Picture => ({
+  kind: "brand",
+  file: `bd-${key}-cover`,
+  brand: name,
+  what,
+  alt: `${name} ${what}: ${alt}`,
+  unsolicited,
+  slides: ["01", "02", "03", "04"].map((n) => `bd-${key}-${n}`),
+  ...size(`bd-${key}-cover`),
+});
+
 const logo = (pic: string, alt: string, tilt: number): StickerPic => ({ pic, alt, w: 128, h: 128, tilt });
 
 // The first pass, strongest first. The packer sets wide pieces alone at full width and everything else two to a row,
 // and an odd one left over shares a row with the wide piece beside it.
 export const FEED: Entry[] = [
+  // 14 Nov: the x post kit (~/night/real/xpost-n14) and four breakdowns (~/night/real/breakdowns-n14) lead
+  clip("reel-n14", "reel-n14.mp4", "Ignura", "this week's ads, one reel", "A 12 second reel of this week's unsolicited ads: PostHog, Mastra, InstaBox, Rainbrand, a Capy hackathon poster and brand boards."),
+  ad("rainbrand-press", "Rainbrand", "On-brand, on repeat. A real offset press, its rollers inked in their five colours."),
+  breakdown("ad-anatomy", "PostHog", "ad, taken apart", "the till ad slide by slide: the line read off posthog.com, the before and after crop, the type, four sizes."),
+  ad("mastra-lightning", "Mastra", "Your agents can now respond to real-world events. Lightning drawn in their orange."),
+  breakdown("site-rebuild", "jawadjalal.com", "taken apart", "the fixed column, the type, the stickers, the squircle buttons and the drifting wall, measured.", false),
+  ad("instabox-midrun", "InstaBox", "Fork a machine, mid-run. LA traffic at night, one lane splitting off in their green."),
+  breakdown("capy-poster", "Capy", "hackathon poster, taken apart", "a poster built from capy.ai's own CSS: the colours, the app tiles, the one empty slot, five sizes."),
+  poster("capyhack-180", "180 builders take over the YC office, the numeral drawn in Capy app tiles."),
+  breakdown("boat-system", "boat.dev", "hackathon system, taken apart", "one event, one system: the poster, the deck sign, the badges and the kit banner, with the grid and the type."),
+
   own("ignaru-app-composer", "Ignaru", "the design tool I'm building", "the Ignaru composer with its model menu open: Opus 5.5, effort set to high."),
   own("ignaru-canvas", "Ignaru", "the design tool I'm building", "the Ignaru canvas: a landing page frame with numbered comments, a mood board and a start button beside it."),
   ad("whop-blimp", "Whop", "an orange Whop blimp over a crowd, in halftone. The fastest path to your next dollar."),
