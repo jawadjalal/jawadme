@@ -12,7 +12,7 @@ html:has(.cb) body {
   --ink-2: #5e5e5e;
   --ink-3: #6b6b6b;
   --blue: #3b5de8;
-  --ground: #f3f0e8;
+  --ground: #ffffff;
   --panel: rgba(255, 255, 255, 0.92);
   --line: rgba(10, 10, 10, 0.08);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 6px 24px rgba(0, 0, 0, 0.08);
@@ -32,18 +32,6 @@ html:has(.cb) body {
 .cb :focus { outline: none; }
 .cb :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
 
-/* the screentone paper: a 45 degree dot lattice, slid by the engine with a transform */
-.cb-tone {
-  position: absolute;
-  inset: -16px -16px 0 0;
-  width: calc(100% + 32px);
-  height: calc(100% + 32px);
-  background-image: radial-gradient(circle, rgba(10, 10, 10, 0.08) 1.4px, transparent 1.8px), radial-gradient(circle, rgba(10, 10, 10, 0.08) 1.4px, transparent 1.8px);
-  background-size: 16px 16px;
-  background-position: 0 0, 8px 8px;
-  will-change: transform;
-  pointer-events: none;
-}
 .cb-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
 
 /* everything over the canvas fades together on H and during the tour */
@@ -171,7 +159,7 @@ html:has(.cb) body {
   .cb-clusters { display: none; left: 50%; top: auto; bottom: 72px; transform: translateX(-50%); width: min(280px, calc(100vw - 32px)); }
   .cb-clusters.cb-open { display: block; }
   .cb-clusters ol { max-height: 50vh; overflow: auto; }
-  .cb-mob { display: inline-flex !important; max-width: 96px; overflow: hidden; text-overflow: ellipsis; }
+  .cb-mob { display: inline-block !important; max-width: 96px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cb-wide { display: none !important; }
   .cb-hint { display: none; }
   .cb-bar { bottom: 14px; }
