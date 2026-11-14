@@ -14,16 +14,33 @@ type Icon = "phone" | "mail";
 const REACH = 70;
 const LEAN = 6;
 
+/** The button's icon as a little sticker: a green phone handset or a yellow envelope, drawn as objects with a white
+ *  die-cut edge (the stroke painted under the fill), tilted a few degrees. It wobbles when the button is pointed at. */
 function Glyph({ icon }: { icon: Icon }) {
   return icon === "phone" ? (
-    <svg viewBox="0 0 20 20" aria-hidden="true">
-      <path d="M6.2 2.8 4.4 3.4c-.9.3-1.5 1.2-1.4 2.2.5 5.4 5 9.9 10.4 10.4 1 .1 1.9-.5 2.2-1.4l.6-1.8a1 1 0 0 0-.5-1.2l-2.6-1.3a1 1 0 0 0-1.2.3l-.9 1.1a8 8 0 0 1-4.4-4.4l1.1-.9a1 1 0 0 0 .3-1.2L7.4 3.3a1 1 0 0 0-1.2-.5Z" />
-    </svg>
+    <span className="sq-stk" style={{ "--t": "-8deg" } as React.CSSProperties}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          className="sq-cut"
+          d="M6.6 2.6c.8-.5 1.9-.3 2.4.5l1.6 2.6c.5.8.3 1.8-.4 2.4l-1.1.9c.9 2 2.5 3.6 4.5 4.5l.9-1.1c.6-.7 1.6-.9 2.4-.4l2.6 1.6c.8.5 1 1.6.5 2.4l-.9 1.5c-.7 1.1-2 1.7-3.3 1.4C9.6 18.9 5.1 14.4 3.5 8.2c-.3-1.3.3-2.6 1.4-3.3Z"
+        />
+        <path
+          d="M6.6 2.6c.8-.5 1.9-.3 2.4.5l1.6 2.6c.5.8.3 1.8-.4 2.4l-1.1.9c.9 2 2.5 3.6 4.5 4.5l.9-1.1c.6-.7 1.6-.9 2.4-.4l2.6 1.6c.8.5 1 1.6.5 2.4l-.9 1.5c-.7 1.1-2 1.7-3.3 1.4C9.6 18.9 5.1 14.4 3.5 8.2c-.3-1.3.3-2.6 1.4-3.3Z"
+          fill="#2fc764"
+        />
+        <path d="M5.4 5.2c.3-.4.7-.7 1.1-.9" fill="none" stroke="#fff" strokeOpacity=".55" strokeWidth="1.1" strokeLinecap="round" />
+        <path d="M15.9 16.6l1.9 1.2" fill="none" stroke="#1d9a48" strokeWidth="1" strokeLinecap="round" />
+      </svg>
+    </span>
   ) : (
-    <svg viewBox="0 0 20 20" aria-hidden="true">
-      <rect x="2.6" y="4.4" width="14.8" height="11.2" rx="2.4" />
-      <path d="m3.6 6 6.4 4.6L16.4 6" />
-    </svg>
+    <span className="sq-stk" style={{ "--t": "7deg" } as React.CSSProperties}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect className="sq-cut" x="2.6" y="5.4" width="18.8" height="13.2" rx="2.2" />
+        <rect x="2.6" y="5.4" width="18.8" height="13.2" rx="2.2" fill="#ffd043" />
+        <path d="M3.4 6.5 12 12.4l8.6-5.9" fill="none" stroke="#b07a00" strokeWidth="1.3" strokeLinejoin="round" strokeLinecap="round" />
+        <rect x="16.4" y="13.6" width="3" height="3.2" rx=".4" fill="#e3322b" />
+      </svg>
+    </span>
   );
 }
 
