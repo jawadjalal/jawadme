@@ -5,29 +5,28 @@
 import { BOOK, EMAIL } from "@/components/felt/copy";
 
 /*
-  Headline, his words (13 Nov, after seeing it live): "Too young to drive," / "but I'm a design mastermind." Four short
-  lines in the slim column (15 Nov), each set whole, both in ink, the first a touch lighter. His memoji on line one, and one more sticker that
-  means something: a little red car (his pick, 14 Nov, over the L plate it replaced). The earlier two-sentence version is kept as HEADLINE_ALT and shows with ?h=alt.
+  Headline, his words (13 Nov, after seeing it live): "Too young to drive," / "but I'm a design mastermind." Two lines at
+  every width (15 Nov, his ask: "two lines max"), each set whole, the first in grey and the second in ink. Both stickers
+  ride on line one, the shorter: a little red car (his pick, 14 Nov, over the L plate it replaced) and his memoji. The
+  earlier two-sentence version is kept as HEADLINE_ALT and shows with ?h=alt.
 */
 const MEMOJI = { pic: "/design/jawad-die.webp", alt: "Jawad's memoji", cut: true, w: 697, h: 781, tilt: 5 } as const;
 const CAR = { pic: "/work/2026-11/sticker-car.svg", alt: "a little red car", w: 156, h: 90, tilt: -4, cut: true, kind: "car" } as const;
 
 /** One array per line of type; each line is set on one line, never rewrapped. A picture is a sticker: `cut` is a
- *  cut-out with its own outline, otherwise a die-cut card with a white edge. */
+ *  cut-out with its own outline, otherwise a die-cut card with a white edge. `fit` is the widest line's width in em,
+ *  measured in the browser plus about 1.5% to spare for other browsers' kerning, so the type is sized to fill the
+ *  column with it. */
 export const HEADLINE = {
-  lead: [[{ t: "Too young" }, CAR], [{ t: "to drive," }, MEMOJI]],
-  main: [[{ t: "but I'm a design" }], [{ t: "mastermind." }]],
-  /** the same words stacked a word or two to a line, so the headline runs the height of the desktop column; "master"
-   *  breaks at the hyphen and his memoji signs the last line */
-  stack: {
-    lead: [[{ t: "Too" }, CAR], [{ t: "young" }], [{ t: "to" }], [{ t: "drive," }]],
-    main: [[{ t: "but" }], [{ t: "I'm a" }], [{ t: "design" }], [{ t: "master-" }], [{ t: "mind." }, MEMOJI]],
-  },
+  lead: [[{ t: "Too young" }, CAR, { t: "to drive," }, MEMOJI]],
+  main: [[{ t: "but I'm a design mastermind." }]],
+  fit: 13.3,
 } as const;
 
 export const HEADLINE_ALT = {
   lead: [[{ t: "Too young" }, CAR, { t: "to drive." }, MEMOJI]],
   main: [[{ t: "Old enough to be a design mastermind." }]],
+  fit: 17.45,
 } as const;
 
 export type Bit = { t: string } | { pic: string; alt: string; w: number; h: number; tilt: number; cut?: boolean; tuck?: boolean; kind?: string };

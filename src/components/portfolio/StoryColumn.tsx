@@ -12,6 +12,8 @@ import { Sticker, type StickerPic } from "./Sticker";
 type Bit = { t: string } | StickerPic;
 type Job = { name: string; role: string; logo: string; href: string };
 type Reply = { quote: string; name: string; handle: string; avatar?: string };
+/** `fit`: the widest line's width in em, which sizes the type to the column */
+type Headline = { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[]; fit: number };
 
 function Lines({ lines }: { lines: readonly (readonly Bit[])[] }) {
   return (
@@ -45,14 +47,9 @@ export function StoryColumn({
   xHandle,
   does,
 }: {
-  headline: {
-    lead: readonly (readonly Bit[])[];
-    main: readonly (readonly Bit[])[];
-    /** the desktop stack: the same words a word or two to a line */
-    stack?: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
-  };
+  headline: Headline;
   /** the earlier headline, shown with ?h=alt so the two can be compared on the real page */
-  headlineAlt?: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
+  headlineAlt?: Headline;
   hire: string;
   second: { label: string; href: string; address: string };
   timeline: Job[];
@@ -67,7 +64,6 @@ export function StoryColumn({
   const [alt, setAlt] = useState(false);
   useEffect(() => setAlt(new URLSearchParams(location.search).get("h") === "alt"), []);
   const h = alt && headlineAlt ? headlineAlt : headline;
-  const stack = alt ? undefined : headline.stack;
   const cta = useRef<HTMLDivElement>(null);
 
   // the phone's floating hire button shows once the header's own has left the screen
@@ -81,23 +77,11 @@ export function StoryColumn({
 
   return (
     <aside className="col col-slim">
-      {/* one h1 holding two settings of the same words: on desktop a stack, a word or two to a line, that runs the
-          column's height; on phones the four-line header. Only one is ever displayed, so only one is read out. */}
       <h1 className="col-title">
-        {stack && (
-          <span className="col-h1 col-stack">
-            <span className="col-lead">
-              <Lines lines={stack.lead} />
-            </span>
-            <span className="col-main">
-              <Lines lines={stack.main} />
-            </span>
-          </span>
-        )}
-        <span className="col-h1 col-flow" data-phone={stack ? "" : undefined}>
+        <span className="col-h1" style={{ "--fit": h.fit } as React.CSSProperties}>
           <span className="col-lead">
             <Lines lines={h.lead} />
-          </span>
+          </span>{" "}
           <span className="col-main">
             <Lines lines={h.main} />
           </span>
