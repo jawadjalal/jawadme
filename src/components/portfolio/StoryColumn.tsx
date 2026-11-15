@@ -1,15 +1,16 @@
 "use client";
 
-// The fixed left column, one composed stack: the two-line headline with his stickers in it, the two squircle buttons,
-// what he does, his two companies linked out, one big pill of the places he worked before, and one reply from X at
-// a time, set as an X post. On a phone it becomes the header block over the wall, and a small hire button stays at
+// The fixed left column, set as one manga page (15 Nov): ink panels with soft Capy corners and hard cel shadows. The
+// first panel is the headline over speed lines, with his name and what he does in narration boxes; then the two
+// buttons as ink blocks, his two companies side by side, the places he worked before in one strip, and the last
+// panel, which takes whatever height is left, holds one reply from X at a time as a speech balloon over screentone. On a phone it becomes the header block over the wall, and a small hire button stays at
 // the bottom of the screen once the header's own has gone.
 
 import { useEffect, useRef, useState } from "react";
 import { SquircleButton } from "./SquircleButton";
 import { Sticker, type StickerPic } from "./Sticker";
 
-type Bit = { t: string } | StickerPic;
+type Bit = { t: string; hot?: boolean } | StickerPic;
 type Job = { name: string; role: string; logo: string; href: string };
 type Reply = { quote: string; name: string; handle: string; avatar?: string };
 
@@ -23,7 +24,7 @@ function Lines({ lines }: { lines: readonly (readonly Bit[])[] }) {
         <span key={l} className="col-line">
           {bits.map((b, i) =>
             "t" in b ? (
-              <span key={i}>{i ? " " : ""}{b.t}</span>
+              <span key={i} className={b.hot ? "col-hot" : undefined}>{i ? " " : ""}{b.t}</span>
             ) : (
               <span key={i}>
                 {" "}
@@ -55,7 +56,7 @@ function Replies({ replies, to }: { replies: Reply[]; to: string }) {
   return (
     <section className="col-replies" aria-label="Replies on X">
       <div className="col-replies-head">
-        <h2>Replies on X</h2>
+        <h2 className="mg-tag">Replies on X</h2>
         <span className="col-count" aria-hidden="true">
           {n + 1} / {replies.length}
         </span>
@@ -107,7 +108,7 @@ function Replies({ replies, to }: { replies: Reply[]; to: string }) {
 function Past({ past }: { past: Job[] }) {
   return (
     <section className="col-past" aria-label="Where I worked before">
-      <h2 className="past-h">Before</h2>
+      <h2 className="past-h mg-tag">Before</h2>
       <ul className="past" style={{ "--n": past.length } as React.CSSProperties}>
         <li className="past-glow" aria-hidden="true" />
         {past.map((j) => (
@@ -134,6 +135,7 @@ export function StoryColumn({
   replies,
   xHandle,
   does,
+  name = "Jawad Jalal",
 }: {
   headline: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
   /** the earlier headline, shown with ?h=alt so the two can be compared on the real page */
@@ -147,6 +149,8 @@ export function StoryColumn({
   xHandle: string;
   /** what he does, in a few words each */
   does: readonly string[];
+  /** his name, in the first panel's narration box */
+  name?: string;
 }) {
   const [stuck, setStuck] = useState(false);
   const [addr, setAddr] = useState(false);
@@ -165,16 +169,34 @@ export function StoryColumn({
   }, []);
 
   return (
-    <aside className="col">
+    <aside className="col mg">
       <div className="col-top">
-        <div className="col-h1">
-          <p className="col-lead">
-            <Lines lines={h.lead} />
+        <section className="mg-p mg-hero">
+          <span className="mg-speed" aria-hidden="true" />
+          <span className="mg-tone" aria-hidden="true" />
+          <p className="mg-tag mg-name">{name}</p>
+          <div className="col-h1">
+            <p className="col-lead">
+              <Lines lines={h.lead} />
+            </p>
+            <h1 className="col-main">
+              <Lines lines={h.main} />
+            </h1>
+          </div>
+          <p className="col-does mg-box">
+            {does.map((d, i) => (
+              <span key={d}>
+                {i ? (
+                  <>
+                    <span className="pf-sr">, </span>
+                    <span className="col-does-dot" aria-hidden="true">·</span>
+                  </>
+                ) : null}
+                {d}
+              </span>
+            ))}
           </p>
-          <h1 className="col-main">
-            <Lines lines={h.main} />
-          </h1>
-        </div>
+        </section>
 
         <div className="col-act">
           <div className="col-actions" ref={cta}>
@@ -191,22 +213,8 @@ export function StoryColumn({
           </p>
         </div>
 
-        <div className="col-who">
-          <p className="col-does">
-            {does.map((d, i) => (
-              <span key={d}>
-                {i ? (
-                  <>
-                    <span className="pf-sr">, </span>
-                    <span className="col-does-dot" aria-hidden="true">·</span>
-                  </>
-                ) : null}
-                {d}
-              </span>
-            ))}
-          </p>
-
-          <h2 className="past-h">Now</h2>
+        <section className="mg-p mg-now">
+          <h2 className="past-h mg-tag">Now</h2>
           <ul className="col-own" aria-label="My companies">
             {timeline.map((j) => (
               <li key={j.name}>
@@ -223,12 +231,15 @@ export function StoryColumn({
               </li>
             ))}
           </ul>
+        </section>
 
+        <div className="mg-p mg-before">
           <Past past={past} />
         </div>
       </div>
 
-      <section className="col-reps">
+      <section className="col-reps mg-p mg-x">
+        <span className="mg-tone" aria-hidden="true" />
         <Replies replies={replies} to={xHandle} />
       </section>
 

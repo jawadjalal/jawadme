@@ -16,7 +16,7 @@ const CAR = { pic: "/work/2026-11/sticker-car.svg", alt: "a little red car", w: 
  *  cut-out with its own outline, otherwise a die-cut card with a white edge. */
 export const HEADLINE = {
   lead: [[{ t: "Too young" }, CAR, { t: "to drive," }, MEMOJI]],
-  main: [[{ t: "but I'm a design mastermind." }]],
+  main: [[{ t: "but I'm a design" }], [{ t: "mastermind.", hot: true }]],
 } as const;
 
 export const HEADLINE_ALT = {
@@ -24,7 +24,7 @@ export const HEADLINE_ALT = {
   main: [[{ t: "Old enough to be a design mastermind." }]],
 } as const;
 
-export type Bit = { t: string } | { pic: string; alt: string; w: number; h: number; tilt: number; cut?: boolean; tuck?: boolean; kind?: string };
+export type Bit = { t: string; hot?: boolean } | { pic: string; alt: string; w: number; h: number; tilt: number; cut?: boolean; tuck?: boolean; kind?: string };
 
 /** "call me" goes to the call page, which holds the booking calendar; BOOKING is the Cal.com page itself, the
  *  fallback inside it. */
