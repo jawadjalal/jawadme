@@ -718,7 +718,10 @@ html[data-viewer] { overflow: hidden; }
 }
 .col-title { margin: 0; font: inherit; container-type: inline-size; }
 /* two lines, each whole: sized so the widest (--fit em, set from the headline) fills the column, up to 46px */
-.col-slim .col-h1 { display: block; font-size: min(46px, calc(100cqi / var(--fit))); line-height: 1.08; letter-spacing: -0.035em; }
+/* the lines are set a little open (15 Nov, his tip: "make the two lines taller"), and the base sits 8px lower; a margin
+   here and not a bigger gap, because the gap also sets the space above the marquees and changes on phones */
+.col-slim .col-h1 { display: block; font-size: min(46px, calc(100cqi / var(--fit))); line-height: 1.24; letter-spacing: -0.035em; }
+.col-slim .col-title { margin-bottom: 8px; }
 .col-slim .col-lead, .col-slim .col-main { font-weight: 640; }
 .col-slim .col-lead { color: #a3a3a3; }
 /* the side bearing of each line's first letter (Instrument Sans at 640: b about 0.06em, T 0.02em) is hung back, so
