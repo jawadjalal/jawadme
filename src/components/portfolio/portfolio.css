@@ -708,9 +708,10 @@ html[data-viewer] { overflow: hidden; }
    The headline is two lines, each set whole, flush left, as large as the column's width allows. Lead and main are
    the same face, weight and size; only the ink changes, at the comma. The base sits right under it: his name and
    what he does, then the call button with "email me" beside it. */
-/* the column is about 30% of the window (it was 22%; 15 Nov, his ask for a bigger headline): the headline grows from
-   about 20px to 29px at 1440, and the wall keeps its four columns from 1200px. Three quiet marquees sit at its foot. */
-.pf-slim { --col: clamp(360px, 30vw, 480px); }
+/* the column is about 36% of the window (15 Nov, his asks for a bigger headline, twice): the headline is about 35px at
+   1440 and 28px at 1024. The wall beside it keeps four columns from 1360px, three from 1040px (DriftWall.tsx). Three
+   quiet marquees sit at its foot. */
+.pf-slim { --col: clamp(424px, 36vw, 560px); }
 .col-slim {
   justify-content: flex-start !important;
   gap: 26px;
