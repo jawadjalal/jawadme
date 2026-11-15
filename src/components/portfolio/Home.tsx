@@ -3,7 +3,7 @@ import { WorkFeed } from "@/components/portfolio/WorkFeed";
 import { DriftWall } from "@/components/portfolio/DriftWall";
 import { FEED, type Picture } from "@/content/feed";
 import { Viewer } from "@/components/portfolio/Viewer";
-import { CLOSING, DOES, HEADLINE, HEADLINE_ALT, HIRE, PAST, REPLIES, SECOND, TIMELINE, X_HANDLE } from "@/content/story";
+import { CLOSING, DOES, HEADLINE, HEADLINE_ALT, HIRE, NOW, REPLIES, SECOND, WORKED, X_HANDLE } from "@/content/story";
 import { print, sans } from "@/components/portfolio/fonts";
 import "@/components/portfolio/portfolio.css";
 
@@ -18,7 +18,7 @@ export const PIECES: Picture[] = FEED.filter((e): e is Picture => "file" in e);
 export function HomePage({ open }: { open?: string }) {
   return (
     <div className={`pf pf-slim ${sans.variable} ${print.variable}`}>
-      <StoryColumn headline={HEADLINE} headlineAlt={HEADLINE_ALT} hire={HIRE} second={SECOND} timeline={TIMELINE} past={PAST} replies={REPLIES} xHandle={X_HANDLE} does={DOES} />
+      <StoryColumn headline={HEADLINE} headlineAlt={HEADLINE_ALT} hire={HIRE} second={SECOND} worked={WORKED} now={NOW} replies={REPLIES} xHandle={X_HANDLE} does={DOES} />
       <main className="pf-main" id="work">
         <h2 className="pf-sr">Work</h2>
         <div className="wall-drift">

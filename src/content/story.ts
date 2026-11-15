@@ -37,22 +37,20 @@ export const HIRE = "/call";
 export const BOOKING = BOOK;
 export const SECOND = { label: "email me", href: `mailto:${EMAIL}?subject=Hiring%20you`, address: EMAIL };
 
-/** Newest first, a timeline. `logo` is the place's own mark (Ignaru's is the orange app icon from the ignaru repo);
- *  `tile` is a plain initial on its colour where the repo has no real mark (public/logos/sof.png is only a red square).
- *  `when` only where the site sources it: lib/profile.ts has "Since 2026" for Okara and MenuFit, both since left;
- *  nothing dates SOF Agency or Basket Ent, so they carry no date. */
-/** His own two companies, linked at the top of the column. */
-export const TIMELINE: { name: string; role: string; logo: string; href: string }[] = [
-  { name: "Ignaru", role: "founder, design tool", logo: "/logos/ignaru-mark.png", href: "https://ignaru.com" },
-  { name: "Ignura", role: "founder, ad and brand studio", logo: "/logos/ignura.png", href: "https://ignura.com" },
+/** The startups he has worked at, for the first marquee at the column's foot: the CV's roles (scripts/cv.mjs ROLES),
+ *  in the CV's order, with the marks the repo has. Nooli has no mark or site in the repo, so its name is set in type alone. */
+export const WORKED: { name: string; role: string; logo?: string; href?: string }[] = [
+  { name: "Ignaru", role: "founder", logo: "/logos/ignaru-mark.png", href: "https://ignaru.com" },
+  { name: "Ignura", role: "founder", logo: "/logos/ignura.png", href: "https://ignura.com" },
+  { name: "MenuFit", role: "product designer", logo: "/logos/menufit-bag-128.webp", href: "https://menufit.com" },
+  { name: "Okara", role: "product intern", logo: "/logos/okara.png", href: "https://okara.ai" },
+  { name: "Bevel", role: "founder", logo: "/logos/bevel.png", href: "https://bevel.team" },
+  { name: "Nooli", role: "head of product" },
 ];
 
-/** Places he has worked before, set side by side in one pill in the column. Roles as he gave them; Bevel's in his words. */
-export const PAST: { name: string; role: string; logo: string; href: string }[] = [
-  { name: "Okara", role: "product intern", logo: "/logos/okara.png", href: "https://okara.ai" },
-  { name: "MenuFit", role: "product designer", logo: "/logos/menufit-bag-128.webp", href: "https://menufit.com" },
-  { name: "Bevel", role: "founder, scaled to six-figure ARR", logo: "/logos/bevel.png", href: "https://bevel.team" },
-];
+/** Where he is right now, for the second marquee: the city from lib/profile.ts, a live clock in its time zone, and the
+ *  line the felt drawer opens with ("15, in London, building Ignaru"). */
+export const NOW = { place: "London, England", zone: "Europe/London", city: "London", doing: "15, building Ignaru" } as const;
 
 /** What he does, in his words, on one line under the buttons. */
 export const DOES = ["Brand design", "Ads", "Design engineering"] as const;
