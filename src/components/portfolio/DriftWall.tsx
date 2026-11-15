@@ -24,9 +24,9 @@ const DRIFT = [
 /** the first offset of each column, so the columns start staggered; also set on the server so nothing jumps on load */
 const START = 220;
 
-/** how wide a picture shows in the drifting wall beside the home column (about 36% of the window, at least 424px):
- *  about a sixth of the window with four columns from 1360px, a fifth with three from 1040px, 29vw with two below */
-const DRIFT_SIZES = "(min-width: 1360px) 16vw, (min-width: 1040px) 21vw, 29vw";
+/** how wide the widest picture shows in the drifting wall beside the home column, rounded up so no screen fetches a
+ *  copy smaller than it shows: four columns from 1280px, three from 1040px, two below */
+const DRIFT_SIZES = "(min-width: 1280px) 21vw, (min-width: 1040px) 23vw, 29vw";
 
 
 /** Lays the entries into `k` columns, each piece going to the shortest column so far (heights as width over ratio). */
@@ -57,8 +57,8 @@ function Copy({ entries, href, hidden, offset }: { entries: Entry[]; href: strin
 }
 
 export function DriftWall({ entries, href }: { entries: Entry[]; href: string }) {
-  // four columns on the server too: most laptop and desktop windows are 1360px or wider (a MacBook Air is 1440 or 1470),
-  // so the wall the server draws is usually the wall that stays, with no re-layout when the script arrives
+  // four columns on the server too: almost every laptop and desktop window is 1280px or wider, so the wall the server
+  // draws is the wall that stays, with no re-layout when the script arrives
   const [k, setK] = useState(4);
   const cols = useMemo(() => lay(entries, k), [entries, k]);
   const wall = useRef<HTMLDivElement>(null);
@@ -66,9 +66,9 @@ export function DriftWall({ entries, href }: { entries: Entry[]; href: string })
   useLoops(wall, k);
 
   useEffect(() => {
-    // set by what is left beside the home column, so a picture stays about 200px wide or more: four columns on a
-    // laptop or wider, three on a small window, two below that
-    const four = matchMedia("(min-width: 1360px)");
+    // set by what is left beside the home column, so the narrowest picture stays about 150px wide or more: four
+    // columns on a laptop or wider, three on a small window, two below that
+    const four = matchMedia("(min-width: 1280px)");
     const three = matchMedia("(min-width: 1040px)");
     const set = () => setK(four.matches ? 4 : three.matches ? 3 : 2);
     set();
