@@ -1,6 +1,7 @@
 /* /work: the pitch page. It borrows the home page's tokens and button from portfolio.css; this file adds the rest.
    The source order (headline, work, prices) is the reading order everywhere. On desktop a grid puts the headline and
-   the prices in a left column with the work beside them, and the prices stick in view while the page scrolls. */
+   the prices in a left column with the work beside them, and on tall windows the prices stick in view while the
+   page scrolls. */
 
 html:has(.pf-work),
 html:has(.pf-work) body {
@@ -57,9 +58,13 @@ html:has(.pf-work) body {
   .pf-work::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--col) - 1px); width: 1px; background: var(--rule); }
   .wk-head { grid-column: 1; grid-row: 1; gap: 24px; padding: var(--edge) var(--edge) 48px; }
   .wk-main { grid-column: 2; grid-row: 1 / span 2; margin-left: 0; padding: var(--edge) calc(var(--edge) * 2) 120px; }
-  .wk-offer { grid-column: 1; grid-row: 2; align-self: start; position: sticky; top: 0; padding: var(--edge); }
+  .wk-offer { grid-column: 1; grid-row: 2; align-self: start; padding: var(--edge); }
   /* tall windows show the whole column at once, so the call button under the prices is enough */
   .wk-head-act { display: none; }
+}
+/* the prices stick in view only where the window is tall enough to show all of them */
+@media (min-width: 821px) and (min-height: 861px) {
+  .wk-offer { position: sticky; top: 0; }
 }
 @media (min-width: 821px) and (max-width: 1200px) {
   .wk-main { padding-inline: var(--edge); }
