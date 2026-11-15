@@ -3,14 +3,17 @@
 // together), and a `story` line breaks the wall wherever it sits in the list.
 //
 // Pictures live in public/work/2026-11 as <file>.webp (960 wide, or 1600 for wide pieces) and <file>-sm.webp (half
-// that); their sizes are in feed-sizes.json, written by the converter. Live components are self-contained pages in
-// public/components.
+// that); their sizes are in feed-sizes.json, written by the converter. A piece with a bigger master also has
+// <file>-2x.webp, for retina screens, and its width is the third number in feed-sizes.json. Live components are
+// self-contained pages in public/components.
 //
 // Every piece carries a one-line caption under it: whose it is and what it is. `unsolicited: true` marks work made
 // unasked for a company that is not a client, and its caption says "unsolicited".
 //
-// A video loop is a picture with `video`: the poster is <file>.webp as usual, the clip is public/work/2026-11/<video>
-// (an mp4, muted). It plays only while it is on screen, and never with reduced motion. To add an Ignaru panel recording:
+// A video loop is a picture with `video`: the poster is <file>.webp as usual (<file>-sm.webp on the wall), the clip is
+// public/work/2026-11/<video> (an mp4, muted), and `bash scripts/loops.sh <video>` makes its 720 wide encodes beside it
+// for phones and wall tiles (<video>-720.mp4 and <video>-720-av1.mp4). It plays only while it is on screen, and never
+// with reduced motion or Save-Data. To add an Ignaru panel recording:
 //   clip("panel-rename", "panel-rename.mp4", "Ignaru", "the rename panel, recorded", "Renaming a frame in Ignaru."),
 // Sources: the ads he posted on X himself (~/night/refs/his-posts-n13), the twenty he picked for his 13 Nov post
 // (~/Desktop/mega-post-2), and the ads, brand studies and sites already on this site.
@@ -61,6 +64,13 @@ export type Piece = Picture | Live;
 /** a picture's one-line caption: whose it is and what it is */
 export const captionOf = (p: Picture) => `${p.brand}${p.kind === "product" ? ", " : " "}${p.what}${p.unsolicited ? ", unsolicited" : ""}`;
 export type Entry = Piece | Story;
+
+/** every width a picture comes in, for an img srcset: half, full, and the retina master where there is one */
+export const srcSetOf = (file: string) => {
+  const [w, , w2] = (sizes as Record<string, number[]>)[file];
+  const b = `/work/2026-11/${file}`;
+  return `${b}-sm.webp ${Math.round(w / 2)}w, ${b}.webp ${w}w${w2 ? `, ${b}-2x.webp ${w2}w` : ""}`;
+};
 
 const size = (file: string) => {
   const s = (sizes as Record<string, number[]>)[file];
