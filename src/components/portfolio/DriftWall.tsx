@@ -53,11 +53,17 @@ export function DriftWall({ entries, href }: { entries: Entry[]; href: string })
   const tracks = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const mq = matchMedia("(max-width: 1180px)");
-    const set = () => setK(mq.matches ? 2 : 3);
+    // four columns on a laptop or wider, three on a small window, two below that
+    const four = matchMedia("(min-width: 1200px)");
+    const three = matchMedia("(min-width: 980px)");
+    const set = () => setK(four.matches ? 4 : three.matches ? 3 : 2);
     set();
-    mq.addEventListener("change", set);
-    return () => mq.removeEventListener("change", set);
+    four.addEventListener("change", set);
+    three.addEventListener("change", set);
+    return () => {
+      four.removeEventListener("change", set);
+      three.removeEventListener("change", set);
+    };
   }, []);
 
   useEffect(() => {

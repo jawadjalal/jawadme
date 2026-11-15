@@ -5,8 +5,8 @@
 import { BOOK, EMAIL } from "@/components/felt/copy";
 
 /*
-  Headline, his words (13 Nov, after seeing it live): "Too young to drive," / "but I'm a design mastermind." Exactly
-  two lines at every width, both in ink, the first a touch lighter. His memoji on line one, and one more sticker that
+  Headline, his words (13 Nov, after seeing it live): "Too young to drive," / "but I'm a design mastermind." Four short
+  lines in the slim column (15 Nov), each set whole, both in ink, the first a touch lighter. His memoji on line one, and one more sticker that
   means something: a little red car (his pick, 14 Nov, over the L plate it replaced). The earlier two-sentence version is kept as HEADLINE_ALT and shows with ?h=alt.
 */
 const MEMOJI = { pic: "/design/jawad-die.webp", alt: "Jawad's memoji", cut: true, w: 697, h: 781, tilt: 5 } as const;
@@ -15,8 +15,8 @@ const CAR = { pic: "/work/2026-11/sticker-car.svg", alt: "a little red car", w: 
 /** One array per line of type; each line is set on one line, never rewrapped. A picture is a sticker: `cut` is a
  *  cut-out with its own outline, otherwise a die-cut card with a white edge. */
 export const HEADLINE = {
-  lead: [[{ t: "Too young" }, CAR, { t: "to drive," }, MEMOJI]],
-  main: [[{ t: "but I'm a design mastermind." }]],
+  lead: [[{ t: "Too young" }, CAR], [{ t: "to drive," }, MEMOJI]],
+  main: [[{ t: "but I'm a design" }], [{ t: "mastermind." }]],
 } as const;
 
 export const HEADLINE_ALT = {
