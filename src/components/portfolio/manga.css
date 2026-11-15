@@ -1,0 +1,305 @@
+/* The home column as one manga page (15 Nov), to match the Capy hackathon strips on the wall: ink panels with soft
+   Capy corners and hard cel shadows, speed lines behind the headline, screentone in the corners, condensed caps for
+   the lettering and a speech balloon for the replies. Ink and paper only; the one colour is the red of "mastermind."
+   (the same red as "INTERVIEW." on his clean Capy posters). Everything here is scoped to .col.mg, so the call page's
+   column keeps its own look. */
+
+.col.mg {
+  --ink: #0b0b0b;
+  --paper: #fff;
+  --hot: #e2231a;
+  --line: 2.5px;
+  --round: 14px;
+  --cel: 4px 4px 0 var(--ink);
+  --gutter: 10px;
+  --letter: var(--pf-print), var(--pf-sans), ui-sans-serif, sans-serif;
+  gap: var(--gutter);
+  padding: 18px 18px 18px;
+  border-right: var(--line) solid var(--ink);
+  background: var(--paper);
+}
+.col.mg .col-top { display: flex; flex-direction: column; gap: var(--gutter); padding: 0; }
+
+/* ── a panel: an ink frame, soft corners, a hard cel shadow ─────────────── */
+.mg-p {
+  position: relative;
+  isolation: isolate;
+  border: var(--line) solid var(--ink);
+  border-radius: var(--round);
+  background: var(--paper);
+  box-shadow: var(--cel);
+  overflow: hidden;
+}
+
+/* the panel tag: a small black narration box in condensed caps */
+.mg-tag {
+  display: inline-block;
+  justify-self: start;
+  align-self: start;
+  margin: 0;
+  padding: 4px 8px 3px;
+  border-radius: 5px;
+  background: var(--ink);
+  color: var(--paper) !important;
+  font-family: var(--letter);
+  font-stretch: 72%;
+  font-size: 12.5px !important;
+  font-weight: 800 !important;
+  line-height: 1;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase;
+}
+
+/* ── panel one: the headline over speed lines ─────────────────────────── */
+.mg-hero { display: grid; gap: 14px; padding: 14px 16px 16px; container-type: inline-size; }
+/* speed lines: two sets of wedges bursting from behind the memoji, clear in the middle so the type stays clean */
+.mg-speed {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    repeating-conic-gradient(from 0deg at 86% 34%, var(--ink) 0deg 0.55deg, transparent 0.55deg 4.1deg),
+    repeating-conic-gradient(from 1.7deg at 86% 34%, var(--ink) 0deg 0.3deg, transparent 0.3deg 6.7deg);
+  -webkit-mask: radial-gradient(ellipse 72% 88% at 86% 34%, transparent 0 46%, #000 92%);
+  mask: radial-gradient(ellipse 72% 88% at 86% 34%, transparent 0 46%, #000 92%);
+  opacity: 0.17;
+  pointer-events: none;
+}
+/* screentone: a dot grid that fades out of one corner */
+.mg-tone {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle, var(--ink) 0 1.05px, transparent 1.45px) 0 0 / 6px 6px;
+  -webkit-mask: linear-gradient(32deg, #000 0%, transparent 42%);
+  mask: linear-gradient(32deg, #000 0%, transparent 42%);
+  opacity: 0.32;
+  pointer-events: none;
+}
+.mg-name { font-size: 13px !important; }
+
+.col.mg .col-h1 {
+  font-family: var(--letter);
+  font-stretch: 68%;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: -0.012em;
+  line-height: 0.9;
+  font-size: min(64px, 12.4cqi);
+}
+.col.mg .col-lead { font-weight: inherit; color: var(--ink); font-size: 0.74em; }
+.col.mg .col-main { font-weight: inherit; color: var(--ink); }
+.col.mg .col-main .col-line:last-child { font-size: 1.52em; line-height: 0.86; letter-spacing: -0.02em; }
+.col-hot { color: var(--hot); }
+/* the stickers in the headline, set to the condensed caps */
+.col.mg .col-h1 .stk[data-cut][data-kind="car"] { height: 0.82em; width: calc(0.82em * var(--ar)); vertical-align: -0.04em; margin: -0.1em 0.06em -0.1em 0.04em; }
+.col.mg .col-h1 .stk[data-cut]:not([data-kind]) { height: 1.34em; width: calc(1.34em * var(--ar)); vertical-align: -0.22em; margin: -0.5em 0 -0.2em 0.06em; }
+
+/* what he does: a white narration box with an ink edge */
+.mg-box {
+  justify-self: start;
+  margin: 2px 0 0;
+  padding: 6px 10px 5px;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: var(--paper);
+  font-family: var(--letter);
+  font-stretch: 78%;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.col.mg .col-does-dot { color: var(--ink); margin: 0 0.4em; }
+
+/* ── the two buttons as ink blocks that press into their shadow ──────── */
+.col.mg .col-actions { gap: var(--gutter); }
+.col.mg .col-actions .sq,
+.col.mg .col-float .sq {
+  --sq: var(--round);
+  height: 58px;
+  border: var(--line) solid var(--ink);
+  border-radius: var(--round);
+  corner-shape: round;
+  background: var(--ink);
+  box-shadow: var(--cel);
+  font-family: var(--letter);
+  font-stretch: 72%;
+  font-weight: 850;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition-property: background-color, translate, box-shadow, transform;
+  transition-duration: 140ms, 140ms, 140ms, 420ms;
+}
+.col.mg .col-actions .sq.sq-soft { background: var(--paper); color: var(--ink) !important; }
+.col.mg .col-actions .sq:is(:hover, :focus-visible) { scale: 1; translate: -1px -1px; box-shadow: 5px 5px 0 var(--ink); }
+.col.mg .col-actions .sq.sq-soft:is(:hover, :focus-visible) { background: var(--paper); }
+.col.mg .col-actions .sq:not(.sq-soft):is(:hover, :focus-visible) { background: #1d1d1d; }
+.col.mg .col-actions .sq:active { translate: 4px 4px; box-shadow: 0 0 0 var(--ink); }
+.col.mg .col-actions .sq::after { display: none; }
+.col.mg .sq-t { translate: 0 1px; }
+.col.mg .sq-ic { width: 26px; height: 26px; }
+.col.mg .sq-stk { width: 26px; height: 26px; }
+.col.mg .col-addr { margin-top: 8px; font-size: 13px; font-weight: 600; color: var(--ink); }
+.col.mg .col-addr:not([data-on="true"]) { margin-top: 0; }
+
+/* ── now: his two companies, side by side ──────────────────────────────── */
+.mg-now { display: grid; gap: 6px; padding: 10px 10px 8px; }
+.col.mg .col-own { grid-template-columns: 1fr 1fr; gap: var(--gutter); margin: 0; }
+.col.mg .col-own a {
+  height: 100%;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: background-color 160ms var(--ease);
+}
+.col.mg .col-own li + li { position: relative; }
+.col.mg .col-own li + li::before { content: ""; position: absolute; left: calc(var(--gutter) / -2 - 1px); top: -2px; bottom: -2px; width: 2px; background: var(--ink); transform: skewX(-8deg); }
+.col.mg .col-own a:is(:hover, :focus-visible) { background: radial-gradient(circle, rgb(0 0 0 / 0.2) 0 0.9px, transparent 1.3px) 0 0 / 5px 5px; }
+.col.mg .col-own img { width: 34px; height: 34px; border-radius: 9px; }
+.col.mg .col-own-t b { font-family: var(--letter); font-stretch: 72%; font-weight: 850; font-size: 21px; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1; }
+.col.mg .col-own-t span { font-size: 12.5px; color: var(--ink-2); line-height: 1.2; margin-top: 2px; }
+.col.mg .col-own-go { font-weight: 700; }
+
+/* ── before: one strip of three, cut by ink gutters ────────────────────── */
+.mg-before { padding: 10px 10px 6px; overflow: visible; }
+.col.mg .col-past { margin: 0; gap: 8px; }
+.col.mg .past {
+  --pad: 0px;
+  border: 0;
+  border-radius: 0;
+  corner-shape: round;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+}
+.col.mg .past-it + .past-it::before { content: ""; position: absolute; left: -1px; top: 2px; bottom: 2px; width: 2px; background: var(--ink); transform: skewX(-8deg); }
+.col.mg .past-it a { height: 42px; border-radius: 8px; }
+.col.mg .past-name { font-family: var(--letter); font-stretch: 74%; font-weight: 800; font-size: 17px; letter-spacing: 0.03em; text-transform: uppercase; }
+.col.mg .past-glow {
+  top: 0; bottom: 0; left: 0;
+  width: calc(100% / var(--n));
+  border-radius: 8px;
+  background: radial-gradient(circle, var(--ink) 0 0.9px, transparent 1.3px) 0 0 / 5px 5px;
+  box-shadow: none;
+  opacity: 0;
+}
+.col.mg .past:has(.past-it a:hover, .past-it a:focus-visible) .past-glow { opacity: 0.22; }
+.col.mg .past-role { border-radius: 6px; background: var(--ink); font-weight: 600; }
+/* the strip's own frame clips nothing, so the role tag can rise out of it; the panel round it does the same */
+
+/* ── the last panel: one reply at a time as a speech balloon ─────────── */
+.mg-x { display: flex; flex-direction: column; padding: 10px 12px 12px; }
+.mg-x .mg-tone { -webkit-mask: linear-gradient(200deg, #000 0%, transparent 52%); mask: linear-gradient(200deg, #000 0%, transparent 52%); opacity: 0.28; }
+.col.mg .col-replies { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.col.mg .col-replies-head { margin-bottom: 0; align-items: center; }
+.col.mg .col-count { font-family: var(--letter); font-stretch: 74%; font-weight: 800; font-size: 14px; color: var(--ink); }
+.col.mg .xpost {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  overflow: visible;
+}
+.col.mg .xpost:hover { transform: none; background: none; }
+.col.mg .xpost-stack { flex: 1; align-content: center; padding: 12px 0 6px; }
+.col.mg .xpost-item { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+/* the balloon: an ink-edged white bubble whose tail points down at whoever said it */
+.col.mg .xpost blockquote {
+  order: -1;
+  position: relative;
+  align-self: center;
+  width: fit-content;
+  min-width: 64%;
+  max-width: 100%;
+  min-height: 3.1em;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0.7em 1.1em 0.62em;
+  border: var(--line) solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  font-family: var(--letter);
+  font-stretch: 74%;
+  font-weight: 850;
+  font-size: clamp(28px, 4.2vh, 44px);
+  line-height: 0.98;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink);
+  text-wrap: balance;
+}
+/* the tail: drawn in ink with a white fill that covers the balloon's edge where they meet */
+.col.mg .xpost blockquote::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  top: calc(100% - 4px);
+  width: 34px;
+  height: 30px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 30'%3E%3Cpath d='M4 1 C8 11 7 20 2 28.5 C14 22 24 12 30 1' fill='%23fff' stroke='%230b0b0b' stroke-width='2.6' stroke-linejoin='round'/%3E%3Crect x='2' y='-2' width='30' height='4.6' fill='%23fff'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%;
+}
+.col.mg .xpost-item { align-items: stretch; }
+.col.mg .xpost-head { padding-left: max(0px, calc(22% - 40px)); width: 100%; margin-top: 10px; }
+.col.mg .xpost-av { width: 38px; height: 38px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); }
+.col.mg .xpost-who b { font-size: 14.5px; color: var(--ink); }
+.col.mg .xpost-who span { font-size: 13.5px; color: var(--ink-2); }
+.col.mg .xpost-x { fill: var(--ink); align-self: center; width: 18px; height: 18px; }
+.col.mg .xpost-to { display: none; }
+.col.mg .xpost-next { width: 100%; margin: 6px 0 0; height: 10px; }
+.col.mg .xpost-next::before { height: 3px; border-radius: 2px; background: rgb(0 0 0 / 0.1); }
+.col.mg .xpost-bar { height: 3px; border-radius: 2px; background: var(--ink); }
+
+/* ── desktop: the page fills the window, the last panel takes what is left ── */
+@media (min-width: 821px) {
+  .col.mg { justify-content: flex-start; padding-bottom: 18px; }
+  .col.mg .col-reps { margin-top: 0; flex: 1 1 auto; min-height: 200px; }
+}
+@media (min-width: 821px) and (max-height: 760px) {
+  .col.mg .col-h1 { font-size: min(52px, 10.4cqi); }
+  .col.mg .col-actions .sq { height: 50px; }
+  .col.mg .col-own a { padding-block: 7px; }
+}
+
+/* ── phones: the page becomes the header over the wall ─────────────────── */
+@media (max-width: 820px) {
+  .col.mg { padding: 14px 14px 6px; border-right: 0; }
+  .col.mg .col-reps { margin-bottom: 18px; }
+  .col.mg .xpost-stack { min-height: 190px; }
+  .col.mg .col-float .sq { box-shadow: var(--cel); }
+}
+@media (max-width: 420px) {
+  .col.mg .col-own a { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .col.mg .col-own-go { display: none; }
+  .col.mg .past-name { font-size: 15px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .col.mg .col-actions .sq, .col.mg .col-own a { transition: none; }
+}
+
+/* ── the story lines across the wall, lettered the same way: condensed caps, stickers in ink frames ── */
+.pf .story[data-look="sticker"] .sl {
+  font-family: var(--pf-print), var(--pf-sans), sans-serif;
+  font-stretch: 70%;
+  font-weight: 850;
+  letter-spacing: -0.008em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  color: #0b0b0b;
+}
+.pf .story[data-look="sticker"] .sl .stk:not([data-cut]) { margin-right: 0.14em; }
+.pf .story[data-look="sticker"] .sl .stk:not([data-cut]) img { border: 0.06em solid #0b0b0b; border-radius: 0.14em; box-shadow: 0.07em 0.07em 0 #0b0b0b; }
+@media (min-width: 821px) {
+  .pf .drift .story[data-look="sticker"] .sl { font-size: 9.6cqi; line-height: 0.92; }
+}
+@media (max-width: 560px) {
+  .pf .story[data-look="sticker"] .sl { font-size: 10.6vw; }
+}

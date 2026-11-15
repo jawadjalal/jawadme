@@ -6,6 +6,7 @@ import { Viewer } from "@/components/portfolio/Viewer";
 import { CLOSING, DOES, HEADLINE, HEADLINE_ALT, HIRE, PAST, REPLIES, SECOND, TIMELINE, X_HANDLE } from "@/content/story";
 import { print, sans } from "@/components/portfolio/fonts";
 import "@/components/portfolio/portfolio.css";
+import "@/components/portfolio/manga.css";
 
 // jawadjalal.com, after jacobtrebacki.com: a fixed column on the left says who he is, what he does, his companies and how
 // to hire him; the rest of the screen is an endless wall of his ads, brand studies, sites, live components and app
