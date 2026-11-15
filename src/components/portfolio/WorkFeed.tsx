@@ -6,6 +6,7 @@
 // then it closes. Live components only appear in the first pass, so the repeats stay light.
 
 import { useEffect, useRef, useState } from "react";
+import { preload } from "react-dom";
 import type { Entry, Piece } from "@/content/feed";
 import { pack, ratio, reshuffle, type Row } from "./pack";
 import { StoryLine, type Look } from "./StoryLine";
@@ -62,7 +63,20 @@ function LiveFrame({ p }: { p: Extract<Piece, { embed: string }> }) {
   );
 }
 
-export function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
+/** How wide a picture shows in the plain wall (phones and narrow windows, up to 820px): wide pieces and every piece
+ *  on a phone fill the width, the rest go two to a row. The drifting wall passes its own column widths. */
+const FLOW_SIZES = { wide: "100vw", pair: "(max-width: 560px) 100vw, 50vw" };
+/** the plain wall is shown up to 820px, the drifting wall above it */
+export const FLOW_MEDIA = "(max-width: 820px)";
+export const DRIFT_MEDIA = "(min-width: 821px)";
+/** a 1px transparent gif: what a picture shows where its wall is hidden, so nothing is fetched for it */
+const BLANK = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
+/** Both walls are in the page and one is display:none, and a browser still fetches a hidden picture. So each picture
+ *  names its wall (`media`): where the other wall shows, its <picture> picks a blank instead, and a phone never
+ *  fetches the desktop wall (nor a laptop the phone's). `eager` marks a piece in the first screen of its wall; it is
+ *  preloaded at high priority, again only where its wall shows. */
+export function Tile({ p, eager, sizes, media = FLOW_MEDIA }: { p: Piece; eager?: boolean; sizes?: string; media?: string }) {
   const r = ratio(p);
   if ("embed" in p) {
     return (
@@ -74,6 +88,14 @@ export function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
   }
   const base = `/work/2026-11/${p.file}`;
   const wide = r > 1.2;
+  const srcSet = `${base}-sm.webp ${Math.round(p.w / 2)}w, ${base}.webp ${p.w}w`;
+  const sz = sizes ?? (wide ? FLOW_SIZES.wide : FLOW_SIZES.pair);
+  if (eager) {
+    // a loop's poster has one size; it is still named as a srcset so each wall's preload is its own (React keeps one
+    // preload per href, and per srcset and sizes)
+    const set = p.video ? `${base}.webp ${p.w}w` : srcSet;
+    preload(`${base}.webp`, { as: "image", imageSrcSet: set, imageSizes: sz, fetchPriority: "high", media });
+  }
   return (
     <figure
       className="tile"
@@ -92,6 +114,7 @@ export function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
           poster={`${base}.webp`}
           width={p.w}
           height={p.h}
+          style={{ aspectRatio: `${p.w} / ${p.h}` }}
           muted
           loop
           playsInline
@@ -99,17 +122,20 @@ export function Tile({ p, eager }: { p: Piece; eager?: boolean }) {
           aria-label={p.alt}
         />
       ) : (
-        <img
-          src={`${base}.webp`}
-          srcSet={`${base}-sm.webp ${Math.round(p.w / 2)}w, ${base}.webp ${p.w}w`}
-          sizes={wide ? "(max-width: 760px) 100vw, 70vw" : "(max-width: 760px) 100vw, 36vw"}
-          width={p.w}
-          height={p.h}
-          alt={p.alt}
-          loading={eager ? "eager" : "lazy"}
-          decoding="async"
-          {...(eager ? { fetchPriority: "high" as const } : {})}
-        />
+        <picture>
+          <source media={media === FLOW_MEDIA ? DRIFT_MEDIA : FLOW_MEDIA} srcSet={BLANK} />
+          <img
+            src={`${base}.webp`}
+            srcSet={srcSet}
+            sizes={sz}
+            width={p.w}
+            height={p.h}
+            alt={p.alt}
+            loading={eager ? "eager" : "lazy"}
+            decoding="async"
+            {...(eager ? { fetchPriority: "high" as const } : {})}
+          />
+        </picture>
       )}
       {p.slides ? (
         <span className="tile-badge" aria-hidden="true">
@@ -199,10 +225,18 @@ export function WorkFeed({ entries, href, closing, name }: { entries: Entry[]; h
     return () => io.disconnect();
   }, [passes.length, look]);
 
-  // video loops play only while they are on screen, and never with reduced motion
+  // video loops play only while they are on screen, and never with reduced motion. They start once the page has
+  // loaded, so a few MB of loop never race the first screen of pictures (the poster shows until then).
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    if (document.readyState === "complete") return setLoaded(true);
+    const on = () => setLoaded(true);
+    addEventListener("load", on, { once: true });
+    return () => removeEventListener("load", on);
+  }, []);
   useEffect(() => {
     const el = root.current;
-    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || !loaded || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const io = new IntersectionObserver(
       (seen) => {
         for (const e of seen) {
@@ -215,7 +249,7 @@ export function WorkFeed({ entries, href, closing, name }: { entries: Entry[]; h
     );
     for (const v of el.querySelectorAll<HTMLVideoElement>("video[data-loop]")) io.observe(v);
     return () => io.disconnect();
-  }, [passes.length]);
+  }, [passes.length, loaded]);
 
   useEffect(() => {
     const el = end.current;

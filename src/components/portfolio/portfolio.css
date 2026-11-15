@@ -365,6 +365,7 @@ html:has(.pf) body {
 /* every piece says whose it is and what it is, in one quiet line under it */
 .tile-cap, .row-cap { margin: 8px 0 0; font-size: 13px; line-height: 1.3; color: var(--ink-3); letter-spacing: -0.005em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tile-cap b, .row-cap b { font-weight: 600; color: var(--ink); }
+.tile picture { display: contents; }
 .tile video { display: block; width: 100%; height: auto; border-radius: 5px; background: var(--tint); }
 .tile-live figcaption { margin-top: 8px; font-size: 13px; color: var(--ink-2); }
 
@@ -375,15 +376,14 @@ html:has(.pf) body {
   .pf-main { padding: 0; }
   .wall-flow { display: none; }
   .wall-drift { display: block; position: fixed; top: 0; bottom: 0; left: var(--col); right: 0; overflow: hidden; }
-  .drift { display: flex; gap: 14px; height: 100%; padding: 0 var(--edge) 0 calc(var(--edge) - 1px); }
-  .dcol { flex: 1 1 0; min-width: 0; height: 100%; overflow: hidden; }
-  /* three columns of three widths, so the wall never reads as a grid */
-  .drift[data-cols="3"] .dcol:nth-child(1) { flex-grow: 1.18; }
-  .drift[data-cols="3"] .dcol:nth-child(2) { flex-grow: 0.86; }
-  .drift[data-cols="2"] .dcol:nth-child(1) { flex-grow: 1.12; }
-  .drift[data-cols="4"] .dcol:nth-child(1) { flex-grow: 1.1; }
-  .drift[data-cols="4"] .dcol:nth-child(2) { flex-grow: 0.9; }
-  .drift[data-cols="4"] .dcol:nth-child(3) { flex-grow: 1.04; }
+  /* the columns are grid tracks, not flex items: the page is long and arrives in pieces, and a flex column painted
+     before its siblings have arrived would fill the whole wall for a frame, then shrink (a layout shift) */
+  .drift { display: grid; gap: 14px; height: 100%; padding: 0 var(--edge) 0 calc(var(--edge) - 1px); }
+  .dcol { min-width: 0; height: 100%; overflow: hidden; }
+  /* columns of different widths, so the wall never reads as a grid */
+  .drift[data-cols="4"] { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) minmax(0, 1.04fr) minmax(0, 1fr); }
+  .drift[data-cols="3"] { grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.86fr) minmax(0, 1fr); }
+  .drift[data-cols="2"] { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); }
   .dtrack { will-change: transform; }
   .dcopy { display: flex; flex-direction: column; gap: 14px; padding-bottom: 14px; }
   .drift .tile { flex: none; }
@@ -539,8 +539,9 @@ html:has(.pf) body {
 .cal-host iframe { display: block; width: 100% !important; border: 0; }
 .cal[data-state="ready"] .cal-host { opacity: 1; }
 .cal-wait, .cal-fail { position: absolute; left: var(--edge); right: var(--edge); top: 8px; margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-3); }
-.cal-wait { animation: cal-breathe 1600ms ease-in-out infinite alternate; }
-@keyframes cal-breathe { from { opacity: 0.45; } to { opacity: 1; } }
+/* it breathes in ink-2 between 0.9 and 1, so it never drops under 4.5:1 on white */
+.cal-wait { color: var(--ink-2); animation: cal-breathe 1600ms ease-in-out infinite alternate; }
+@keyframes cal-breathe { from { opacity: 0.9; } to { opacity: 1; } }
 .cal-fail { color: var(--ink-2); max-width: 30em; }
 .cal-fail a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .cal-alt { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 0; padding: 12px var(--edge) 0; font-size: 13px; color: var(--ink-3); white-space: nowrap; }
@@ -616,6 +617,9 @@ html:has(.pf) body {
   background: #d9d9d6; z-index: -1;
 }
 .tile[data-slides]::after { left: 8%; right: 8%; top: -10px; background: #ebebe8; z-index: -2; }
+/* the sheets stand 10px above the cover, so the piece keeps its full gap to the one above it */
+.drift .tile[data-slides] { margin-top: 10px; }
+.row:has(> .tile[data-slides]) { padding-top: 10px; }
 .tile { isolation: isolate; }
 .tile-badge {
   position: absolute; top: 10px; left: 10px; display: inline-flex; align-items: center; gap: 6px;

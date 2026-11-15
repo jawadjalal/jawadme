@@ -10,14 +10,23 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Entry, Piece } from "@/content/feed";
 import { ratio } from "./pack";
 import { StoryLine } from "./StoryLine";
-import { Tile } from "./WorkFeed";
+import { DRIFT_MEDIA, Tile } from "./WorkFeed";
 
 /** px per second for each column (sign is the direction) and how hard the wheel moves it */
 const DRIFT = [
   { speed: 16, wheel: 1 },
   { speed: -11, wheel: 1.18 },
   { speed: 13, wheel: 0.9 },
+  { speed: -9, wheel: 1.06 },
 ];
+
+/** the first offset of each column, so the columns start staggered; also set on the server so nothing jumps on load */
+const START = 220;
+
+/** how wide a picture shows in the drifting wall: about a quarter of the window from 1200px (four columns beside the
+ *  column), a third below that, a half below 980px */
+const DRIFT_SIZES = "(min-width: 1200px) 22vw, (min-width: 980px) 28vw, 36vw";
+
 
 /** Lays the entries into `k` columns, each piece going to the shortest column so far (heights as width over ratio). */
 function lay(entries: Entry[], k: number): Entry[][] {
@@ -39,7 +48,7 @@ function Copy({ entries, href, hidden, offset }: { entries: Entry[]; href: strin
         "story" in e ? (
           <StoryLine key={i} text={e.story} cta={e.cta} pic={e.pic} at={e.at} href={href} look="sticker" index={offset + i} />
         ) : (
-          <Tile key={"file" in e ? e.file : e.embed} p={e} eager={!hidden && i < 2} />
+          <Tile key={"file" in e ? e.file : e.embed} p={e} eager={!hidden && i < 2} sizes={DRIFT_SIZES} media={DRIFT_MEDIA} />
         ),
       )}
     </div>
@@ -47,7 +56,9 @@ function Copy({ entries, href, hidden, offset }: { entries: Entry[]; href: strin
 }
 
 export function DriftWall({ entries, href }: { entries: Entry[]; href: string }) {
-  const [k, setK] = useState(3);
+  // four columns on the server too: almost every laptop and desktop window is 1200px or wider, so the wall the server
+  // draws is the wall that stays, with no re-layout when the script arrives
+  const [k, setK] = useState(4);
   const cols = useMemo(() => lay(entries, k), [entries, k]);
   const wall = useRef<HTMLDivElement>(null);
   const tracks = useRef<(HTMLDivElement | null)[]>([]);
@@ -70,7 +81,7 @@ export function DriftWall({ entries, href }: { entries: Entry[]; href: string })
     const el = wall.current;
     if (!el) return;
     const still = matchMedia("(prefers-reduced-motion: reduce)");
-    const off = new Array(k).fill(0).map((_, i) => i * 220);
+    const off = new Array(k).fill(0).map((_, i) => i * START);
     const paused = new Array(k).fill(false);
     let pending = 0;
     // each column's loop length, kept by a ResizeObserver so the frame loop never reads layout
@@ -171,7 +182,7 @@ export function DriftWall({ entries, href }: { entries: Entry[]; href: string })
         storyIndex += c.filter((e) => "story" in e).length;
         return (
           <div className="dcol" key={`${k}-${i}`}>
-            <div className="dtrack" ref={(n) => void (tracks.current[i] = n)}>
+            <div className="dtrack" ref={(n) => void (tracks.current[i] = n)} style={{ transform: `translate3d(0, ${-i * START}px, 0)` }}>
               <Copy entries={c} href={href} offset={from} />
               <Copy entries={c} href={href} offset={from} hidden />
             </div>
