@@ -11,6 +11,7 @@ import type { Entry, Piece } from "@/content/feed";
 import { ratio } from "./pack";
 import { StoryLine } from "./StoryLine";
 import { DRIFT_MEDIA, Tile } from "./WorkFeed";
+import { useLoops } from "./Loop";
 
 /** px per second for each column (sign is the direction) and how hard the wheel moves it */
 const DRIFT = [
@@ -62,6 +63,7 @@ export function DriftWall({ entries, href }: { entries: Entry[]; href: string })
   const cols = useMemo(() => lay(entries, k), [entries, k]);
   const wall = useRef<HTMLDivElement>(null);
   const tracks = useRef<(HTMLDivElement | null)[]>([]);
+  useLoops(wall, k);
 
   useEffect(() => {
     // four columns on a laptop or wider, three on a small window, two below that

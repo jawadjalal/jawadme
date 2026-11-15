@@ -7,10 +7,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { preload } from "react-dom";
-import type { Entry, Piece } from "@/content/feed";
+import { srcSetOf, type Entry, type Piece } from "@/content/feed";
 import { pack, ratio, reshuffle, type Row } from "./pack";
 import { StoryLine, type Look } from "./StoryLine";
 import { SquircleButton } from "./SquircleButton";
+import { LoopSources, useLoops } from "./Loop";
 
 const MAX_PASSES = 6;
 const LOOK: Look = "sticker";
@@ -72,6 +73,10 @@ export const DRIFT_MEDIA = "(min-width: 821px)";
 /** a 1px transparent gif: what a picture shows where its wall is hidden, so nothing is fetched for it */
 const BLANK = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
+/** Where a loop plays its 720 wide encode instead of the full 1280: phones on the plain wall, and the drifting wall's
+ *  columns until the window is wide enough for a column to need more than 720 pixels at 2x. */
+const LOOP_SMALL = { flow: "(max-width: 560px)", drift: "(max-width: 1700px)" };
+
 /** Both walls are in the page and one is display:none, and a browser still fetches a hidden picture. So each picture
  *  names its wall (`media`): where the other wall shows, its <picture> picks a blank instead, and a phone never
  *  fetches the desktop wall (nor a laptop the phone's). `eager` marks a piece in the first screen of its wall; it is
@@ -88,13 +93,13 @@ export function Tile({ p, eager, sizes, media = FLOW_MEDIA }: { p: Piece; eager?
   }
   const base = `/work/2026-11/${p.file}`;
   const wide = r > 1.2;
-  const srcSet = `${base}-sm.webp ${Math.round(p.w / 2)}w, ${base}.webp ${p.w}w`;
+  const srcSet = srcSetOf(p.file);
   const sz = sizes ?? (wide ? FLOW_SIZES.wide : FLOW_SIZES.pair);
   if (eager) {
-    // a loop's poster has one size; it is still named as a srcset so each wall's preload is its own (React keeps one
-    // preload per href, and per srcset and sizes)
-    const set = p.video ? `${base}.webp ${p.w}w` : srcSet;
-    preload(`${base}.webp`, { as: "image", imageSrcSet: set, imageSizes: sz, fetchPriority: "high", media });
+    // a loop's poster has one size (the half size one, about as sharp as its 720 encode); it is still named as a srcset
+    // so each wall's preload is its own (React keeps one preload per href, and per srcset and sizes)
+    const set = p.video ? `${base}-sm.webp ${Math.round(p.w / 2)}w` : srcSet;
+    preload(p.video ? `${base}-sm.webp` : `${base}.webp`, { as: "image", imageSrcSet: set, imageSizes: sz, fetchPriority: "high", media });
   }
   return (
     <figure
@@ -110,8 +115,7 @@ export function Tile({ p, eager, sizes, media = FLOW_MEDIA }: { p: Piece; eager?
       {p.video ? (
         <video
           data-loop=""
-          src={`/work/2026-11/${p.video}`}
-          poster={`${base}.webp`}
+          poster={`${base}-sm.webp`}
           width={p.w}
           height={p.h}
           style={{ aspectRatio: `${p.w} / ${p.h}` }}
@@ -120,7 +124,9 @@ export function Tile({ p, eager, sizes, media = FLOW_MEDIA }: { p: Piece; eager?
           playsInline
           preload="none"
           aria-label={p.alt}
-        />
+        >
+          <LoopSources video={p.video} small={media === DRIFT_MEDIA ? LOOP_SMALL.drift : LOOP_SMALL.flow} />
+        </video>
       ) : (
         <picture>
           <source media={media === FLOW_MEDIA ? DRIFT_MEDIA : FLOW_MEDIA} srcSet={BLANK} />
@@ -225,31 +231,7 @@ export function WorkFeed({ entries, href, closing, name }: { entries: Entry[]; h
     return () => io.disconnect();
   }, [passes.length, look]);
 
-  // video loops play only while they are on screen, and never with reduced motion. They start once the page has
-  // loaded, so a few MB of loop never race the first screen of pictures (the poster shows until then).
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    if (document.readyState === "complete") return setLoaded(true);
-    const on = () => setLoaded(true);
-    addEventListener("load", on, { once: true });
-    return () => removeEventListener("load", on);
-  }, []);
-  useEffect(() => {
-    const el = root.current;
-    if (!el || !loaded || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const io = new IntersectionObserver(
-      (seen) => {
-        for (const e of seen) {
-          const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) v.play().catch(() => {});
-          else v.pause();
-        }
-      },
-      { threshold: 0.25 },
-    );
-    for (const v of el.querySelectorAll<HTMLVideoElement>("video[data-loop]")) io.observe(v);
-    return () => io.disconnect();
-  }, [passes.length, loaded]);
+  useLoops(root, passes.length);
 
   useEffect(() => {
     const el = end.current;

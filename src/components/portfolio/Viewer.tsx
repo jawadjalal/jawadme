@@ -8,13 +8,24 @@
 // viewer already open on the piece, and its link card on X is the piece itself, so a shared ad unfurls as the ad.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { captionOf, type Picture } from "@/content/feed";
+import { captionOf, srcSetOf, type Picture } from "@/content/feed";
+import sizes from "@/content/feed-sizes.json";
+import { LoopSources } from "./Loop";
 
 const BASE = "/work/2026-11";
 const SITE = "https://jawadjalal.com";
 
 /** the frames a piece shows: its own picture (or loop), then any breakdown slides */
 const framesOf = (p: Picture) => [p.file, ...(p.slides ?? [])];
+
+/** How wide a frame shows: as wide as the stage, or as the stage's height allows, never past its own width (as before
+ *  it had a srcset), so a retina screen fetches the 2x master and a phone keeps the full size file. Matches .vw-stage
+ *  and .vw-media. */
+const viewerSizes = (file: string) => {
+  const [w, h] = (sizes as Record<string, number[]>)[file];
+  const r = (w / h).toFixed(3);
+  return `(max-width: 760px) min(calc(100vw - 24px), calc((100vh - 210px) * ${r}), ${w}px), min(calc(100vw - 168px), calc((100vh - 170px) * ${r}), ${w}px)`;
+};
 
 
 export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?: string; hire: string }) {
@@ -125,7 +136,8 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
     if (!at) return;
     const n = frames[at.f + 1] ?? framesOf(pieces[(at.i + 1) % pieces.length])[0];
     const img = new Image();
-    img.src = `${BASE}/${n}.webp`;
+    img.sizes = viewerSizes(n);
+    img.srcset = srcSetOf(n, true);
   }, [at, frames, pieces]);
 
   const touch = useRef<{ x: number; y: number } | null>(null);
@@ -137,7 +149,6 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
   const caption = captionOf(p);
   const tweet = `${caption.replace(/, unsolicited$/, "")}. Made by @jawadmakes`;
   const intent = `https://x.com/intent/post?text=${encodeURIComponent(tweet)}&url=${encodeURIComponent(url)}`;
-  const isVideo = at.f === 0 && p.video;
 
   return (
     <div
@@ -169,10 +180,19 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
       </div>
 
       <div className="vw-stage" onClick={(e) => e.target === e.currentTarget && close()}>
-        {isVideo ? (
-          <video key={file} className="vw-media" src={`${BASE}/${p.video}`} poster={`${BASE}/${file}.webp`} autoPlay muted loop playsInline />
+        {at.f === 0 && p.video ? (
+          <video key={file} className="vw-media" poster={`${BASE}/${file}.webp`} autoPlay muted loop playsInline>
+            <LoopSources video={p.video} small="(max-width: 760px)" />
+          </video>
         ) : (
-          <img key={file} className="vw-media" src={`${BASE}/${file}.webp`} alt={at.f === 0 ? p.alt : `${p.alt} Slide ${at.f + 1} of ${frames.length}.`} />
+          <img
+            key={file}
+            className="vw-media"
+            src={`${BASE}/${file}.webp`}
+            srcSet={srcSetOf(file, true)}
+            sizes={viewerSizes(file)}
+            alt={at.f === 0 ? p.alt : `${p.alt} Slide ${at.f + 1} of ${frames.length}.`}
+          />
         )}
         <button className="vw-nav vw-prev" onClick={() => step(-1)} aria-label="Previous">
           <svg viewBox="0 0 24 24" aria-hidden="true">
