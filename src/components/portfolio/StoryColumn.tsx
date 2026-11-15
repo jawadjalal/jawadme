@@ -129,12 +129,12 @@ export function StoryColumn({
 
       <div className="col-mqs">
         <Marquee
-          label="Startups I have worked at"
+          label="Startups I founded or worked at"
           speed={20}
           items={worked.map((j) => {
             const inner = (
               <>
-                {j.logo ? <img src={j.logo} alt="" width={18} height={18} loading="lazy" decoding="async" /> : null}
+                {j.logo ? <img src={j.logo} alt="" width={18} height={18} decoding="async" /> : null}
                 <b>{j.name}</b> {j.role}
               </>
             );
@@ -155,8 +155,8 @@ export function StoryColumn({
             <span className="mq-it" key="p">
               <b>{now.place}</b>
             </span>,
-            <span className="mq-it mq-time" key="t">
-              {time ? <>{time} in {now.city}</> : now.city}
+            <span className="mq-it" key="t">
+              <span className="mq-clock">{time}</span>&nbsp;in {now.city}
             </span>,
             <span className="mq-it" key="d">
               {now.doing}
@@ -169,7 +169,7 @@ export function StoryColumn({
           items={replies.map((r) => (
             <span className="mq-it mq-rep">
               {r.avatar ? (
-                <img src={r.avatar} alt="" width={18} height={18} loading="lazy" decoding="async" />
+                <img src={r.avatar} alt="" width={18} height={18} decoding="async" />
               ) : (
                 <span className="mq-av" aria-hidden="true">
                   {r.name[0]}

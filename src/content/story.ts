@@ -38,7 +38,7 @@ export const BOOKING = BOOK;
 export const SECOND = { label: "email me", href: `mailto:${EMAIL}?subject=Hiring%20you`, address: EMAIL };
 
 /** The startups he has worked at, for the first marquee at the column's foot: the CV's roles (scripts/cv.mjs ROLES),
- *  newest first, with the marks the repo has. Nooli has no mark or site in the repo, so its name is set in type alone. */
+ *  in the CV's order, with the marks the repo has. Nooli has no mark or site in the repo, so its name is set in type alone. */
 export const WORKED: { name: string; role: string; logo?: string; href?: string }[] = [
   { name: "Ignaru", role: "founder", logo: "/logos/ignaru-mark.png", href: "https://ignaru.com" },
   { name: "Ignura", role: "founder", logo: "/logos/ignura.png", href: "https://ignura.com" },

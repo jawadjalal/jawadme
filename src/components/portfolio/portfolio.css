@@ -733,7 +733,11 @@ html[data-viewer] { overflow: hidden; }
 .col-base { display: grid; gap: 20px; }
 .col-who { margin: 0; text-wrap: balance; font-size: 14.5px; line-height: 1.4; color: var(--ink-3); letter-spacing: -0.008em; }
 .col-who b { display: block; font-weight: 620; color: var(--ink); }
-.col-act { display: flex; align-items: center; gap: 26px; }
+/* "email me" sits at the end of a row a little narrower than the column, so it stays near the button and the
+   button's "+ you" grows into the space between without pushing it */
+.col-act { display: flex; align-items: center; gap: 20px; max-width: 330px; }
+.col-act .col-mail { margin-left: auto; }
+@media (max-width: 400px) { .col-act { flex-wrap: wrap; row-gap: 14px; } }
 .col-slim .col-act .sq { --sq: 20px; height: 60px; padding: 0 28px; font-size: 18.5px; gap: 10px; }
 .col-slim .col-act .sq-ic, .col-slim .col-act .sq-stk { width: 25px; height: 25px; }
 /* the second way in: plain words and a small arrow that steps up and out when pointed at, never a second button */
@@ -752,26 +756,34 @@ html[data-viewer] { overflow: hidden; }
 /* The column's foot: three slow marquees. Small grey type that drifts at 16 to 24px a second, edge to edge of the
    column and faded at both ends, so it reads as the column's ground and never competes with the wall. */
 .col-mqs { display: grid; gap: 12px; margin: auto calc(var(--edge) * -1) 0; padding-top: 8px; }
-.mq { overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--edge), #000 calc(100% - var(--edge)), transparent); mask-image: linear-gradient(to right, transparent, #000 var(--edge), #000 calc(100% - var(--edge)), transparent); } /* taste-skill-ignore: a fade at the marquee's ends, not a colour */
+.mq { min-width: 0; overflow: clip; -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--edge), #000 calc(100% - var(--edge)), transparent); mask-image: linear-gradient(to right, transparent, #000 var(--edge), #000 calc(100% - var(--edge)), transparent); } /* taste-skill-ignore: a fade at the marquee's ends, not a colour */
 .mq-track { display: flex; width: max-content; animation: mq var(--dur, 60s) linear infinite; }
 .mq[data-dir="r"] .mq-track { animation-direction: reverse; }
-.mq:hover .mq-track, .mq:focus-within .mq-track { animation-play-state: paused; }
+.mq:hover .mq-track, .mq:active .mq-track { animation-play-state: paused; }
+/* a keyboard user tabbing into a strip gets it standing still at its start, scrollable, so the browser can bring each
+   focused link into view; focus reads as hover */
+.mq:focus-within { overflow-x: auto; scrollbar-width: none; }
+.mq:focus-within .mq-track { animation: none; }
 .mq-set { display: flex; flex: none; align-items: center; margin: 0; padding: 0; list-style: none; }
 .mq-set li { display: flex; align-items: center; flex: none; padding-right: 26px; }
-.mq-it { display: inline-flex; align-items: center; height: 26px; font-size: 13.5px; line-height: 1; letter-spacing: -0.005em; color: var(--ink-3); white-space: nowrap; }
+.mq-it { display: inline-block; font-size: 13.5px; line-height: 26px; letter-spacing: -0.005em; color: var(--ink-3); white-space: nowrap; }
 .mq-it b { font-weight: 600; color: var(--ink-2); }
-.mq-it img, .mq-av { flex: none; width: 18px; height: 18px; margin-right: 8px; border-radius: 5px; object-fit: contain; }
+.mq-it img, .mq-av { display: inline-block; width: 18px; height: 18px; margin-right: 8px; vertical-align: -4px; border-radius: 4px; object-fit: contain; }
 a.mq-job { transition: color 160ms var(--ease); }
 a.mq-job:hover, a.mq-job:focus-visible, a.mq-job:hover b, a.mq-job:focus-visible b { color: var(--ink); }
-.mq-time { font-variant-numeric: tabular-nums; }
+/* the clock keeps one width from the server's first paint through every minute, so the strip's pace never changes */
+.mq-clock { display: inline-block; min-width: 4.8em; font-variant-numeric: tabular-nums; text-align: right; }
 .mq-rep img, .mq-rep .mq-av { border-radius: 50%; }
-.mq-av { display: inline-grid; place-items: center; background: var(--tint); color: var(--ink-3); font-size: 10px; font-weight: 600; }
+.mq-av { background: var(--tint); color: var(--ink-3); font-size: 10px; font-weight: 600; line-height: 18px; text-align: center; }
 .mq-rep q { color: var(--ink-2); quotes: "\201C" "\201D"; }
 @keyframes mq { to { transform: translateX(-50%); } }
+.mq::-webkit-scrollbar { display: none; }
+/* reduced motion: no strips at all, each set once, wrapped, standing still */
 @media (prefers-reduced-motion: reduce) {
-  .mq-track { animation: none; padding-left: var(--edge); }
-  .mq { overflow-x: auto; scrollbar-width: none; }
-  .mq::-webkit-scrollbar { display: none; }
+  .mq, .mq:focus-within { overflow: visible; -webkit-mask-image: none; mask-image: none; padding-inline: var(--edge); }
+  .mq-track { display: block; animation: none; width: auto; }
+  .mq-set { flex-wrap: wrap; }
+  .mq-set ~ .mq-set { display: none; }
   a.mq-job { transition: none; }
 }
 @media (max-width: 820px) {
