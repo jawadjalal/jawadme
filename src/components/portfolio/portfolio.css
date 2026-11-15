@@ -688,22 +688,62 @@ html[data-viewer] { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .vw, .vw-media { animation: none; } }
 
-/* ── The slim home column (15 Nov): the headline, one call button, a quiet foot; the wall gets four columns ── */
+/* ── The slim home column: the headline is the column ──────────────────────────────────────────────────────────
+   The headline is set as a stack, a word or two to a line, one size, tight, flush left, sized so it runs the
+   column's height: as large as the column's width allows ("mind." and the memoji is the widest line), and no larger
+   than the height left over above the base. Lead and main are the same face, weight and size; only the ink changes,
+   at the comma. The base is one unit pinned to the foot: his name and what he does, then the call button with his
+   companies and email stacked beside it at the button's height. */
 .pf-slim { --col: clamp(272px, 22vw, 340px); }
-.col-slim { justify-content: space-between !important; gap: 24px; padding-bottom: 22px !important; }
-.col-slim .col-top { gap: 22px; padding-bottom: 0; }
-/* the headline as four short lines, each set whole, sized so "but I'm a design" fills the column */
-.col-slim .col-h1 { font-size: min(42px, 13.6cqi); line-height: 1.04; }
+.col-slim {
+  --lines: 9;
+  --lh: 0.9;
+  --fit: 3.44;    /* the widest line, "mind." and the memoji, less its hang, in em */
+  --base: 216px;  /* the base block (about 130px), at least 40px above it, and the column's top and bottom padding */
+  justify-content: space-between !important;
+  gap: 24px;
+  padding-bottom: var(--edge) !important;
+}
+.col-title { margin: 0; font: inherit; }
+.col-slim .col-h1 { line-height: var(--lh); letter-spacing: -0.05em; }
+.col-slim .col-stack {
+  display: block;
+  font-size: min(calc((var(--col) - 2 * var(--edge) - 1px) / var(--fit)), calc((100dvh - var(--base)) / (var(--lines) * var(--lh))));
+  /* when the width caps the size and height is left over, the leading opens a little (never past 0.96) to take it */
+  line-height: clamp(calc(var(--lh) * 1em), calc((100dvh - var(--base)) / var(--lines)), 0.96em);
+}
+.col-slim .col-flow[data-phone] { display: none; }
+.col-slim .col-lead, .col-slim .col-main { font-weight: 640; }
+.col-slim .col-lead { color: #a3a3a3; }
+/* big type's side bearings push each line in by a different amount (Instrument Sans at 640: b and m about 0.06em, I
+   0.05em, T and d 0.02em, t and y none); each line is hung back by its first letter's, so every stem sits on the
+   column's edge, the same edge as the small type below */
+.col-slim .col-h1 .col-line[data-first="T"], .col-slim .col-h1 .col-line[data-first="d"] { margin-left: -0.016em; }
+.col-slim .col-h1 .col-line[data-first="I"] { margin-left: -0.047em; }
+.col-slim .col-h1 .col-line:is([data-first="b"], [data-first="m"]) { margin-left: -0.062em; }
+
+/* stickers at display size: the car sits on the baseline at cap height, the memoji a head taller and hung below */
+.col-slim .col-stack .stk[data-cut][data-kind="car"] { height: 0.7em; width: calc(0.7em * var(--ar)); vertical-align: 0; margin: 0 0 0 0.1em; }
+.col-slim .col-h1 .stk[data-cut]:not([data-kind]) { height: 0.9em; width: calc(0.9em * var(--ar)); vertical-align: -0.1em; margin: -0.2em 0 -0.1em 0.08em; }
+
+.col-base { display: grid; gap: 16px; }
+.col-who { margin: 0; text-wrap: balance; font-size: 13.5px; line-height: 1.4; color: var(--ink-3); letter-spacing: -0.005em; }
+.col-who b { display: block; font-weight: 620; color: var(--ink); }
+.col-act { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
 .col-slim .col-act .sq { --sq: 18px; height: 52px; padding: 0 22px; font-size: 16px; }
-.col-foot { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; font-size: 13.5px; color: var(--ink-3); }
+.col-foot { display: grid; justify-items: end; align-content: space-between; height: 52px; margin: 0; font-size: 13.5px; line-height: 1; color: var(--ink-3); }
 .col-foot a { transition: color 160ms var(--ease); }
 .col-foot a:hover, .col-foot a:focus-visible { color: var(--ink); }
-@media (min-width: 821px) and (max-height: 800px) {
-  .col-slim .col-h1 { font-size: min(36px, 12cqi); }
+/* tall screens: the width caps the headline, so the base steps up a size to keep the column's scale even */
+@media (min-width: 821px) and (min-height: 1000px) {
+  .col-who, .col-foot { font-size: 15px; }
+  .col-foot { height: 58px; }
+  .col-slim .col-act .sq { height: 58px; padding: 0 26px; font-size: 17.5px; }
 }
 @media (max-width: 820px) {
-  .col-slim { gap: 18px; padding-bottom: 8px !important; }
-  .col-slim .col-h1 { font-size: min(44px, 11.6vw); }
+  .col-slim { gap: 22px; padding-bottom: 28px !important; }
+  .col-slim .col-stack { display: none; }
+  .col-slim .col-flow[data-phone] { display: block; }
+  .col-slim .col-flow { font-size: min(46px, 11.8vw); line-height: 0.94; }
+  .col-slim .col-h1 .stk[data-cut]:not([data-kind]) { height: 0.8em; width: calc(0.8em * var(--ar)); vertical-align: -0.12em; margin: -0.1em 0 -0.1em 0.06em; }
 }
-/* the memoji sits on its own short line here, so it is kept off the line below */
-.col-slim .col-h1 .stk[data-cut]:not([data-kind]) { height: 1.04em; width: calc(1.04em * var(--ar)); vertical-align: -0.12em; margin: -0.3em 0 -0.1em 0.08em; }

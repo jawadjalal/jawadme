@@ -17,7 +17,7 @@ function Lines({ lines }: { lines: readonly (readonly Bit[])[] }) {
   return (
     <>
       {lines.map((bits, l) => (
-        <span key={l} className="col-line">
+        <span key={l} className="col-line" data-first={"t" in bits[0] ? bits[0].t[0] : undefined}>
           {bits.map((b, i) =>
             "t" in b ? (
               <span key={i}>{i ? " " : ""}{b.t}</span>
@@ -45,7 +45,12 @@ export function StoryColumn({
   xHandle,
   does,
 }: {
-  headline: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
+  headline: {
+    lead: readonly (readonly Bit[])[];
+    main: readonly (readonly Bit[])[];
+    /** the desktop stack: the same words a word or two to a line */
+    stack?: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
+  };
   /** the earlier headline, shown with ?h=alt so the two can be compared on the real page */
   headlineAlt?: { lead: readonly (readonly Bit[])[]; main: readonly (readonly Bit[])[] };
   hire: string;
@@ -62,6 +67,7 @@ export function StoryColumn({
   const [alt, setAlt] = useState(false);
   useEffect(() => setAlt(new URLSearchParams(location.search).get("h") === "alt"), []);
   const h = alt && headlineAlt ? headlineAlt : headline;
+  const stack = alt ? undefined : headline.stack;
   const cta = useRef<HTMLDivElement>(null);
 
   // the phone's floating hire button shows once the header's own has left the screen
@@ -75,30 +81,47 @@ export function StoryColumn({
 
   return (
     <aside className="col col-slim">
-      <div className="col-top">
-        <div className="col-h1">
-          <p className="col-lead">
+      {/* one h1 holding two settings of the same words: on desktop a stack, a word or two to a line, that runs the
+          column's height; on phones the four-line header. Only one is ever displayed, so only one is read out. */}
+      <h1 className="col-title">
+        {stack && (
+          <span className="col-h1 col-stack">
+            <span className="col-lead">
+              <Lines lines={stack.lead} />
+            </span>
+            <span className="col-main">
+              <Lines lines={stack.main} />
+            </span>
+          </span>
+        )}
+        <span className="col-h1 col-flow" data-phone={stack ? "" : undefined}>
+          <span className="col-lead">
             <Lines lines={h.lead} />
-          </p>
-          <h1 className="col-main">
+          </span>
+          <span className="col-main">
             <Lines lines={h.main} />
-          </h1>
-        </div>
+          </span>
+        </span>
+      </h1>
+
+      <div className="col-base">
+        <p className="col-who">
+          <b>Jawad Jalal</b> {does.join(", ")}
+        </p>
         <div className="col-act" ref={cta}>
           <SquircleButton href={hire} icon="phone" label="Call me: book a call">
             call me
           </SquircleButton>
+          <p className="col-foot">
+            {timeline.map((j) => (
+              <a key={j.name} href={j.href} target="_blank" rel="noopener">
+                {j.name}
+              </a>
+            ))}
+            <a href={second.href}>Email</a>
+          </p>
         </div>
       </div>
-
-      <p className="col-foot">
-        {timeline.map((j) => (
-          <a key={j.name} href={j.href} target="_blank" rel="noopener">
-            {j.name}
-          </a>
-        ))}
-        <a href={second.href}>Email</a>
-      </p>
 
       <div className="col-float" data-on={stuck} inert={!stuck}>
         <SquircleButton href={hire} size="sm" icon="phone" label="Call me: book a call">
