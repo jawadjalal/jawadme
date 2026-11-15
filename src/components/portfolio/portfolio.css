@@ -762,8 +762,8 @@ html[data-viewer] { overflow: hidden; }
 .mq:hover .mq-track, .mq:active .mq-track { animation-play-state: paused; }
 /* a keyboard user tabbing into a strip gets it standing still at its start, scrollable, so the browser can bring each
    focused link into view; focus reads as hover */
-.mq:focus-within { overflow-x: auto; scrollbar-width: none; }
-.mq:focus-within .mq-track { animation: none; }
+.mq:has(:focus-visible) { overflow-x: auto; scrollbar-width: none; scroll-padding-inline: var(--edge); }
+.mq:has(:focus-visible) .mq-track { animation: none; padding-left: var(--edge); }
 .mq-set { display: flex; flex: none; align-items: center; margin: 0; padding: 0; list-style: none; }
 .mq-set li { display: flex; align-items: center; flex: none; padding-right: 26px; }
 .mq-it { display: inline-block; font-size: 13.5px; line-height: 26px; letter-spacing: -0.005em; color: var(--ink-3); white-space: nowrap; }
@@ -780,7 +780,7 @@ a.mq-job:hover, a.mq-job:focus-visible, a.mq-job:hover b, a.mq-job:focus-visible
 .mq::-webkit-scrollbar { display: none; }
 /* reduced motion: no strips at all, each set once, wrapped, standing still */
 @media (prefers-reduced-motion: reduce) {
-  .mq, .mq:focus-within { overflow: visible; -webkit-mask-image: none; mask-image: none; padding-inline: var(--edge); }
+  .mq, .mq:has(:focus-visible) { overflow: visible; -webkit-mask-image: none; mask-image: none; padding-inline: var(--edge); }
   .mq-track { display: block; animation: none; width: auto; }
   .mq-set { flex-wrap: wrap; }
   .mq-set ~ .mq-set { display: none; }
