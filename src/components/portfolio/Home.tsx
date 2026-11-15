@@ -17,7 +17,7 @@ export const PIECES: Picture[] = FEED.filter((e): e is Picture => "file" in e);
 
 export function HomePage({ open }: { open?: string }) {
   return (
-    <div className={`pf ${sans.variable} ${print.variable}`}>
+    <div className={`pf pf-slim ${sans.variable} ${print.variable}`}>
       <StoryColumn headline={HEADLINE} headlineAlt={HEADLINE_ALT} hire={HIRE} second={SECOND} timeline={TIMELINE} past={PAST} replies={REPLIES} xHandle={X_HANDLE} does={DOES} />
       <main className="pf-main" id="work">
         <h2 className="pf-sr">Work</h2>

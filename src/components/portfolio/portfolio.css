@@ -381,6 +381,9 @@ html:has(.pf) body {
   .drift[data-cols="3"] .dcol:nth-child(1) { flex-grow: 1.18; }
   .drift[data-cols="3"] .dcol:nth-child(2) { flex-grow: 0.86; }
   .drift[data-cols="2"] .dcol:nth-child(1) { flex-grow: 1.12; }
+  .drift[data-cols="4"] .dcol:nth-child(1) { flex-grow: 1.1; }
+  .drift[data-cols="4"] .dcol:nth-child(2) { flex-grow: 0.9; }
+  .drift[data-cols="4"] .dcol:nth-child(3) { flex-grow: 1.04; }
   .dtrack { will-change: transform; }
   .dcopy { display: flex; flex-direction: column; gap: 14px; padding-bottom: 14px; }
   .drift .tile { flex: none; }
@@ -684,3 +687,23 @@ html[data-viewer] { overflow: hidden; }
   .pf .vw-btn { justify-content: center; height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) { .vw, .vw-media { animation: none; } }
+
+/* ── The slim home column (15 Nov): the headline, one call button, a quiet foot; the wall gets four columns ── */
+.pf-slim { --col: clamp(272px, 22vw, 340px); }
+.col-slim { justify-content: space-between !important; gap: 24px; padding-bottom: 22px !important; }
+.col-slim .col-top { gap: 22px; padding-bottom: 0; }
+/* the headline as four short lines, each set whole, sized so "but I'm a design" fills the column */
+.col-slim .col-h1 { font-size: min(42px, 13.6cqi); line-height: 1.04; }
+.col-slim .col-act .sq { --sq: 18px; height: 52px; padding: 0 22px; font-size: 16px; }
+.col-foot { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; font-size: 13.5px; color: var(--ink-3); }
+.col-foot a { transition: color 160ms var(--ease); }
+.col-foot a:hover, .col-foot a:focus-visible { color: var(--ink); }
+@media (min-width: 821px) and (max-height: 800px) {
+  .col-slim .col-h1 { font-size: min(36px, 12cqi); }
+}
+@media (max-width: 820px) {
+  .col-slim { gap: 18px; padding-bottom: 8px !important; }
+  .col-slim .col-h1 { font-size: min(44px, 11.6vw); }
+}
+/* the memoji sits on its own short line here, so it is kept off the line below */
+.col-slim .col-h1 .stk[data-cut]:not([data-kind]) { height: 1.04em; width: calc(1.04em * var(--ar)); vertical-align: -0.12em; margin: -0.3em 0 -0.1em 0.08em; }
