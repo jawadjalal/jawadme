@@ -700,23 +700,13 @@ html[data-viewer] { overflow: hidden; }
    companies and email stacked beside it at the button's height. */
 .pf-slim { --col: clamp(272px, 22vw, 340px); }
 .col-slim {
-  --lines: 9;
-  --lh: 0.9;
-  --fit: 3.44;    /* the widest line, "mind." and the memoji, less its hang, in em */
-  --base: 216px;  /* the base block (about 130px), at least 40px above it, and the column's top and bottom padding */
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
   gap: 24px;
   padding-bottom: var(--edge) !important;
 }
-.col-title { margin: 0; font: inherit; }
-.col-slim .col-h1 { line-height: var(--lh); letter-spacing: -0.05em; }
-.col-slim .col-stack {
-  display: block;
-  font-size: min(calc((var(--col) - 2 * var(--edge) - 1px) / var(--fit)), calc((100dvh - var(--base)) / (var(--lines) * var(--lh))));
-  /* when the width caps the size and height is left over, the leading opens a little (never past 0.96) to take it */
-  line-height: clamp(calc(var(--lh) * 1em), calc((100dvh - var(--base)) / var(--lines)), 0.96em);
-}
-.col-slim .col-flow[data-phone] { display: none; }
+.col-title { margin: 0; font: inherit; container-type: inline-size; }
+/* two lines, each whole: sized so the widest (--fit em, set from the headline) fills the column, up to 46px */
+.col-slim .col-h1 { display: block; font-size: min(46px, calc(100cqi / var(--fit))); line-height: 1.08; letter-spacing: -0.035em; }
 .col-slim .col-lead, .col-slim .col-main { font-weight: 640; }
 .col-slim .col-lead { color: #a3a3a3; }
 /* big type's side bearings push each line in by a different amount (Instrument Sans at 640: b and m about 0.06em, I
@@ -727,7 +717,7 @@ html[data-viewer] { overflow: hidden; }
 .col-slim .col-h1 .col-line:is([data-first="b"], [data-first="m"]) { margin-left: -0.062em; }
 
 /* stickers at display size: the car sits on the baseline at cap height, the memoji a head taller and hung below */
-.col-slim .col-stack .stk[data-cut][data-kind="car"] { height: 0.7em; width: calc(0.7em * var(--ar)); vertical-align: 0; margin: 0 0 0 0.1em; }
+.col-slim .col-h1 .stk[data-cut][data-kind="car"] { height: 0.7em; width: calc(0.7em * var(--ar)); vertical-align: 0; margin: 0 0 0 0.1em; }
 .col-slim .col-h1 .stk[data-cut]:not([data-kind]) { height: 0.9em; width: calc(0.9em * var(--ar)); vertical-align: -0.1em; margin: -0.2em 0 -0.1em 0.08em; }
 
 .col-base { display: grid; gap: 16px; }
@@ -746,8 +736,4 @@ html[data-viewer] { overflow: hidden; }
 }
 @media (max-width: 820px) {
   .col-slim { gap: 22px; padding-bottom: 28px !important; }
-  .col-slim .col-stack { display: none; }
-  .col-slim .col-flow[data-phone] { display: block; }
-  .col-slim .col-flow { font-size: min(46px, 11.8vw); line-height: 0.94; }
-  .col-slim .col-h1 .stk[data-cut]:not([data-kind]) { height: 0.8em; width: calc(0.8em * var(--ar)); vertical-align: -0.12em; margin: -0.1em 0 -0.1em 0.06em; }
 }
