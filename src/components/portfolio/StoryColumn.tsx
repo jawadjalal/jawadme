@@ -106,7 +106,7 @@ export function StoryColumn({
 
       <div className="col-base">
         <p className="col-who">
-          <b>Jawad Jalal</b> {does.join(", ")}
+          <b>Jawad Jalal</b> {does.map((d, i) => (i ? d.toLowerCase() : d)).join(", ")}
         </p>
         <div className="col-act" ref={cta}>
           <SquircleButton href={hire} icon="phone" label="Call me: book a call">
