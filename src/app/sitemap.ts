@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { WORK } from "@/content/hire";
 import { POSTS } from "@/lib/posts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -15,6 +16,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    ...(WORK.length
+      ? [{ url: "https://jawadjalal.com/work", lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 }]
+      : []),
     {
       url: "https://jawadjalal.com/capy",
       lastModified: new Date(),
