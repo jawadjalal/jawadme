@@ -610,7 +610,7 @@ html:has(.pf) body {
   .col-h1 .stk[data-cut][data-kind="car"]:hover { animation: none; }
   .cal-wait { animation: none; }
   .xpost, .xpost-item, .sq, .stk, .col-float, .tile, .tile img, .tile video, .tile-cap, .col-foot a::after, .story .sl, .story-cta { transition: none !important; }
-  .vw-btn .vw-tick { animation: none; }
+  .vw-btn .vw-tick { animation: none !important; }
   .xpost-bar { animation-duration: 9000ms !important; }
   .stk:hover { animation: none; }
   .sq:hover .sq-stk { animation: none; }
