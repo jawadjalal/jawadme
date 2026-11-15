@@ -15,17 +15,18 @@ const CAR = { pic: "/work/2026-11/sticker-car.svg", alt: "a little red car", w: 
 
 /** One array per line of type; each line is set on one line, never rewrapped. A picture is a sticker: `cut` is a
  *  cut-out with its own outline, otherwise a die-cut card with a white edge. `fit` is the widest line's width in em,
- *  measured in the browser, so the type is sized to fill the column with it. */
+ *  measured in the browser plus about 1.5% to spare for other browsers' kerning, so the type is sized to fill the
+ *  column with it. */
 export const HEADLINE = {
   lead: [[{ t: "Too young" }, CAR, { t: "to drive," }, MEMOJI]],
   main: [[{ t: "but I'm a design mastermind." }]],
-  fit: 13.12,
+  fit: 13.3,
 } as const;
 
 export const HEADLINE_ALT = {
   lead: [[{ t: "Too young" }, CAR, { t: "to drive." }, MEMOJI]],
   main: [[{ t: "Old enough to be a design mastermind." }]],
-  fit: 17.26,
+  fit: 17.45,
 } as const;
 
 export type Bit = { t: string } | { pic: string; alt: string; w: number; h: number; tilt: number; cut?: boolean; tuck?: boolean; kind?: string };

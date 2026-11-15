@@ -692,12 +692,10 @@ html[data-viewer] { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .vw, .vw-media { animation: none; } }
 
-/* ── The slim home column: the headline is the column ──────────────────────────────────────────────────────────
-   The headline is set as a stack, a word or two to a line, one size, tight, flush left, sized so it runs the
-   column's height: as large as the column's width allows ("mind." and the memoji is the widest line), and no larger
-   than the height left over above the base. Lead and main are the same face, weight and size; only the ink changes,
-   at the comma. The base is one unit pinned to the foot: his name and what he does, then the call button with his
-   companies and email stacked beside it at the button's height. */
+/* ── The slim home column ──────────────────────────────────────────────────────────────────────────────────────
+   The headline is two lines, each set whole, flush left, as large as the column's width allows. Lead and main are
+   the same face, weight and size; only the ink changes, at the comma. The base sits right under it: his name and
+   what he does, then the call button with his companies and email stacked beside it at the button's height. */
 .pf-slim { --col: clamp(272px, 22vw, 340px); }
 .col-slim {
   justify-content: flex-start !important;
@@ -709,12 +707,10 @@ html[data-viewer] { overflow: hidden; }
 .col-slim .col-h1 { display: block; font-size: min(46px, calc(100cqi / var(--fit))); line-height: 1.08; letter-spacing: -0.035em; }
 .col-slim .col-lead, .col-slim .col-main { font-weight: 640; }
 .col-slim .col-lead { color: #a3a3a3; }
-/* big type's side bearings push each line in by a different amount (Instrument Sans at 640: b and m about 0.06em, I
-   0.05em, T and d 0.02em, t and y none); each line is hung back by its first letter's, so every stem sits on the
-   column's edge, the same edge as the small type below */
-.col-slim .col-h1 .col-line[data-first="T"], .col-slim .col-h1 .col-line[data-first="d"] { margin-left: -0.016em; }
-.col-slim .col-h1 .col-line[data-first="I"] { margin-left: -0.047em; }
-.col-slim .col-h1 .col-line:is([data-first="b"], [data-first="m"]) { margin-left: -0.062em; }
+/* the side bearing of each line's first letter (Instrument Sans at 640: b about 0.06em, T 0.02em) is hung back, so
+   every stem sits on the column's edge, the same edge as the small type below */
+.col-slim .col-h1 .col-line[data-first="T"] { margin-left: -0.016em; }
+.col-slim .col-h1 .col-line[data-first="b"] { margin-left: -0.062em; }
 
 /* stickers at display size: the car sits on the baseline at cap height, the memoji a head taller and hung below */
 .col-slim .col-h1 .stk[data-cut][data-kind="car"] { height: 0.7em; width: calc(0.7em * var(--ar)); vertical-align: 0; margin: 0 0 0 0.1em; }

@@ -81,7 +81,7 @@ export function StoryColumn({
         <span className="col-h1" style={{ "--fit": h.fit } as React.CSSProperties}>
           <span className="col-lead">
             <Lines lines={h.lead} />
-          </span>
+          </span>{" "}
           <span className="col-main">
             <Lines lines={h.main} />
           </span>
