@@ -235,7 +235,7 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
             Share
           </a>
           <button
-            className="vw-btn"
+            className="vw-btn vw-copy"
             aria-live="polite"
             onClick={() => {
               navigator.clipboard?.writeText(url).then(() => setCopied(true), () => {});

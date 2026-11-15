@@ -369,6 +369,9 @@ html:has(.pf) body {
 .tile-cap { display: flex; align-items: baseline; gap: 12px; }
 .tile-what { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .tile-n { flex: none; margin-left: auto; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+/* on the plain wall the label always shows, so a long one takes a second line rather than losing its end */
+.wall-flow .tile-cap { white-space: normal; }
+.wall-flow .tile-what { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .tile picture { display: contents; }
 .tile video { display: block; width: 100%; height: auto; border-radius: 5px; background: var(--tint); }
 .tile-live figcaption { margin-top: 8px; font-size: 13px; color: var(--ink-2); }
@@ -606,7 +609,8 @@ html:has(.pf) body {
   .col-actions .sq::after { display: none; }
   .col-h1 .stk[data-cut][data-kind="car"]:hover { animation: none; }
   .cal-wait { animation: none; }
-  .xpost, .xpost-item, .sq, .stk, .col-float, .tile, .tile img, .tile-cap, .story .sl, .story-cta { transition: none !important; }
+  .xpost, .xpost-item, .sq, .stk, .col-float, .tile, .tile img, .tile video, .tile-cap, .col-foot a::after, .story .sl, .story-cta { transition: none !important; }
+  .vw-btn .vw-tick { animation: none; }
   .xpost-bar { animation-duration: 9000ms !important; }
   .stk:hover { animation: none; }
   .sq:hover .sq-stk { animation: none; }
@@ -680,6 +684,8 @@ html[data-viewer] { overflow: hidden; }
 .pf .vw-btn:is(:hover, :focus-visible) { background: rgb(255 255 255 / 0.18); scale: 1.03; }
 .pf .vw-btn:active { translate: 0 1px; scale: 1; transition-duration: 90ms; }
 .vw-btn .vw-xlogo { width: 15px; height: 15px; fill: currentColor; stroke: none; }
+/* wide enough for "Copied" and its tick, so the buttons beside it never move */
+.pf .vw-copy { min-width: 8.2em; justify-content: center; }
 /* copied: a tick draws itself in and the label says so, then it settles back */
 .vw-btn .vw-tick { width: 15px; height: 15px; stroke-width: 2.2; stroke-dasharray: 20; animation: vw-tick 360ms var(--ease) both; }
 @keyframes vw-tick { from { stroke-dashoffset: 20; } }
@@ -732,10 +738,11 @@ html[data-viewer] { overflow: hidden; }
 .col-foot a:hover, .col-foot a:focus-visible { color: var(--ink); }
 /* his companies open in a new tab: a small arrow slides in beside the name, in the column's margin */
 .col-foot a[target]::after {
-  content: "↗"; position: absolute; left: calc(100% + 3px); top: 50%; font-size: 0.8em;
+  content: "↗"; content: "↗" / ""; position: absolute; left: calc(100% + 3px); top: 50%; font-size: 0.8em;
   opacity: 0; transform: translate(-4px, -50%); transition: opacity 140ms var(--ease), transform 320ms var(--spring);
 }
-.col-foot a[target]:is(:hover, :focus-visible)::after { opacity: 1; transform: translate(0, -50%); }
+.col-foot a[target]:focus-visible::after { opacity: 1; transform: translate(0, -50%); }
+@media (hover: hover) { .col-foot a[target]:hover::after { opacity: 1; transform: translate(0, -50%); } }
 .col-foot a:active { color: var(--ink-2); }
 /* tall screens: the width caps the headline, so the base steps up a size to keep the column's scale even */
 @media (min-width: 821px) and (min-height: 1000px) {
