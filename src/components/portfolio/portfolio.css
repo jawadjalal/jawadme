@@ -708,9 +708,10 @@ html[data-viewer] { overflow: hidden; }
    The headline is two lines, each set whole, flush left, as large as the column's width allows. Lead and main are
    the same face, weight and size; only the ink changes, at the comma. The base sits right under it: his name and
    what he does, then the call button with "email me" beside it. */
-/* the column is about 30% of the window (it was 22%; 15 Nov, his ask for a bigger headline): the headline grows from
-   about 20px to 29px at 1440, and the wall keeps its four columns from 1200px. Three quiet marquees sit at its foot. */
-.pf-slim { --col: clamp(360px, 30vw, 480px); }
+/* the column grows with the window, 377px at 821 to 560px from about 1580 (15 Nov, his asks for a bigger headline,
+   twice): the headline is about 36px at 1440 and 28px at 1024. The wall beside it keeps four columns from 1280px and
+   three from 1040px (DriftWall.tsx). Three quiet marquees sit at its foot. */
+.pf-slim { --col: clamp(360px, calc(24vw + 180px), 560px); }
 .col-slim {
   justify-content: flex-start !important;
   gap: 26px;
@@ -736,8 +737,8 @@ html[data-viewer] { overflow: hidden; }
 .col-base { display: grid; gap: 20px; }
 .col-who { margin: 0; text-wrap: balance; font-size: 14.5px; line-height: 1.4; color: var(--ink-3); letter-spacing: -0.008em; }
 .col-who b { display: block; font-weight: 620; color: var(--ink); }
-/* "email me" sits at the end of a row a little narrower than the column, so it stays near the button and the
-   button's "+ you" grows into the space between without pushing it */
+/* "email me" sits at the end of a row sized to the button (its width, its "+ you" and a gap), not to the column, so
+   it stays near the button and the "+ you" grows into the space between without pushing it */
 .col-act { display: flex; align-items: center; gap: 20px; max-width: 330px; }
 .col-act .col-mail { margin-left: auto; }
 @media (max-width: 400px) { .col-act { flex-wrap: wrap; row-gap: 14px; } }
