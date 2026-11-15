@@ -11,6 +11,7 @@ import { srcSetOf, type Entry, type Piece } from "@/content/feed";
 import { pack, ratio, reshuffle, type Row } from "./pack";
 import { StoryLine, type Look } from "./StoryLine";
 import { SquircleButton } from "./SquircleButton";
+import { LoopSources, useLoops } from "./Loop";
 
 const MAX_PASSES = 6;
 const LOOK: Look = "sticker";
@@ -74,20 +75,7 @@ const BLANK = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
 
 /** Where a loop plays its 720 wide encode instead of the full 1280: phones on the plain wall, and the drifting wall's
  *  columns until the window is wide enough for a column to need more than 720 pixels at 2x. */
-const LOOP_SMALL = { flow: "(max-width: 560px)", drift: "(max-width: 1800px)" };
-
-/** A loop's encodes, best first. Where `small` matches: 720 wide at 30 fps, AV1 where the browser plays it (a fifth
- *  smaller again), H.264 everywhere else. Otherwise the full size H.264. Nothing is fetched until the video plays. */
-export function LoopSources({ video, small }: { video: string; small: string }) {
-  const b = `/work/2026-11/${video.replace(/\.mp4$/, "")}`;
-  return (
-    <>
-      <source media={small} src={`${b}-720-av1.mp4`} type={'video/mp4; codecs="av01.0.04M.08"'} />
-      <source media={small} src={`${b}-720.mp4`} type="video/mp4" />
-      <source src={`${b}.mp4`} type="video/mp4" />
-    </>
-  );
-}
+const LOOP_SMALL = { flow: "(max-width: 560px)", drift: "(max-width: 1700px)" };
 
 /** Both walls are in the page and one is display:none, and a browser still fetches a hidden picture. So each picture
  *  names its wall (`media`): where the other wall shows, its <picture> picks a blank instead, and a phone never
@@ -243,32 +231,7 @@ export function WorkFeed({ entries, href, closing, name }: { entries: Entry[]; h
     return () => io.disconnect();
   }, [passes.length, look]);
 
-  // video loops play only while they are on screen, and never with reduced motion or Save-Data (the poster stays). They
-  // start once the page has loaded, so a loop never races the first screen of pictures (the poster shows until then).
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    if (document.readyState === "complete") return setLoaded(true);
-    const on = () => setLoaded(true);
-    addEventListener("load", on, { once: true });
-    return () => removeEventListener("load", on);
-  }, []);
-  useEffect(() => {
-    const el = root.current;
-    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
-    if (!el || !loaded || saveData || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const io = new IntersectionObserver(
-      (seen) => {
-        for (const e of seen) {
-          const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) v.play().catch(() => {});
-          else v.pause();
-        }
-      },
-      { threshold: 0.25 },
-    );
-    for (const v of el.querySelectorAll<HTMLVideoElement>("video[data-loop]")) io.observe(v);
-    return () => io.disconnect();
-  }, [passes.length, loaded]);
+  useLoops(root, passes.length);
 
   useEffect(() => {
     const el = end.current;

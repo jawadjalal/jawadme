@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { captionOf, srcSetOf, type Picture } from "@/content/feed";
 import sizes from "@/content/feed-sizes.json";
-import { LoopSources } from "./WorkFeed";
+import { LoopSources } from "./Loop";
 
 const BASE = "/work/2026-11";
 const SITE = "https://jawadjalal.com";
@@ -19,7 +19,8 @@ const SITE = "https://jawadjalal.com";
 const framesOf = (p: Picture) => [p.file, ...(p.slides ?? [])];
 
 /** How wide a frame shows: as wide as the stage, or as the stage's height allows, never past its own width (as before
- *  it had a srcset), so a retina screen fetches the 2x master and a phone never does. Matches .vw-stage and .vw-media. */
+ *  it had a srcset), so a retina screen fetches the 2x master and a phone keeps the full size file. Matches .vw-stage
+ *  and .vw-media. */
 const viewerSizes = (file: string) => {
   const [w, h] = (sizes as Record<string, number[]>)[file];
   const r = (w / h).toFixed(3);
@@ -136,7 +137,7 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
     const n = frames[at.f + 1] ?? framesOf(pieces[(at.i + 1) % pieces.length])[0];
     const img = new Image();
     img.sizes = viewerSizes(n);
-    img.srcset = srcSetOf(n);
+    img.srcset = srcSetOf(n, true);
   }, [at, frames, pieces]);
 
   const touch = useRef<{ x: number; y: number } | null>(null);
@@ -188,7 +189,7 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
             key={file}
             className="vw-media"
             src={`${BASE}/${file}.webp`}
-            srcSet={srcSetOf(file)}
+            srcSet={srcSetOf(file, true)}
             sizes={viewerSizes(file)}
             alt={at.f === 0 ? p.alt : `${p.alt} Slide ${at.f + 1} of ${frames.length}.`}
           />

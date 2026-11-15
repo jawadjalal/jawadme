@@ -65,11 +65,13 @@ export type Piece = Picture | Live;
 export const captionOf = (p: Picture) => `${p.brand}${p.kind === "product" ? ", " : " "}${p.what}${p.unsolicited ? ", unsolicited" : ""}`;
 export type Entry = Piece | Story;
 
-/** every width a picture comes in, for an img srcset: half, full, and the retina master where there is one */
-export const srcSetOf = (file: string) => {
+/** a picture's img srcset: on the wall its half and full size; `big` (the viewer) its full size and the retina master
+ *  where there is one */
+export const srcSetOf = (file: string, big = false) => {
   const [w, , w2] = (sizes as Record<string, number[]>)[file];
   const b = `/work/2026-11/${file}`;
-  return `${b}-sm.webp ${Math.round(w / 2)}w, ${b}.webp ${w}w${w2 ? `, ${b}-2x.webp ${w2}w` : ""}`;
+  if (!big) return `${b}-sm.webp ${Math.round(w / 2)}w, ${b}.webp ${w}w`;
+  return `${b}.webp ${w}w${w2 ? `, ${b}-2x.webp ${w2}w` : ""}`;
 };
 
 const size = (file: string) => {
