@@ -17,6 +17,12 @@ const CAR = { pic: "/work/2026-11/sticker-car.svg", alt: "a little red car", w: 
 export const HEADLINE = {
   lead: [[{ t: "Too young" }, CAR], [{ t: "to drive," }, MEMOJI]],
   main: [[{ t: "but I'm a design" }], [{ t: "mastermind." }]],
+  /** the same words stacked a word or two to a line, so the headline runs the height of the desktop column; "master"
+   *  breaks at the hyphen and his memoji signs the last line */
+  stack: {
+    lead: [[{ t: "Too" }, CAR], [{ t: "young" }], [{ t: "to" }], [{ t: "drive," }]],
+    main: [[{ t: "but" }], [{ t: "I'm a" }], [{ t: "design" }], [{ t: "master-" }], [{ t: "mind." }, MEMOJI]],
+  },
 } as const;
 
 export const HEADLINE_ALT = {
