@@ -26,7 +26,7 @@ const START = 220;
 
 /** how wide the widest picture shows in the drifting wall beside the home column, rounded up so no screen fetches a
  *  copy smaller than it shows: four columns from 1280px, three from 1040px, two below */
-const DRIFT_SIZES = "(min-width: 1280px) 21vw, (min-width: 1040px) 23vw, 29vw";
+const DRIFT_SIZES = "(min-width: 2200px) 21vw, (min-width: 1600px) 19vw, (min-width: 1280px) 16vw, (min-width: 1040px) 23vw, 29vw";
 
 
 /** Lays the entries into `k` columns, each piece going to the shortest column so far (heights as width over ratio). */
