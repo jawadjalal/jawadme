@@ -143,22 +143,14 @@ export function Tile({ p, eager, sizes, media = FLOW_MEDIA }: { p: Piece; eager?
           />
         </picture>
       )}
-      {p.slides ? (
-        <span className="tile-badge" aria-hidden="true">
-          <i />
-          {p.slides.length + 1} slides
-        </span>
-      ) : p.video ? (
-        <span className="tile-badge" aria-hidden="true">
-          <i data-play="" />
-          reel
-        </span>
-      ) : null}
       <figcaption className="tile-cap">
-        <b>{p.brand}</b>
-        {p.kind === "product" ? ", " : " "}
-        {p.what}
-        {p.unsolicited ? ", unsolicited" : ""}
+        <span className="tile-what">
+          <b>{p.brand}</b>
+          {p.kind === "product" ? ", " : " "}
+          {p.what}
+          {p.unsolicited ? ", unsolicited" : ""}
+        </span>
+        {p.slides ? <span className="tile-n">{p.slides.length + 1} slides</span> : p.video ? <span className="tile-n">reel</span> : null}
       </figcaption>
     </figure>
   );

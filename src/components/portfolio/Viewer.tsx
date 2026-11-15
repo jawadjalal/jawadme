@@ -140,6 +140,13 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
     img.srcset = srcSetOf(n, true);
   }, [at, frames, pieces]);
 
+  // "Copied" holds long enough to read, then the button is ready to copy again
+  useEffect(() => {
+    if (!copied) return;
+    const t = setTimeout(() => setCopied(false), 1800);
+    return () => clearTimeout(t);
+  }, [copied]);
+
   const touch = useRef<{ x: number; y: number } | null>(null);
 
   if (!p || !at) return null;
@@ -210,7 +217,7 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
         <div className="vw-cap">
           <p>
             <b>{p.brand}</b> {p.what}
-            {p.unsolicited ? <em>unsolicited</em> : null}
+            {p.unsolicited ? <i>, unsolicited</i> : null}
           </p>
           {frames.length > 1 ? (
             <div className="vw-dots" role="tablist" aria-label="Slides">
@@ -228,12 +235,22 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
             Share
           </a>
           <button
-            className="vw-btn"
+            className="vw-btn vw-copy"
+            aria-live="polite"
             onClick={() => {
               navigator.clipboard?.writeText(url).then(() => setCopied(true), () => {});
             }}
           >
-            {copied ? "Copied" : "Copy link"}
+            {copied ? (
+              <>
+                <svg viewBox="0 0 24 24" aria-hidden="true" className="vw-tick">
+                  <path d="M5 12.5l4.5 4.5L19 7.5" />
+                </svg>
+                Copied
+              </>
+            ) : (
+              "Copy link"
+            )}
           </button>
           <a className="vw-btn vw-hire" href={hire}>
             Want one? Call me
