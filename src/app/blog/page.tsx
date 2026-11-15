@@ -42,13 +42,13 @@ export default function BlogIndex() {
   return (
     <section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <div className="screen-line-bottom px-4 py-1">
+      <div className="screen-line-bottom px-4 py-1 sm:px-6">
         <h1 className="font-display text-xl font-medium tracking-tight sm:text-2xl">Blog</h1>
       </div>
       <ul className="space-y-1 px-4 py-5 sm:px-6">
         {posts.map((p) => (
           <li key={p.slug}>
-            <Link href={`/blog/${p.slug}`} className="role-row -mx-2 block rounded-lg px-2 py-2">
+            <Link href={`/blog/${p.slug}`} className="role-row !block">
               <div className="flex items-baseline gap-2">
                 <h2 className="min-w-0 font-display text-[15px] font-semibold leading-snug">{p.title}</h2>
                 <span className="lead" aria-hidden="true" />
