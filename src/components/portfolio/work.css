@@ -1,6 +1,6 @@
-/* /work: the pitch page. It borrows the home page's tokens and column from portfolio.css; this file only adds what
-   differs. The column is wider than the home's slim one because it carries the prices, and the page scrolls on
-   desktop (the home page fixes its own wall and stops the body scrolling). */
+/* /work: the pitch page. It borrows the home page's tokens and button from portfolio.css; this file adds the rest.
+   The source order (headline, work, prices) is the reading order everywhere. On desktop a grid puts the headline and
+   the prices in a left column with the work beside them, and the prices stick in view while the page scrolls. */
 
 html:has(.pf-work),
 html:has(.pf-work) body {
@@ -10,13 +10,13 @@ html:has(.pf-work) body {
 
 .pf-work { --col: clamp(340px, 31vw, 440px); }
 
-.wk-col { justify-content: space-between; gap: 28px; padding-bottom: var(--edge); }
-.wk-head-act { display: none; }
 .wk-head .col-h1 { font-size: min(54px, 13.6cqi); letter-spacing: -0.045em; line-height: 1.02; }
-.wk-head .col-lead { color: #a3a3a3; font-weight: 640; }
+.wk-head .col-lead { color: #8f8f8f; font-weight: 640; }
 .wk-head .col-main { font-weight: 640; }
 .wk-sub { margin: 0; max-width: 30em; font-size: 14px; line-height: 1.45; color: var(--ink-3); letter-spacing: -0.005em; text-wrap: pretty; }
 .wk-sub b { display: block; font-weight: 620; color: var(--ink); }
+.wk-head-act { display: flex; align-items: center; gap: 18px; }
+.wk-head-act .sq { --sq: 18px; height: 52px; padding: 0 22px; font-size: 16px; }
 
 .wk-h { margin: 0 0 14px; font-size: 15px; font-weight: 620; letter-spacing: -0.015em; color: var(--ink); }
 
@@ -31,8 +31,7 @@ html:has(.pf-work) body {
 .wk-mail { font-size: 14px; color: var(--ink-2) !important; transition: color 160ms var(--ease); }
 .wk-mail:hover, .wk-mail:focus-visible { color: var(--ink) !important; }
 
-/* the pieces: one to a row, as large as the window allows, the line under each */
-.wk-main { padding: var(--edge) calc(var(--edge) * 2) 120px; }
+/* the pieces: one to a row, up to 1280px wide, the line under each */
 .wk-sec { max-width: 1280px; }
 .wk-sec + .wk-sec { margin-top: 160px; }
 .wk-piece { margin: 0; }
@@ -47,31 +46,42 @@ html:has(.pf-work) body {
 .wk-more a { color: var(--ink-2); transition: color 160ms var(--ease); }
 .wk-more a:hover, .wk-more a:focus-visible { color: var(--ink); }
 
-/* narrower desktops: the pieces take the margin back */
+/* desktop: the left column is the headline over the prices, with one rule down its edge */
+@media (min-width: 821px) {
+  .pf-work {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--col) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+  .pf-work::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--col) - 1px); width: 1px; background: var(--rule); }
+  .wk-head { grid-column: 1; grid-row: 1; gap: 24px; padding: var(--edge) var(--edge) 48px; }
+  .wk-main { grid-column: 2; grid-row: 1 / span 2; margin-left: 0; padding: var(--edge) calc(var(--edge) * 2) 120px; }
+  .wk-offer { grid-column: 1; grid-row: 2; align-self: start; position: sticky; top: 0; padding: var(--edge); }
+  /* tall windows show the whole column at once, so the call button under the prices is enough */
+  .wk-head-act { display: none; }
+}
 @media (min-width: 821px) and (max-width: 1200px) {
   .wk-main { padding-inline: var(--edge); }
 }
-/* short laptop screens: the column closes up so the button stays on the first screen */
-@media (min-width: 821px) and (max-height: 820px) {
-  .wk-col { gap: 16px; }
-  .wk-head { gap: 14px; padding-bottom: 0; }
+/* short laptop screens: the call button also sits under the headline, and the prices close up */
+@media (min-width: 821px) and (max-height: 860px) {
+  .wk-head-act { display: flex; }
   .wk-head .col-h1 { font-size: min(44px, 12.4cqi); }
+  .wk-head { gap: 18px; padding-bottom: 32px; }
   .wk-h { margin-bottom: 10px; }
   .wk-prices { gap: 8px; }
   .wk-what { font-size: 13px; line-height: 1.36; }
   .wk-act { margin-top: 14px; }
 }
 
-/* phones and narrow windows: the headline, then the work, then the prices and the button */
+/* phones and narrow windows: headline and call button, the work, then the prices */
 @media (max-width: 820px) {
-  .pf-work { display: flex; flex-direction: column; }
-  .wk-col { display: contents; }
-  .wk-head { order: 0; padding: 24px var(--edge) 32px; gap: 16px; }
-  .wk-head-act { display: flex; align-items: center; gap: 18px; margin-top: 4px; }
-  .wk-head-act .sq { --sq: 18px; height: 52px; padding: 0 22px; font-size: 16px; }
+  .wk-head { padding: 24px var(--edge) 32px; gap: 16px; }
   .wk-head .col-h1 { font-size: min(46px, 11.6vw); }
-  .wk-main { order: 1; padding: 0 var(--edge); }
-  .wk-offer { order: 2; padding: 80px var(--edge) calc(56px + env(safe-area-inset-bottom)); }
+  .wk-head-act { margin-top: 4px; }
+  .wk-main { margin-left: 0; padding: 0 var(--edge); }
+  .wk-offer { padding: 80px var(--edge) calc(56px + env(safe-area-inset-bottom)); }
   .wk-sec + .wk-sec { margin-top: 96px; }
   .wk-piece + .wk-piece { margin-top: 56px; }
   .wk-piece figcaption { margin-top: 12px; }

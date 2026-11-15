@@ -8,7 +8,9 @@ import "@/components/portfolio/portfolio.css";
 import "@/components/portfolio/work.css";
 
 // jawadjalal.com/work: the pitch. The best logos, brand boards and ads shown large, one plain line on each idea, and
-// the prices and the call button in the column beside them. The pieces and prices are in content/hire.ts.
+// the prices and the call button beside them. The pieces and prices are in content/hire.ts. The source order is the
+// reading order on every screen (headline, work, prices); on desktop the CSS grid puts the headline and the prices in
+// a left column, and the prices stay in view while the work scrolls.
 
 const TITLE = "Work and prices";
 const DESCRIPTION = "Ads, logos and brands by Jawad Jalal, shown large, with what it costs to have him make yours.";
@@ -49,10 +51,12 @@ function Piece({ p, first }: { p: Work; first: boolean }) {
         <p className="wk-idea">
           <b>{p.brand}</b> {p.idea}
         </p>
-        <p className="wk-fine">
-          {p.spec && <>Unofficial spec work, not commissioned by {p.brand}. </>}
-          {p.credit}
-        </p>
+        {(p.spec || p.credit) && (
+          <p className="wk-fine">
+            {p.spec && <>Unofficial spec work, not commissioned by {p.brand}. </>}
+            {p.credit}
+          </p>
+        )}
       </figcaption>
     </figure>
   );
@@ -64,53 +68,27 @@ export default function WorkPage() {
   const firstId = sections[0]?.items[0]?.id;
   return (
     <div className={`pf pf-work ${sans.variable}`}>
-      <aside className="col wk-col">
-        <div className="col-top wk-head">
-          <h1 className="col-h1">
-            <span className="col-lead">
-              <span className="col-line">Ads and brands</span>
-            </span>
-            <span className="col-main">
-              <span className="col-line">for startups.</span>
-            </span>
-          </h1>
-          <p className="wk-sub">
-            <b>Jawad Jalal</b> Each piece here was made unasked, for a real company or an invented one. Yours starts the same way.
-          </p>
-          <div className="wk-head-act">
-            <SquircleButton href={HIRE} icon="phone" label="Call me: book a call">
-              call me
-            </SquircleButton>
-            <a className="wk-mail" href="#wk-prices">
-              see prices
-            </a>
-          </div>
+      <header className="col-top wk-head">
+        <h1 className="col-h1">
+          <span className="col-lead">
+            <span className="col-line">Ads and brands</span>
+          </span>
+          <span className="col-main">
+            <span className="col-line">for startups.</span>
+          </span>
+        </h1>
+        <p className="wk-sub">
+          <b>Jawad Jalal</b> Logos, brands and ads, each with the idea behind it. Yours can start with a free spec set.
+        </p>
+        <div className="wk-head-act">
+          <SquircleButton href={HIRE} icon="phone" label="Call me: book a call">
+            call me
+          </SquircleButton>
+          <a className="wk-mail" href="#wk-prices">
+            see prices
+          </a>
         </div>
-
-        <section className="wk-offer" aria-labelledby="wk-prices">
-          <h2 id="wk-prices" className="wk-h">
-            Prices
-          </h2>
-          <dl className="wk-prices">
-            {PRICES.map((p) => (
-              <div key={p.name} className="wk-rung">
-                <dt>{p.name}</dt>
-                <dd className="wk-price">{p.price}</dd>
-                <dd className="wk-what">{p.what}</dd>
-              </div>
-            ))}
-          </dl>
-          <p className="wk-what wk-brand">Logos and brand identities: tell me what you need on a call and I&apos;ll price it there.</p>
-          <div className="wk-act">
-            <SquircleButton href={HIRE} icon="phone" label="Call me: book a call">
-              call me
-            </SquircleButton>
-            <a className="wk-mail" href={SECOND.href}>
-              or email me
-            </a>
-          </div>
-        </section>
-      </aside>
+      </header>
 
       <main className="pf-main wk-main" id="work">
         {sections.map((s) => (
@@ -127,6 +105,30 @@ export default function WorkPage() {
           <a href="/">More of my work, on the home page</a>
         </p>
       </main>
+
+      <section className="wk-offer" aria-labelledby="wk-prices">
+        <h2 id="wk-prices" className="wk-h">
+          Prices
+        </h2>
+        <dl className="wk-prices">
+          {PRICES.map((p) => (
+            <div key={p.name} className="wk-rung">
+              <dt>{p.name}</dt>
+              <dd className="wk-price">{p.price}</dd>
+              <dd className="wk-what">{p.what}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="wk-what wk-brand">Logos and brand identities: tell me what you need on a call and I&apos;ll price it there.</p>
+        <div className="wk-act">
+          <SquircleButton href={HIRE} icon="phone" label="Call me: book a call">
+            call me
+          </SquircleButton>
+          <a className="wk-mail" href={SECOND.href}>
+            or email me
+          </a>
+        </div>
+      </section>
     </div>
   );
 }

@@ -42,8 +42,10 @@ export const SIZES = { wide: [960, 1440, 1920], tall: [540, 810, 1080] } as cons
  */
 export const WORK: Work[] = [];
 
-export const wide = (file: string): Shot => ({ file, w: 1920, h: 1080 });
-export const tall = (file: string): Shot => ({ file, w: 1080, h: 1350 });
+/** a desktop picture (16:9 unless its size is given) and a phone picture (4:5 unless given); the full file must be at
+ *  least as wide as the largest width in SIZES */
+export const wide = (file: string, w = 1920, h = 1080): Shot => ({ file, w, h });
+export const tall = (file: string, w = 1080, h = 1350): Shot => ({ file, w, h });
 
 /** section names, in the order the page shows them */
 export const SECTIONS: { kind: Kind; title: string }[] = [
