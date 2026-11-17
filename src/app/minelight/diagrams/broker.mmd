@@ -1,0 +1,15 @@
+sequenceDiagram
+  participant T as Crew thread
+  participant B as forge studio broker (Mac)
+  participant W as Studio window
+  T->>B: lease --place game.rbxl --ttl 720 --holder ROBL-n
+  B->>B: queue by priority, memory gate,<br/>one launch at a time (shared sign-in token)
+  B->>W: open hidden on a private copy
+  B-->>T: lease id
+  T->>B: luau / play start / screen_capture
+  B->>B: guard: no data store writes, no publish,<br/>no script Source edits (Rojo owns scripts)
+  B->>W: call, with a timeout
+  W-->>B: result (checked for truncation)
+  B-->>T: whole answer as JSON
+  T->>B: release
+  B->>W: close, reap any test processes

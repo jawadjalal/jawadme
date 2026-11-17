@@ -1,0 +1,19 @@
+flowchart TB
+  dir(["Director: taste and calls"]):::gate --> cap["Captain agent<br/>briefs, one owner per piece, runs the trains"]
+  cap --> crew["Crew agents, one lane each<br/>look, UI, combat, floors, audio, camera, tools"]
+  crew --> swarm["Swarm on the boxes<br/>DeepSeek and Devin SWE-2 draft bulk tickets"]
+  crew --> wf["spec, tickets, tests first, code"]
+  swarm --> judge["Swarm judge: apply to main, run forge"]
+  wf --> fc["forge check"]
+  judge --> fc
+  fc --> rev["Review: a second model reads every diff"]
+  rev --> tr["Merge train every 30 min"]
+  tr --> main[("main")]
+  main --> pb["Playbot: town to Mole King to results"]
+  main --> vj["Visual judge: in-engine stills, fixed rubric"]
+  main --> bt["Blind tester: plays from screenshots"]
+  pb --> les["Every failure becomes a guard:<br/>a test, a lint rule, a workflow line"]
+  vj --> les
+  bt --> les
+  les --> cap
+  classDef gate fill:#3d300f,stroke:#ffc043,color:#fff3d6

@@ -1,0 +1,27 @@
+flowchart LR
+  subgraph CL["CLIENT (StarterPlayerScripts)"]
+    direction TB
+    in[Input, Camera, Wield]
+    vis[Actors, Fx, Cel, PixelFilter]
+    uic["UI: 38 modules"]
+    snd[Audio, Music]
+  end
+  subgraph RE["REMOTES (created by the server)"]
+    direction TB
+    up["14 intent events<br/>Attack · Dash · Bomb · Ability · UseItem<br/>UseSlot · CombineSlot · Pickup · Station<br/>Wildcard · FirstDive · DiveAgain · ToTown"]
+    down["Event: server to clients<br/>Snapshot: unreliable positions"]
+  end
+  subgraph SV["SERVER (ServerScriptService, one script)"]
+    direction TB
+    g["G: the service registry"]
+    svc["Remotes · Metrics · World · Heroes · Announce<br/>Items · Actors · Boss · Loot · Mine<br/>Combat · Kits · Surge · Run · Debug"]
+    meta["Meta: saves, town, forge timing"]
+    av[AvatarLook]
+    g --- svc
+    g --- meta
+  end
+  in --> up --> svc
+  svc --> down --> vis
+  down --> uic
+  down --> snd
+  meta --> ps[("ProfileStore<br/>session-locked profile")]
