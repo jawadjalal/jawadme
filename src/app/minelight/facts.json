@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-17T18:42:05Z",
+  "generatedAt": "2026-11-17T19:12:04Z",
   "main": {
-    "sha": "1e6b55f0",
-    "date": "2026-11-17T18:34:04Z",
-    "subject": "cartridge: no player sees a goal they can't reach at launch: rebirth, DIVE I–III and floor-locked goals hide until their layer is launch-ready (#444)"
+    "sha": "2bd6f250",
+    "date": "2026-11-17T19:04:03Z",
+    "subject": "Tutorial: every lesson finishes by doing it, and the Elder's ring stays on the target in a dive (READINESS line 61, ROBL-20) (#457)"
   },
   "counts": {
-    "mergedPRs": 369,
-    "testFiles": 195,
+    "mergedPRs": 377,
+    "testFiles": 200,
     "engineTestFiles": 13,
     "contentToml": 146,
     "uiModules": 48,
@@ -35,8 +35,8 @@
     "instancesLine": 20500,
     "bytesLine": 1400000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1276638,
-    "joinInstances": 19892
+    "latestBuildBytes": 1266984,
+    "joinInstances": 19931
   },
   "remotes": [
     "Attack",
@@ -56,11 +56,6 @@
     "Snapshot"
   ],
   "joinHistory": [
-    {
-      "sha": "87761afc",
-      "bytes": 1391967,
-      "line": 1400000
-    },
     {
       "sha": "7e8dbd4e",
       "bytes": 1390055,
@@ -104,6 +99,11 @@
     {
       "sha": "1e6b55f0",
       "bytes": 1276638,
+      "line": 1400000
+    },
+    {
+      "sha": "2bd6f250",
+      "bytes": 1266984,
       "line": 1400000
     }
   ]
