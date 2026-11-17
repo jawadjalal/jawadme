@@ -12,15 +12,15 @@ import "./minelight.css";
 // without a redeploy. Everything else on the page is static.
 export const revalidate = 180;
 
-const TITLE = "Minelight, explained: the game from the loop down to the toolchain";
+const TITLE = "Mine for Light, explained: the game from the loop down to the toolchain";
 const DESCRIPTION =
-  "How Minelight works, a co-op action mining game for Roblox: the loop, floors, bestiary, camera, cel look, UI, audio, the server-authoritative architecture and the agent crew that builds it, with a live feed of what shipped.";
+  "How Mine for Light works, a co-op action mining game for Roblox: the loop, floors, bestiary, camera, cel look, UI, audio, the server-authoritative architecture and the agent crew that builds it, with a live feed of what shipped.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/minelight" },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: "/minelight", type: "article", images: [{ url: "/minelight/img/og.jpg", width: 1200, height: 630, alt: "Minelight key art: an in-engine capture of a miner and the Mole King" }] },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: "/minelight", type: "article", images: [{ url: "/minelight/img/og.jpg", width: 1200, height: 630, alt: "Mine for Light key art: an in-engine capture of a miner and the Mole King" }] },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: ["/minelight/img/og.jpg"] },
 };
 
@@ -77,8 +77,8 @@ export default async function MinelightPage() {
 
         <header className="ml-hero">
           <div>
-            <h1 style={{ margin: 0 }}>
-              <img src="/minelight/img/logo-wide.webp" srcSet="/minelight/img/logo-wide-600.webp 600w, /minelight/img/logo-wide.webp 1024w" sizes="(min-width: 900px) 520px, 90vw" width={1024} height={242} alt="MINELIGHT" className="ml-logo" />
+            <h1 className="ml-wordmark">
+              <span>Mine for</span> <span className="lt">Light</span>
             </h1>
             <p className="ml-kicker">A co-op action mining game for Roblox</p>
             <p className="ml-lede">Dig deep with your friends. Smash monsters, crack glowing ore, beat the boss, forge better gear.</p>
@@ -89,7 +89,7 @@ export default async function MinelightPage() {
           </div>
           <figure className="ml-poster">
             <img src="/minelight/img/poster-1280.jpg" srcSet="/minelight/img/poster-640.jpg 640w, /minelight/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="A miner in a white space suit raises a pickaxe in front of the purple Mole King" />
-            <figcaption><span className="ml-badge art">In-engine + key art</span>A real in-engine capture of the Golden Room, graded, with rays and the logo added.</figcaption>
+            <figcaption><span className="ml-badge art">In-engine + key art</span>A real in-engine capture of the Golden Room, graded, with rays and the title added.</figcaption>
           </figure>
         </header>
 
@@ -130,14 +130,14 @@ export default async function MinelightPage() {
           </div>
         </Section>
 
-        <Section id="what" eyebrow="01 · The pitch" title="What Minelight is">
+        <Section id="what" eyebrow="01 · The pitch" title="What Mine for Light is">
           <div className="ml-col">
             <p>
-              Minelight is a co-op action mining crawler. Up to four friends drop into a mine as their own Roblox avatars. They swing, dig, dodge, crack glowing ore and fight to a boss, then
+              Mine for Light is a co-op action mining crawler. Up to four friends drop into a mine as their own Roblox avatars. They swing, dig, dodge, crack glowing ore and fight to a boss, then
               go back to town, forge better gear and dive deeper. A dive takes minutes, so a phone player at a bus stop can finish one and a group of friends can do three in a session.
             </p>
             <p>
-              Other mining games are about the grind. Minelight is a boss raid in a mine with your friends: short, loud dives that end in a fight. Four rules decide what gets built.
+              Other mining games are about the grind. Mine for Light is a boss raid in a mine with your friends: short, loud dives that end in a fight. Four rules decide what gets built.
             </p>
           </div>
           <div className="ml-grid two">
@@ -483,7 +483,7 @@ export default async function MinelightPage() {
         <Section id="crew" eyebrow="15 · The studio" title="How the agent crew builds it">
           <div className="ml-col">
             <p>
-              Minelight is built by a crew of AI agents with one human director. A Captain agent turns direction into briefs and gives every piece of work one owner. About thirty crew agents each own a
+              Mine for Light is built by a crew of AI agents with one human director. A Captain agent turns direction into briefs and gives every piece of work one owner. About thirty crew agents each own a
               lane (the look, UI, combat, floors, audio, the camera, the tools) and work spec, tickets, tests first, code, forge check, playbot, review, pull request. Cheaper models draft the bulk tickets on
               the build boxes, and a stronger model reviews everything before it lands.
             </p>

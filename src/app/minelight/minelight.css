@@ -1,4 +1,4 @@
-/* /minelight: Minelight explained, from the player loop down to the toolchain.
+/* /minelight: Mine for Light explained, from the player loop down to the toolchain.
    Everything is scoped under .ml so nothing reaches another page. Server-rendered, no client JS. */
 @font-face { font-family: "Chillax ML"; src: url("/fonts/chillax-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
 
@@ -44,7 +44,9 @@ body:has(.ml) { background: #100c1c; }
 /* Hero */
 .ml-hero { padding: 28px 0 8px; display: grid; gap: 28px; grid-template-columns: 1fr; align-items: center; }
 @media (min-width: 900px) { .ml-hero { grid-template-columns: 1fr 1.05fr; padding-top: 40px; } }
-.ml-logo { width: 100%; max-width: 520px; height: auto; display: block; filter: drop-shadow(0 6px 0 rgba(5, 3, 10, 0.6)); }
+.ml-wordmark { margin: 0; font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.95; font-size: clamp(42px, 7.4vw, 66px); color: #fff4dc; text-shadow: 0.045em 0em 0 var(--ink), -0.045em 0em 0 var(--ink), 0em 0.045em 0 var(--ink), 0em -0.045em 0 var(--ink), 0.032em 0.032em 0 var(--ink), -0.032em 0.032em 0 var(--ink), 0.032em -0.032em 0 var(--ink), -0.032em -0.032em 0 var(--ink), 0 0.1em 0 #5b1c2c, 0 0.135em 0 var(--ink), 0 0.2em 0.3em rgba(5, 3, 10, 0.55); }
+.ml-wordmark span { display: block; }
+.ml-wordmark .lt { font-size: 1.48em; color: var(--amber); margin-top: 0.02em; }
 .ml-kicker { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); font-weight: 700; margin: 18px 0 8px; }
 .ml-lede { font-size: 20px; line-height: 1.5; color: var(--cream); margin: 0 0 12px; }
 .ml-sub { color: var(--muted); margin: 0; }
