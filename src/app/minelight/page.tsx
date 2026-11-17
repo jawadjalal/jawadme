@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import facts from "./facts.json";
 import { Feed, FeedMeta, LatestShipped, getFeed } from "./Feed";
-import { CameraRig, JoinBudget, SwingFrames } from "./figures";
+import { CameraRig, JOIN_SEED, JoinBudget, type Point, SwingFrames } from "./figures";
 import { Diagram, Still, Table } from "./ui";
 import "./minelight.css";
 
@@ -62,6 +62,7 @@ export default async function MinelightPage() {
   const c = facts.counts;
   const cam = facts.camera;
   const jb = facts.joinBudget;
+  const joinHistory = (facts as { joinHistory?: Point[] }).joinHistory ?? JOIN_SEED;
   return (
     <div className="ml">
       <div className="ml-wrap">
@@ -283,7 +284,7 @@ export default async function MinelightPage() {
             </p>
           </div>
           <figure className="ml-fig ml-wide">
-            <div className="ml-fig-body"><div style={{ minWidth: 640 }}><SwingFrames /></div></div>
+            <div className="ml-fig-body"><div className="ml-svg-box"><SwingFrames /></div></div>
             <figcaption><span><b>The Miner's moves.</b> Every ult winds up exactly 39 frames, so its sound lands on the beat.</span></figcaption>
           </figure>
           <Table
@@ -312,7 +313,7 @@ export default async function MinelightPage() {
             </p>
           </div>
           <figure className="ml-fig ml-wide">
-            <div className="ml-fig-body"><div style={{ minWidth: 640 }}><CameraRig cam={cam} /></div></div>
+            <div className="ml-fig-body"><div className="ml-svg-box"><CameraRig cam={cam} /></div></div>
             <figcaption><span><b>View.FORGE on main.</b> The classic room camera (FOV 20°, 60° down, 96 studs) stays as a setting.</span></figcaption>
           </figure>
           <Table
@@ -451,8 +452,8 @@ export default async function MinelightPage() {
             </p>
           </div>
           <figure className="ml-fig ml-wide">
-            <div className="ml-fig-body"><div style={{ minWidth: 600 }}><JoinBudget latest={jb.latestBuildBytes} latestLabel={facts.main.sha} publishLine={jb.publishLine} /></div></div>
-            <figcaption><span><b>Place bytes against the line, build by build.</b> Gold: today's main.</span></figcaption>
+            <div className="ml-fig-body"><div className="ml-svg-box"><JoinBudget history={joinHistory} publishLine={jb.publishLine} /></div></div>
+            <figcaption><span><b>Place bytes against the line, main by main.</b> Gold: the latest main, measured by the refresh job the way the test measures it.</span></figcaption>
           </figure>
         </Section>
 

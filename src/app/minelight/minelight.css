@@ -97,7 +97,9 @@ body:has(.ml) { background: #100c1c; }
 
 /* Tables */
 .ml-tbl { overflow-x: auto; margin: 16px 0 22px; border: 2px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--ink); background: var(--panel); -webkit-overflow-scrolling: touch; }
-.ml-tbl table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 520px; }
+.ml-tbl table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+.ml-tbl-wide table { min-width: 640px; }
+@media (max-width: 640px) { .ml-tbl table { font-size: 13.5px; } .ml-tbl th, .ml-tbl td { padding: 8px 10px; } }
 .ml-tbl th, .ml-tbl td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #2c2350; vertical-align: top; }
 .ml-tbl th { background: var(--panel2); color: var(--amber); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; white-space: nowrap; }
 .ml-tbl tr:last-child td { border-bottom: 0; }
@@ -146,6 +148,8 @@ body:has(.ml) { background: #100c1c; }
 .ml-foot { margin: 80px 0 0; padding: 26px 0 40px; border-top: 2px solid var(--ink); color: var(--dim); font-size: 14px; }
 
 /* Hand-drawn figures (inline SVG) */
+.ml-svg { width: 100%; height: auto; }
+.ml-svg-box { min-width: 560px; }
 .ml-svg text { font-family: Arial, Helvetica, sans-serif; fill: var(--cream); }
 .ml-svg .muted { fill: var(--muted); }
 .ml-svg .amber { fill: var(--amber); }
