@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-17T16:42:05Z",
+  "generatedAt": "2026-11-17T17:12:04Z",
   "main": {
-    "sha": "a6aab68c",
-    "date": "2026-11-17T11:01:51Z",
-    "subject": "cartridge: the room mix (side chambers become detours), healing springs, and a signpost over every door (#390)"
+    "sha": "c6210bdc",
+    "date": "2026-11-17T17:02:42Z",
+    "subject": "docs(launch): the store page checked beside the genre's biggest game: one-sentence change, no name clash, no other game's names (ROBL-31) (#416)"
   },
   "counts": {
-    "mergedPRs": 346,
-    "testFiles": 182,
+    "mergedPRs": 349,
+    "testFiles": 186,
     "engineTestFiles": 12,
     "contentToml": 143,
-    "uiModules": 47,
+    "uiModules": 48,
     "remotes": 15,
     "ores": 44,
     "bars": 12,
@@ -35,8 +35,8 @@
     "instancesLine": 20500,
     "bytesLine": 1520000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1451016,
-    "joinInstances": 19885
+    "latestBuildBytes": 1471398,
+    "joinInstances": 19888
   },
   "remotes": [
     "Attack",
@@ -56,11 +56,6 @@
     "Snapshot"
   ],
   "joinHistory": [
-    {
-      "sha": "ec9d81fe",
-      "bytes": 1171660,
-      "line": 1300000
-    },
     {
       "sha": "5da98087",
       "bytes": 1247699,
@@ -104,6 +99,11 @@
     {
       "sha": "a6aab68c",
       "bytes": 1451016,
+      "line": 1520000
+    },
+    {
+      "sha": "c6210bdc",
+      "bytes": 1471398,
       "line": 1520000
     }
   ]
