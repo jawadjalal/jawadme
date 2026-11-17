@@ -34,7 +34,10 @@
 .ml-wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
 .ml-col { max-width: 760px; }
 
-.ml-top { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; font-size: 14px; color: var(--muted); }
+body:has(.ml) { background: #100c1c; }
+.ml-top { display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: space-between; align-items: center; padding: 18px 0; font-size: 14px; color: var(--muted); }
+.ml-top a { white-space: nowrap; }
+@media (max-width: 640px) { .ml-top { font-size: 12.5px; } }
 .ml-top a { color: var(--muted); text-decoration: none; }
 .ml-top a:hover { color: var(--cream); }
 
