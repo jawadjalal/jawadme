@@ -5,21 +5,21 @@
 const LAUNCH_URL = "https://gist.githubusercontent.com/jawadjalal/04eb0fef24e83e3856a51ad0fc3214b9/raw/launch.json";
 const TZ = "Europe/London";
 
-type Status = "red" | "amber" | "green";
+type Status = "red" | "amber" | "green" | "killed";
 type Line = { s: Status; rule: string; where: string | null; owner: string | null };
 type Group = { name: string; lines: Line[] };
 type Point = { t: string; red: number; amber: number; green: number };
 export type LaunchData = {
   generated_at: string;
   doc: { edited_sha: string | null; edited_at: string | null; graded_on: string | null };
-  counts: { red: number; amber: number; green: number; total: number };
+  counts: { red: number; amber: number; green: number; killed: number; total: number };
   sections: Group[];
   history: Point[];
 };
 
 const str = (v: unknown) => (typeof v === "string" && v ? v : null);
 const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : 0);
-const isStatus = (v: unknown): v is Status => v === "red" || v === "amber" || v === "green";
+const isStatus = (v: unknown): v is Status => v === "red" || v === "amber" || v === "green" || v === "killed";
 
 function clean(raw: unknown): LaunchData | null {
   if (!raw || typeof raw !== "object") return null;
@@ -43,7 +43,7 @@ function clean(raw: unknown): LaunchData | null {
   return {
     generated_at: r.generated_at,
     doc: { edited_sha: str(d.edited_sha), edited_at: str(d.edited_at), graded_on: str(d.graded_on) },
-    counts: { red: num(c.red), amber: num(c.amber), green: num(c.green), total: num(c.total) },
+    counts: { red: num(c.red), amber: num(c.amber), green: num(c.green), killed: num(c.killed), total: num(c.total) },
     sections,
     history,
   };
@@ -73,7 +73,7 @@ const GOALS: [string, string][] = [
 const when = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false });
 const hms = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
 const hm = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
-const LABEL: Record<Status, string> = { red: "Red: blocks launch", amber: "Amber: launchable, not proven", green: "Green: done, with proof" };
+const LABEL: Record<Status, string> = { red: "Red: blocks launch", amber: "Amber: launchable, not proven", green: "Green: done, with proof", killed: "Killed for beta: gated off until its gate opens" };
 
 function Burndown({ history }: { history: Point[] }) {
   if (history.length < 2) {
@@ -141,22 +141,22 @@ export function LaunchBoard({ launch, renderedAt }: { launch: LaunchData | null;
         <p className="ml-note">The launch readiness list is unavailable right now. It refreshes every 3 minutes, so check back shortly.</p>
       ) : (
         <>
-          <h3 className="ml-h3">Launch readiness: {c.green} of {c.total} green</h3>
+          <h3 className="ml-h3">Launch readiness: {c.green} of {c.total} green{c.killed ? ", " + c.killed + " killed for beta" : ""}</h3>
           <div className="ml-feed-head">
             <span className="ml-live"><i />Live</span>
             <span>Refreshed at <b>{hms.format(new Date(launch.generated_at))}</b> London, page built {hms.format(new Date(renderedAt))}</span>
             {launch.doc.edited_at ? <span>List last regraded {when.format(new Date(launch.doc.edited_at))}{launch.doc.edited_sha ? <> (<code>{launch.doc.edited_sha}</code>)</> : null}</span> : null}
           </div>
           <div className="ml-lb-counts">
-            {(["red", "amber", "green"] as Status[]).map((s) => (
+            {(["red", "amber", "green", "killed"] as Status[]).filter((s) => s !== "killed" || c.killed > 0).map((s) => (
               <div key={s} className={"ml-lb-count " + s}>
                 <b>{c[s]}</b>
-                <span>{s}</span>
+                <span>{s === "killed" ? "killed for beta" : s}</span>
               </div>
             ))}
           </div>
-          <div className="ml-lb-bar" role="img" aria-label={c.red + " red, " + c.amber + " amber, " + c.green + " green"}>
-            {(["green", "amber", "red"] as Status[]).map((s) => <i key={s} className={s} style={{ width: (100 * c[s]) / Math.max(c.total, 1) + "%" }} />)}
+          <div className="ml-lb-bar" role="img" aria-label={c.red + " red, " + c.amber + " amber, " + c.green + " green, " + c.killed + " killed for beta"}>
+            {(["green", "amber", "red", "killed"] as Status[]).map((s) => <i key={s} className={s} style={{ width: (100 * c[s]) / Math.max(c.total, 1) + "%" }} />)}
           </div>
           <Burndown history={launch.history} />
           <h3 className="ml-h3">{LABEL.red} ({c.red})</h3>
@@ -167,6 +167,12 @@ export function LaunchBoard({ launch, renderedAt }: { launch: LaunchData | null;
             <summary>{LABEL.green} ({c.green})</summary>
             <Lines status="green" launch={launch} compact />
           </details>
+          {c.killed ? (
+            <details className="ml-older">
+              <summary>{LABEL.killed} ({c.killed})</summary>
+              <Lines status="killed" launch={launch} compact />
+            </details>
+          ) : null}
           <p className="ml-vis-meta">
             Read from the game's launch readiness list on main. Store and pricing lines show only their colour and owner until launch.
           </p>
