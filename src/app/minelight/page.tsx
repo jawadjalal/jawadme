@@ -4,6 +4,7 @@ import facts from "./facts.json";
 import { Feed, FeedMeta, LatestShipped, getFeed } from "./Feed";
 import { CameraRig, JOIN_SEED, JoinBudget, type Point, SwingFrames } from "./figures";
 import { Diagram, Still, Table } from "./ui";
+import { LatestVisuals } from "./Visuals";
 import "./minelight.css";
 
 // Rebuilt at most every 3 minutes, so the shipped feed (a JSON the build box refreshes every 3 minutes) stays fresh
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
 };
 
 const SECTIONS: [string, string][] = [
+  ["visuals", "Latest visuals"],
   ["shipped-now", "Just shipped"],
   ["what", "What it is"],
   ["loop", "The core loop"],
@@ -80,7 +82,7 @@ export default async function MinelightPage() {
             <p className="ml-lede">Dig deep with your friends. Smash monsters, crack glowing ore, beat the boss, forge better gear.</p>
             <p className="ml-sub">
               This page is the whole game on one sheet: the loop a player feels, the numbers under it, and the machine that builds it.
-              It is drawn from the game repo's main branch and the team's design docs, and its shipped feed updates every 3 minutes.
+              It is drawn from the game repo's main branch and the team's design docs. Its shipped feed updates every 3 minutes, and its latest visuals every hour.
             </p>
           </div>
           <figure className="ml-poster">
@@ -103,6 +105,10 @@ export default async function MinelightPage() {
         <nav className="ml-toc" aria-label="Contents">
           <ol>{SECTIONS.map(([id, label]) => <li key={id}><a href={"#" + id}>{label}</a></li>)}</ol>
         </nav>
+
+        <Section id="visuals" eyebrow="Live · hourly" title="Latest visuals">
+          <LatestVisuals />
+        </Section>
 
         <Section id="shipped-now" eyebrow="Live" title="Just shipped">
           <div className="ml-col">
