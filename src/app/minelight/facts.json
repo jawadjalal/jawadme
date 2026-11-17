@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-17T17:12:04Z",
+  "generatedAt": "2026-11-17T17:42:04Z",
   "main": {
-    "sha": "c6210bdc",
-    "date": "2026-11-17T17:02:42Z",
-    "subject": "docs(launch): the store page checked beside the genre's biggest game: one-sentence change, no name clash, no other game's names (ROBL-31) (#416)"
+    "sha": "337dff34",
+    "date": "2026-11-17T17:33:46Z",
+    "subject": "launch docs: READINESS regraded on main a6aab68c, one owner thread per red and amber line (JAW-149) (#419)"
   },
   "counts": {
-    "mergedPRs": 349,
-    "testFiles": 186,
-    "engineTestFiles": 12,
+    "mergedPRs": 356,
+    "testFiles": 188,
+    "engineTestFiles": 13,
     "contentToml": 143,
     "uiModules": 48,
     "remotes": 15,
@@ -35,8 +35,8 @@
     "instancesLine": 20500,
     "bytesLine": 1520000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1471398,
-    "joinInstances": 19888
+    "latestBuildBytes": 1503639,
+    "joinInstances": 19891
   },
   "remotes": [
     "Attack",
@@ -56,11 +56,6 @@
     "Snapshot"
   ],
   "joinHistory": [
-    {
-      "sha": "5da98087",
-      "bytes": 1247699,
-      "line": 1330000
-    },
     {
       "sha": "8c9d041d",
       "bytes": 1326790,
@@ -104,6 +99,11 @@
     {
       "sha": "c6210bdc",
       "bytes": 1471398,
+      "line": 1520000
+    },
+    {
+      "sha": "337dff34",
+      "bytes": 1503639,
       "line": 1520000
     }
   ]
