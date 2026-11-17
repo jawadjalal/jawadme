@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import facts from "./facts.json";
 import { Feed, FeedMeta, LatestShipped, getFeed } from "./Feed";
+import { LaunchBoard, getLaunch } from "./Launch";
 import { CameraRig, JOIN_SEED, JoinBudget, type Point, SwingFrames } from "./figures";
 import { Diagram, Still, Table } from "./ui";
 import { LatestVisuals } from "./Visuals";
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
 };
 
 const SECTIONS: [string, string][] = [
+  ["launch", "Launch board"],
   ["visuals", "Latest visuals"],
   ["shipped-now", "Just shipped"],
   ["what", "What it is"],
@@ -59,7 +61,7 @@ function Section({ id, eyebrow, title, children }: { id: string; eyebrow: string
 }
 
 export default async function MinelightPage() {
-  const feed = await getFeed();
+  const [feed, launch] = await Promise.all([getFeed(), getLaunch()]);
   const renderedAt = Date.now();
   const c = facts.counts;
   const cam = facts.camera;
@@ -105,6 +107,10 @@ export default async function MinelightPage() {
         <nav className="ml-toc" aria-label="Contents">
           <ol>{SECTIONS.map(([id, label]) => <li key={id}><a href={"#" + id}>{label}</a></li>)}</ol>
         </nav>
+
+        <Section id="launch" eyebrow="Live · today" title="Launch board">
+          <LaunchBoard launch={launch} renderedAt={renderedAt} />
+        </Section>
 
         <Section id="visuals" eyebrow="Live · hourly" title="Latest visuals">
           <LatestVisuals />
