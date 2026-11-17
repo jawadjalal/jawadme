@@ -161,7 +161,6 @@ export default async function MinelightPage() {
           <Diagram name="run-state" alt="State diagram: lobby to countdown when a hero steps on the Lift pad, to running after 5 seconds, to results after banking or a wipe; inside running, chambers go idle, active, cleared, and heroes go up, downed and revived." caption={<><b>Run.state on the server.</b> One expedition per server for now.</>} />
           <Table
             head={["Rule", "Number"]}
-            num={[1]}
             rows={[
               ["Lift pad countdown", "5 s"],
               ["Party size", "1 to 4"],
@@ -187,7 +186,6 @@ export default async function MinelightPage() {
               <p>Each floor has Gloom levels 0 to V. Beating the floor's guardian at your highest Gloom unlocks the next. All the extra danger arrives at Gloom I; after that each level changes how the dive plays, and the reward keeps climbing.</p>
               <Table
                 head={["Gloom", "Adds", "Yield, XP"]}
-                num={[2]}
                 rows={[
                   ["0", "the base dive", "x1"],
                   ["I · Restless", "enemies x1.5 HP, x1.25 damage", "x1.25"],
@@ -289,7 +287,6 @@ export default async function MinelightPage() {
           </figure>
           <Table
             head={["Feel value", "Number"]}
-            num={[1]}
             rows={[
               ["Combo window", "14 f (233 ms)"],
               ["Input buffer", "8 f (133 ms)"],
@@ -318,7 +315,6 @@ export default async function MinelightPage() {
           </figure>
           <Table
             head={["Key in View.FORGE", "Value", "What it does"]}
-            num={[1]}
             rows={[
               ["fov", String(cam.fov) + "°", "vertical field of view, Roblox's default"],
               ["pitch", String(cam.pitch) + "°", "degrees down, held: the player never tilts it"],
@@ -504,7 +500,6 @@ export default async function MinelightPage() {
             <Still name="mole-king-2" title="The Mole King, later" note="The guardian at full size under the forge camera." />
             <Still name="results" title="The results card" note="Depth, kills, time, best combo, XP, then DIVE AGAIN or TOWN." />
             <Still name="relic" title="A mythic relic reveal" note="Rarity cards match the loot beam colours." />
-            <Still name="smeltery" title="The Smeltery" note="Five ore to one bar." />
             <Still name="coop" title="Co-op" note="Up to four avatars in one dive." art />
             <Still name="ore-impact" title="An ore strike" note="The moment a vein cracks." art />
           </div>

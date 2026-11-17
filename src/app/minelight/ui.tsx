@@ -32,7 +32,7 @@ export function Diagram({ name, alt, caption }: { name: string; alt: string; cap
 
 export function Table({ head, rows, num = [] }: { head: string[]; rows: React.ReactNode[][]; num?: number[] }) {
   return (
-    <div className={"ml-tbl" + (head.length > 3 ? " ml-tbl-wide" : "")}>
+    <div className={"ml-tbl" + (head.length >= 3 ? " ml-tbl-wide" : "")}>
       <table>
         <thead><tr>{head.map((h) => <th key={h}>{h}</th>)}</tr></thead>
         <tbody>
