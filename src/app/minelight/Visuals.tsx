@@ -30,7 +30,7 @@ export function LatestVisuals() {
           The newest finished frames from each lane, refreshed every hour. Every picture says what it is: an <b>in-engine capture</b> is a real frame from Roblox Studio, a <b>box render</b>{" "}
           is drawn offline on a build box from the game's own files and is not the game itself, and <b>AI-assisted key art</b> is a thumbnail made from an in-engine capture with image tools.
         </p>
-        <p className="ml-vis-meta">Checked {clock(v.generatedAt)}.</p>
+        <p className="ml-vis-meta">Last changed {clock(v.generatedAt)}. The drive is checked every hour.</p>
       </div>
       <div className="ml-vis">
         {v.items.map((it, i) => {
