@@ -34,7 +34,7 @@ export function Table({ head, rows, num = [] }: { head: string[]; rows: React.Re
   return (
     <div className={"ml-tbl" + (head.length >= 3 ? " ml-tbl-wide" : "")}>
       <table>
-        <thead><tr>{head.map((h) => <th key={h}>{h}</th>)}</tr></thead>
+        <thead><tr>{head.map((h, i) => <th key={i}>{h}</th>)}</tr></thead>
         <tbody>
           {rows.map((r, i) => (
             <tr key={i}>{r.map((c, j) => <td key={j} className={num.includes(j) ? "n" : undefined}>{c}</td>)}</tr>
