@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-17T09:42:04Z",
+  "generatedAt": "2026-11-17T10:12:04Z",
   "main": {
-    "sha": "9d5cd874",
-    "date": "2026-11-17T09:01:49Z",
-    "subject": "forge sim: a headless balance simulator gated in forge check, with dig and DELVELIGHT adapters (#130)"
+    "sha": "29e6864a",
+    "date": "2026-11-17T10:04:38Z",
+    "subject": "UI: the town menu tabs stop short of the player list (the dead SHOP click after #386) (#404)"
   },
   "counts": {
-    "mergedPRs": 332,
-    "testFiles": 174,
+    "mergedPRs": 341,
+    "testFiles": 181,
     "engineTestFiles": 12,
     "contentToml": 143,
-    "uiModules": 45,
+    "uiModules": 47,
     "remotes": 15,
     "ores": 44,
     "bars": 12,
@@ -35,8 +35,8 @@
     "instancesLine": 20500,
     "bytesLine": 1460000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1391100,
-    "joinInstances": 19875
+    "latestBuildBytes": 1447383,
+    "joinInstances": 19883
   },
   "remotes": [
     "Attack",
@@ -94,6 +94,11 @@
     {
       "sha": "9d5cd874",
       "bytes": 1391100,
+      "line": 1460000
+    },
+    {
+      "sha": "29e6864a",
+      "bytes": 1447383,
       "line": 1460000
     }
   ]
