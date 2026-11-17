@@ -2,7 +2,7 @@
 // A loop on the crew's Linux base reads docs/launch/READINESS.md on the game repo's main every 3 minutes, scrubs it
 // to public-safe text (store and money lines show only their colour and owner) and writes launch.json to the same
 // public gist as the feed. The page reads it when it rebuilds, at most every 180 s, so no token is ever on the site.
-const LAUNCH_URL = "https://gist.githubusercontent.com/jawadjalal/04eb0fef24e83e3856a51ad0fc3214b9/raw/launch.json";
+const LAUNCH_URL = "https://gist.githubusercontent.com/jawadjalal/04eb0fef24e83e3856a51ad0fc3214b9/raw/board.json";
 const TZ = "Europe/London";
 
 type Status = "red" | "amber" | "green" | "killed";
