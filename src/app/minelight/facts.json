@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-17T10:12:04Z",
+  "generatedAt": "2026-11-17T10:42:04Z",
   "main": {
-    "sha": "29e6864a",
-    "date": "2026-11-17T10:04:38Z",
-    "subject": "UI: the town menu tabs stop short of the player list (the dead SHOP click after #386) (#404)"
+    "sha": "636e7c73",
+    "date": "2026-11-17T10:40:26Z",
+    "subject": "forge: player builds leave the playbot's Autopilot out, and Main.client starts without it (-15.6 KB at join) (#409)"
   },
   "counts": {
-    "mergedPRs": 341,
+    "mergedPRs": 345,
     "testFiles": 181,
     "engineTestFiles": 12,
     "contentToml": 143,
@@ -33,9 +33,9 @@
   },
   "joinBudget": {
     "instancesLine": 20500,
-    "bytesLine": 1460000,
+    "bytesLine": 1520000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1447383,
+    "latestBuildBytes": 1440320,
     "joinInstances": 19883
   },
   "remotes": [
@@ -100,6 +100,11 @@
       "sha": "29e6864a",
       "bytes": 1447383,
       "line": 1460000
+    },
+    {
+      "sha": "636e7c73",
+      "bytes": 1440320,
+      "line": 1520000
     }
   ]
 }
