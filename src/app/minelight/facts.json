@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-17T08:30:00Z",
+  "generatedAt": "2026-11-17T08:36:08Z",
   "main": {
-    "sha": "87761afc",
-    "date": "2026-11-17T07:25:11Z",
-    "subject": "Heroes: a miner back in town has full hearts, not the 0 a death left (#378)"
+    "sha": "57eba1c3",
+    "date": "2026-11-17T08:29:28Z",
+    "subject": "cartridge: the join budget's byte line is 1,460,000 for the released held PRs, the Captain's call (JAW-118 brings it back before a public publish) (#387)"
   },
   "counts": {
-    "mergedPRs": 320,
-    "testFiles": 183,
-    "engineTestFiles": 9,
+    "mergedPRs": 321,
+    "testFiles": 171,
+    "engineTestFiles": 12,
     "contentToml": 143,
-    "uiModules": 38,
+    "uiModules": 45,
     "remotes": 15,
     "ores": 44,
     "bars": 12,
@@ -33,7 +33,7 @@
   },
   "joinBudget": {
     "instancesLine": 20500,
-    "bytesLine": 1400000,
+    "bytesLine": 1460000,
     "publishLine": 1230000,
     "latestBuildBytes": 1391967
   },
