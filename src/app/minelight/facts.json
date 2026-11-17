@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-17T19:42:02Z",
+  "generatedAt": "2026-11-17T20:12:05Z",
   "main": {
-    "sha": "bd9efb22",
-    "date": "2026-11-17T19:40:55Z",
-    "subject": "forge: crisp, jawad's crisp-UI rule as a forge check step with its rules as data (warn mode) (#433)"
+    "sha": "26357787",
+    "date": "2026-11-17T20:06:22Z",
+    "subject": "cartridge: an engine test that the boss bar follows a miniboss fight and holds still between changes (covers #430) (#467)"
   },
   "counts": {
-    "mergedPRs": 380,
-    "testFiles": 205,
-    "engineTestFiles": 13,
-    "contentToml": 146,
-    "uiModules": 48,
+    "mergedPRs": 395,
+    "testFiles": 209,
+    "engineTestFiles": 20,
+    "contentToml": 161,
+    "uiModules": 49,
     "remotes": 15,
     "ores": 44,
     "bars": 12,
@@ -35,8 +35,8 @@
     "instancesLine": 20500,
     "bytesLine": 1400000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1283804,
-    "joinInstances": 19935
+    "latestBuildBytes": 1304323,
+    "joinInstances": 17054
   },
   "remotes": [
     "Attack",
@@ -56,11 +56,6 @@
     "Snapshot"
   ],
   "joinHistory": [
-    {
-      "sha": "9d5cd874",
-      "bytes": 1391100,
-      "line": 1460000
-    },
     {
       "sha": "29e6864a",
       "bytes": 1447383,
@@ -104,6 +99,11 @@
     {
       "sha": "bd9efb22",
       "bytes": 1283804,
+      "line": 1400000
+    },
+    {
+      "sha": "26357787",
+      "bytes": 1304323,
       "line": 1400000
     }
   ]
