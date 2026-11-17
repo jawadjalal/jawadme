@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-17T08:36:08Z",
+  "generatedAt": "2026-11-17T08:42:02Z",
   "main": {
-    "sha": "57eba1c3",
-    "date": "2026-11-17T08:29:28Z",
-    "subject": "cartridge: the join budget's byte line is 1,460,000 for the released held PRs, the Captain's call (JAW-118 brings it back before a public publish) (#387)"
+    "sha": "7e8dbd4e",
+    "date": "2026-11-17T08:37:55Z",
+    "subject": "forge: player builds leave the ui's Mock out too, with the test modules (nothing in a game requires it) (#388)"
   },
   "counts": {
-    "mergedPRs": 321,
-    "testFiles": 171,
+    "mergedPRs": 329,
+    "testFiles": 172,
     "engineTestFiles": 12,
     "contentToml": 143,
     "uiModules": 45,
@@ -35,7 +35,8 @@
     "instancesLine": 20500,
     "bytesLine": 1460000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1391967
+    "latestBuildBytes": 1390055,
+    "joinInstances": 19875
   },
   "remotes": [
     "Attack",
@@ -53,5 +54,42 @@
     "ToTown",
     "Event",
     "Snapshot"
+  ],
+  "joinHistory": [
+    {
+      "sha": "97effd2",
+      "bytes": 1102692,
+      "line": 1230000
+    },
+    {
+      "sha": "ec9d81fe",
+      "bytes": 1171660,
+      "line": 1300000
+    },
+    {
+      "sha": "5da98087",
+      "bytes": 1247699,
+      "line": 1330000
+    },
+    {
+      "sha": "8c9d041d",
+      "bytes": 1326790,
+      "line": 1360000
+    },
+    {
+      "sha": "9150c4fe",
+      "bytes": 1358842,
+      "line": 1400000
+    },
+    {
+      "sha": "87761afc",
+      "bytes": 1391967,
+      "line": 1400000
+    },
+    {
+      "sha": "7e8dbd4e",
+      "bytes": 1390055,
+      "line": 1460000
+    }
   ]
 }
