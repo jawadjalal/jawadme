@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-11-17T18:12:03Z",
+  "generatedAt": "2026-11-17T18:42:05Z",
   "main": {
-    "sha": "3630da32",
-    "date": "2026-11-17T18:11:17Z",
-    "subject": "FirstDive: the first dive ends on a LEVEL UP (ROBL-20) (#435)"
+    "sha": "1e6b55f0",
+    "date": "2026-11-17T18:34:04Z",
+    "subject": "cartridge: no player sees a goal they can't reach at launch: rebirth, DIVE I–III and floor-locked goals hide until their layer is launch-ready (#444)"
   },
   "counts": {
-    "mergedPRs": 362,
-    "testFiles": 191,
+    "mergedPRs": 369,
+    "testFiles": 195,
     "engineTestFiles": 13,
-    "contentToml": 145,
+    "contentToml": 146,
     "uiModules": 48,
     "remotes": 15,
     "ores": 44,
@@ -35,8 +35,8 @@
     "instancesLine": 20500,
     "bytesLine": 1400000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1282469,
-    "joinInstances": 19896
+    "latestBuildBytes": 1276638,
+    "joinInstances": 19892
   },
   "remotes": [
     "Attack",
@@ -56,11 +56,6 @@
     "Snapshot"
   ],
   "joinHistory": [
-    {
-      "sha": "9150c4fe",
-      "bytes": 1358842,
-      "line": 1400000
-    },
     {
       "sha": "87761afc",
       "bytes": 1391967,
@@ -104,6 +99,11 @@
     {
       "sha": "3630da32",
       "bytes": 1282469,
+      "line": 1400000
+    },
+    {
+      "sha": "1e6b55f0",
+      "bytes": 1276638,
       "line": 1400000
     }
   ]
