@@ -66,7 +66,7 @@ export function LatestVisuals() {
       </div>
       <div className="ml-col">
         <Table
-          head={["This morning's build (17 Nov)", "jawad's score"]}
+          head={["17 Nov build", "jawad's score"]}
           rows={[
             ["Overall design", "2 / 10"],
             ["The UI", "The worst part. On a phone it was very pixelly, weird and cluttered. On desktop it was pixelly, the buttons made no sense, and it looked unrefined."],
