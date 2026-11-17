@@ -98,7 +98,7 @@ body:has(.ml) { background: #100c1c; }
 /* Tables */
 .ml-tbl { overflow-x: auto; margin: 16px 0 22px; border: 2px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--ink); background: var(--panel); -webkit-overflow-scrolling: touch; }
 .ml-tbl table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
-.ml-tbl-wide table { min-width: 640px; }
+.ml-tbl-wide table { min-width: 600px; }
 @media (max-width: 640px) { .ml-tbl table { font-size: 13.5px; } .ml-tbl th, .ml-tbl td { padding: 8px 10px; } }
 .ml-tbl th, .ml-tbl td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #2c2350; vertical-align: top; }
 .ml-tbl th { background: var(--panel2); color: var(--amber); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; white-space: nowrap; }
