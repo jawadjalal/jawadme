@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-17T10:42:04Z",
+  "generatedAt": "2026-11-17T11:12:04Z",
   "main": {
-    "sha": "636e7c73",
-    "date": "2026-11-17T10:40:26Z",
-    "subject": "forge: player builds leave the playbot's Autopilot out, and Main.client starts without it (-15.6 KB at join) (#409)"
+    "sha": "a6aab68c",
+    "date": "2026-11-17T11:01:51Z",
+    "subject": "cartridge: the room mix (side chambers become detours), healing springs, and a signpost over every door (#390)"
   },
   "counts": {
-    "mergedPRs": 345,
-    "testFiles": 181,
+    "mergedPRs": 346,
+    "testFiles": 182,
     "engineTestFiles": 12,
     "contentToml": 143,
     "uiModules": 47,
@@ -35,8 +35,8 @@
     "instancesLine": 20500,
     "bytesLine": 1520000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1440320,
-    "joinInstances": 19883
+    "latestBuildBytes": 1451016,
+    "joinInstances": 19885
   },
   "remotes": [
     "Attack",
@@ -56,11 +56,6 @@
     "Snapshot"
   ],
   "joinHistory": [
-    {
-      "sha": "97effd2",
-      "bytes": 1102692,
-      "line": 1230000
-    },
     {
       "sha": "ec9d81fe",
       "bytes": 1171660,
@@ -104,6 +99,11 @@
     {
       "sha": "636e7c73",
       "bytes": 1440320,
+      "line": 1520000
+    },
+    {
+      "sha": "a6aab68c",
+      "bytes": 1451016,
       "line": 1520000
     }
   ]
