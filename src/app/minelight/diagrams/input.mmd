@@ -1,0 +1,16 @@
+sequenceDiagram
+  autonumber
+  participant P as Player
+  participant C as Client (Input, Wield, Fx)
+  participant S as Server (Remotes, Combat, Mine)
+  participant A as All clients
+  P->>C: click (or tap SWING)
+  C->>C: play the swing locally, buffer 8 f
+  C->>S: Attack intent, a flat aim direction
+  S->>S: token bucket per player per remote
+  S->>S: unitXZ: reject NaN, huge or zero vectors
+  S->>S: move phase, range, arc, cooldown checks
+  S->>S: hit: damage, crit x2, hit-stop 4 f or 6 f on a kill
+  S-->>A: Event: hit, number, stagger, ore pop
+  S-->>A: Snapshot (unreliable): positions
+  A->>A: flash, sound, particles, damage number

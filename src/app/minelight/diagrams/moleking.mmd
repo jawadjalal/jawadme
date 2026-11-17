@@ -1,0 +1,23 @@
+stateDiagram-v2
+  direction TB
+  [*] --> Intro: 1.6 s intro, name card, music shifts
+  Intro --> DIG
+  DIG --> CLOD_STORM: party, health falls
+  CLOD_STORM --> CAVE_IN
+  CAVE_IN --> [*]: 60 HP gone
+  DIG --> ENRAGED: lone hero below Gloom I
+  ENRAGED --> [*]
+  note right of DIG
+    strike: 30 f wind-up, 8 stud radius
+    slam: 7 stud radius
+    shockwave: 16 studs/s for 24 studs
+    summons 2 diggers, up to 4
+  end note
+  note right of CAVE_IN
+    a rock near each hero every 0.9 s for 4 s
+    lit plates drop a stalactite that dazes him
+  end note
+  note left of ENRAGED
+    idles 70 to 50 f
+    moves 12 to 16 studs/s
+  end note

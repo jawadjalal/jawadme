@@ -1,0 +1,8 @@
+flowchart TB
+  ore["ORE<br/>44 kinds over 6 layers<br/>rarity: common to 1 in 2,000"] -->|"Smeltery: 5 ore"| bar["BARS<br/>12 kinds, tier 1 to 9"]
+  bar -->|"Forge"| pick["PICKAXE LADDER"]
+  bar -->|"Forge"| armour["Helms · mail · boots · packs"]
+  ore -->|"Jeweller"| charm["Charms: lamp, luck, vitality"]
+  pick --> p1["Wooden · start"] --> p2["Copper · L1"] --> p3["Bronze · L2"] --> p4["Iron · L3"] --> p5["Silver · L5"] --> p6["Gold · L8"] --> p7["Platinum · L12"] --> p8["Obsidian · L16"] --> p9["Mithril · L20"] --> p10["Adamant · L26"] --> p11["Starmetal · L31"]
+  p11 --> rb(["REBIRTH at L30 with a Heartstone<br/>x0.25 yield per rebirth, up to x5"]):::good
+  classDef good fill:#3d300f,stroke:#ffc043,color:#fff3d6

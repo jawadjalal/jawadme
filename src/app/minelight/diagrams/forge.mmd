@@ -1,0 +1,11 @@
+flowchart TB
+  src["Branch: Luau, TOML content, kit models"] --> sm["1 · Rojo sourcemap"]
+  sm --> an["2 · luau-lsp analyze<br/>strict, Roblox definitions"]
+  an --> se["3 · selene lint"]
+  se --> st["4 · stylua --check"]
+  st --> te["5 · Lune unit tests<br/>183 test files, sharded 3 ways in CI"]
+  te --> co["6 · content validators<br/>143 TOML files compiled to typed Luau<br/>every ore feeds a recipe"]
+  co --> as["7 · asset manifest rules"]
+  as --> ok(["PASS: one JSON report, exit 0"]):::good
+  te -.-> jb["perf/JoinBudget: 20,500 join instances,<br/>place bytes under the line"]
+  classDef good fill:#1f3a2a,stroke:#7be0a0,color:#eafff1

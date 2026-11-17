@@ -1,0 +1,18 @@
+stateDiagram-v2
+  direction TB
+  [*] --> lobby
+  lobby --> countdown: a hero steps on the Lift pad
+  countdown --> lobby: everyone steps off
+  countdown --> running: 5 s, the party drops in
+  state running {
+    direction TB
+    idle --> active: a hero walks in, doors lock
+    active --> cleared: last wave down, doors open
+    cleared --> idle: next chamber
+    --
+    up --> downed: last heart
+    downed --> up: a friend revives, 2 s within 4.5 studs
+  }
+  running --> results: banked at the Lift, or the party wiped
+  results --> running: DIVE AGAIN
+  results --> lobby: TOWN

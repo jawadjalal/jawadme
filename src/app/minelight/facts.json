@@ -1,0 +1,57 @@
+{
+  "generatedAt": "2026-11-17T08:30:00Z",
+  "main": {
+    "sha": "87761afc",
+    "date": "2026-11-17T07:25:11Z",
+    "subject": "Heroes: a miner back in town has full hearts, not the 0 a death left (#378)"
+  },
+  "counts": {
+    "mergedPRs": 320,
+    "testFiles": 183,
+    "engineTestFiles": 9,
+    "contentToml": 143,
+    "uiModules": 38,
+    "remotes": 15,
+    "ores": 44,
+    "bars": 12,
+    "classes": 4,
+    "floors": 6,
+    "enemyFiles": 33
+  },
+  "camera": {
+    "fov": 70,
+    "pitch": 30,
+    "yaw": 0,
+    "distance": 16,
+    "focusHeight": 2,
+    "popMargin": 0.6,
+    "popMin": 3,
+    "popOutSmooth": 0.3,
+    "teleport": 30,
+    "focusEase": 0.4,
+    "focusPull": 0.7
+  },
+  "joinBudget": {
+    "instancesLine": 20500,
+    "bytesLine": 1400000,
+    "publishLine": 1230000,
+    "latestBuildBytes": 1391967
+  },
+  "remotes": [
+    "Attack",
+    "Dash",
+    "Bomb",
+    "UseItem",
+    "UseSlot",
+    "CombineSlot",
+    "Pickup",
+    "Ability",
+    "Station",
+    "Wildcard",
+    "FirstDive",
+    "DiveAgain",
+    "ToTown",
+    "Event",
+    "Snapshot"
+  ]
+}
