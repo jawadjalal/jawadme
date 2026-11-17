@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-17T08:42:02Z",
+  "generatedAt": "2026-11-17T09:12:03Z",
   "main": {
-    "sha": "7e8dbd4e",
-    "date": "2026-11-17T08:37:55Z",
-    "subject": "forge: player builds leave the ui's Mock out too, with the test modules (nothing in a game requires it) (#388)"
+    "sha": "9d5cd874",
+    "date": "2026-11-17T09:01:49Z",
+    "subject": "forge sim: a headless balance simulator gated in forge check, with dig and DELVELIGHT adapters (#130)"
   },
   "counts": {
-    "mergedPRs": 329,
-    "testFiles": 172,
+    "mergedPRs": 332,
+    "testFiles": 174,
     "engineTestFiles": 12,
     "contentToml": 143,
     "uiModules": 45,
@@ -35,7 +35,7 @@
     "instancesLine": 20500,
     "bytesLine": 1460000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1390055,
+    "latestBuildBytes": 1391100,
     "joinInstances": 19875
   },
   "remotes": [
@@ -89,6 +89,11 @@
     {
       "sha": "7e8dbd4e",
       "bytes": 1390055,
+      "line": 1460000
+    },
+    {
+      "sha": "9d5cd874",
+      "bytes": 1391100,
       "line": 1460000
     }
   ]
