@@ -374,7 +374,7 @@ export default async function MinelightPage() {
           </div>
           <Diagram name="ui" alt="The UI layers from the world up: nametags, the HUD, announcements, panels, the results card, then toasts and the tutorial card, all styled by shared tokens." caption={<><b>What draws over what.</b></>} />
           <div className="ml-col">
-            <p>A visual judge scores every round of screens on a fixed rubric from in-engine stills, and nothing under 7 out of 10 is shown as finished.</p>
+            <p>Since 17 Nov a UI score counts only when it comes from the locked blind check against the best RPG game interfaces, anchored on jawad's own scores (JAW-156). His scale and scores are under Latest visuals.</p>
           </div>
         </Section>
 
@@ -488,7 +488,7 @@ export default async function MinelightPage() {
               the build boxes, and a stronger model reviews everything before it lands.
             </p>
             <p>
-              Judges close the loop: a playbot that plays from town to the Mole King to the results card, a visual judge that scores in-engine stills on a fixed rubric, and a blind tester that plays from
+              Judges close the loop: a playbot that plays from town to the Mole King to the results card, a locked, blind visual check that scores in-engine stills side by side against real references, and a blind tester that plays from
               screenshots like a first-timer. Every failure they find becomes a guard, a test, a lint rule or a workflow line, so the same mistake can't land twice.
             </p>
           </div>

@@ -203,3 +203,10 @@ body:has(.ml) { background: #100c1c; }
 .ml-lb-line b { display: block; color: var(--cream); font-size: 15px; line-height: 1.35; }
 .ml-lb-line p { margin: 4px 0 0; font-size: 14px; color: var(--muted); line-height: 1.45; }
 .ml-lb-line .m { margin-top: 6px; font-size: 12px; color: var(--dim); display: flex; flex-wrap: wrap; gap: 2px 12px; }
+
+/* jawad's scale (Visuals.tsx). */
+.ml-scale { display: grid; gap: 12px; grid-template-columns: 1fr; margin: 12px 0 4px; max-width: 760px; }
+@media (min-width: 640px) { .ml-scale { grid-template-columns: 1fr 1fr; } }
+.ml-scale > div { background: var(--panel); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink); padding: 12px 16px; }
+.ml-scale b { display: block; font-family: var(--display); font-weight: 600; font-size: 30px; line-height: 1.1; color: var(--amber); }
+.ml-scale span { display: block; color: var(--muted); font-size: 14.5px; line-height: 1.45; margin-top: 4px; }

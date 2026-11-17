@@ -1,0 +1,179 @@
+{
+  "generatedAt": "2026-11-17T16:05:03Z",
+  "items": [
+    {
+      "id": "a9db366a41",
+      "title": "Thumbnail round 4",
+      "time": "08:40",
+      "kind": "ai",
+      "pair": false,
+      "images": [
+        {
+          "src": "/minelight/latest/c054b2c51c62.jpg",
+          "w": 960,
+          "h": 540,
+          "label": null,
+          "alt": "Thumbnail round 4, capsule a vortex"
+        },
+        {
+          "src": "/minelight/latest/467f8b95d9d3.jpg",
+          "w": 960,
+          "h": 540,
+          "label": null,
+          "alt": "Thumbnail round 4, capsule b ore burst"
+        },
+        {
+          "src": "/minelight/latest/865479ecf037.jpg",
+          "w": 960,
+          "h": 540,
+          "label": null,
+          "alt": "Thumbnail round 4, capsule c lantern"
+        }
+      ]
+    },
+    {
+      "id": "0110d0307c",
+      "title": "Town in engine",
+      "time": "07:56",
+      "kind": "engine",
+      "pair": true,
+      "images": [
+        {
+          "src": "/minelight/latest/257bd8f63b14.jpg",
+          "w": 960,
+          "h": 501,
+          "label": "Before · main",
+          "alt": "Town in engine, engine main town"
+        },
+        {
+          "src": "/minelight/latest/d70648d05413.jpg",
+          "w": 960,
+          "h": 583,
+          "label": "After · bright",
+          "alt": "Town in engine, engine bright town"
+        }
+      ]
+    },
+    {
+      "id": "6a82a97167",
+      "title": "Key art v12: the impact reshoot at two angles",
+      "time": "07:42",
+      "kind": "engine-art",
+      "pair": false,
+      "images": [
+        {
+          "src": "/minelight/latest/e5e9d8e9a0f7.jpg",
+          "w": 960,
+          "h": 540,
+          "label": null,
+          "alt": "Key art v12: the impact reshoot at two angles, cap 01 poster"
+        },
+        {
+          "src": "/minelight/latest/17f617e0da38.jpg",
+          "w": 960,
+          "h": 540,
+          "label": null,
+          "alt": "Key art v12: the impact reshoot at two angles, cap 02 poster b"
+        },
+        {
+          "src": "/minelight/latest/c58658a5c725.jpg",
+          "w": 960,
+          "h": 540,
+          "label": null,
+          "alt": "Key art v12: the impact reshoot at two angles, cap 03 king solo"
+        }
+      ]
+    },
+    {
+      "id": "58c48c020d",
+      "title": "Lift cage drop-in, round 4",
+      "time": "05:28",
+      "kind": "engine",
+      "pair": false,
+      "images": [
+        {
+          "src": "/minelight/latest/d09490a65634.jpg",
+          "w": 960,
+          "h": 501,
+          "label": null,
+          "alt": "Lift cage drop-in, round 4, pc after a"
+        },
+        {
+          "src": "/minelight/latest/e43ed84ed7a8.jpg",
+          "w": 960,
+          "h": 501,
+          "label": null,
+          "alt": "Lift cage drop-in, round 4, pc after b"
+        },
+        {
+          "src": "/minelight/latest/01a23e9b56e4.jpg",
+          "w": 960,
+          "h": 501,
+          "label": null,
+          "alt": "Lift cage drop-in, round 4, pc after c"
+        }
+      ]
+    },
+    {
+      "id": "5f8f52e650",
+      "title": "Lune phone renders",
+      "time": "05:20",
+      "kind": "box",
+      "pair": false,
+      "images": [
+        {
+          "src": "/minelight/latest/0621c4596f65.jpg",
+          "w": 960,
+          "h": 443,
+          "label": null,
+          "alt": "Lune phone renders, golden room.phone"
+        },
+        {
+          "src": "/minelight/latest/90db12cfbfc1.jpg",
+          "w": 960,
+          "h": 443,
+          "label": null,
+          "alt": "Lune phone renders, menu gear lamp.phone"
+        },
+        {
+          "src": "/minelight/latest/73f398def60b.jpg",
+          "w": 960,
+          "h": 443,
+          "label": null,
+          "alt": "Lune phone renders, town lamp.phone"
+        }
+      ]
+    },
+    {
+      "id": "1636aab7f0",
+      "title": "Lift cage drop-in, round 3",
+      "time": "04:58",
+      "kind": "engine",
+      "pair": false,
+      "images": [
+        {
+          "src": "/minelight/latest/2cd79bfa8210.jpg",
+          "w": 960,
+          "h": 501,
+          "label": null,
+          "alt": "Lift cage drop-in, round 3, pc landed"
+        },
+        {
+          "src": "/minelight/latest/17adf5dc5282.jpg",
+          "w": 960,
+          "h": 501,
+          "label": null,
+          "alt": "Lift cage drop-in, round 3, pc namecard"
+        },
+        {
+          "src": "/minelight/latest/7df0476c6905.jpg",
+          "w": 960,
+          "h": 501,
+          "label": null,
+          "alt": "Lift cage drop-in, round 3, pc ride t0.12"
+        }
+      ]
+    }
+  ],
+  "calibrated": []
+}
