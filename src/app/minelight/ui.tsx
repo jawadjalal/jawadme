@@ -66,3 +66,26 @@ export function Still({ name, title, note, art = false, eager = false }: { name:
     </figure>
   );
 }
+
+// A captured frame at its own size: a Studio look study, or a game capture whose shape isn't 16:9.
+export function Shot({ name, w, h, title, note, kind, eager = false }: { name: string; w: number; h: number; title: string; note: string; kind: string; eager?: boolean }) {
+  return (
+    <figure className="ml-shot">
+      <img
+        src={"/minelight/img/" + name + "-1280.jpg"}
+        srcSet={"/minelight/img/" + name + "-640.jpg 640w, /minelight/img/" + name + "-1280.jpg 1280w"}
+        sizes="(min-width: 760px) 520px, 100vw"
+        width={w}
+        height={h}
+        alt={title + " (" + kind.toLowerCase() + ")"}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+      />
+      <figcaption>
+        <b>{title}</b>
+        <span className="ml-badge">{kind}</span>
+        {note}
+      </figcaption>
+    </figure>
+  );
+}

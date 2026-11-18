@@ -4,7 +4,7 @@ import facts from "./facts.json";
 import { Feed, FeedMeta, LatestShipped, getFeed } from "./Feed";
 import { LaunchBoard, getLaunch } from "./Launch";
 import { CameraRig, JOIN_SEED, JoinBudget, type Point, SwingFrames } from "./figures";
-import { Diagram, Still, Table } from "./ui";
+import { Diagram, Shot, Still, Table } from "./ui";
 import { LatestVisuals } from "./Visuals";
 import "./minelight.css";
 
@@ -12,23 +12,26 @@ import "./minelight.css";
 // without a redeploy. Everything else on the page is static.
 export const revalidate = 180;
 
-const TITLE = "Mine for Light, explained: the game from the loop down to the toolchain";
+const TITLE = "Derelict Depths: the game from the loop down to the toolchain";
 const DESCRIPTION =
-  "How Mine for Light works, a co-op action mining game for Roblox: the loop, floors, bestiary, camera, cel look, UI, audio, the server-authoritative architecture and the agent crew that builds it, with a live feed of what shipped.";
+  "Derelict Depths, a co-op action mining crawler for Roblox: the dive, the town, classes and talents, loot, the pixel-splat look, the camera, audio, the server-authoritative architecture and the agent crew that builds it, with a live feed of what shipped.";
+const OG_ALT = "Derelict Depths key art: an in-engine capture of a miner in the Golden Room";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/minelight" },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: "/minelight", type: "article", images: [{ url: "/minelight/img/og.jpg", width: 1200, height: 630, alt: "Mine for Light key art: an in-engine capture of a miner and the Mole King" }] },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: "/minelight", type: "article", images: [{ url: "/minelight/img/og.jpg", width: 1200, height: 630, alt: OG_ALT }] },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: ["/minelight/img/og.jpg"] },
 };
 
 const SECTIONS: [string, string][] = [
+  ["today", "The game today"],
+  ["look", "The look"],
+  ["captures", "Captures"],
+  ["shipped-now", "Just shipped"],
   ["launch", "Launch board"],
   ["visuals", "Latest visuals"],
-  ["shipped-now", "Just shipped"],
-  ["what", "What it is"],
   ["loop", "The core loop"],
   ["dive", "A dive, server side"],
   ["world", "Floors and Gloom"],
@@ -36,14 +39,12 @@ const SECTIONS: [string, string][] = [
   ["progression", "Progression"],
   ["feel", "Combat feel in frames"],
   ["camera", "Camera and controls"],
-  ["look", "The look pipeline"],
   ["ui", "UI"],
   ["audio", "Audio"],
   ["architecture", "Server-authoritative architecture"],
   ["forge", "The forge toolchain"],
   ["trains", "CI and merge trains"],
   ["crew", "How the agent crew builds it"],
-  ["stills", "In-engine stills"],
   ["shipped", "Everything that shipped"],
 ];
 
@@ -59,6 +60,79 @@ function Section({ id, eyebrow, title, children }: { id: string; eyebrow: string
     </section>
   );
 }
+
+const SYSTEMS: { name: string; body: string; code: string }[] = [
+  {
+    name: "The dive",
+    body: "The Lift lowers a cage down a shaft onto the landing spot, then a layer plays out of chambers: clear one and its doors unlock, so a dive is a chain of rooms ending in the floor's guardian.",
+    code: "Descent.luau · Run.luau · Chambers.luau",
+  },
+  {
+    name: "The town",
+    body: "A hub with the Lift in the middle, the Smeltery, the forge, NPC stalls, a crew board, the Hall of Delvers and the Vigil fire. It is where every dive starts and every haul gets settled.",
+    code: "TownPlan.luau · Meta/Renown.luau · Meta/Vigil.luau",
+  },
+  {
+    name: "Classes",
+    body: "Four of them, each with an ability and an ult: the Miner, the Demolitionist, the Prospector and the Alchemist. Each unlocks by banking a few bars and reaching a depth, so a new class is a reason for another dive.",
+    code: "Meta/Progress.luau · content/meta/classes",
+  },
+  {
+    name: "Talents",
+    body: "One skill point a level in a shared Mining tree plus a constellation tree for each class. A node opens when any one of its prerequisites is learned, the root is free, and the top of every class tree holds a party perk.",
+    code: "Meta/Trees.luau",
+  },
+  {
+    name: "Characters",
+    body: "Several characters on one account. One is the main you push furthest; the others share the account's bonuses and can be swapped in town, so a second character is a build, not a restart.",
+    code: "Meta/Roster.luau · Swap.luau",
+  },
+  {
+    name: "Loot on one card",
+    body: "Every get speaks the same card language: a big icon, a short name, a rarity colour and one plain line that never holds a number. Relics, consumables and set pieces all read the same way.",
+    code: "Items.luau · ItemRules.luau · ItemsCards.luau",
+  },
+  {
+    name: "The reward room",
+    body: "A chest per ore tier, from a free Wood chest up to Heartstone. The run's grade decides which ones open, each shows what is inside before you spend on it, so the room is a choice and a coin sink.",
+    code: "Chests.luau · RunScore.luau",
+  },
+  {
+    name: "Detours and puzzles",
+    body: "Side chambers off the main line: spring rooms that launch you across, obby rooms, and puzzle rooms where you light four miners' lanterns in the order a chalk board shows, with a vault at the end.",
+    code: "Detours.luau · Puzzle.luau · RoomMix.luau",
+  },
+  {
+    name: "Gloom and the Surge",
+    body: "Gloom is a floor's difficulty, 0 to V. Each level keeps every modifier below it, adds one named modifier and pays more. On a clock, a Gloom Surge rolls through and lifts everything for a while.",
+    code: "Gloom.luau · Surge.luau",
+  },
+  {
+    name: "Parties and crews",
+    body: "A party of up to four, with invites that time out and join asks posted on the town's crew board. Crews live across servers: finishing the three daily crew tasks earns crew points for everyone in it.",
+    code: "Party.luau · Meta/Crews.luau · CrewBoard.luau",
+  },
+  {
+    name: "Trading",
+    body: "Two players open one window, put up coins, bank items and a note, both lock and both confirm. After a short countdown the save settles it, so a trade is never one side's claim.",
+    code: "Trade.luau · server/Trades.luau",
+  },
+  {
+    name: "The Daily Mine",
+    body: "One try a day on a build the whole server shares, so the day's board means something. The gate checks the try and the Lift are free before it asks the Run to start.",
+    code: "Meta/DailyGate.luau · Meta/Board.luau",
+  },
+  {
+    name: "The first thirty minutes",
+    body: "The opening is scripted to the second: what a brand-new player meets and when. A guard fails the build when a scripted beat lands late, so the pacing cannot drift.",
+    code: "FirstThirty.luau · FirstThirtyBeats.luau",
+  },
+  {
+    name: "The Vigil fire",
+    body: "Sit at Lantern Square's campfire, or just be away, and the lantern fills. A full lantern is three dives at plus a quarter luck, a third of it spent at each dive's start.",
+    code: "Meta/Vigil.luau",
+  },
+];
 
 export default async function MinelightPage() {
   const [feed, launch] = await Promise.all([getFeed(), getLaunch()]);
@@ -78,17 +152,18 @@ export default async function MinelightPage() {
         <header className="ml-hero">
           <div>
             <h1 className="ml-wordmark">
-              <span>Mine for</span> <span className="lt">Light</span>
+              <span>Derelict</span> <span className="lt">Depths</span>
             </h1>
-            <p className="ml-kicker">A co-op action mining game for Roblox</p>
+            <p className="ml-kicker">A co-op action mining crawler for Roblox</p>
             <p className="ml-lede">Dig deep with your friends. Smash monsters, crack glowing ore, beat the boss, forge better gear.</p>
             <p className="ml-sub">
-              This page is the whole game on one sheet: the loop a player feels, the numbers under it, and the machine that builds it.
-              It is drawn from the game repo's main branch and the team's design docs. Its shipped feed updates every 3 minutes, and its latest visuals every hour.
+              This page is the game as it stands today, and the machine that builds it: the dive a player feels, the systems under it, the look being
+              built, and the numbers behind all of it. It is drawn from the game repo&apos;s main branch and the team&apos;s design docs. Its shipped feed
+              updates every 3 minutes, and its latest visuals every hour.
             </p>
           </div>
           <figure className="ml-poster">
-            <img src="/minelight/img/poster-1280.jpg" srcSet="/minelight/img/poster-640.jpg 640w, /minelight/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="A miner in a white space suit raises a pickaxe in front of the purple Mole King" />
+            <img src="/minelight/img/poster-1280.jpg" srcSet="/minelight/img/poster-640.jpg 640w, /minelight/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="A miner raises a pickaxe in the Golden Room in front of the Mole King" />
             <figcaption><span className="ml-badge art">In-engine + key art</span>A real in-engine capture of the Golden Room, graded, with rays and the title added.</figcaption>
           </figure>
         </header>
@@ -97,10 +172,10 @@ export default async function MinelightPage() {
           <div className="ml-stat"><b>{n(c.mergedPRs)}+</b><span>pull requests merged into main</span></div>
           <div className="ml-stat"><b>{c.testFiles} + {c.engineTestFiles}</b><span>Lune test files, plus in-engine test files</span></div>
           <div className="ml-stat"><b>{c.remotes}</b><span>remotes: the only doors from a client to the server</span></div>
-          <div className="ml-stat"><b>{c.floors} floors</b><span>2 playable today, 4 more greyboxed</span></div>
-          <div className="ml-stat"><b>{c.ores} ores</b><span>{c.bars} bars, 11 pickaxe tiers</span></div>
+          <div className="ml-stat"><b>2 floors</b><span>Topsoil Tunnels and Iron Halls are the release; {c.floors - 2} more are greyboxed</span></div>
+          <div className="ml-stat"><b>{c.ores} ores</b><span>{c.bars} bars, and a pickaxe ladder above them</span></div>
           <div className="ml-stat"><b>{c.classes} classes</b><span>Miner, Demolitionist, Prospector, Alchemist</span></div>
-          <div className="ml-stat"><b>{cam.pitch}° · {cam.distance} studs</b><span>the forge camera: fixed yaw, no camera input</span></div>
+          <div className="ml-stat"><b>R6 hero</b><span>your own Roblox avatar, over a shoulder camera</span></div>
           <div className="ml-stat"><b>{(jb.latestBuildBytes / 1e6).toFixed(2)} MB</b><span>the place a phone downloads to join (line {(jb.bytesLine / 1e6).toFixed(2)} MB)</span></div>
         </div>
 
@@ -108,12 +183,101 @@ export default async function MinelightPage() {
           <ol>{SECTIONS.map(([id, label]) => <li key={id}><a href={"#" + id}>{label}</a></li>)}</ol>
         </nav>
 
-        <Section id="launch" eyebrow="Live · today" title="Launch board">
-          <LaunchBoard launch={launch} renderedAt={renderedAt} />
+        <Section id="today" eyebrow="Today · 18 Nov" title="The game today">
+          <div className="ml-col">
+            <p>
+              Derelict Depths is a co-op action mining crawler. Up to four friends drop into a mine as their own Roblox avatars. They swing, dig, dodge,
+              crack glowing ore and fight down to each floor&apos;s guardian, then go back to town to forge gear, trade, fill the Vigil fire and dive deeper.
+              A dive takes minutes, so a phone player at a bus stop can finish one and a group of friends can do three in a session.
+            </p>
+            <p>
+              The release is floors one and two, <strong>Topsoil Tunnels</strong> and <strong>Iron Halls</strong>, finished end to end: the first thirty
+              minutes, the tutorial, both guardians, the forge and the town around them. Everything below is on the game repo&apos;s main branch today, and
+              each card names the modules that hold it.
+            </p>
+          </div>
+          <div className="ml-sys">
+            {SYSTEMS.map((s) => (
+              <div className="ml-card" key={s.name}>
+                <h4>{s.name}</h4>
+                <p>{s.body}</p>
+                <small>{s.code}</small>
+              </div>
+            ))}
+          </div>
+          <div className="ml-col">
+            <h3 className="ml-h3">What a player meets, in order</h3>
+            <p>
+              The title hands the camera straight to the game. The Elder&apos;s card teaches one thing at a time (move, swing, fight, mine), the first dive
+              cannot kill a brand-new player, and the first guardian falls in the first sitting. Everything after that is choice: which class to open, which
+              chest to spend on, how deep to push before banking.
+            </p>
+          </div>
+          <Table
+            head={["Part of the game", "Where it lives"]}
+            rows={[
+              ["The dive", "A cage descent, chambers with locked doors, detour rooms, a miniboss, then the floor's guardian"],
+              ["The town", "Lift, Smeltery, forge, NPC stalls, crew board, Hall of Delvers, the Vigil fire"],
+              ["Your character", "Class, talents, level, gear, and several characters on one account"],
+              ["What you bring back", "Ore and bars, coins, relic cards, chest picks, crew points"],
+              ["Who you bring", "A party of up to four, crews across servers, trades that both sides confirm"],
+              ["How hard it is", "Gloom 0 to V per floor, and a Gloom Surge on a clock"],
+            ]}
+          />
         </Section>
 
-        <Section id="visuals" eyebrow="Live · hourly" title="Latest visuals">
-          <LatestVisuals />
+        <Section id="look" eyebrow="The look" title="Painted 3D, hard pixels">
+          <div className="ml-col">
+            <p>
+              The look being built is painted 3D with hard pixels on top: block-built rooms with ink edges and a coarse pixel grain, and characters and
+              monsters that keep their pixels at any distance. The second half is the hard part, because Roblox only keeps pixels hard on some surfaces,
+              so the crew measured which ones before drawing anything.
+            </p>
+            <ul className="ml-list">
+              <li><strong>Hard pixels need the right surface.</strong> An <code>ImageLabel</code> on a SurfaceGui or a BillboardGui keeps a 16-pixel sprite crisp at any size with <code>ResampleMode = Pixelated</code>. A SurfaceAppearance, a Decal or a Texture is filtered bilinearly whatever the setting says, so those get drawn small and upscaled nearest-neighbour before upload (the crew&apos;s 8× rule).</li>
+              <li><strong>Monsters and heroes are 16-direction sprites.</strong> 16 angles from the front round to the back, so a monster turns like a painted model rather than sliding a flat card. Idle runs at 6 frames a second, an attack at 12, and a redraw costs about 3 ms.</li>
+              <li><strong>One billboard, one creature.</strong> A guardian&apos;s sprite is a 12 × 15 stud billboard, and it measures brighter and more colourful than a texture-mapped mesh of the same monster, which is what makes it read on a phone.</li>
+              <li><strong>The cel base underneath.</strong> One workspace attribute switches the cel look on: palettes from each floor&apos;s style kit bake lit, mid and shadow tones, every visible body gets an ink shell and a light band, and a pixel filter swaps the cel masks for a coarse grained version. The UI is never filtered.</li>
+            </ul>
+          </div>
+          <div className="ml-pair">
+            <Shot name="look-king-front" w={1583} h={1080} kind="Look study" title="The guardian, two ways" note="Left: the textured mesh. Right: the same monster as a sprite billboard. Photographed in Studio on a bare floor, not in the game." />
+            <Shot name="look-king-slash" w={1583} h={1080} kind="Look study" title="A sprite mid-slash" note="One frame of the slash, drawn once. Idle is 6 frames a second and the slash 12." />
+          </div>
+          <div className="ml-pair">
+            <Shot name="look-pixels-label" w={1354} h={1080} kind="Look study" title="Pixels that stay hard" note="The same 16-pixel image twice: the left one keeps its pixels on an ImageLabel, the right one is blurred by the default filter." />
+            <Shot name="look-pixels-mesh" w={1354} h={1080} kind="Look study" title="Pixels a mesh blurs" note="On a mesh surface the same setting changes nothing: both halves blur, which is why those textures are upscaled before upload." />
+          </div>
+          <div className="ml-col">
+            <p>
+              These four are Studio studies from 18 Nov, on a scratch floor rather than the game place, which is where a look is proved before it ships.
+              The rooms below are the game itself.
+            </p>
+          </div>
+        </Section>
+
+        <Section id="captures" eyebrow="Captures" title="The game, in its own screens">
+          <div className="ml-col">
+            <p>
+              Captured in Studio play from the game place on build <code>47ba0d7</code> (17 Nov, 08:55), with the game camera and the HUD on. The hero is a
+              real Roblox avatar. The interface and the look have moved on since; these are the frames that exist, shown as they were taken.
+            </p>
+          </div>
+          <div className="ml-stills">
+            <Still name="town" title="The town" note="The Lift in the middle, the stations and their keepers around it." eager />
+            <Still name="dive" title="The dive" note="The cage ride down the shaft onto the landing spot." />
+            <Still name="ore-room" title="A Topsoil ore room" note="Lit tops, mid sides, ink edges, the ability arc bottom right." />
+            <Still name="fight" title="A fight" note="The swing, the tell and the number, on the same frame." />
+            <Still name="dodge" title="A dodge" note="Movement values are locked by a test." />
+            <Still name="loot" title="Loot" note="Drops scatter from broken ore and fallen enemies." />
+            <Still name="mole-king" title="The Mole King" note="The boss bar names the phase." />
+            <Still name="mole-king-2" title="The Mole King, phase two" note="The guardian at full size under the game camera." />
+            <Still name="results" title="The results card" note="Depth, kills, time, best combo and XP, then DIVE AGAIN or TOWN." />
+            <Still name="flip-reveal" title="A rarity reveal" note="The card flips for the rare gets; rarity colours match the loot beams." />
+            <Still name="forge" title="The forge" note="The timing strike: the beat is timed on the server." />
+            <Still name="smeltery" title="The Smeltery" note="Ore becomes bars, five to one." />
+            <Still name="gear" title="Gear" note="What you are wearing, on the same card language as everything else." />
+          </div>
         </Section>
 
         <Section id="shipped-now" eyebrow="Live" title="Just shipped">
@@ -130,29 +294,19 @@ export default async function MinelightPage() {
           </div>
         </Section>
 
-        <Section id="what" eyebrow="01 · The pitch" title="What Mine for Light is">
-          <div className="ml-col">
-            <p>
-              Mine for Light is a co-op action mining crawler. Up to four friends drop into a mine as their own Roblox avatars. They swing, dig, dodge, crack glowing ore and fight to a boss, then
-              go back to town, forge better gear and dive deeper. A dive takes minutes, so a phone player at a bus stop can finish one and a group of friends can do three in a session.
-            </p>
-            <p>
-              Other mining games are about the grind. Mine for Light is a boss raid in a mine with your friends: short, loud dives that end in a fight. Four rules decide what gets built.
-            </p>
-          </div>
-          <div className="ml-grid two">
-            <div className="ml-card"><h4>Friends first</h4><p>Good solo, built for 2 to 4. Rooms and bosses scale with the party, revives are free and take 2 seconds, and everyone sees the loot beams.</p></div>
-            <div className="ml-card"><h4>Every hit feels amazing</h4><p>The swing is the product: flash, hit-stop, layered sound, particles and a number on the same frame. Movement values are locked by a test.</p></div>
-            <div className="ml-card"><h4>Bright, readable, gorgeous</h4><p>Most players are on phones, so the look reads at thumb size: three flat tones, black ink, a faint pixel grain and nothing muddy.</p></div>
-            <div className="ml-card"><h4>Always a next thing</h4><p>Every dive ends with something: ore for the forge, XP for a skill point, a key to the next floor. Nothing sells power.</p></div>
-          </div>
+        <Section id="launch" eyebrow="Live · today" title="Launch board">
+          <LaunchBoard launch={launch} renderedAt={renderedAt} />
         </Section>
 
-        <Section id="loop" eyebrow="02 · The player's view" title="The core loop">
+        <Section id="visuals" eyebrow="Live · hourly" title="Latest visuals">
+          <LatestVisuals />
+        </Section>
+
+        <Section id="loop" eyebrow="01 · The player's view" title="The core loop">
           <div className="ml-col">
             <p>
-              Town, dive, mine, fight, the King, bank, smelt, forge, dive again. The banking step is the one real decision in it: ore only counts once it is banked at a Lift station, and a wipe
-              keeps your gear but loses whatever wasn't banked, so every room deeper is a bet.
+              Town, dive, mine, fight, the guardian, bank, smelt, forge, dive again. The banking step is the one real decision in it: ore only counts once
+              it is banked at a Lift station, and a wipe keeps your gear but loses whatever wasn&apos;t banked, so every room deeper is a bet.
             </p>
           </div>
           <Diagram name="loop" alt="Flowchart of the core loop: town, the Lift pad, dropping in, clearing chambers while mining and fighting, the miniboss, the guardian, banking at the Lift station, the results card, then the Smeltery, the forge and back to town." caption={<><b>The core loop.</b> Dashed: the wipe path.</>} />
@@ -162,12 +316,13 @@ export default async function MinelightPage() {
           <Diagram name="loops" alt="Five nested loops: the swing in about a second, the fight in 20 to 40 seconds, the dive in 5 to 8 minutes, the session in 15 to 30 minutes, and the return over days and weeks." caption={<><b>Five loops, from one swing to one month.</b></>} />
         </Section>
 
-        <Section id="dive" eyebrow="03 · Run state" title="A dive, as the server sees it">
+        <Section id="dive" eyebrow="02 · Run state" title="A dive, as the server sees it">
           <div className="ml-col">
             <p>
-              A dive is one expedition, owned by the server's <code>Run</code> service. The run moves through <code>lobby</code>, <code>countdown</code>, <code>running</code> and <code>results</code>, and publishes
-              its state as workspace attributes (<code>RunState</code>, <code>BossPhase</code>) that every client reads. Inside a run, each chamber is <code>idle</code> until a hero walks in, <code>active</code> with its
-              doors locked until the last wave falls, then <code>cleared</code>.
+              A dive is one expedition, owned by the server&apos;s <code>Run</code> service. The run moves through <code>lobby</code>, <code>countdown</code>,{" "}
+              <code>running</code> and <code>results</code>, and publishes its state as workspace attributes (<code>RunState</code>, <code>BossPhase</code>) that
+              every client reads. Inside a run, each chamber is <code>idle</code> until a hero walks in, <code>active</code> with its doors locked until the
+              last wave falls, then <code>cleared</code>.
             </p>
           </div>
           <Diagram name="run-state" alt="State diagram: lobby to countdown when a hero steps on the Lift pad, to running after 5 seconds, to results after banking or a wipe; inside running, chambers go idle, active, cleared, and heroes go up, downed and revived." caption={<><b>Run.state on the server.</b> One expedition per server for now.</>} />
@@ -184,18 +339,19 @@ export default async function MinelightPage() {
           />
         </Section>
 
-        <Section id="world" eyebrow="04 · The world" title="Floors and Gloom">
+        <Section id="world" eyebrow="03 · The world" title="Floors and Gloom">
           <div className="ml-col">
             <p>
-              Six floors sit under a surface town. Each floor has to earn its place with one new idea, a new enemy behaviour, a hazard or a new use for the lamp, and its own palette inside the
-              shared style kit. The deeper you go the stranger it gets, but never muddier: even the Core glows rather than going dark.
+              Six floors sit under a surface town, and eight layers of rock in total. Topsoil Tunnels and Iron Halls are the ones the release ships. Each
+              floor has to earn its place with one new idea, a new enemy behaviour, a hazard or a new use for the lamp, and its own palette inside the shared
+              style kit. The deeper you go the stranger it gets, but never muddier: even the Core glows rather than going dark.
             </p>
           </div>
           <div className="ml-grid two" style={{ alignItems: "start" }}>
             <Diagram name="floors" alt="The six floors in order under the town: Topsoil and Iron Halls playable, Crystal Grotto shut, Fungal Depths, Magma Forge and The Core greyboxed." caption={<><b>The floors today.</b></>} />
             <div>
               <h3 className="ml-h3" style={{ marginTop: 0 }}>Gloom: difficulty per floor</h3>
-              <p>Each floor has Gloom levels 0 to V. Beating the floor's guardian at your highest Gloom unlocks the next. All the extra danger arrives at Gloom I; after that each level changes how the dive plays, and the reward keeps climbing.</p>
+              <p>Each floor has Gloom levels 0 to V. Beating the floor&apos;s guardian at your highest Gloom unlocks the next. All the extra danger arrives at Gloom I; after that each level changes how the dive plays, and the reward keeps climbing.</p>
               <Table
                 head={["Gloom", "Adds", "Yield, XP"]}
                 rows={[
@@ -211,11 +367,12 @@ export default async function MinelightPage() {
           </div>
         </Section>
 
-        <Section id="bestiary" eyebrow="05 · Enemies" title="Bestiary and minibosses">
+        <Section id="bestiary" eyebrow="04 · Enemies" title="Bestiary and minibosses">
           <div className="ml-col">
             <p>
-              Enemies are built from a few shared behaviours, each with a tell, an attack and a recovery window. A new enemy is mostly data (its look, its numbers, which behaviour), so the bestiary grows
-              fast and players learn a small set of tells that keeps paying off. Every enemy file opens with the line a kid would say about it.
+              Enemies are built from a few shared behaviours, each with a tell, an attack and a recovery window. A new enemy is mostly data (its look, its
+              numbers, which behaviour), so the bestiary grows fast and players learn a small set of tells that keeps paying off. Every enemy file opens
+              with the line a kid would say about it.
             </p>
           </div>
           <Diagram name="roles" alt="Each enemy role and the answer it asks for: chargers, exploders, buffers, shields, ranged enemies and burrowers." caption={<><b>Roles and their answers.</b></>} />
@@ -240,32 +397,34 @@ export default async function MinelightPage() {
           <div className="ml-grid two">
             <div className="ml-card">
               <h4>Thornmaw, The Old Bulb</h4>
-              <p>Topsoil's miniboss. 30 HP, a ranged plant with a 42-frame tell. Break its bark, then hit the bulb, and stay out of the circles and the thorn lines.</p>
+              <p>Topsoil&apos;s miniboss. 30 HP, a ranged plant with a 42-frame tell. Break its bark, then hit the bulb, and stay out of the circles and the thorn lines.</p>
             </div>
             <div className="ml-card">
               <h4>Rattletrap, The Runaway Cart</h4>
-              <p>Iron Halls' miniboss. 34 HP, a charger with a 45-frame tell. Jump out of its lane twice, then kick its kegs back at it.</p>
+              <p>Iron Halls&apos; miniboss. 34 HP, a charger with a 45-frame tell. Jump out of its lane twice, then kick its kegs back at it.</p>
             </div>
           </div>
           <div className="ml-col">
             <p>
-              A miniboss is a short, loud spike of 20 to 40 seconds in the middle of a dive: an intro card, a health bar at the top of the screen, a two-step pattern and a guaranteed loot beam. Its health
-              scales with the party, and the beam drops one reward per player. Each floor's miniboss teaches the move its guardian will test.
+              A miniboss is a short, loud spike of 20 to 40 seconds in the middle of a dive: an intro card, a health bar at the top of the screen, a two-step
+              pattern and a guaranteed loot beam. Its health scales with the party, and the beam drops one reward per player. Each floor&apos;s miniboss
+              teaches the move its guardian will test.
             </p>
             <h3 className="ml-h3">The Mole King</h3>
             <p>
-              Topsoil's guardian has 60 HP and a stagger bar of 12 hits. A party fights three named phases; a lone hero below Gloom I gets a shorter two-phase fight, so the boss is beatable solo
-              without being trivial in a group.
+              Topsoil&apos;s guardian has 60 HP and a stagger bar of 12 hits. A party fights three named phases; a lone hero below Gloom I gets a shorter
+              two-phase fight, so the boss is beatable solo without being trivial in a group.
             </p>
           </div>
           <Diagram name="moleking" alt="The Mole King's phases: intro, DIG, CLOD STORM and CAVE-IN for a party, or DIG then ENRAGED for a lone hero, with the numbers of each attack." caption={<><b>The Mole King's fight.</b> The Rust Golem (75 HP, Iron Halls) runs SLAM, ROCKET FIST, OVERHEAT.</>} />
         </Section>
 
-        <Section id="progression" eyebrow="06 · Getting stronger" title="Progression">
+        <Section id="progression" eyebrow="05 · Getting stronger" title="Progression">
           <div className="ml-col">
             <p>
-              Ore becomes bars at the Smeltery (five ore to one bar), bars become gear at the forge, and gems become charms at the jeweller. The pickaxe ladder is the spine: each tier breaks harder rock,
-              which opens rarer ore, which pays for the next tier. Every ore must feed at least one recipe, and a content test enforces it.
+              Ore becomes bars at the Smeltery (five ore to one bar), bars become gear at the forge, and gems become charms at the jeweller. The pickaxe ladder
+              is the spine: each tier breaks harder rock, which opens rarer ore, which pays for the next tier. Every ore must feed at least one recipe, and a
+              content test enforces it.
             </p>
           </div>
           <Diagram name="progression" alt="Ore to bars to gear: the pickaxe ladder from wooden to starmetal with the level each needs, and rebirth at level 30." caption={<><b>Ore to gear.</b> Level gates from the recipes on main.</>} />
@@ -280,22 +439,29 @@ export default async function MinelightPage() {
           />
           <div className="ml-grid three">
             <div className="ml-card"><h4>Levels</h4><p>Cap 50. Each level needs 80 × L<sup>1.45</sup> XP: 8,099 in total for level 10, 130,288 for 30, 463,101 for 50.</p></div>
-            <div className="ml-card"><h4>Skill points</h4><p>One per level, two at levels 10 and 25, spent in a shared mining tree and one tree per class.</p></div>
+            <div className="ml-card"><h4>Skill points</h4><p>One per level, two at levels 10 and 25, spent in a shared mining tree and one constellation tree per class. A node needs any one of its prerequisites; the root is free.</p></div>
             <div className="ml-card"><h4>Rebirth</h4><p>From level 30 with a Heartstone. It resets gear and the bank, keeps classes and cosmetics, and adds x0.25 yield each time, up to x5.</p></div>
+          </div>
+          <div className="ml-col">
+            <p>
+              Several characters can live on one account. One is the main you push furthest; the others keep their own class, gear and level while sharing the
+              account&apos;s bonuses, so trying a second build never means throwing the first away. Nothing is bound to the character that forged it either: the
+              town&apos;s vault moves gear between them, and class and level decide who can wear it.
+            </p>
           </div>
         </Section>
 
-        <Section id="feel" eyebrow="07 · Game feel" title="Combat feel in frames">
+        <Section id="feel" eyebrow="06 · Game feel" title="Combat feel in frames">
           <div className="ml-col">
             <p>
-              The game counts in frames at 60 a second. Three numbers do most of the work: <strong>hit-stop</strong> freezes the game 4 frames on a hit and 6 on a kill (long enough to feel, short enough not
-              to read as lag), an <strong>8-frame input buffer</strong> means a press 133 ms early still counts, and a <strong>perfect dodge</strong> in the first 10 frames of an enemy's hit makes your next hit
-              a x2 crit, which turns defence into offence.
+              The game counts in frames at 60 a second. Three numbers do most of the work: <strong>hit-stop</strong> freezes the game 4 frames on a hit and 6 on
+              a kill (long enough to feel, short enough not to read as lag), an <strong>8-frame input buffer</strong> means a press 133 ms early still counts,
+              and a <strong>perfect dodge</strong> in the first 10 frames of an enemy&apos;s hit makes your next hit a x2 crit, which turns defence into offence.
             </p>
           </div>
           <figure className="ml-fig ml-wide">
             <div className="ml-fig-body"><div className="ml-svg-box"><SwingFrames /></div></div>
-            <figcaption><span><b>The Miner's moves.</b> Every ult winds up exactly 39 frames, so its sound lands on the beat.</span></figcaption>
+            <figcaption><span><b>The Miner&apos;s moves.</b> Every ult winds up exactly 39 frames, so its sound lands on the beat.</span></figcaption>
           </figure>
           <Table
             head={["Feel value", "Number"]}
@@ -313,17 +479,18 @@ export default async function MinelightPage() {
           />
         </Section>
 
-        <Section id="camera" eyebrow="08 · Camera and controls" title="The forge camera">
+        <Section id="camera" eyebrow="07 · Camera and controls" title="The camera, and one click">
           <div className="ml-col">
             <p>
-              The camera sits behind and above the hero at a held angle and follows on its own. There is no camera input at all: no right-drag, no zoom, no rotate key, so a trackpad or a thumb is enough.
-              Its yaw is fixed at {cam.yaw}°, the eye due south of the hero, so the keys stay world-steady (W is always up the screen) and held strafes go straight. Rock, walls and a shut door between the
-              eye and the hero fade instead of hiding them.
+              The camera follows on its own from over the hero&apos;s right shoulder, so the view is cinematic and the keys stay world-steady: no right-drag,
+              no zoom, no rotate key, which means a trackpad or a thumb is enough. The hero is an R6 rig wearing the player&apos;s own avatar, and the camera
+              keeps its distance rather than pulling in, because rock between the eye and the hero fades instead of hiding them. The earlier forge-style
+              follow (a held yaw, {cam.pitch}° down, {cam.distance} studs back) is still in the build as a setting.
             </p>
           </div>
           <figure className="ml-fig ml-wide">
             <div className="ml-fig-body"><div className="ml-svg-box"><CameraRig cam={cam} /></div></div>
-            <figcaption><span><b>View.FORGE on main.</b> The classic room camera (FOV 20°, 60° down, 96 studs) stays as a setting.</span></figcaption>
+            <figcaption><span><b>View.FORGE on main.</b> The held follow the shoulder style was built from, still selectable.</span></figcaption>
           </figure>
           <Table
             head={["Key in View.FORGE", "Value", "What it does"]}
@@ -341,63 +508,55 @@ export default async function MinelightPage() {
           />
           <h3 className="ml-h3">Controls</h3>
           <div className="ml-grid three">
-            <div className="ml-card"><h4>PC</h4><p>WASD to move, <strong>click to swing</strong>, Space to dash, E for a bomb, F for the ability, R for the ult, 1 to 3 for the hotbar.</p></div>
-            <div className="ml-card"><h4>Phone</h4><p>A thumbstick and one big SWING button, with the dash, bomb, ability and ult on an arc around it.</p></div>
-            <div className="ml-card"><h4>Click to swing</h4><p>The client plays the swing at once and sends an intent; the server decides what it hit. A hit is never the client's claim.</p></div>
+            <div className="ml-card"><h4>PC</h4><p>WASD to move, <strong>click to swing</strong>, Space to dash, E for a bomb, F for the ability, R for the ult, 1 to 9 for the hotbar.</p></div>
+            <div className="ml-card"><h4>Phone</h4><p>A thumbstick and one big SWING button, with the dash, bomb, ability and ult on an arc around it. The hotbar sits along the bottom and takes a tap.</p></div>
+            <div className="ml-card"><h4>Click to swing</h4><p>The client plays the swing at once and sends an intent; the server decides what it hit. A hit is never the client&apos;s claim.</p></div>
           </div>
           <Diagram name="input" alt="Sequence diagram of one swing: the player clicks, the client plays the swing and sends an Attack intent, the server rate-limits and validates it, resolves the hit and broadcasts it, and every client plays the flash, sound and number." caption={<><b>One click, end to end.</b></>} />
         </Section>
 
-        <Section id="look" eyebrow="09 · Rendering" title="The look pipeline">
+        <Section id="ui" eyebrow="08 · Interface" title="UI">
           <div className="ml-col">
             <p>
-              Roblox has no full-screen post-processing shader, so the cel look is built into the assets and a few client scripts. One workspace attribute, <code>Look3D</code>, switches the whole look on, and it
-              ships on by default.
+              The interface is {c.uiModules} client modules on one design system: tokens for the palette, a pixel grid, type and motion, and a lint that refuses
+              hand-written tweens so every screen opens, closes and presses the same way. The style is RPG: framed panels, rarity colours that match the
+              world&apos;s loot beams, big numbers and a live title scene where the player&apos;s own avatar stands in the grove and PLAY hands the camera straight
+              to the game.
             </p>
-            <ul className="ml-list">
-              <li><strong>Cel ramps.</strong> Each floor's style kit defines palettes in Python (<code>packages/art/artkit/blocks.py</code>). <code>art look build</code> generates <code>Cel.luau</code>: for every palette key, a lit, mid and shadow tone, lit on top faces, mid on the sides and shadow underneath, plus cel mask textures four studs a tile.</li>
-              <li><strong>Ink shells.</strong> On the client, every visible part of a body gets an ink shell welded behind it and a light band decal, which turn to the camera and the key light each frame. It works on any R15 avatar and its accessories with no per-avatar art.</li>
-              <li><strong>The pixel filter.</strong> A workspace attribute (<code>off</code>, <code>faint</code>, <code>medium</code>) swaps every cel mask for a coarse, grained version, so surfaces read as big pixels. Faint won the judge's A/B. The UI is never filtered.</li>
-              <li><strong>Avatar cel.</strong> The server reads each player's avatar once, maps it to a <code>HeroLook</code> attribute that replicates to every client, and each client builds the avatar body (in a collision group that touches nothing) and inks it.</li>
-            </ul>
-          </div>
-          <Diagram name="look" alt="Flowchart of the look pipeline: style kit palettes generate Cel.luau and cel mask textures, which Room3D and Rock3D apply, then the pixel filter; Look3D gates rooms, rigs and the HUD; the avatar path runs from AvatarLook to the HeroLook attribute to the client's body and ink shells." caption={<><b>From palette to pixels.</b></>} />
-        </Section>
-
-        <Section id="ui" eyebrow="10 · Interface" title="UI">
-          <div className="ml-col">
             <p>
-              The interface is {c.uiModules} client modules on one design system: tokens for the palette, a pixel grid, type and motion, and a lint that refuses hand-written tweens so every screen opens,
-              closes and presses the same way. The style is RPG: framed panels, rarity colours that match the world's loot beams, big numbers and a live title scene where the player's own avatar stands in
-              the grove and PLAY hands the camera straight to the game.
+              In play the HUD is deliberately small: health is a bar with its number, the hotbar runs along the bottom (keys 1 to 9, or a tap), and loot arrives
+              as a card rather than a list. Every number a player reads goes through one formatter, so ore, coins and damage climb 1.2K, 4.8M, 2.1B without
+              ever wrapping the line.
             </p>
           </div>
           <Diagram name="ui" alt="The UI layers from the world up: nametags, the HUD, announcements, panels, the results card, then toasts and the tutorial card, all styled by shared tokens." caption={<><b>What draws over what.</b></>} />
           <div className="ml-col">
-            <p>Since 17 Nov a UI score counts only when it comes from the locked blind check against the best RPG game interfaces, anchored on jawad's own scores (JAW-156). His scale and scores are under Latest visuals.</p>
+            <p>Since 17 Nov a UI score counts only when it comes from the locked blind check against the best RPG game interfaces, anchored on jawad&apos;s own scores (JAW-156). His scale and scores are under Latest visuals.</p>
           </div>
         </Section>
 
-        <Section id="audio" eyebrow="11 · Sound" title="Audio">
+        <Section id="audio" eyebrow="09 · Sound" title="Audio">
           <div className="ml-col">
             <p>
-              Every hit is layered (a transient, a body and a tail) with small pitch and volume variations so repeats never sound copied. A mixer caps how many sounds of each kind play at once and lets the
-              louder or nearer one win; the effects bus tames the top end for phone speakers. The music is an adaptive director whose tension stems rise in fights and boss lairs and duck under big moments.
-              Guards in the tests check that every moment of the loop has a cue and that each bus sits inside its loudness window.
+              Every hit is layered (a transient, a body and a tail) with small pitch and volume variations so repeats never sound copied. A mixer caps how
+              many sounds of each kind play at once and lets the louder or nearer one win; the effects bus tames the top end for phone speakers. The music is
+              an adaptive director whose tension stems rise in fights and boss lairs and duck under big moments. Guards in the tests check that every moment
+              of the loop has a cue and that each bus sits inside its loudness window.
             </p>
           </div>
           <Diagram name="audio" alt="Audio flow: game events trigger layered cues, the mixer caps and prioritises them, the Sfx sound group plays them, and the adaptive music director ducks under big moments." caption={<><b>Sound, from event to speaker.</b></>} />
         </Section>
 
-        <Section id="architecture" eyebrow="12 · Architecture" title="Server-authoritative, one script each side">
+        <Section id="architecture" eyebrow="10 · Architecture" title="Server-authoritative, one script each side">
           <div className="ml-col">
             <p>
-              The server is a single script that requires every service in a fixed order and registers each in a shared registry, <code>G</code>, so services call each other at runtime without circular
-              requires. The server creates every remote. Clients only send intents; each is checked for type, range, rate and state by the service that handles it, and a per-player token bucket
-              limits each remote. Results come back as events, and positions stream over an unreliable remote.
+              The server is a single script that requires every service in a fixed order and registers each in a shared registry, <code>G</code>, so services
+              call each other at runtime without circular requires. The server creates every remote. Clients only send intents; each is checked for type, range,
+              rate and state by the service that handles it, and a per-player token bucket limits each remote. Results come back as events, and positions stream
+              over an unreliable remote.
             </p>
           </div>
-          <Diagram name="arch" alt="Architecture: client modules send 14 intent events to the server's services, registered in G; the server answers with the Event remote and an unreliable Snapshot; Meta keeps the session-locked profile." caption={<><b>Client, remotes and server.</b></>} />
+          <Diagram name="arch" alt="Architecture: client modules send intent events to the server's services, registered in G; the server answers with the Event remote and an unreliable Snapshot; Meta keeps the session-locked profile." caption={<><b>Client, remotes and server.</b></>} />
           <Table
             head={["Remote", "Direction", "Purpose"]}
             rows={[
@@ -412,20 +571,21 @@ export default async function MinelightPage() {
           <h3 className="ml-h3">Saves</h3>
           <div className="ml-col">
             <p>
-              Progress lives in a session-locked profile (ProfileStore), autosaved and saved on leave. The only way a run touches the save is banking at a Lift station; run-only currencies stay out of
-              it, and a test proves the two never collide. The forge's timing mini-game is timed on the server, so a client can't claim a perfect rhythm. A fuzz test throws random sequences at the
-              progress rules, and a fairness test holds the line that nothing sells power.
+              Progress lives in a session-locked profile (ProfileStore), autosaved and saved on leave. The only way a run touches the save is banking at a Lift
+              station; run-only currencies stay out of it, and a test proves the two never collide. The forge&apos;s timing mini-game is timed on the server, so
+              a client can&apos;t claim a perfect rhythm. A fuzz test throws random sequences at the progress rules, and a fairness test holds the line that
+              nothing sells power.
             </p>
           </div>
-          <Diagram name="saves" alt="Sequence diagram of a save's life: the profile loads session-locked on join, the run banks the haul into it, the server times forge strikes, and the profile saves and releases on leave." caption={<><b>A save's life.</b></>} />
+          <Diagram name="saves" alt="Sequence diagram of a save's life: the profile loads session-locked on join, the run banks the haul into it, the server times forge strikes, and the profile saves and releases on leave." caption={<><b>A save&apos;s life.</b></>} />
         </Section>
 
-        <Section id="forge" eyebrow="13 · Tooling" title="The forge toolchain">
+        <Section id="forge" eyebrow="11 · Tooling" title="The forge toolchain">
           <div className="ml-col">
             <p>
-              <code>forge</code> is the judge every change passes. It is written in Lune, so it runs the same on a Mac and on the Linux build boxes, every command takes <code>--json</code>, and any failure
-              exits 1. Game content is TOML ({c.contentToml} files: ores, recipes, enemies, frame data, the camera) that forge compiles into typed Luau, so balance changes are data and a validator can
-              refuse a bad one before it ever runs.
+              <code>forge</code> is the judge every change passes. It is written in Lune, so it runs the same on a Mac and on the Linux build boxes, every
+              command takes <code>--json</code>, and any failure exits 1. Game content is TOML ({c.contentToml} files: ores, recipes, enemies, frame data, the
+              camera) that forge compiles into typed Luau, so balance changes are data and a validator can refuse a bad one before it ever runs.
             </p>
           </div>
           <Diagram name="forge" alt="The forge check pipeline: Rojo sourcemap, luau-lsp strict analysis, selene, stylua, the Lune unit tests, the content validators and the asset manifest rules." caption={<><b>forge check, in order.</b> CI runs it as four parts: the static steps and three test shards.</>} />
@@ -445,18 +605,18 @@ export default async function MinelightPage() {
           <h3 className="ml-h3">The Studio broker</h3>
           <div className="ml-col">
             <p>
-              Studio is one signed-in licence on one Mac, and two windows starting at the same moment revoke the shared sign-in. So every agent reaches Studio through a broker: it hands out short leases on
-              private copies of a place, starts one window at a time, times out hung calls, checks answers aren't cut, and refuses data store writes, publishes and edits to scripts (the repo owns the
-              scripts, Studio is only a sync target).
+              Studio is a scarce resource, and two windows starting at the same moment fight over one licence. So every agent reaches Studio through a broker:
+              it hands out short leases on private copies of a place, starts one window at a time, times out hung calls, checks answers aren&apos;t cut, and
+              refuses data store writes, publishes and edits to scripts (the repo owns the scripts, Studio is only a sync target).
             </p>
           </div>
-          <Diagram name="broker" alt="Sequence diagram: a crew thread leases a Studio window from the broker, which queues, guards and times out its calls, then releases and reaps the window." caption={<><b>A Studio lease.</b> Leases ran 12 minutes overnight.</>} />
+          <Diagram name="broker" alt="Sequence diagram: a crew thread leases a Studio window from the broker, which queues, guards and times out its calls, then releases and reaps the window." caption={<><b>A Studio lease.</b> Leases run about 12 minutes.</>} />
           <h3 className="ml-h3">JoinBudget</h3>
           <div className="ml-col">
             <p>
-              What a phone must download before it can play is the place itself, so a test holds two lines: {n(jb.instancesLine)} join instances and a byte line for the place. A PR that grows the join past
-              them has to take something out first, or raise the line with the reason in the PR. Overnight the line was raised four times on purpose for the visual push, and it has to come back down to{" "}
-              {n(jb.publishLine)} bytes before publish.
+              What a phone must download before it can play is the place itself, so a test holds two lines: {n(jb.instancesLine)} join instances and a byte line
+              for the place. A PR that grows the join past them has to take something out first, or raise the line with the reason in the PR. The line was raised
+              four times on purpose for the visual push, and it has to come back down to {n(jb.publishLine)} bytes before publish.
             </p>
           </div>
           <figure className="ml-fig ml-wide">
@@ -465,70 +625,52 @@ export default async function MinelightPage() {
           </figure>
         </Section>
 
-        <Section id="trains" eyebrow="14 · Shipping" title="CI and merge trains">
+        <Section id="trains" eyebrow="12 · Shipping" title="CI and merge trains">
           <div className="ml-col">
             <p>
-              Nobody merges by hand. Every 30 minutes a merge train takes every PR labelled <code>train</code>, merges the batch onto main and runs forge check on a build box. If it passes, each PR is
-              squash-merged at exactly the code that was tested. If it fails, the train splits the batch in half until it finds the culprit, comments the failing lines on it and sends it back.
-              A PR that touches the join budget rides first and alone, so one shared line can't fail every half of a bisect.
+              Nobody merges by hand. Every 30 minutes a merge train takes every PR labelled <code>train</code>, merges the batch onto main and runs forge check on
+              a build box. If it passes, each PR is squash-merged at exactly the code that was tested. If it fails, the train splits the batch in half until it
+              finds the culprit, comments the failing lines on it and sends it back. A PR that touches the join budget rides first and alone, so one shared line
+              can&apos;t fail every half of a bisect.
             </p>
             <p>
-              CI runs on self-hosted runners on Instabox boxes, so jobs spend no GitHub minutes. On a box, every check waits for a slot in a scheduler (four at once on a 16 GB box) so checks never run
-              a box out of memory, and below 2 GB of free disk it starts nothing new.
+              CI runs on self-hosted runners on the build boxes, so jobs spend no GitHub minutes. On a box, every check waits for a slot in a scheduler (four at
+              once on a 16 GB box) so checks never run a box out of memory, and below 2 GB of free disk it starts nothing new.
             </p>
           </div>
           <Diagram name="train" alt="Merge train flowchart: labelled PRs, a timer at :25 and :55, budget PRs first, the batch check, squash-merge on pass, bisect on fail, then CI on main." caption={<><b>A merge train.</b></>} />
         </Section>
 
-        <Section id="crew" eyebrow="15 · The studio" title="How the agent crew builds it">
+        <Section id="crew" eyebrow="13 · The studio" title="How the agent crew builds it">
           <div className="ml-col">
             <p>
-              Mine for Light is built by a crew of AI agents with one human director. A Captain agent turns direction into briefs and gives every piece of work one owner. About thirty crew agents each own a
-              lane (the look, UI, combat, floors, audio, the camera, the tools) and work spec, tickets, tests first, code, forge check, playbot, review, pull request. Cheaper models draft the bulk tickets on
-              the build boxes, and a stronger model reviews everything before it lands.
+              Derelict Depths is built by a crew of AI agents with one human director. A Captain agent turns direction into briefs and gives every piece of work
+              one owner. About thirty crew agents each own a lane (the look, UI, combat, floors, audio, the camera, the tools) and work spec, tickets, tests
+              first, code, forge check, playbot, review, pull request. Cheaper models draft the bulk tickets on the build boxes, and a stronger model reviews
+              everything before it lands.
             </p>
             <p>
-              Judges close the loop: a playbot that plays from town to the Mole King to the results card, a locked, blind visual check that scores in-engine stills side by side against real references, and a blind tester that plays from
-              screenshots like a first-timer. Every failure they find becomes a guard, a test, a lint rule or a workflow line, so the same mistake can't land twice.
+              Judges close the loop: a playbot that plays from town to the guardian to the results card, a locked, blind visual check that scores in-engine
+              stills side by side against real references, and a blind tester that plays from screenshots like a first-timer. Every failure they find becomes a
+              guard, a test, a lint rule or a workflow line, so the same mistake can&apos;t land twice.
             </p>
           </div>
           <Diagram name="crew" alt="The crew: director, Captain, crew agents, the swarm on the boxes, forge check, review, merge trains, main, then the playbot, visual judge and blind tester feeding lessons back as guards." caption={<><b>The machine that builds the game.</b></>} />
         </Section>
 
-        <Section id="stills" eyebrow="16 · Pictures" title="In-engine stills">
+        <Section id="shipped" eyebrow="14 · Live" title="Everything that shipped">
           <div className="ml-col">
             <p>
-              Captured in Roblox Studio play on main <code>0d0724c</code> (06:15, 17 Nov) with the game camera and the HUD on, except where marked. Key art frames are in-engine captures with grading, rays
-              and the logo added on top. The hero is a real Roblox avatar.
-            </p>
-          </div>
-          <div className="ml-stills">
-            <Still name="town" title="The surface town" note="The Lift pad in the middle, stations and keepers around it." eager />
-            <Still name="ore-room" title="Topsoil, an ore room" note="Lit tops, mid sides, ink edges, and the ability arc bottom right." />
-            <Still name="fight" title="The first fight" note="The tutorial mole and the Elder's card." />
-            <Still name="dodge" title="A dodge" note="Movement values are locked by a test." />
-            <Still name="loot" title="Loot" note="Drops scatter from ore and enemies." />
-            <Still name="mole-king" title="The Mole King, phase 1" note="The boss bar names the phase: DIG." />
-            <Still name="mole-king-2" title="The Mole King, later" note="The guardian at full size under the forge camera." />
-            <Still name="results" title="The results card" note="Depth, kills, time, best combo, XP, then DIVE AGAIN or TOWN." />
-            <Still name="relic" title="A mythic relic reveal" note="Rarity cards match the loot beam colours." />
-            <Still name="coop" title="Co-op" note="Up to four avatars in one dive." art />
-            <Still name="ore-impact" title="An ore strike" note="The moment a vein cracks." art />
-          </div>
-        </Section>
-
-        <Section id="shipped" eyebrow="17 · Live" title="Everything that shipped">
-          <div className="ml-col">
-            <p>
-              Every pull request merged into the game repo's main, newest first and grouped by the hour (London time), with a one-line plain summary. A job on the build box refreshes this list every 3
-              minutes; store and pricing work is kept private until launch.
+              Every pull request merged into the game repo&apos;s main, newest first and grouped by the hour (London time), with a one-line plain summary. A job on
+              the build box refreshes this list every 3 minutes; store and pricing work is kept private until launch.
             </p>
             <Feed feed={feed} renderedAt={renderedAt} />
           </div>
         </Section>
 
         <footer className="ml-foot">
-          Numbers come from the game repo's main at <code>{facts.main.sha}</code> and the team's design docs. Diagrams are pre-rendered SVG, so the page works with JavaScript off.{" "}
+          Numbers come from the game repo&apos;s main at <code>{facts.main.sha}</code> and the team&apos;s design docs. Diagrams are pre-rendered SVG, so the page
+          works with JavaScript off.{" "}
           <Link href="/">jawadjalal.com</Link>
         </footer>
       </div>

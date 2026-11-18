@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-17T20:42:03Z",
+  "generatedAt": "2026-11-18T08:51:49Z",
   "main": {
-    "sha": "26357787",
-    "date": "2026-11-17T20:06:22Z",
-    "subject": "cartridge: an engine test that the boss bar follows a miniboss fight and holds still between changes (covers #430) (#467)"
+    "sha": "35e70a28",
+    "date": "2026-11-18T08:49:07Z",
+    "subject": "town: the rebirth altar on the Hill opens the rebirth card (ROBL-30, JAW-168) (#542)"
   },
   "counts": {
-    "mergedPRs": 395,
-    "testFiles": 209,
-    "engineTestFiles": 20,
-    "contentToml": 161,
-    "uiModules": 49,
-    "remotes": 15,
-    "ores": 44,
+    "mergedPRs": 474,
+    "testFiles": 316,
+    "engineTestFiles": 21,
+    "contentToml": 162,
+    "uiModules": 68,
+    "remotes": 17,
+    "ores": 68,
     "bars": 12,
     "classes": 4,
     "floors": 6,
@@ -35,8 +35,8 @@
     "instancesLine": 20500,
     "bytesLine": 1400000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1304323,
-    "joinInstances": 17054
+    "latestBuildBytes": 1290554,
+    "joinInstances": 18136
   },
   "remotes": [
     "Attack",
@@ -45,9 +45,11 @@
     "UseItem",
     "UseSlot",
     "CombineSlot",
+    "SelectSlot",
     "Pickup",
     "Ability",
     "Station",
+    "SecondWind",
     "Wildcard",
     "FirstDive",
     "DiveAgain",
@@ -56,11 +58,6 @@
     "Snapshot"
   ],
   "joinHistory": [
-    {
-      "sha": "29e6864a",
-      "bytes": 1447383,
-      "line": 1460000
-    },
     {
       "sha": "636e7c73",
       "bytes": 1440320,
@@ -104,6 +101,11 @@
     {
       "sha": "26357787",
       "bytes": 1304323,
+      "line": 1400000
+    },
+    {
+      "sha": "35e70a28",
+      "bytes": 1290554,
       "line": 1400000
     }
   ]
