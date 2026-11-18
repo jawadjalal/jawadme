@@ -228,3 +228,15 @@ body:has(.ml) { background: #100c1c; }
 .ml-shot img { width: 100%; height: auto; display: block; }
 .ml-shot figcaption { padding: 10px 14px 12px; font-size: 13.5px; color: var(--muted); line-height: 1.4; }
 .ml-shot figcaption b { color: var(--cream); display: block; font-size: 14.5px; }
+
+/* The release art: the wordmark beside the icon, then the capsules. */
+.ml-art { display: grid; gap: 16px; grid-template-columns: 1fr; margin: 20px 0; align-items: center; }
+@media (min-width: 760px) { .ml-art { grid-template-columns: 1fr 240px; } }
+.ml-logo-fig, .ml-icon-fig { margin: 0; background: var(--panel); border: 3px solid var(--ink); border-radius: 14px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+.ml-logo-fig img { display: block; width: 100%; height: auto; background: #07040f; padding: 14px; }
+.ml-icon-fig img { display: block; width: 100%; max-width: 256px; height: auto; margin: 14px auto 6px; border-radius: 16px; }
+.ml-logo-fig figcaption, .ml-icon-fig figcaption { padding: 10px 14px 12px; font-size: 13.5px; color: var(--muted); line-height: 1.4; }
+.ml-logo-fig figcaption b, .ml-icon-fig figcaption b { color: var(--cream); display: block; font-size: 14.5px; }
+.ml-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 0; font-size: 15px; }
+.ml-links a { color: var(--amber); font-weight: 700; text-decoration: none; }
+.ml-links a:hover { text-decoration: underline; }

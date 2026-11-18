@@ -20,12 +20,13 @@ const OG_ALT = "Derelict Depths key art: an in-engine capture of a miner in the 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/minelight" },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: "/minelight", type: "article", images: [{ url: "/minelight/img/og.jpg", width: 1200, height: 630, alt: OG_ALT }] },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: ["/minelight/img/og.jpg"] },
+  alternates: { canonical: "/derelictdepths" },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: "/derelictdepths", type: "article", images: [{ url: "/derelictdepths/img/og.jpg", width: 1200, height: 630, alt: OG_ALT }] },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: ["/derelictdepths/img/og.jpg"] },
 };
 
 const SECTIONS: [string, string][] = [
+  ["art", "The release art"],
   ["today", "The game today"],
   ["look", "The look"],
   ["captures", "Captures"],
@@ -161,9 +162,13 @@ export default async function MinelightPage() {
               built, and the numbers behind all of it. It is drawn from the game repo&apos;s main branch and the team&apos;s design docs. Its shipped feed
               updates every 3 minutes, and its latest visuals every hour.
             </p>
+            <p className="ml-links">
+              <a href="/reading/derelict-depths-book/">Read the Derelict Depths book →</a>
+              <a href="#art">The release art</a>
+            </p>
           </div>
           <figure className="ml-poster">
-            <img src="/minelight/img/poster-1280.jpg" srcSet="/minelight/img/poster-640.jpg 640w, /minelight/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="A miner raises a pickaxe in the Golden Room in front of the Mole King" />
+            <img src="/derelictdepths/img/poster-1280.jpg" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="A miner raises a pickaxe in the Golden Room in front of the Mole King" />
             <figcaption><span className="ml-badge art">In-engine + key art</span>A real in-engine capture of the Golden Room, graded, with rays and the title added.</figcaption>
           </figure>
         </header>
@@ -182,6 +187,36 @@ export default async function MinelightPage() {
         <nav className="ml-toc" aria-label="Contents">
           <ol>{SECTIONS.map(([id, label]) => <li key={id}><a href={"#" + id}>{label}</a></li>)}</ol>
         </nav>
+
+        <Section id="art" eyebrow="Visuals · release" title="The release art">
+          <div className="ml-col">
+            <p>
+              The wordmark, the icon and the three store capsules, all built for release day. The capsules are the shots a player sees before any of the
+              game: a dive, the Mole King and an ore room. Each alternates file is kept as a labelled option rather than shipped.
+            </p>
+          </div>
+          <div className="ml-art">
+            <figure className="ml-logo-fig">
+              <img src="/derelictdepths/img/logo-1280.webp" srcSet="/derelictdepths/img/logo-640.webp 640w, /derelictdepths/img/logo-1280.webp 1280w" sizes="(min-width: 760px) 720px, 100vw" width={1280} height={727} alt="The Derelict Depths wordmark" loading="eager" decoding="async" />
+              <figcaption><b>The wordmark</b><span className="ml-badge">Logo</span>Built in code, so every size is a redraw rather than a stretched image.</figcaption>
+            </figure>
+            <figure className="ml-icon-fig">
+              <img src="/derelictdepths/img/icon-256.png" width={256} height={256} alt="The Derelict Depths icon" loading="eager" decoding="async" />
+              <figcaption><b>The icon</b><span className="ml-badge">Store icon</span>What a player sees at thumbnail size in a list of games.</figcaption>
+            </figure>
+          </div>
+          <div className="ml-pair">
+            <Shot name="thumb-dive" w={1280} h={720} kind="Store thumbnail" title="Capsule one: the dive" note="A real capture, cropped to drop the HUD labels, with the wordmark composited on." eager />
+            <Shot name="thumb-king" w={1280} h={720} kind="Store thumbnail" title="Capsule two: the Mole King" note="The guardian's arena, painted up from a real capture, with no generated lettering." />
+          </div>
+          <div className="ml-pair">
+            <Shot name="thumb-ore" w={1280} h={720} kind="Store thumbnail" title="Capsule three: the ore room" note="A real capture of a Topsoil ore room." />
+            <div className="ml-card">
+              <h4>How the capsules were picked</h4>
+              <p>Each capsule has one default and one or two alternates. The defaults are the ones a store upload reads; the alternates stay as labelled options for jawad&apos;s pick. Every file is 1920 × 1080 and carries the same wordmark, and none of them introduces a game, a name or a look that isn&apos;t in the build.</p>
+            </div>
+          </div>
+        </Section>
 
         <Section id="today" eyebrow="Today · 18 Nov" title="The game today">
           <div className="ml-col">
@@ -248,10 +283,18 @@ export default async function MinelightPage() {
             <Shot name="look-pixels-label" w={1354} h={1080} kind="Look study" title="Pixels that stay hard" note="The same 16-pixel image twice: the left one keeps its pixels on an ImageLabel, the right one is blurred by the default filter." />
             <Shot name="look-pixels-mesh" w={1354} h={1080} kind="Look study" title="Pixels a mesh blurs" note="On a mesh surface the same setting changes nothing: both halves blur, which is why those textures are upscaled before upload." />
           </div>
+          <div className="ml-pair">
+            <Shot name="splat-room-before" w={1280} h={667} kind="Look study" title="Room one, the toggle off" note="A Topsoil start room with the new pixel effects switched off. 0.22% of the frame changes when they come on." />
+            <Shot name="splat-room-after" w={1280} h={667} kind="Look study" title="Room one, the toggle on" note="The same frame with them on: mobs and walls swap live, with no other change." />
+          </div>
+          <div className="ml-pair">
+            <Shot name="splat-halls-before" w={1280} h={667} kind="Look study" title="Iron Halls, off" note="A golem and a miner in room one of Iron Halls." />
+            <Shot name="splat-halls-after" w={1280} h={667} kind="Look study" title="Iron Halls, on" note="The same frame with the pixel effects on: 1.5% of the pixels change." />
+          </div>
           <div className="ml-col">
             <p>
-              These four are Studio studies from 18 Nov, on a scratch floor rather than the game place, which is where a look is proved before it ships.
-              The rooms below are the game itself.
+              Every shot above is a Studio study from 18 Nov, on the game&apos;s own camera but a preview build rather than the shipped place, which is where
+              a look is proved before it lands. The rooms under Captures are the game itself.
             </p>
           </div>
         </Section>
@@ -260,7 +303,8 @@ export default async function MinelightPage() {
           <div className="ml-col">
             <p>
               Captured in Studio play from the game place on build <code>47ba0d7</code> (17 Nov, 08:55), with the game camera and the HUD on. The hero is a
-              real Roblox avatar. The interface and the look have moved on since; these are the frames that exist, shown as they were taken.
+              real Roblox avatar. The release capture set replaces these as soon as it lands; until then these are the frames that exist, shown as they were
+              taken, and the interface and the look have moved on since.
             </p>
           </div>
           <div className="ml-stills">

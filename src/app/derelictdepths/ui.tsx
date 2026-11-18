@@ -15,7 +15,7 @@ type Size = { w: number; h: number };
 export function Diagram({ name, alt, caption }: { name: string; alt: string; caption: React.ReactNode }) {
   const size = (sizes as Record<string, Size>)[name];
   const wide = size.w > 700;
-  const src = "/minelight/d/" + name + ".svg";
+  const src = "/derelictdepths/d/" + name + ".svg";
   return (
     <figure className={"ml-fig" + (wide ? " ml-wide" : "")}>
       <div className="ml-fig-body">
@@ -49,8 +49,8 @@ export function Still({ name, title, note, art = false, eager = false }: { name:
   return (
     <figure className="ml-still">
       <img
-        src={"/minelight/img/" + name + "-1280.jpg"}
-        srcSet={"/minelight/img/" + name + "-640.jpg 640w, /minelight/img/" + name + "-1280.jpg 1280w"}
+        src={"/derelictdepths/img/" + name + "-1280.jpg"}
+        srcSet={"/derelictdepths/img/" + name + "-640.jpg 640w, /derelictdepths/img/" + name + "-1280.jpg 1280w"}
         sizes="(min-width: 760px) 520px, 100vw"
         width={1280}
         height={720}
@@ -72,8 +72,8 @@ export function Shot({ name, w, h, title, note, kind, eager = false }: { name: s
   return (
     <figure className="ml-shot">
       <img
-        src={"/minelight/img/" + name + "-1280.jpg"}
-        srcSet={"/minelight/img/" + name + "-640.jpg 640w, /minelight/img/" + name + "-1280.jpg 1280w"}
+        src={"/derelictdepths/img/" + name + "-1280.jpg"}
+        srcSet={"/derelictdepths/img/" + name + "-640.jpg 640w, /derelictdepths/img/" + name + "-1280.jpg 1280w"}
         sizes="(min-width: 760px) 520px, 100vw"
         width={w}
         height={h}
