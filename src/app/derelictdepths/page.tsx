@@ -181,7 +181,7 @@ export default async function MinelightPage() {
           <div className="ml-stat"><b>{c.ores} ores</b><span>{c.bars} bars, and a pickaxe ladder above them</span></div>
           <div className="ml-stat"><b>{c.classes} classes</b><span>Miner, Demolitionist, Prospector, Alchemist</span></div>
           <div className="ml-stat"><b>R6 hero</b><span>your own Roblox avatar, over a shoulder camera</span></div>
-          <div className="ml-stat"><b>{(jb.latestBuildBytes / 1e6).toFixed(2)} MB</b><span>the place a phone downloads to join (line {(jb.bytesLine / 1e6).toFixed(2)} MB)</span></div>
+          <div className="ml-stat"><b>{n(jb.latestBuildBytes)} bytes</b><span>what a phone downloads to join, measured by JoinBudget on main {facts.main.sha}, against the {n(jb.bytesLine)} line</span></div>
         </div>
 
         <nav className="ml-toc" aria-label="Contents">
@@ -226,8 +226,8 @@ export default async function MinelightPage() {
               A dive takes minutes, so a phone player at a bus stop can finish one and a group of friends can do three in a session.
             </p>
             <p>
-              The release is floors one and two, <strong>Topsoil Tunnels</strong> and <strong>Iron Halls</strong>, finished end to end: the first thirty
-              minutes, the tutorial, both guardians, the forge and the town around them. Everything below is on the game repo&apos;s main branch today, and
+              The release is floors one and two, <strong>Topsoil Tunnels</strong> and <strong>Iron Halls</strong>, built end to end, with the engine
+              playthrough still pending: the first thirty minutes, the tutorial, both guardians, the forge and the town around them. Everything below is on the game repo&apos;s main branch today, and
               each card names the modules that hold it.
             </p>
           </div>

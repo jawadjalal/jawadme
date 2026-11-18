@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-18T08:51:49Z",
+  "generatedAt": "2026-11-18T15:57:10Z",
   "main": {
-    "sha": "35e70a28",
-    "date": "2026-11-18T08:49:07Z",
-    "subject": "town: the rebirth altar on the Hill opens the rebirth card (ROBL-30, JAW-168) (#542)"
+    "sha": "394db8ad",
+    "date": "2026-11-18T15:55:25Z",
+    "subject": "Audio launch, Shared half: flag, ore classes and tiers, reveal stinger ladder, provenance (no behaviour change) (#623)"
   },
   "counts": {
-    "mergedPRs": 474,
-    "testFiles": 316,
+    "mergedPRs": 533,
+    "testFiles": 388,
     "engineTestFiles": 21,
-    "contentToml": 162,
-    "uiModules": 68,
-    "remotes": 17,
+    "contentToml": 170,
+    "uiModules": 86,
+    "remotes": 19,
     "ores": 68,
     "bars": 12,
     "classes": 4,
@@ -33,10 +33,10 @@
   },
   "joinBudget": {
     "instancesLine": 20500,
-    "bytesLine": 1400000,
+    "bytesLine": 1480000,
     "publishLine": 1230000,
-    "latestBuildBytes": 1290554,
-    "joinInstances": 18136
+    "latestBuildBytes": 1469058,
+    "joinInstances": 18496
   },
   "remotes": [
     "Attack",
@@ -54,15 +54,12 @@
     "FirstDive",
     "DiveAgain",
     "ToTown",
+    "RideBack",
+    "LeaveDive",
     "Event",
     "Snapshot"
   ],
   "joinHistory": [
-    {
-      "sha": "636e7c73",
-      "bytes": 1440320,
-      "line": 1520000
-    },
     {
       "sha": "a6aab68c",
       "bytes": 1451016,
@@ -107,6 +104,11 @@
       "sha": "35e70a28",
       "bytes": 1290554,
       "line": 1400000
+    },
+    {
+      "sha": "394db8ad",
+      "bytes": 1469058,
+      "line": 1480000
     }
   ]
 }
