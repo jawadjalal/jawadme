@@ -61,7 +61,7 @@ export default function Home() {
           </div>
           <div className="hero-stage" data-view="mark">
             <div className="poster-3d mark-poster" aria-hidden="true">
-              <Image src="/three/mark-poster.webp" alt="" width={1605} height={1086} priority sizes="(min-width: 768px) 66vw, 100vw" />
+              <Image src="/three/pillar-poster.webp" alt="" width={1600} height={1523} priority sizes="(min-width: 768px) 50vw, 100vw" />
             </div>
             <span className="marks" aria-hidden="true">
               <i />

@@ -1,7 +1,7 @@
 "use client";
 
 // The one canvas: fixed over the page, transparent, never catching the pointer. Each [data-view] box in the page
-// gets a drei View scissored into it, so the hero Mark and the footer call key share one WebGL context.
+// gets a drei View scissored into it, so the hero pillar and the footer signpost share one WebGL context.
 // The loop pauses while no box is on screen, DPR is capped at 1.5, and a governor drops to DPR 1 and then back to
 // the posters if the 75th percentile frame stays over 22 ms for two seconds.
 
@@ -9,7 +9,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { View } from "@react-three/drei";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MarkView } from "./Mark";
+import { PillarView } from "./Pillar";
 import { KeyView } from "./Key";
 import { SignpostView } from "./Signpost";
 
@@ -77,7 +77,9 @@ export default function Scene({ onFail }: { onFail: () => void }) {
     >
       {tracks.map(({ el, ref }, i) => (
         <View key={`${path}-${i}`} track={ref as React.RefObject<HTMLElement>}>
-          {el.dataset.view === "mark" ? <MarkView el={el} /> : el.dataset.view === "signpost" ? <SignpostView el={el} /> : <KeyView el={el} path={path} />}
+          {el.dataset.view === "pillar" && <PillarView el={el} />}
+          {el.dataset.view === "signpost" && <SignpostView el={el} />}
+          {el.dataset.view === "key" && <KeyView el={el} path={path} />}
         </View>
       ))}
       <Governor onFail={onFail} />
