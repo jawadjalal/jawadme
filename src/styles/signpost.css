@@ -1,0 +1,121 @@
+/* The footer signpost. Brand tokens fall back to their values until ds.css carries them. */
+
+@font-face {
+  font-family: "Cinzel Signpost";
+  src: url("/fonts/cinzel-700.woff") format("woff");
+  font-weight: 700;
+  font-display: swap;
+}
+
+.sp {
+  --sp-void: var(--void, #07060b);
+  --sp-slate: var(--slate, #1c1a2b);
+  --sp-slate-3: var(--slate-3, #6e6a8c);
+  --sp-bone: var(--bone, #ede4d3);
+  --sp-gold: var(--gold, #ffb43a);
+  --sp-brazier: var(--brazier, #ff8a2a);
+  --sp-disp: "Cinzel", "Cinzel Signpost", serif;
+  --sp-sans: "Fira Sans", var(--f-sans, sans-serif);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-bottom: calc(-1 * var(--dock, 0px));
+  padding-bottom: var(--dock, 0px);
+  background:
+    radial-gradient(60% 46% at 68% 86%, rgb(255 138 42 / 0.13), transparent 70%),
+    radial-gradient(70% 60% at 66% 40%, rgb(58 56 82 / 0.42), transparent 72%),
+    var(--sp-void);
+  color: var(--sp-bone);
+  font-family: var(--sp-sans);
+}
+.sp::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, var(--sp-void), transparent 22%, transparent 80%, rgb(7 6 11 / 0.9));
+  pointer-events: none;
+}
+.sp-in {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: 24px;
+  padding: clamp(56px, 8vw, 120px) var(--g, 24px) 0;
+}
+.sp-copy { display: grid; gap: 28px; align-content: center; padding-bottom: 48px; }
+.sp-kicker, .sp-n, .sp-meta, .sp-link {
+  font-family: var(--sp-sans);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.sp-kicker { margin: 0; font-size: 13px; color: var(--sp-slate-3); }
+.sp-title {
+  margin: 0;
+  font-family: var(--sp-disp);
+  font-weight: 700;
+  font-size: clamp(48px, 6vw, 104px);
+  line-height: 0.98;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--sp-bone);
+  text-shadow: 0 2px 0 var(--sp-void), 0 0 40px rgb(255 180 58 / 0.12);
+  max-width: 6.5em;
+}
+.sp-list { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid rgb(110 106 140 / 0.28); max-width: 420px; }
+.sp-list li { border-bottom: 1px solid rgb(110 106 140 / 0.28); }
+.sp-link {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 13px 0;
+  font-size: 14px;
+  color: rgb(237 228 211 / 0.82);
+  transition: color 160ms, transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sp-n { width: 2.6em; font-size: 11px; color: var(--sp-gold); opacity: 0.7; }
+.sp-link:hover, .sp-link:focus-visible,
+.sp[data-hot="0"] [data-arm="0"] .sp-link, .sp[data-hot="1"] [data-arm="1"] .sp-link, .sp[data-hot="2"] [data-arm="2"] .sp-link,
+.sp[data-hot="3"] [data-arm="3"] .sp-link, .sp[data-hot="4"] [data-arm="4"] .sp-link { color: var(--sp-gold); transform: translateX(6px); }
+.sp-book { color: var(--sp-brazier); }
+.sp-book .sp-n { color: var(--sp-brazier); opacity: 1; }
+.sp-link:focus-visible { outline: 2px solid var(--sp-gold); outline-offset: 4px; }
+
+.sp-stage { position: relative; width: min(100%, 76vh); aspect-ratio: 5 / 6; justify-self: center; }
+.sp-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1); }
+.sp-hits a { position: absolute; border-radius: 6px; }
+.sp-hits a:focus-visible { outline: 2px solid var(--sp-gold); }
+html[data-gl="live"] .sp-hits { display: none; }
+html[data-gl="live"] .sp-poster { pointer-events: none; }
+
+.sp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 28px;
+  padding: 18px var(--g, 24px) 22px;
+  border-top: 1px solid rgb(110 106 140 / 0.22);
+  font-size: 12px;
+  color: var(--sp-slate-3);
+}
+.sp-meta a { color: rgb(237 228 211 / 0.78); transition: color 160ms; }
+.sp-meta a:hover, .sp-meta a:focus-visible { color: var(--sp-gold); }
+.sp-meta .sp-meta-book { color: var(--sp-brazier); }
+.sp-social { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-left: auto; }
+.sp-sheet { opacity: 0.6; }
+
+@media (max-width: 900px) {
+  .sp-in { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 64px; }
+  .sp-copy { display: contents; }
+  .sp-kicker { order: 1; margin-bottom: 14px; }
+  .sp-title { order: 2; font-size: clamp(48px, 15vw, 80px); }
+  .sp-stage { order: 3; width: 100%; margin: 8px 0 12px; }
+  .sp-copy nav { order: 4; padding-bottom: 40px; }
+  .sp-list { max-width: none; }
+  .sp-social { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp-link, .sp-poster { transition: none; }
+  .sp-link:hover, .sp-link:focus-visible { transform: none; }
+}

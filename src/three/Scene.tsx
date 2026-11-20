@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MarkView } from "./Mark";
 import { KeyView } from "./Key";
+import { SignpostView } from "./Signpost";
 
 function Governor({ onFail }: { onFail: () => void }) {
   const setDpr = useThree((s) => s.setDpr);
@@ -76,7 +77,7 @@ export default function Scene({ onFail }: { onFail: () => void }) {
     >
       {tracks.map(({ el, ref }, i) => (
         <View key={`${path}-${i}`} track={ref as React.RefObject<HTMLElement>}>
-          {el.dataset.view === "mark" ? <MarkView el={el} /> : <KeyView el={el} path={path} />}
+          {el.dataset.view === "mark" ? <MarkView el={el} /> : el.dataset.view === "signpost" ? <SignpostView el={el} /> : <KeyView el={el} path={path} />}
         </View>
       ))}
       <Governor onFail={onFail} />
