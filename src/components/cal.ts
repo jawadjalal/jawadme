@@ -1,9 +1,6 @@
 "use client";
 
-// One Cal.com booking for the whole site: the 15 minute call (BOOK in felt/copy). Every CTA is a plain link to
-// /cal?src=<tag>, so it works without JavaScript; once the page has loaded, openBooking() opens the same event in
-// Cal's popup instead. The tag rides into the embed config as `src` (prefills the hidden booking question with that
-// identifier) and `metadata[src]` (lands on the booking's metadata), so each booking records where it came from.
+
 
 import { track } from "@vercel/analytics";
 import { BOOK } from "./felt/copy";
@@ -84,12 +81,9 @@ export function calApi(src: string) {
   return Cal.ns[NS];
 }
 
-/** A click handler for a booking link: opens the popup in place, unless the visitor asked for a new tab or window. */
 export const openBooking = (src: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-  e.preventDefault();
   trackBooking("book_open", src);
-  calApi(src)("modal", { calLink: CAL_LINK, config: calConfig(src) });
 };
 
 /** The link every CTA uses: /cal with its channel. */

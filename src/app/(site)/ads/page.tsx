@@ -20,7 +20,7 @@ export default async function Ads({ searchParams }: Props) {
   const tabs = [...CAMPAIGNS, "Other"];
   const pick = tabs.find((t) => slug(t) === c);
   const list = pick ? ADS.filter((a) => campaignOf(a) === pick) : ADS;
-  const chunks = Array.from({ length: Math.ceil(list.length / 8) }, (_, i) => list.slice(i * 8, i * 8 + 8));
+  const chunks = Array.from({ length: Math.ceil(list.length / 12) }, (_, i) => list.slice(i * 12, i * 12 + 12));
   return (
     <main className="ads">
       <TitleTab as="h1" tag={String(ADS.length)} side={<span className="tab-say">Spec ads for real brands, made unasked.</span>}>
@@ -40,14 +40,14 @@ export default async function Ads({ searchParams }: Props) {
       </nav>
       {chunks.map((chunk, n) => (
         <div key={n}>
-          <div className="wrap masonry">
+          <div className="wrap ad-grid">
             {chunk.map((a, i) => (
               <Link key={a.id} href={`/w/${a.id}`} className="m-item" data-cursor="view">
                 <Media m={{ src: a.src, w: a.w, h: a.h, alt: a.alt }} sizes="(min-width: 768px) 33vw, 50vw" delay={(i % 3) * 60} />
               </Link>
             ))}
           </div>
-          {n < chunks.length - 1 || chunks.length === 1 ? (
+          {n === 0 ? (
             <BookLink src="ads-inline" className="strip" cursor>
               <span className="d-name">Want ads like these?</span>
               <span className="strip-cta">Book a call ↗</span>

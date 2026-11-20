@@ -29,6 +29,7 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
     return () => removeEventListener("keydown", key);
   }, [at, router]);
   const headline = piece.alt.split(". ").slice(0, -1).join(". ") || piece.alt;
+  const related = at?.strip.filter((item) => item.id !== piece.id).slice(1, 5) ?? [];
   return (
     <main
       className="viewer"
@@ -44,17 +45,25 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
         <Link href="/ads" className="v-close" aria-label="Back to all ads">
           ← All ads
         </Link>
-        <h1 className="v-line">{headline}</h1>
-        <span>{piece.group}</span>
-        {piece.spec ? <span className="tag">Spec</span> : null}
-        {at ? (
-          <span className="v-count">
-            {String(at.n).padStart(2, "0")} / {at.of}
-          </span>
-        ) : null}
+        {at ? <span>{String(at.n).padStart(2, "0")} / {at.of}</span> : null}
       </header>
-      <div className="v-stage">
-        <Image key={piece.id} src={piece.src} width={piece.w} height={piece.h} alt={piece.alt} priority sizes="(min-width: 768px) 70vw, 100vw" quality={90} />
+      <div className="v-main">
+        <div className="v-stage">
+          <Image key={piece.id} src={piece.src} width={piece.w} height={piece.h} alt={piece.alt} priority sizes="(min-width: 1024px) 58vw, 100vw" quality={90} />
+        </div>
+        <div className="v-info">
+          <h1 className="v-title">{headline}</h1>
+          <p>{piece.spec ? `Spec ad for ${piece.group}` : piece.group}</p>
+          {related.length ? (
+            <nav className="v-strip" aria-label="More ads">
+              {related.map((item) => (
+                <Link key={item.id} href={`/w/${item.id}`} replace scroll={false}>
+                  <Image src={item.sm} width={160} height={200} alt={item.alt} sizes="(min-width: 1024px) 11vw, 1px" />
+                </Link>
+              ))}
+            </nav>
+          ) : null}
+        </div>
       </div>
       <footer className="v-bar">
         {at ? (
@@ -65,15 +74,6 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
             <Link href={`/w/${at.next}`} replace scroll={false} aria-label="Next">
               →
             </Link>
-          </nav>
-        ) : null}
-        {at ? (
-          <nav className="v-strip" aria-label="More ads">
-            {at.strip.map((s) => (
-              <Link key={s.id} href={`/w/${s.id}`} replace scroll={false} aria-current={s.id === piece.id ? "page" : undefined}>
-                <Image src={s.sm} width={88} height={110} alt={s.alt} sizes="44px" />
-              </Link>
-            ))}
           </nav>
         ) : null}
         <BookLink src="viewer" className="dock-cta v-cta" cursor>

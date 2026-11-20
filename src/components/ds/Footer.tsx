@@ -8,7 +8,7 @@ import "@/styles/signpost.css";
  *  draws the post into the [data-view="signpost"] box, reads its labels from this list and clicks these links.
  *  Otherwise the poster shows with a link laid over each arm. */
 
-const ARMS = [...NAV.map((n) => ({ label: n.label, href: n.href })), { label: "Book a call", href: "/call?src=footer-signpost" }];
+const ARMS = [...NAV.map((n) => ({ label: n.label, href: n.href })), { label: "Book a call", href: "/cal?src=footer-signpost" }];
 const HITS: [number, number, number, number][] = [
   [46, 29, 32, 11],
   [17, 38, 29, 11],
@@ -22,7 +22,6 @@ export function Footer({ src, sheet }: { src: string; sheet: string }) {
     <footer className="sp" data-signpost="">
       <div className="sp-in">
         <div className="sp-copy">
-          <p className="sp-kicker">The road forks here</p>
           <h2 className="sp-title">Where to next?</h2>
           <nav aria-label="Where to next">
             <ol className="sp-list">
