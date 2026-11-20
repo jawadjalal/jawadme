@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -25,7 +26,7 @@ function Nav({ onPick }: { onPick?: () => void }) {
   );
 }
 
-/** The fixed bottom bar on every page but /call: the mark, four links, the booking status and the call block. */
+/** The fixed bottom bar on every page but /cal: the mark, four links, the booking status and the call block. */
 export function Dock() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
@@ -42,20 +43,18 @@ export function Dock() {
     addEventListener("scroll", on, { passive: true });
     return () => removeEventListener("scroll", on);
   }, []);
-  if (path === "/call" || path.startsWith("/w/")) return null;
+  if (path === "/cal" || path.startsWith("/w/")) return null;
   return (
     <>
       <div className="dock-sheet" data-open={open} id="dock-sheet" aria-hidden={!open}>
         <Suspense>
           <Nav onPick={() => setOpen(false)} />
         </Suspense>
-        <span className="lbl">[ ● Booking {SITE.bookingMonth} · {SITE.detail} ]</span>
+        <span className="lbl">● Booking {SITE.bookingMonth} · {SITE.detail}</span>
       </div>
       <nav className="dock" aria-label="Site" data-hide={hide && !open}>
         <Link href="/" className="dock-mark" aria-label="Jawad Jalal, home">
-          <svg viewBox="0 0 40 24" aria-hidden="true">
-            <path fill="currentColor" d="M8 0h10v15.5C18 21 14.6 24 9.3 24 4 24 1 21.2 0 16.8l6.3-1.6c.4 1.9 1.4 3 3 3 1.6 0 2.3-1 2.3-3.1V5.6H8V0Zm20 0h10v15.5C38 21 34.6 24 29.3 24c-5.3 0-8.3-2.8-9.3-7.2l6.3-1.6c.4 1.9 1.4 3 3 3 1.6 0 2.3-1 2.3-3.1V5.6H28V0Z" />
-          </svg>
+          <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="40px" priority />
         </Link>
         <ul className="dock-nav">
           <Suspense>
@@ -67,7 +66,7 @@ export function Dock() {
           Menu
         </button>
         <span className="dock-status lbl">
-          <i aria-hidden="true" />[ Booking {SITE.bookingMonth} ]
+          <i aria-hidden="true" />Booking {SITE.bookingMonth}
         </span>
         <BookLink src="dock" className="dock-cta" cursor>
           <span>

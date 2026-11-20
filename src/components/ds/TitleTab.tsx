@@ -6,7 +6,7 @@ export function TitleTab({ children, tag, side, as: H = "h2", id }: { children: 
     <header className="tab" id={id}>
       <div className="tab-name">
         <H className="d-tab">{children}</H>
-        {tag ? <span className="lbl tab-tag">[ {tag} ]</span> : null}
+        {tag ? <span className="lbl tab-tag">{tag}</span> : null}
       </div>
       {side ? <div className="tab-side">{side}</div> : null}
     </header>

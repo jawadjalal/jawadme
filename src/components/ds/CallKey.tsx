@@ -13,7 +13,7 @@ export function CallKey({ src }: { src: string }) {
           <br />a call
         </span>
       </span>
-      <span className="lbl dim key-label">[ Press to book ]</span>
+      <span className="lbl dim key-label">Press to book</span>
     </a>
   );
 }

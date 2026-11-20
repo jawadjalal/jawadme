@@ -1,6 +1,7 @@
 // The ad curation: one list feeds the home rail, /ads, the ad case studies and the viewer (/w/<id>).
 // Swap the list and everything follows. Source: JAWA-10's curation (every ad Jawad rated 6 or higher), in its order.
-// Every piece is spec work: made unasked, not commissioned.
+// Every piece is spec work: made unasked, not commissioned. The type-pass set (handoffs/JAWA-11/new-ads, his picks in
+// type.html) leads, ahead of the JAWA-10 curation.
 
 export type Ad = {
   /** the /w/<id> permalink */
@@ -24,11 +25,21 @@ const best = (id: string, campaign: string, alt: string): Omit<Ad, "rail"> => ({
 const more = (id: string, campaign: string, alt: string, w = 1080, h = 1350): Omit<Ad, "rail"> => ({
   id, campaign, alt, src: `/ads/more/${id}.webp`, sm: `/ads/more/${id}-440.webp`, w, h, spec: true,
 });
+const type = (id: string, campaign: string, alt: string): Omit<Ad, "rail"> => ({
+  id, campaign, alt, src: `/ads/type/${id}.webp`, sm: `/ads/type/${id}-480.webp`, w: 960, h: 1200, spec: true,
+});
 const palantir = (id: string, alt: string, w: number, h: number): Omit<Ad, "rail"> => ({
   id, campaign: "Palantir", alt, src: `/ads/palantir/${id}.webp`, sm: `/ads/palantir/${id}-sm.webp`, w, h, spec: true,
 });
 
 const LIST = [
+  type("linear-a", "Linear", "Purpose-built for planning. Linear spec ad, centre-pivot fields seen from above, one striped like the Linear mark."),
+  type("vercel-a", "Vercel", "From zero to millions. Vercel spec ad, a mountain's triangular shadow cast on haze at sunrise."),
+  type("cursor-a", "Cursor", "The new way to build software. Cursor spec ad, lit office windows drawing the Cursor mark on a night tower."),
+  type("perplexity-a", "Perplexity", "Where knowledge begins. Perplexity spec ad, the Perplexity mark in a stained-glass library skylight."),
+  type("elevenlabs-a", "ElevenLabs", "Create lifelike speech. ElevenLabs spec ad, two jetties over green water forming the ElevenLabs mark."),
+  type("vercel-b", "Vercel", "Agentic Infrastructure. Vercel spec ad, a triangular courtyard sky seen from below."),
+  type("elevenlabs-b", "ElevenLabs", "17,500+ voices in 90+ languages. ElevenLabs spec ad, two columns of lit windows on a dark tower."),
   best("shown-told", "Shown Media", "Shown, not told. Shown Media spec ad, the word shown lit on a night billboard."),
   best("shown-seen", "Shown Media", "One job. Get you seen. Shown Media spec ad, the Shown mark in the pupil of an eye."),
   more("hyperspell", "Hyperspell", "A brain for your company. Hyperspell spec ad."),

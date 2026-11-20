@@ -23,17 +23,17 @@ export default async function Ads({ searchParams }: Props) {
   const chunks = Array.from({ length: Math.ceil(list.length / 8) }, (_, i) => list.slice(i * 8, i * 8 + 8));
   return (
     <main className="ads">
-      <TitleTab as="h1" tag={String(ADS.length)} side={<span className="tab-say">Spec ads, made unasked</span>}>
+      <TitleTab as="h1" tag={String(ADS.length)} side={<span className="tab-say">Spec ads for real brands, made unasked.</span>}>
         Ads
       </TitleTab>
       <nav className="filters wrap" aria-label="Filter by campaign">
         <Link href="/ads" aria-current={!pick ? "page" : undefined} scroll={false}>
-          <span className="n">[{ADS.length}]</span> All
+          <span className="n">{ADS.length}</span> All
         </Link>
         <span className="filters-r">
           {tabs.map((t) => (
             <Link key={t} href={`/ads?c=${slug(t)}`} aria-current={pick === t ? "page" : undefined} scroll={false}>
-              <span className="n">[{ADS.filter((a) => campaignOf(a) === t).length}]</span> {t}
+              <span className="n">{ADS.filter((a) => campaignOf(a) === t).length}</span> {t}
             </Link>
           ))}
         </span>

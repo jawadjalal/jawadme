@@ -168,12 +168,12 @@ const PROJECTS_ALL: Project[] = [
   campaign("outpace", "Outpace", 2026, ["Their orange as a running track, wherever it fits."]),
   {
     slug: "derelict-depths",
-    name: "Derelict Depths",
+    name: "Fracture",
     year: 2026,
     lane: "roblox",
     disciplines: ["Game design", "3D", "UI", "Engineering"],
     link: { href: "/derelictdepths", label: "jawadjalal.com/derelictdepths" },
-    lines: ["A Roblox mining game I design and build.", "68 ores, six floors, one Mole King."],
+    lines: ["A Roblox mining game I design and build, formerly Derelict Depths.", "68 ores, six floors, one Mole King."],
     cover: m("/derelictdepths/img/poster-1280.jpg", 1280, 720, "Derelict Depths release art", "ink"),
     blocks: [
       { kind: "pair", media: [m("/derelictdepths/img/mole-king-1280.jpg", 1280, 720, "The Mole King", "ink"), m("/derelictdepths/img/ore-room-1280.jpg", 1280, 720, "An ore room", "ink")] },

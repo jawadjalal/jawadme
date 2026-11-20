@@ -18,12 +18,26 @@ export function RailPin({ children }: { children: React.ReactNode }) {
       const t = track.current!;
       p.classList.add("pinned");
       const dist = () => t.scrollWidth - p.clientWidth;
+      const caps = [...t.querySelectorAll<HTMLElement>(".rail-cap")];
+      const fade = () => {
+        const w = innerWidth;
+        const g = Math.max(20, (Math.min(w, 1920) / 480) * 4.5);
+        for (const c of caps) {
+          const r = c.getBoundingClientRect();
+          c.style.opacity = String(Math.max(0, Math.min(1, (r.left - g - 24) / 60, (w - r.right - g - 24) / 60)));
+        }
+      };
       gsap.to(t, {
         x: () => -dist(),
         ease: "none",
         scrollTrigger: { trigger: p, start: "top top", end: () => `+=${dist()}`, pin: true, scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1 },
+        onUpdate: fade,
       });
-      return () => p.classList.remove("pinned");
+      fade();
+      return () => {
+        p.classList.remove("pinned");
+        caps.forEach((c) => (c.style.opacity = ""));
+      };
     });
     return () => mm.revert();
   }, []);

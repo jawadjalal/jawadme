@@ -25,7 +25,7 @@ export function CalInline({ email }: { email: string }) {
   return (
     <div className="cal-box" data-state={state}>
       <div ref={host} className="cal-host" />
-      {state === "loading" ? <p className="lbl dim cal-note">[ Loading the calendar ]</p> : null}
+      {state === "loading" ? <p className="lbl dim cal-note">Loading the calendar</p> : null}
       {state === "failed" ? (
         <p className="cal-note">
           The calendar did not load. <a href={`https://cal.com/${CAL_LINK}?src=${src}`}>Open it on Cal.com</a> or email <a href={`mailto:${email}`}>{email}</a>.

@@ -49,7 +49,7 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
         {piece.spec ? <span className="tag">Spec</span> : null}
         {at ? (
           <span className="v-count">
-            [ {String(at.n).padStart(2, "0")} / {at.of} ]
+            {String(at.n).padStart(2, "0")} / {at.of}
           </span>
         ) : null}
       </header>

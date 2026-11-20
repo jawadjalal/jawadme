@@ -15,6 +15,7 @@ const nextConfig = {
   // the page moved to /derelictdepths when the game was renamed; every old link must keep working
   async redirects() {
     return [
+      { source: "/call", destination: "/cal", permanent: true },
       { source: "/minelight", destination: "/derelictdepths", permanent: true },
       { source: "/minelight/:path*", destination: "/derelictdepths/:path*", permanent: true },
       { source: "/mine-for-light", destination: "/derelictdepths", permanent: true },

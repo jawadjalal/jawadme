@@ -69,7 +69,7 @@ export function KeyView({ el, path }: { el: HTMLElement; path: string }) {
       </mesh>
       <group ref={cap}>
         <RoundedBox args={[2.1, 0.62, 2.1]} radius={0.2} smoothness={6} position={[0, 0, 0]}>
-          <meshPhysicalMaterial color="#ff4a12" roughness={0.32} clearcoat={1} clearcoatRoughness={0.18} />
+          <meshPhysicalMaterial color="#ff8a2a" roughness={0.32} clearcoat={1} clearcoatRoughness={0.18} />
         </RoundedBox>
         <Text font="/three/cabinet-800.woff" fontSize={0.36} letterSpacing={-0.03} color="#fff" anchorX="center" anchorY="middle" rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.315, 0]}>
           BOOK

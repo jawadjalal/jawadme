@@ -43,7 +43,7 @@ export function Placeholder({ label, ratio = "4 / 5", tone = "paper", art }: { l
     <div className={`ph hatch ${tone === "ink" ? "ph-ink" : ""}`} style={{ aspectRatio: ratio }}>
       {art ? <Image className="ph-art" src={art} alt="" width={1100} height={744} sizes="40vw" /> : null}
       <span className="marks"><i /></span>
-      <span className="lbl">[ Placeholder ]</span>
+      <span className="lbl">Placeholder</span>
       <span className="lbl dim">{label}</span>
     </div>
   );

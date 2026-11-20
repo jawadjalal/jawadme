@@ -31,7 +31,7 @@ export function Sequence({ frames, label }: { frames: Media[]; label: string }) 
         <Image key={f.src} src={f.src} width={f.w} height={f.h} alt={n === 0 ? f.alt : ""} sizes="(min-width: 768px) 60vw, 100vw" style={{ opacity: n === i ? 1 : 0 }} />
       ))}
       <span className="lbl seq-count">
-        [ {String(i + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")} ]
+        {String(i + 1).padStart(2, "0")} / {String(frames.length).padStart(2, "0")}
       </span>
       <span className="lbl seq-label">{label}</span>
       <i className="plate" />

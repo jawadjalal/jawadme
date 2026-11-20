@@ -21,17 +21,17 @@ export default async function Work({ searchParams }: Props) {
   const count = (l?: Lane) => (l ? PROJECTS.filter((p) => p.lane === l) : PROJECTS).filter((p) => !p.placeholder).length;
   return (
     <main className="work">
-      <TitleTab as="h1" tag={`${count()} projects`} side={<span className="tab-say">Brands, ads, 3D and Roblox games</span>}>
+      <TitleTab as="h1" tag={`${count()} projects`} side={<span className="tab-say">Brands, ads, 3D and Roblox games, designed and built.</span>}>
         Work
       </TitleTab>
       <nav className="filters wrap" aria-label="Filter by lane">
         <Link href="/work" aria-current={!lane ? "page" : undefined} scroll={false}>
-          <span className="n">[{count()}]</span> All
+          <span className="n">{count()}</span> All
         </Link>
         <span className="filters-r">
           {LANES.map((l) => (
             <Link key={l.key} href={`/work?f=${l.key}`} aria-current={lane === l.key ? "page" : undefined} scroll={false}>
-              <span className="n">[{count(l.key)}]</span> {l.label}
+              <span className="n">{count(l.key)}</span> {l.label}
             </Link>
           ))}
         </span>
@@ -43,7 +43,7 @@ export default async function Work({ searchParams }: Props) {
               <span className="card-meta">
                 <Badge n={i + 1} />
                 <span className="d-name">{p.name}</span>
-                <span className="lbl dim">[ {laneLabel(p.lane)} ]</span>
+                <span className="lbl dim">{laneLabel(p.lane)}</span>
               </span>
               <Placeholder label={p.placeholder} ratio="4 / 3" art={p.lane === "roblox" ? "/three/mark-brick.webp" : "/three/mark-felt.webp"} />
             </div>
@@ -53,7 +53,7 @@ export default async function Work({ searchParams }: Props) {
                 <Badge n={i + 1} />
                 <span className="d-name">{p.name}</span>
                 <span className="lbl dim">
-                  [ {laneLabel(p.lane)} ]{p.spec ? " [ Spec ]" : ""}
+                  {laneLabel(p.lane)}{p.spec ? " · Spec" : ""}
                 </span>
               </span>
               <Media m={p.cover} ratio="4 / 3" fit={p.cover.h > p.cover.w ? "contain" : "cover"} sizes="(min-width: 768px) 50vw, 100vw" />

@@ -73,8 +73,8 @@ export default function Home() {
           <span className="hf-a">
             <Clock />
           </span>
-          <span className="hf-b">[ Design / Ads / 3D / Roblox ]</span>
-          <span className="hf-c">[ S-01 ↘ ]</span>
+          <span className="hf-b">Design · Ads · 3D · Roblox</span>
+          <span className="hf-c">Scroll ↓</span>
         </div>
       </section>
 
@@ -89,7 +89,7 @@ export default function Home() {
               <span className="card-meta">
                 <Badge n={i + 1} />
                 <span className="d-name">{p.name}</span>
-                <span className="lbl dim">[ {laneLabel(p.lane)} ]</span>
+                <span className="lbl dim">{laneLabel(p.lane)}</span>
               </span>
             </TLink>
           ))}
@@ -132,20 +132,20 @@ export default function Home() {
       </section>
 
       <section className="room" data-room="ink" aria-labelledby="room-h">
-        <TitleTab id="room-h" tag="Lights off" side={<Link href="/derelictdepths">Derelict Depths ↗</Link>}>
+        <TitleTab id="room-h" tag="Lights off" side={<Link href="/derelictdepths">The game ↗</Link>}>
           3D &amp; Roblox
         </TitleTab>
         <div className="g16 room-grid">
           <div className="room-seq">
-            <Sequence frames={[DD.cover, ...DD.blocks.flatMap((b) => ("media" in b ? (Array.isArray(b.media) ? b.media : [b.media]) : []))].filter((m) => m.w / m.h > 1.7)} label="[ Derelict Depths · stills until the A4 diorama turntable ]" />
+            <Sequence frames={[DD.cover, ...DD.blocks.flatMap((b) => ("media" in b ? (Array.isArray(b.media) ? b.media : [b.media]) : []))].filter((m) => m.w / m.h > 1.7)} label="Fracture · stills until the A4 diorama turntable" />
             <span className="room-name">
-              <span className="d-name">Derelict Depths</span>
-              <span className="lbl dim">[ Roblox · 2026 ]</span>
+              <span className="d-name">Fracture</span>
+              <span className="lbl dim">Roblox · 2026</span>
             </span>
           </div>
           <div className="room-side">
             <figure>
-              <Media m={{ src: "/derelictdepths/img/look-king-front-1280.jpg", w: 1280, h: 873, alt: "The Mole King, modelled for Derelict Depths" }} ratio="4 / 5" sizes="25vw" />
+              <Media m={{ src: "/derelictdepths/img/look-king-front-1280.jpg", w: 1280, h: 873, alt: "The Mole King, modelled for Fracture" }} ratio="4 / 5" sizes="25vw" />
               <figcaption className="lbl">Mole King <span className="dim">· model</span></figcaption>
             </figure>
             <figure>

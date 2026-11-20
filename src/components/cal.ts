@@ -1,7 +1,7 @@
 "use client";
 
 // One Cal.com booking for the whole site: the 15 minute call (BOOK in felt/copy). Every CTA is a plain link to
-// /call?src=<tag>, so it works without JavaScript; once the page has loaded, openBooking() opens the same event in
+// /cal?src=<tag>, so it works without JavaScript; once the page has loaded, openBooking() opens the same event in
 // Cal's popup instead. The tag rides into the embed config as `src` (prefills the hidden booking question with that
 // identifier) and `metadata[src]` (lands on the booking's metadata), so each booking records where it came from.
 
@@ -15,9 +15,12 @@ type Cal = Queue & { ns: Record<string, Queue>; loaded?: boolean };
 export const CAL_LINK = new URL(BOOK).pathname.replace(/^\//, "");
 export const NS = "call";
 export const THEME = {
-  theme: "light",
+  theme: "dark",
   layout: "month_view",
-  cssVarsPerTheme: { light: { "cal-brand": "#0a0a0a", "cal-brand-emphasis": "#262626", "cal-brand-text": "#ffffff" } },
+  cssVarsPerTheme: {
+    light: { "cal-brand": "#0a0a0a", "cal-brand-emphasis": "#262626", "cal-brand-text": "#ffffff" },
+    dark: { "cal-brand": "#ff8a2a", "cal-brand-emphasis": "#ffb43a", "cal-brand-text": "#07060b", "cal-bg": "#110f1b", "cal-bg-muted": "#1c1a2b", "cal-bg-emphasis": "#3a3852", "cal-border": "#3a3852", "cal-border-subtle": "#2a2840", "cal-text": "#ede4d3", "cal-text-muted": "#b9b0c9" },
+  },
 } as const;
 
 /** A channel tag from a query string or a caller: lower-case letters, digits and dashes, else "direct". */
@@ -89,5 +92,5 @@ export const openBooking = (src: string) => (e: React.MouseEvent<HTMLAnchorEleme
   calApi(src)("modal", { calLink: CAL_LINK, config: calConfig(src) });
 };
 
-/** The link every CTA uses: /call with its channel. */
-export const callHref = (src: string) => `/call?src=${src}`;
+/** The link every CTA uses: /cal with its channel. */
+export const callHref = (src: string) => `/cal?src=${src}`;
