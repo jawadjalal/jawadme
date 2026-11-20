@@ -3,6 +3,7 @@ const nextConfig = {
   images: {
     // /capy asks the optimizer for 256 and 640 wide copies of its pictures; keep them a week
     minimumCacheTTL: 604800,
+    qualities: [75, 86, 90],
     remotePatterns: [
       { protocol: "https", hostname: "www.google.com" },
       { protocol: "https", hostname: "icons.duckduckgo.com" },
