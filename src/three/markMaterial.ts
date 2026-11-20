@@ -40,48 +40,53 @@ float noise(vec3 x) {
 vec3 L = normalize(vec3(-0.5, 0.75, 0.7));
 
 vec3 paper(vec3 n) {
-  float d = clamp(dot(n, L) * 0.7 + 0.42, 0.0, 1.0);
-  vec2 g = gl_FragCoord.xy / (4.0 * uDpr);
-  g = mat2(0.707, -0.707, 0.707, 0.707) * g;
-  float r = sqrt(1.0 - d) * 0.66;
-  float dotm = 1.0 - smoothstep(r - 0.07, r + 0.07, length(fract(g) - 0.5));
-  vec3 col = mix(vec3(0.965, 0.953, 0.925), INK, dotm * 0.92);
-  float chamfer = smoothstep(0.2, 0.35, vNo.z) * smoothstep(0.2, 0.35, length(vNo.xy));
-  return mix(col, SIGNAL * (0.75 + 0.3 * d), chamfer);
+  float d = clamp(dot(n, L) * 0.5 + 0.5, 0.0, 1.0);
+  vec3 h = normalize(L + vV);
+  float sheen = pow(max(dot(n, h), 0.0), 18.0) * 0.06;
+  float grain = noise(vO * 220.0) * 0.03 + noise(vO * 18.0) * 0.025;
+  float occ = 0.82 + 0.18 * smoothstep(-1.6, 1.4, vO.y);
+  vec3 col = mix(vec3(0.6, 0.58, 0.55), vec3(0.965, 0.955, 0.935), pow(d, 1.3)) * occ;
+  return col + sheen - grain;
 }
 
 vec3 felt(vec3 n) {
-  float w = clamp((dot(n, L) + 0.55) / 1.55, 0.0, 1.0);
-  float fib = noise(vO * 90.0) * 0.55 + noise(vO * 210.0) * 0.45;
-  vec3 base = vec3(0.98, 0.72, 0.06);
-  vec3 col = base * (0.42 + 0.68 * w) * (0.86 + 0.22 * fib);
-  float fuzz = pow(1.0 - max(dot(n, vV), 0.0), 2.2);
-  return col + vec3(1.0, 0.9, 0.62) * fuzz * 0.32;
+  float w = clamp((dot(n, L) + 0.4) / 1.4, 0.0, 1.0);
+  float fib = noise(vO * 70.0) * 0.5 + noise(vO * 190.0) * 0.5;
+  vec3 base = vec3(0.16, 0.15, 0.14);
+  vec3 col = base * (0.3 + 0.82 * w) * (0.8 + 0.32 * fib);
+  float fuzz = pow(1.0 - max(dot(n, vV), 0.0), 2.0);
+  return col * 2.2 + vec3(0.62, 0.6, 0.57) * fuzz * 0.32;
 }
 
 vec3 voxel(vec3 n) {
-  float k = 5.2;
-  vec3 c = floor(vO * k + 0.5);
-  vec3 lo = fract(vO * k + 0.5);
+  float k = 2.7;
+  vec3 q = vO * k + vec3(0.5, 0.5, 0.25);
+  vec3 c = floor(q);
+  vec3 lo = fract(q);
   vec3 m = min(lo, 1.0 - lo);
   vec3 an = abs(vNo);
   float e = an.z > 0.6 ? min(m.x, m.y) : (an.x > 0.6 ? min(m.y, m.z) : min(m.x, m.z));
-  float h = hash(c + 3.1);
-  vec3 col = h < 0.26 ? vec3(0.77, 0.16, 0.11) : h < 0.48 ? vec3(0.05, 0.41, 0.67) : h < 0.66 ? vec3(0.29, 0.59, 0.29) : h < 0.84 ? vec3(0.96, 0.8, 0.19) : vec3(0.94, 0.95, 0.95);
-  float d = floor((dot(n, L) * 0.5 + 0.5) * 4.0) / 4.0;
-  col *= 0.5 + 0.6 * d;
-  return col * mix(0.55, 1.0, smoothstep(0.02, 0.08, e));
+  float h = hash(c + 7.3);
+  vec3 col = SIGNAL * (0.86 + 0.14 * h);
+  float d = clamp(dot(n, L) * 0.6 + 0.5, 0.0, 1.0);
+  col *= 0.45 + 0.65 * d;
+  float groove = smoothstep(0.015, 0.05, e);
+  float lip = smoothstep(0.05, 0.12, e);
+  col *= mix(0.35, 1.0, groove);
+  col += (1.0 - lip) * groove * 0.12;
+  return col;
 }
 
 vec3 glass(vec3 n) {
-  float f = pow(1.0 - max(dot(n, vV), 0.0), 3.0);
-  vec3 milk = vec3(0.78, 0.83, 0.86);
-  vec3 col = mix(vec3(0.42, 0.48, 0.53), milk, clamp(dot(n, L) * 0.5 + 0.55, 0.0, 1.0));
-  float ui = step(0.86, fract(vO.y * 3.4)) * step(abs(vO.x + 0.1), 0.55) * step(0.6, abs(vNo.z));
-  col = mix(col, vec3(0.96, 0.97, 0.98), ui * 0.55);
+  float f = pow(1.0 - max(dot(n, vV), 0.0), 2.0);
+  float d = clamp(dot(n, L) * 0.5 + 0.5, 0.0, 1.0);
+  float depth = smoothstep(-1.5, 1.5, vO.y + vO.x * 0.4);
+  vec3 col = mix(vec3(0.33, 0.47, 0.56), vec3(0.72, 0.84, 0.9), depth * 0.6 + d * 0.4);
+  col += noise(vO * 34.0) * 0.025;
   vec3 h = normalize(L + vV);
-  float spec = pow(max(dot(n, h), 0.0), 90.0);
-  return mix(col, vec3(1.0), f * 0.7) + spec * 0.9;
+  float spec = pow(max(dot(n, h), 0.0), 140.0);
+  float band = smoothstep(0.14, 0.0, abs(vO.x + vO.y * 0.5 - 0.25)) * step(0.6, abs(vNo.z));
+  return mix(col, vec3(0.97, 0.99, 1.0), f * 0.8) + spec * 1.2 + band * 0.12;
 }
 
 vec3 look(float i, vec3 n) {

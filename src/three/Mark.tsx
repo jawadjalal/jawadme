@@ -20,6 +20,7 @@ export function MarkView({ el }: { el: HTMLElement }) {
   const dpr = useThree((s) => s.viewport.dpr);
   const st = useRef({ mix: 0, px: 0, py: 0, squash: 0, vel: 0, born: 0, lane: -1 });
   const hero = el.closest<HTMLElement>("[data-hero]") ?? el;
+  const still = useMemo(() => Number(new URLSearchParams(location.search).get("still") ?? -1), []);
 
   useEffect(() => {
     const s = st.current;
@@ -43,9 +44,9 @@ export function MarkView({ el }: { el: HTMLElement }) {
     s.born += dt;
     const r = hero.getBoundingClientRect();
     const p = Math.min(Math.max(-r.top / (r.height * 0.7), 0), 1);
-    const idle = Math.floor(s.born / 2.6) % 4;
-    const target = p > 0.015 ? p * 3 : s.born < 1.6 ? 0 : idle;
-    s.mix = damp(s.mix, target, p > 0.015 ? 7 : 2.2, dt);
+    const idle = Math.floor(s.born / 3.2) % 4;
+    const target = still >= 0 ? still : p > 0.015 ? p * 3 : s.born < 2 ? 0 : idle;
+    s.mix = still >= 0 ? still : damp(s.mix, target, p > 0.015 ? 7 : 3.4, dt);
     mat.uniforms.uMix.value = s.mix;
     mat.uniforms.uTime.value = state.clock.elapsedTime;
     mat.uniforms.uDpr.value = dpr;
@@ -56,7 +57,7 @@ export function MarkView({ el }: { el: HTMLElement }) {
     }
     s.vel += (-s.squash * 160 - s.vel * 11) * dt;
     s.squash += s.vel * dt;
-    const intro = Math.min(s.born / 1.4, 1);
+    const intro = still >= 0 ? 1 : Math.min(s.born / 1.4, 1);
     const ease = 1 - Math.pow(1 - intro, 4);
     g.rotation.y = damp(g.rotation.y, -0.42 + p * 0.61 + s.px * 0.22 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05 + (1 - ease) * -1.6, 6, dt);
     g.rotation.x = damp(g.rotation.x, 0.1 + s.py * 0.08, 6, dt);
@@ -67,7 +68,7 @@ export function MarkView({ el }: { el: HTMLElement }) {
 
   return (
     <>
-      <PerspectiveCamera makeDefault position={[0, 0.2, 10]} fov={24} />
+      <PerspectiveCamera makeDefault position={[0, 0.1, 8.2]} fov={23} />
       <group ref={group}>
         <mesh geometry={geo} material={mat} />
       </group>

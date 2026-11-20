@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 import { BookLink } from "@/components/BookLink";
 
 type Piece = { id: string; src: string; w: number; h: number; alt: string; group: string; spec: boolean };
-type At = { n: number; of: number; prev: string; next: string } | null;
+type At = { n: number; of: number; prev: string; next: string; strip: { id: string; sm: string; alt: string }[] } | null;
 
 /** The piece full size on ink, its name and campaign in mono, previous and next by arrow keys or swipe, Escape
  *  back to the wall, and the call block in the corner. */
@@ -42,8 +42,9 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
     >
       <header className="v-top lbl">
         <Link href="/ads" className="v-close" aria-label="Back to all ads">
-          ✕ Close
+          ← All ads
         </Link>
+        <h1 className="v-line">{headline}</h1>
         <span>{piece.group}</span>
         {piece.spec ? <span className="tag">Spec</span> : null}
         {at ? (
@@ -66,7 +67,15 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
             </Link>
           </nav>
         ) : null}
-        <p className="v-line">{headline}</p>
+        {at ? (
+          <nav className="v-strip" aria-label="More ads">
+            {at.strip.map((s) => (
+              <Link key={s.id} href={`/w/${s.id}`} replace scroll={false} aria-current={s.id === piece.id ? "page" : undefined}>
+                <Image src={s.sm} width={88} height={110} alt={s.alt} sizes="44px" />
+              </Link>
+            ))}
+          </nav>
+        ) : null}
         <BookLink src="viewer" className="dock-cta v-cta" cursor>
           <span>
             Book a call <span className="arr">↗</span>

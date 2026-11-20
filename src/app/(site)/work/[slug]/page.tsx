@@ -72,6 +72,13 @@ export default async function Case({ params }: Props) {
       <TitleTab as="h1" tag={laneLabel(p.lane)}>
         {p.name}
       </TitleTab>
+      <div className="g16 case-lines">
+        {p.lines.map((l) => (
+          <p key={l} className="t-line" data-lines="">
+            {l}
+          </p>
+        ))}
+      </div>
       <dl className="g16 spec">
         {rows.map(([k, v]) => (
           <div key={k}>
@@ -91,13 +98,6 @@ export default async function Case({ params }: Props) {
       <div className={`wrap case-cover ${tall ? "tall hatch" : ""}`}>
         <Media m={p.cover} vt={`cover-${p.slug}`} priority sizes={tall ? "40vw" : "100vw"} />
       </div>
-      <div className="g16 case-lines">
-        {p.lines.map((l) => (
-          <p key={l} className="t-line" data-lines="">
-            {l}
-          </p>
-        ))}
-      </div>
       <div className="wrap case-blocks">
         {p.blocks.map((b, i) => (
           <BlockView key={i} b={b} />
@@ -105,8 +105,7 @@ export default async function Case({ params }: Props) {
       </div>
       <TLink href={`/work/${next.slug}`} vt={`cover-${next.slug}`} className="next wrap" data-cursor="view">
         <span className="next-head">
-          <span className="lbl dim">[ Next project ]</span>
-          <span className="d-tab">{next.name} ↗</span>
+          <span className="d-tab">Next: {next.name} ↗</span>
         </span>
         <Media m={next.cover} ratio="21 / 9" sizes="100vw" fit={portrait(next.cover) ? "contain" : "cover"} />
       </TLink>

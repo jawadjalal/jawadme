@@ -29,7 +29,19 @@ function Nav({ onPick }: { onPick?: () => void }) {
 export function Dock() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const [hide, setHide] = useState(false);
   useEffect(() => setOpen(false), [path]);
+  useEffect(() => {
+    let last = scrollY;
+    const on = () => {
+      const y = scrollY;
+      if (Math.abs(y - last) < 6) return;
+      setHide(y > last && y > 320);
+      last = y;
+    };
+    addEventListener("scroll", on, { passive: true });
+    return () => removeEventListener("scroll", on);
+  }, []);
   if (path === "/call" || path.startsWith("/w/")) return null;
   return (
     <>
@@ -39,7 +51,7 @@ export function Dock() {
         </Suspense>
         <span className="lbl">[ ● Booking {SITE.bookingMonth} · {SITE.detail} ]</span>
       </div>
-      <nav className="dock" aria-label="Site">
+      <nav className="dock" aria-label="Site" data-hide={hide && !open}>
         <Link href="/" className="dock-mark" aria-label="Jawad Jalal, home">
           <svg viewBox="0 0 40 24" aria-hidden="true">
             <path fill="currentColor" d="M8 0h10v15.5C18 21 14.6 24 9.3 24 4 24 1 21.2 0 16.8l6.3-1.6c.4 1.9 1.4 3 3 3 1.6 0 2.3-1 2.3-3.1V5.6H8V0Zm20 0h10v15.5C38 21 34.6 24 29.3 24c-5.3 0-8.3-2.8-9.3-7.2l6.3-1.6c.4 1.9 1.4 3 3 3 1.6 0 2.3-1 2.3-3.1V5.6H28V0Z" />

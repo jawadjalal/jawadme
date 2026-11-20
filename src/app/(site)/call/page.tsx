@@ -21,11 +21,14 @@ export default function Call() {
             Book a call
           </TitleTab>
           <div className="call-meta">
-            <p className="lbl">[ 15 min · video · London time shown in yours ]</p>
+            <p className="call-lead">A 15 minute video call with Jawad. Times show in your zone.</p>
             <p>
               <span className="dim">Prefer email? </span>
               <a href={`mailto:${SITE.email}?subject=Project`}>{SITE.email}</a>
             </p>
+            <a href="https://cal.com/jawad-jalal-hesqbk/15min?src=call-page" className="call-open" target="_blank" rel="noopener">
+              Open the calendar on Cal.com ↗
+            </a>
             <a href="/" className="lbl call-home">
               ← Back to the work
             </a>

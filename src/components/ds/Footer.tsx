@@ -8,7 +8,6 @@ export function Footer({ src, sheet }: { src: string; sheet: string }) {
     <footer className="foot hair">
       <div className="g16 foot-cta">
         <BookLink src={src} className="foot-big" cursor>
-          <span className="lbl dim">[ Next step ]</span>
           <span className="d-cta" data-lines="">
             Book a call ↗
           </span>

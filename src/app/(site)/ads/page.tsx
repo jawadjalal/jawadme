@@ -23,7 +23,7 @@ export default async function Ads({ searchParams }: Props) {
   const chunks = Array.from({ length: Math.ceil(list.length / 8) }, (_, i) => list.slice(i * 8, i * 8 + 8));
   return (
     <main className="ads">
-      <TitleTab as="h1" tag={String(ADS.length)}>
+      <TitleTab as="h1" tag={String(ADS.length)} side={<span className="tab-say">Spec ads, made unasked</span>}>
         Ads
       </TitleTab>
       <nav className="filters wrap" aria-label="Filter by campaign">

@@ -38,9 +38,10 @@ export function Media({
 }
 
 /** A marked stand-in where Jawad's media is still to come. Never pretends to be work. */
-export function Placeholder({ label, ratio = "4 / 5", tone = "paper" }: { label: string; ratio?: string; tone?: "paper" | "ink" }) {
+export function Placeholder({ label, ratio = "4 / 5", tone = "paper", art }: { label: string; ratio?: string; tone?: "paper" | "ink"; art?: string }) {
   return (
     <div className={`ph hatch ${tone === "ink" ? "ph-ink" : ""}`} style={{ aspectRatio: ratio }}>
+      {art ? <Image className="ph-art" src={art} alt="" width={1100} height={744} sizes="40vw" /> : null}
       <span className="marks"><i /></span>
       <span className="lbl">[ Placeholder ]</span>
       <span className="lbl dim">{label}</span>

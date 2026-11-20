@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  devIndicators: false,
   images: {
     // /capy asks the optimizer for 256 and 640 wide copies of its pictures; keep them a week
     minimumCacheTTL: 604800,

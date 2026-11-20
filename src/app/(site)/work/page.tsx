@@ -21,7 +21,7 @@ export default async function Work({ searchParams }: Props) {
   const count = (l?: Lane) => (l ? PROJECTS.filter((p) => p.lane === l) : PROJECTS).filter((p) => !p.placeholder).length;
   return (
     <main className="work">
-      <TitleTab as="h1" tag={`${count()} projects`}>
+      <TitleTab as="h1" tag={`${count()} projects`} side={<span className="tab-say">Brands, ads, 3D and Roblox games</span>}>
         Work
       </TitleTab>
       <nav className="filters wrap" aria-label="Filter by lane">
@@ -45,7 +45,7 @@ export default async function Work({ searchParams }: Props) {
                 <span className="d-name">{p.name}</span>
                 <span className="lbl dim">[ {laneLabel(p.lane)} ]</span>
               </span>
-              <Placeholder label={p.placeholder} ratio="4 / 3" />
+              <Placeholder label={p.placeholder} ratio="4 / 3" art={p.lane === "roblox" ? "/three/mark-brick.webp" : "/three/mark-felt.webp"} />
             </div>
           ) : (
             <TLink key={p.slug} href={`/work/${p.slug}`} vt={`cover-${p.slug}`} className="card" data-cursor="view">

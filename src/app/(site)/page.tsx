@@ -61,7 +61,7 @@ export default function Home() {
           </div>
           <div className="hero-stage" data-view="mark">
             <div className="poster-3d mark-poster" aria-hidden="true">
-              <Image src="/three/mark-poster.webp" alt="" width={1400} height={1200} priority sizes="(min-width: 768px) 66vw, 100vw" />
+              <Image src="/three/mark-poster.webp" alt="" width={1605} height={1086} priority sizes="(min-width: 768px) 66vw, 100vw" />
             </div>
             <span className="marks" aria-hidden="true">
               <i />
@@ -95,12 +95,6 @@ export default function Home() {
           ))}
         </div>
         <div className="sel-rows">
-          <div className="g16 sel-head lbl dim">
-            <span className="c-name">Project</span>
-            <span className="c-media">Media</span>
-            <span className="c-disc">Discipline</span>
-            <span className="c-year">Year</span>
-          </div>
           {rows.map((p, i) => (
             <TLink key={p.slug} href={`/work/${p.slug}`} vt={`cover-${p.slug}`} className="g16 sel-row hair" data-cursor="view">
               <span className="c-name">
@@ -126,7 +120,6 @@ export default function Home() {
             <Link key={a.id} href={`/w/${a.id}`} className="rail-item" data-cursor="view">
               <Media m={{ src: a.src, w: a.w, h: a.h, alt: a.alt }} ratio="4 / 5" fit={fitsFrame(a) ? "cover" : "contain"} sizes="(min-width: 1024px) 28vw, 78vw" delay={(i % 4) * 60} />
               <span className="lbl rail-cap">
-                <span>{String(i + 1).padStart(2, "0")}</span>
                 <span>{a.campaign}</span>
                 <span className="dim">Spec</span>
               </span>
@@ -156,11 +149,11 @@ export default function Home() {
               <figcaption className="lbl">Mole King <span className="dim">· model</span></figcaption>
             </figure>
             <figure>
-              <Placeholder label="3D piece 01 · turntable (A5)" tone="ink" />
+              <Placeholder label="3D piece 01 · turntable (A5)" tone="ink" art="/three/mark-felt.webp" />
               <figcaption className="lbl dim">Awaiting render</figcaption>
             </figure>
             <figure>
-              <Placeholder label="3D piece 02 · turntable (A5)" tone="ink" />
+              <Placeholder label="3D piece 02 · turntable (A5)" tone="ink" art="/three/mark-glass.webp" />
               <figcaption className="lbl dim">Awaiting render</figcaption>
             </figure>
           </div>
@@ -168,7 +161,7 @@ export default function Home() {
       </section>
 
       <section className="clients wrap" aria-labelledby="cl-h">
-        <h2 id="cl-h" className="lbl dim">[ Worked with ]</h2>
+        <h2 id="cl-h" className="cl-h">Worked with</h2>
         <ul className="clients-row">
           {[
             ["/logos/menufit.png", "MenuFit"],
