@@ -31,8 +31,6 @@ export const calConfig = (src: string) => ({ layout: THEME.layout, theme: THEME.
 let current = "direct";
 let wired = false;
 
-// TODO: book_open and booked go to Vercel Analytics custom events, which need the Vercel Pro plan. If the project is
-// on Hobby, send these two events to PostHog or Plausible instead (redesign plan, section 13).
 export const trackBooking = (event: "book_open" | "booked", src: string) => track(event, { src });
 
 /** Cal.com's documented loader, typed: calls queue until embed.js arrives and replays them. */
