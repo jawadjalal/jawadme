@@ -72,7 +72,7 @@ export const POSTS: Post[] = [
         <h2>If you've built something</h2>
         <p>
           We're booking November launches now. If your app is close and you want launch day to
-          match the work you put in, <a href="https://ignura.com/call">book a free 15-min call</a>.
+          match the work you put in, <a href="/call?src=blog">book a free 15-min call</a>.
           Or email <a href="mailto:hello@ignura.com">hello@ignura.com</a>.
         </p>
       </>
