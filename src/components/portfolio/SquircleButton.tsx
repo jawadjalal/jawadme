@@ -60,7 +60,7 @@ export function SquircleButton({
   className?: string;
   /** an accessible name when the visible label needs more context */
   label?: string;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const external = /^https?:/.test(href);

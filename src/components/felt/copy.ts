@@ -5,7 +5,7 @@
 //
 // Facts only. Each number here was read from a live page or a repo; the source sits beside it.
 
-export const BOOK = "https://cal.com/jawad-jalal-hesqbk/intro-call-with-ignura";
+export const BOOK = "https://cal.com/jawad-jalal-hesqbk/15min";
 export const EMAIL = "hijawadjalal@gmail.com";
 export const CV = "/jawad-jalal-cv.pdf";
 
