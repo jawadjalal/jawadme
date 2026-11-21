@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
-import { Art } from "@/components/ds/Art";
+import { Art, hasArt } from "@/components/ds/Art";
 import { ADS } from "@/content/ads";
 import { SITE } from "@/content/site";
 
 // The home hero. The name is set as a mark across the full width; one crystal seam draws down through "Mastermind",
 // splits it a few pixels along the cut and cools to a hairline that stays. The ember bar of facts wipes in under it,
-// the statement stands beside the name, and the painted panel opens below with the call at its foot. The wall of ads sits right under the hero and
+// the statement stands beside the name with the call under it, and the painted panel, once its file exists, opens below. The wall of ads sits right under the hero and
 // drifts; each ad opens in the viewer. Reduced motion: everything at rest and no seam.
 
 const SUB = "Hi! I'm Jawad Jalal. I'm 15 and in London, designing and building things.";
@@ -45,6 +45,13 @@ const chars = (w: string, from: number) =>
   ));
 
 export function Hero() {
+  const art = hasArt("hero");
+  const book = (
+    <BookLink src="home-hero" className="hero-who" cursor>
+      <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="52px" priority />
+      <span>Book a 15 min call ↗</span>
+    </BookLink>
+  );
   return (
     <section className="hero" data-hero="">
       <div className="hero-top">
@@ -61,6 +68,7 @@ export function Hero() {
             </svg>
           </span>
         </h1>
+        <div className="hero-side">
         <p className="hero-say" aria-label={SUB}>
           {SUB.split(" ").map((w, i) => (
             <span key={i}>
@@ -70,22 +78,20 @@ export function Hero() {
             </span>
           ))}
         </p>
+        {art ? null : book}
+        </div>
       </div>
       <div className="bar hero-bar">
         <span>Jawad Jalal</span>
-        <span className="hide-s">[ Brands, ads, 3D, Roblox ]</span>
+        <span className="hide-s">Brands, ads, 3D and Roblox</span>
         <span>London</span>
-        <span>{SITE.available}</span>
       </div>
-      <div className="hero-stage">
-        <Art k="hero" priority className="hero-art" />
-        <div className="hero-over">
-          <BookLink src="home-hero" className="hero-who" cursor>
-            <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="52px" priority />
-            <span>Book a 15 min call ↗</span>
-          </BookLink>
+      {art ? (
+        <div className="hero-stage">
+          <Art k="hero" priority className="hero-art" />
+          <div className="hero-over">{book}</div>
         </div>
-      </div>
+      ) : null}
     </section>
   );
 }

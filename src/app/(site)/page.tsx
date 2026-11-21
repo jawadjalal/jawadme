@@ -8,9 +8,9 @@ import { Media } from "@/components/ds/Media";
 import { RailPin } from "@/components/ds/RailPin";
 import { Sequence } from "@/components/ds/Sequence";
 import { TLink } from "@/components/ds/TLink";
-import { Badge, TitleTab } from "@/components/ds/TitleTab";
+import { TitleTab } from "@/components/ds/TitleTab";
 import { RAIL, fitsFrame } from "@/content/ads";
-import { SITE } from "@/content/site";
+import { EXPERIENCE, FIGURES, SITE } from "@/content/site";
 import { SELECTED, laneLabel, projectBySlug } from "@/content/work";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
@@ -30,16 +30,43 @@ export default function Home() {
       <Hero />
       <AdWall />
 
+      <section className="xp" aria-labelledby="xp-h">
+        <TitleTab id="xp-h" tag="Where I've worked" side={<a href={SITE.cv}>CV ↗</a>}>
+          Experience
+        </TitleTab>
+        <ol className="xp-rows">
+          {EXPERIENCE.map((x, i) => (
+            <li key={x.co} data-in="" style={{ "--i": i } as React.CSSProperties}>
+              <TLink href={x.href} vt={"cover-" + x.href.split("/").pop()} className="g16 xp-row" data-cursor="view">
+                <span className="xp-co">{x.co}</span>
+                <span className="xp-role">{x.role}</span>
+                <span className="xp-yr">{x.years}</span>
+                <span className="xp-go" aria-hidden="true">
+                  →
+                </span>
+              </TLink>
+            </li>
+          ))}
+        </ol>
+        <div className="g16 figs">
+          {FIGURES.map((f, i) => (
+            <div key={f.l} className="fig" data-in="" style={{ "--i": i } as React.CSSProperties}>
+              <p className="fig-n">{f.n}</p>
+              <p className="fig-l">{f.l}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="sel" aria-labelledby="sel-h">
-        <TitleTab id="sel-h" tag={String(SELECTED.length).padStart(2, "0")} side={<Link href="/work">All work ↗</Link>}>
+        <TitleTab id="sel-h" tag={SELECTED.length + " projects"} side={<Link href="/work">All work ↗</Link>}>
           Selected work
         </TitleTab>
         <div className="g16 sel-big">
-          {big.map((p, i) => (
+          {big.map((p) => (
             <TLink key={p.slug} href={"/work/" + p.slug} vt={"cover-" + p.slug} className="card" data-cursor="view">
               <Media m={p.cover} ratio="4 / 5" sizes="(min-width: 768px) 50vw, 100vw" />
               <span className="card-meta">
-                <Badge n={i + 1} />
                 <span className="d-name">{p.name}</span>
                 <span className="lbl dim">{laneLabel(p.lane)}</span>
               </span>
@@ -47,10 +74,9 @@ export default function Home() {
           ))}
         </div>
         <div className="sel-rows">
-          {rows.map((p, i) => (
+          {rows.map((p) => (
             <TLink key={p.slug} href={"/work/" + p.slug} vt={"cover-" + p.slug} className="g16 sel-row hair" data-cursor="view">
               <span className="c-name">
-                <Badge n={i + 3} />
                 <span className="d-name">{p.name}</span>
               </span>
               <span className="c-media">
@@ -67,7 +93,7 @@ export default function Home() {
       </section>
 
       <section className="rail" aria-labelledby="rail-h">
-        <TitleTab id="rail-h" tag={String(RAIL.length)} side={<Link href="/ads">All ads ↗</Link>}>
+        <TitleTab id="rail-h" tag={RAIL.length + " spec ads"} side={<Link href="/ads">All ads ↗</Link>}>
           Ads
         </TitleTab>
         <RailPin>

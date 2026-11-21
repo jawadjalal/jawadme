@@ -45,7 +45,7 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
         <Link href="/ads" className="v-close" aria-label="Back to all ads">
           ← All ads
         </Link>
-        {at ? <span>{String(at.n).padStart(2, "0")} / {at.of}</span> : null}
+        {at ? <span>{at.n} / {at.of}</span> : null}
       </header>
       <div className="v-main">
         <div className="v-stage">

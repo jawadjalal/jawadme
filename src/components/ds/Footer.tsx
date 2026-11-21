@@ -22,7 +22,7 @@ export function Footer({ src }: { src: string }) {
           </p>
         </div>
         <nav className="sign" aria-label="Where to next" data-in="">
-          <Art k="sign" sizes="(min-width: 768px) 30vw, 70vw" className="sign-art" />
+          <Art k="sign" sizes="(min-width: 768px) 30vw, 70vw" className="sign-art" fallback={<span className="sign-post" aria-hidden="true" />} />
           <ol className="sign-arms">
             {ARMS.map((a, i) => {
               const book = i === ARMS.length - 1;

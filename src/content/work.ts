@@ -2,8 +2,7 @@
 // the JSON-LD and /llms.txt all read from here. Ad campaigns are built from the ad curation in ads.ts, so a new
 // curation changes the ad case studies too.
 //
-// Rules: at most three short lines per project, true facts only. Spec work says so. A placeholder is a lane slot
-// waiting for Jawad's media: it shows as a marked card and has no page.
+// Rules: at most three short lines per project, true facts only. Spec work says so.
 
 import sizes from "./feed-sizes.json";
 import { adsOf } from "./ads";
@@ -22,7 +21,8 @@ export type Block =
   | { kind: "pair"; media: [Media, Media] }
   | { kind: "inset"; media: Media }
   | { kind: "grid"; media: Media[] }
-  | { kind: "sequence"; media: Media };
+  | { kind: "sequence"; media: Media }
+  | { kind: "compare"; title: string; before: Media; after: Media };
 
 export type Project = {
   slug: string;
@@ -31,13 +31,15 @@ export type Project = {
   lane: Lane;
   disciplines: string[];
   client?: string;
+  /** Jawad's title there, as his CV gives it */
+  role?: string;
   link?: { href: string; label: string };
   spec?: boolean;
   lines: [string] | [string, string] | [string, string, string];
   cover: Media;
+  /** up to three figures, each traceable to the CV or his files */
+  figs?: { n: string; l: string }[];
   blocks: Block[];
-  /** a lane slot waiting for media: a marked card, no page */
-  placeholder?: string;
 };
 
 const fd = (file: string, alt: string): Media => {
@@ -72,21 +74,41 @@ const PROJECTS_ALL: Project[] = [
     year: 2026,
     lane: "brand-web",
     client: "MenuFit",
-    disciplines: ["Product design", "App screens"],
+    role: "Product designer",
+    disciplines: ["Product design", "App screens", "Components"],
     link: { href: "https://menufit.com", label: "menufit.com" },
-    lines: ["Designed for 1.5M users.", "The app for eating out healthy, light and dark."],
+    lines: [
+      "The app for eating out healthy: a healthy menu for every restaurant, with macros and a fit score on each dish.",
+      "I designed the core product, and owned the screens across iOS and Android, light and dark, and the components they share.",
+    ],
+    figs: [
+      { n: "1.5M", l: "people use the app" },
+      { n: "7 fig", l: "ARR" },
+      { n: "2", l: "platforms, iOS and Android, each in light and dark" },
+    ],
     cover: m("/showcase/menufit-screens-1440.webp", 1440, 900, "MenuFit app screens for eating out healthy, light and dark"),
     blocks: [
       { kind: "grid", media: [
         m("/menufit/today-light.webp", 540, 1169, "MenuFit, the Today screen in light"),
+        m("/menufit/meal-light.webp", 540, 1169, "MenuFit, a meal and its fit score in light"),
+        m("/menufit/nearby-light.webp", 540, 1169, "MenuFit, healthy picks nearby in light"),
+      ] },
+      { kind: "grid", media: [
+        m("/menufit/today-dark.webp", 540, 1169, "MenuFit, the Today screen in dark"),
         m("/menufit/meal-dark.webp", 540, 1169, "MenuFit, a meal in dark"),
-        m("/menufit/nearby-light.webp", 540, 1169, "MenuFit, healthy picks nearby"),
+        m("/menufit/nearby-dark.webp", 540, 1169, "MenuFit, healthy picks nearby in dark"),
+        m("/menufit/your-week-dark.webp", 540, 1169, "MenuFit, your week in dark"),
       ] },
       { kind: "full", media: m("/design/menufit.webp", 1470, 800, "MenuFit screens laid out side by side") },
       { kind: "grid", media: [
-        m("/menufit/log-a-meal-dark.webp", 540, 1169, "MenuFit, logging a meal in dark"),
-        m("/menufit/your-week-light.webp", 540, 1169, "MenuFit, your week in light"),
-        m("/menufit/the-hack-dark.webp", 540, 1169, "MenuFit, the order hack in dark"),
+        m("/menufit/log-a-meal-light.webp", 540, 1169, "MenuFit, logging a meal"),
+        m("/menufit/lunch-logged-light.webp", 540, 1169, "MenuFit, lunch, logged"),
+        m("/menufit/the-hack-light.webp", 540, 1169, "MenuFit, the order hack"),
+      ] },
+      { kind: "grid", media: [
+        m("/menufit/hacks-dark.webp", 540, 1169, "MenuFit, hacks for this restaurant in dark"),
+        m("/menufit/counter-card-dark.webp", 540, 1169, "MenuFit, the counter card in dark"),
+        m("/menufit/no-hacks-nearby-dark.webp", 540, 1169, "MenuFit, when nothing nearby fits, in dark"),
       ] },
     ],
   },
@@ -145,10 +167,24 @@ const PROJECTS_ALL: Project[] = [
     year: 2026,
     lane: "brand-web",
     client: "Okara",
-    disciplines: ["Product design"],
-    lines: ["Product design for an AI CMO.", "Its launch film did 14M views on X in a day."],
-    cover: m("/okara/credits.webp", 1200, 750, "Okara, the credits screen"),
-    blocks: [{ kind: "pair", media: [m("/okara/feed.webp", 800, 1127, "Okara, the feed"), m("/okara/morning.webp", 1200, 749, "Okara, the morning brief")] }],
+    role: "Product development intern",
+    disciplines: ["Product design", "Prototyping"],
+    link: { href: "https://okara.ai", label: "okara.ai" },
+    lines: [
+      "Okara is an AI CMO serving 150,000+ businesses.",
+      "I won the internship with a teardown: a week on the free tier, then a deployed site with three redesigns built as live React mockups.",
+    ],
+    figs: [
+      { n: "150,000+", l: "businesses on Okara" },
+      { n: "3", l: "redesigns, built as live React mockups" },
+      { n: "14M", l: "views on Okara's launch, day one" },
+    ],
+    cover: m("/okara/morning.webp", 1200, 749, "My redesign of Okara's return visit: a morning note from your CMO"),
+    blocks: [
+      { kind: "compare", title: "A morning note from your CMO.", before: m("/okara/morning-before.webp", 1600, 1000, "Okara's dashboard on a return visit, as it ships"), after: m("/okara/morning.webp", 1200, 749, "The redesign: what the CMO found overnight, and one thing waiting for approval") },
+      { kind: "compare", title: "Sell the work, not the count.", before: m("/okara/feed-before.webp", 1600, 1000, "Okara's agents feed, as it ships"), after: m("/okara/feed.webp", 800, 1127, "The redesign: a real draft from the X agent, with the strategy line it came from") },
+      { kind: "compare", title: "Put a price on the work.", before: m("/okara/credits-before.webp", 1600, 1000, "Okara's credits page, as it ships"), after: m("/okara/credits.webp", 1200, 750, "The redesign: what each kind of work costs in credits, and where every credit went") },
+    ],
   },
   {
     slug: "coresrent",
@@ -182,33 +218,16 @@ const PROJECTS_ALL: Project[] = [
       { kind: "pair", media: [m("/derelictdepths/img/smeltery-1280.jpg", 1280, 720, "The smeltery", "ink"), m("/derelictdepths/img/thumb-king-1280.jpg", 1280, 720, "Thumbnail art: the king", "ink")] },
     ],
   },
-  placeholderOf("3d-turntable-01", "3D piece 01", "3d", "Awaiting Jawad's renders or turntable (A5)"),
-  placeholderOf("3d-turntable-02", "3D piece 02", "3d", "Awaiting Jawad's renders or turntable (A5)"),
-  placeholderOf("roblox-02", "Roblox piece 02", "roblox", "Awaiting a second Roblox UI or art piece"),
 ];
-
-function placeholderOf(slug: string, name: string, lane: Lane, why: string): Project {
-  return {
-    slug,
-    name,
-    year: 2026,
-    lane,
-    disciplines: [],
-    lines: [why],
-    cover: m("", 4, 5, why),
-    blocks: [],
-    placeholder: why,
-  };
-}
 
 /** campaigns with no ads in the current curation drop out */
 export const PROJECTS = PROJECTS_ALL.filter((p) => p.lane !== "ads" || p.cover);
-export const REAL = PROJECTS.filter((p) => !p.placeholder);
+export const REAL = PROJECTS;
 export const projectBySlug = (slug: string) => REAL.find((p) => p.slug === slug);
 export const nextOf = (p: Project) => REAL[(REAL.indexOf(p) + 1) % REAL.length];
 export const laneLabel = (l: Lane) => LANES.find((x) => x.key === l)!.label;
 
 /** home, selected work: the order Jawad can change */
-export const SELECTED = ["ignaru", "menufit", "shown-media", "derelict-depths", "ignura-seo", "palantir"]
+export const SELECTED = ["ignaru", "menufit", "okara", "shown-media", "derelict-depths", "ignura-seo", "palantir"]
   .map((s) => projectBySlug(s))
   .filter((p): p is Project => Boolean(p));

@@ -36,13 +36,3 @@ export function Media({
     </div>
   );
 }
-
-/** A marked stand-in where Jawad's media is still to come. Never pretends to be work. */
-export function Placeholder({ label, ratio = "4 / 5" }: { label: string; ratio?: string }) {
-  return (
-    <div className="ph" style={{ aspectRatio: ratio }}>
-      <span className="lbl">Placeholder</span>
-      <span className="lbl dim">{label}</span>
-    </div>
-  );
-}
