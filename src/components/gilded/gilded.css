@@ -89,9 +89,10 @@
 .gl-fr { left: var(--fx, 0px); right: var(--fx, 0px); top: 2px; height: var(--kh); background: var(--g1); mask: var(--key) 0 0 / var(--kw) var(--kh) repeat-x; }
 .gl-fr + .gl-fr { top: auto; bottom: 2px; scale: 1 -1; }
 
-/* light crossing the gold: two hard-edged bands, under the enamel so only the metal catches it */
+/* light crossing the gold: two hard-edged bands over the whole frame (lip, bands, fret, caps), under the enamel so
+   only the metal catches it */
 .gl-sw { inset: 0; translate: -2.6em; }
-.gl-sw::before, .gl-sw::after { content: ""; position: absolute; inset: -2px auto; left: 0; width: 1.2em; background: rgb(255 248 222 / 0.78); transform: skewX(-22deg); }
+.gl-sw::before, .gl-sw::after { content: ""; position: absolute; inset: -2px auto; left: 0; width: 1.2em; background: rgb(255 251 236 / 0.86); transform: skewX(-22deg); }
 .gl-sw::after { left: 1.65em; width: 0.4em; }
 @media (hover: hover) { .gl:hover .gl-sw { animation: gl-sweep 700ms var(--out); } }
 .gl:is(:focus-visible, [data-open]) .gl-sw { animation: gl-sweep 700ms var(--out); }
@@ -112,11 +113,12 @@
   transition: box-shadow 140ms var(--out);
 }
 
-/* caps: the frame's sides, a mint-inlaid rivet in each. The right cap rides the clip edge. */
+/* caps: the frame's sides, a mint-inlaid rivet in each, inside the plate so the sweep crosses them. The right cap
+   rides the clip edge. */
 .gl-c { inset: 0 auto 0 0; width: var(--r); border-radius: var(--rad) 0 0 var(--rad); box-shadow: inset -1px 0 0 var(--g0), inset 0 1px 0 var(--lip), inset 0 var(--r) 0 var(--top), inset 0 -1px 0 var(--g1), inset 0 calc(-1 * var(--r)) 0 var(--g2); }
 .gl-c::before, .gl-c::after { content: ""; position: absolute; left: calc(50% - 2.5px); top: calc(50% - 2.5px); width: 5px; height: 5px; rotate: 45deg; background: var(--accent-paper); box-shadow: 0 0 0 1px var(--g0); }
 .gl-c::after { background: var(--accent); box-shadow: 0 0 0 1px var(--g0), 0 0 6px 1px var(--accent-glow); opacity: var(--lit); transition: opacity 120ms; }
-.gl-cr { left: auto; right: 0; border-radius: 0 var(--rad) var(--rad) 0; box-shadow: inset 1px 0 0 var(--g0), inset 0 1px 0 var(--lip), inset 0 var(--r) 0 var(--top), inset 0 -1px 0 var(--g1), inset 0 calc(-1 * var(--r)) 0 var(--g2); translate: calc(var(--R) * var(--op)); transition: translate 340ms var(--out), box-shadow 140ms var(--out); }
+.gl-cr { left: auto; right: calc(var(--R) + var(--S)); border-radius: 0 var(--rad) var(--rad) 0; box-shadow: inset 1px 0 0 var(--g0), inset 0 1px 0 var(--lip), inset 0 var(--r) 0 var(--top), inset 0 -1px 0 var(--g1), inset 0 calc(-1 * var(--r)) 0 var(--g2); translate: calc(var(--R) * var(--op)); transition: translate 340ms var(--out), box-shadow 140ms var(--out); }
 
 /* the label, and the mint groove under it: a hard bar, and a glow that wakes on hover and focus. A press drops both. */
 .gl-t { position: relative; translate: calc(var(--hv) * var(--nudge, 0px)) calc(-0.07em + var(--hv) * -2px + var(--pr) * (2px + 0.1em)); transition: translate 140ms var(--out); text-shadow: 0 -1px 0 rgb(0 0 0 / 0.6); }
@@ -132,7 +134,8 @@
 /* cta: the plate runs past the label by the open width plus slack for the spring, clipped back to the label */
 .gl[data-v="cta"] { --R: calc(var(--mw, 0px) + 0.45em); --S: 0.6em; }
 .gl[data-v="cta"] .gl-p { clip-path: inset(0 calc(var(--R) * (1 - var(--op)) + var(--S)) 0 0 round var(--rad)); transition: clip-path 340ms var(--out), box-shadow 140ms var(--out); }
-.gl[data-v="cta"]:is(:hover, :focus-visible, [data-open], [data-state] *) :is(.gl-p, .gl-cr, .gl-m) { transition-duration: 620ms, 140ms; transition-timing-function: var(--spring), var(--out); }
+.gl[data-v="cta"] .gl-f { clip-path: inset(-1px calc(var(--R) * (1 - var(--op)) + var(--S)) -1px -1px); transition: clip-path 340ms var(--out), box-shadow 140ms var(--out); }
+.gl[data-v="cta"]:is(:hover, :focus-visible, [data-open], [data-state] *) :is(.gl-p, .gl-f, .gl-cr, .gl-m) { transition-duration: 620ms, 140ms; transition-timing-function: var(--spring), var(--out); }
 .gl[data-size="hero"] { font-size: min(22px, 5.4vw); --h: 2.75em; --r: 11px; --pad: 1.3em; }
 .gl[data-size="dock"] { font-size: 15px; --r: 9px; --pad: 1.15em; }
 .gl-m { position: absolute; inset: 0 calc(var(--S) + var(--pad)) 0 auto; display: flex; align-items: center; gap: 0.4em; color: var(--g5); opacity: var(--op); transform: translateX(calc((1 - var(--op)) * -0.7em)); translate: 0 calc(var(--pr) * 0.1em); transition: transform 340ms var(--out), translate 140ms var(--out), opacity 340ms var(--out); }
