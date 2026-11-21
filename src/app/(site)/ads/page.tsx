@@ -27,17 +27,19 @@ export default async function Ads({ searchParams }: Props) {
       </TitleTab>
       <nav className="filters wrap" aria-label="Filter by campaign">
         <Link href="/ads" aria-current={!pick ? "page" : undefined} scroll={false}>
-          <span className="n">{ADS.length}</span> All
+          All
         </Link>
         <span className="filters-r">
           {tabs.map((t) => (
             <Link key={t} href={`/ads?c=${slug(t)}`} aria-current={pick === t ? "page" : undefined} scroll={false}>
-              <span className="n">{ADS.filter((a) => campaignOf(a) === t).length}</span> {t}
+              {t}
             </Link>
           ))}
         </span>
       </nav>
-      <AdGallery ads={list} />
+      <div className="ads-hall" data-room="hall">
+        <AdGallery ads={list} />
+      </div>
       <BookLink src="ads-inline" className="strip" cursor>
         <span className="d-name">Want ads like these?</span>
         <span className="strip-cta">Book a call ↗</span>

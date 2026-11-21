@@ -80,7 +80,7 @@ export function Motion() {
           scrollTrigger: top ? undefined : { trigger: el, start: "top 92%", once: true },
         });
       });
-      if (!reduce)
+      if (!reduce && matchMedia("(min-width: 768px)").matches)
         document.querySelectorAll<HTMLElement>("[data-par]").forEach((el) =>
           gsap.to(el, {
             y: -Number(el.dataset.par) * 4,

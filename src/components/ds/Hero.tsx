@@ -7,7 +7,7 @@ import { SITE } from "@/content/site";
 
 // The home hero. The statement and the call sit on the top line; under them the name runs the full width as a mark,
 // and below its baseline the hall opens: the painted underworld gallery (public/art/hero.webp), or until it lands the
-// same space in plum-black, lit from the floor, with a few embers rising.
+// same space in plum-black, lit from the floor.
 // with one crystal seam drawn down through "Mastermind" that splits it a few pixels along the cut and cools to a
 // hairline. Five ads stand in the hall in arched niches, breaking up out of it into the mark's foot, the middle one
 // larger, each at its own height, so the work is the treasure and the name is its caption. Load, about 1.6 s: letters rise, the seam draws and splits, then the
@@ -20,7 +20,6 @@ const PICK = ["vercel-a", "cursor-a", "perplexity-a", "linear-a", "elevenlabs-a"
 const ORDER = [2, 1, 0, 3, 4];
 const LIFT = [6, 2, 0, 4, 9];
 const DRIFT = [14, 6, 0, 10, 18];
-const EMBERS = [[8, 0, 7], [17, 2.4, 9], [29, 1.1, 8], [41, 3.6, 10], [52, 0.6, 7.5], [58, 4.2, 9], [69, 1.8, 8.5], [77, 3, 7], [88, 0.3, 9.5], [94, 2.7, 8]];
 
 type Pt = [number, number];
 
@@ -86,9 +85,6 @@ export function Hero() {
       <nav className="hero-ads" aria-label="Five recent ads">
         <div className="hall" aria-hidden="true">
           <Art k="hero" priority className="hall-art" fallback={<span className="hall-light" />} />
-          {EMBERS.map((e, i) => (
-            <i key={i} className="ember" style={{ left: e[0] + "%", animationDelay: e[1] + "s", animationDuration: e[2] + "s" }} />
-          ))}
         </div>
         {PICK.map((a, i) => (
           <Link
