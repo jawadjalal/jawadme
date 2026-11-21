@@ -1,6 +1,6 @@
 import "../globals.css";
 import { preload } from "react-dom";
-import { BookLink } from "@/components/BookLink";
+import { Gilded } from "@/components/gilded/Gilded";
 import { ShaftMoment } from "@/components/moments/derelictdepths";
 
 // The game page's closing call band, added here so the page and its data pipeline stay untouched. Its three faces are
@@ -19,12 +19,7 @@ export default function DerelictDepthsLayout({ children }: { children: React.Rea
           <p className="text-[28px] font-semibold leading-tight tracking-[-0.02em] sm:text-[36px]">
             want a game like this? <span className="text-[#b9addb]">15 min, video.</span>
           </p>
-          <BookLink
-            src="derelictdepths"
-            className="rounded-full bg-[#ffc043] px-6 py-3 text-[17px] font-semibold text-[#05030a] transition-colors hover:bg-[#ffe08f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffc043]"
-          >
-            book a call ↗
-          </BookLink>
+          <Gilded variant="cta" src="derelictdepths" size="hero" />
         </div>
       </section>
     </>

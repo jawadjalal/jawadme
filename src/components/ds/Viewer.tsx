@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { preload } from "react-dom";
 import { ViewerMoment } from "@/components/moments/viewer";
-import { BookCallB } from "@/components/cta/BookCallB";
+import { Gilded } from "@/components/gilded/Gilded";
 
 type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; spec: boolean };
 type Near = { id: string; src: string; w: number; h: number };
@@ -91,7 +91,7 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
           </nav>
         ) : null}
         <span className="v-cta">
-          <BookCallB src="viewer" size="dock" />
+          <Gilded variant="cta" src="viewer" size="dock" />
         </span>
       </footer>
     </main>

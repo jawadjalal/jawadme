@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { DockCta } from "./DockCta";
+import { Gilded } from "@/components/gilded/Gilded";
 import { NAV, SITE } from "@/content/site";
 
 function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
@@ -12,19 +13,24 @@ function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
   const c = useSearchParams().get("c");
   const current = (href: string) => {
     const [p, q] = href.split("?c=");
-    return path === p && (q ? c === q : !c) ? "page" : undefined;
+    return path === p && (q ? c === q : !c);
   };
   return (
     <>
-      {NAV.map((n, i) => {
-        const link = (
-          <Link key={n.href} href={n.href} aria-current={current(n.href)} onClick={onPick} data-m="press" style={{ ["--i" as string]: i }}>
+      {NAV.map((n, i) =>
+        list ? (
+          <li key={n.href}>
+            <Gilded variant="pill" href={n.href} selected={current(n.href)}>
+              {n.label}
+            </Gilded>
+          </li>
+        ) : (
+          <Link key={n.href} href={n.href} aria-current={current(n.href) ? "page" : undefined} onClick={onPick} data-m="press" style={{ ["--i" as string]: i }}>
             {n.label}
             <span className="lbl dim" aria-hidden="true">↗</span>
           </Link>
-        );
-        return list ? <li key={n.href}>{link}</li> : link;
-      })}
+        ),
+      )}
     </>
   );
 }

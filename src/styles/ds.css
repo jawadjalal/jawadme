@@ -72,7 +72,6 @@ html[data-room="ink"]:has(.ds) { background: #0b0b0b; }
 html[data-room="ink"] .ds { --accent-text: var(--accent); --bg: #0b0b0b; --fg: #e6e5e1; --dim: #a3a29d; --rule: rgb(230 229 225 / 0.16); --tile: #1b1b1a; }
 .ds ::selection { background: var(--accent); color: var(--accent-ink); }
 .ds a { color: inherit; text-decoration: none; }
-.ds a.bcb { color: var(--ink); }
 .ds :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-glow) 28%, transparent); }
 .ds img { display: block; max-width: 100%; }
 .ds h1, .ds h2, .ds h3, .ds p, .ds dl, .ds dd, .ds figure { margin: 0; }
@@ -187,19 +186,15 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
   letter-spacing: -0.02em;
   filter: drop-shadow(0 10px 24px rgb(0 0 0 / 0.28));
 }
-.dock-body, .dock > .bcb { align-self: center; }
-.dock > .bcb { transition: opacity var(--t-base) var(--ease), translate var(--t-base) var(--ease), visibility 0s; }
-html[data-call-in-view] .dock > .bcb, html:not([data-call-seen]) .dock > .bcb[data-hold] { opacity: 0; translate: 0 14px; visibility: hidden; transition: opacity var(--t-fast) var(--ease), translate var(--t-fast) var(--ease), visibility 0s var(--t-fast); }
+.dock-body, .dock > .gl { align-self: center; }
+.dock > .gl { transition: opacity var(--t-base) var(--ease), translate var(--t-base) var(--ease), visibility 0s; }
+html[data-call-in-view] .dock > .gl, html:not([data-call-seen]) .dock > .gl[data-hold] { opacity: 0; translate: 0 14px; visibility: hidden; transition: opacity var(--t-fast) var(--ease), translate var(--t-fast) var(--ease), visibility 0s var(--t-fast); }
 .dock-body { --nx: 100%; display: flex; align-items: stretch; padding-right: 10px; background: var(--ivory); color: var(--ink); border-radius: 3px 0 0 3px; }
 .dock-mark { display: grid; place-items: center; width: 56px; }
 .dock-mark img { width: 30px; height: auto; transition: transform var(--sp-pop-t) var(--sp-pop); }
 .dock-mark:hover img { transform: rotate(-10deg) scale(1.08); }
-.dock-nav { display: flex; align-items: stretch; gap: 20px; padding: 0 10px 0 2px; margin: 0; list-style: none; }
-.dock-nav li { display: flex; }
-.dock-nav a { position: relative; display: flex; align-items: center; }
-.dock-nav a .lbl { display: none; }
-.dock-nav a::after { content: ""; position: absolute; left: 0; right: 0; top: calc(50% + 0.62em); height: 2px; background: var(--accent-paper); transform: scaleX(0); transform-origin: left; transition: transform var(--sp-pop-t) var(--sp-pop); }
-.dock-nav a:hover::after, .dock-nav a[aria-current="page"]::after { transform: scaleX(1); }
+.dock-nav { position: relative; display: flex; align-items: center; gap: 8px; padding: 0 10px 0 2px; margin: 0; list-style: none; }
+.dock-nav li { display: flex; align-items: center; }
 .dock-menu { display: none; }
 .dock-sheet { display: none; }
 @media (max-width: 767px) {
@@ -219,16 +214,10 @@ html[data-call-in-view] .dock > .bcb, html:not([data-call-seen]) .dock > .bcb[da
     border-radius: 3px;
     background: var(--ivory);
     color: var(--ink);
-    transform: translateY(16px);
-    opacity: 0;
     visibility: hidden;
-    transition: transform var(--sp-soft-t) var(--sp-soft), opacity 160ms, visibility 0s var(--sp-soft-t);
     padding: 8px 18px 16px;
   }
-  .dock-sheet[data-open="true"] { transform: none; opacity: 1; visibility: visible; transition: transform var(--sp-pop-t) var(--sp-pop), opacity 160ms; }
-  .dock-sheet a { opacity: 0; translate: 0 18px; transition: opacity 120ms, translate 120ms; }
-  .dock-sheet[data-open="true"] a { opacity: 1; translate: none; transition: opacity 200ms calc(40ms + var(--i) * 45ms), translate var(--sp-pop-t) var(--sp-pop) calc(var(--i) * 45ms), scale var(--sp-press-t) var(--sp-press); }
-  .dock-sheet[data-open="true"] a:active { scale: 0.97; }
+  .dock-sheet[data-open="true"] { visibility: visible; }
   .dock-sheet a { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0 8px; border-bottom: 1px solid rgb(11 11 11 / 0.12); font: 700 11vw/0.94 var(--f-disp); letter-spacing: -0.035em; }
   .dock-sheet a .lbl { font-size: 20px; }
   .dock-sheet a[aria-current="page"] { color: var(--accent-paper); }
@@ -459,8 +448,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .lost-copy { justify-self: start; max-width: min(720px, 100%); padding: 22px 26px 26px; background: #100b09; }
 .lost-k { margin: 0; font: 700 15px/1 var(--f-bar); color: rgb(241 230 210 / 0.72); }
 .lost-ways { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 28px; }
-.lost-ways a:not(.bcb) { display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; background: #f1e6d2; color: #100b09; font: 700 17px/1 var(--f-bar); letter-spacing: -0.02em; }
-.lost-ways a:not(.bcb):hover { background: #fff; }
 @media (prefers-reduced-motion: reduce) { .lost-h, .lost-line { animation: none; } }
 
 .cursor-dot { transition-property: width, height, margin, background-color, transform, opacity; }
@@ -586,12 +573,11 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
 /* ── The hang (/work and the home gallery): justified rows, each piece at its own proportions ── */
 .hang { --gap: 16px; display: flex; flex-wrap: wrap; align-items: flex-start; column-gap: var(--gap); row-gap: 34px; }
 .hang-i { --w: var(--dw); --n: var(--dn); width: calc((100% - var(--gap) * var(--n)) * var(--w) - 0.5px); min-width: 0; display: grid; gap: 12px; -webkit-tap-highlight-color: transparent; }
-.hang-i .media > img, .hang-i .media > video { transition: transform 900ms var(--ease); }
+.hang-i .media > img, .hang-i .media > video { transition: transform var(--sp-soft-t) var(--sp-soft); }
 .hang-cap { display: grid; gap: 4px; min-width: 0; font: 700 15px/1.15 var(--f-bar); letter-spacing: -0.015em; }
 .hang-co { transition: color var(--t-fast); }
 .hang-hl { font-weight: 500; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (hover: hover) {
-  .hang-i:hover .media.in > img, .hang-i:hover .media > video { transform: scale(1.03); }
   .hang-i:hover .hang-co { color: var(--accent-text); }
 }
 
@@ -645,11 +631,9 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
 
 /* ── Rooms: one row of chips that sticks to the top while you walk the hall, and scrolls sideways on a phone ── */
 .chips { position: sticky; top: 0; z-index: 20; margin-bottom: calc(8 * var(--u)); background: var(--bg); transition: background-color var(--t-room) var(--ease-io); }
-.chips-in { display: flex; gap: 2px; padding: 8px var(--g); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scroll-padding-inline: var(--g); scrollbar-width: none; }
+.chips-in { display: flex; gap: 8px; align-items: center; padding: 8px var(--g); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scroll-padding-inline: var(--g); scrollbar-width: none; }
 .chips-in::-webkit-scrollbar { display: none; }
-.chips a { flex: none; display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; scroll-snap-align: start; white-space: nowrap; font: 700 16px/1 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
-.chips a:hover { color: var(--fg); }
-.chips a[aria-current="page"] { background: var(--fg); color: var(--bg); }
+.chips .gl { flex: none; scroll-snap-align: start; }
 
 /* ── The call strip under the hall ── */
 .strip { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin: calc(14 * var(--u)) 0; padding: calc(8 * var(--u)) var(--g) calc(6 * var(--u)); background: var(--accent); color: var(--accent-ink) !important; transition: background-color var(--t-fast), color var(--t-fast); }
@@ -693,15 +677,10 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
 .ct-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .ct-c { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 48px; min-height: clamp(240px, 30vw, 440px); padding: calc(6 * var(--u)) calc(7 * var(--u)) calc(7 * var(--u)); background: var(--ink); color: var(--white); }
 .ct-k { font: 700 max(20px, calc(6 * var(--u)))/1.1 var(--f-bar); letter-spacing: -0.02em; color: #a3a29d; }
-.ct .ct-m { font: 700 max(26px, calc(10 * var(--u)))/1.05 var(--f-disp); letter-spacing: -0.035em; overflow-wrap: anywhere; color: var(--white); text-decoration: underline; text-decoration-thickness: 0.05em; text-underline-offset: 0.14em; transition: color var(--t-fast); }
-.ct .ct-m:hover { color: var(--accent); }
-.ct-m .arr { display: inline-block; transition: transform var(--t-base) var(--ease); }
-.ct-m:hover .arr { transform: translate(3px, -3px); }
 .ct-p .ct { min-height: calc(100svh - var(--dock)); display: flex; flex-direction: column; justify-content: flex-end; }
 @media (max-width: 767px) {
   .ct-two { grid-template-columns: minmax(0, 1fr); }
   .ct-c { min-height: 200px; padding: 22px 22px 24px; }
-  .ct .ct-m { font-size: 6.2vw; }
   .ab-text { gap: 18px; padding-top: 64px; padding-bottom: 32px; }
   .ab-lead { max-width: none; margin-bottom: 6px; font-size: 12.2vw; line-height: 0.9; }
   .ab-text p:not(.ab-lead) { font-size: 21px; line-height: 1.24; letter-spacing: -0.022em; }
@@ -748,6 +727,5 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
 
 /* ── Email: a click copies the address too; the link says so for a moment, and a status line tells screen readers ── */
 a[data-mail] { position: relative; }
-a[data-mail]::after { content: "copied"; position: absolute; left: 0; top: 100%; margin-top: 8px; padding: 5px 8px; font: 600 12px/1 var(--f-sans); letter-spacing: 0; background: var(--accent-ink); color: var(--accent-glow); white-space: nowrap; pointer-events: none; opacity: 0; translate: 0 -6px; transition: opacity var(--t-fast), translate var(--sp-pop-t) var(--sp-pop); }
-a[data-mail][data-copied]::after { opacity: 1; translate: none; }
-.ct .ct-m[data-m] { display: inline-block; }
+a[data-mail] > .mail-tag { position: absolute; left: 0; top: 100%; margin-top: 8px; padding: 5px 8px; font: 600 12px/1 var(--f-sans); letter-spacing: 0; background: var(--accent-ink); color: var(--accent-glow); white-space: nowrap; pointer-events: none; opacity: 0; translate: 0 -6px; transition: opacity var(--t-fast), translate var(--sp-pop-t) var(--sp-pop); }
+a[data-mail][data-copied] > .mail-tag { opacity: 1; translate: none; }

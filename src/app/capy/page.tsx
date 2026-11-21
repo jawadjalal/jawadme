@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
-import { BookCallB } from "@/components/cta/BookCallB";
+import { Gilded } from "@/components/gilded/Gilded";
 import { X_HANDLE, X_HREF } from "@/lib/seo";
 import data from "./assets.json";
 import { Gallery, type Asset } from "./Gallery";
@@ -70,7 +70,7 @@ export default function CapyPage() {
           <Link href="/" className="cp-name">
             jawad jalal
           </Link>
-          <BookCallB src="capy" size="dock" />
+          <Gilded variant="cta" src="capy" size="dock" />
         </div>
         <h1 className="cp-title" data-text={"capy hackathon\nassets"}>
           capy hackathon

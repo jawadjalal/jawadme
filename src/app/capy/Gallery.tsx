@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Gilded } from "@/components/gilded/Gilded";
 import { sized } from "./exporters";
 
 export type Asset = {
@@ -415,13 +416,13 @@ export function Gallery({ assets, kinds, total, sets }: { assets: Asset[]; kinds
     <main className="cp-main">
       <nav className="cp-filter" aria-label="kinds">
         <div className="cp-filter-in">
-          <button type="button" aria-pressed={kind === "all"} onClick={() => setKind("all")}>
+          <Gilded variant="filter" selected={kind === "all"} onClick={() => setKind("all")}>
             all <span>{total}</span>
-          </button>
+          </Gilded>
           {kinds.map((k) => (
-            <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}>
+            <Gilded key={k} variant="filter" selected={kind === k} onClick={() => setKind(k)}>
               {kindName(k)} <span>{[...(byKind.get(k)?.values() ?? [])].flat().length}</span>
-            </button>
+            </Gilded>
           ))}
           <span className="cp-count">
             {total} files in {sets} designs

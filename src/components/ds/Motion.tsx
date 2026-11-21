@@ -40,8 +40,13 @@ export function Motion() {
     }
     if ((window as Win).__vtDone || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const main = document.querySelector("main");
-    main?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180, easing: "linear" });
-    main?.animate([{ transform: "translateY(14px)" }, { transform: "none" }], { duration: SPRINGS.soft.ms, easing: SPRINGS.soft.easing });
+    if (!main) return;
+    const fade = main.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180, easing: "ease-out" });
+    const settle = main.animate([{ transform: "translateY(14px)" }, { transform: "none" }], { duration: SPRINGS.soft.ms, easing: SPRINGS.soft.easing });
+    return () => {
+      fade.cancel();
+      settle.cancel();
+    };
   }, [path]);
 
   // data-m="tilt": the surface under a mouse pointer gets the pointer's place as --rx/--ry (-1..1), once a frame at most,
