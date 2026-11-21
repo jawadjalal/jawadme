@@ -246,7 +246,8 @@ body:has(.ml) { background: #100c1c; }
   .ml-kicker { font-size: 14px; letter-spacing: 0.02em; }
   .ml-eyebrow { font-size: 14px; letter-spacing: 0.04em; }
   .ml-toc { padding: 8px 14px; }
-  .ml-toc ol { grid-template-columns: 1fr 1fr; gap: 0 14px; }
+  .ml-toc ol { gap: 0; }
+  .ml-toc li + li { border-top: 1px solid #2c2350; }
   .ml-toc li { display: flex; align-items: center; min-height: 44px; font-size: 15px; line-height: 1.25; }
   .ml-toc li::before { flex: none; font-size: 12px; margin-right: 6px; }
   .ml-toc a { display: flex; align-items: center; min-height: 44px; }

@@ -710,6 +710,7 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
   .ct-h { margin-bottom: 20px; }
   .ct-p .ct { padding-top: 32px; padding-bottom: 16px; }
   .ct-p .ct-h { margin-bottom: auto; padding-bottom: 32px; font-size: 24vw; line-height: 0.82; letter-spacing: -0.06em; }
+  .ct-p .ct-c { min-height: max(200px, calc((100svh - var(--dock) - 220px) / 2)); }
 }
 
 /* ── GitHub: a square a day on flat ink, accent levels, the total counting up ── */
