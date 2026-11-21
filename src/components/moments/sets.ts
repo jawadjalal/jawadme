@@ -9,7 +9,7 @@ import { BRAZIER, AMPHORA, Batch, COS, M, Q, RV, box, column, lathe, prep, rock,
 
 export type SetCtx = { B: Batch; m: Palette; mk: (color: string, kind: { k: "stone"; rim?: number } | { k: "rock" }, extra?: THREE.MeshToonMaterialParameters) => THREE.MeshToonMaterial; scene: THREE.Scene; b: Bag; time: { value: number }; family: string };
 export type Set = { fires: Fire[]; shot: { t: THREE.Vector3; h: number; w: number }; update?: (dt: number, t: number) => void };
-export type SetName = "break3d" | "niche-ads" | "niche-web" | "niche-game" | "niche-view" | "gate" | "study" | "shaft" | "deadend" | "reading";
+export type SetName = "break3d" | "niche-ads" | "niche-web" | "niche-game" | "niche-view" | "gate" | "shaft" | "deadend" | "reading";
 
 const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
 /** A point along the screen's horizontal from p: positive is to the right. */
@@ -180,27 +180,6 @@ function gate(c: SetCtx): Set {
 }
 
 /** /about: a desk with a book open on it, and his three places of work cut into standing tablets behind. */
-function study(c: SetCtx): Set {
-  const k = kit(c);
-  const { B, m } = c;
-  k.platform(8);
-  B.add(m.wood, box(4.6, 1.7, 2.4, 0.12), M(1.4, 0, 1.4, Q));
-  B.add(m.pale, box(1.5, 0.12, 1.9, 0.05), M(1.4 + 0.5, 1.75, 1.4 - 0.5, Q, 1, 0, 0.12));
-  B.add(m.pale, box(1.5, 0.12, 1.9, 0.05), M(1.4 - 0.5, 1.75, 1.4 + 0.5, Q, 1, 0, -0.12));
-  k.lamp(V(2.6, 2.4, 0.4), 6);
-  B.add(m.bronze, lathe(AMPHORA, 24), M(4.6, 0, 3.6, 0, 1.3));
-  const back = V(-3.2, 0, -3.2);
-  ["Ignura Studio", "MenuFit", "Okara"].forEach((name, i) => {
-    const p = along(back, (i - 1) * 4.4);
-    B.add(i === 0 ? m.bronze : m.dark, box(3.8, 4.6, 0.5, 0.12), M(p.x, 0, p.z, Q));
-    k.words(name, p.clone().add(V(0.19, 2.6, 0.19)), 3.4, 1.3, i === 0 ? "#1a0f08" : "#efe4d0", 0.42);
-  });
-  k.brazier(V(-6, 0, 2.6));
-  k.brazier(V(2.6, 0, -6));
-  return { fires: k.fires, shot: { t: V(-0.6, 2.4, -0.6), h: 15, w: 26 } };
-}
-
-/** /derelictdepths: a cut into the rock, ore glowing in it, rails running out to a cart and a lantern on a post. */
 function shaft(c: SetCtx): Set {
   const k = kit(c);
   const { B, m } = c;
@@ -279,7 +258,6 @@ export const SETS: Record<SetName, (c: SetCtx) => Set> = {
   "niche-game": (c) => niche(c, "game"),
   "niche-view": (c) => niche(c, "view"),
   gate,
-  study,
   shaft,
   deadend,
   reading,

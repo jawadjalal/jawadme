@@ -3,11 +3,14 @@
 // live, hides everything else on the page, screenshots the stage and writes <out>/<name>-<d|m>.webp.
 //
 //   import { posters } from "./kit/posters.mjs";
-//   await posters({ base: "http://localhost:3000", out: "public/world/poster", jobs: [{ name: "foot-a", path: "/ads?footer=a", stage: ".foot-stage" }] });
+//   await posters({ base: "http://localhost:3000", out: "public/world/poster", jobs: [{ name: "pillar", path: "/about", stage: ".pl-stage", scroll: true }] });
+//
+// A stage that finds ?bare in its URL draws its flames as CSS instead (./Flames) and leaves their place in data-marks;
+// given `marks` (a JSON file path), every job's marks are merged into it as { [name]: { d, m } }.
 //
 // CHROME=<path> picks the browser (default: Playwright's). A job may set `scroll: true` to bring the stage into view
 // first (stages below the fold load only near the screen; plain scrolling, since smooth-scroll libraries never settle), `wait` in ms after it goes live, and `sizes` to override.
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { chromium } from "playwright";
 import sharp from "sharp";
@@ -17,8 +20,9 @@ export const SIZES = [
   { tag: "m", viewport: { width: 390, height: 844 }, dpr: 2, width: 780, quality: 64 },
 ];
 
-export async function posters({ base, out, jobs, sizes = SIZES }) {
+export async function posters({ base, out, jobs, sizes = SIZES, marks }) {
   mkdirSync(out, { recursive: true });
+  const found = marks && existsSync(marks) ? JSON.parse(readFileSync(marks, "utf8")) : {};
   const browser = await chromium.launch({
     executablePath: process.env.CHROME || undefined,
     args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"],
@@ -41,10 +45,13 @@ export async function posters({ base, out, jobs, sizes = SIZES }) {
         const file = path.join(out, j.name + "-" + s.tag + ".webp");
         const info = await sharp(png).resize({ width: s.width }).webp({ quality: s.quality, effort: 6 }).toFile(file);
         console.log(j.name + "-" + s.tag, info.width + "x" + info.height, Math.round(info.size / 1024) + " KB");
+        const m = await page.evaluate((q) => document.querySelector(q + " [data-marks]")?.dataset.marks ?? null, j.stage);
+        if (m) (found[j.name] ??= {})[s.tag] = JSON.parse(m);
       }
       await page.close();
     }
   } finally {
     await browser.close();
   }
+  if (marks) writeFileSync(marks, JSON.stringify(found) + "\n");
 }

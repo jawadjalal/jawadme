@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { buildHall, type Shot, type Slot } from "./hall";
-import { ACCENT, Batch, DV, INK, NL, NOISE, PITCH, Q, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, setMap, shared, view, type Fire } from "./kit";
+import { ACCENT, Batch, GLOW, DV, INK, NL, NOISE, PITCH, Q, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, marks, painter, post, setMap, shared, view, type Fire } from "./kit";
 import { COURT, HALL, LAND, SIGN, THEATRE, buildMap, type Mats } from "./map";
 
 // The underworld under the home page, seen the way an isometric action game sees its rooms: the kit's orthographic
@@ -9,7 +9,7 @@ import { COURT, HALL, LAND, SIGN, THEATRE, buildMap, type Mats } from "./map";
 // void, vignette and grain. The fires light in a wave out from the gate on load.
 
 export type WorldAd = { id: string; campaign: string; alt: string; src: string };
-export type WorldOpts = { progress: () => number; ads: WorldAd[]; small: boolean; still: boolean; dim: boolean; open: (id: string) => void; ready: () => void };
+export type WorldOpts = { progress: () => number; ads: WorldAd[]; small: boolean; still: boolean; bare: boolean; dim: boolean; open: (id: string) => void; enter: () => void; ready: () => void };
 
 export function mount(host: HTMLElement, o: WorldOpts) {
   const dpr = Math.min(window.devicePixelRatio || 1, o.still ? 2 : o.small ? 1.25 : 1.75);
@@ -86,6 +86,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     b.mats.push(g);
     return g;
   };
+  const gateGlows: THREE.Mesh[] = [];
   for (const gl of world.glows) {
     const geo = new THREE.PlaneGeometry(gl.w, gl.h);
     b.geos.push(geo);
@@ -93,6 +94,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     mesh.matrixAutoUpdate = false;
     mesh.matrix.copy(gl.m);
     scene.add(mesh);
+    if (gl.soul) gateGlows.push(mesh);
   }
 
   // fire, souls and motes; the ignition wave starts from the gate
@@ -102,13 +104,16 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   F.u.door.value.copy(door);
   const warm = fires.filter((f) => !f.soul && !f.lamp), cold = fires.filter((f) => f.soul && !f.lamp);
   const per = o.small ? 14 : 24;
-  F.flames(warm, false, per);
-  F.flames(cold, true, per);
-  F.halos(warm, "#" + ACCENT.getHexString(THREE.SRGBColorSpace));
+  const motes = o.small ? 0.5 : 1;
+  if (!o.bare) {
+    F.flames(warm, false, per);
+    F.flames(cold, true, per);
+  }
+  F.halos(warm, GLOW.glow);
   F.halos(cold, "#" + SOUL.getHexString(THREE.SRGBColorSpace));
-  F.drift(o.small ? 160 : 320, [70, 26, 70], 0.11, 1.1, "#" + ACCENT.getHexString(THREE.SRGBColorSpace), 1.4, 0);
-  F.drift(o.small ? 60 : 120, [70, 20, 70], 0.42, 0.35, "#" + SOUL.getHexString(THREE.SRGBColorSpace), 0.42, 1);
-  F.drift(o.small ? 90 : 180, [60, 16, 60], 0.06, 0.08, "#b49a80", 0.35, 1);
+  F.drift(Math.round(320 * motes), [70, 26, 70], 0.11, 1.1, GLOW.glow, 1.4, 0);
+  F.drift(Math.round(120 * motes), [70, 20, 70], 0.42, 0.35, "#" + SOUL.getHexString(THREE.SRGBColorSpace), 0.42, 1);
+  F.drift(Math.round(180 * motes), [60, 16, 60], 0.06, 0.08, "#b49a80", 0.35, 1);
 
   const v = view(host, (dt, fresh) => tick(dt, fresh), { dpr });
   const renderer = v.renderer;
@@ -125,7 +130,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   ];
   const want = new THREE.Vector3(), cur = shots[0].t.clone();
   let wantH = shots[0].h, curH = shots[0].h, wantW = shots[0].w, curW = shots[0].w, floorY = COURT.y;
-  const ptr = { x: 0, y: 0, tx: 0, ty: 0, moved: false, cx: -1, cy: -1, over: false };
+  const ptr = { x: 0, y: 0, tx: 0, ty: 0, moved: false, cx: -1, cy: -1, over: false, mouse: false };
 
   // ad textures and captions, loaded after first paint, nearest the hall's start first
   const family = getComputedStyle(host).fontFamily;
@@ -191,26 +196,57 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     })
     .catch(() => {});
 
-  // pointer: a sway of the camera, a hand-held light on the floor, hover and click on the ads
+  // pointer: a sway of the camera, a witch-light in the accent that follows a mouse over the floor, and the ads and the
+  // gate answering it. Hover lifts, tilts and lights a banner's border in the accent and brightens the gate; a press
+  // knocks the banner on its rod, or flares the gate and walks into the hall. Every answer is a spring. Touch gets the
+  // press and a short light-up on tap, not the hover or the witch-light.
   const ray = new THREE.Raycaster();
   const ndc = new THREE.Vector2();
-  const picks = hall.slots.map((s) => s.pick);
-  let hot = -1;
+  const picks: THREE.Object3D[] = [...hall.slots.map((s) => s.pick), ...gateGlows];
+  const GATE = hall.slots.length;
   const mine = () => canvas.parentElement === host;
+  const pick = (x: number, y: number) => {
+    const r = canvas.getBoundingClientRect();
+    ndc.set(((x - r.left) / r.width) * 2 - 1, -((y - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const h = ray.intersectObjects(picks, false)[0];
+    return h ? Math.min(GATE, picks.indexOf(h.object)) : -1;
+  };
+  type Spring = { x: number; v: number };
+  const spring = (s: Spring, to: number, dt: number, k: number, z: number) => {
+    s.v += (k * (to - s.x) - 2 * z * Math.sqrt(k) * s.v) * dt;
+    s.x += s.v * dt;
+  };
+  const hover = hall.slots.map(() => ({ x: 0, v: 0 })), knock = hall.slots.map(() => ({ x: 0, v: 0 }));
+  const gate = { x: 0, v: 0 }, flare = { x: 0, v: 0 }, hand = { x: 0, v: 0 };
+  const hp = new THREE.Vector3(), hv = new THREE.Vector3(), hd = new THREE.Vector3();
+  let hot = -1, tap = -1, tapT = 0;
   const move = (e: PointerEvent) => {
     ptr.tx = (e.clientX / innerWidth) * 2 - 1;
     ptr.ty = -((e.clientY / innerHeight) * 2 - 1);
-    const r = canvas.getBoundingClientRect();
-    ptr.cx = e.clientX - r.left;
-    ptr.cy = e.clientY - r.top;
+    ptr.cx = e.clientX;
+    ptr.cy = e.clientY;
+    ptr.mouse = e.pointerType !== "touch";
     ptr.over = e.target === canvas && mine();
     ptr.moved = true;
   };
+  const down = (e: PointerEvent) => {
+    if (e.target !== canvas || !mine() || o.still) return;
+    const j = pick(e.clientX, e.clientY);
+    if (j < 0) return;
+    if (j < GATE) knock[j].v += 7;
+    else flare.v += 22;
+    if (e.pointerType === "touch") (tap = j), (tapT = S.time.value);
+  };
   const click = (e: MouseEvent) => {
-    if (e.target !== canvas || !mine() || hot < 0) return;
-    o.open(o.ads[hall.slots[hot].i].id);
+    if (e.target !== canvas || !mine()) return;
+    const j = pick(e.clientX, e.clientY);
+    if (j < 0) return;
+    if (j < GATE) o.open(o.ads[hall.slots[j].i].id);
+    else o.enter();
   };
   addEventListener("pointermove", move, { passive: true });
+  addEventListener("pointerdown", down, { passive: true });
   addEventListener("click", click);
 
   // a fire lights when the ignition wave reaches it, with a flare
@@ -236,7 +272,10 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     wantH = A.h + (Z.h - A.h) * f + (i === 1 ? 0 : Math.sin(Math.PI * f) * 10);
     wantW = A.w + (Z.w - A.w) * f;
     const [W, H] = v.size();
-    if (W / H < 0.8) wantW = Math.min(wantW, 40);
+    if (W / H < 0.8) {
+      wantW = Math.min(wantW, 40);
+      want.addScaledVector(UP, 12 * (i === 0 ? 1 - f : 0));
+    }
     const intro = Math.min(1, Math.max(0, (ign.value - 0.3) / 3.2));
     wantH -= (1 - Math.pow(1 - intro, 3)) * 3 * Math.max(0, 1 - p * 2);
     floorY = A.floor + (Z.floor - A.floor) * f;
@@ -254,26 +293,33 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     F.u.center.value.copy(cur);
     lightFires(S, fires, cur, lit);
 
-    if (ptr.moved && ptr.cx >= 0) {
+    if (ptr.moved && ptr.over && ptr.mouse) {
       ptr.moved = false;
-      ndc.set((ptr.cx / W) * 2 - 1, -(ptr.cy / H) * 2 + 1);
-      ray.setFromCamera(ndc, camera);
-      const h = ptr.over ? ray.intersectObjects(picks, false)[0] : undefined;
-      hot = h ? picks.indexOf(h.object) : -1;
+      hot = pick(ptr.cx, ptr.cy);
       canvas.style.cursor = hot >= 0 ? "pointer" : "";
       const t = (floorY + 1.6 - ray.ray.origin.y) / ray.ray.direction.y;
       p0.copy(ray.ray.origin).addScaledVector(ray.ray.direction, t);
-    }
+    } else if (!ptr.over) hot = -1;
+    if (tap >= 0 && S.time.value - tapT > 0.35) tap = -1;
     const focus = Number((document.activeElement as HTMLElement | null)?.dataset?.ad ?? -1);
     hall.slots.forEach((s: Slot, j) => {
-      s.hot(j === hot || s.i === focus ? 1 : 0);
+      spring(hover[j], j === hot || j === tap || s.i === focus ? 1 : 0, dt, 260, 0.6);
+      spring(knock[j], 0, dt, 160, 0.22);
+      s.hot(hover[j].x, knock[j].x);
       if (o.still) return s.drop(1);
       if (!unroll[j] && s.pos.distanceTo(cur) < 30) unroll[j] = S.time.value + 0.12 * (j % 4);
       const u = unroll[j] ? Math.min(1, Math.max(0, (S.time.value - unroll[j]) / 0.9)) : 0;
       s.drop(1 - Math.pow(1 - u, 3));
     });
-    S.fl.value[NL - 1].set(p0.x, p0.y, p0.z, ptr.over && !o.still ? 8 : 0.001);
-    S.fc.value[NL - 1].set(1.1, 0.62, 0.32);
+    spring(gate, hot === GATE || tap === GATE ? 1 : 0, dt, 200, 0.7);
+    spring(flare, 0, dt, 90, 0.9);
+    for (const g of gateGlows) (g.material as THREE.ShaderMaterial).uniforms.uA.value = 1.2 + 0.6 * gate.x + 0.5 * flare.x;
+    spring(hand, ptr.over && ptr.mouse && !o.still ? 1 : 0, dt, 120, 1);
+    if (hand.x < 0.02) hp.copy(p0), hv.set(0, 0, 0);
+    hv.addScaledVector(hd.subVectors(p0, hp), 140 * dt).multiplyScalar(Math.max(0, 1 - 2 * Math.sqrt(140) * dt));
+    hp.addScaledVector(hv, dt);
+    S.fl.value[NL - 1].set(hp.x, hp.y, hp.z, 0.001 + 8 * Math.max(0, hand.x));
+    S.fc.value[NL - 1].set(GLOW.fire[0] * 0.55, GLOW.fire[1] * 0.55, GLOW.fire[2] * 0.55);
 
     if (fresh || shadowAt.distanceTo(cur) > 1.5 || Math.abs(shadowH - vh) > vh * 0.08) {
       shadowAt.copy(cur);
@@ -295,6 +341,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     P.render(scene, camera, vh, off.set(cur.dot(RV) / vh, cur.dot(UP) / vh));
     if (!shown) {
       shown = true;
+      if (o.bare) host.dataset.marks = JSON.stringify(marks(camera, [...warm, ...cold].map((f) => ({ p: f.p, h: 2.1 }))));
       o.ready();
     }
   }
@@ -304,6 +351,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     gone = true;
     v.stop();
     removeEventListener("pointermove", move);
+    removeEventListener("pointerdown", down);
     removeEventListener("click", click);
     drop(b);
   };

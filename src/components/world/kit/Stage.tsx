@@ -5,7 +5,7 @@ import { want3d } from "./gate";
 import "./stage.css";
 
 /** What a stage's scene module provides: draw into `host` (with ./view), call `ready` after the first frame, return a cleanup. */
-export type Mount = (host: HTMLElement, ctx: { still: boolean; small: boolean; ready: () => void }) => () => void;
+export type Mount = (host: HTMLElement, ctx: { still: boolean; bare: boolean; small: boolean; ready: () => void }) => () => void;
 
 /**
  * A 3D moment on a page. First paint is the poster (a render of the same scene, see ./posters.mjs), and it stays the
@@ -23,7 +23,8 @@ export function Stage({ load, poster, margin = "900px 0px", className, children,
     if (!want3d() || !box.current || !host.current) return;
     setMode("live");
     const el = host.current;
-    const still = new URLSearchParams(location.search).has("snap");
+    const q = new URLSearchParams(location.search);
+    const still = q.has("snap");
     let off: (() => void) | undefined;
     let dead = false;
     const io = new IntersectionObserver(
@@ -31,7 +32,7 @@ export function Stage({ load, poster, margin = "900px 0px", className, children,
         if (!en.isIntersecting) return;
         io.disconnect();
         load().then((mount) => {
-          if (!dead) off = mount(el, { still, small: innerWidth < 1100, ready: () => setLive(true) });
+          if (!dead) off = mount(el, { still, bare: q.has("bare"), small: innerWidth < 1100, ready: () => setLive(true) });
         });
       },
       { rootMargin: margin },

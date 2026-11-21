@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import type { Bag } from "./bag";
 import type { Fire } from "./lights";
-import { ACCENT, SOUL, glsl, type Shared } from "./paint";
+import { GLOW, SOUL, glsl, type Shared } from "./paint";
 
 // The particle systems, all GPU points: flames over each fire, a halo around it, and drifting motes (embers, souls,
 // dust) in a box that follows the camera. `u.ign` is ignition time: a fire lights when ign passes its distance from
@@ -32,11 +32,10 @@ export function fx(scene: THREE.Scene, S: Shared, b: Bag) {
   const IG = "clamp((uIgn - 0.15 - length(position - uDoor) / 26.0) / 0.45, 0.0, 1.0)";
   return {
     u,
-    /** Flames over each fire, `per` points apiece, warm or soul-cyan. */
+    /** Flames over each fire, `per` points apiece, green (GLOW) or soul-cyan. */
     flames(list: Fire[], soul: boolean, per = 24) {
       if (!list.length) return;
-      const c = soul ? SOUL : ACCENT;
-      const [hot, cold] = [glsl(c.clone().lerp(new THREE.Color(1, 1, 1), 0.6)), glsl(c, 0.95)];
+      const [hot, cold] = soul ? [glsl(SOUL.clone().lerp(new THREE.Color(1, 1, 1), 0.6)), glsl(SOUL, 0.95)] : [glsl(new THREE.Color(GLOW.core).lerp(new THREE.Color(1, 1, 1), 0.45)), glsl(new THREE.Color(GLOW.emissive), 0.95)];
       points(list.length * per, (i) => list[i % list.length].p.toArray() as [number, number, number], {}, `
         void main() {
           vS = aSeed;

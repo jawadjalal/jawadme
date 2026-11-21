@@ -2,15 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { capable } from "./kit/gate";
+import { Flames } from "./kit/Flames";
+import { want3d } from "./kit/gate";
 import type { WorldAd } from "./scene";
 
 // The stage behind the home page. First paint is a poster of the gate court before its fires are lit, rendered from
 // the scene itself. Once the page has loaded, the live scene lights them in a wave out from the gate; without it, a
 // lit poster fades in over the dark one. The other chambers' posters load after the page and cross-fade as the page
-// reaches them. On a capable desktop GPU
-// the live scene (./scene, three.js) loads once the page is idle and takes over. Phones, reduced motion, weak or
-// software GPUs and no WebGL2 keep the posters. ?world=live|poster overrides the choice; ?shot=0..4 holds the camera
+// reaches them. A lit poster's flames are a CSS flipbook (./kit/Flames), and the posters drift slowly with the page. The live scene (./scene, three.js) loads once the page is idle and takes over on a desktop GPU
+// (./kit/gate). Phones, tablets, reduced motion, Save-Data, weak or software GPUs and no WebGL2 keep the posters, and
+// three.js never loads. ?world=live|poster overrides the choice; ?shot=0..4 holds the camera
 // on one shot (posters.mjs renders the posters that way) and ?snap drops the camera's easing (for screenshots).
 //
 // The camera follows five keys measured from the page's [data-world-stop] blocks: the gate (top of the page), the
@@ -33,8 +34,7 @@ export function World({ ads }: { ads: WorldAd[] }) {
     const section = el?.closest<HTMLElement>("[data-world]");
     if (!el || !section) return;
     const q = new URLSearchParams(location.search);
-    const w = q.get("world");
-    const go3d = w === "live" || (w !== "poster" && capable());
+    const go3d = want3d();
     section.dataset.mode = go3d ? "live" : "poster";
 
     let keys = [0, 1, 2, 3, 4];
@@ -75,8 +75,14 @@ export function World({ ads }: { ads: WorldAd[] }) {
           ads,
           small: innerWidth < 1100,
           still: shot !== null || q.has("snap"),
+          bare: q.has("bare"),
           dim: q.has("dim"),
           open: (id) => router.push("/w/" + id),
+          enter: () => {
+            const lenis = (window as Window & { __lenis?: { scrollTo: (y: number) => void } }).__lenis;
+            if (lenis) lenis.scrollTo(keys[1]);
+            else scrollTo({ top: keys[1], behavior: "smooth" });
+          },
           ready: () => setLive(true),
         });
       });
@@ -97,20 +103,28 @@ export function World({ ads }: { ads: WorldAd[] }) {
   return (
     <div className={"world-stage" + (live ? " live" : "")} aria-hidden="true">
       {ROOMS.map((r, i) => (
-        <picture key={r} className="world-poster" data-on={i === room ? "" : undefined}>
+        <div key={r} className="world-poster" data-on={i === room ? "" : undefined}>
           {i === 0 || later ? (
-            <>
-              <source media="(max-width: 767px)" srcSet={"/world/poster/" + r + "-m.webp"} />
-              <img src={"/world/poster/" + r + "-d.webp"} alt="" decoding="async" fetchPriority={i === 0 ? "high" : "low"} />
-            </>
+            <div className="world-frame">
+              <picture>
+                <source media="(max-width: 767px)" srcSet={"/world/poster/" + r + "-m.webp"} />
+                <img src={"/world/poster/" + r + "-d.webp"} alt="" decoding="async" fetchPriority={i === 0 ? "high" : "low"} />
+              </picture>
+              {i > 0 && !live ? <Flames of={r} /> : null}
+            </div>
           ) : null}
-        </picture>
+        </div>
       ))}
       {lit ? (
-        <picture className="world-poster world-lit" data-on={room === 0 ? "" : undefined}>
-          <source media="(max-width: 767px)" srcSet="/world/poster/gate-lit-m.webp" />
-          <img src="/world/poster/gate-lit-d.webp" alt="" decoding="async" />
-        </picture>
+        <div className="world-poster world-lit" data-on={room === 0 ? "" : undefined}>
+          <div className="world-frame">
+            <picture>
+              <source media="(max-width: 767px)" srcSet="/world/poster/gate-lit-m.webp" />
+              <img src="/world/poster/gate-lit-d.webp" alt="" decoding="async" />
+            </picture>
+            <Flames of="gate-lit" />
+          </div>
+        </div>
       ) : null}
       <div ref={host} className="world-gl" />
     </div>

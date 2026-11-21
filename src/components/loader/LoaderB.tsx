@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import "./loaderB.css";
 
 // Loader B, on home for every hard load (the long beat on a first visit, a short one on repeats); ?loader=0 turns it
-// off. Client navigations never run it: the inline script below only runs in the server HTML. Embers rise out of the dark and a few real Arabic words drift through them, one or two
+// off. Client navigations never run it: the inline script below only runs in the server HTML. Sparks rise out of the dark and a few real Arabic words drift through them, one or two
 // at a time with uneven holds, a stall, and one wrong-footed beat of black; then تصميم ("design") comes apart into
-// embers that gather into the name, which settles solid and docks exactly onto the home h1. The mark is not drawn
+// sparks that gather into the name, which settles solid and docks exactly onto the home h1. The mark is not drawn
 // here: it is a clone of the hero's own h1 (whatever face the hero sets it in), so the dock lands on the real thing.
 // Words are drawn as whole shaped runs (canvas fillText, direction rtl), never as separate letters. The words and
 // what they mean are in loader-words.md. Font: Aref Ruqaa Bold, SIL OFL 1.1, subset to those words.
@@ -93,7 +93,7 @@ export function LoaderB() {
     const vw = innerWidth;
     const vh = innerHeight;
     const tall = vh > vw * 1.1;
-    const dpr = Math.min(devicePixelRatio || 1, vw < 600 ? 1.25 : 1.5);
+    const dpr = Math.min(devicePixelRatio || 1, vw < 600 ? 1 : 1.5);
 
     let dead = false;
     let raf = 0;
@@ -144,13 +144,15 @@ export function LoaderB() {
       probe.fillRect(0, 0, 1, 1);
       return Array.from(probe.getImageData(0, 0, 1, 1).data.slice(0, 3));
     };
-    const acc = token("--accent", "#ff5314");
-    const hi = token("--accent-hi", "#ffb060");
+    const acc = token("--accent", "#73e8b5");
+    const glow = token("--accent-glow", "#8af5c6");
+    const spark = token("--accent-spark", "#4dffae");
+    const ivory = token("--ivory", "#f8e3c2");
     const mix = (a: number[], b: number[], u: number) => a.map((v, i) => Math.round(v + (b[i] - v) * u));
     const css = (c: number[], a = 1) => "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a + ")";
-    const hot = mix(hi, [255, 255, 255], 0.4);
-    const GLOW = "drop-shadow(0 0 7px " + css(acc, 0.75) + ")";
-    const NOGLOW = "drop-shadow(0 0 0 " + css(acc, 0) + ")";
+    const hot = mix(spark, [255, 255, 255], 0.4);
+    const GLOW = "drop-shadow(0 0 7px " + css(glow, 0.75) + ")";
+    const NOGLOW = "drop-shadow(0 0 0 " + css(glow, 0) + ")";
 
     const handoff = (dur: number) => {
       const opt = { duration: dur, fill: "forwards" as const };
@@ -201,9 +203,9 @@ export function LoaderB() {
       const tg0 = tile.getContext("2d")!;
       const gi = tg0.createImageData(128, 128);
       for (let p = 0; p < gi.data.length; p += 4) {
-        gi.data[p] = hot[0];
-        gi.data[p + 1] = hot[1];
-        gi.data[p + 2] = hot[2];
+        gi.data[p] = glow[0];
+        gi.data[p + 1] = glow[1];
+        gi.data[p + 2] = glow[2];
         gi.data[p + 3] = Math.random() * 4.5;
       }
       tg0.putImageData(gi, 0, 0);
@@ -234,7 +236,7 @@ export function LoaderB() {
         const h = Math.ceil(m.actualBoundingBoxAscent + m.actualBoundingBoxDescent);
         const ox = P + left;
         const oy = P + asc;
-        const draw = (scale: number, glow: boolean) => {
+        const draw = (scale: number, lit: boolean) => {
           const c = document.createElement("canvas");
           c.width = Math.ceil((wd + 2 * P) * scale);
           c.height = Math.ceil((h + 2 * P) * scale);
@@ -243,27 +245,23 @@ export function LoaderB() {
           g.font = f;
           g.direction = "rtl";
           g.textAlign = "center";
-          if (glow) {
-            const grad = g.createLinearGradient(0, oy - asc, 0, oy + h - asc);
-            grad.addColorStop(0, css(hot));
-            grad.addColorStop(0.5, css(hi));
-            grad.addColorStop(1, css(acc));
+          if (lit) {
             g.lineJoin = "round";
-            g.strokeStyle = css(acc, 0.1);
+            g.strokeStyle = css(glow, 0.1);
             g.lineWidth = size * 0.26;
             g.strokeText(WORD_AR[it.i], ox, oy);
-            g.strokeStyle = css(acc, 0.16);
+            g.strokeStyle = css(glow, 0.16);
             g.lineWidth = size * 0.15;
             g.strokeText(WORD_AR[it.i], ox, oy);
-            g.strokeStyle = css(acc, 0.3);
+            g.strokeStyle = css(glow, 0.3);
             g.lineWidth = size * 0.07;
             g.strokeText(WORD_AR[it.i], ox, oy);
-            g.fillStyle = grad;
+            g.fillStyle = css(glow);
           } else g.fillStyle = "#fff";
           g.fillText(WORD_AR[it.i], ox, oy);
           return { c, g };
         };
-        const glow = draw(dpr, true);
+        const lit = draw(dpr, true);
         const pts: number[] = [];
         if (it.i === 3) {
           const mask = draw(1, false);
@@ -271,7 +269,7 @@ export function LoaderB() {
           for (let y = 0; y < mask.c.height; y += 2) for (let x = 0; x < mask.c.width; x += 2) if (data[(y * mask.c.width + x) * 4 + 3] > 140) pts.push(x - ox, y - oy);
         }
         const [sx, sy] = tall ? it.tall : it.wide;
-        words.push({ cv: glow.c, ox, oy, x: sx * vw, y: sy * vh, at: it.at, out: it.i === 3 ? cfg.cond : it.at + OUT[it.i], simAt: -1, pts });
+        words.push({ cv: lit.c, ox, oy, x: sx * vw, y: sy * vh, at: it.at, out: it.i === 3 ? cfg.cond : it.at + OUT[it.i], simAt: -1, pts });
       }
       await tick();
       if (dead) return;
@@ -308,7 +306,7 @@ export function LoaderB() {
       }
       await tick();
       if (dead) return;
-      const N = Math.min(2000, tpts.length / 2);
+      const N = Math.min(vw < 600 ? 1100 : 2000, tpts.length / 2);
       const pick = (arr: number[], n: number) => {
         const out: number[] = [];
         const total = arr.length / 2;
@@ -351,18 +349,25 @@ export function LoaderB() {
       const spr = document.createElement("canvas");
       spr.width = spr.height = 64;
       const sg = spr.getContext("2d")!;
-      const rg = sg.createRadialGradient(32, 32, 0, 32, 32, 32);
-      rg.addColorStop(0, css(hot));
-      rg.addColorStop(0.25, css(hi, 0.7));
-      rg.addColorStop(1, css(acc, 0));
-      sg.fillStyle = rg;
-      sg.fillRect(0, 0, 64, 64);
+      sg.shadowColor = css(spark, 0.9);
+      sg.shadowBlur = 22;
+      sg.fillStyle = css(hot);
+      for (let pass = 0; pass < 4; pass++) {
+        sg.beginPath();
+        sg.arc(32, 32, 8, 0, Math.PI * 2);
+        sg.fill();
+      }
+      sg.shadowBlur = 0;
+      sg.fillStyle = "#fff";
+      sg.beginPath();
+      sg.arc(32, 32, 3.5, 0, Math.PI * 2);
+      sg.fill();
       cv.width = Math.round(vw * dpr);
       cv.height = Math.round(vh * dpr);
       const ctx = cv.getContext("2d")!;
-      const flying = css(hi);
-      const landed = css(mix(hi, [244, 234, 216], 0.6));
-      const embers: Ember[] = Array.from({ length: Math.round(cfg.embers * (vw < 600 ? 0.6 : 1)) }, () => ({ x: Math.random() * vw, y: vh * (0.55 + Math.random() * 0.6), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
+      const flying = css(spark);
+      const landed = css(mix(glow, ivory, 0.5));
+      const embers: Ember[] = Array.from({ length: Math.round(cfg.embers * (vw < 600 ? 0.4 : 1)) }, () => ({ x: Math.random() * vw, y: vh * (0.55 + Math.random() * 0.6), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
 
       t0 = Math.max(T0, performance.now() - 1300);
       let last = t0;
@@ -395,7 +400,7 @@ export function LoaderB() {
             const x = e.x + Math.sin(age * e.sw + e.ph) * 18;
             if (y < -20) continue;
             ctx.globalAlpha = Math.min(1, clamp(y / (vh * 0.9)) * 1.1) * (0.55 + 0.45 * Math.sin(simT * 7 + e.ph * 3)) * fadeOut * clamp((t - e.at) / 300);
-            const s = e.r * 7;
+            const s = e.r * 8;
             ctx.drawImage(spr, x - s / 2, y - s / 2, s, s);
           }
         if (cut && t > cfg.cut[1] - 90) {
@@ -418,31 +423,31 @@ export function LoaderB() {
         });
 
         if (t >= cfg.cond && t < cfg.markIn + 220) {
-          ctx.globalCompositeOperation = "lighter";
           const fade = 1 - clamp((t - cfg.markIn) / 180);
+          const pf = new Path2D();
+          const pl = new Path2D();
           for (let i = 0; i < N; i++) {
             const u = clamp((t - cfg.cond - dl[i]) / du[i]);
+            if (u === 0) continue;
             const e = ease(u);
             const bow = Math.sin(u * Math.PI);
             const x = sx[i] + (tx[i] - sx[i]) * e + ax[i] * bow;
             const y = sy[i] + (ty[i] - sy[i]) * e + ay[i] * bow;
-            ctx.globalAlpha = (u === 0 ? 0 : 0.5 + 0.5 * u) * fade * fadeOut;
             const s = 2.3 - u * 0.5;
-            ctx.fillStyle = u < 1 ? flying : landed;
-            ctx.fillRect(x - s / 2, y - s / 2, s, s);
-            if (i % 7 === 0) {
-              ctx.globalAlpha *= 0.35;
-              ctx.drawImage(spr, x - 5, y - 5, 10, 10);
-            }
+            (u < 1 ? pf : pl).rect(x - s / 2, y - s / 2, s, s);
           }
-          ctx.globalCompositeOperation = "source-over";
+          ctx.globalAlpha = 0.9 * fade * fadeOut;
+          ctx.fillStyle = flying;
+          ctx.fill(pf);
+          ctx.fillStyle = landed;
+          ctx.fill(pl);
         }
         ctx.globalAlpha = 1;
 
         if (t >= cfg.markIn && handoffAt < 0) {
           const u = ease(clamp((t - cfg.markIn) / 170));
           mark.style.opacity = String(u);
-          mark.style.filter = "drop-shadow(0 0 " + (5 + 10 * (1 - u)) + "px " + css(acc, 0.5 + 0.4 * (1 - u)) + ")";
+          mark.style.filter = "drop-shadow(0 0 " + (5 + 10 * (1 - u)) + "px " + css(glow, 0.5 + 0.4 * (1 - u)) + ")";
         }
         if (t >= cfg.handoff && handoffAt < 0) {
           handoffAt = t;

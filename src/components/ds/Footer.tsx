@@ -1,25 +1,29 @@
 import { BookLink } from "@/components/BookLink";
 import { MailLink } from "@/components/MailLink";
-import { FootStage } from "@/components/world/FootStage";
+import { Pillar } from "@/components/world/Pillar";
 import { SITE } from "@/content/site";
 import { SOCIALS } from "@/lib/profile";
+import { Contributions } from "./Contributions";
 import "@/styles/footer.css";
 
 const LINKS = SOCIALS.filter((s) => s.href.startsWith("https://") && s.label !== "linkedin");
 
-/** The page's last word on every page: the footer's chamber (FootStage), one object to play with and the ways out,
- *  then a plain row of every link. */
+/** The page's last word on every page: the waymarker (Pillar), one sign per way out, then a quiet row of every link,
+ *  with his GitHub year beside github. */
 export function Footer({ src }: { src: string }) {
   return (
     <footer className="foot">
-      <FootStage />
+      <Pillar />
       <div className="foot-row">
         <span className="foot-c">©2026 jawad jalal</span>
         <span className="foot-links">
           {LINKS.map((s) => (
-            <a key={s.label} href={s.href} target="_blank" rel="noopener">
-              {s.label}
-            </a>
+            <span key={s.label} className={s.label === "github" ? "foot-gh" : undefined}>
+              <a href={s.href} target="_blank" rel="noopener">
+                {s.label}
+              </a>
+              {s.label === "github" ? <Contributions size="mini" /> : null}
+            </span>
           ))}
           <a href="/about">about</a>
         </span>
