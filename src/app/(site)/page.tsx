@@ -25,7 +25,7 @@ export default function Home() {
       <Timeline />
 
       <section className="ads-home" data-room="hall" aria-labelledby="ads-h">
-        <TitleTab id="ads-h" tag={ADS.length + " ads"} side={<Link href="/ads">All ads ↗</Link>}>
+        <TitleTab id="ads-h" tag={ADS.length + " ads"} side={<Link href="/work">All work ↗</Link>}>
           Ads
         </TitleTab>
         <AdGallery ads={GALLERY} />
@@ -67,7 +67,7 @@ export default function Home() {
         <div className="about-pic">
           <Media m={SITE.portrait} ratio="1 / 1" sizes="(min-width: 768px) 25vw, 60vw" />
         </div>
-        <p className="t-line about-line" data-lines="">
+        <p className="t-line about-line">
           {SITE.about}
         </p>
       </section>

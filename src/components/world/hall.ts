@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { BRAZIER, Batch, M, box, column, lathe } from "./kit";
-import { HALL, Q, type Fire, type Mats } from "./map";
+import { BRAZIER, Batch, M, Q, box, column, lathe, type Fire } from "./kit";
+import { HALL, type Mats } from "./map";
 
 // The hall of ads: every ad woven into a cloth banner with a gold border and its caption band, hung square to the
 // viewer so it reads as a flat, undistorted 4:5 picture (its height is stretched by 1 / cos(pitch) to undo the

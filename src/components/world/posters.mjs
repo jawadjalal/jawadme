@@ -7,6 +7,6 @@ const [base = "http://localhost:3000", only] = process.argv.slice(2);
 const ROOMS = [["gate", "0&dim"], ["gate-lit", "0"], ["hall", "1"], ["theatre", "3"], ["river", "4"]];
 const jobs = [
   ...ROOMS.map(([name, k]) => ({ name, path: "/?shot=" + k, stage: ".world-stage" })),
-  ...["a", "b", "c"].map((v) => ({ name: "foot-" + v, path: "/ads?footer=" + v, stage: ".foot-stage", scroll: true })),
+  ...["a", "b", "c"].map((v) => ({ name: "foot-" + v, path: "/work?footer=" + v, stage: ".foot-stage", scroll: true })),
 ].filter((j) => !only || only.split(",").includes(j.name));
 await posters({ base, out: new URL("../../../public/world/poster/", import.meta.url).pathname, jobs });
