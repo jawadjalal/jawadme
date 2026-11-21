@@ -586,12 +586,11 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
 /* ── The hang (/work and the home gallery): justified rows, each piece at its own proportions ── */
 .hang { --gap: 16px; display: flex; flex-wrap: wrap; align-items: flex-start; column-gap: var(--gap); row-gap: 34px; }
 .hang-i { --w: var(--dw); --n: var(--dn); width: calc((100% - var(--gap) * var(--n)) * var(--w) - 0.5px); min-width: 0; display: grid; gap: 12px; -webkit-tap-highlight-color: transparent; }
-.hang-i .media > img, .hang-i .media > video { transition: transform 900ms var(--ease); }
+.hang-i .media > img, .hang-i .media > video { transition: transform var(--sp-soft-t) var(--sp-soft); }
 .hang-cap { display: grid; gap: 4px; min-width: 0; font: 700 15px/1.15 var(--f-bar); letter-spacing: -0.015em; }
 .hang-co { transition: color var(--t-fast); }
 .hang-hl { font-weight: 500; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (hover: hover) {
-  .hang-i:hover .media.in > img, .hang-i:hover .media > video { transform: scale(1.03); }
   .hang-i:hover .hang-co { color: var(--accent-text); }
 }
 
