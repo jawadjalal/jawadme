@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import "./loaderB.css";
 
-// Loader B, behind ?loader=b. Embers rise out of the dark and a few real Arabic words drift through them, one or two
+// Loader B, on home for every hard load (the long beat on a first visit, a short one on repeats); ?loader=0 turns it
+// off. Client navigations never run it: the inline script below only runs in the server HTML. Embers rise out of the dark and a few real Arabic words drift through them, one or two
 // at a time with uneven holds, a stall, and one wrong-footed beat of black; then تصميم ("design") comes apart into
 // embers that gather into the name, which settles solid and docks exactly onto the home h1. The mark is not drawn
 // here: it is a clone of the hero's own h1 (whatever face the hero sets it in), so the dock lands on the real thing.
@@ -13,8 +14,7 @@ import "./loaderB.css";
 
 const FAM = "LoaderB Aref Ruqaa";
 const KEY = "lb-b-seen";
-const WORD_AR = ["جمر", "نور", "خط", "تصميم"];
-const INK = "#100b09";
+const WORD_AR = ["ضياء", "نور", "خط", "تصميم"];
 
 type Item = { i: number; at: number; wide: [number, number]; tall: [number, number]; s: number };
 type Beat = { items: Item[]; stall: [number, number]; cut: [number, number]; cond: number; markIn: number; handoff: number; end: number; embers: number };
@@ -55,7 +55,8 @@ const clamp = (v: number) => Math.min(1, Math.max(0, v));
 type Ember = { x: number; y: number; vy: number; r: number; ph: number; sw: number; at: number };
 type Word = { cv: HTMLCanvasElement; ox: number; oy: number; x: number; y: number; at: number; out: number; simAt: number; pts: number[] };
 
-const SCRIPT = "try{if(/[?&]loader=b(&|$)/.test(location.search)){document.documentElement.classList.add('lb-on');window.__lbT=performance.now();window.__lbF=document.fonts.load('700 80px \"LoaderB Aref Ruqaa\"','جمر نور خط تصميم')}}catch(e){}";
+const SCRIPT =
+  "try{if(!/[?&]loader=0(&|$)/.test(location.search)){var d=document.documentElement;d.classList.add('lb-on');setTimeout(function(){d.classList.remove('lb-on')},6000);window.__lbT=performance.now();window.__lbF=document.fonts.load('700 80px \"LoaderB Aref Ruqaa\"','" + WORD_AR.join(" ") + "')}}catch(e){}";
 
 export function LoaderB() {
   const [armed, setArmed] = useState(false);
@@ -68,7 +69,7 @@ export function LoaderB() {
   const ctaRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    if (/[?&]loader=b(&|$)/.test(location.search)) setArmed(true);
+    if (document.documentElement.classList.contains("lb-on")) setArmed(true);
     else setGone(true);
   }, []);
 
@@ -92,7 +93,7 @@ export function LoaderB() {
     const vw = innerWidth;
     const vh = innerHeight;
     const tall = vh > vw * 1.1;
-    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    const dpr = Math.min(devicePixelRatio || 1, vw < 600 ? 1.25 : 1.5);
 
     let dead = false;
     let raf = 0;
@@ -119,8 +120,9 @@ export function LoaderB() {
 
     const src = document.querySelector<HTMLElement>("main h1");
     const B = src?.getBoundingClientRect();
-    if (!src || !B || B.width < 40) {
-      timers.push(window.setTimeout(finish, 300));
+    if (!src || !B || B.width < 40 || scrollY > 10 || B.top > vh * 0.5) {
+      anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" }), cta.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" }));
+      timers.push(window.setTimeout(finish, 230));
       return finish;
     }
     const cs = getComputedStyle(src);
@@ -193,21 +195,32 @@ export function LoaderB() {
       await Promise.race([(w.__lbF ?? document.fonts.load('700 80px "' + FAM + '"', WORD_AR.join(" "))).catch(() => {}), new Promise((r) => setTimeout(r, 900))]);
       if (dead) return;
 
-      grain.width = vw;
-      grain.height = vh;
-      const gg = grain.getContext("2d")!;
-      const gi = gg.createImageData(vw, vh);
+      const tick = () => new Promise<void>((r) => setTimeout(r));
+      const tile = document.createElement("canvas");
+      tile.width = tile.height = 128;
+      const tg0 = tile.getContext("2d")!;
+      const gi = tg0.createImageData(128, 128);
       for (let p = 0; p < gi.data.length; p += 4) {
         gi.data[p] = hot[0];
         gi.data[p + 1] = hot[1];
         gi.data[p + 2] = hot[2];
         gi.data[p + 3] = Math.random() * 4.5;
       }
-      gg.putImageData(gi, 0, 0);
+      tg0.putImageData(gi, 0, 0);
+      grain.width = vw;
+      grain.height = vh;
+      const gg = grain.getContext("2d")!;
+      gg.fillStyle = gg.createPattern(tile, "repeat")!;
+      gg.fillRect(0, 0, vw, vh);
+      await tick();
+      if (dead) return;
 
       const base = vw < 600 ? vw * 0.2 : Math.min(150, vw * 0.1);
       const P = 40;
-      const words: Word[] = cfg.items.map((it) => {
+      const words: Word[] = [];
+      for (const it of cfg.items) {
+        await tick();
+        if (dead) return;
         const size = base * it.s;
         const f = font.replace("%s", String(size));
         const probe = document.createElement("canvas").getContext("2d")!;
@@ -235,11 +248,17 @@ export function LoaderB() {
             grad.addColorStop(0, css(hot));
             grad.addColorStop(0.5, css(hi));
             grad.addColorStop(1, css(acc));
+            g.lineJoin = "round";
+            g.strokeStyle = css(acc, 0.1);
+            g.lineWidth = size * 0.26;
+            g.strokeText(WORD_AR[it.i], ox, oy);
+            g.strokeStyle = css(acc, 0.16);
+            g.lineWidth = size * 0.15;
+            g.strokeText(WORD_AR[it.i], ox, oy);
+            g.strokeStyle = css(acc, 0.3);
+            g.lineWidth = size * 0.07;
+            g.strokeText(WORD_AR[it.i], ox, oy);
             g.fillStyle = grad;
-            g.shadowColor = css(acc, 0.85);
-            g.shadowBlur = 26;
-            g.fillText(WORD_AR[it.i], ox, oy);
-            g.shadowBlur = 0;
           } else g.fillStyle = "#fff";
           g.fillText(WORD_AR[it.i], ox, oy);
           return { c, g };
@@ -252,39 +271,43 @@ export function LoaderB() {
           for (let y = 0; y < mask.c.height; y += 2) for (let x = 0; x < mask.c.width; x += 2) if (data[(y * mask.c.width + x) * 4 + 3] > 140) pts.push(x - ox, y - oy);
         }
         const [sx, sy] = tall ? it.tall : it.wide;
-        return { cv: glow.c, ox, oy, x: sx * vw, y: sy * vh, at: it.at, out: it.i === 3 ? cfg.cond : it.at + OUT[it.i], simAt: -1, pts };
-      });
+        words.push({ cv: glow.c, ox, oy, x: sx * vw, y: sy * vh, at: it.at, out: it.i === 3 ? cfg.cond : it.at + OUT[it.i], simAt: -1, pts });
+      }
+      await tick();
+      if (dead) return;
       const design = words[words.length - 1];
 
       const tpts: number[] = [];
       const svgs = mark.querySelectorAll("svg");
       if (svgs.length) {
-        const tc = document.createElement("canvas");
-        tc.width = vw;
-        tc.height = vh;
-        const tg = tc.getContext("2d")!;
-        svgs.forEach((s) => {
-          const r = s.getBoundingClientRect();
-          const vb = (s.getAttribute("viewBox") ?? "0 0 1 1").split(" ").map(Number);
-          tg.save();
-          tg.translate(r.left, r.top);
-          tg.scale(r.width / vb[2], r.width / vb[2]);
-          tg.translate(-vb[0], -vb[1]);
-          s.querySelectorAll("path").forEach((p) => tg.fill(new Path2D(p.getAttribute("d") ?? "")));
-          tg.restore();
-        });
         const r0 = mark.getBoundingClientRect();
         const rx = Math.max(0, Math.floor(r0.left));
         const ry = Math.max(0, Math.floor(r0.top));
         const rw = Math.min(vw, Math.ceil(r0.right)) - rx;
         const rh = Math.min(vh, Math.ceil(r0.bottom)) - ry;
-        const td = tg.getImageData(rx, ry, rw, rh).data;
+        const tc = document.createElement("canvas");
+        tc.width = rw;
+        tc.height = rh;
+        const tg = tc.getContext("2d")!;
+        svgs.forEach((s) => {
+          const r = s.getBoundingClientRect();
+          const vb = (s.getAttribute("viewBox") ?? "0 0 1 1").split(" ").map(Number);
+          tg.save();
+          tg.translate(r.left - rx, r.top - ry);
+          tg.scale(r.width / vb[2], r.width / vb[2]);
+          tg.translate(-vb[0], -vb[1]);
+          s.querySelectorAll("path").forEach((p) => tg.fill(new Path2D(p.getAttribute("d") ?? "")));
+          tg.restore();
+        });
+        const td = tg.getImageData(0, 0, rw, rh).data;
         const tstep = B.width * k < 500 ? 1 : 2;
         for (let y = 0; y < rh; y += tstep) for (let x = 0; x < rw; x += tstep) if (td[(y * rw + x) * 4 + 3] > 140) tpts.push(rx + x, ry + y);
       } else {
         const r0 = mark.getBoundingClientRect();
         for (let n = 0; n < 6000; n++) tpts.push(r0.left + Math.random() * r0.width, r0.top + Math.random() * r0.height);
       }
+      await tick();
+      if (dead) return;
       const N = Math.min(2000, tpts.length / 2);
       const pick = (arr: number[], n: number) => {
         const out: number[] = [];
@@ -339,7 +362,7 @@ export function LoaderB() {
       const ctx = cv.getContext("2d")!;
       const flying = css(hi);
       const landed = css(mix(hi, [244, 234, 216], 0.6));
-      const embers: Ember[] = Array.from({ length: cfg.embers }, () => ({ x: Math.random() * vw, y: vh * (0.55 + Math.random() * 0.6), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
+      const embers: Ember[] = Array.from({ length: Math.round(cfg.embers * (vw < 600 ? 0.6 : 1)) }, () => ({ x: Math.random() * vw, y: vh * (0.55 + Math.random() * 0.6), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
 
       t0 = Math.max(T0, performance.now() - 1300);
       let last = t0;
