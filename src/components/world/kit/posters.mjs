@@ -3,7 +3,7 @@
 // live, hides everything else on the page, screenshots the stage and writes <out>/<name>-<d|m>.webp.
 //
 //   import { posters } from "./kit/posters.mjs";
-//   await posters({ base: "http://localhost:3000", out: "public/world/poster", jobs: [{ name: "foot-a", path: "/ads?footer=a", stage: ".foot-stage" }] });
+//   await posters({ base: "http://localhost:3000", out: "public/world/poster", jobs: [{ name: "pillar", path: "/about", stage: ".pl-stage", scroll: true }] });
 //
 // CHROME=<path> picks the browser (default: Playwright's). A job may set `scroll: true` to bring the stage into view
 // first (stages below the fold load only near the screen; plain scrolling, since smooth-scroll libraries never settle), `wait` in ms after it goes live, and `sizes` to override.

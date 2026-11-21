@@ -11,7 +11,6 @@ const jobs = [
   { name: "niche-game", path: "/work/derelict-depths", stage: ".mo-niche-game" },
   { name: "niche-view", path: "/w/midjourney-a", stage: ".mo-niche-view" },
   { name: "gate", path: "/cal", stage: ".mo-gate", sizes: [{ tag: "d", viewport: { width: 1440, height: 900 }, dpr: 1.25, width: 900, quality: 70 }] },
-  { name: "study", path: "/about", stage: ".mo-study", scroll: true },
   { name: "shaft", path: "/derelictdepths", stage: ".mo-shaft" },
   { name: "deadend", path: "/nope", stage: ".mo-deadend" },
   { name: "reading", path: "/blog", stage: ".mo-reading" },

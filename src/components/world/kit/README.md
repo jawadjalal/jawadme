@@ -2,8 +2,9 @@
 
 Everything a route needs for its own 3D moment in the same world: the iso camera, the painted toon materials, the
 props, fire light, particles, the ink-outline and bloom finish, one shared renderer, a React `Stage` with a poster
-first paint, and a headless poster renderer. The home world (`../scene.ts`) and the footer (`../footScene.ts`) are
-built on it; read `../footScene.ts` as the smallest complete example.
+first paint, and a headless poster renderer. The home world (`../scene.ts`) and the route moments (`../../moments`) are
+built on it; read `../../moments/mount.ts` as the smallest complete example. The footer (`../pillarScene.ts`) uses only
+its Stage and view, around a baked GLB.
 
 ## A stage in four parts
 
