@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
 import { Hang } from "@/components/ds/AdGallery";
+import { Ink } from "@/components/ds/display/Ink";
 import { Footer } from "@/components/ds/Footer";
 import { WorkMoment } from "@/components/moments/work";
 import { ADS } from "@/content/ads";
@@ -105,7 +106,7 @@ function RoomView({ room, i, lead }: { room: Room; i: number; lead: boolean }) {
         <div className="rh-side">
           {room.note ? <p className="rh-n">{room.note}</p> : null}
           <p className="rh-m">
-            <span>{room.count}</span>
+            <Ink kind="ring">{room.count}</Ink>
             {room.caseHref ? (
               <Link href={room.caseHref} className="rh-case">
                 case study <span className="arr">↗</span>
@@ -131,7 +132,10 @@ export default async function Work({ searchParams }: Props) {
           work
         </h1>
         <p className="wk-n">
-          <strong>{ADS.length} ads</strong> first. then websites, a design tool, 3d and a roblox game, designed and built.
+          <Ink kind="under">
+            <strong>{ADS.length} ads</strong>
+          </Ink>{" "}
+          first. then websites, a design tool, 3d and a roblox game, designed and built.
         </p>
       </header>
       <div className="gal-hall" data-room="hall">
