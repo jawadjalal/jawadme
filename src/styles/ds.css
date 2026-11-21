@@ -194,12 +194,10 @@ html[data-call-in-view] .dock > .bcb, html:not([data-call-seen]) .dock > .bcb[da
 .dock-mark { display: grid; place-items: center; width: 56px; }
 .dock-mark img { width: 30px; height: auto; transition: transform var(--sp-pop-t) var(--sp-pop); }
 .dock-mark:hover img { transform: rotate(-10deg) scale(1.08); }
-.dock-nav { display: flex; align-items: stretch; gap: 20px; padding: 0 10px 0 2px; margin: 0; list-style: none; }
+.dock-nav { position: relative; display: flex; align-items: stretch; gap: 20px; padding: 0 10px 0 2px; margin: 0; list-style: none; }
 .dock-nav li { display: flex; }
 .dock-nav a { position: relative; display: flex; align-items: center; }
 .dock-nav a .lbl { display: none; }
-.dock-nav a::after { content: ""; position: absolute; left: 0; right: 0; top: calc(50% + 0.62em); height: 2px; background: var(--accent-paper); transform: scaleX(0); transform-origin: left; transition: transform var(--sp-pop-t) var(--sp-pop); }
-.dock-nav a:hover::after, .dock-nav a[aria-current="page"]::after { transform: scaleX(1); }
 .dock-menu { display: none; }
 .dock-sheet { display: none; }
 @media (max-width: 767px) {
@@ -219,16 +217,10 @@ html[data-call-in-view] .dock > .bcb, html:not([data-call-seen]) .dock > .bcb[da
     border-radius: 3px;
     background: var(--ivory);
     color: var(--ink);
-    transform: translateY(16px);
-    opacity: 0;
     visibility: hidden;
-    transition: transform var(--sp-soft-t) var(--sp-soft), opacity 160ms, visibility 0s var(--sp-soft-t);
     padding: 8px 18px 16px;
   }
-  .dock-sheet[data-open="true"] { transform: none; opacity: 1; visibility: visible; transition: transform var(--sp-pop-t) var(--sp-pop), opacity 160ms; }
-  .dock-sheet a { opacity: 0; translate: 0 18px; transition: opacity 120ms, translate 120ms; }
-  .dock-sheet[data-open="true"] a { opacity: 1; translate: none; transition: opacity 200ms calc(40ms + var(--i) * 45ms), translate var(--sp-pop-t) var(--sp-pop) calc(var(--i) * 45ms), scale var(--sp-press-t) var(--sp-press); }
-  .dock-sheet[data-open="true"] a:active { scale: 0.97; }
+  .dock-sheet[data-open="true"] { visibility: visible; }
   .dock-sheet a { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0 8px; border-bottom: 1px solid rgb(11 11 11 / 0.12); font: 700 11vw/0.94 var(--f-disp); letter-spacing: -0.035em; }
   .dock-sheet a .lbl { font-size: 20px; }
   .dock-sheet a[aria-current="page"] { color: var(--accent-paper); }

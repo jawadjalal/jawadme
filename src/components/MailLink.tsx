@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/track";
 import { IDENTITY } from "@/lib/profile";
 
@@ -24,6 +24,7 @@ function announce(text: string) {
 export function MailLink({ src, className, children }: { src: string; className?: string; children?: React.ReactNode }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef(0);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
   return (
     <a
       href={MAIL}
