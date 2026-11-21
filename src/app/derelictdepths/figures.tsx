@@ -21,7 +21,7 @@ export function CameraRig({ cam }: { cam: Cam }) {
   const arcEndX = heroX - Math.cos(rad) * arcR;
   const arcEndY = lookY - Math.sin(rad) * arcR;
   return (
-    <svg className="ml-svg" viewBox="0 0 720 360" width="720" height="360" role="img" aria-label={"The forge camera from the side: the eye sits " + cam.distance + " studs from a look point " + cam.focusHeight + " studs above the hero's root, looking down " + cam.pitch + " degrees, field of view " + cam.fov + " degrees."}>
+    <svg className="ml-svg" viewBox="0 0 720 360" width="720" height="360" role="img" aria-label={"the forge camera from the side: the eye sits " + cam.distance + " studs from a look point " + cam.focusHeight + " studs above the hero's root, looking down " + cam.pitch + " degrees, field of view " + cam.fov + " degrees."}>
       <defs>
         <linearGradient id="mlcone" x1="0" x2="1">
           <stop offset="0" stopColor="#ffc043" stopOpacity="0.28" />
@@ -38,11 +38,11 @@ export function CameraRig({ cam }: { cam: Cam }) {
         <rect x={heroX - 11} y={groundY - 3 * s} width="22" height={3 * s} fill="#cfc6f2" rx="2" />
         <rect x={heroX - 16} y={groundY - 6.6 * s} width="32" height={1.7 * s} fill="#ffffff" rx="6" />
       </g>
-      <text x={heroX + 22} y={groundY - 6 * s} className="muted" fontSize="13">hero (any R15 avatar)</text>
+      <text x={heroX + 22} y={groundY - 6 * s} className="muted" fontSize="13">hero (any r15 avatar)</text>
       <line x1={eyeX} y1={eyeY} x2={heroX} y2={lookY} stroke="#ffc043" strokeWidth="2.5" strokeDasharray="7 6" />
       <circle cx={heroX} cy={lookY} r="6" fill="#ffc043" stroke="#05030a" strokeWidth="2" />
       <line x1={heroX - 110} y1={lookY} x2={heroX} y2={lookY} stroke="#6b5bb0" strokeWidth="1.5" strokeDasharray="3 4" />
-      <path d={"M " + arcX + " " + lookY + " A " + arcR + " " + arcR + " 0 0 1 " + arcEndX + " " + arcEndY} fill="none" stroke="#ffc043" strokeWidth="2" />
+      <path d={"m " + arcX + " " + lookY + " a " + arcR + " " + arcR + " 0 0 1 " + arcEndX + " " + arcEndY} fill="none" stroke="#ffc043" strokeWidth="2" />
       <text x={heroX - arcR - 44} y={lookY - 4} className="amber" fontSize="15" fontWeight="700">{cam.pitch}°</text>
       <line x1={heroX + 36} y1={lookY} x2={heroX + 36} y2={groundY - rootH * s} stroke="#b6a6ee" strokeWidth="1.5" />
       <text x={heroX + 44} y={lookY + 14} fontSize="13" className="muted">+{cam.focusHeight} studs</text>
@@ -52,9 +52,9 @@ export function CameraRig({ cam }: { cam: Cam }) {
       </g>
       <text x={eyeX - 30} y={eyeY - 26} fontSize="15" fontWeight="700">eye</text>
       <text x={(eyeX + heroX) / 2 - 92} y={(eyeY + lookY) / 2 - 22} fontSize="15" fontWeight="700" className="amber">{cam.distance} studs</text>
-      <text x={eyeX - 150} y={eyeY + 70} fontSize="13" className="muted">FOV {cam.fov}° (vertical)</text>
-      <text x="24" y="28" fontSize="13" className="muted">Side view, to scale (1 stud = {s} px)</text>
-      <text x="24" y="342" fontSize="13" className="muted">A wall in the way: the eye pops in front of it ({cam.popMargin} stud margin, never closer than {cam.popMin}) and eases out in {cam.popOutSmooth} s.</text>
+      <text x={eyeX - 150} y={eyeY + 70} fontSize="13" className="muted">fov {cam.fov}° (vertical)</text>
+      <text x="24" y="28" fontSize="13" className="muted">side view, to scale (1 stud = {s} px)</text>
+      <text x="24" y="342" fontSize="13" className="muted">a wall in the way: the eye pops in front of it ({cam.popMargin} stud margin, never closer than {cam.popMin}) and eases out in {cam.popOutSmooth} s.</text>
     </svg>
   );
 }
@@ -65,8 +65,8 @@ const MINER: Move[] = [
   { name: "combo 1", startup: 5, active: 3, recovery: 12, cancel: 8, dmg: 1 },
   { name: "combo 2", startup: 5, active: 3, recovery: 12, cancel: 8, dmg: 1 },
   { name: "combo 3", startup: 8, active: 4, recovery: 18, dmg: 2 },
-  { name: "Strike the Vein", startup: 12, active: 4, recovery: 14, dmg: 3 },
-  { name: "Cave Breaker (ult)", startup: 39, active: 6, recovery: 18, dmg: 6 },
+  { name: "strike the vein", startup: 12, active: 4, recovery: 14, dmg: 3 },
+  { name: "cave breaker (ult)", startup: 39, active: 6, recovery: 18, dmg: 6 },
 ];
 
 export function SwingFrames() {
@@ -77,7 +77,7 @@ export function SwingFrames() {
   const total = 63;
   const h = top + MINER.length * row + 56;
   return (
-    <svg className="ml-svg" viewBox={"0 0 " + (left + total * px + 30) + " " + h} width={left + total * px + 30} height={h} role="img" aria-label="The Miner's moves in frames at 60 per second: startup, active and recovery for each combo hit, the ability and the ult.">
+    <svg className="ml-svg" viewBox={"0 0 " + (left + total * px + 30) + " " + h} width={left + total * px + 30} height={h} role="img" aria-label="the miner's moves in frames at 60 per second: startup, active and recovery for each combo hit, the ability and the ult.">
       {Array.from({ length: Math.floor(total / 6) + 1 }, (_, i) => (
         <g key={i}>
           <line x1={left + i * 6 * px} y1={top - 10} x2={left + i * 6 * px} y2={top + MINER.length * row - 8} stroke="#2c2350" strokeWidth="1" />
@@ -136,15 +136,15 @@ export function JoinBudget({ history, publishLine }: { history: Point[]; publish
   const ticks = [];
   for (let v = min; v <= top; v += 100000) ticks.push(v);
   return (
-    <svg className="ml-svg" viewBox={"0 0 " + W + " " + H} width={W} height={H} role="img" aria-label="Place size in bytes against the join budget's byte line, main by main.">
+    <svg className="ml-svg" viewBox={"0 0 " + W + " " + H} width={W} height={H} role="img" aria-label="place size in bytes against the join budget's byte line, main by main.">
       {ticks.map((v) => (
         <g key={v}>
           <line x1={x0} x2={W - 10} y1={y(v)} y2={y(v)} stroke="#2c2350" />
-          <text x={x0 - 8} y={y(v) + 4} fontSize="11" textAnchor="end" className="muted">{(v / 1e6).toFixed(1)} MB</text>
+          <text x={x0 - 8} y={y(v) + 4} fontSize="11" textAnchor="end" className="muted">{(v / 1e6).toFixed(1)} mb</text>
         </g>
       ))}
       <line x1={x0} x2={W - 10} y1={y(publishLine)} y2={y(publishLine)} stroke="#7be0a0" strokeWidth="2" strokeDasharray="6 5" />
-      <text x={W - 12} y={y(publishLine) - 6} fontSize="11.5" textAnchor="end" fill="#7be0a0">publish line {(publishLine / 1e6).toFixed(2)} MB</text>
+      <text x={W - 12} y={y(publishLine) - 6} fontSize="11.5" textAnchor="end" fill="#7be0a0">publish line {(publishLine / 1e6).toFixed(2)} mb</text>
       {data.map((d, i) => {
         const cx = x0 + i * bw + bw / 2;
         return (

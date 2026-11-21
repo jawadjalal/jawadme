@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { IDENTITY } from "@/lib/profile";
 import { formatDate, POSTS } from "@/lib/posts";
 
-const TITLE = `Blog, ${IDENTITY.properName}`;
+const TITLE = `blog, ${IDENTITY.properName}`;
 const DESCRIPTION =
-  "Notes from Jawad Jalal on design, building products and launching apps with Ignura.";
+  "notes from jawad jalal on design, building products and launching apps with ignura.";
 const URL = `${IDENTITY.site}/blog`;
 
 export const metadata: Metadata = {

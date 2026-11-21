@@ -16,17 +16,12 @@
 .world-flow { position: relative; z-index: 1; pointer-events: none; }
 .world-flow a, .world-flow button, .world-flow .w-ads { pointer-events: auto; }
 
-/* the gate court: the name in his lettering at the top, the line under it, then the call; the void's ink falls
-   from the top edge behind them so they never sit on the busy part of the scene */
-.w-gate { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; min-height: calc(100svh - var(--dock)); padding: calc(4 * var(--u) + 16px) var(--g) 0; background: linear-gradient(#100b09 0, rgb(16 11 9 / 0.88) 22%, rgb(16 11 9 / 0) 44%); }
+/* the gate court: the name in his lettering at the top, the line under it, then the call, over the void above the court */
+.w-gate { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; min-height: calc(100svh - var(--dock)); padding: calc(4 * var(--u) + 16px) var(--g) 0; }
 .w-say { display: grid; justify-items: center; gap: 16px; text-align: center; }
 .w-gate .wm { width: min(44vw, 660px); margin: 0; padding: 0; gap: 1.1vw; color: #f8e3c2; }
 .w-say .hero-say { animation: fade 400ms 360ms both; max-width: 27em; color: #f8e3c2; font-size: clamp(18px, 1.45vw, 26px); line-height: 1.08; }
 .w-say .hero-sw > span { animation-duration: 700ms; }
-.w-say .hero-who { padding: 6px 18px 6px 6px; background: var(--ember); color: #140d09; animation-delay: 900ms; }
-.w-say .hero-who img { width: 36px; }
-.w-say .hero-who:hover { background: #f8e3c2; }
-.w-say .hero-who:hover span { color: inherit; }
 .w-sound { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border: 0; border-radius: 999px; background: #100b09; color: inherit; font: 600 15px/1 var(--f-bar); letter-spacing: -0.01em; cursor: pointer; animation: fade 500ms 900ms both; transition: background var(--t-fast); }
 .w-sound:hover { background: #2a1d16; }
 .w-sound-i { display: inline-flex; align-items: center; justify-content: center; gap: 3px; width: 30px; height: 30px; border-radius: 50%; background: #2b1f18; }

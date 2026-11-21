@@ -12,13 +12,13 @@ export function NavEmail() {
       href={MAIL}
       onClick={() => trackEmail("blog-nav")}
       data-cur="say hi"
-      aria-label="Send an email"
+      aria-label="send an email"
       className="key key-soft h-9 gap-2 px-1.5 text-[14px] sm:pr-3"
     >
       <span className="key-tile">
         <Obj name="contact" size={20} />
       </span>
-      <span className="hidden sm:inline">Email</span>
+      <span className="hidden sm:inline">email</span>
     </a>
   );
 }

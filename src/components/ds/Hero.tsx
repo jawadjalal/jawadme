@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { BookLink } from "@/components/BookLink";
+import { BookCallB } from "@/components/cta/BookCallB";
 import { AdRing } from "@/components/ds/AdRing";
 import { Statement } from "@/components/ds/Statement";
 import { Wordmark } from "@/components/ds/Wordmark";
@@ -40,10 +40,7 @@ export function Hero() {
                 </span>
               ))}
             </p>
-            <BookLink src="home-hero" className="hero-who" cursor>
-              <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="44px" priority />
-              <span>book a 15 min call ↗</span>
-            </BookLink>
+            <BookCallB src="home-hero" size="hero" />
           </div>
         </div>
         <section className="w-hall" data-world-stop="hall" aria-labelledby="hall-h">

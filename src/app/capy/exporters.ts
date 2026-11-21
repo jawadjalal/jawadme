@@ -38,7 +38,7 @@ export function save(blob: Blob, name: string) {
 export const fileBase = (a: Asset) => `capy-${a.id}`;
 
 /** A smaller copy made at request time by the site's image optimizer, so the page stores nothing new. */
-export const sized = (url: string, w: 128 | 256 | 640 | 1080, q = 75) => `/_next/image?url=${encodeURIComponent(url)}&w=${w}&q=${q}`;
+export const sized = (url: string, w: 64 | 256 | 640 | 1080, q = 75) => `/_next/image?url=${encodeURIComponent(url)}&w=${w}&q=${q}`;
 
 /** True vector or an image wrapped in SVG: none of the Capy pieces has a vector source today, so all of them wrap. */
 export const isVector = (a: Asset) => Boolean(a.svg);

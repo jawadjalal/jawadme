@@ -32,9 +32,9 @@ function clean(raw: unknown): LaunchData | null {
     if (!Array.isArray(gr.lines)) return [];
     const lines = gr.lines.flatMap((l) => {
       const lr = (l ?? {}) as Record<string, unknown>;
-      return isStatus(lr.s) && str(lr.rule) ? [{ s: lr.s, rule: String(lr.rule), where: str(lr.where), owner: str(lr.owner) }] : [];
+      return isStatus(lr.s) && str(lr.rule) ? [{ s: lr.s, rule: String(lr.rule).toLowerCase(), where: str(lr.where)?.toLowerCase() ?? null, owner: str(lr.owner)?.toLowerCase() ?? null }] : [];
     });
-    return [{ name: str(gr.name) ?? "Other", lines }];
+    return [{ name: str(gr.name)?.toLowerCase() ?? "other", lines }];
   });
   const history = (Array.isArray(r.history) ? r.history : []).flatMap((p) => {
     const pr = (p ?? {}) as Record<string, unknown>;
@@ -62,22 +62,22 @@ export async function getLaunch(): Promise<LaunchData | null> {
 }
 
 const GOALS: [string, string][] = [
-  ["Finish every mechanic properly", "Every red and amber line below turns green before launch. The list is regraded on current main, and its owner column is the assignment."],
-  ["Clean, striking thumbnails and key art", "Capsule art held to the bar of the best on Steam, scored blind beside real references, not by the team that made it."],
+  ["finish every mechanic properly", "every red and amber line below turns green before launch. the list is regraded on current main, and its owner column is the assignment."],
+  ["clean, striking thumbnails and key art", "capsule art held to the bar of the best on steam, scored blind beside real references, not by the team that made it."],
   [
-    "Then all in on game feel, visuals and UI",
-    "A crisp RPG interface on phone and desktop, with no pixel fonts or blown-up pixel buttons, and a pixel-style, cel-shaded 3D world built from real references. Numbers go up: health, damage and gear grow big the deeper you dive.",
+    "then all in on game feel, visuals and ui",
+    "a crisp rpg interface on phone and desktop, with no pixel fonts or blown-up pixel buttons, and a pixel-style, cel-shaded 3d world built from real references. numbers go up: health, damage and gear grow big the deeper you dive.",
   ],
 ];
 
-const when = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false });
-const hms = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
-const hm = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
-const LABEL: Record<Status, string> = { red: "Red: blocks launch", amber: "Amber: launchable, not proven", green: "Green: done, with proof", killed: "Killed for beta: gated off until its gate opens" };
+const when = new Intl.DateTimeFormat("en-gb", { timeZone: TZ, day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false });
+const hms = new Intl.DateTimeFormat("en-gb", { timeZone: TZ, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+const hm = new Intl.DateTimeFormat("en-gb", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
+const LABEL: Record<Status, string> = { red: "red: blocks launch", amber: "amber: launchable, not proven", green: "green: done, with proof", killed: "killed for beta: gated off until its gate opens" };
 
 function Burndown({ history }: { history: Point[] }) {
   if (history.length < 2) {
-    return <p className="ml-vis-meta">The burndown chart draws itself as the list changes: one point each time a line changes colour, and one an hour.</p>;
+    return <p className="ml-vis-meta">the burndown chart draws itself as the list changes: one point each time a line changes colour, and one an hour.</p>;
   }
   const W = 640, H = 150, L = 34, B = 22, T = 10;
   const t0 = new Date(history[0].t).getTime();
@@ -86,10 +86,10 @@ function Burndown({ history }: { history: Point[] }) {
   const x = (t: string) => L + ((new Date(t).getTime() - t0) / (t1 - t0)) * (W - L - 8);
   const y = (v: number) => T + (1 - v / top) * (H - T - B);
   const area = (f: (p: Point) => number) =>
-    "M" + x(history[0].t) + "," + y(0) + history.map((p) => " L" + x(p.t).toFixed(1) + "," + y(f(p)).toFixed(1)).join("") + " L" + x(history[history.length - 1].t) + "," + y(0) + " Z";
+    "m" + x(history[0].t) + "," + y(0) + history.map((p) => " l" + x(p.t).toFixed(1) + "," + y(f(p)).toFixed(1)).join("") + " l" + x(history[history.length - 1].t) + "," + y(0) + " z";
   return (
     <figure className="ml-lb-chart">
-      <svg viewBox={"0 0 " + W + " " + H} role="img" aria-label={"Open lines over time, from " + (history[0].red + history[0].amber) + " to " + (history[history.length - 1].red + history[history.length - 1].amber)}>
+      <svg viewBox={"0 0 " + W + " " + H} role="img" aria-label={"open lines over time, from " + (history[0].red + history[0].amber) + " to " + (history[history.length - 1].red + history[history.length - 1].amber)}>
         <line x1={L} x2={W - 8} y1={y(0)} y2={y(0)} stroke="#3a2f63" />
         <line x1={L} x2={W - 8} y1={y(top)} y2={y(top)} stroke="#2c2350" strokeDasharray="4 4" />
         <text x={L - 6} y={y(top) + 4} textAnchor="end">{top}</text>
@@ -99,7 +99,7 @@ function Burndown({ history }: { history: Point[] }) {
         <text x={L} y={H - 4}>{hm.format(new Date(history[0].t))}</text>
         <text x={W - 8} y={H - 4} textAnchor="end">{hm.format(new Date(history[history.length - 1].t))}</text>
       </svg>
-      <figcaption>Open lines over time: red on the bottom, amber above it. Green is everything under the dashed line that has left the chart.</figcaption>
+      <figcaption>open lines over time: red on the bottom, amber above it. green is everything under the dashed line that has left the chart.</figcaption>
     </figure>
   );
 }
@@ -114,7 +114,7 @@ function Lines({ status, launch, compact = false }: { status: Status; launch: La
           {l.where ? <p>{l.where}</p> : null}
           <div className="m">
             <span>{l.group}</span>
-            {l.owner ? <span>Owner: {l.owner}</span> : null}
+            {l.owner ? <span>owner: {l.owner}</span> : null}
           </div>
         </li>
       ))}
@@ -127,7 +127,7 @@ export function LaunchBoard({ launch, renderedAt }: { launch: LaunchData | null;
   return (
     <>
       <div className="ml-col">
-        <p>Today's three goals, in jawad's order. The second and third start once the first has nothing red left.</p>
+        <p>today's three goals, in jawad's order. the second and third start once the first has nothing red left.</p>
       </div>
       <ol className="ml-goals">
         {GOALS.map(([title, body]) => (
@@ -138,14 +138,14 @@ export function LaunchBoard({ launch, renderedAt }: { launch: LaunchData | null;
         ))}
       </ol>
       {!launch || !c ? (
-        <p className="ml-note">The launch readiness list is unavailable right now. It refreshes every 3 minutes, so check back shortly.</p>
+        <p className="ml-note">the launch readiness list is unavailable right now. it refreshes every 3 minutes, so check back shortly.</p>
       ) : (
         <>
-          <h3 className="ml-h3">Launch readiness: {c.green} of {c.total} green{c.killed ? ", " + c.killed + " killed for beta" : ""}</h3>
+          <h3 className="ml-h3">launch readiness: {c.green} of {c.total} green{c.killed ? ", " + c.killed + " killed for beta" : ""}</h3>
           <div className="ml-feed-head">
-            <span className="ml-live"><i />Live</span>
-            <span>Refreshed at <b>{hms.format(new Date(launch.generated_at))}</b> London, page built {hms.format(new Date(renderedAt))}</span>
-            {launch.doc.edited_at ? <span>List last regraded {when.format(new Date(launch.doc.edited_at))}{launch.doc.edited_sha ? <> (<code>{launch.doc.edited_sha}</code>)</> : null}</span> : null}
+            <span className="ml-live"><i />live</span>
+            <span>refreshed at <b>{hms.format(new Date(launch.generated_at))}</b> london, page built {hms.format(new Date(renderedAt))}</span>
+            {launch.doc.edited_at ? <span>list last regraded {when.format(new Date(launch.doc.edited_at)).toLowerCase()}{launch.doc.edited_sha ? <> (<code>{launch.doc.edited_sha}</code>)</> : null}</span> : null}
           </div>
           <div className="ml-lb-counts">
             {(["red", "amber", "green", "killed"] as Status[]).filter((s) => s !== "killed" || c.killed > 0).map((s) => (
@@ -174,7 +174,7 @@ export function LaunchBoard({ launch, renderedAt }: { launch: LaunchData | null;
             </details>
           ) : null}
           <p className="ml-vis-meta">
-            Read from the game's launch readiness list on main. Store and pricing lines show only their colour and owner until launch.
+            read from the game's launch readiness list on main. store and pricing lines show only their colour and owner until launch.
           </p>
         </>
       )}

@@ -56,7 +56,7 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
     >
       <header className="bar v-top">
         <Link href={back} className="v-close">
-          ← All work
+          ← all work
         </Link>
         {at ? <span>{at.n} / {at.of}</span> : null}
       </header>
@@ -68,7 +68,7 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
           <h1 className="v-title">{piece.line}</h1>
           <p>{`${piece.group}, ${piece.credit}.`}</p>
           {related.length ? (
-            <nav className="v-strip" aria-label="More work">
+            <nav className="v-strip" aria-label="more work">
               {related.map((item) => (
                 <Link key={item.id} href={`/w/${item.id}`} replace scroll={false}>
                   <Image src={item.sm} width={160} height={200} alt={item.alt} sizes="(min-width: 1024px) 11vw, 1px" />
@@ -76,23 +76,23 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
               ))}
             </nav>
           ) : null}
-          {piece.spec ? <p className="disclose">Independent work. Not commissioned by or affiliated with the brands shown.</p> : null}
+          {piece.spec ? <p className="disclose">independent work. not commissioned by or affiliated with the brands shown.</p> : null}
         </div>
       </div>
       <footer className="v-bar">
         {at ? (
           <nav className="v-nav">
-            <Link href={`/w/${at.prev.id}`} replace scroll={false} aria-label="Previous">
+            <Link href={`/w/${at.prev.id}`} replace scroll={false} aria-label="previous">
               ←
             </Link>
-            <Link href={`/w/${at.next.id}`} replace scroll={false} aria-label="Next">
+            <Link href={`/w/${at.next.id}`} replace scroll={false} aria-label="next">
               →
             </Link>
           </nav>
         ) : null}
         <BookLink src="viewer" className="dock-cta v-cta" cursor>
           <span>
-            Book a call <span className="arr">↗</span>
+            book a call <span className="arr">↗</span>
           </span>
           <small>15 min, video</small>
         </BookLink>

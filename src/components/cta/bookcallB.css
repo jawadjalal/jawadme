@@ -1,0 +1,215 @@
+/* The call, as a printed ticket. Paper body, ember stub, a perforated seam between them. Every state is a pair of
+   custom properties (--hv hover, --pr press, --fc focus) so the geometry is written once and the transitions do the
+   rest. Forced states for the preview: a data-state="hover|press|focus" ancestor. */
+
+.bcb {
+  --ink: #17120e;
+  --ember: #ff5314;
+  --paper: #f4eddf;
+  --paper-lo: #e9dfca;
+  --spring: cubic-bezier(0.3, 1.45, 0.45, 1);
+  --hv: 0;
+  --pr: 0;
+  --fc: 0;
+  --tx: 0;
+  --ty: 0;
+  --n: 0.36em;
+  --perf: 0.11em;
+  position: relative;
+  display: inline-block;
+  font: 700 16px/1 var(--f-pub, "Public Sans"), "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  perspective: 44em;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+.ds .bcb { color: var(--ink); }
+.bcb[data-size="hero"] { font-size: min(24px, 5.6vw); }
+.bcb[data-size="hero"] .bcb-arrow { stroke-width: 2.6; }
+.bcb::before { content: ""; position: absolute; inset: -0.3em; }
+
+.bcb:is(:hover, [data-state="hover"] *, [data-state="press"] *) { --hv: 1; }
+.bcb:is(:active, [data-state="press"] *) { --pr: 1; }
+.bcb:is(:focus-visible, [data-state="focus"] *) { --fc: 1; }
+[data-state="hover"] .bcb, [data-state="press"] .bcb { --tx: 0.55; --ty: -0.45; --mx: 70%; --my: 25%; }
+
+.bcb-card {
+  position: relative;
+  display: flex;
+  height: 3.5em;
+  transform-style: preserve-3d;
+  transform:
+    rotateX(calc(var(--hv) * var(--ty) * -6deg))
+    rotateY(calc(var(--hv) * var(--tx) * 7deg))
+    translateY(calc(var(--hv) * -0.08em + var(--pr) * 0.05em))
+    scale(calc(1 - var(--pr) * 0.02));
+  transition: transform 560ms var(--spring), filter 300ms;
+  filter:
+    drop-shadow(0 0 0.03em rgb(23 18 14 / 0.75))
+    drop-shadow(0 0.04em 0 rgb(23 18 14 / 0.55))
+    drop-shadow(0 -0.01em 0.05em rgb(255 205 150 / 0.7))
+    drop-shadow(0 calc(0.28em - var(--pr) * 0.18em) calc(0.5em - var(--pr) * 0.3em) rgb(0 0 0 / calc(0.32 + var(--hv) * 0.12)))
+    drop-shadow(0 0.12em 0.9em rgb(255 83 20 / calc(0.14 + var(--hv) * 0.12)));
+}
+.bcb:is(:active, [data-state="press"] *) .bcb-card { transition-duration: 70ms, 70ms; }
+
+/* paper */
+.bcb-body, .bcb-stub {
+  --notch: radial-gradient(circle var(--n) at var(--nx) 0, #0000 97%, #000), radial-gradient(circle var(--n) at var(--nx) 100%, #0000 97%, #000);
+  --hole: radial-gradient(circle calc(var(--perf) * 1.05) at var(--nx) 50%, #0000 96%, #000) var(--nx) 0 / 100% 0.62em repeat-y;
+  -webkit-mask: var(--notch), var(--hole);
+  -webkit-mask-composite: source-in;
+  mask: var(--notch), var(--hole);
+  mask-composite: intersect;
+}
+.bcb-body {
+  --nx: 100%;
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.68em;
+  padding: 0 1.05em 0 0.62em;
+  border-radius: 0.2em 0 0 0.2em;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .18 0 0 0 0 .1 .4 0 0 0 -.14'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(circle at var(--mx, 30%) var(--my, 18%), rgb(255 255 255 / calc(var(--hv) * 0.7)), #fff0 55%),
+    linear-gradient(180deg, var(--paper), var(--paper-lo));
+  box-shadow:
+    inset 0 0.06em 0 rgb(255 240 215 / 0.95),
+    inset 0 -0.08em 0 rgb(23 18 14 / 0.16),
+    inset 0 calc(var(--pr) * 0.28em) calc(var(--pr) * 0.6em) rgb(23 18 14 / calc(var(--pr) * 0.28));
+  transition: box-shadow 300ms;
+}
+.bcb:is(:active, [data-state="press"] *) .bcb-body { transition-duration: 70ms; }
+.bcb-body::before {
+  content: "";
+  position: absolute;
+  inset: 0.3em 0.3em 0.3em 0.3em;
+  border: 1px solid rgb(23 18 14 / 0.2);
+  border-radius: 0.1em;
+  pointer-events: none;
+}
+
+.bcb-face {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 2.1em;
+  height: 2.1em;
+  border-radius: 0.26em;
+  object-fit: cover;
+  background: var(--ink);
+  box-shadow: 0 0 0 0.09em var(--paper), 0 0 0 0.16em rgb(23 18 14 / 0.85), 0 0.1em 0.2em 0.1em rgb(23 18 14 / 0.25);
+  transform: rotate(calc(-5deg + var(--hv) * 5deg + var(--pr) * 3deg)) scale(calc(1 + var(--hv) * 0.06));
+  transition: transform 520ms var(--spring);
+}
+.bcb-text { position: relative; z-index: 1; display: grid; gap: 0.3em; white-space: nowrap; }
+.bcb-text b {
+  font-size: 1.12em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0.045em 0 rgb(255 252 244 / 0.95), 0 -0.02em 0 rgb(23 18 14 / 0.35);
+}
+.bcb-text small {
+  font-size: 0.78em;
+  font-weight: 650;
+  letter-spacing: 0;
+  color: #4a4137;
+  text-shadow: 0 0.06em 0 rgb(255 252 244 / 0.9);
+}
+
+/* the ink impression a press leaves behind, fading slowly on release */
+.bcb-stamp {
+  position: absolute;
+  left: 0.3em;
+  top: 50%;
+  width: 2.75em;
+  height: 2.75em;
+  margin-top: -1.375em;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.09em var(--ink), inset 0 0 0 0.2em #0000, inset 0 0 0 0.26em var(--ink);
+  mix-blend-mode: multiply;
+  opacity: calc(var(--pr) * 0.24);
+  transform: rotate(-14deg) scale(calc(1.5 - var(--pr) * 0.5));
+  transition: opacity 900ms, transform 900ms var(--spring);
+  pointer-events: none;
+}
+.bcb:is(:active, [data-state="press"] *) .bcb-stamp { transition-duration: 60ms, 90ms; }
+
+.bcb-stub {
+  --nx: 0%;
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.5em;
+  border-radius: 0 0.2em 0.2em 0;
+  color: var(--ink);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .1 0 0 0 0 0 .4 0 0 0 -.14'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #ff6a2c, var(--ember) 45%, #ec4608);
+  box-shadow: inset 0 0.06em 0 rgb(255 255 255 / 0.4), inset 0 -0.08em 0 rgb(80 20 0 / 0.25);
+  filter: brightness(calc(1 + var(--hv) * 0.05 - var(--pr) * 0.1));
+  transform-origin: 0 80%;
+  transform:
+    translate(calc(var(--pr) * 0.03em), calc(var(--hv) * -0.03em + var(--pr) * -0.04em))
+    rotate(calc(var(--hv) * 2.5deg + var(--pr) * 4.5deg));
+  transition: transform 640ms var(--spring), filter 300ms;
+}
+.bcb:is(:active, [data-state="press"] *) .bcb-stub { transition-duration: 80ms; }
+.bcb-arrow {
+  position: relative;
+  z-index: 1;
+  stroke-width: 3.3;
+  width: 1.55em;
+  height: 1.1em;
+  filter: drop-shadow(0 0.05em 0 rgb(255 190 150 / 0.55));
+  transform: translateX(calc(var(--hv) * 0.12em + var(--pr) * 0.2em));
+  transition: transform 520ms var(--spring);
+}
+.bcb:is(:hover, [data-state="hover"] *) .bcb-arrow path { animation: bcb-draw 560ms 60ms cubic-bezier(0.2, 0.7, 0.1, 1) backwards; }
+.bcb:is(:hover, [data-state="hover"] *) .bcb-arrow path + path { animation-delay: 300ms; animation-duration: 300ms; }
+.bcb-arrow path { stroke-dasharray: 1 1.2; }
+@keyframes bcb-draw { from { stroke-dashoffset: 1.1; } to { stroke-dashoffset: 0; } }
+
+/* hover light: one diagonal specular band crossing the paper, then the stub */
+.bcb-body::after, .bcb-stub::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(105deg, #fff0 37%, rgb(110 80 40 / 0.12) 45%, rgb(255 252 244 / 0.98) 50%, rgb(110 80 40 / 0.1) 55%, #fff0 63%) 100% 0 / 260% 100% no-repeat;
+  opacity: 0;
+  pointer-events: none;
+}
+.bcb:is(:hover, [data-state="hover"] *, [data-state="press"] *) :is(.bcb-body, .bcb-stub)::after { opacity: 1; animation: bcb-sweep 900ms 40ms cubic-bezier(0.3, 0.6, 0.2, 1) backwards; }
+.bcb:is(:hover, [data-state="hover"] *, [data-state="press"] *) .bcb-stub::after { animation-delay: 440ms; animation-duration: 640ms; background-size: 300% 100%; }
+[data-state="hover"] :is(.bcb-body, .bcb-stub)::after, [data-state="press"] :is(.bcb-body, .bcb-stub)::after { animation: none; background-position: 38% 0; }
+@keyframes bcb-sweep { from { background-position: 100% 0; } to { background-position: 0% 0; } }
+
+/* focus: ember registration frame, offset from the ticket so it reads on ink and on ivory */
+.bcb::after {
+  content: "";
+  position: absolute;
+  inset: -0.34em;
+  border-radius: 0.34em;
+  border: 2px solid var(--ember);
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.9), 0 0 0 4px var(--ink);
+  opacity: var(--fc);
+  transform: scale(calc(1.06 - var(--fc) * 0.06));
+  transition: opacity 160ms, transform 320ms var(--spring);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bcb *, .bcb::after { transition-duration: 0.01ms !important; animation: none !important; }
+  .bcb-body::after, .bcb-stub::after { display: none; }
+  .bcb-card { transform: none; }
+  .bcb-stub, .bcb-face, .bcb-arrow { transform: none; }
+  .bcb-stamp { transform: rotate(-14deg); }
+}

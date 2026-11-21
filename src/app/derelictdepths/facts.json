@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-18T15:57:10Z",
+  "generatedAt": "2026-11-18t15:57:10z",
   "main": {
     "sha": "394db8ad",
-    "date": "2026-11-18T15:55:25Z",
-    "subject": "Audio launch, Shared half: flag, ore classes and tiers, reveal stinger ladder, provenance (no behaviour change) (#623)"
+    "date": "2026-11-18t15:55:25z",
+    "subject": "audio launch, shared half: flag, ore classes and tiers, reveal stinger ladder, provenance (no behaviour change) (#623)"
   },
   "counts": {
     "mergedPRs": 533,
@@ -39,25 +39,25 @@
     "joinInstances": 18496
   },
   "remotes": [
-    "Attack",
-    "Dash",
-    "Bomb",
+    "attack",
+    "dash",
+    "bomb",
     "UseItem",
     "UseSlot",
     "CombineSlot",
     "SelectSlot",
-    "Pickup",
-    "Ability",
-    "Station",
+    "pickup",
+    "ability",
+    "station",
     "SecondWind",
-    "Wildcard",
+    "wildcard",
     "FirstDive",
     "DiveAgain",
     "ToTown",
     "RideBack",
     "LeaveDive",
-    "Event",
-    "Snapshot"
+    "event",
+    "snapshot"
   ],
   "joinHistory": [
     {

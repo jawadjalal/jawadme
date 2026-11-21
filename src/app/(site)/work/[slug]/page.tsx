@@ -16,7 +16,7 @@ export const generateStaticParams = () => REAL.map((p) => ({ slug: p.slug }));
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = projectBySlug((await params).slug);
   if (!p) return {};
-  return meta({ title: p.name, description: `${p.lines.join(" ")} ${p.disciplines.join(", ")} by Jawad Jalal, ${p.year}.`, path: "/work/" + p.slug, type: "article" });
+  return meta({ title: p.name, description: `${p.lines.join(" ")} ${p.disciplines.join(", ")} by jawad jalal, ${p.year}.`, path: "/work/" + p.slug, type: "article" });
 }
 
 const portrait = (m: M) => m.h > m.w;
@@ -62,7 +62,7 @@ export default async function Case({ params }: Props) {
       <JsonLd
         data={[
           caseWork(p),
-          { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Work", item: abs("/work") }, { "@type": "ListItem", position: 2, name: p.name, item: abs("/work/" + p.slug) }] },
+          { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "work", item: abs("/work") }, { "@type": "ListItem", position: 2, name: p.name, item: abs("/work/" + p.slug) }] },
         ]}
       />
       <TitleTab
@@ -91,7 +91,7 @@ export default async function Case({ params }: Props) {
       </div>
       <TLink href={"/work/" + next.slug} vt={"cover-" + next.slug} className="next wrap" data-cursor="view">
         <span className="next-head">
-          <span className="d-tab">Next: {next.name} ↗</span>
+          <span className="d-tab">next: {next.name} ↗</span>
         </span>
         <Media m={next.cover} ratio="21 / 9" sizes="100vw" fit={portrait(next.cover) ? "contain" : "cover"} />
       </TLink>

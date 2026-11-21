@@ -121,7 +121,7 @@ function zoomPath(a: [number, number, number], b: [number, number, number], rho:
 }
 
 // ── pictures ──────────────────────────────────────────────────────────────
-// Levels 0, 1 and 2 are 128, 256 and 640 wide copies from the image optimizer, 3 is the site's web preview (about 1200
+// Levels 0, 1 and 2 are 64, 256 and 640 wide copies from the image optimizer, 3 is the site's web preview (about 1200
 // on the long side), 4 is the original file. A piece asks for the smallest level that is sharp at its size on screen.
 type Tex = { img: HTMLImageElement | null; state: 0 | 1 | 2 | 3; used: number; at?: number };
 const ST = { none: 0, loading: 1, ready: 2, failed: 3 } as const;
@@ -144,7 +144,7 @@ class Pictures {
   }
   url(i: number, l: number) {
     const a = this.pieces[i].a;
-    if (l === 0) return sized(a.preview, 128);
+    if (l === 0) return sized(a.preview, 64);
     if (l === 1) return sized(a.preview, 256);
     if (l === 2) return sized(a.preview, 640);
     if (l === 3) return a.preview;
@@ -153,7 +153,7 @@ class Pictures {
   /** The level a piece wants for `px` device pixels of width on screen. */
   want(i: number, px: number) {
     const a = this.pieces[i].a;
-    if (px <= 120) return 0;
+    if (px <= 60) return 0;
     if (px <= 300) return 1;
     if (px <= 720) return 2;
     const pw = a.w * Math.min(1, 1200 / Math.max(a.w, a.h));
