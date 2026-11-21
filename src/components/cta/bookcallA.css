@@ -1,0 +1,210 @@
+/* BookCallA: a brass plate struck with the call. The plate is a chamfered octagon on a bevelled rim, lifted out of a
+   recess (the bed). Hover lifts it and drags a specular band across the brass; press seats it in the bed and the shadow
+   collapses; focus rings it in ember along the same chamfer. Every length is a multiple of --k so the hero is the dock
+   plate, larger. */
+
+.bca {
+  --k: 1px;
+  --c: calc(9.8 * var(--k));
+  --engrave: #26170a;
+  --lip: rgb(255 238 196 / 0.62);
+  --spring: cubic-bezier(0.3, 1.6, 0.5, 1);
+  position: relative;
+  display: inline-flex;
+  padding: calc(3 * var(--k));
+  color: var(--engrave);
+  font-family: var(--f-pub), "Helvetica Neue", Arial, sans-serif;
+  text-decoration: none;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+}
+.bca[data-size="hero"] { --k: min(2px, calc((100vw - 32px) / 214)); }
+a.bca:focus-visible { outline: none; }
+
+.bca::before, .bca-plate, .bca-face {
+  clip-path: polygon(var(--c) 0, calc(100% - var(--c)) 0, 100% var(--c), 100% calc(100% - var(--c)), calc(100% - var(--c)) 100%, var(--c) 100%, 0 calc(100% - var(--c)), 0 var(--c));
+}
+
+.bca-ring, .bca-face::before, .bca-face::after {
+  clip-path: polygon(evenodd,
+    var(--co) 0, calc(100% - var(--co)) 0, 100% var(--co), 100% calc(100% - var(--co)), calc(100% - var(--co)) 100%, var(--co) 100%, 0 calc(100% - var(--co)), 0 var(--co), var(--co) 0,
+    calc(var(--t) + var(--ci)) var(--t), var(--t) calc(var(--t) + var(--ci)), var(--t) calc(100% - var(--t) - var(--ci)), calc(var(--t) + var(--ci)) calc(100% - var(--t)), calc(100% - var(--t) - var(--ci)) calc(100% - var(--t)), calc(100% - var(--t)) calc(100% - var(--t) - var(--ci)), calc(100% - var(--t)) calc(var(--t) + var(--ci)), calc(100% - var(--t) - var(--ci)) var(--t), calc(var(--t) + var(--ci)) var(--t));
+}
+
+/* the bed: a recess cut to the plate's shape, its lower lip catching light */
+.bca::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgb(92 62 34 / 0.34);
+  box-shadow: inset 0 calc(2 * var(--k)) calc(3 * var(--k)) rgb(0 0 0 / 0.55), inset 0 calc(-1 * var(--k)) 0 rgb(255 236 200 / 0.22);
+  mix-blend-mode: multiply;
+}
+
+.bca-lift {
+  display: block;
+  transform: translateY(calc(-1.5 * var(--k)));
+  filter: drop-shadow(0 calc(2 * var(--k)) calc(1 * var(--k)) rgb(12 6 0 / 0.5)) drop-shadow(0 calc(7 * var(--k)) calc(9 * var(--k)) rgb(12 6 0 / 0.34));
+  transition: transform 420ms var(--spring), filter 420ms var(--spring);
+}
+
+/* the rim: a bevel lit from the upper left */
+.bca-plate {
+  --c: calc(8 * var(--k));
+  display: block;
+  padding: calc(2 * var(--k));
+  background: linear-gradient(152deg, #fff0c4 0%, #ddb26a 26%, #a87538 58%, #5a3a15 100%);
+  transition: filter 240ms ease;
+}
+
+.bca-face {
+  --c: calc(6.8 * var(--k));
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: calc(48 * var(--k));
+  padding: 0 calc(14 * var(--k)) 0 calc(5 * var(--k));
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='64'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9 .02' numOctaves='2' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E"),
+    radial-gradient(120% 140% at 18% 0%, rgb(255 240 200 / 0.55), transparent 55%),
+    linear-gradient(180deg, #e4c282 0%, #cfa35f 40%, #b4823f 56%, #c39352 78%, #a37138 100%);
+  background-size: 220px 64px, auto, auto;
+  background-blend-mode: overlay, normal, normal;
+  box-shadow: inset 0 0 0 transparent;
+  transition: box-shadow 240ms ease;
+}
+
+/* a fine engraved border: the cut, and its lit lower edge one step below */
+.bca-face::before, .bca-face::after {
+  --t: var(--k);
+  --co: calc(5 * var(--k));
+  --ci: calc(var(--co) - 0.586 * var(--t));
+  content: "";
+  position: absolute;
+  inset: calc(3 * var(--k));
+  pointer-events: none;
+  background: rgb(58 34 12 / 0.5);
+}
+.bca-face::before { top: calc(4 * var(--k)); bottom: calc(2 * var(--k)); background: var(--lip); }
+
+/* the seal: ember enamel under a glaze, set in a raised bezel */
+.bca-seal {
+  position: relative;
+  flex: none;
+  width: calc(38 * var(--k));
+  height: calc(38 * var(--k));
+  border: calc(2 * var(--k)) solid transparent;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 34% 26%, #ff9b62 0, #ff5314 40%, #cf3c09 74%, #8c2905 100%) padding-box, linear-gradient(155deg, #fff0c4, #c4914a 45%, #5a3a15) border-box;
+  box-shadow: 0 var(--k) 0 var(--lip), 0 calc(-1 * var(--k)) 0 rgb(70 40 12 / 0.45);
+}
+.bca-seal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(70% 46% at 36% 16%, rgb(255 255 255 / 0.6), transparent 72%);
+  box-shadow: inset 0 calc(2 * var(--k)) calc(3 * var(--k)) rgb(90 20 0 / 0.55);
+}
+.bca-seal img {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 78%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 var(--k) var(--k) rgb(90 20 0 / 0.55));
+  transition: transform 420ms var(--spring);
+}
+
+.bca-type { display: grid; margin-left: calc(10 * var(--k)); text-shadow: 0 var(--k) 0 var(--lip); }
+.bca-t { font-size: calc(17 * var(--k)); font-weight: 720; line-height: 1; letter-spacing: -0.03em; white-space: nowrap; }
+.bca-sub {
+  margin-top: calc(4 * var(--k));
+  padding-top: calc(4 * var(--k));
+  font-size: calc(11 * var(--k));
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: rgb(38 23 10 / 0.78);
+  background: linear-gradient(rgb(58 34 12 / 0.5) 0 0) 0 0 / 100% var(--k) no-repeat, linear-gradient(var(--lip) 0 0) 0 var(--k) / 100% var(--k) no-repeat;
+}
+
+.bca-arr {
+  flex: none;
+  width: calc(12 * var(--k));
+  height: calc(12 * var(--k));
+  margin-left: calc(14 * var(--k));
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: square;
+  filter: drop-shadow(0 var(--k) 0 var(--lip));
+  transition: transform 420ms var(--spring);
+}
+
+/* the specular band, swept once across the brass as it lifts */
+.bca-glint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(106deg, transparent 43%, rgb(255 238 200 / 0.22) 46.5%, rgb(255 250 235 / 0.62) 49.4%, rgb(255 255 250 / 0.8) 50%, rgb(255 238 200 / 0.3) 51.5%, transparent 55%, rgb(255 238 200 / 0.18) 57%, transparent 59%) 100% 0 / 300% 100% no-repeat;
+  mix-blend-mode: screen;
+}
+@keyframes bca-sweep { from { background-position: 100% 0; } to { background-position: 0 0; } }
+
+/* hover: lifted toward the light */
+:is(.bca:hover, [data-state="hover"] > .bca) .bca-lift {
+  transform: translateY(calc(-3 * var(--k)));
+  filter: drop-shadow(0 calc(3.5 * var(--k)) calc(2 * var(--k)) rgb(12 6 0 / 0.42)) drop-shadow(0 calc(13 * var(--k)) calc(16 * var(--k)) rgb(12 6 0 / 0.36));
+}
+:is(.bca:hover, [data-state="hover"] > .bca) .bca-plate { filter: brightness(1.06) saturate(1.06); }
+:is(.bca:hover, [data-state="hover"] > .bca) .bca-glint { opacity: 1; animation: bca-sweep 1100ms cubic-bezier(0.3, 0.1, 0.2, 1) both; }
+[data-state="hover"] > .bca .bca-glint { animation: none; background-position: 40% 0; }
+:is(.bca:hover, [data-state="hover"] > .bca) .bca-seal img { transform: translate(-50%, -53%) rotate(-5deg); }
+:is(.bca:hover, [data-state="hover"] > .bca) .bca-arr { transform: translate(calc(1.5 * var(--k)), calc(-1.5 * var(--k))); }
+
+/* press: seated in the bed, the shadow gone, the lip of the recess shading the top edge */
+:is(.bca:active, [data-state="press"] > .bca) .bca-lift {
+  transform: translateY(calc(0.75 * var(--k))) scale(0.988);
+  filter: drop-shadow(0 0 0 rgb(12 6 0 / 0.42)) drop-shadow(0 var(--k) var(--k) rgb(12 6 0 / 0.3));
+  transition-duration: 70ms;
+  transition-timing-function: ease-out;
+}
+:is(.bca:active, [data-state="press"] > .bca) .bca-plate { filter: brightness(0.86) saturate(1.08); transition-duration: 70ms; }
+:is(.bca:active, [data-state="press"] > .bca) .bca-face { box-shadow: inset 0 calc(3 * var(--k)) calc(4 * var(--k)) rgb(40 20 0 / 0.45); transition-duration: 70ms; }
+:is(.bca:active, [data-state="press"] > .bca) .bca-glint { opacity: 0; }
+:is(.bca:active, [data-state="press"] > .bca) .bca-arr { transform: translate(calc(0.5 * var(--k)), calc(-0.5 * var(--k))); transition-duration: 70ms; }
+
+/* focus: an ember ring cut to the bed's chamfer, standing off it */
+.bca-ring {
+  --o: calc(4 * var(--k));
+  --t: calc(2 * var(--k));
+  --co: calc(var(--c) + 0.586 * var(--o));
+  --ci: calc(var(--co) - 0.586 * var(--t));
+  position: absolute;
+  inset: calc(-1 * var(--o));
+  background: #ff5314;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 160ms ease, transform 300ms var(--spring);
+  pointer-events: none;
+}
+:is(.bca:focus-visible, [data-state="focus"] > .bca) .bca-ring { opacity: 1; transform: none; }
+:is(.bca:focus-visible, [data-state="focus"] > .bca) .bca-plate { filter: brightness(1.04); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bca *, .bca *::before, .bca *::after { transition-duration: 0ms !important; animation: none !important; }
+  :is(.bca:hover, [data-state="hover"] > .bca) .bca-glint { opacity: 0.6; background-position: 50% 0; }
+  :is(.bca:hover, .bca:active) .bca-seal img { transform: translate(-50%, -50%); }
+}
+@media (forced-colors: active) {
+  .bca { border: 2px solid ButtonText; }
+  a.bca:focus-visible { outline: 3px solid Highlight; outline-offset: 3px; }
+}
