@@ -94,7 +94,7 @@ export const ABOUT_ROLES: {
 
 export const ABOUT_TAIL = [
   "~the rest of the time it's~ :pen:<3d art and logo work>~, and whatever i can~ ^hl.pink{talk someone into} ~letting me redesign~ :bolt:.",
-  "~find me on~ :x:{twitter|https://x.com/jawadmakes}, :linkedin:{linkedin|https://www.linkedin.com/in/jawad-jalal-designs}, :instagram:{instagram|https://www.instagram.com/j.awadjalal/} ~and~ :youtube:{youtube|https://www.youtube.com/@jawadmake}.",
+  "~find me on~ :x:{twitter|https://x.com/jawadjalal}, :linkedin:{linkedin|https://www.linkedin.com/in/jawad-jalal-designs}, :instagram:{instagram|https://www.instagram.com/j.awadjalal/} ~and~ :youtube:{youtube|https://www.youtube.com/@jawadmakes}.",
   "~got something in mind? say hi:~ :mail:{work with me|mailto:hijawadjalal@gmail.com}",
 ];
 
@@ -379,10 +379,12 @@ export const SOCIALS: {
 }[] = [
   { label: "Email", href: "mailto:hijawadjalal@gmail.com", icon: "mail" },
   { label: "CV", href: "/jawad-jalal-cv.pdf", icon: "doc" },
-  { label: "X", href: "https://x.com/jawadmakes", brand: "x" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/jawad-jalal-designs", brand: "linkedin" },
-  { label: "Instagram", href: "https://www.instagram.com/j.awadjalal/", brand: "instagram" },
-  { label: "YouTube", href: "https://www.youtube.com/@jawadmake", brand: "youtube" },
+  { label: "x", href: "https://x.com/jawadjalal", brand: "x" },
+  { label: "github", href: "https://github.com/jawadjalal" },
+  { label: "instagram", href: "https://www.instagram.com/j.awadjalal/", brand: "instagram" },
+  { label: "tiktok", href: "https://www.tiktok.com/@jawadmakes" },
+  { label: "youtube", href: "https://www.youtube.com/@jawadmakes", brand: "youtube" },
+  { label: "linkedin", href: "https://www.linkedin.com/in/jawad-jalal-designs", brand: "linkedin" },
 ];
 
 /** The four things the work sits inside, drawn as overlapping circles at the
@@ -485,7 +487,7 @@ export const NAV: {
     icon: "mail",
     items: [
       { label: "Email", href: `mailto:${IDENTITY.email}`, note: "hijawadjalal@" },
-      { label: "X", href: "https://x.com/jawadmakes", note: "@jawadmakes", external: true },
+      { label: "X", href: "https://x.com/jawadjalal", note: "@jawadjalal", external: true },
       {
         label: "LinkedIn",
         href: "https://www.linkedin.com/in/jawad-jalal-designs",

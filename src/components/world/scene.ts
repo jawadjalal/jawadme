@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { buildHall, type Shot, type Slot } from "./hall";
-import { Batch, DV, EMBER, INK, NL, NOISE, PITCH, Q, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, setMap, shared, view, type Fire } from "./kit";
+import { ACCENT, Batch, DV, INK, NL, NOISE, PITCH, Q, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, setMap, shared, view, type Fire } from "./kit";
 import { COURT, HALL, LAND, SIGN, THEATRE, buildMap, type Mats } from "./map";
 
 // The underworld under the home page, seen the way an isometric action game sees its rooms: the kit's orthographic
@@ -89,7 +89,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   for (const gl of world.glows) {
     const geo = new THREE.PlaneGeometry(gl.w, gl.h);
     b.geos.push(geo);
-    const mesh = new THREE.Mesh(geo, glowMat(gl.soul ? SOUL : EMBER, 1.2));
+    const mesh = new THREE.Mesh(geo, glowMat(gl.soul ? SOUL : ACCENT, 1.2));
     mesh.matrixAutoUpdate = false;
     mesh.matrix.copy(gl.m);
     scene.add(mesh);
@@ -104,10 +104,10 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   const per = o.small ? 14 : 24;
   F.flames(warm, false, per);
   F.flames(cold, true, per);
-  F.halos(warm, "#ff6a24");
-  F.halos(cold, "#4fd8ff");
-  F.drift(o.small ? 160 : 320, [70, 26, 70], 0.11, 1.1, "#ff6a24", 1.4, 0);
-  F.drift(o.small ? 60 : 120, [70, 20, 70], 0.42, 0.35, "#63e6ff", 0.42, 1);
+  F.halos(warm, "#" + ACCENT.getHexString(THREE.SRGBColorSpace));
+  F.halos(cold, "#" + SOUL.getHexString(THREE.SRGBColorSpace));
+  F.drift(o.small ? 160 : 320, [70, 26, 70], 0.11, 1.1, "#" + ACCENT.getHexString(THREE.SRGBColorSpace), 1.4, 0);
+  F.drift(o.small ? 60 : 120, [70, 20, 70], 0.42, 0.35, "#" + SOUL.getHexString(THREE.SRGBColorSpace), 0.42, 1);
   F.drift(o.small ? 90 : 180, [60, 16, 60], 0.06, 0.08, "#b49a80", 0.35, 1);
 
   const v = view(host, (dt, fresh) => tick(dt, fresh), { dpr });
