@@ -51,8 +51,7 @@
     drop-shadow(0 0 0.03em rgb(23 18 14 / 0.75))
     drop-shadow(0 0.04em 0 rgb(23 18 14 / 0.55))
     drop-shadow(0 -0.01em 0.05em color-mix(in srgb, var(--accent-hi) 70%, transparent))
-    drop-shadow(0 calc(0.28em - var(--pr) * 0.18em) calc(0.5em - var(--pr) * 0.3em) rgb(0 0 0 / calc(0.32 + var(--hv) * 0.12)))
-    drop-shadow(0 0.12em 0.9em color-mix(in srgb, var(--accent) calc(14% + var(--hv) * 12%), transparent));
+    drop-shadow(0 calc(0.28em - var(--pr) * 0.18em) calc(0.5em - var(--pr) * 0.3em) rgb(0 0 0 / calc(0.32 + var(--hv) * 0.12)));
 }
 .bcb:is(:active, [data-state="press"] *) .bcb-card { transition-duration: 70ms, 70ms; }
 

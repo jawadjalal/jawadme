@@ -195,7 +195,7 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
 .dock-nav li { display: flex; }
 .dock-nav a { position: relative; display: flex; align-items: center; }
 .dock-nav a .lbl { display: none; }
-.dock-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 13px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform var(--t-base) var(--ease); }
+.dock-nav a::after { content: ""; position: absolute; left: 0; right: 0; top: calc(50% + 0.62em); height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform var(--t-base) var(--ease); }
 .dock-nav a:hover::after, .dock-nav a[aria-current="page"]::after { transform: scaleX(1); }
 .dock-menu { display: none; }
 .dock-sheet { display: none; }
