@@ -144,8 +144,8 @@ class Pictures {
   }
   url(i: number, l: number) {
     const a = this.pieces[i].a;
-    if (l === 0) return sized(a.preview, 256, 70);
-    if (l === 1) return sized(a.preview, 640, 74);
+    if (l === 0) return sized(a.preview, 256);
+    if (l === 1) return sized(a.preview, 640);
     if (l === 2) return a.preview;
     return a.original;
   }

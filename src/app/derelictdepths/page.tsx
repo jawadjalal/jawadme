@@ -168,7 +168,7 @@ export default async function MinelightPage() {
             </p>
           </div>
           <figure className="ml-poster">
-            <img src="/derelictdepths/img/poster-1280.jpg" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="A miner raises a pickaxe in the Golden Room in front of the Mole King" />
+            <img src="/derelictdepths/img/poster-1280.jpg" fetchPriority="high" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="A miner raises a pickaxe in the Golden Room in front of the Mole King" />
             <figcaption><span className="ml-badge art">In-engine + key art</span>A real in-engine capture of the Golden Room, graded, with rays and the title added.</figcaption>
           </figure>
         </header>
@@ -197,16 +197,16 @@ export default async function MinelightPage() {
           </div>
           <div className="ml-art">
             <figure className="ml-logo-fig">
-              <img src="/derelictdepths/img/logo-1280.webp" srcSet="/derelictdepths/img/logo-640.webp 640w, /derelictdepths/img/logo-1280.webp 1280w" sizes="(min-width: 760px) 720px, 100vw" width={1280} height={727} alt="The Derelict Depths wordmark" loading="eager" decoding="async" />
+              <img src="/derelictdepths/img/logo-1280.webp" srcSet="/derelictdepths/img/logo-640.webp 640w, /derelictdepths/img/logo-1280.webp 1280w" sizes="(min-width: 760px) 720px, 100vw" width={1280} height={727} alt="The Derelict Depths wordmark" loading="lazy" decoding="async" />
               <figcaption><b>The wordmark</b><span className="ml-badge">Logo</span>Built in code, so every size is a redraw rather than a stretched image.</figcaption>
             </figure>
             <figure className="ml-icon-fig">
-              <img src="/derelictdepths/img/icon-256.png" width={256} height={256} alt="The Derelict Depths icon" loading="eager" decoding="async" />
+              <img src="/derelictdepths/img/icon-256.png" width={256} height={256} alt="The Derelict Depths icon" loading="lazy" decoding="async" />
               <figcaption><b>The icon</b><span className="ml-badge">Store icon</span>What a player sees at thumbnail size in a list of games.</figcaption>
             </figure>
           </div>
           <div className="ml-pair">
-            <Shot name="thumb-dive" w={1280} h={720} kind="Store thumbnail" title="Capsule one: the dive" note="A real capture, cropped to drop the HUD labels, with the wordmark composited on." eager />
+            <Shot name="thumb-dive" w={1280} h={720} kind="Store thumbnail" title="Capsule one: the dive" note="A real capture, cropped to drop the HUD labels, with the wordmark composited on." />
             <Shot name="thumb-king" w={1280} h={720} kind="Store thumbnail" title="Capsule two: the Mole King" note="The guardian's arena, painted up from a real capture, with no generated lettering." />
           </div>
           <div className="ml-pair">
@@ -308,7 +308,7 @@ export default async function MinelightPage() {
             </p>
           </div>
           <div className="ml-stills">
-            <Still name="town" title="The town" note="The Lift in the middle, the stations and their keepers around it." eager />
+            <Still name="town" title="The town" note="The Lift in the middle, the stations and their keepers around it." />
             <Still name="dive" title="The dive" note="The cage ride down the shaft onto the landing spot." />
             <Still name="ore-room" title="A Topsoil ore room" note="Lit tops, mid sides, ink edges, the ability arc bottom right." />
             <Still name="fight" title="A fight" note="The swing, the tell and the number, on the same frame." />

@@ -1,9 +1,14 @@
 import "../globals.css";
+import { preload } from "react-dom";
 import { BookLink } from "@/components/BookLink";
 
-// The game page's closing call band, added here so the page and its data pipeline stay untouched.
+// The game page's closing call band, added here so the page and its data pipeline stay untouched. Its three faces are
+// preloaded so the hero sets in them from the first paint instead of shifting when they arrive.
+
+const FONTS = ["/fonts/satoshi-400.woff2", "/fonts/satoshi-700.woff2", "/fonts/chillax-600.woff2"];
 
 export default function DerelictDepthsLayout({ children }: { children: React.ReactNode }) {
+  for (const f of FONTS) preload(f, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
   return (
     <>
       {children}
