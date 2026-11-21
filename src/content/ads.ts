@@ -2,7 +2,8 @@
 // Swap the list and everything follows. Source: JAWA-10's curation (every ad Jawad rated 6 or higher), in its order.
 // Every piece is independent work, not commissioned. Order: the four from his 21 Nov X post (Vercel, Midjourney, Mistral,
 // Lovable; x.com/jawadjalal/status/2124118088819834999), then the type-pass set (handoffs/JAWA-11/new-ads, his picks in
-// type.html), then the JAWA-10 curation.
+// type.html), then the JAWA-10 curation, then the rest of his 6s from ~/night/real/ad-replay/replay-manifest.json
+// (21 Nov: deduped against earlier passes and the set above; one with a spec footnote in the art left out).
 
 export type Ad = {
   /** the /w/<id> permalink */
@@ -46,6 +47,18 @@ const LIST = [
   best("shown-told", "Shown Media", "Shown, not told. Shown Media ad, the word shown lit on a night billboard."),
   best("shown-seen", "Shown Media", "One job. Get you seen. Shown Media ad, the Shown mark in the pupil of an eye."),
   more("hyperspell", "Hyperspell", "A brain for your company. Hyperspell ad."),
+  more("fishaudio-mic", "Fish Audio", "AI that doesn't sound like AI. Fish Audio ad, a chrome studio microphone trailing a pink ribbon of sound."),
+  more("outpace-scale", "Outpace", "Ship fast and scale even faster. Outpace Studios ad, running-track lanes fanning out from the mark."),
+  more("whop-build", "Whop", "Build businesses, run ads, get paid. Whop ad, an orange sign on a brick townhouse, in halftone."),
+  more("whop-column", "Whop", "One place to run your entire business. Whop ad, an orange advertising column in an old town square."),
+  more("click-routed", "Click", "Routed intelligently. Filled instantly. Click ad, blue-lit cars streaking through a night intersection."),
+  more("blue-phone", "Blue", "Your next phone, shipping now. The Blue Phone ad, a blue banner hung down a Manhattan tower."),
+  more("hyperspell-why", "Hyperspell", "Give your agents the why. Hyperspell ad, pixel steps climbing through sunset colours."),
+  more("launchpoint-fake", "Launchpoint", "Fake views don't get paid. Launchpoint ad, a violet sign on the front of an old hotel."),
+  more("dreamstate-favourite", "Dreamstate", "ChatGPT has a favourite. Make it you. Dreamstate ad, a blue shop sign over an empty storefront."),
+  more("hyperspell-knowledge", "Hyperspell", "Knowledge leaves when the employee does. Hyperspell ad, closed lift doors in a dark lobby."),
+  more("outpace-prelaunch", "Outpace", "Pre-launch or post-raise. Outpace Studios ad, a running track curving round a green pitch."),
+  more("outpace-inhouse", "Outpace", "Think in-house, but faster. Outpace Studios ad, a starting block on a red track."),
   palantir("palantir-carrier", "Palantir ad: a carrier deck crew forming the Palantir mark.", 1080, 1350),
   palantir("palantir-wake", "Palantir ad: a ship's wake drawing a ring on the sea.", 1458, 1080),
   more("offense", "Offense", "Give your agent a swarm. Offense ad."),
