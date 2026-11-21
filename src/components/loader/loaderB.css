@@ -8,7 +8,7 @@
   font-display: block;
 }
 
-.lb { display: none; }
+.lb, .lb[hidden] { display: none; }
 html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor: pointer; touch-action: none; overscroll-behavior: contain; }
 
 .lb-ground { position: absolute; inset: 0; background: #100b09; }

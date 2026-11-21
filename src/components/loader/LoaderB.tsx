@@ -21,17 +21,17 @@ type Beat = { items: Item[]; stall: [number, number]; cut: [number, number]; con
 
 const FIRST: Beat = {
   items: [
-    { i: 0, at: 240, wide: [0.3, 0.64], tall: [0.38, 0.66], s: 1 },
-    { i: 1, at: 520, wide: [0.72, 0.32], tall: [0.64, 0.3], s: 0.8 },
-    { i: 2, at: 820, wide: [0.44, 0.52], tall: [0.5, 0.5], s: 1.2 },
-    { i: 3, at: 1300, wide: [0.5, 0.5], tall: [0.5, 0.5], s: 1.5 },
+    { i: 0, at: 200, wide: [0.3, 0.64], tall: [0.38, 0.66], s: 1 },
+    { i: 1, at: 450, wide: [0.72, 0.32], tall: [0.64, 0.3], s: 0.8 },
+    { i: 2, at: 720, wide: [0.44, 0.52], tall: [0.5, 0.5], s: 1.2 },
+    { i: 3, at: 1160, wide: [0.5, 0.5], tall: [0.5, 0.5], s: 1.5 },
   ],
-  stall: [940, 1200],
-  cut: [1220, 1300],
-  cond: 1620,
-  markIn: 1950,
-  handoff: 2300,
-  end: 2660,
+  stall: [840, 1060],
+  cut: [1080, 1160],
+  cond: 1450,
+  markIn: 1780,
+  handoff: 2080,
+  end: 2440,
   embers: 150,
 };
 const REPEAT: Beat = {
@@ -43,8 +43,8 @@ const REPEAT: Beat = {
   cut: [300, 370],
   cond: 560,
   markIn: 900,
-  handoff: 1150,
-  end: 1500,
+  handoff: 1130,
+  end: 1470,
   embers: 70,
 };
 const OUT = [380, 300, 400, 0];
@@ -113,6 +113,7 @@ export function LoaderB() {
         localStorage.setItem(KEY, "1");
       } catch {}
       root.classList.remove("lb-on");
+      el.hidden = true;
       setGone(true);
     };
 
@@ -259,15 +260,19 @@ export function LoaderB() {
           s.querySelectorAll("path").forEach((p) => tg.fill(new Path2D(p.getAttribute("d") ?? "")));
           tg.restore();
         });
-        const td = tg.getImageData(0, 0, vw, vh).data;
-        const tstep = B.width * k < 500 ? 1 : 2;
         const r0 = mark.getBoundingClientRect();
-        for (let y = Math.max(0, Math.floor(r0.top)); y < Math.min(vh, r0.bottom); y += tstep) for (let x = Math.max(0, Math.floor(r0.left)); x < Math.min(vw, r0.right); x += tstep) if (td[(y * vw + x) * 4 + 3] > 140) tpts.push(x, y);
+        const rx = Math.max(0, Math.floor(r0.left));
+        const ry = Math.max(0, Math.floor(r0.top));
+        const rw = Math.min(vw, Math.ceil(r0.right)) - rx;
+        const rh = Math.min(vh, Math.ceil(r0.bottom)) - ry;
+        const td = tg.getImageData(rx, ry, rw, rh).data;
+        const tstep = B.width * k < 500 ? 1 : 2;
+        for (let y = 0; y < rh; y += tstep) for (let x = 0; x < rw; x += tstep) if (td[(y * rw + x) * 4 + 3] > 140) tpts.push(rx + x, ry + y);
       } else {
         const r0 = mark.getBoundingClientRect();
         for (let n = 0; n < 6000; n++) tpts.push(r0.left + Math.random() * r0.width, r0.top + Math.random() * r0.height);
       }
-      const N = Math.min(2800, tpts.length / 2);
+      const N = Math.min(2000, tpts.length / 2);
       const pick = (arr: number[], n: number) => {
         const out: number[] = [];
         const total = arr.length / 2;
@@ -316,24 +321,12 @@ export function LoaderB() {
       rg.addColorStop(1, "rgba(255,80,20,0)");
       sg.fillStyle = rg;
       sg.fillRect(0, 0, 64, 64);
-      const heat = document.createElement("canvas");
-      heat.width = 256;
-      heat.height = 128;
-      const hg = heat.getContext("2d")!;
-      hg.scale(1, 0.5);
-      const hr = hg.createRadialGradient(128, 256, 0, 128, 256, 250);
-      hr.addColorStop(0, "rgba(255,90,20,0.9)");
-      hr.addColorStop(0.5, "rgba(200,50,10,0.35)");
-      hr.addColorStop(0.92, "rgba(120,20,0,0)");
-      hg.fillStyle = hr;
-      hg.fillRect(0, 0, 256, 256);
-
       cv.width = Math.round(vw * dpr);
       cv.height = Math.round(vh * dpr);
       const ctx = cv.getContext("2d")!;
       const embers: Ember[] = Array.from({ length: cfg.embers }, () => ({ x: Math.random() * vw, y: vh * (0.55 + Math.random() * 0.6), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
 
-      t0 = Math.max(T0, performance.now() - 700);
+      t0 = Math.max(T0, performance.now() - 1300);
       let last = t0;
       let simT = 0;
       const frame = (now: number) => {
@@ -341,6 +334,12 @@ export function LoaderB() {
         const t = now - t0;
         const dt = Math.min(now - last, 50);
         last = now;
+        const nap = t >= cfg.stall[0] + 60 && t < cfg.stall[1] ? cfg.stall[1] : t >= cfg.cut[0] + 50 && t < cfg.cut[1] - 20 ? cfg.cut[1] - 20 : 0;
+        if (nap) {
+          timers.push(window.setTimeout(() => (raf = requestAnimationFrame(frame)), nap - t));
+          last = now;
+          return;
+        }
         const stalled = t >= cfg.stall[0] && t < cfg.stall[1];
         const cut = t >= cfg.cut[0] && t < cfg.cut[1];
         const lurch = t >= cfg.cut[1] && t < cfg.cut[1] + 160 ? 2.4 : 1;
@@ -350,8 +349,6 @@ export function LoaderB() {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.clearRect(0, 0, vw, vh);
         ctx.globalCompositeOperation = "lighter";
-        ctx.globalAlpha = (0.16 + 0.1 * clamp((t - 200) / 1000) + 0.04 * Math.sin(simT * 3)) * (cut ? 0.15 : 1) * fadeOut;
-        ctx.drawImage(heat, 0, vh * 0.5, vw, vh * 0.5);
         if (!cut)
           for (const e of embers) {
             if (t < e.at) continue;
@@ -412,7 +409,7 @@ export function LoaderB() {
         if (t >= cfg.handoff && handoffAt < 0) {
           handoffAt = t;
           mark.style.opacity = "1";
-          handoff(cfg.end - cfg.handoff);
+          handoff(Math.max(200, cfg.end - t));
         }
         raf = requestAnimationFrame(frame);
       };
