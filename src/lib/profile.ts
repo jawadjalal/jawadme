@@ -125,7 +125,7 @@ export type Item = {
   roleNote?: string;
   period: string;
   blurb: string;
-  status: "Live" | "Building" | "Waitlist" | "Discontinued";
+  status: "Live" | "Building" | "Waitlist" | "Discontinued" | "Past";
   /** The stack, as tags under a project card. */
   tags?: { brand?: import("@/components/Brand").BrandKey; label: string }[];
 };
@@ -163,10 +163,10 @@ export const NOW: Item[] = [
     logo: "/logos/menufit.png",
     shot: "/design/menufit.webp",
     domain: "menufit.com",
-    role: "Design",
+    role: "Product designer",
     period: "2026",
-    status: "Live",
-    blurb: "The app for eating out healthy, with 1.5 million users. I was its product designer.",
+    status: "Past",
+    blurb: "An 8-figure startup: the app for eating out healthy, used by 1.5 million people. I was its product designer.",
     tags: [
       { brand: "figmacolour", label: "Product design" },
       { label: "iOS" },
@@ -203,10 +203,10 @@ export const NOW: Item[] = [
     logo: "/logos/okara.png",
     shot: "/design/okara-card.webp",
     domain: "okara.ai",
-    role: "Design",
+    role: "Product development intern",
     period: "2026",
-    status: "Live",
-    blurb: "An AI CMO that drafts and ships marketing work. I was a product development intern there.",
+    status: "Past",
+    blurb: "An 8-figure AI startup, the AI CMO that drafts and ships marketing work. I was a product development intern there.",
     tags: [
       { brand: "figmacolour", label: "Product design" },
       { brand: "nextdotjs", label: "Next.js" },
@@ -403,7 +403,8 @@ export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
   "a design studio at 6 figure ARR, and builds Ignaru (ignaru.com), an agent-native design tool " +
   "where design and code share one canvas. He also runs bevel, a 3D art team for games at 6 figure ARR, " +
-  "and has designed for Okara and for MenuFit (menufit.com), an app for eating out healthy with 1.5 million users.";
+  "and has worked at two 8-figure startups: as product designer at MenuFit (menufit.com), an app for eating out healthy " +
+  "used by 1.5 million people, and as a product development intern at Okara, an AI CMO.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [

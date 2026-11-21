@@ -665,3 +665,38 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 
 /* ── Home: Fracture's key art, one big scrubbed frame in the ink room ── */
 .room-one { padding-top: calc(10 * var(--u)); }
+
+/* ── The hall: where the ads are kept. Plum-black, lit from the floor like a brazier, embers rising. The painting
+   (public/art/hero.webp) fills it when it lands; until then the niches and the floor light carry the space. ── */
+.hero-ads { padding-bottom: 40px; }
+.hall { position: absolute; z-index: -1; left: 0; right: 0; bottom: 0; top: calc(var(--mark, 11.8vw) * 0.3); overflow: hidden; background: var(--under); clip-path: inset(0 0 100% 0); animation: hall-open 900ms 640ms var(--ease-cut) forwards; }
+@keyframes hall-open { to { clip-path: inset(0 0 0 0); } }
+.hall-art { position: absolute; inset: 0; }
+.hall-light { position: absolute; inset: 0; background:
+  linear-gradient(to top, rgb(255 83 20 / 0.30), rgb(255 83 20 / 0.08) 22%, transparent 48%),
+  linear-gradient(to bottom, rgb(0 0 0 / 0.5), transparent 30%); }
+.hall::after { content: ""; position: absolute; left: 0; right: 0; bottom: 30px; height: 1px; background: rgb(181 131 63 / 0.55); }
+.ember { position: absolute; bottom: 30px; width: 3px; height: 3px; border-radius: 50%; background: #ffb070; box-shadow: 0 0 6px 2px rgb(255 83 20 / 0.7); opacity: 0; animation: ember linear infinite; }
+@keyframes ember { 0% { opacity: 0; transform: translate(0, 0); } 15% { opacity: 0.9; } 100% { opacity: 0; transform: translate(14px, -320px); } }
+.hero-ad::before { content: ""; position: absolute; z-index: -1; left: -14px; right: -14px; top: -22px; bottom: calc(-10px - var(--lift) * var(--u)); border-radius: 999px 999px 0 0; background: linear-gradient(to bottom, #33263d, #1c1422 75%); border: 1px solid rgb(181 131 63 / 0.22); border-bottom: 0; animation: fade 700ms calc(1000ms + var(--o) * 110ms) both; }
+.hero-ad-in { outline: 1px solid rgb(181 131 63 / 0.6); outline-offset: 5px; animation-name: ad-rise-hall; }
+@keyframes ad-rise-hall { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(-8px -8px -8px -8px); } }
+.hero-ad-tag { color: var(--ground); }
+.hero-ad:hover .hero-ad-in { outline-color: var(--ember); }
+.hero-bar { margin-top: 0; }
+@media (max-width: 767px) {
+  .hall { top: 0; }
+  .hero-ads { padding-top: 22px; margin-top: 18px; }
+  .hero-ad::before { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .hall { clip-path: none; } .ember { display: none; } .hero-ad::before { animation: none; } .hero-ad-in { animation: none; clip-path: none; } }
+
+/* ── The gallery is the hall's second room: the page darkens to plum as you walk into it ── */
+html[data-room="hall"]:has(.ds) { background: #150f19; }
+html[data-room="hall"] .ds { --bg: #150f19; --fg: #e6e5e1; --dim: rgb(230 229 225 / 0.6); --rule: rgb(181 131 63 / 0.35); --tile: #21182a; }
+html[data-room="hall"] .bar.ink { color: var(--ink); }
+html[data-room="hall"] .bar.ink::before { background: var(--ground); }
+.ads-home .gal-item .media { outline: 1px solid rgb(181 131 63 / 0); outline-offset: 5px; transition: outline-color 600ms var(--ease-io); }
+html[data-room="hall"] .ads-home .gal-item .media { outline-color: rgb(181 131 63 / 0.55); }
+html[data-room="hall"] .ads-home .gal-item:hover .media { outline-color: var(--ember); }
+.ads-home { padding-bottom: calc(10 * var(--u)); }
