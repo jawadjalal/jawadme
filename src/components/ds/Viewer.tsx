@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { preload } from "react-dom";
-import { BookLink } from "@/components/BookLink";
 import { ViewerMoment } from "@/components/moments/viewer";
+import { BookCallB } from "@/components/cta/BookCallB";
 
 type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; spec: boolean };
 type Near = { id: string; src: string; w: number; h: number };
@@ -90,12 +90,9 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
             </Link>
           </nav>
         ) : null}
-        <BookLink src="viewer" className="dock-cta v-cta" cursor>
-          <span>
-            book a call <span className="arr">↗</span>
-          </span>
-          <small>15 min, video</small>
-        </BookLink>
+        <span className="v-cta">
+          <BookCallB src="viewer" size="dock" />
+        </span>
       </footer>
     </main>
   );

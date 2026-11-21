@@ -1,15 +1,7 @@
-import { BookLink } from "@/components/BookLink";
-import { SITE } from "@/content/site";
+import { BookCallB } from "@/components/cta/BookCallB";
 
-/** The dock's call slot: the ember stub at the end of the ticket. Swap this component to change the dock's CTA; the
- *  dock only places it. */
+/** The dock's call slot: the printed ticket at dock size. Swap this component to change the dock's CTA; the dock only
+ *  places it. */
 export function DockCta() {
-  return (
-    <BookLink src="dock" className="dock-cta" cursor>
-      <span>
-        {SITE.cta} <span className="arr">↗</span>
-      </span>
-      <small>{SITE.detail}</small>
-    </BookLink>
-  );
+  return <BookCallB src="dock" size="dock" />;
 }

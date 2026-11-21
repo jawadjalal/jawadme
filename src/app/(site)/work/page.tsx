@@ -8,6 +8,7 @@ import { ADS } from "@/content/ads";
 import { REAL } from "@/content/work";
 import { GALLERY, ROOMS, roomByKey, type Room } from "@/lib/gallery";
 import { JsonLd, PERSON_ID, abs, caseWork, meta, pieceWork } from "@/lib/seo";
+import { BookCallB } from "@/components/cta/BookCallB";
 
 export const metadata: Metadata = meta({
   title: "work",
@@ -57,9 +58,7 @@ function Break({ say, n }: { say: Say; n: number }) {
       </p>
       <div className="brk-side">
         {say.s ? <p className="brk-s">{say.s}</p> : null}
-        <BookLink src={"work-break-" + n} className="brk-cta" cursor>
-          book a call <span className="arr">↗</span>
-        </BookLink>
+        <BookCallB src={"work-break-" + n} size="hero" />
       </div>
     </>
   );

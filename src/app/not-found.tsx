@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookLink } from "@/components/BookLink";
+import { BookCallB } from "@/components/cta/BookCallB";
 import { Dock } from "@/components/ds/Dock";
 import { Footer } from "@/components/ds/Footer";
 import { LostMoment } from "@/components/moments/notfound";
@@ -20,9 +20,7 @@ export default function NotFound() {
           <nav className="lost-ways" aria-label="ways back">
             <Link href="/work">work ↗</Link>
             <Link href="/">home ↗</Link>
-            <BookLink src="404" className="lost-call">
-              book a call ↗
-            </BookLink>
+            <BookCallB src="404" size="hero" />
           </nav>
         </LostMoment>
       </main>
