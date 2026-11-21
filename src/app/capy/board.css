@@ -152,6 +152,11 @@ html:has(.cb) body {
 
 /* ── the list view (the old page) ─────────────────────────────────────── */
 .cb-list { position: relative; }
+.cb-phone { display: none; }
+@media (max-width: 899px) {
+  .cb:not(.cb-asked) { display: none; }
+  .cb-phone { display: block; }
+}
 .cb-back { position: fixed; z-index: 20; right: 16px; bottom: 16px; height: 38px; padding: 0 14px; border-radius: 10px; border: 0; background: #0a0a0a; color: #fff; font: 600 13px var(--cp-sans), ui-sans-serif, system-ui, sans-serif; cursor: pointer; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18); }
 
 /* ── narrow screens: the cluster list folds into the toolbar ──────────── */

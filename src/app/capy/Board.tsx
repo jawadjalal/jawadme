@@ -12,6 +12,7 @@ import * as X from "./exporters";
 type Scope = "piece" | "selection" | "view" | "board";
 type Fmt = "png" | "svg" | "html" | "copy-svg" | "copy-html";
 
+const PHONE = "(max-width: 899px)";
 const isMac = () => typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
 
 export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: string[]; children: ReactNode }) {
@@ -22,6 +23,8 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   const [st, setSt] = useState<EngineState>({ z: 0, selected: [], cluster: 0, touring: false, hover: -1 });
   const [hidden, setHidden] = useState(false);
   const [list, setList] = useState(false);
+  /** phones open on the list; the canvas loads only once they ask for the board */
+  const [asked, setAsked] = useState(false);
   const [exp, setExp] = useState(false);
   const [help, setHelp] = useState(false);
   const [clustersOpen, setClustersOpen] = useState(false);
@@ -37,6 +40,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   // the engine, once
   useEffect(() => {
     if (list || !canvas.current) return;
+    if (!asked && matchMedia(PHONE).matches) return;
     const e = new Engine(canvas.current, board);
     eng.current = e;
     e.redraw();
@@ -70,7 +74,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
       eng.current = null;
       delete w.__capy;
     };
-  }, [board, list]);
+  }, [board, list, asked]);
 
   // the chrome's footprint, so fits and flights land in the clear part of the screen
   useEffect(() => {
@@ -218,7 +222,16 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   const e = eng.current;
 
   return (
-    <div ref={root} className={`cb${chromeOff ? " cb-off" : ""}${st.selected.length ? " cb-has-sel" : ""}`}>
+    <>
+    {asked ? null : (
+      <div className="cb-phone">
+        {children}
+        <button className="cb-back" onClick={() => setAsked(true)}>
+          see the board
+        </button>
+      </div>
+    )}
+    <div ref={root} className={`cb${asked ? " cb-asked" : ""}${chromeOff ? " cb-off" : ""}${st.selected.length ? " cb-has-sel" : ""}`}>
       <canvas ref={canvas} className="cb-canvas" role="img" aria-label={`A board of ${board.pieces.length} Capy hackathon assets in ${board.clusters.length} clusters. Drag to pan, scroll or pinch to zoom, click a piece to fly to it.`} />
 
       <header className="cb-head">
@@ -357,6 +370,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
         </p>
       )}
     </div>
+    </>
   );
 }
 

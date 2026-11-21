@@ -12,18 +12,29 @@ export function Sequence({ frames, label }: { frames: Media[]; label: string }) 
   const box = useRef<HTMLDivElement>(null);
   const [i, setI] = useState(0);
   useEffect(() => {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = box.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
-    const tick = () => {
-      const r = box.current?.getBoundingClientRect();
-      if (r && r.bottom > 0 && r.top < innerHeight) {
-        const p = Math.min(Math.max((innerHeight - r.top) / (innerHeight + r.height), 0), 0.999);
-        setI(Math.floor(p * frames.length));
-      }
-      raf = requestAnimationFrame(tick);
+    const set = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const p = Math.min(Math.max((innerHeight - r.top) / (innerHeight + r.height), 0), 0.999);
+      setI(Math.floor(p * frames.length));
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    const on = () => void (raf ||= requestAnimationFrame(set));
+    // measured only on scroll while the box is on screen, never every frame
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        addEventListener("scroll", on, { passive: true });
+        on();
+      } else removeEventListener("scroll", on);
+    });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      removeEventListener("scroll", on);
+      cancelAnimationFrame(raf);
+    };
   }, [frames.length]);
   return (
     <div className="seq media" ref={box} data-plate="" style={{ aspectRatio: `${frames[0].w} / ${frames[0].h}` }}>

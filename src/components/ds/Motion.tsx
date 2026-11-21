@@ -7,7 +7,8 @@
 //   [data-lines]        the text splits into lines that rise out of a mask, 50 ms apart
 //   [data-par]          the hero ads drift up at their own rate as the hero scrolls away
 //   [data-room]         the page flips to ink while the section is in the middle of the screen
-// Reduced motion: no Lenis, plates and lines rest at their end state (ds.css), rooms still flip without travel.
+// Reduced motion: no Lenis, plates and lines rest at their end state (ds.css), rooms still flip without travel. Touch
+// screens scroll natively (no Lenis) and keep every other effect.
 
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef } from "react";
@@ -41,7 +42,8 @@ export function Motion() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, SplitText);
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // touch screens keep their own scroll: Lenis does nothing there but would still run the ticker every frame
+    if (matchMedia("(prefers-reduced-motion: reduce), (hover: none), (pointer: coarse)").matches) return;
     const lenis = new Lenis({ autoRaf: false, lerp: 0.1, syncTouch: false, stopInertiaOnNavigate: true });
     (window as Win).__lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
