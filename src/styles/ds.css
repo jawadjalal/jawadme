@@ -726,4 +726,4 @@ html[data-room="hall"] .gal-item:hover .media, html[data-room="hall"] .gal-lead:
   .ring-flat { gap: 12px; }
   .ring-flat li { width: 62vw; }
 }
-.v-info .disclose { margin-top: 20px; padding: 0; font: 600 13px/1.4 var(--f-sans); color: var(--dim); }
+.v-info .disclose { margin: 4px 0 0; padding: 0; font: 600 13px/1.4 var(--f-sans); letter-spacing: 0; color: var(--dim); }

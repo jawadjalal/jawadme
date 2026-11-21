@@ -54,7 +54,6 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
         <div className="v-info">
           <h1 className="v-title">{headline}</h1>
           <p>{`${piece.group}, designed by Jawad Jalal.`}</p>
-          {piece.spec ? <p className="disclose">Independent work. Not commissioned by or affiliated with the brands shown.</p> : null}
           {related.length ? (
             <nav className="v-strip" aria-label="More ads">
               {related.map((item) => (
@@ -64,6 +63,7 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
               ))}
             </nav>
           ) : null}
+          {piece.spec ? <p className="disclose">Independent work. Not commissioned by or affiliated with the brands shown.</p> : null}
         </div>
       </div>
       <footer className="v-bar">
