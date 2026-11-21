@@ -9,12 +9,12 @@ import "@/styles/signpost.css";
  *  Otherwise the poster shows with a link laid over each arm. */
 
 const ARMS = [...NAV.map((n) => ({ label: n.label, href: n.href })), { label: "Book a call", href: "/cal?src=footer-signpost" }];
-const HITS: [number, number, number, number][] = [
-  [46, 29, 32, 11],
-  [17, 38, 29, 11],
-  [47, 48, 24, 11],
-  [12, 56, 33, 10],
-  [46, 66, 44, 11],
+const HITS: [number, number, number, number, number][] = [
+  [55, 22.0, 24, 7.4, -9],
+  [24, 34.5, 21, 7.4, 7],
+  [55, 45.8, 24, 7.4, -7],
+  [22, 55.8, 23, 7.4, 7],
+  [54, 69.1, 25, 7.9, -7],
 ];
 
 export function Footer({ src, sheet }: { src: string; sheet: string }) {
@@ -44,17 +44,27 @@ export function Footer({ src, sheet }: { src: string; sheet: string }) {
           </nav>
         </div>
         <div className="sp-stage" data-view="signpost">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="poster-3d sp-poster" src="/three/signpost-poster.webp" alt="" width={1000} height={1200} loading="lazy" decoding="async" />
-          <div className="sp-hits" aria-hidden="true">
-            {ARMS.map((a, i) => (
-              <a
-                key={a.label}
-                href={a.href}
-                tabIndex={-1}
-                style={{ left: `${HITS[i][0]}%`, top: `${HITS[i][1]}%`, width: `${HITS[i][2]}%`, height: `${HITS[i][3]}%` }}
-              />
-            ))}
+          <div className="poster-3d sp-fallback">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="sp-poster" src="/three/signpost-illustration.webp" alt="" width={768} height={1152} loading="lazy" decoding="async" />
+            <div className="sp-hits" aria-hidden="true">
+              {ARMS.map((a, i) => (
+                <a
+                  key={a.label}
+                  href={a.href}
+                  tabIndex={-1}
+                  style={{
+                    left: `${HITS[i][0]}%`,
+                    top: `${HITS[i][1]}%`,
+                    width: `${HITS[i][2]}%`,
+                    height: `${HITS[i][3]}%`,
+                    transform: `rotate(${HITS[i][4]}deg)`,
+                  }}
+                >
+                  {a.label}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>

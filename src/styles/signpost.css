@@ -26,13 +26,6 @@
   color: var(--sp-bone);
   font-family: var(--sp-sans);
 }
-.sp::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  display: none;
-}
 .sp-in {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
@@ -41,13 +34,12 @@
   padding: clamp(56px, 8vw, 120px) var(--g, 24px) 0;
 }
 .sp-copy { display: grid; gap: 28px; align-content: center; padding-bottom: 48px; }
-.sp-kicker, .sp-n, .sp-meta, .sp-link {
+.sp-n, .sp-meta, .sp-link {
   font-family: var(--sp-sans);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.14em;
 }
-.sp-kicker { margin: 0; font-size: 13px; color: var(--sp-slate-3); }
 .sp-title {
   margin: 0;
   font-family: var(--sp-disp);
@@ -79,11 +71,13 @@
 .sp-link:focus-visible { outline: 2px solid var(--sp-gold); outline-offset: 4px; }
 
 .sp-stage { position: relative; width: min(100%, 76vh); aspect-ratio: 5 / 6; justify-self: center; }
-.sp-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1); }
-.sp-hits a { position: absolute; border-radius: 6px; }
-.sp-hits a:focus-visible { outline: 2px solid var(--sp-gold); }
-html[data-gl="live"] .sp-hits { display: none; }
-html[data-gl="live"] .sp-poster { pointer-events: none; }
+.sp-fallback { position: absolute; top: 0; left: 50%; height: 100%; aspect-ratio: 2 / 3; transform: translateX(-50%); container-type: inline-size; transition: opacity 480ms var(--ease); }
+.sp-poster { display: block; width: 100%; height: 100%; }
+.sp-hits a { position: absolute; display: grid; place-items: center; color: var(--sp-bone); font: 700 clamp(13px, 4.5cqw, 29px)/1 var(--sp-disp); white-space: nowrap; }
+.sp-hits a:hover { color: var(--sp-gold); }
+.sp-hits a:last-child { color: var(--sp-void); }
+.sp-hits a:last-child:hover { color: var(--sp-bone); }
+html[data-gl="live"] .sp-fallback { pointer-events: none; }
 
 .sp-meta {
   display: flex;
@@ -104,7 +98,6 @@ html[data-gl="live"] .sp-poster { pointer-events: none; }
 @media (max-width: 900px) {
   .sp-in { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 64px; }
   .sp-copy { display: contents; }
-  .sp-kicker { order: 1; margin-bottom: 14px; }
   .sp-title { order: 2; font-size: clamp(48px, 15vw, 80px); }
   .sp-stage { order: 3; width: 100%; margin: 8px 0 12px; }
   .sp-copy nav { order: 4; padding-bottom: 40px; }
@@ -112,6 +105,6 @@ html[data-gl="live"] .sp-poster { pointer-events: none; }
   .sp-social { margin-left: 0; width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sp-link, .sp-poster { transition: none; }
+  .sp-link, .sp-fallback { transition: none; }
   .sp-link:hover, .sp-link:focus-visible { transform: none; }
 }

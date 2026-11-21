@@ -14,32 +14,6 @@ import { SELECTED, laneLabel, projectBySlug } from "@/content/work";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-const Guides = () => (
-  <div className="guides" aria-hidden="true">
-    {Array.from({ length: 16 }, (_, i) => (
-      <i key={i} />
-    ))}
-  </div>
-);
-
-/** The supporting line, with the four lanes marked so the Mark's material lights its word. */
-function Line() {
-  const lanes: [string, number][] = [["Brands", 3], ["ads", 0], ["3D", 1], ["Roblox", 2]];
-  return (
-    <p className="hero-line">
-      {lanes.map(([w, i], n) => (
-        <span key={w}>
-          <span className="lane" data-i={i}>
-            {w}
-          </span>
-          {n < 2 ? ", " : n === 2 ? " and " : " games. "}
-        </span>
-      ))}
-      <span className="dim">Designed by Jawad Jalal in London.</span>
-    </p>
-  );
-}
-
 const DD = projectBySlug("derelict-depths")!;
 
 export default function Home() {
@@ -47,33 +21,33 @@ export default function Home() {
   const rows = SELECTED.slice(2);
   return (
     <main>
-      <section className="hero" data-hero="" data-lane="0">
-        <Guides />
-        <h1 className="d-hero hero-h1" data-lines="">
-          {SITE.headline}
-        </h1>
+      <section className="hero" data-hero="">
         <div className="g16 hero-body">
-          <div className="hero-copy">
-            <Line />
-            <span className="lbl dim hero-mat">
-              [ <span data-m="0">Paper</span> / <span data-m="1">Felt</span> / <span data-m="2">Brick</span> / <span data-m="3">Glass</span> ]
-            </span>
-          </div>
-          <div className="hero-stage" data-view="mark">
-            <div className="poster-3d mark-poster" aria-hidden="true">
-              <Image src="/three/pillar-poster.webp" alt="" width={1600} height={1523} priority sizes="(min-width: 768px) 50vw, 100vw" />
-            </div>
-            <span className="marks" aria-hidden="true">
+          <h1 className="d-hero hero-h1">
+            {SITE.headline.split(" ").map((word, i) => (
+              <span key={word}>{i ? " " : ""}{word}</span>
+            ))}
+          </h1>
+          <div className="hero-stage" data-view="pillar" aria-hidden="true">
+            <div className="hero-seal">
               <i />
-            </span>
-            <span className="lbl dim stage-note">[ The Mark · A1 stand-in, built in code ]</span>
+            </div>
+            <div className="poster-3d pillar-poster">
+              <Image src="/three/pillar-illustration.webp" alt="" width={768} height={1152} priority sizes="(min-width: 1024px) 380px, 245px" />
+            </div>
+          </div>
+          <div className="hero-copy">
+            <p className="hero-line">
+              Brands, ads, 3D and Roblox games.
+              <span className="dim">Designed by Jawad Jalal in London.</span>
+            </p>
+            <Link href="/work/derelict-depths" className="lbl hero-caption">Inspired by Fracture ↗</Link>
           </div>
         </div>
         <div className="g16 hero-foot hair lbl">
           <span className="hf-a">
             <Clock />
           </span>
-          <span className="hf-b">Design · Ads · 3D · Roblox</span>
           <span className="hf-c">Scroll ↓</span>
         </div>
       </section>
