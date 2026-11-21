@@ -20,7 +20,7 @@
 }
 /* the rim and the sheen: a green edge that lights, and one hard-edged band that crosses once */
 [data-m~="tilt"] .media::after { content: ""; position: absolute; inset: 0; z-index: 3; box-shadow: inset 0 0 0 2px var(--accent); opacity: 0; transition: opacity var(--t-fast); pointer-events: none; }
-[data-m~="tilt"] .media::before { content: ""; position: absolute; top: -10%; bottom: -10%; left: 0; z-index: 3; width: 22%; background: rgb(255 255 255 / 0.16); transform: skewX(-16deg); translate: -160% 0; pointer-events: none; }
+[data-m~="tilt"] .media::before { content: ""; position: absolute; top: -10%; bottom: -10%; left: 0; z-index: 3; width: 22%; background: rgb(255 255 255 / 0.16); transform: skewX(-16deg); translate: -420% 0; pointer-events: none; }
 @media (hover: hover) {
   [data-m~="tilt"]:hover .media { translate: 0 -6px; }
   [data-m~="tilt"]:hover .media::after { opacity: 1; }

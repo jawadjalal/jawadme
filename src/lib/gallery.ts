@@ -30,12 +30,13 @@ function adRooms(): Room[] {
   const singles: Ad[] = [];
   for (const b of new Set(ADS.map((a) => a.campaign))) {
     const ads = ADS.filter((a) => a.campaign === b);
-    if (ads.length < 2) {
+    // a lone ad waits in "more brands", unless it came in the newest drop (/ads/new): those all hang at the front
+    if (ads.length < 2 && !ads[0].src.startsWith("/ads/new/")) {
       singles.push(...ads);
       continue;
     }
     const c = caseOf(b);
-    rooms.push({ key: slug(b), title: b, note: c?.lines[0] ?? "", count: ads.length + " ads", entries: ads.map(adEntry), section: "ads", caseHref: c ? "/work/" + c.slug : undefined });
+    rooms.push({ key: slug(b), title: b, note: c?.lines[0] ?? "", count: ads.length + (ads.length === 1 ? " ad" : " ads"), entries: ads.map(adEntry), section: "ads", caseHref: c ? "/work/" + c.slug : undefined });
   }
   if (singles.length) rooms.push({ key: "more-brands", title: "more brands", note: "", count: singles.length + " ads", entries: singles.map(adEntry), section: "ads" });
   return rooms;
