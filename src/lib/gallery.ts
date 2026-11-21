@@ -44,7 +44,6 @@ function adRooms(): Room[] {
 const web = design("designed and built by jawad jalal", "web design");
 const ignaru = project("ignaru");
 const fracture = project("derelict-depths");
-const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const sites = [project("ignura"), project("ignura-seo"), project("coresrent")].map(projectEntry).concat(SITES.map(web));
 
@@ -62,7 +61,7 @@ export const ROOMS: Room[] = [
     count: "roblox game",
     caseHref: "/work/" + fracture.slug,
     section: "3d",
-    entries: [fracture.cover, ...fracture.blocks.flatMap((b) => (Array.isArray(b.media) ? b.media : [b.media]))].slice(0, 3).map((m, i) => ({ key: fracture.slug + "-" + i, href: "/work/" + fracture.slug, media: m, title: fracture.name, line: cap(m.alt.replace(/^[^:]*:\s*/, "")) })),
+    entries: [fracture.cover, ...fracture.blocks.flatMap((b) => (Array.isArray(b.media) ? b.media : [b.media]))].slice(0, 3).map((m, i) => ({ key: fracture.slug + "-" + i, href: "/work/" + fracture.slug, media: m, title: fracture.name, line: m.alt.replace(/^[^:]*:\s*/, "") })),
   },
 ];
 
