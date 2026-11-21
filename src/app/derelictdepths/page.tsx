@@ -168,7 +168,7 @@ export default async function MinelightPage() {
             </p>
           </div>
           <figure className="ml-poster">
-            <img src="/derelictdepths/img/poster-1280.jpg" fetchPriority="high" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-768.jpg 768w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="a miner raises a pickaxe in the golden room in front of the mole king" />
+            <img src="/derelictdepths/img/poster-1280.jpg" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-768.jpg 768w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="a miner raises a pickaxe in the golden room in front of the mole king" />
             <figcaption><span className="ml-badge art">in-engine + key art</span>a real in-engine capture of the golden room, graded, with rays and the title added.</figcaption>
           </figure>
         </header>
