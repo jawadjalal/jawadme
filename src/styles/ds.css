@@ -15,7 +15,7 @@
 
   --bg: var(--ground);
   --fg: var(--ink);
-  --dim: rgb(11 11 11 / 0.64);
+  --dim: #55544f;
   --rule: rgb(11 11 11 / 0.14);
 
   --u: calc(min(100vw, 1920px) / 480);
@@ -67,7 +67,7 @@ html:has(.ds), html:has(.ds) body { margin: 0; -webkit-text-size-adjust: 100%; }
 
 html:has(.ds) { background: #e6e5e1; color-scheme: light; }
 html[data-room="ink"]:has(.ds) { background: #0b0b0b; }
-html[data-room="ink"] .ds { --bg: #0b0b0b; --fg: #e6e5e1; --dim: rgb(230 229 225 / 0.6); --rule: rgb(230 229 225 / 0.16); --tile: #1b1b1a; }
+html[data-room="ink"] .ds { --bg: #0b0b0b; --fg: #e6e5e1; --dim: #a3a29d; --rule: rgb(230 229 225 / 0.16); --tile: #1b1b1a; }
 .ds ::selection { background: var(--ember); color: var(--ink); }
 .ds a { color: inherit; text-decoration: none; }
 .ds :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
@@ -449,6 +449,7 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .cal-mail { padding: 12px var(--g) 0; font: 700 15px/1.4 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
 .cal-mail a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .cal-mail a:hover { color: var(--ember); }
+.cal-alt { padding-bottom: calc(10 * var(--u)); }
 @media (max-width: 767px) {
   .cal-bar { height: 44px; gap: 10px; }
   .cal-h { padding: 0 10px; }
@@ -463,8 +464,9 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 
 /* ── 404 ── */
 .lost { padding-top: 0; }
-.lost-h { margin: 6px 0 0; font: 700 max(64px, calc(40 * var(--u)))/0.86 var(--f-disp); letter-spacing: -0.05em; color: #f1e6d2; animation: up 700ms var(--ease) both; }
-.lost-line { margin: 18px 0 0; max-width: 22em; font: 700 max(20px, calc(7 * var(--u)))/1.05 var(--f-sans); letter-spacing: -0.025em; color: #f1e6d2; animation: up 700ms 80ms var(--ease) both; }
+.lost-h { margin: 8px 0 0; font: 700 max(64px, calc(36 * var(--u)))/0.96 var(--f-disp); letter-spacing: -0.05em; color: #f1e6d2; animation: up 700ms var(--ease) both; }
+.lost-line { margin: calc(4 * var(--u) + 10px) 0 0; max-width: 22em; font: 700 max(20px, calc(7 * var(--u)))/1.05 var(--f-sans); letter-spacing: -0.025em; color: #f1e6d2; animation: up 700ms 80ms var(--ease) both; }
+.lost-copy { justify-self: start; max-width: min(720px, 100%); padding: 22px 26px 26px; background: #100b09; }
 .lost-k { margin: 0; font: 700 15px/1 var(--f-bar); color: rgb(241 230 210 / 0.72); }
 .lost-ways { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 .lost-ways a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; background: #f1e6d2; color: #100b09; font: 700 17px/1 var(--f-bar); letter-spacing: -0.02em; transition: background-color var(--t-fast), scale var(--t-press) var(--ease); }
@@ -541,7 +543,7 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 
 /* ── The gallery is the hall's second room: the page darkens to the same warm ink as you walk into it ── */
 html[data-room="hall"]:has(.ds) { background: #17120e; }
-html[data-room="hall"] .ds { --bg: #17120e; --fg: #e6e5e1; --dim: rgb(230 229 225 / 0.6); --rule: rgb(181 131 63 / 0.35); --tile: #221b16; }
+html[data-room="hall"] .ds { --bg: #17120e; --fg: #e6e5e1; --dim: #a3a29d; --rule: rgb(181 131 63 / 0.35); --tile: #221b16; }
 html[data-room="hall"] .bar.ink { color: var(--ink); }
 html[data-room="hall"] .bar.ink::before { background: var(--ground); }
 .ads-home { padding-bottom: calc(10 * var(--u)); }

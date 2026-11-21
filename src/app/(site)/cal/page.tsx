@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CalInline } from "@/components/ds/CalInline";
+import { MailLink } from "@/components/MailLink";
 import { CalMoment } from "@/components/moments/cal";
 import { SITE } from "@/content/site";
 import { meta } from "@/lib/seo";
@@ -28,15 +29,19 @@ export default async function Cal({ searchParams }: Props) {
         <span>Free</span>
       </header>
       <p className="cal-mail">
-        Rather write? <a href={"mailto:" + SITE.email + "?subject=Project"}>{SITE.email}</a>
-        <span aria-hidden="true"> · </span>
+        Calendar not loading?{" "}
         <a href={"https://cal.com/jawad-jalal-hesqbk/15min?src=" + src} target="_blank" rel="noopener">
           Open on Cal.com ↗
         </a>
       </p>
       <div className="cal-row">
-        <div className="cal-embed">
-          <CalInline email={SITE.email} theme="light" />
+        <div>
+          <div className="cal-embed">
+            <CalInline email={SITE.email} theme="light" />
+          </div>
+          <p className="cal-mail cal-alt">
+            Rather write? <MailLink src="cal" />
+          </p>
         </div>
         <CalMoment />
       </div>
