@@ -171,7 +171,7 @@ function gate(c: SetCtx): Set {
   for (const s of [-1, 1]) k.col(along(P, s * 2.3), 7.2, 0.58, 0, s + 2);
   B.add(m.trim, box(6.2, 1, 1.5, 0.1), M(P.x, P.y + 7.2, P.z, Q));
   B.add(m.pale, box(6.8, 0.4, 1.9, 0.1), M(P.x, P.y + 8.2, P.z, Q));
-  const g = k.glow(P.clone().setY(P.y + 3.6), 3.6, 7, ACCENT.hi, 1.1);
+  const g = k.glow(P.clone().setY(P.y + 3.6), 3.6, 7, ACCENT.glow, 1.1);
   k.lamp(P.clone().setY(P.y + 2.6).add(V(0.8, 0, 0.8)), 10);
   k.brazier(V(3.4, 0, 0.8));
   k.brazier(V(0.8, 0, 3.4));
@@ -209,7 +209,7 @@ function shaft(c: SetCtx): Set {
   B.add(m.rock, rock(7, 6, 4.6, 9, true), M(back.x, 4.6, back.z, 0.2, [1.2, 1.1, 1]));
   B.add(m.rock, rock(5, 4, 3.4, 5, true), M(back.x + 5.2, 3.4, back.z - 1.4, 0.8));
   B.add(m.rock, rock(4, 4, 2.6, 2, true), M(back.x - 1.2, 2.6, back.z + 5, 1.4));
-  const ores: [number, number, number, number, string][] = [[-4.2, 1.6, -2.6, 1, "#63e6ff"], [-2.6, 2.4, -4.4, 0.8, "#ffc043"], [-5.8, 2.8, -1.2, 0.7, "#63e6ff"], [0.6, 1.4, -6.2, 0.9, "#ff5a1c"], [-6.4, 0.2, 0.8, 0.8, "#ffc043"]];
+  const ores: [number, number, number, number, string][] = [[-4.2, 1.6, -2.6, 1, "#63e6ff"], [-2.6, 2.4, -4.4, 0.8, "#ffc043"], [-5.8, 2.8, -1.2, 0.7, "#63e6ff"], [0.6, 1.4, -6.2, 0.9, ACCENT.accent], [-6.4, 0.2, 0.8, 0.8, "#ffc043"]];
   for (const [x, y, z, s, col] of ores) k.crystal(V(x, y, z), s, col, x + z, 0.4);
   k.lamp(V(-4, 2.6, -3), 7, true);
   for (const s of [-0.7, 0.7]) B.add(m.bronze, box(16, 0.16, 0.18, 0.04), M(1.6 + s * 0.7, 0.12, 1.6 - s * 0.7, Q + Math.PI / 2));
@@ -247,8 +247,8 @@ function deadend(c: SetCtx): Set {
   B.add(m.rock, rock(3, 3, 1.2, 8, true), M(-5.4, 1.2, -0.6, 0.5, [1, 0.8, 1]));
   const post = V(4.2, 0, 4.2);
   B.add(m.wood, box(0.34, 6, 0.34, 0.06), M(post.x, 0, post.z));
-  [[5.1, 0.25, "#efe4d0"], [4.1, -0.35, "#efe4d0"], [3.1, 0.15, "#ff5a1c"]].forEach(([y, a, col]) => {
-    const mat = col === "#ff5a1c" ? c.mk("#ff5a1c", { k: "stone", rim: 1.4 }) : m.pale;
+  [[5.1, 0.25, "#efe4d0"], [4.1, -0.35, "#efe4d0"], [3.1, 0.15, ACCENT.accent]].forEach(([y, a, col]) => {
+    const mat = col === ACCENT.accent ? c.mk(ACCENT.accent, { k: "stone", rim: 1.4 }) : m.pale;
     B.add(mat, box(2.8, 0.62, 0.16, 0.06), M(post.x + Math.cos(Q + (a as number)) * 1.2, y as number, post.z - Math.sin(Q + (a as number)) * 1.2, Q + (a as number)));
   });
   k.brazier(V(-1.2, 0, 1.2), true);

@@ -15,9 +15,9 @@ export const NS = "call";
 export const THEME = {
   theme: "light",
   layout: "month_view",
-  styles: { branding: { brandColor: ACCENT.accent } },
+  styles: { branding: { brandColor: ACCENT.paper } },
   cssVarsPerTheme: {
-    light: { "cal-brand": ACCENT.accent, "cal-brand-emphasis": "#0b0b0b", "cal-brand-text": "#0b0b0b", "cal-bg": "#e6e5e1", "cal-bg-muted": "#dcdbd6", "cal-bg-emphasis": "#d6d5d0", "cal-bg-subtle": "#dcdbd6", "cal-border": "#c9c8c2", "cal-border-emphasis": "#0b0b0b", "cal-border-subtle": "#d6d5d0", "cal-border-booker": "#c9c8c2", "cal-text": "#0b0b0b", "cal-text-emphasis": "#0b0b0b", "cal-text-subtle": "#66655f", "cal-text-muted": "#66655f" },
+    light: { "cal-brand": ACCENT.paper, "cal-brand-emphasis": "#0b0b0b", "cal-brand-text": "#f8e3c2", "cal-bg": "#e6e5e1", "cal-bg-muted": "#dcdbd6", "cal-bg-emphasis": "#d6d5d0", "cal-bg-subtle": "#dcdbd6", "cal-border": "#c9c8c2", "cal-border-emphasis": "#0b0b0b", "cal-border-subtle": "#d6d5d0", "cal-border-booker": "#c9c8c2", "cal-text": "#0b0b0b", "cal-text-emphasis": "#0b0b0b", "cal-text-subtle": "#66655f", "cal-text-muted": "#66655f" },
   },
 } as const;
 

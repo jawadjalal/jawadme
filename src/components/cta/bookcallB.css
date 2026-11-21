@@ -29,6 +29,9 @@
 .ds .bcb { color: var(--ink); }
 .bcb[data-size="hero"] { font-size: min(24px, 5.6vw); }
 .bcb[data-size="hero"] .bcb-arrow { stroke-width: 2.6; }
+/* one flat green block per view: the hero ticket is it, so the dock's stub is ink, lit by a green edge and a glowing arrow */
+.bcb[data-size="dock"] .bcb-stub { background: var(--ink); color: var(--accent-glow); box-shadow: inset 0 0 0 0.09em var(--accent), inset 0 0.06em 0 rgb(255 255 255 / 0.12); }
+.bcb[data-size="dock"] .bcb-arrow { filter: drop-shadow(0 0 0.2em var(--accent-glow)); }
 .bcb::before { content: ""; position: absolute; inset: -0.3em; }
 
 .bcb:is(:hover, [data-state="hover"] *, [data-state="press"] *) { --hv: 1; }
@@ -50,7 +53,7 @@
   filter:
     drop-shadow(0 0 0.03em rgb(23 18 14 / 0.75))
     drop-shadow(0 0.04em 0 rgb(23 18 14 / 0.55))
-    drop-shadow(0 -0.01em 0.05em color-mix(in srgb, var(--accent-hi) 70%, transparent))
+    drop-shadow(0 -0.01em 0.05em rgb(255 205 150 / 0.7))
     drop-shadow(0 calc(0.28em - var(--pr) * 0.18em) calc(0.5em - var(--pr) * 0.3em) rgb(0 0 0 / calc(0.32 + var(--hv) * 0.12)));
 }
 .bcb:is(:active, [data-state="press"] *) .bcb-card { transition-duration: 70ms, 70ms; }
@@ -165,7 +168,7 @@
   stroke-width: 3.3;
   width: 1.55em;
   height: 1.1em;
-  filter: drop-shadow(0 0.05em 0 color-mix(in srgb, var(--accent-hi) 55%, transparent));
+  filter: drop-shadow(0 0.05em 0 rgb(255 255 255 / 0.45));
   transform: translateX(calc(var(--hv) * 0.12em + var(--pr) * 0.2em));
   transition: transform 520ms var(--spring);
 }
@@ -197,7 +200,7 @@
   position: absolute;
   inset: -0.34em;
   border-radius: 0.34em;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--accent-glow);
   box-shadow: 0 0 0 2px rgb(255 255 255 / 0.9), 0 0 0 4px var(--ink);
   opacity: var(--fc);
   transform: scale(calc(1.06 - var(--fc) * 0.06));

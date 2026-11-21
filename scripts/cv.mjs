@@ -6,12 +6,13 @@
 // every line starts with a verb and carries an outcome, and nothing is
 // claimed that the site or the work does not already show.
 //
-// The look is the site's: Satoshi alone, black on white, one orange accent.
+// The look is the site's: Satoshi alone, black on white, one green accent.
 // The fonts are embedded from public/fonts, so the PDF never depends on a CDN.
 //
 //   npm run cv            (CHROMIUM_PATH=<a Chromium binary> if Playwright's own is missing)
 
 import { chromium } from "playwright";
+import { ACCENT } from "../src/lib/accent.ts";
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -157,7 +158,7 @@ const html = `<!doctype html><meta charset="utf-8">
   header { display: flex; justify-content: space-between; align-items: flex-end; gap: 12pt; }
   h1 { margin: 0; font-size: 26pt; font-weight: 700; letter-spacing: -0.045em; line-height: 0.95; }
   .role { margin-top: 4pt; font-size: 10.5pt; font-weight: 500; color: #4f4f4f; letter-spacing: -0.01em; }
-  .role i { font-style: normal; color: #f05a00; font-weight: 700; }
+  .role i { font-style: normal; color: ${ACCENT.paper}; font-weight: 700; }
   .contact { text-align: right; font-size: 8.2pt; line-height: 1.55; color: #4f4f4f; }
   .contact b { font-weight: 500; color: #111; }
 
