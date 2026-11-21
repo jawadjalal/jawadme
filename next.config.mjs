@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  devIndicators: false,
   images: {
     // /capy asks the optimizer for 256 and 640 wide copies of its pictures; keep them a week
     minimumCacheTTL: 604800,
+    qualities: [75, 86, 90],
     remotePatterns: [
       { protocol: "https", hostname: "www.google.com" },
       { protocol: "https", hostname: "icons.duckduckgo.com" },
@@ -13,6 +15,9 @@ const nextConfig = {
   // the page moved to /derelictdepths when the game was renamed; every old link must keep working
   async redirects() {
     return [
+      { source: "/call", destination: "/cal", permanent: true },
+      { source: "/work/okara", destination: "/", permanent: false },
+      { source: "/work/menufit", destination: "/", permanent: false },
       { source: "/minelight", destination: "/derelictdepths", permanent: true },
       { source: "/minelight/:path*", destination: "/derelictdepths/:path*", permanent: true },
       { source: "/mine-for-light", destination: "/derelictdepths", permanent: true },

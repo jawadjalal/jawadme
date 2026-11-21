@@ -33,7 +33,7 @@ export type Bit = { t: string } | { pic: string; alt: string; w: number; h: numb
 
 /** "call me" goes to the call page, which holds the booking calendar; BOOKING is the Cal.com page itself, the
  *  fallback inside it. */
-export const HIRE = "/call";
+export const HIRE = "/cal";
 export const BOOKING = BOOK;
 export const SECOND = { label: "email me", href: `mailto:${EMAIL}?subject=Hiring%20you`, address: EMAIL };
 
