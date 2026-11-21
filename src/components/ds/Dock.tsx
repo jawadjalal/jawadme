@@ -44,7 +44,7 @@ export function Dock() {
         </Suspense>
         <span className="lbl">{SITE.detail}</span>
       </div>
-      <nav className="dock" aria-label="Site">
+      <nav className="dock" aria-label="site">
         <div className="dock-body">
           <Link href="/" className="dock-mark" aria-label="jawad jalal, home">
             <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="40px" priority />

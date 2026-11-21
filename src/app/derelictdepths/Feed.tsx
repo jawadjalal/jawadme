@@ -18,9 +18,9 @@ function clean(raw: unknown): FeedData | null {
     .filter((i): i is Item => !!i && typeof i === "object" && typeof (i as Item).n === "number" && typeof (i as Item).merged_at === "string")
     .map((i) => ({
       n: i.n,
-      title: String(i.title ?? ""),
-      summary: String(i.summary ?? ""),
-      area: typeof i.area === "string" ? i.area : null,
+      title: String(i.title ?? "").toLowerCase(),
+      summary: String(i.summary ?? "").toLowerCase(),
+      area: typeof i.area === "string" ? i.area.toLowerCase() : null,
       merged_at: i.merged_at,
       sha: String(i.sha ?? "").slice(0, 7),
     }));
@@ -45,10 +45,10 @@ export async function getFeed(): Promise<FeedData | null> {
   }
 }
 
-const hm = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
-const hms = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
-const day = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, weekday: "short", day: "numeric", month: "short" });
-const hourOnly = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", hour12: false });
+const hm = new Intl.DateTimeFormat("en-gb", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
+const hms = new Intl.DateTimeFormat("en-gb", { timeZone: TZ, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+const day = new Intl.DateTimeFormat("en-gb", { timeZone: TZ, weekday: "short", day: "numeric", month: "short" });
+const hourOnly = new Intl.DateTimeFormat("en-gb", { timeZone: TZ, hour: "2-digit", hour12: false });
 
 function groupByHour(items: Item[]) {
   const groups: { key: string; label: string; items: Item[] }[] = [];
@@ -56,7 +56,7 @@ function groupByHour(items: Item[]) {
     const d = new Date(item.merged_at);
     const h = Number(hourOnly.format(d)) % 24;
     const key = day.format(d) + " " + h;
-    const label = day.format(d) + " · " + String(h).padStart(2, "0") + ":00 to " + String((h + 1) % 24).padStart(2, "0") + ":00";
+    const label = day.format(d).toLowerCase() + " · " + String(h).padStart(2, "0") + ":00 to " + String((h + 1) % 24).padStart(2, "0") + ":00";
     const last = groups[groups.length - 1];
     if (last && last.key === key) last.items.push(item);
     else groups.push({ key, label, items: [item] });
@@ -87,12 +87,12 @@ export function FeedMeta({ feed, renderedAt }: { feed: FeedData; renderedAt: num
   const ageMin = Math.max(0, Math.round((renderedAt - at.getTime()) / 60000));
   return (
     <div className="ml-feed-head">
-      <span className="ml-live"><i />Live feed</span>
+      <span className="ml-live"><i />live feed</span>
       <span>
-        Refreshed by the build box at <b>{hms.format(at)}</b> London
+        refreshed by the build box at <b>{hms.format(at)}</b> london
         {ageMin > 0 ? ", " + ageMin + " min before this page was built" : ""}
       </span>
-      <span>Page built {hms.format(new Date(renderedAt))}</span>
+      <span>page built {hms.format(new Date(renderedAt))}</span>
       <span>{feed.merged_24h} merged in the last 24 hours</span>
       {feed.main ? <span>main <code>{feed.main}</code></span> : null}
     </div>
@@ -109,7 +109,7 @@ export function LatestShipped({ feed }: { feed: FeedData }) {
 
 export function Feed({ feed, renderedAt }: { feed: FeedData | null; renderedAt: number }) {
   if (!feed || feed.items.length === 0) {
-    return <p className="ml-note">The live feed is unavailable right now. It refreshes every 3 minutes, so check back shortly.</p>;
+    return <p className="ml-note">the live feed is unavailable right now. it refreshes every 3 minutes, so check back shortly.</p>;
   }
   const groups = groupByHour(feed.items);
   const open = groups.slice(0, 8);
@@ -126,7 +126,7 @@ export function Feed({ feed, renderedAt }: { feed: FeedData | null; renderedAt: 
       ))}
       {rest.length ? (
         <details className="ml-older">
-          <summary>Older: {restCount} more PRs over {rest.length} hours</summary>
+          <summary>older: {restCount} more prs over {rest.length} hours</summary>
           {rest.map((g) => (
             <section key={g.key} className="ml-hour">
               <h3>{g.label} <span>{g.items.length} merged</span></h3>

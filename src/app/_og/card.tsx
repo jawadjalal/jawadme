@@ -60,7 +60,7 @@ export async function card({ title, line, bar, side, strip, face }: Card) {
             {face && !strip ? (
               <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 28, letterSpacing: -0.8 }}>
                 <img src={"data:image/png;base64," + me.toString("base64")} width={54} height={60} alt="" />
-                Jawad Jalal
+                jawad jalal
               </div>
             ) : null}
             <div style={{ display: "flex", flexDirection: "column", gap: strip ? 10 : 22 }}>

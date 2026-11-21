@@ -2,8 +2,8 @@ import { card } from "@/app/_og/card";
 import { SITE } from "@/content/site";
 
 export { contentType, size } from "@/app/_og/card";
-export const alt = "About Jawad Jalal, a 15-year-old designer and founder in London";
+export const alt = "about jawad jalal, a 15-year-old designer and founder in london";
 
 export default function Image() {
-  return card({ title: "About Jawad", line: "15, in London, designing and building brands, ads, sites and Roblox games.", bar: ["Jawad Jalal", "Designer and founder", "London"], side: { src: SITE.portrait.src, w: 500 }, face: true });
+  return card({ title: "about jawad", line: "15, in london, designing and building brands, ads, sites and roblox games.", bar: ["jawad jalal", "designer and founder", "london"], side: { src: SITE.portrait.src, w: 500 }, face: true });
 }

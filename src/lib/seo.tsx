@@ -16,12 +16,12 @@ export const SITE_ID = URL_ + "/#website";
 /** The sentence an answer engine should lift: who he is, in the third person, built from the subheadline and the
  *  experience list. */
 export const ENTITY =
-  "Jawad Jalal is a 15-year-old designer and founder in London who designs and builds brands, ads, websites, 3D and Roblox games. " +
-  "He runs Ignura Studio, a design studio that designs and builds websites for startups from scratch, and builds Ignaru, an agent-native design tool. " +
-  "He was product designer at MenuFit, an 8-figure startup at 7-figure MRR, and a product development intern at Okara, an 8-figure AI startup.";
+  "jawad jalal is a 15-year-old designer and founder in london who designs and builds brands, ads, websites, 3d and roblox games. " +
+  "he runs ignura studio, a design studio that designs and builds websites for startups from scratch, and builds ignaru, an agent-native design tool. " +
+  "he was product designer at menufit, an 8-figure startup at 7-figure mrr, and a product development intern at okara, an 8-figure ai startup.";
 
 export function meta({ title, description, path, type = "website" }: { title: string; description: string; path: string; type?: "website" | "article" | "profile" }): Metadata {
-  const full = title + " · Jawad Jalal";
+  const full = title + " · jawad jalal";
   return {
     title,
     description,
@@ -38,11 +38,11 @@ export const person = () => ({
   url: URL_,
   image: abs(SITE.portrait.src),
   email: "mailto:" + IDENTITY.email,
-  jobTitle: "Designer and founder",
+  jobTitle: "designer and founder",
   description: ENTITY,
-  homeLocation: { "@type": "Place", name: "London, England" },
+  homeLocation: { "@type": "Place", name: "london, england" },
   address: { "@type": "PostalAddress", addressLocality: IDENTITY.locality, addressRegion: IDENTITY.region, addressCountry: IDENTITY.country },
-  knowsAbout: ["Brand design", "Advertising design", "Art direction", "Web design", "Product design", "3D art", "Roblox game design", "Front-end engineering"],
+  knowsAbout: ["brand design", "advertising design", "art direction", "web design", "product design", "3d art", "roblox game design", "front-end engineering"],
   worksFor: TIMELINE.filter((t) => t.now).map((t) => ({ "@type": "Organization", name: t.co, url: t.href })),
   sameAs: SOCIALS.filter((s) => s.href.startsWith("https:")).map((s) => s.href),
 });

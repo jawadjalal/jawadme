@@ -5,14 +5,14 @@
 // Rules: at most three short lines per project, true facts only. Spec work says so.
 
 import sizes from "./feed-sizes.json";
-import { adsOf } from "./ads";
+import { ADS } from "./ads";
 
 export type Lane = "ads" | "brand-web" | "3d" | "roblox";
 export const LANES: { key: Lane; label: string }[] = [
-  { key: "ads", label: "Ads" },
-  { key: "brand-web", label: "Brand & Web" },
-  { key: "3d", label: "3D" },
-  { key: "roblox", label: "Roblox" },
+  { key: "ads", label: "ads" },
+  { key: "brand-web", label: "brand & web" },
+  { key: "3d", label: "3d" },
+  { key: "roblox", label: "roblox" },
 ];
 
 export type Media = { src: string; w: number; h: number; alt: string; loop?: string; seq?: { base: string; frames: number }; tone?: "ink" | "paper" };
@@ -43,8 +43,8 @@ const fd = (file: string, alt: string): Media => {
 };
 const m = (src: string, w: number, h: number, alt: string, tone?: Media["tone"]): Media => ({ src, w, h, alt, tone });
 
-const campaign = (slug: string, name: string, year: number, lines: Project["lines"], disciplines = ["Ad campaign", "Art direction"]): Project => {
-  const ads = adsOf(name).map((a) => ({ src: a.src, w: a.w, h: a.h, alt: a.alt }));
+const campaign = (slug: string, name: string, year: number, lines: Project["lines"], disciplines = ["ad campaign", "art direction"]): Project => {
+  const ads = ADS.filter((a) => a.campaign.toLowerCase() === name).map((a) => ({ src: a.src, w: a.w, h: a.h, alt: a.alt }));
   return {
     slug,
     name,
@@ -65,52 +65,52 @@ const campaign = (slug: string, name: string, year: number, lines: Project["line
 const PROJECTS_ALL: Project[] = [
   {
     slug: "ignaru",
-    name: "Ignaru",
+    name: "ignaru",
     year: 2026,
     lane: "brand-web",
-    disciplines: ["Product design", "Brand", "Website", "Engineering"],
+    disciplines: ["product design", "brand", "website", "engineering"],
     link: { href: "https://ignaru.com", label: "ignaru.com" },
-    lines: ["Design tool.", "Circle what's wrong on the canvas. Your coding agent fixes it in your files."],
+    lines: ["design tool.", "circle what's wrong on the canvas. your coding agent fixes it in your files."],
     cover: { ...m("/work/case/ignaru-live-1.webp", 1920, 1200, "ignaru.com today: agentic design that sells, over a grid of ads made in it", "ink"), loop: "/work/case/ignaru-scroll.mp4" },
     blocks: [
-      { kind: "full", media: fd("ignaru-canvas-ads", "The Ignaru canvas: an ad set laid out as frames, layers on the left, the composer at the foot") },
+      { kind: "full", media: fd("ignaru-canvas-ads", "the ignaru canvas: an ad set laid out as frames, layers on the left, the composer at the foot") },
       { kind: "grid", media: [
-        fd("ignaru-app-composer", "The Ignaru composer with its model menu open"),
-        fd("ignaru-app-palette", "The Ignaru command palette"),
-        fd("ignaru-app-agent", "Ignaru's start-an-agent sheet"),
+        fd("ignaru-app-composer", "the ignaru composer with its model menu open"),
+        fd("ignaru-app-palette", "the ignaru command palette"),
+        fd("ignaru-app-agent", "ignaru's start-an-agent sheet"),
       ] },
       { kind: "full", media: m("/work/case/ignaru-live-5.webp", 1920, 1200, "ignaru.com: design the brand on one canvas", "ink") },
-      { kind: "pair", media: [fd("ignaru-app-changes", "Ignaru's changes panel: two files, a commit message and the diff"), fd("ignaru-app-share", "Ignaru's share sheet")] },
-      { kind: "inset", media: fd("ignaru-canvas-zoom", "The Ignaru canvas zoomed into one ad") },
+      { kind: "pair", media: [fd("ignaru-app-changes", "ignaru's changes panel: two files, a commit message and the diff"), fd("ignaru-app-share", "ignaru's share sheet")] },
+      { kind: "inset", media: fd("ignaru-canvas-zoom", "the ignaru canvas zoomed into one ad") },
     ],
   },
   {
     slug: "ignura-seo",
-    name: "Ignura Studio SEO",
+    name: "ignura studio seo",
     year: 2026,
     lane: "brand-web",
-    disciplines: ["Brand", "Website", "Illustration"],
-    lines: ["The site from the AI-native SEO and GEO days.", "Pipes, balls and one question: does AI name your company?"],
-    cover: { ...m("/work/case/seo-named.webp", 1920, 1200, "Does AI name your company? The SEO and GEO landing, October 2026"), loop: "/work/case/seo-scroll.mp4" },
+    disciplines: ["brand", "website", "illustration"],
+    lines: ["the site from the ai-native seo and geo days.", "pipes, balls and one question: does ai name your company?"],
+    cover: { ...m("/work/case/seo-named.webp", 1920, 1200, "does ai name your company? the seo and geo landing, october 2026"), loop: "/work/case/seo-scroll.mp4" },
     blocks: [
-      { kind: "full", media: m("/work/case/seo-climb.webp", 1920, 1200, "Climb Google and AI chats: the hero with its pipe and ball machine") },
-      { kind: "pair", media: [m("/work/case/seo-named-m.webp", 900, 1948, "The landing on a phone"), m("/work/case/seo-climb-m.webp", 900, 1948, "The later hero on a phone")] },
-      { kind: "full", media: m("/work/case/seo-build.webp", 1920, 1200, "Build it, run it: the dark section with its 3D objects") },
-      { kind: "pair", media: [m("/work/case/seo-find.webp", 1920, 1200, "Find: your company, then every gap"), m("/work/case/seo-run.webp", 1920, 1200, "Run: nothing goes out without your yes")] },
-      { kind: "inset", media: m("/work/case/seo-hand.webp", 1920, 1200, "You could do this by hand. Or let it ask.") },
-      { kind: "full", media: m("/work/case/seo-measure.webp", 1920, 1200, "Find: the weekly measure, 20 buyer questions asked every week") },
+      { kind: "full", media: m("/work/case/seo-climb.webp", 1920, 1200, "climb google and ai chats: the hero with its pipe and ball machine") },
+      { kind: "pair", media: [m("/work/case/seo-named-m.webp", 900, 1948, "the landing on a phone"), m("/work/case/seo-climb-m.webp", 900, 1948, "the later hero on a phone")] },
+      { kind: "full", media: m("/work/case/seo-build.webp", 1920, 1200, "build it, run it: the dark section with its 3d objects") },
+      { kind: "pair", media: [m("/work/case/seo-find.webp", 1920, 1200, "find: your company, then every gap"), m("/work/case/seo-run.webp", 1920, 1200, "run: nothing goes out without your yes")] },
+      { kind: "inset", media: m("/work/case/seo-hand.webp", 1920, 1200, "you could do this by hand. or let it ask.") },
+      { kind: "full", media: m("/work/case/seo-measure.webp", 1920, 1200, "find: the weekly measure, 20 buyer questions asked every week") },
     ],
   },
   {
     slug: "ignura",
-    name: "Ignura Studio",
+    name: "ignura studio",
     year: 2026,
     lane: "brand-web",
-    disciplines: ["Brand", "Website"],
+    disciplines: ["brand", "website"],
     link: { href: "https://ignura.com", label: "ignura.com" },
-    lines: ["My ad and brand studio's site: ads and brands people stop for."],
-    cover: fd("ignura-home", "The Ignura home page beside a wall of its ads"),
-    blocks: [{ kind: "inset", media: fd("ignura-phone", "The Ignura home page on a phone") }],
+    lines: ["my ad and brand studio's site: ads and brands people stop for."],
+    cover: fd("ignura-home", "the ignura home page beside a wall of its ads"),
+    blocks: [{ kind: "inset", media: fd("ignura-phone", "the ignura home page on a phone") }],
   },
   {
     slug: "coresrent",
@@ -118,28 +118,28 @@ const PROJECTS_ALL: Project[] = [
     year: 2026,
     lane: "brand-web",
     client: "CoresRent",
-    disciplines: ["Website", "WebGL"],
+    disciplines: ["website", "WebGL"],
     link: { href: "https://coresrent.vercel.app", label: "coresrent.vercel.app" },
-    lines: ["Fund real GPUs in verified data centres and earn rent every metered hour."],
-    cover: m("/showcase/coresrent-1440.webp", 1440, 900, "CoresRent, the first screen with its WebGL scene"),
-    blocks: [{ kind: "pair", media: [m("/work/coresrent.webp", 1600, 1000, "CoresRent home page"), m("/work/coresrent-m.webp", 780, 1688, "CoresRent on a phone")] }],
+    lines: ["fund real gpus in verified data centres and earn rent every metered hour."],
+    cover: m("/showcase/coresrent-1440.webp", 1440, 900, "coresrent, the first screen with its webgl scene"),
+    blocks: [{ kind: "pair", media: [m("/work/coresrent.webp", 1600, 1000, "coresrent home page"), m("/work/coresrent-m.webp", 780, 1688, "coresrent on a phone")] }],
   },
-  campaign("shown-media", "Shown Media", 2026, ["One mark, every screen it could be shown on."]),
-  campaign("palantir", "Palantir", 2026, ["The mark, made by a ship and its crew."]),
-  campaign("whop", "Whop", 2026, ["The new economy, painted, printed and flown."]),
-  campaign("outpace", "Outpace", 2026, ["Their orange as a running track, wherever it fits."]),
+  campaign("shown-media", "shown media", 2026, ["one mark, every screen it could be shown on."]),
+  campaign("palantir", "palantir", 2026, ["the mark, made by a ship and its crew."]),
+  campaign("whop", "whop", 2026, ["the new economy, painted, printed and flown."]),
+  campaign("outpace", "outpace", 2026, ["their orange as a running track, wherever it fits."]),
   {
     slug: "derelict-depths",
-    name: "Fracture",
+    name: "fracture",
     year: 2026,
     lane: "roblox",
-    disciplines: ["Game design", "3D", "UI", "Engineering"],
+    disciplines: ["game design", "3d", "ui", "engineering"],
     link: { href: "/derelictdepths", label: "jawadjalal.com/derelictdepths" },
-    lines: ["A Roblox mining game I design and build, formerly Derelict Depths.", "68 ores, six floors, one Mole King."],
-    cover: m("/work/fracture/mole-king.webp", 1920, 1080, "Fracture key art: a miner swings at the armoured Mole King in a torchlit hall", "ink"),
+    lines: ["a roblox mining game i design and build, formerly derelict depths.", "68 ores, six floors, one mole king."],
+    cover: m("/work/fracture/mole-king.webp", 1920, 1080, "fracture key art: a miner swings at the armoured mole king in a torchlit hall", "ink"),
     blocks: [
-      { kind: "full", media: m("/work/fracture/strike.webp", 1920, 1080, "Fracture key art: a miner splits a gold vein, sparks and ore flying", "ink") },
-      { kind: "pair", media: [m("/work/fracture/crew.webp", 1920, 1080, "Fracture key art: two miners face a mole bursting out of the floor", "ink"), m("/work/fracture/shaft.webp", 1920, 1080, "Fracture key art: a miner dives down a shaft past crystals and lava", "ink")] },
+      { kind: "full", media: m("/work/fracture/strike.webp", 1920, 1080, "fracture key art: a miner splits a gold vein, sparks and ore flying", "ink") },
+      { kind: "pair", media: [m("/work/fracture/crew.webp", 1920, 1080, "fracture key art: two miners face a mole bursting out of the floor", "ink"), m("/work/fracture/shaft.webp", 1920, 1080, "fracture key art: a miner dives down a shaft past crystals and lava", "ink")] },
     ],
   },
 ];

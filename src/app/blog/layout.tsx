@@ -19,9 +19,9 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
       <main id="main" className="mx-auto w-full max-w-column px-4 pt-12 sm:px-6 sm:pt-16">
         {children}
         <footer className="mt-24 px-4 py-8 text-[15px] text-muted-foreground sm:px-6">
-          <Link href="/" className="rp-link">{IDENTITY.properName}</Link>, designer and founder in London.{" "}
+          <Link href="/" className="rp-link">{IDENTITY.properName}</Link>, designer and founder in london.{" "}
           <BookLink src="blog" className="rp-link">
-            Book a call ↗
+            book a call ↗
           </BookLink>
         </footer>
       </main>

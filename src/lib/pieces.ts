@@ -18,8 +18,8 @@ const OLD: Piece[] = FEED.filter((e): e is Picture => "file" in e && !("embed" i
   alt: p.alt,
   line: lineOf(p.alt),
   group: p.brand,
-  credit: "designed by Jawad Jalal",
-  kind: "Ad design",
+  credit: "designed by jawad jalal",
+  kind: "ad design",
   spec: Boolean(p.unsolicited),
 }));
 

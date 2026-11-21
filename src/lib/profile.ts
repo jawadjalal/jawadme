@@ -16,12 +16,12 @@
 
 export const IDENTITY = {
   name: "jawad jalal",
-  properName: "Jawad Jalal",
+  properName: "jawad jalal",
   wordmark: "JAWAD",
   role: "designer & founder",
   location: "london",
-  locality: "London",
-  region: "England",
+  locality: "london",
+  region: "england",
   country: "GB",
   email: "hijawadjalal@gmail.com",
   cv: "/jawad-jalal-cv.pdf",
