@@ -1,6 +1,6 @@
 /* Design Mastermind: the design system for jawadjalal.com.
-   A warm off-white ground, ink, and one ember accent for the info bars and the call. One face, Public Sans, set the
-   way Joyco sets it: 700 for statements and titles at modest sizes, line-height near 0.94, tracking near -0.03em. The info bar, a strip of
+   A warm off-white ground, ink, and one ember accent for the info bars and the call. Geist for the body and the UI;
+   every heading in --display, Mastermind Display, the face the name is lettered in (components/ds/display/letter.py). The info bar, a strip of
    facts on ember or ink, is the recurring motif. There is no cyan. A 16 column
    grid, type sized on a 480 px canvas (--u) so every width reads as the same poster. */
 
@@ -12,6 +12,7 @@
   --ember: #ff5314;
   --bronze: #b5833f;
   --under: #17120e;
+  --ivory: #f8e3c2;
 
   --bg: var(--ground);
   --fg: var(--ink);
@@ -31,7 +32,7 @@
   --ease-cut: cubic-bezier(0.7, 0, 0.2, 1);
   --ease-io: cubic-bezier(0.45, 0, 0.2, 1);
 
-  --display: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
+  --display: var(--f-display), var(--f-geist), "Helvetica Neue", Arial, sans-serif;
   --f-disp: var(--display);
   --f-bar: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
   --f-sans: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
@@ -424,7 +425,7 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .cal-home { display: flex; align-items: center; gap: 8px; min-height: 44px; }
 .cal-home img { width: 22px; height: auto; transition: transform var(--t-base) var(--ease); }
 .cal-home:hover img { transform: rotate(-10deg); }
-.cal-h { align-self: stretch; display: flex; align-items: center; margin: 0 !important; padding: 0 18px; background: var(--ember); color: var(--ink); font: inherit; }
+.cal-h { align-self: stretch; display: flex; align-items: center; margin: 0 !important; padding: 0 18px; background: var(--ember); color: var(--ink); font: inherit; font-family: var(--f-disp); }
 .cal-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 26vw); align-items: start; gap: var(--g); padding-right: var(--g); }
 .cal-embed { padding: calc(6 * var(--u)) var(--g) 0; }
 @media (max-width: 1099px) { .cal-row { grid-template-columns: minmax(0, 1fr); padding-right: 0; } .cal-row .mo-cal { display: none; } }
@@ -584,9 +585,17 @@ html[data-room="hall"] .bar.ink::before { background: var(--ground); }
 @media (max-width: 767px) {
   .wm { flex-direction: column; gap: 0; margin-top: 22px; }
   .wm-w { flex: none; width: calc(var(--r) * 100%); }
-  .wm-w + .wm-w { margin-top: -5.2vw; }
+  .wm-w + .wm-w { margin-top: -2.4vw; }
 }
 @media (prefers-reduced-motion: reduce) { .wm-g { animation: none; } }
+
+/* ── Marginalia (display/Ink): a stroke drawn with the name's nib over the text it marks, warm ivory in the dark rooms ── */
+.mg { --mg: var(--fg); position: relative; display: inline-block; }
+html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
+.mg svg { position: absolute; pointer-events: none; overflow: visible; fill: var(--mg); }
+.mg-under svg { left: -3%; bottom: -0.2em; width: 106%; height: 0.26em; }
+.mg-ring { margin-inline: 0.6em; }
+.mg-ring svg { left: -0.6em; top: -0.5em; width: calc(100% + 1.2em); height: calc(100% + 1em); }
 
 /* ── The hang (/work and the home gallery): justified rows, each piece at its own proportions ── */
 .hang { --gap: 16px; display: flex; flex-wrap: wrap; align-items: flex-start; column-gap: var(--gap); row-gap: 34px; }
