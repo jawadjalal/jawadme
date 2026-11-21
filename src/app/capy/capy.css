@@ -11,7 +11,7 @@ html:has(.capy) body {
 .capy {
   --ink: #0a0a0a;
   --ink-2: #5e5e5e;
-  --ink-3: #8d8d8d;
+  --ink-3: #707070;
   --ground: #fff;
   --tint: #f4f4f3;
   --blue: #3b5de8;
@@ -159,7 +159,7 @@ html:has(.capy) body {
   transform: scale(1.01);
   transition: opacity 420ms var(--ease), transform 600ms var(--ease);
 }
-video.cp-media, .cp-media[data-loaded] { opacity: 1; transform: none; }
+video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { opacity: 1; transform: none; }
 .cp-frame:hover .cp-media, .cp-frame:focus-visible .cp-media { transform: scale(1.015); }
 
 /* one line under every tile: the name or size, then the two actions; it never wraps or stacks */

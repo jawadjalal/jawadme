@@ -12,13 +12,19 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
-import Lenis from "lenis";
+import type Lenis from "lenis";
 import { SPRINGS } from "@/lib/motion";
 
 type Win = Window & { __lenis?: Lenis; __vtDone?: () => void };
+
+// gsap and its plugins arrive after hydration in their own chunk, so the first paint and the LCP never wait on them;
+// plates open from the observer below without them. One load, shared by every effect and every route.
+let kit: Promise<{ gsap: typeof import("gsap").default; ScrollTrigger: typeof import("gsap/ScrollTrigger").ScrollTrigger; SplitText: typeof import("gsap/SplitText").SplitText }> | undefined;
+const loadKit = () =>
+  (kit ??= Promise.all([import("gsap"), import("gsap/ScrollTrigger"), import("gsap/SplitText")]).then(([{ default: gsap }, { ScrollTrigger }, { SplitText }]) => {
+    gsap.registerPlugin(ScrollTrigger, SplitText);
+    return { gsap, ScrollTrigger, SplitText };
+  }));
 
 export function Motion() {
   const path = usePathname();
@@ -82,19 +88,28 @@ export function Motion() {
   }, []);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger, SplitText);
-    // touch screens keep their own scroll: Lenis does nothing there but would still run the ticker every frame
+    // touch screens keep their own scroll: Lenis does nothing there but would still run the ticker every frame, and
+    // its chunk never loads
     if (matchMedia("(prefers-reduced-motion: reduce), (hover: none), (pointer: coarse)").matches) return;
-    const lenis = new Lenis({ autoRaf: false, lerp: 0.1, syncTouch: false, stopInertiaOnNavigate: true });
-    (window as Win).__lenis = lenis;
-    lenis.on("scroll", ScrollTrigger.update);
-    const tick = (t: number) => lenis.raf(t * 1000);
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
+    let off: (() => void) | undefined;
+    let dead = false;
+    Promise.all([loadKit(), import("lenis")]).then(([{ gsap, ScrollTrigger }, { default: Lenis }]) => {
+      if (dead) return;
+      const lenis = new Lenis({ autoRaf: false, lerp: 0.1, syncTouch: false, stopInertiaOnNavigate: true });
+      (window as Win).__lenis = lenis;
+      lenis.on("scroll", ScrollTrigger.update);
+      const tick = (t: number) => lenis.raf(t * 1000);
+      gsap.ticker.add(tick);
+      gsap.ticker.lagSmoothing(0);
+      off = () => {
+        gsap.ticker.remove(tick);
+        lenis.destroy();
+        delete (window as Win).__lenis;
+      };
+    });
     return () => {
-      gsap.ticker.remove(tick);
-      lenis.destroy();
-      delete (window as Win).__lenis;
+      dead = true;
+      off?.();
     };
   }, []);
 
@@ -108,41 +123,6 @@ export function Motion() {
     delete w.__vtDone;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const root = document.documentElement;
-    const ctx = gsap.context(() => {
-      document.querySelectorAll<HTMLElement>("[data-lines]").forEach((el) => {
-        const split = SplitText.create(el, { type: "lines", mask: "lines", linesClass: "ln-line", aria: "none" });
-        el.classList.add("split");
-        if (reduce) return;
-        const top = el.getBoundingClientRect().top < innerHeight;
-        gsap.from(split.lines, {
-          yPercent: 112,
-          duration: 0.7,
-          ease: "power3.out",
-          stagger: 0.05,
-          delay: top ? 0.05 : 0,
-          scrollTrigger: top ? undefined : { trigger: el, start: "top 92%", once: true },
-        });
-      });
-      if (!reduce && matchMedia("(min-width: 768px)").matches)
-        document.querySelectorAll<HTMLElement>("[data-par]").forEach((el) =>
-          gsap.to(el, {
-            y: -Number(el.dataset.par) * 4,
-            ease: "none",
-            scrollTrigger: { trigger: el.closest("section") ?? el, start: "top top", end: "bottom top", scrub: true },
-          }),
-        );
-      document.querySelectorAll<HTMLElement>("[data-room]").forEach((el) =>
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 55%",
-          end: "bottom 45%",
-          onToggle: (self) => {
-            if (self.isActive) root.dataset.room = el.dataset.room;
-            else if (root.dataset.room === el.dataset.room) delete root.dataset.room;
-          },
-        }),
-      );
-    });
     const io = new IntersectionObserver(
       (es) =>
         es.forEach((e) => {
@@ -153,11 +133,55 @@ export function Motion() {
       { rootMargin: "0px 0px -6% 0px" },
     );
     document.querySelectorAll(".media[data-plate], [data-in]").forEach((el) => io.observe(el));
-    const r = requestAnimationFrame(() => ScrollTrigger.refresh());
+    let off: (() => void) | undefined;
+    let dead = false;
+    loadKit().then(({ gsap, ScrollTrigger, SplitText }) => {
+      if (dead) return;
+      const ctx = gsap.context(() => {
+        document.querySelectorAll<HTMLElement>("[data-lines]").forEach((el) => {
+          const split = SplitText.create(el, { type: "lines", mask: "lines", linesClass: "ln-line", aria: "none" });
+          el.classList.add("split");
+          if (reduce) return;
+          const top = el.getBoundingClientRect().top < innerHeight;
+          gsap.from(split.lines, {
+            yPercent: 112,
+            duration: 0.7,
+            ease: "power3.out",
+            stagger: 0.05,
+            delay: top ? 0.05 : 0,
+            scrollTrigger: top ? undefined : { trigger: el, start: "top 92%", once: true },
+          });
+        });
+        if (!reduce && matchMedia("(min-width: 768px)").matches)
+          document.querySelectorAll<HTMLElement>("[data-par]").forEach((el) =>
+            gsap.to(el, {
+              y: -Number(el.dataset.par) * 4,
+              ease: "none",
+              scrollTrigger: { trigger: el.closest("section") ?? el, start: "top top", end: "bottom top", scrub: true },
+            }),
+          );
+        document.querySelectorAll<HTMLElement>("[data-room]").forEach((el) =>
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 55%",
+            end: "bottom 45%",
+            onToggle: (self) => {
+              if (self.isActive) root.dataset.room = el.dataset.room;
+              else if (root.dataset.room === el.dataset.room) delete root.dataset.room;
+            },
+          }),
+        );
+      });
+      const r = requestAnimationFrame(() => ScrollTrigger.refresh());
+      off = () => {
+        cancelAnimationFrame(r);
+        ctx.revert();
+      };
+    });
     return () => {
-      cancelAnimationFrame(r);
+      dead = true;
+      off?.();
       io.disconnect();
-      ctx.revert();
       delete root.dataset.room;
     };
   }, [path]);

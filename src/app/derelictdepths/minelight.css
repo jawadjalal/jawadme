@@ -68,7 +68,7 @@ body:has(.ml) { background: #100c1c; }
 .ml-toc a:hover { color: var(--amber); }
 
 /* Sections */
-.ml-sec { padding: 64px 0 8px; scroll-margin-top: 12px; }
+.ml-sec { padding: 64px 0 8px; scroll-margin-top: 12px; content-visibility: auto; contain-intrinsic-block-size: auto 1400px; }
 .ml-sec + .ml-sec { border-top: 1px dashed #2c2350; margin-top: 48px; }
 .ml-h2 { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 5vw, 44px); line-height: 1.05; margin: 0 0 6px; letter-spacing: -0.01em; color: var(--cream); text-shadow: 3px 3px 0 #3b2780, 5px 5px 0 var(--ink); }
 .ml-eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--amber); font-weight: 700; margin: 0 0 10px; }

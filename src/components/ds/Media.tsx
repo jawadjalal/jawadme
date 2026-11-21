@@ -34,7 +34,7 @@ export function Media({
       {m.loop ? (
         <LoopVideo src={m.loop} poster={m.src} label={m.alt} />
       ) : (
-        <Image src={m.src} width={m.w} height={m.h} alt={m.alt} sizes={sizes} priority={priority} quality={quality} />
+        <Image src={m.src} width={m.w} height={m.h} alt={m.alt} sizes={sizes} priority={priority} fetchPriority={priority ? "high" : undefined} quality={quality} />
       )}
       {priority ? null : <i className="plate" style={delay ? { transitionDelay: `${delay}ms` } : undefined} />}
     </div>

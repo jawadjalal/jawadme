@@ -4,6 +4,9 @@ const nextConfig = {
   // metadata in the head for every reader, never streamed into the body: crawlers and audits read the head
   htmlLimitedBots: /.*/,
   images: {
+    // AVIF first for every browser that takes it: the same picture at roughly half the bytes of WebP, which is most of
+    // what a phone waits on before the first large paint
+    formats: ["image/avif", "image/webp"],
     // /capy asks the optimizer for 256 and 640 wide copies of its pictures; keep them a week
     minimumCacheTTL: 604800,
     qualities: [75, 86, 90],

@@ -346,6 +346,9 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .case-lines .t-line { grid-column: 1 / span 11; }
 .case-lines .t-line + .t-line { color: var(--dim); }
 .case-blocks { display: grid; gap: calc(30 * var(--u)); }
+/* blocks below the fold skip layout and paint until they near the screen, and their lazy pictures wait with them,
+   so a phone spends its first second on the moment and the cover; each block remembers its real height once seen */
+.case-blocks > * { content-visibility: auto; contain-intrinsic-block-size: auto 70svh; }
 .b-inset { display: grid; place-items: center; padding: calc(14 * var(--u)) 0; }
 .b-inset .media { width: 62.5%; }
 .b-inset.tall .media { width: min(36%, 460px); }

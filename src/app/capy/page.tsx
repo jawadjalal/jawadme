@@ -1,6 +1,6 @@
 import "../globals.css";
 import type { Metadata } from "next";
-import { Archivo, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
 import { BookCallB } from "@/components/cta/BookCallB";
@@ -15,9 +15,11 @@ import "./board.css";
 // jawadjalal.com/capy: an explorable board (Board.tsx) of every asset Jawad made for The Consumer Mobile Hackathon (Capy, 15 November), each one
 // copyable to the clipboard and downloadable. The list is assets.json, written by scripts/capy-sync.mjs.
 
-const sans = Inter({ subsets: ["latin"], display: "swap", variable: "--cp-sans" });
-/** The home page's print face: Archivo's black italic, taken down to extra condensed. */
-const print = Archivo({ subsets: ["latin"], style: ["italic"], axes: ["wdth"], display: "swap", variable: "--cp-print" });
+/** Inter, latin, its weight axis narrowed to the 400 to 700 the page sets (fontTools' instancer): 36 KB instead of 48. */
+const sans = localFont({ src: "./inter-text.woff2", weight: "400 700", display: "swap", variable: "--cp-sans" });
+/** The home page's print face: Archivo's black italic, taken down to extra condensed. The one instance the page sets
+ *  (wght 900, wdth 62, latin) is cut from the variable font with fontTools' instancer: 15 KB instead of 100. */
+const print = localFont({ src: "./archivo-print.woff2", style: "italic", weight: "900", display: "swap", variable: "--cp-print" });
 
 // the posters built around a giant numeral 15 are left off
 const ASSETS = (data.assets as Asset[]).filter((a) => !LEFT_OUT.test(a.id));

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { sized } from "./exporters";
 
 export type Asset = {
   id: string;
@@ -81,6 +82,8 @@ function fileName(a: Asset, url = a.original) {
 /** Plays a video only while it is on screen, muted. */
 function useInView<T extends HTMLElement>(on: boolean) {
   const ref = useRef<T>(null);
+  // the poster is fetched only once the clip is within a screen or so, never with the page's first pictures
+  const [near, setNear] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!on || !el || !(el instanceof HTMLVideoElement)) return;
@@ -91,14 +94,28 @@ function useInView<T extends HTMLElement>(on: boolean) {
       },
       { threshold: 0.25 },
     );
+    const pre = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        setNear(true);
+        pre.disconnect();
+      },
+      { rootMargin: "800px 0px" },
+    );
     io.observe(el);
-    return () => io.disconnect();
+    pre.observe(el);
+    return () => {
+      io.disconnect();
+      pre.disconnect();
+    };
   }, [on]);
-  return ref;
+  return [ref, near] as const;
 }
 
-function Media({ a, eager }: { a: Asset; eager?: boolean }) {
-  const video = useInView<HTMLVideoElement>(a.type === "video");
+/** A tile passes `sizes` and gets optimizer copies at 256, 384, 640 and 1080 wide (never past the preview's own width), so
+ *  a phone pulls a few KB a piece instead of the whole preview; the lightbox passes none and shows the preview itself. */
+function Media({ a, eager, sizes }: { a: Asset; eager?: boolean; sizes?: string }) {
+  const [video, near] = useInView<HTMLVideoElement>(a.type === "video");
   const [loaded, setLoaded] = useState(false);
   if (a.type === "video") {
     return (
@@ -106,7 +123,7 @@ function Media({ a, eager }: { a: Asset; eager?: boolean }) {
         ref={video}
         className="cp-media"
         src={a.original}
-        poster={a.preview}
+        poster={!near ? undefined : sizes ? sized(a.preview, 1080, 86) : a.preview}
         width={a.w}
         height={a.h}
         muted
@@ -127,10 +144,13 @@ function Media({ a, eager }: { a: Asset; eager?: boolean }) {
       }}
       onLoad={() => setLoaded(true)}
       src={a.type === "gif" ? a.original : a.preview}
+      srcSet={sizes && a.type !== "gif" ? `${sized(a.preview, 256, 86)} 256w, ${sized(a.preview, 384, 86)} 384w, ${sized(a.preview, 640, 86)} 640w, ${sized(a.preview, 1080, 86)} 1080w` : undefined}
+      sizes={a.type === "gif" ? undefined : sizes}
       width={a.w}
       height={a.h}
       alt={`${a.title}, ${a.size}`}
       loading={eager ? "eager" : "lazy"}
+      fetchPriority={eager ? "high" : undefined}
       decoding="async"
       draggable={false}
     />
@@ -162,7 +182,7 @@ function Tile({ a, r, width, onOpen, eager, named }: { a: Asset; r: number; widt
     <figure className="cp-tile" style={(width ? { width } : { "--r": r }) as React.CSSProperties}>
       <button type="button" className="cp-frame" onClick={() => onOpen(a)} aria-label={`open ${a.title}, ${a.size}`}>
         <span className="cp-box" style={{ aspectRatio: `${r}` }}>
-          <Media a={a} eager={eager} />
+          <Media a={a} eager={eager} sizes={width ? `${width}px` : "(max-width: 600px) 50vw, 400px"} />
         </span>
       </button>
       <figcaption className="cp-cap">
