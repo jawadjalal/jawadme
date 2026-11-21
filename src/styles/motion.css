@@ -64,9 +64,9 @@
     translate: 0 -5px;
     box-shadow: 0 8px 0 var(--accent-paper);
   }
-  .hang-i:hover .media.in > img,
+  .hang-i:hover .media > img,
   .hang-i:hover .media > video,
-  .next:hover .media.in > img,
+  .next:hover .media > img,
   .next:hover .media > video {
     transform: scale(1.055);
     transition: transform var(--sp-soft-t) var(--sp-soft);
@@ -106,9 +106,9 @@
     translate: none !important;
     transition-property: color;
   }
-  .hang-i:hover .media.in > img,
+  .hang-i:hover .media > img,
   .hang-i:hover .media > video,
-  .next:hover .media.in > img,
+  .next:hover .media > img,
   .next:hover .media > video {
     transform: none !important;
     transition: none;
