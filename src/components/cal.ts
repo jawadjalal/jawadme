@@ -3,7 +3,7 @@ import { ACCENT } from "@/lib/accent";
 
 
 
-import { track } from "@vercel/analytics";
+import { track } from "@/lib/track";
 import { BOOK } from "./felt/copy";
 
 type Fn = (...args: unknown[]) => void;
