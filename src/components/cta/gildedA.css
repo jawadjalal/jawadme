@@ -1,0 +1,194 @@
+/* Gilded buttons. A flat gold plate (one hard-edged pale band across its top, a bright lip, a dark foot) holding a
+   black-enamel face, an engraved fret cut into the top and bottom of the bezel (a dark cut over a pale catch-light),
+   riveted end caps, and a mint inlay inside the bezel. No gradients: every tone is flat, the bands are hard inset
+   shadows. States are custom properties (--hv hover, --op open, --lit inlay, --pr press) so each rule is written once.
+   Forced states for the preview: a data-state="hover|press|focus|selected" ancestor. */
+
+.gd {
+  --gold: #c99a3f;
+  --gold-hi: #f7dc92;
+  --band: rgb(255 236 176 / 0.34);
+  --gold-lo: #80571a;
+  --cut: #4a3008;
+  --edge: #6a460f;
+  --edge2: #1f1408;
+  --face: var(--accent-ink);
+  --txt: #f4e6c4;
+  --inlay: var(--accent);
+  --h: 2.9em;
+  --ring: 0.4em;
+  --pad: 1.2em;
+  --rad: 0.34em;
+  --R: 0px;
+  --S: 0px;
+  --hv: 0;
+  --op: 0;
+  --lit: 0;
+  --pr: 0;
+  --spring: linear(0, 0.072, 0.235, 0.428, 0.613, 0.768, 0.887, 0.969, 1.019, 1.045, 1.054, 1.052, 1.044, 1.033, 1.023, 1.014, 1.007, 1.003, 0.999, 0.998, 1);
+  --bounce: linear(0, 0.065, 0.228, 0.444, 0.672, 0.88, 1.049, 1.167, 1.234, 1.254, 1.237, 1.196, 1.141, 1.083, 1.03, 0.988, 0.958, 0.941, 0.936, 0.94, 0.95, 0.964, 1);
+  --out: cubic-bezier(0.3, 0.7, 0.2, 1);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  height: var(--h);
+  padding: 0 var(--pad);
+  font: 700 16px/1 var(--f-bar, var(--f-geist, "Helvetica Neue")), Arial, sans-serif;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  white-space: nowrap;
+  color: var(--txt);
+  text-decoration: none;
+  outline: none;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.ds a.gd { color: var(--txt); }
+.gd::before { content: ""; position: absolute; inset: min(0px, calc((var(--h) - 44px) / 2)) 0; }
+.gd-t { position: relative; text-shadow: 0 -0.06em 0 rgb(0 0 0 / 0.6); }
+
+@media (hover: hover) { .gd:hover { --hv: 1; --op: 1; --lit: 1; } }
+.gd:is([data-open], [data-state="hover"] *, [data-state="press"] *) { --hv: 1; --op: 1; --lit: 1; }
+.gd:is(:active, [data-state="press"] *) { --pr: 1; }
+.gd:is(:focus-visible, [data-state="focus"] *) { --op: 1; --lit: 1; }
+
+/* the shape: coin edge and cast shadow as flat drop shadows of the whole outline, so they follow the clip as it opens */
+.gd-s {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translate(calc(var(--hv) * var(--nudge, 0em)), calc(var(--pr) * 0.1em));
+  filter:
+    drop-shadow(0 calc(0.1em - var(--pr) * 0.08em) 0 var(--edge))
+    drop-shadow(0 calc(0.06em - var(--pr) * 0.04em) 0 var(--edge2))
+    drop-shadow(0 calc(0.4em - var(--pr) * 0.3em) calc(0.7em - var(--pr) * 0.45em) rgb(0 0 0 / 0.42));
+  transition: transform 520ms var(--bounce), filter 520ms var(--bounce);
+}
+.gd:is(:active, [data-state="press"] *) .gd-s { transition: transform 70ms ease-out, filter 70ms ease-out; }
+.gd:is(:focus-visible, [data-state="focus"] *) .gd-s {
+  filter:
+    drop-shadow(0 0.1em 0 var(--edge)) drop-shadow(0 0.06em 0 var(--edge2))
+    drop-shadow(2px 0 0 var(--accent)) drop-shadow(-2px 0 0 var(--accent)) drop-shadow(0 2px 0 var(--accent)) drop-shadow(0 -2px 0 var(--accent))
+    drop-shadow(2px 0 0 var(--accent-ink)) drop-shadow(-2px 0 0 var(--accent-ink)) drop-shadow(0 2px 0 var(--accent-ink)) drop-shadow(0 -2px 0 var(--accent-ink));
+}
+
+/* gold plate */
+.gd-p, .gd-c {
+  background: var(--gold);
+  box-shadow: inset 0 0.07em 0 var(--gold-hi), inset 0 -0.08em 0 var(--gold-lo), inset 0 calc(var(--h) * 0.46) 0 var(--band);
+}
+.gd-p {
+  position: absolute;
+  inset: 0 calc(-1 * (var(--R) + var(--S))) 0 0;
+  overflow: clip;
+  border-radius: var(--rad);
+}
+
+/* the fret: a hanging key of our own, cut into the bezel top and bottom */
+.gd-fr {
+  position: absolute;
+  inset: 0;
+  background: var(--cut);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M0 1.8H12M9 1.8V10.2H3V4.6H6.2V7.4' fill='none' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E") 0 0 / var(--ring) var(--ring) repeat-x, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M0 10.2H12M9 10.2V1.8H3V7.4H6.2V4.6' fill='none' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E") 0 100% / var(--ring) var(--ring) repeat-x;
+}
+.gd-fl { background: var(--gold-hi); opacity: 0.6; transform: translateY(0.05em); }
+
+/* light crossing the gold on hover: one hard-edged band, under the enamel */
+.gd-sw { position: absolute; inset: 0; transform: translateX(-100%); }
+.gd-sw::after { content: ""; position: absolute; inset: 0 0 0 auto; width: 1.3em; background: rgb(255 248 220 / 0.6); transform: skewX(-20deg); }
+@media (hover: hover) { .gd:hover .gd-sw { animation: gd-sweep 820ms 40ms var(--out) backwards; } }
+[data-state="hover"] .gd-sw, [data-state="press"] .gd-sw { transform: translateX(-38%); }
+@keyframes gd-sweep { to { transform: translateX(115%); } }
+
+/* black enamel, its own hard gloss band, sunk by a press */
+.gd-f {
+  position: absolute;
+  inset: var(--ring);
+  background: var(--face);
+  box-shadow:
+    inset 0 0.07em 0 rgb(0 0 0 / 0.75),
+    inset 0 -0.05em 0 rgb(255 255 255 / 0.09),
+    inset 0 calc((var(--h) - 2 * var(--ring)) * 0.42) 0 rgb(255 255 255 / 0.05),
+    inset 0 calc(var(--pr) * 0.3em) calc(var(--pr) * 0.45em) rgb(0 0 0 / 0.6);
+  transition: box-shadow 420ms var(--out);
+}
+.gd:is(:active, [data-state="press"] *) .gd-f { transition-duration: 70ms; }
+
+/* mint inlay: top and bottom on the enamel, the sides on the caps */
+.gd-f::after, .gd-c::before {
+  content: "";
+  position: absolute;
+  background: var(--inlay);
+  box-shadow: 0 0 0.4em var(--accent-glow);
+  opacity: calc(0.42 + var(--lit) * 0.58);
+  transition: opacity 260ms;
+}
+.gd-f::after { inset: 0.16em -1px auto; height: 1px; box-shadow: 0 0 0.4em var(--accent-glow), 0 calc(var(--h) - 2 * var(--ring) - 0.32em - 1px) 0 var(--inlay), 0 calc(var(--h) - 2 * var(--ring) - 0.32em - 1px) 0.4em var(--accent-glow); }
+
+/* end caps: the bezel's sides, a rivet in each corner. The right cap rides the clip edge. */
+.gd-c {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--ring);
+  border-radius: var(--rad) 0 0 var(--rad);
+}
+.gd-c::before { top: calc(var(--ring) + 0.16em); bottom: calc(var(--ring) + 0.16em); left: calc(var(--ring) + 0.16em); width: 1px; }
+.gd-c::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(var(--ring) / 2);
+  width: 0.16em;
+  height: 0.16em;
+  margin: -0.08em;
+  background: var(--gold-hi);
+  transform: rotate(45deg);
+  --d: calc((var(--h) - var(--ring)) * 0.7071);
+  box-shadow: 0 0 0 0.035em var(--cut), var(--d) var(--d) 0 0 var(--gold-hi), var(--d) var(--d) 0 0.035em var(--cut);
+}
+.gd-cr { inset: 0 0 0 auto; border-radius: 0 var(--rad) var(--rad) 0; transform: translateX(calc(var(--R) * var(--op))); transition: transform 340ms var(--out); }
+.gd-cr::before { left: auto; right: calc(var(--ring) + 0.16em); }
+
+/* cta: the plate runs past the label by the open width plus a little slack for the spring, clipped back to the label */
+.gd[data-v="cta"] { --R: calc(var(--mw, 0px) + 0.45em); --S: 0.6em; }
+.gd[data-v="cta"] .gd-p { clip-path: inset(0 calc(var(--R) * (1 - var(--op)) + var(--S)) 0 0 round var(--rad)); transition: clip-path 340ms var(--out); }
+.gd[data-v="cta"]:is(:hover, :focus-visible, [data-open], [data-state] *) :is(.gd-p, .gd-cr, .gd-m) { transition-duration: 620ms; transition-timing-function: var(--spring); }
+.gd[data-size="hero"] { font-size: min(22px, 5.4vw); --h: 2.75em; --ring: 0.42em; --pad: 1.3em; }
+.gd[data-size="dock"] { font-size: 15px; --h: 3em; --ring: 0.42em; --pad: 1.15em; }
+.gd-m {
+  position: absolute;
+  inset: 0 calc(var(--S) + var(--pad)) 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--gold-hi);
+  opacity: var(--op);
+  transform: translateX(calc((1 - var(--op)) * -0.7em));
+  transition: opacity 340ms var(--out), transform 340ms var(--out);
+}
+.gd-m b + * + b { color: var(--accent); }
+.gd-a { width: 1.4em; height: 1.4em; border-radius: 50%; background: var(--face); box-shadow: 0 0 0 0.08em var(--gold), 0 0 0 0.13em var(--cut); }
+
+/* email: the same frame, a warm quieter face, a gold inlay */
+.gd[data-v="email"] { --face: #15110b; --inlay: #a8803a; }
+
+/* arm: the call as the footer pillar's sign, pointing on */
+.gd[data-v="arm"] { font-size: 18px; --h: 2.8em; --nudge: 0.16em; padding-right: calc(var(--pad) + var(--h) * 0.4); }
+.gd[data-v="arm"] .gd-p { clip-path: polygon(0 0, calc(100% - var(--h) / 2) 0, 100% 50%, calc(100% - var(--h) / 2) 100%, 0 100%); }
+.gd[data-v="arm"] .gd-f { right: calc(var(--ring) * 1.42); clip-path: polygon(0 0, calc(100% - var(--h) / 2 + var(--ring)) 0, 100% 50%, calc(100% - var(--h) / 2 + var(--ring)) 100%, 0 100%); }
+
+/* pill and filter: the small rounded forms, a plain bezel */
+.gd:is([data-v="pill"], [data-v="filter"]) { font-size: 14px; --h: 2.6em; --ring: 0.2em; --pad: 1.05em; --rad: 99em; }
+.gd[data-v="filter"] { font-size: 13px; --ring: 0.18em; --pad: 0.95em; }
+.gd:is([data-v="pill"], [data-v="filter"]) .gd-f { border-radius: var(--rad); }
+.gd:is([data-v="pill"], [data-v="filter"]) .gd-f::after { inset: 0.14em; height: auto; background: none; border: 1px solid var(--inlay); border-radius: var(--rad); box-shadow: 0 0 0.4em var(--accent-glow); }
+.gd[data-v="pill"]:is([aria-current], [data-state="selected"] *) { --lit: 1; --txt: var(--accent-hi); }
+.gd[data-v="filter"]:is([aria-current], [data-state="selected"] *) { --face: var(--gold); --txt: var(--edge2); --lit: 0; }
+.gd[data-v="filter"]:is([aria-current], [data-state="selected"] *) .gd-f::after { opacity: 0; }
+.gd[data-v="filter"]:is([aria-current], [data-state="selected"] *) .gd-t { text-shadow: 0 0.06em 0 rgb(255 240 190 / 0.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .gd *, .gd *::before, .gd *::after { transition-duration: 0s !important; animation: none !important; }
+}
