@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { PostHog } from "@/components/PostHog";
 import { IDENTITY } from "@/lib/profile";
 import { JsonLd, X_HANDLE, person, website } from "@/lib/seo";
 import { ACCENT_CSS } from "@/lib/accent";
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </svg>
         {children}
         {process.env.VERCEL ? <Analytics /> : null}
+        <PostHog />
       </body>
     </html>
   );
