@@ -5,13 +5,16 @@ import { ContactModal } from "@/components/ContactModal";
 import { BlogMoment } from "@/components/moments/blog";
 import { SiteNav } from "@/components/SiteNav";
 import { IDENTITY } from "@/lib/profile";
+import { geist } from "../fonts";
+
+const GEIST = { "--font": 'var(--f-geist), "Helvetica Neue", Arial, sans-serif', fontFamily: "var(--font)" } as React.CSSProperties;
 
 // The same reading column as the home page, under the same hanging bar. The
 // home page's menus point at its own sections, so the blog's bar has none.
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-dvh">
+    <div className={"min-h-dvh " + geist.variable} style={GEIST}>
       <ContactModal />
       <SiteNav home={false} />
 

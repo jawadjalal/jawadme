@@ -31,9 +31,10 @@
   --ease-cut: cubic-bezier(0.7, 0, 0.2, 1);
   --ease-io: cubic-bezier(0.45, 0, 0.2, 1);
 
-  --f-disp: var(--f-pub), "Helvetica Neue", Arial, sans-serif;
-  --f-bar: var(--f-pub), "Helvetica Neue", Arial, sans-serif;
-  --f-sans: var(--f-pub), "Helvetica Neue", Arial, sans-serif;
+  --display: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
+  --f-disp: var(--display);
+  --f-bar: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
+  --f-sans: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
 
   position: relative;
   min-height: 100dvh;
