@@ -14,11 +14,15 @@ import type { WorldAd } from "./scene";
 // three.js never loads. ?world=live|poster overrides the choice; ?shot=0..4 holds the camera
 // on one shot (posters.mjs renders the posters that way) and ?snap drops the camera's easing (for screenshots).
 //
+// Each time the chamber in view changes, window gets a "world:chamber" event with "court", "hall", "theatre" or
+// "river" as its detail (for analytics).
+//
 // The camera follows five keys measured from the page's [data-world-stop] blocks: the gate (top of the page), the
 // hall's start and end (its block's top meeting the top of the screen, its bottom meeting the bottom), the theatre
 // (its block centred on the screen) and the landing (its block's bottom meeting the bottom of the screen).
 
 const ROOMS = ["gate", "hall", "theatre", "river"] as const;
+const CHAMBER = ["court", "hall", "theatre", "river"] as const;
 const roomOf = (p: number) => (p < 0.5 ? 0 : p < 2.5 ? 1 : p < 3.5 ? 2 : 3);
 
 export function World({ ads }: { ads: WorldAd[] }) {
@@ -28,6 +32,8 @@ export function World({ ads }: { ads: WorldAd[] }) {
   const [room, setRoom] = useState(0);
   const [later, setLater] = useState(false);
   const [lit, setLit] = useState(false);
+
+  useEffect(() => void dispatchEvent(new CustomEvent("world:chamber", { detail: CHAMBER[room] })), [room]);
 
   useEffect(() => {
     const el = host.current;
