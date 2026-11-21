@@ -41,8 +41,9 @@ export default function About() {
           </p>
         ) : null}
         <p>
-          before that, i was a product designer at <a href="https://menufit.com">menufit</a>, an 8-figure startup at 7-figure mrr, and a
-          product development intern at <a href="https://okara.ai">okara</a>, an 8-figure ai startup.
+          before that, i was a product designer at <a href="https://menufit.com">menufit</a>, an <span className="nw">8-figure</span> startup at{" "}
+          <span className="nw">7-figure</span> mrr, and a product development intern at <a href="https://okara.ai">okara</a>, an{" "}
+          <span className="nw">8-figure</span> ai startup.
         </p>
         <p>i made 3d art for blade ball and fish it, two of roblox&apos;s biggest games (over 11 billion visits between them).</p>
         <Contributions />

@@ -80,8 +80,8 @@ export default async function PostPage({ params }: Props) {
     <article>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <header className="screen-line-bottom px-4 py-6 sm:px-6">
-        <p className="text-xs text-muted-foreground">
-          <Link href="/blog" className="rp-link">Blog</Link>
+        <p className="text-[13px] text-muted-foreground sm:text-xs">
+          <Link href="/blog" className="rp-link">blog</Link>
           {" · "}
           <time dateTime={post.date}>{formatDate(post.date)}</time>
           {" · "}
