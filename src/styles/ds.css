@@ -674,6 +674,7 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
 .ab-text p:not(.ab-lead) { margin: 0; max-width: 22em; font: 600 max(23px, calc(11 * var(--u)))/1.12 var(--f-sans); letter-spacing: -0.028em; text-wrap: pretty; }
 .ab-text p a { text-decoration: underline; text-decoration-thickness: 0.06em; text-underline-offset: 0.12em; transition: color var(--t-fast); }
 .ab-text p a:hover { color: var(--accent-text); }
+.ab-text .nw { white-space: nowrap; }
 .ab-faq { max-width: 64em; margin-top: calc(4 * var(--u)); border-top: 1px solid var(--rule); }
 .ab-faq summary { display: flex; justify-content: space-between; align-items: center; min-height: 56px; cursor: pointer; list-style: none; font: 700 19px/1 var(--f-bar); letter-spacing: -0.02em; }
 .ab-faq summary::-webkit-details-marker { display: none; }
@@ -701,7 +702,12 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
   .ct-two { grid-template-columns: minmax(0, 1fr); }
   .ct-c { min-height: 200px; padding: 22px 22px 24px; }
   .ct .ct-m { font-size: 6.2vw; }
-  .ab-text { padding-top: 64px; }
+  .ab-text { gap: 18px; padding-top: 64px; padding-bottom: 32px; }
+  .ab-lead { max-width: none; margin-bottom: 6px; font-size: 12.2vw; line-height: 0.9; }
+  .ab-text p:not(.ab-lead) { font-size: 21px; line-height: 1.24; letter-spacing: -0.022em; }
+  .ab-text .cg { margin-top: 14px; }
+  .ct { padding-top: 56px; padding-bottom: 56px; }
+  .ct-h { margin-bottom: 20px; }
   .ct-p .ct { padding-top: 32px; padding-bottom: 16px; }
   .ct-p .ct-h { margin-bottom: auto; padding-bottom: 32px; font-size: 24vw; line-height: 0.82; letter-spacing: -0.06em; }
 }
