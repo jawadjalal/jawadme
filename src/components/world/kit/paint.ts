@@ -9,8 +9,18 @@ import type { Bag } from "./bag";
 
 export const NL = 16;
 export const INK = new THREE.Color("#100b09");
-export const EMBER = new THREE.Color("#ff5a1c");
+/** The world's light, one colour for every fire, flame, halo, spark and the warm side of the rim; stone and bronze keep
+ *  their own colours. It is the site's accent: change it here and the whole world relights. */
+export const ACCENT = new THREE.Color("#ff5a1c");
+/** The second light: soul flames, the gate's glow and the cool side of the rim. */
 export const SOUL = new THREE.Color("#63e6ff");
+/** A colour's sRGB components, scaled by k. */
+export const srgb = (c: THREE.Color, k = 1) => {
+  const o = c.getRGB({ r: 0, g: 0, b: 0 }, THREE.SRGBColorSpace);
+  return [o.r * k, o.g * k, o.b * k] as const;
+};
+/** The same as a GLSL vec3 literal, for shaders written as strings. */
+export const glsl = (c: THREE.Color, k = 1) => "vec3(" + srgb(c, k).map((v) => v.toFixed(3)).join(", ") + ")";
 
 export const NOISE = /* glsl */ `
 float h21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -173,7 +183,7 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
           outgoingLight += diffuseColor.rgb * fire;
           float rimv = 1.0 - clamp(abs(normal.z), 0.0, 1.0);
           float rm = smoothstep(0.72, 0.88, rimv) * uRim;
-          vec3 rc = mix(vec3(0.39, 0.9, 1.0) * 0.6, vec3(1.0, 0.48, 0.18) * 0.75, smoothstep(-0.25, 0.25, normal.x));
+          vec3 rc = mix(${glsl(SOUL, 0.6)}, mix(${glsl(ACCENT)}, vec3(1.0), 0.18) * 0.75, smoothstep(-0.25, 0.25, normal.x));
           outgoingLight += rc * rm * (0.3 + 0.7 * smoothstep(-0.2, 0.5, normal.y)) + diffuseColor.rgb * fire * rm * 1.4;
           ${kind.k === "rock" ? "outgoingLight = mix(outgoingLight, vec3(0.012, 0.008, 0.007), smoothstep(-0.5, -9.0, vH));" : ""}
           #include <opaque_fragment>`,
