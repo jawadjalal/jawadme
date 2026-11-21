@@ -1,0 +1,58 @@
+/* ── Footer (Footer, world/FootStage): the last chamber of the world on flat ink, the same object on every page, then
+   one plain row of every link. Live, the scene lays each link's box over its object and the link draws only its tag;
+   as a poster (phones, no WebGL, reduced motion), the links sit in a row of plates over the chamber's picture. ── */
+.foot { position: relative; background: #100b09; color: #f4ece1; }
+.foot-stage { position: relative; height: clamp(600px, 94svh, 1000px); overflow: hidden; }
+.foot-poster, .foot-gl { position: absolute; inset: 0; }
+.foot-poster img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.foot-gl { opacity: 0; transition: opacity 900ms var(--ease-io); }
+.foot-gl canvas { display: block; width: 100%; height: 100%; }
+.foot-stage[data-live] .foot-gl { opacity: 1; }
+.foot-head { position: absolute; top: max(32px, calc(9 * var(--u))); left: var(--g); z-index: 2; pointer-events: none; }
+.foot-h { margin: 0; font: 700 max(44px, calc(17 * var(--u)))/0.88 var(--f-disp); letter-spacing: -0.05em; color: #f8e3c2; }
+.foot-hint { margin: 12px 0 0; font: 600 max(17px, calc(4.6 * var(--u)))/1.1 var(--f-bar); letter-spacing: -0.02em; color: #b9a184; }
+.foot-ui { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.foot-ui a, .foot-ui button { pointer-events: auto; }
+
+.foot-x { display: block; color: inherit; }
+.foot-x-t { display: grid; justify-items: center; gap: 3px; padding: 9px 16px 10px; background: #130d0a; box-shadow: inset 0 0 0 1px rgb(248 227 194 / 0.24); white-space: nowrap; transition: translate 400ms var(--ease), box-shadow var(--t-fast), background-color var(--t-fast); }
+.foot-x-l { font: 700 22px/1 var(--f-bar); letter-spacing: -0.03em; color: #f8e3c2; }
+.foot-x-s { font: 600 13px/1.2 var(--f-bar); letter-spacing: -0.01em; color: #b9a184; }
+.foot-x.main .foot-x-t { background: var(--ember); box-shadow: none; }
+.foot-x.main .foot-x-l { font-size: 28px; color: var(--ink); }
+.foot-x.main .foot-x-s { color: rgb(11 11 11 / 0.7); }
+.foot-x:hover .foot-x-t, .foot-x:focus-visible .foot-x-t { box-shadow: inset 0 0 0 2px #f8e3c2; }
+.foot-x.main:hover .foot-x-t, .foot-x.main:focus-visible .foot-x-t { background: #f8e3c2; }
+
+.foot-stage[data-mode="live"] .foot-x { position: absolute; left: 0; top: 0; translate: -50% -50%; }
+.foot-stage[data-mode="live"] .foot-x-t { position: absolute; left: 50%; bottom: 100%; translate: -50% -4px; }
+.foot-stage[data-mode="live"] .foot-x:hover .foot-x-t, .foot-stage[data-mode="live"] .foot-x:focus-visible .foot-x-t { translate: -50% -14px; }
+.foot-stage[data-mode="live"][data-v="b"] .foot-x-t { clip-path: inset(50%); width: 1px; height: 1px; padding: 0; overflow: hidden; }
+.foot-stage[data-mode="live"][data-v="c"] .foot-x { display: none; }
+.foot-die { position: absolute; left: 0; top: 0; translate: -50% -50%; padding: 0; border: 0; border-radius: 14px; background: none; cursor: grab; touch-action: none; }
+.foot-die:active { cursor: grabbing; }
+.foot-pick { position: absolute; left: 0; top: 0; translate: 0 -50%; display: grid; gap: 8px; white-space: nowrap; color: #f8e3c2; }
+.foot-pick-k { font: 600 15px/1 var(--f-bar); letter-spacing: -0.01em; color: #b9a184; }
+.foot-pick-l { font: 700 max(46px, calc(15 * var(--u)))/0.9 var(--f-disp); letter-spacing: -0.05em; transition: color var(--t-fast); }
+.foot-pick.main .foot-pick-l { color: var(--ember); }
+.foot-pick:hover .foot-pick-l, .foot-pick:focus-visible .foot-pick-l { color: #fff; }
+.foot-pick-s { font: 600 17px/1.2 var(--f-bar); letter-spacing: -0.02em; color: #b9a184; }
+
+.foot-stage[data-mode="poster"] .foot-ui { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; padding: var(--g) var(--g) calc(var(--g) + 8px); }
+.foot-stage[data-mode="poster"] .foot-x.main { order: -1; }
+
+.foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 10px 24px; padding: 18px var(--g) 20px; box-shadow: inset 0 1px 0 rgb(248 227 194 / 0.14); font: 700 18px/1.2 var(--f-bar); letter-spacing: -0.02em; }
+.foot-c { color: #b9a184; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.foot-row a { color: #f4ece1; transition: color var(--t-fast); }
+.foot-row a:hover { color: var(--ember); }
+.foot-row .foot-book { color: var(--ember); }
+.foot-row .foot-book:hover { color: #fff; }
+
+@media (max-width: 767px) {
+  .foot-stage { height: auto; min-height: 100svh; display: flex; flex-direction: column; justify-content: space-between; }
+  .foot-head { position: relative; top: auto; left: auto; padding: 56px var(--g) 0; }
+  .foot-stage[data-mode="poster"] .foot-ui { position: relative; inset: auto; flex-direction: column; align-items: stretch; gap: 10px; }
+  .foot-stage[data-mode="poster"] .foot-x-t { justify-items: start; padding: 14px 16px; }
+  .foot-row { display: grid; gap: 12px; }
+}

@@ -56,8 +56,13 @@ export function Sound() {
   };
   return (
     <button type="button" className="w-sound" aria-pressed={on} onClick={flip}>
-      <span className="w-sound-dot" aria-hidden="true" />
-      {on ? "Sound on" : "Sound off"}
+      <span className="w-sound-i" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
+      {on ? "The river is playing" : "Hear the river"}
     </button>
   );
 }
