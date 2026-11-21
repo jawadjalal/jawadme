@@ -1,3 +1,4 @@
+import { ACCENT } from "@/lib/accent";
 import * as THREE from "three";
 import { BRAZIER, AMPHORA, Batch, COS, M, Q, RV, box, column, lathe, prep, rock, type Bag, type Fire, type Palette } from "@/components/world/kit";
 
@@ -160,7 +161,7 @@ function niche(c: SetCtx, lane: "ads" | "web" | "game" | "view"): Set {
   return { fires: k.fires, shot: { t: V(0, 3.4, 0), h: 17, w: 40 } };
 }
 
-/** /cal: a gate up three steps, ember light standing in it. */
+/** /cal: a gate up three steps, accent light standing in it. */
 function gate(c: SetCtx): Set {
   const k = kit(c);
   const { B, m } = c;
@@ -170,7 +171,7 @@ function gate(c: SetCtx): Set {
   for (const s of [-1, 1]) k.col(along(P, s * 2.3), 7.2, 0.58, 0, s + 2);
   B.add(m.trim, box(6.2, 1, 1.5, 0.1), M(P.x, P.y + 7.2, P.z, Q));
   B.add(m.pale, box(6.8, 0.4, 1.9, 0.1), M(P.x, P.y + 8.2, P.z, Q));
-  const g = k.glow(P.clone().setY(P.y + 3.6), 3.6, 7, "#ff6a24", 1.1);
+  const g = k.glow(P.clone().setY(P.y + 3.6), 3.6, 7, ACCENT.hi, 1.1);
   k.lamp(P.clone().setY(P.y + 2.6).add(V(0.8, 0, 0.8)), 10);
   k.brazier(V(3.4, 0, 0.8));
   k.brazier(V(0.8, 0, 3.4));

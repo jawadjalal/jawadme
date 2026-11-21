@@ -30,7 +30,7 @@ function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
 }
 
 /** The ticket pinned to the corner of every page but /cal and the viewer: the mark and the way round on its body, the
- *  call on its ember stub. It stays on screen at every depth, so the call is always one tap away. */
+ *  call on its accent stub. It stays on screen at every depth, so the call is always one tap away. */
 export function Dock() {
   const path = usePathname();
   const [open, setOpen] = useState(false);

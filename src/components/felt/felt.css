@@ -37,7 +37,7 @@ html.fh-locked { overflow: hidden; }
 /* the same dots, printed still in CSS, for the first paint and where there is no WebGL; it steps out once the shader runs */
 .fh-ground {
   position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.5;
-  background: conic-gradient(from 200deg at 50% 50%, #9a4dea, #f0454f, #f5b400, #1f7ae0, #9a4dea);
+  background: #1f7ae0;
   -webkit-mask: radial-gradient(circle, #000 1.7px, transparent 2.3px) 0 0 / 9px 9px, radial-gradient(62% 62% at 50% 50%, transparent 46%, #000 100%);
   -webkit-mask-composite: source-in;
   mask: radial-gradient(circle, #000 1.7px, transparent 2.3px) 0 0 / 9px 9px, radial-gradient(62% 62% at 50% 50%, transparent 46%, #000 100%);

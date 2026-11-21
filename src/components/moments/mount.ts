@@ -1,3 +1,4 @@
+import { ACCENT } from "@/lib/accent";
 import * as THREE from "three";
 import { Batch, INK, NL, RV, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, shared, view } from "@/components/world/kit";
 import type { Mount } from "@/components/world/kit/Stage";
@@ -33,8 +34,8 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
   const n = (k: number) => Math.round(k * (ctx.small ? 0.6 : 1));
   F.flames(set.fires.filter((f) => !f.soul && !f.lamp), false, n(22));
   F.flames(set.fires.filter((f) => f.soul && !f.lamp), true, n(22));
-  F.halos(set.fires.filter((f) => !f.soul && !f.lamp), "#ff6a24");
-  F.drift(n(110), [set.shot.w, 16, set.shot.w], 0.11, 1.1, "#ff6a24", 1.4, 0);
+  F.halos(set.fires.filter((f) => !f.soul && !f.lamp), ACCENT.hi);
+  F.drift(n(110), [set.shot.w, 16, set.shot.w], 0.11, 1.1, ACCENT.hi, 1.4, 0);
   F.drift(n(36), [set.shot.w, 12, set.shot.w], 0.4, 0.35, "#63e6ff", 0.42, 1);
 
   const dpr = Math.min(window.devicePixelRatio || 1, ctx.still ? 2 : ctx.small ? 1.25 : 1.75);

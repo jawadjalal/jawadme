@@ -2,7 +2,7 @@ import { TitleTab } from "@/components/ds/TitleTab";
 import { SITE, TIMELINE } from "@/content/site";
 
 /** Where Jawad has worked, each place at display size with its role, years and one line beside it; the studio he runs
- *  now is set in ember. The rows rise in turn as the section arrives. */
+ *  now is set in the accent. The rows rise in turn as the section arrives. */
 export function Timeline() {
   return (
     <section className="tl" aria-labelledby="tl-h">

@@ -13,6 +13,11 @@ export const abs = (path: string) => new URL(path, URL_).toString();
 export const PERSON_ID = URL_ + "/#person";
 export const SITE_ID = URL_ + "/#website";
 
+const X = SOCIALS.find((s) => s.brand === "x");
+/** The X account from profile.ts, for twitter:creator and the X link on /capy. */
+export const X_HANDLE = X ? "@" + new URL(X.href).pathname.split("/")[1] : undefined;
+export const X_HREF = X?.href;
+
 /** The sentence an answer engine should lift: who he is, in the third person, built from the subheadline and the
  *  experience list. */
 export const ENTITY =
@@ -27,7 +32,7 @@ export function meta({ title, description, path, type = "website" }: { title: st
     description,
     alternates: { canonical: path },
     openGraph: { title: full, description, url: path, siteName: IDENTITY.properName, type, locale: "en_GB" },
-    twitter: { card: "summary_large_image", creator: "@jawadmakes", title: full, description },
+    twitter: { card: "summary_large_image", creator: X_HANDLE, title: full, description },
   };
 }
 

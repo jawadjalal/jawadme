@@ -7,7 +7,7 @@ import "./bookcallB.css";
 
 const TILT = ["--tx", "--ty", "--mx", "--my"];
 
-/** The call as a printed ticket: ivory paper body, ember stub on a perforated seam, a hand-drawn arrow. The pointer
+/** The call as a printed ticket: ivory paper body, accent stub on a perforated seam, a hand-drawn arrow. The pointer
  *  tilts the card; the stub lifts on hover and tears back on press. All the states live in bookcallB.css. */
 export function BookCallB({ src, size }: { src: string; size: "dock" | "hero" }) {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-// A 10 px ink dot that becomes a 72 px disc over work ("View") and an orange one over a booking link ("Book").
+// A 10 px ink dot that becomes a 72 px disc over work ("View") and an accent one over a booking link ("Book").
 // Fine pointers only, and never under reduced motion.
 
 import { useEffect, useRef } from "react";

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { IDENTITY } from "@/lib/profile";
+import { X_HANDLE } from "@/lib/seo";
 import { formatDate, postBySlug, POSTS } from "@/lib/posts";
 
 export const dynamicParams = false;
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       authors: [IDENTITY.properName],
       images: [{ url: `/og/blog-${post.slug}.png`, width: 1200, height: 630, alt: post.title }],
     },
-    twitter: { card: "summary_large_image", creator: "@jawadmakes", images: [`/og/blog-${post.slug}.png`] },
+    twitter: { card: "summary_large_image", creator: X_HANDLE, images: [`/og/blog-${post.slug}.png`] },
   };
 }
 

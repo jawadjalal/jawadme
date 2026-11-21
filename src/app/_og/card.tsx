@@ -1,10 +1,11 @@
+import { ACCENT } from "@/lib/accent";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
 import sharp from "sharp";
 
 // The share card for every page in the site group, in the page's own parts: Geist 700 on the warm ground, the
-// page's one line in the dim ink, the ember info bar along the foot, and the page's own pictures (an ad, a cover, a
+// page's one line in the dim ink, the accent info bar along the foot, and the page's own pictures (an ad, a cover, a
 // strip of the gallery) cut edge to edge. Satori reads PNG and JPEG only, so the WebP pictures pass through sharp.
 
 export const size = { width: 1200, height: 630 };
@@ -70,7 +71,7 @@ export async function card({ title, line, bar, side, strip, face }: Card) {
           </div>
           {sidePic ? <img src={sidePic} width={side!.w} height={H} alt="" style={{ marginLeft: "auto" }} /> : null}
         </div>
-        <div style={{ height: BAR, display: "flex", alignItems: "center", justifyContent: "space-between", background: "#ff5314", padding: "0 56px", fontSize: 28, letterSpacing: -0.8 }}>
+        <div style={{ height: BAR, display: "flex", alignItems: "center", justifyContent: "space-between", background: ACCENT.accent, color: ACCENT.ink, padding: "0 56px", fontSize: 28, letterSpacing: -0.8 }}>
           {bar.map((b) => (
             <span key={b}>{b}</span>
           ))}

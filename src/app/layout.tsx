@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { IDENTITY } from "@/lib/profile";
-import { JsonLd, person, website } from "@/lib/seo";
+import { JsonLd, X_HANDLE, person, website } from "@/lib/seo";
+import { ACCENT_CSS } from "@/lib/accent";
 
 const TITLE = "jawad jalal, design mastermind: brand, ad, 3d and roblox design";
 const DESCRIPTION = "brands, ads, 3d and roblox games. designed by jawad jalal in london. book a 15 minute call.";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    creator: "@jawadmakes",
+    creator: X_HANDLE,
   },
   alternates: { canonical: IDENTITY.site },
 };
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <style dangerouslySetInnerHTML={{ __html: ACCENT_CSS }} />
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <JsonLd data={[person(), website()]} />
       </head>

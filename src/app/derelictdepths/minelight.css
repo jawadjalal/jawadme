@@ -16,10 +16,7 @@
   --green: #7be0a0;
   --violet: #9d8fd6;
   --display: "Chillax ML", "Satoshi", ui-sans-serif, system-ui, sans-serif;
-  background:
-    radial-gradient(1200px 600px at 80% -10%, rgba(255, 192, 67, 0.10), transparent 60%),
-    radial-gradient(900px 500px at -10% 10%, rgba(157, 143, 214, 0.14), transparent 60%),
-    var(--bg);
+  background: var(--bg);
   color: var(--cream);
   min-height: 100dvh;
   font-family: var(--font, "Satoshi", ui-sans-serif, system-ui, sans-serif);
@@ -85,9 +82,7 @@ body:has(.ml) { background: #100c1c; }
 
 /* Figures */
 .ml-fig { margin: 22px 0 26px; background: var(--panel); border: 3px solid var(--ink); border-radius: 16px; box-shadow: 5px 5px 0 var(--ink); overflow: hidden; }
-.ml-fig-body { overflow-x: auto; padding: 18px; -webkit-overflow-scrolling: touch; background:
-  linear-gradient(rgba(157, 143, 214, 0.06) 1px, transparent 1px) 0 0 / 22px 22px,
-  linear-gradient(90deg, rgba(157, 143, 214, 0.06) 1px, transparent 1px) 0 0 / 22px 22px; }
+.ml-fig-body { overflow-x: auto; padding: 18px; -webkit-overflow-scrolling: touch; }
 .ml-fig-body img, .ml-fig-body svg { display: block; margin: 0 auto; height: auto; }
 .ml-fig-body img { width: 100%; }
 @media (max-width: 640px) { .ml-wide .ml-fig-body img { width: 600px; max-width: none; } }

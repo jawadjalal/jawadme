@@ -13,6 +13,7 @@ printf '{"executablePath":"%s","args":["--no-sandbox","--disable-gpu"]}' "${CHRO
 for f in "$here"/*.mmd; do
   name="$(basename "$f" .mmd)"
   "${MMDC:-mmdc}" -q -i "$f" -o "$out/$name.svg" -c "$here/mermaid.json" -b transparent -p /tmp/ml-puppeteer.json
+  sed -i -e 's/stroke:url(#my-svg-gradient)/stroke:#9d8fd6/g' -e 's/fill:url(#my-svg-gradient)/fill:#9d8fd6/g' -e 's#<linearGradient id="my-svg-gradient"[^>]*>.*</linearGradient>##' "$out/$name.svg"
 done
 node -e '
 const fs = require("fs"), path = require("path");

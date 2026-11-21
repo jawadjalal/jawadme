@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { IDENTITY } from "@/lib/profile";
+import { X_HANDLE } from "@/lib/seo";
 import { formatDate, POSTS } from "@/lib/posts";
 
 const TITLE = `blog, ${IDENTITY.properName}`;
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: "/og/blog.png", width: 1200, height: 630, alt: TITLE }],
   },
-  twitter: { card: "summary_large_image", creator: "@jawadmakes", images: ["/og/blog.png"] },
+  twitter: { card: "summary_large_image", creator: X_HANDLE, images: ["/og/blog.png"] },
 };
 
 const JSON_LD = {
