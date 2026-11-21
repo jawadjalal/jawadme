@@ -2,16 +2,41 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { callHref, openBooking } from "@/components/cal";
 import "./bookcallB.css";
 
 const TILT = ["--tx", "--ty", "--mx", "--my"];
 
+const inView = new Set<Element>();
+const mark = () => {
+  if (inView.size) document.documentElement.dataset.callInView = "";
+  else delete document.documentElement.dataset.callInView;
+};
+
 /** The call as a printed ticket: ivory paper body, accent stub on a perforated seam, a hand-drawn arrow. The pointer
- *  tilts the card; the stub lifts on hover and tears back on press. All the states live in bookcallB.css. */
+ *  tilts the card; the stub lifts on hover and tears back on press. All the states live in bookcallB.css. A hero ticket on
+ *  screen sets html[data-call-in-view], which hides the dock's, so there is one call in view at a time. */
 export function BookCallB({ src, size }: { src: string; size: "dock" | "hero" }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (size !== "hero" || !el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) inView.add(el);
+      else inView.delete(el);
+      mark();
+    });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      inView.delete(el);
+      mark();
+    };
+  }, [size]);
   return (
     <Link
+      ref={ref}
       href={callHref(src)}
       onClick={openBooking(src)}
       className="bcb"
