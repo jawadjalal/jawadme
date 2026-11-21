@@ -6,7 +6,7 @@
 //   await posters({ base: "http://localhost:3000", out: "public/world/poster", jobs: [{ name: "foot-a", path: "/ads?footer=a", stage: ".foot-stage" }] });
 //
 // CHROME=<path> picks the browser (default: Playwright's). A job may set `scroll: true` to bring the stage into view
-// first (stages below the fold load only near the screen), `wait` in ms after it goes live, and `sizes` to override.
+// first (stages below the fold load only near the screen; plain scrolling, since smooth-scroll libraries never settle), `wait` in ms after it goes live, and `sizes` to override.
 import { mkdirSync } from "node:fs";
 import path from "node:path";
 import { chromium } from "playwright";
@@ -31,8 +31,10 @@ export async function posters({ base, out, jobs, sizes = SIZES }) {
         url.searchParams.set("world", "live");
         url.searchParams.set("snap", "");
         await page.goto(url.href, { waitUntil: "load", timeout: 180000 });
-        if (j.scroll) await page.locator(j.stage).scrollIntoViewIfNeeded();
+        const bring = () => page.evaluate((q) => document.querySelector(q)?.scrollIntoView({ block: "start" }), j.stage);
+        for (let i = 0; j.scroll && i < 6; i++) await bring().then(() => page.waitForTimeout(1000));
         await page.waitForSelector(j.stage + "[data-live], " + j.stage + ".live", { timeout: 240000 });
+        if (j.scroll) await bring();
         await page.addStyleTag({ content: `body * { visibility: hidden !important; } ${j.stage}, ${j.stage} canvas { visibility: visible !important; }` });
         await page.waitForTimeout(j.wait ?? 9000);
         const png = await page.locator(j.stage).screenshot({ animations: "disabled" });
