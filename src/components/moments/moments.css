@@ -5,6 +5,8 @@
 .mo > .stage-gl { z-index: 1; }
 .mo > :not(.stage-poster):not(.stage-gl) { position: relative; z-index: 2; }
 .mo-poster picture { display: block; width: 100%; height: 100%; }
+/* the poster is the LCP: it paints as it lands, under no page's image entrance (the viewer fades its own picture in) */
+.mo .mo-poster img { object-fit: cover; animation: none; }
 /* the poster's flames stay until the live scene has drawn (the kit hides them as soon as a stage decides to go live) */
 .mo.stage[data-mode="live"]:not([data-live]) .pf { display: block; }
 .mo-poster .pf { animation: mo-in 600ms ease-out both; }
@@ -37,6 +39,7 @@
 @media (max-width: 767px) {
   .mo-case { aspect-ratio: 4 / 5; }
   .mo-case .case-cover-in, .mo-case.tall .case-cover-in { width: 72%; }
+  .mo-case .pf-m { display: none; }
   .mo-about { aspect-ratio: 4 / 3.4; }
   .mo-shaft { aspect-ratio: 4 / 3; }
   .mo-blog { aspect-ratio: 4 / 3; }
