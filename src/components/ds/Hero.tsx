@@ -85,7 +85,7 @@ export function Hero() {
       </div>
       <div className="bar hero-bar">
         <span>Jawad Jalal</span>
-        <span className="hide-s">{SITE.available}</span>
+        <span>{SITE.available}</span>
         <span>London</span>
       </div>
     </section>
