@@ -14,9 +14,9 @@ export const SITE = {
 };
 
 export const NAV = [
-  { label: "Work", href: "/work" },
-  { label: "Sites", href: "/work?c=websites" },
-  { label: "Roblox", href: "/work?c=fracture" },
+  { label: "work", href: "/work" },
+  { label: "about", href: "/about" },
+  { label: "contact", href: "/contact" },
 ] as const;
 
 export const SOCIAL = [
