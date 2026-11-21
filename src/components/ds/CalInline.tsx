@@ -1,10 +1,13 @@
 "use client";
 
 // The 15 minute event inline, through Cal's own embed so its ui settings apply. The ?src= tag rides into the config.
-// If it has not loaded after 15 s (blocked, offline) the plain booking link and the email take its place.
+// Its box keeps the calendar's height from the first paint and a quiet skeleton of the month holds the space until
+// Cal reports ready. If it has not loaded after 15 s (blocked, offline) the booking link and the email take its place.
 
 import { useEffect, useRef, useState } from "react";
 import { CAL_LINK, calApi, calConfig, cleanSrc } from "@/components/cal";
+
+const DAYS = Array.from({ length: 35 }, (_, i) => i);
 
 export function CalInline({ email, theme }: { email: string; theme?: "light" | "dark" }) {
   const host = useRef<HTMLDivElement>(null);
@@ -25,10 +28,24 @@ export function CalInline({ email, theme }: { email: string; theme?: "light" | "
   return (
     <div className="cal-box" data-state={state}>
       <div ref={host} className="cal-host" />
-      {state === "loading" ? <p className="lbl dim cal-note">Loading the calendar</p> : null}
+      {state === "loading" ? (
+        <div className="cal-skel" aria-label="Loading the calendar" role="status">
+          <i className="cal-skel-head" />
+          <span className="cal-skel-days">
+            {DAYS.map((d) => (
+              <i key={d} />
+            ))}
+          </span>
+          <span className="cal-skel-slots">
+            {DAYS.slice(0, 8).map((d) => (
+              <i key={d} />
+            ))}
+          </span>
+        </div>
+      ) : null}
       {state === "failed" ? (
         <p className="cal-note">
-          The calendar did not load. <a href={`https://cal.com/${CAL_LINK}?src=${src}`}>Open it on Cal.com</a> or email <a href={`mailto:${email}`}>{email}</a>.
+          The calendar did not load. <a href={"https://cal.com/" + CAL_LINK + "?src=" + src}>Open it on Cal.com</a> or email <a href={"mailto:" + email}>{email}</a>.
         </p>
       ) : null}
     </div>
