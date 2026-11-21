@@ -2,6 +2,7 @@ import { Dock } from "@/components/ds/Dock";
 import { Motion } from "@/components/ds/Motion";
 import { fontVars } from "../fonts";
 import "@/styles/ds.css";
+import "@/styles/world.css";
 
 // The chrome for every page in this group: the type, the dock, and the one ticker. The game pages, the
 // blog and the unlisted pages keep their own layouts.
