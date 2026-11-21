@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   devIndicators: false,
+  // metadata in the head for every reader, never streamed into the body: crawlers and audits read the head
+  htmlLimitedBots: /.*/,
   images: {
     // /capy asks the optimizer for 256 and 640 wide copies of its pictures; keep them a week
     minimumCacheTTL: 604800,
@@ -16,6 +18,7 @@ const nextConfig = {
   async redirects() {
     return [
       { source: "/call", destination: "/cal", permanent: true },
+      { source: "/ads", destination: "/work", permanent: true },
       { source: "/work/okara", destination: "/", permanent: false },
       { source: "/work/menufit", destination: "/", permanent: false },
       { source: "/minelight", destination: "/derelictdepths", permanent: true },

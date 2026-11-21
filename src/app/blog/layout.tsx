@@ -1,5 +1,8 @@
+import "../globals.css";
 import Link from "next/link";
+import { BookLink } from "@/components/BookLink";
 import { ContactModal } from "@/components/ContactModal";
+import { BlogMoment } from "@/components/moments/blog";
 import { SiteNav } from "@/components/SiteNav";
 import { IDENTITY } from "@/lib/profile";
 
@@ -12,10 +15,14 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
       <ContactModal />
       <SiteNav home={false} />
 
-      <main id="main" className="mx-auto w-full max-w-column px-4 pt-24 sm:px-6 sm:pt-28">
+      <BlogMoment />
+      <main id="main" className="mx-auto w-full max-w-column px-4 pt-12 sm:px-6 sm:pt-16">
         {children}
         <footer className="mt-24 px-4 py-8 text-[15px] text-muted-foreground sm:px-6">
-          <Link href="/" className="rp-link">{IDENTITY.properName}</Link>, designer and founder in London.
+          <Link href="/" className="rp-link">{IDENTITY.properName}</Link>, designer and founder in London.{" "}
+          <BookLink src="blog" className="rp-link">
+            Book a call ↗
+          </BookLink>
         </footer>
       </main>
     </div>

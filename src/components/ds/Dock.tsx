@@ -7,42 +7,34 @@ import { Suspense, useEffect, useState } from "react";
 import { BookLink } from "@/components/BookLink";
 import { NAV, SITE } from "@/content/site";
 
-function Nav({ onPick }: { onPick?: () => void }) {
+function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
   const path = usePathname();
-  const f = useSearchParams().get("f");
+  const c = useSearchParams().get("c");
   const current = (href: string) => {
-    const [p, q] = href.split("?f=");
-    return path === p && (q ? f === q : !f) ? "page" : undefined;
+    const [p, q] = href.split("?c=");
+    return path === p && (q ? c === q : !c) ? "page" : undefined;
   };
   return (
     <>
-      {NAV.map((n) => (
-        <Link key={n.href} href={n.href} aria-current={current(n.href)} onClick={onPick}>
-          {n.label}
-          <span className="lbl dim" aria-hidden="true">↗</span>
-        </Link>
-      ))}
+      {NAV.map((n) => {
+        const link = (
+          <Link key={n.href} href={n.href} aria-current={current(n.href)} onClick={onPick}>
+            {n.label}
+            <span className="lbl dim" aria-hidden="true">↗</span>
+          </Link>
+        );
+        return list ? <li key={n.href}>{link}</li> : link;
+      })}
     </>
   );
 }
 
-/** The fixed bottom bar on every page but /cal: the mark, four links, and the call block. */
+/** The ticket pinned to the corner of every page but /cal and the viewer: the mark and the way round on its body, the
+ *  call on its ember stub. It stays on screen at every depth, so the call is always one tap away. */
 export function Dock() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
-  const [hide, setHide] = useState(false);
   useEffect(() => setOpen(false), [path]);
-  useEffect(() => {
-    let last = scrollY;
-    const on = () => {
-      const y = scrollY;
-      if (Math.abs(y - last) < 6) return;
-      setHide(y > last && y > 320);
-      last = y;
-    };
-    addEventListener("scroll", on, { passive: true });
-    return () => removeEventListener("scroll", on);
-  }, []);
   if (path === "/cal" || path.startsWith("/w/")) return null;
   return (
     <>
@@ -52,19 +44,21 @@ export function Dock() {
         </Suspense>
         <span className="lbl">{SITE.detail}</span>
       </div>
-      <nav className="dock" aria-label="Site" data-hide={hide && !open}>
-        <Link href="/" className="dock-mark" aria-label="Jawad Jalal, home">
-          <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="40px" priority />
-        </Link>
-        <ul className="dock-nav">
-          <Suspense>
-            <Nav />
-          </Suspense>
-        </ul>
-        <button className="dock-menu" aria-expanded={open} aria-controls="dock-sheet" onClick={() => setOpen((o) => !o)}>
-          <i aria-hidden="true" />
-          Menu
-        </button>
+      <nav className="dock" aria-label="Site">
+        <div className="dock-body">
+          <Link href="/" className="dock-mark" aria-label="Jawad Jalal, home">
+            <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="40px" priority />
+          </Link>
+          <ul className="dock-nav">
+            <Suspense>
+              <Nav list />
+            </Suspense>
+          </ul>
+          <button className="dock-menu" aria-expanded={open} aria-controls="dock-sheet" onClick={() => setOpen((o) => !o)}>
+            <i aria-hidden="true" />
+            Menu
+          </button>
+        </div>
         <BookLink src="dock" className="dock-cta" cursor>
           <span>
             {SITE.cta} <span className="arr">↗</span>

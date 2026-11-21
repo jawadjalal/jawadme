@@ -2,13 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CalInline } from "@/components/ds/CalInline";
+import { CalMoment } from "@/components/moments/cal";
 import { SITE } from "@/content/site";
+import { meta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Book a call",
-  description: "Book a 15 minute video call with Jawad Jalal about brands, ads, 3D and Roblox games.",
-  alternates: { canonical: "/cal" },
-};
+export const metadata: Metadata = meta({ title: "Book a call", description: "Book a free 15 minute video call with Jawad Jalal about brands, ads, sites, 3D and Roblox games.", path: "/cal" });
 
 // The calendar is the page: one ink bar of facts, then Cal.com's own month view across the grid, themed to the site.
 
@@ -36,8 +34,11 @@ export default async function Cal({ searchParams }: Props) {
           Open on Cal.com ↗
         </a>
       </p>
-      <div className="cal-embed">
-        <CalInline email={SITE.email} theme="light" />
+      <div className="cal-row">
+        <div className="cal-embed">
+          <CalInline email={SITE.email} theme="light" />
+        </div>
+        <CalMoment />
       </div>
     </main>
   );

@@ -47,7 +47,7 @@ export function LatestVisuals() {
                 {it.images.map((im) => (
                   <figure key={im.src}>
                     <a href={im.src} target="_blank" rel="noopener">
-                      <img src={im.src} width={im.w} height={im.h} alt={im.alt + " (" + label.toLowerCase() + ")"} loading={i < 2 ? "eager" : "lazy"} decoding="async" />
+                      <img src={im.src} width={im.w} height={im.h} alt={im.alt + " (" + label.toLowerCase() + ")"} loading="lazy" decoding="async" />
                     </a>
                     {im.label ? <figcaption>{im.label}</figcaption> : null}
                   </figure>

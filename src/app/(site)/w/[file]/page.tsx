@@ -1,49 +1,36 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Viewer } from "@/components/ds/Viewer";
-import { ADS } from "@/content/ads";
-import { FEED, type Picture } from "@/content/feed";
+import { CURATED, PIECES, pieceById, type Piece as P } from "@/lib/pieces";
+import { JsonLd, meta, pieceWork } from "@/lib/seo";
 
-// One piece at its own address. The curated ads step through in curation order; every older permalink from the
-// previous wall (its files are unchanged) still opens, as a piece on its own.
+// One piece at its own address. The gallery's pieces step through in the order /work hangs them; the older permalinks
+// open as pieces on their own.
 
 type Props = { params: Promise<{ file: string }> };
-type Item = { id: string; src: string; w: number; h: number; alt: string; group: string; spec: boolean };
 
-const OLD: Item[] = FEED.filter((e): e is Picture => "file" in e && !("embed" in e)).map((p) => ({
-  id: p.file,
-  src: `/work/2026-11/${p.file}.webp`,
-  w: p.w,
-  h: p.h,
-  alt: p.alt,
-  group: p.brand,
-  spec: Boolean(p.unsolicited),
-}));
-const CURATED: (Item & { sm: string })[] = ADS.map((a) => ({ id: a.id, src: a.src, sm: a.sm, w: a.w, h: a.h, alt: a.alt, group: a.campaign, spec: a.spec }));
-const ALL = [...CURATED, ...OLD.filter((o) => !CURATED.some((c) => c.id === o.id))];
+const near = (c: P) => ({ id: c.id, src: c.src, w: c.w, h: c.h });
 
 export const dynamicParams = false;
-export const generateStaticParams = () => ALL.map((p) => ({ file: p.id }));
+export const generateStaticParams = () => PIECES.map((p) => ({ file: p.id }));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { file } = await params;
-  const p = ALL.find((x) => x.id === file);
+  const p = pieceById((await params).file);
   if (!p) return {};
-  const title = `${p.group}, by Jawad Jalal`;
-  return {
-    title,
-    description: p.alt,
-    alternates: { canonical: `/w/${p.id}` },
-    openGraph: { title, description: p.alt, images: [{ url: p.src, width: p.w, height: p.h, alt: p.alt }] },
-    twitter: { card: "summary_large_image", creator: "@jawadmakes", title, images: [p.src] },
-  };
+  return meta({ title: `${p.line}, ${p.group}`, description: `${p.alt} ${p.group}, ${p.credit}.`, path: "/w/" + p.id, type: "article" });
 }
 
 export default async function Piece({ params }: Props) {
   const { file } = await params;
   const i = CURATED.findIndex((c) => c.id === file);
-  const p = ALL.find((x) => x.id === file);
+  const p = pieceById(file);
   if (!p) notFound();
-  const at = i >= 0 ? { n: i + 1, of: CURATED.length, prev: CURATED[(i - 1 + CURATED.length) % CURATED.length].id, next: CURATED[(i + 1) % CURATED.length].id, strip: [-3, -2, -1, 0, 1, 2, 3].map((d) => CURATED[(i + d + CURATED.length) % CURATED.length]).map((c) => ({ id: c.id, sm: c.sm, alt: c.alt })) } : null;
-  return <Viewer piece={p} at={at} />;
+  const n = CURATED.length;
+  const at = i >= 0 ? { n: i + 1, of: n, prev: near(CURATED[(i - 1 + n) % n]), next: near(CURATED[(i + 1) % n]), strip: [-3, -2, -1, 0, 1, 2, 3].map((d) => CURATED[(i + d + n) % n]).map((c) => ({ id: c.id, sm: c.sm, alt: c.alt })) } : null;
+  return (
+    <>
+      {p.credit.includes("Jawad Jalal") ? <JsonLd data={pieceWork(p)} /> : null}
+      <Viewer piece={p} at={at} />
+    </>
+  );
 }

@@ -1,37 +1,21 @@
 import type { MetadataRoute } from "next";
+import { REAL } from "@/content/work";
 import { POSTS } from "@/lib/posts";
+import { CURATED } from "@/lib/pieces";
+import { abs } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const page = (path: string, priority: number, changeFrequency: "weekly" | "monthly" | "yearly" = "monthly") => ({ url: abs(path), changeFrequency, priority });
   return [
-    {
-      url: "https://jawadjalal.com/",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-    {
-      url: "https://jawadjalal.com/cal",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: "https://jawadjalal.com/capy",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
-    {
-      url: "https://jawadjalal.com/blog",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    ...POSTS.map((p) => ({
-      url: `https://jawadjalal.com/blog/${p.slug}`,
-      lastModified: new Date(p.date),
-      changeFrequency: "yearly" as const,
-      priority: 0.6,
-    })),
+    page("/", 1, "weekly"),
+    page("/work", 0.9, "weekly"),
+    page("/about", 0.8),
+    page("/cal", 0.8),
+    ...REAL.map((p) => page("/work/" + p.slug, 0.7)),
+    ...CURATED.map((a) => page("/w/" + a.id, 0.5)),
+    page("/derelictdepths", 0.6),
+    page("/capy", 0.5, "weekly"),
+    page("/blog", 0.5, "weekly"),
+    ...POSTS.map((p) => ({ url: abs("/blog/" + p.slug), lastModified: new Date(p.date), changeFrequency: "yearly" as const, priority: 0.4 })),
   ];
 }

@@ -3,7 +3,7 @@
 // One ticker for the whole site: Lenis smooth scroll driven from gsap.ticker, ScrollTrigger kept in step with it.
 // On every route it wires the three page-wide effects by attribute, so pages stay server components:
 //   .media[data-plate]  the picture opens from the bottom as it enters, and [data-in] (info bars, the signpost)
-//                       plays its entrance; CSS does the move, this adds .in
+//                       plays its entrance; CSS does the move, one IntersectionObserver adds .in
 //   [data-lines]        the text splits into lines that rise out of a mask, 50 ms apart
 //   [data-par]          the hero ads drift up at their own rate as the hero scrolls away
 //   [data-room]         the page flips to ink while the section is in the middle of the screen
@@ -23,7 +23,7 @@ export function Motion() {
   const first = useRef(true);
 
   // Every navigation after the first load, unless a cover morph is carrying it: the new page is cut in from the top
-  // edge on the site's cut ease while it settles up 24 px. The first load has its own choreography per page.
+  // edge on the site's cut ease while it settles up 24 px, in 400 ms. The first load has its own choreography per page.
   useLayoutEffect(() => {
     if (first.current) {
       first.current = false;
@@ -35,7 +35,7 @@ export function Motion() {
         { clipPath: "inset(0 0 100% 0)", transform: "translateY(24px)" },
         { clipPath: "inset(0 0 0% 0)", transform: "none" },
       ],
-      { duration: 640, easing: "cubic-bezier(0.7, 0, 0.2, 1)" },
+      { duration: 400, easing: "cubic-bezier(0.7, 0, 0.2, 1)" },
     );
   }, [path]);
 
@@ -57,17 +57,17 @@ export function Motion() {
 
   useEffect(() => {
     const w = window as Win;
-    w.__lenis?.scrollTo(0, { immediate: true, force: true });
+    const mark = location.hash.length > 1 ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+    const y = mark ? Math.max(0, mark.getBoundingClientRect().top + scrollY - innerHeight * 0.18) : 0;
+    if (w.__lenis) w.__lenis.scrollTo(y, { immediate: true, force: true });
+    else if (mark) scrollTo(0, y);
     w.__vtDone?.();
     delete w.__vtDone;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const root = document.documentElement;
     const ctx = gsap.context(() => {
-      document.querySelectorAll<HTMLElement>(".media[data-plate], [data-in]").forEach((el) =>
-        ScrollTrigger.create({ trigger: el, start: "top 94%", once: true, onEnter: () => el.classList.add("in") }),
-      );
       document.querySelectorAll<HTMLElement>("[data-lines]").forEach((el) => {
-        const split = SplitText.create(el, { type: "lines", mask: "lines", linesClass: "ln-line" });
+        const split = SplitText.create(el, { type: "lines", mask: "lines", linesClass: "ln-line", aria: "none" });
         el.classList.add("split");
         if (reduce) return;
         const top = el.getBoundingClientRect().top < innerHeight;
@@ -100,9 +100,20 @@ export function Motion() {
         }),
       );
     });
+    const io = new IntersectionObserver(
+      (es) =>
+        es.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        }),
+      { rootMargin: "0px 0px -6% 0px" },
+    );
+    document.querySelectorAll(".media[data-plate], [data-in]").forEach((el) => io.observe(el));
     const r = requestAnimationFrame(() => ScrollTrigger.refresh());
     return () => {
       cancelAnimationFrame(r);
+      io.disconnect();
       ctx.revert();
       delete root.dataset.room;
     };
