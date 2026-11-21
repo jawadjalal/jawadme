@@ -10,9 +10,9 @@ import { useEffect, useRef, type CSSProperties } from "react";
 
 type Tok = string | { w: string; src: string; tail: string };
 const SAY: Tok[] = [
-  "I'm", "15", "and", "in", "London.", "I", "design", { w: "ads", src: "/ads/type/vercel-c-480.webp", tail: "," },
-  { w: "3D", src: "/showcase/coresrent-720.webp", tail: "" }, "and", "Roblox", { w: "games", src: "/work/fracture/mole-king.webp", tail: "," },
-  "and", "I", "build", "what", "I", "design.",
+  "i'm", "15", "and", "in", "london.", "i", "design", { w: "ads", src: "/ads/type/vercel-c-480.webp", tail: "," },
+  { w: "3d", src: "/showcase/coresrent-720.webp", tail: "" }, "and", "roblox", { w: "games", src: "/work/fracture/mole-king.webp", tail: "," },
+  "and", "i", "build", "what", "i", "design.",
 ];
 
 export function Statement() {
@@ -39,7 +39,7 @@ export function Statement() {
     };
   }, []);
   return (
-    <section className="stmt" data-world-stop="theatre" aria-label="About Jawad">
+    <section className="stmt" data-world-stop="theatre" aria-label="about jawad">
       <p ref={ref} className="stmt-p" style={{ "--n": SAY.length } as CSSProperties}>
         {SAY.map((t, i) =>
           typeof t === "string" ? (
