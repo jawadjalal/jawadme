@@ -1,0 +1,153 @@
+/* The gilded frame: one component, five variants (cta, email, pill, filter, arm). Flat tones only. The gold is a bright rim,
+   a dark engraved line and a plate, cut to stepped lintel corners with clip-path; the light is a hard-edged translucent
+   band; the face is ink with a hard top-half mint tint and an inset shadow; the inlay is a mint groove with a glow.
+   State is three numbers on the root (--hv hover or focus or press, --pr press, --fc focus), so geometry is written once.
+   Forced states for the preview: a data-state="hover|press|focus" ancestor. */
+
+.g {
+  --g0: #2a1c05;
+  --g1: #5b4012;
+  --g2: #8f6a22;
+  --g3: #c9a042;
+  --g4: #e8c86f;
+  --g5: #fff1bd;
+  --face: var(--accent-ink, #06140e);
+  --lbl: #f6efdc;
+  --open: linear(0, 0.064 2.8%, 0.214 5.6%, 0.4 8.3%, 0.586 11.1%, 0.75 13.9%, 0.881 16.7%, 0.976 19.4%, 1.037 22.2%, 1.071 25%, 1.083 27.8%, 1.081 30.6%, 1.07 33.3%, 1.055 36.1%, 1.039 38.9%, 1.025 41.7%, 1.013 44.4%, 1.004 47.2%, 0.998 50%, 0.995 52.8%, 0.993 55.6%, 0.994 61.1%, 0.996 66.7%, 0.999 72.2%, 1 77.8%, 1.001 83.3%, 1 91.7%, 1);
+  --press: linear(0, 0.213 4.2%, 0.61 8.3%, 0.946 12.5%, 1.124 16.7%, 1.162 20.8%, 1.118 25%, 1.053 29.2%, 1.002 33.3%, 0.977 37.5%, 0.974 41.7%, 0.993 50%, 1.004 58.3%, 1.003 66.7%, 1 75%, 0.999 83.3%, 1);
+  --gr: 1;
+  --gl: 0.4;
+  --kb: 0.2em;
+  --kf: 0.16em;
+  --fw: 0.42em;
+  --ln: 0.1em;
+  --h: 3.2em;
+  --pad: 2.3em;
+  --e: 0px;
+  --sw: 14em;
+  --hv: 0;
+  --pr: 0;
+  --fc: 0;
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: var(--h);
+  margin: 0;
+  padding: 0 var(--pad);
+  border: 0;
+  background: none;
+  font: 700 14px/1 var(--f-geist), "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 0.015em;
+  text-transform: lowercase;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--lbl);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.g[data-size="hero"] { font-size: min(18px, 4.9vw); --h: 3.4em; }
+.g::before { content: ""; position: absolute; inset: min(0px, calc((var(--h) - 44px) / 2)) -4px; }
+
+.g:is(:hover, :focus-visible, :active, [data-held], [data-state="hover"] *, [data-state="press"] *, [data-state="focus"] *) { --hv: 1; }
+.g:is(:active, [data-state="press"] *) { --pr: 1; }
+.g:is(:focus-visible, [data-state="focus"] *) { --fc: 1; }
+
+.g[data-v="cta"] { --e: 6.9em; --sw: 19em; }
+.g[data-v="email"] { --face: #0d1c15; --lbl: #e9e2cf; --gr: 0.55; --gl: 0; --sw: 13em; }
+.g[data-v="arm"] { --h: 3.3em; --sw: 14em; font-size: 15px; }
+.g[data-v="pill"], .g[data-v="filter"] { --h: 2.4em; --pad: 1.2em; --kb: 0.11em; --kf: 0.07em; --fw: 0.3em; --ln: 0.085em; --sw: 9em; --gr: 0.55; --gl: 0; font-size: 13px; }
+.g[data-v="filter"] { --lbl: #bdb7a5; }
+.g[data-v="pill"] { --lbl: #e9e2cf; }
+.g:is([aria-pressed="true"], [aria-current="page"]) { --face: #0b241a; --lbl: var(--accent-hi); --gr: 1; --gl: 0.9; }
+.g:is([data-v="pill"], [data-v="filter"]) .g-ft { display: none; }
+.g[data-v="arm"] .g-bed { display: none; }
+.g[data-v="arm"] .g-body { transform: none; }
+
+/* the drawer: the box is the only thing that changes width; the label never moves */
+.g-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: calc(100% + var(--hv) * var(--e));
+  transition: width 900ms var(--open);
+  contain: layout style;
+}
+.g-box i { position: absolute; display: block; }
+.g-bed, .g-body, .g-a, .g-c, .g-face {
+  clip-path: polygon(0 calc(var(--k) * 2), var(--k) calc(var(--k) * 2), var(--k) var(--k), calc(var(--k) * 2) var(--k), calc(var(--k) * 2) 0, calc(100% - var(--k) * 2) 0, calc(100% - var(--k) * 2) var(--k), calc(100% - var(--k)) var(--k), calc(100% - var(--k)) calc(var(--k) * 2), 100% calc(var(--k) * 2), 100% calc(100% - var(--k) * 2), calc(100% - var(--k)) calc(100% - var(--k) * 2), calc(100% - var(--k)) calc(100% - var(--k)), calc(100% - var(--k) * 2) calc(100% - var(--k)), calc(100% - var(--k) * 2) 100%, calc(var(--k) * 2) 100%, calc(var(--k) * 2) calc(100% - var(--k)), var(--k) calc(100% - var(--k)), var(--k) calc(100% - var(--k) * 2), 0 calc(100% - var(--k) * 2));
+}
+
+.g-bed { --k: var(--kb); inset: 0; background: rgb(0 0 0 / 0.55); transform: translateY(calc(0.2em - var(--pr) * 0.13em)); transition: transform 500ms var(--press); }
+.g-body { --k: var(--kb); inset: 0; background: var(--g4); transform: translateY(calc(var(--hv) * -0.03em + var(--pr) * 0.07em)); transition: transform 500ms var(--press); }
+.g-a { --k: calc(var(--kb) - 0.01em); inset: var(--ln); background: var(--g1); }
+.g-c {
+  --k: calc(var(--kb) - 0.015em);
+  inset: calc(var(--ln) + 1.4px);
+  background: var(--g3);
+  box-shadow: inset 0 calc(0.09em * (1 - var(--pr) * 0.8)) 0 rgb(255 241 189 / 0.8), inset 0 -0.09em 0 var(--g2);
+}
+.g-c::after { content: ""; position: absolute; inset: 0; background: var(--g5); opacity: calc(var(--hv) * 0.28 - var(--pr) * 0.12); transition: opacity 300ms; }
+
+/* light across the gold: two hard-edged translucent bands, under the face so only the metal catches it */
+.g-sw { top: -10%; bottom: -10%; left: 0; width: 2.4em; transform: translateX(-4em) skewX(-20deg); }
+.g-sw::before, .g-sw::after { content: ""; position: absolute; top: 0; bottom: 0; background: rgb(255 246 214 / 0.75); }
+.g-sw::before { left: 0; width: 1.1em; }
+.g-sw::after { left: 1.6em; width: 0.35em; }
+.g:is(:hover, :focus-visible, :active, [data-held]) .g-sw { animation: g-sweep 850ms 40ms cubic-bezier(0.3, 0.6, 0.2, 1) backwards; }
+.g:is(:hover, :focus-visible, :active, [data-held]) .g-face::after { animation: g-sweep 850ms 200ms cubic-bezier(0.3, 0.6, 0.2, 1) backwards; }
+:is([data-state="hover"], [data-state="press"], [data-state="focus"]) .g .g-sw { animation: none; transform: translateX(3.2em) skewX(-20deg); }
+:is([data-state="hover"], [data-state="press"], [data-state="focus"]) .g .g-face::after { animation: none; transform: translateX(4.4em) skewX(-20deg); }
+@keyframes g-sweep { from { transform: translateX(-4em) skewX(-20deg); } to { transform: translateX(var(--sw)) skewX(-20deg); } }
+
+.g-face {
+  --k: var(--kf);
+  inset: var(--fw);
+  background: var(--face);
+  box-shadow: inset 0 calc(0.14em + var(--pr) * 0.16em) calc(0.4em + var(--pr) * 0.2em) rgb(0 0 0 / 0.7), inset 0 -0.07em 0 color-mix(in srgb, var(--accent) 20%, transparent);
+  transform: translateY(calc(var(--pr) * 0.1em)) scale(calc(1 - var(--pr) * 0.012));
+  transition: transform 500ms var(--press), box-shadow 500ms var(--press);
+}
+.g-face::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 50%; background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.g-face::after { content: ""; position: absolute; top: -10%; bottom: -10%; left: 0; width: 1em; background: color-mix(in srgb, var(--accent) 14%, transparent); transform: translateX(-4em) skewX(-20deg); opacity: 0; }
+.g:is(:hover, :focus-visible, :active, [data-held]) .g-face::after { opacity: 1; }
+
+/* the mint inlay: a groove under the label, a glow that wakes on hover */
+.g-gr { left: calc(var(--pad) - var(--fw)); right: calc(var(--pad) - var(--fw)); bottom: 0.44em; height: 0.15em; border-radius: 0.1em; background: var(--accent); opacity: var(--gr); box-shadow: 0 0 0 1px rgb(0 0 0 / 0.55); }
+.g-gr::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0.8em 0.14em var(--accent-glow); opacity: calc(var(--gl) + var(--hv) * 0.6 - var(--pr) * 0.25); transition: opacity 350ms; }
+
+.g-ft { position: absolute; top: 50%; left: 0.5em; width: 1.1em; height: 0.84em; margin-top: -0.42em; fill: none; stroke: var(--g4); stroke-width: 1.5; stroke-linecap: square; stroke-linejoin: miter; opacity: calc(0.8 + var(--hv) * 0.2); }
+.g-ft + .g-ft { left: auto; right: 0.5em; transform: scaleX(-1); }
+
+.g-lbl, .g-x { position: relative; z-index: 1; transform: translateY(calc(-0.13em + var(--pr) * 0.1em)); transition: transform 500ms var(--press), color 300ms; }
+.g-lbl { color: color-mix(in srgb, var(--accent-hi) calc(var(--hv) * 100%), var(--lbl)); text-shadow: 0 1px 0 rgb(0 0 0 / 0.9); }
+
+.g-x { position: absolute; left: calc(100% - var(--pad) + 0.65em); top: 0; bottom: 0; display: flex; align-items: center; gap: 0.5em; }
+.g-dia { width: 0.32em; height: 0.32em; background: var(--g4); transform: rotate(45deg) scale(var(--hv)); transition: transform 500ms var(--open); transition-delay: calc(var(--hv) * 120ms); }
+.g-x img {
+  width: 1.85em;
+  height: 1.85em;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--face);
+  box-shadow: 0 0 0 0.09em var(--face), 0 0 0 0.17em var(--g3), 0 0 0 0.23em var(--g1);
+  opacity: var(--hv);
+  transform: translateX(calc((1 - var(--hv)) * -1.6em)) rotate(calc((1 - var(--hv)) * -400deg)) scale(calc(0.6 + var(--hv) * 0.4));
+  transition: transform 800ms var(--open), opacity 200ms;
+  transition-delay: calc(var(--hv) * 140ms);
+}
+.g-you { display: flex; color: var(--accent); text-shadow: 0 0 0.6em color-mix(in srgb, var(--accent-glow) 55%, transparent); }
+.g-you b { font-weight: 800; opacity: var(--hv); transform: translateY(calc((1 - var(--hv)) * 0.3em)); transition: opacity 90ms, transform 160ms; transition-delay: calc(var(--hv) * (var(--i) * 65ms + 330ms)); }
+
+/* focus: a mint ring and an ink ring outside it, so it reads on ink and on ivory; it follows the open box */
+.g-box::after { content: ""; position: absolute; inset: -0.45em; border: 2px solid var(--accent-glow); border-radius: 0.5em; box-shadow: 0 0 0 2px #06140e; opacity: var(--fc); transition: opacity 160ms; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .g, .g *, .g *::before, .g *::after { transition-duration: 0.01ms !important; transition-delay: 0s !important; animation: none !important; }
+  .g-sw, .g-face::after { display: none; }
+  .g-x img { transform: none; }
+}
