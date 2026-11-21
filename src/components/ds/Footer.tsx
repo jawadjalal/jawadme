@@ -1,4 +1,5 @@
 import { BookLink } from "@/components/BookLink";
+import { MailLink } from "@/components/MailLink";
 import { FootStage } from "@/components/world/FootStage";
 import { SITE, SOCIAL } from "@/content/site";
 import "@/styles/footer.css";
@@ -20,11 +21,13 @@ export function Footer({ src }: { src: string }) {
           <a href="/about">About</a>
           <a href="/blog">Blog</a>
           <a href={SITE.cv}>CV</a>
-          <a href={"mailto:" + SITE.email}>{SITE.email}</a>
         </span>
-        <BookLink src={src} className="foot-book" cursor>
-          {SITE.cta} ↗
-        </BookLink>
+        <span className="foot-reach">
+          <MailLink src="footer" className="foot-mail" />
+          <BookLink src={src} className="foot-book" cursor>
+            {SITE.cta} ↗
+          </BookLink>
+        </span>
       </div>
     </footer>
   );
