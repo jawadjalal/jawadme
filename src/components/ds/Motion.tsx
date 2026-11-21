@@ -5,6 +5,7 @@
 //   .media[data-plate]  the picture opens from the bottom as it enters, and [data-in] (info bars, the signpost)
 //                       plays its entrance; CSS does the move, this adds .in
 //   [data-lines]        the text splits into lines that rise out of a mask, 50 ms apart
+//   [data-par]          the hero ads drift up at their own rate as the hero scrolls away
 //   [data-room]         the page flips to ink while the section is in the middle of the screen
 // Reduced motion: no Lenis, plates and lines rest at their end state (ds.css), rooms still flip without travel.
 
@@ -79,6 +80,14 @@ export function Motion() {
           scrollTrigger: top ? undefined : { trigger: el, start: "top 92%", once: true },
         });
       });
+      if (!reduce)
+        document.querySelectorAll<HTMLElement>("[data-par]").forEach((el) =>
+          gsap.to(el, {
+            y: -Number(el.dataset.par) * 4,
+            ease: "none",
+            scrollTrigger: { trigger: el.closest("section") ?? el, start: "top top", end: "bottom top", scrub: true },
+          }),
+        );
       document.querySelectorAll<HTMLElement>("[data-room]").forEach((el) =>
         ScrollTrigger.create({
           trigger: el,

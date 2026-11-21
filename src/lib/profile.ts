@@ -86,7 +86,7 @@ export const ABOUT_ROLES: {
   href?: string;
 }[] = [
   { key: "ignura", name: "ignura", role: "founder", stat: "6 figure arr", logo: "/logos/ignura.png", logoTile: "#111111", href: "https://ignura.com" },
-  { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 1.5m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
+  { key: "menufit", name: "menufit", role: "design", stat: "1.5m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
   { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
   { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
   { key: "ignaru", name: "ignaru", role: "founder", stat: "design tool", logo: "/logos/ignaru.svg", href: "https://ignaru.com" },
@@ -164,9 +164,9 @@ export const NOW: Item[] = [
     shot: "/design/menufit.webp",
     domain: "menufit.com",
     role: "Design",
-    period: "Since 2026",
+    period: "2026",
     status: "Live",
-    blurb: "The app for eating out healthy. 7 figure ARR and 1.5 million users. I design the product.",
+    blurb: "The app for eating out healthy, with 1.5 million users. I was its product designer.",
     tags: [
       { brand: "figmacolour", label: "Product design" },
       { label: "iOS" },
@@ -204,9 +204,9 @@ export const NOW: Item[] = [
     shot: "/design/okara-card.webp",
     domain: "okara.ai",
     role: "Design",
-    period: "Since 2026",
+    period: "2026",
     status: "Live",
-    blurb: "An AI CMO that drafts and ships marketing work. I design the product. Its launch film did 14M views on X in a day.",
+    blurb: "An AI CMO that drafts and ships marketing work. I was a product development intern there.",
     tags: [
       { brand: "figmacolour", label: "Product design" },
       { brand: "nextdotjs", label: "Next.js" },
@@ -403,7 +403,7 @@ export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
   "a design studio at 6 figure ARR, and builds Ignaru (ignaru.com), an agent-native design tool " +
   "where design and code share one canvas. He also runs bevel, a 3D art team for games at 6 figure ARR, " +
-  "and has designed for Okara and for MenuFit (menufit.com), an app for eating out healthy with 1.5 million users and 7 figure ARR.";
+  "and has designed for Okara and for MenuFit (menufit.com), an app for eating out healthy with 1.5 million users.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [

@@ -26,16 +26,9 @@ export const SOCIAL = [
   { label: "YouTube", href: "https://www.youtube.com/@jawadmake" },
 ];
 
-/** From Jawad's CV (public/jawad-jalal-cv.pdf). Nothing here is written from memory. */
-export const EXPERIENCE = [
-  { co: "Ignaru", role: "Founder, design canvas", years: "Since 2026", href: "/work/ignaru" },
-  { co: "Ignura", role: "Founder, design studio", years: "Since 2026", href: "/work/ignura" },
-  { co: "MenuFit", role: "Product designer", years: "2026", href: "/work/menufit" },
-  { co: "Okara", role: "Product development intern", years: "2026", href: "/work/okara" },
-];
-
-export const FIGURES = [
-  { n: "1.5M", l: "people use the app I design" },
-  { n: "14M", l: "views on Okara's launch, day one" },
-  { n: "7 fig", l: "ARR at MenuFit" },
+/** From Jawad's CV (public/jawad-jalal-cv.pdf), years only. He has left MenuFit and Okara. */
+export const TIMELINE = [
+  { co: "Ignura", role: "Founder", what: "A design studio: websites for startups, built from scratch", years: "2026 to now", href: "https://ignura.com", now: true },
+  { co: "MenuFit", role: "Product designer", what: "The app for eating out healthy, used by 1.5 million people", years: "2026", href: "https://menufit.com", now: false },
+  { co: "Okara", role: "Product development intern", what: "An AI CMO for founders", years: "2026", href: "https://okara.ai", now: false },
 ];

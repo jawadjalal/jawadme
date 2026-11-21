@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
 import { Footer } from "@/components/ds/Footer";
-import { Media } from "@/components/ds/Media";
+import { AdGallery } from "@/components/ds/AdGallery";
 import { TitleTab } from "@/components/ds/TitleTab";
 import { ADS, CAMPAIGNS, campaignOf } from "@/content/ads";
 
@@ -20,10 +20,9 @@ export default async function Ads({ searchParams }: Props) {
   const tabs = [...CAMPAIGNS, "Other"];
   const pick = tabs.find((t) => slug(t) === c);
   const list = pick ? ADS.filter((a) => campaignOf(a) === pick) : ADS;
-  const chunks = Array.from({ length: Math.ceil(list.length / 12) }, (_, i) => list.slice(i * 12, i * 12 + 12));
   return (
     <main className="ads">
-      <TitleTab as="h1" tag={String(ADS.length)} side={<span className="tab-say">Spec ads for real brands, made unasked.</span>}>
+      <TitleTab as="h1" tag={ADS.length + " spec ads"} side={<span className="tab-say">Spec ads for real brands, made unasked.</span>}>
         Ads
       </TitleTab>
       <nav className="filters wrap" aria-label="Filter by campaign">
@@ -38,23 +37,11 @@ export default async function Ads({ searchParams }: Props) {
           ))}
         </span>
       </nav>
-      {chunks.map((chunk, n) => (
-        <div key={n}>
-          <div className="wrap ad-grid">
-            {chunk.map((a, i) => (
-              <Link key={a.id} href={`/w/${a.id}`} className="m-item" data-cursor="view">
-                <Media m={{ src: a.src, w: a.w, h: a.h, alt: a.alt }} sizes="(min-width: 768px) 33vw, 50vw" delay={(i % 3) * 60} />
-              </Link>
-            ))}
-          </div>
-          {n === 0 ? (
-            <BookLink src="ads-inline" className="strip" cursor>
-              <span className="d-name">Want ads like these?</span>
-              <span className="strip-cta">Book a call ↗</span>
-            </BookLink>
-          ) : null}
-        </div>
-      ))}
+      <AdGallery ads={list} />
+      <BookLink src="ads-inline" className="strip" cursor>
+        <span className="d-name">Want ads like these?</span>
+        <span className="strip-cta">Book a call ↗</span>
+      </BookLink>
       <Footer src="ads" />
     </main>
   );

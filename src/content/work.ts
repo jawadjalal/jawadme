@@ -21,8 +21,7 @@ export type Block =
   | { kind: "pair"; media: [Media, Media] }
   | { kind: "inset"; media: Media }
   | { kind: "grid"; media: Media[] }
-  | { kind: "sequence"; media: Media }
-  | { kind: "compare"; title: string; before: Media; after: Media };
+  | { kind: "sequence"; media: Media };
 
 export type Project = {
   slug: string;
@@ -31,14 +30,10 @@ export type Project = {
   lane: Lane;
   disciplines: string[];
   client?: string;
-  /** Jawad's title there, as his CV gives it */
-  role?: string;
   link?: { href: string; label: string };
   spec?: boolean;
   lines: [string] | [string, string] | [string, string, string];
   cover: Media;
-  /** up to three figures, each traceable to the CV or his files */
-  figs?: { n: string; l: string }[];
   blocks: Block[];
 };
 
@@ -68,50 +63,6 @@ const campaign = (slug: string, name: string, year: number, lines: Project["line
 };
 
 const PROJECTS_ALL: Project[] = [
-  {
-    slug: "menufit",
-    name: "MenuFit",
-    year: 2026,
-    lane: "brand-web",
-    client: "MenuFit",
-    role: "Product designer",
-    disciplines: ["Product design", "App screens", "Components"],
-    link: { href: "https://menufit.com", label: "menufit.com" },
-    lines: [
-      "The app for eating out healthy: a healthy menu for every restaurant, with macros and a fit score on each dish.",
-      "I designed the core product, and owned the screens across iOS and Android, light and dark, and the components they share.",
-    ],
-    figs: [
-      { n: "1.5M", l: "people use the app" },
-      { n: "7 fig", l: "ARR" },
-      { n: "2", l: "platforms, iOS and Android, each in light and dark" },
-    ],
-    cover: m("/showcase/menufit-screens-1440.webp", 1440, 900, "MenuFit app screens for eating out healthy, light and dark"),
-    blocks: [
-      { kind: "grid", media: [
-        m("/menufit/today-light.webp", 540, 1169, "MenuFit, the Today screen in light"),
-        m("/menufit/meal-light.webp", 540, 1169, "MenuFit, a meal and its fit score in light"),
-        m("/menufit/nearby-light.webp", 540, 1169, "MenuFit, healthy picks nearby in light"),
-      ] },
-      { kind: "grid", media: [
-        m("/menufit/today-dark.webp", 540, 1169, "MenuFit, the Today screen in dark"),
-        m("/menufit/meal-dark.webp", 540, 1169, "MenuFit, a meal in dark"),
-        m("/menufit/nearby-dark.webp", 540, 1169, "MenuFit, healthy picks nearby in dark"),
-        m("/menufit/your-week-dark.webp", 540, 1169, "MenuFit, your week in dark"),
-      ] },
-      { kind: "full", media: m("/design/menufit.webp", 1470, 800, "MenuFit screens laid out side by side") },
-      { kind: "grid", media: [
-        m("/menufit/log-a-meal-light.webp", 540, 1169, "MenuFit, logging a meal"),
-        m("/menufit/lunch-logged-light.webp", 540, 1169, "MenuFit, lunch, logged"),
-        m("/menufit/the-hack-light.webp", 540, 1169, "MenuFit, the order hack"),
-      ] },
-      { kind: "grid", media: [
-        m("/menufit/hacks-dark.webp", 540, 1169, "MenuFit, hacks for this restaurant in dark"),
-        m("/menufit/counter-card-dark.webp", 540, 1169, "MenuFit, the counter card in dark"),
-        m("/menufit/no-hacks-nearby-dark.webp", 540, 1169, "MenuFit, when nothing nearby fits, in dark"),
-      ] },
-    ],
-  },
   {
     slug: "ignaru",
     name: "Ignaru",
@@ -162,31 +113,6 @@ const PROJECTS_ALL: Project[] = [
     blocks: [{ kind: "inset", media: fd("ignura-phone", "The Ignura home page on a phone") }],
   },
   {
-    slug: "okara",
-    name: "Okara",
-    year: 2026,
-    lane: "brand-web",
-    client: "Okara",
-    role: "Product development intern",
-    disciplines: ["Product design", "Prototyping"],
-    link: { href: "https://okara.ai", label: "okara.ai" },
-    lines: [
-      "Okara is an AI CMO serving 150,000+ businesses.",
-      "I won the internship with a teardown: a week on the free tier, then a deployed site with three redesigns built as live React mockups.",
-    ],
-    figs: [
-      { n: "150,000+", l: "businesses on Okara" },
-      { n: "3", l: "redesigns, built as live React mockups" },
-      { n: "14M", l: "views on Okara's launch, day one" },
-    ],
-    cover: m("/okara/morning.webp", 1200, 749, "My redesign of Okara's return visit: a morning note from your CMO"),
-    blocks: [
-      { kind: "compare", title: "A morning note from your CMO.", before: m("/okara/morning-before.webp", 1600, 1000, "Okara's dashboard on a return visit, as it ships"), after: m("/okara/morning.webp", 1200, 749, "The redesign: what the CMO found overnight, and one thing waiting for approval") },
-      { kind: "compare", title: "Sell the work, not the count.", before: m("/okara/feed-before.webp", 1600, 1000, "Okara's agents feed, as it ships"), after: m("/okara/feed.webp", 800, 1127, "The redesign: a real draft from the X agent, with the strategy line it came from") },
-      { kind: "compare", title: "Put a price on the work.", before: m("/okara/credits-before.webp", 1600, 1000, "Okara's credits page, as it ships"), after: m("/okara/credits.webp", 1200, 750, "The redesign: what each kind of work costs in credits, and where every credit went") },
-    ],
-  },
-  {
     slug: "coresrent",
     name: "CoresRent",
     year: 2026,
@@ -210,12 +136,10 @@ const PROJECTS_ALL: Project[] = [
     disciplines: ["Game design", "3D", "UI", "Engineering"],
     link: { href: "/derelictdepths", label: "jawadjalal.com/derelictdepths" },
     lines: ["A Roblox mining game I design and build, formerly Derelict Depths.", "68 ores, six floors, one Mole King."],
-    cover: m("/derelictdepths/img/poster-1280.jpg", 1280, 720, "Derelict Depths release art", "ink"),
+    cover: m("/work/fracture/mole-king.webp", 1920, 1080, "Fracture key art: a miner swings at the armoured Mole King in a torchlit hall", "ink"),
     blocks: [
-      { kind: "pair", media: [m("/derelictdepths/img/mole-king-1280.jpg", 1280, 720, "The Mole King", "ink"), m("/derelictdepths/img/ore-room-1280.jpg", 1280, 720, "An ore room", "ink")] },
-      { kind: "full", media: m("/derelictdepths/img/town-1280.jpg", 1280, 720, "The town above the mine", "ink") },
-      { kind: "inset", media: m("/derelictdepths/img/look-king-front-1280.jpg", 1280, 873, "The Mole King model, front", "ink") },
-      { kind: "pair", media: [m("/derelictdepths/img/smeltery-1280.jpg", 1280, 720, "The smeltery", "ink"), m("/derelictdepths/img/thumb-king-1280.jpg", 1280, 720, "Thumbnail art: the king", "ink")] },
+      { kind: "full", media: m("/work/fracture/strike.webp", 1920, 1080, "Fracture key art: a miner splits a gold vein, sparks and ore flying", "ink") },
+      { kind: "pair", media: [m("/work/fracture/crew.webp", 1920, 1080, "Fracture key art: two miners face a mole bursting out of the floor", "ink"), m("/work/fracture/shaft.webp", 1920, 1080, "Fracture key art: a miner dives down a shaft past crystals and lava", "ink")] },
     ],
   },
 ];
@@ -228,6 +152,6 @@ export const nextOf = (p: Project) => REAL[(REAL.indexOf(p) + 1) % REAL.length];
 export const laneLabel = (l: Lane) => LANES.find((x) => x.key === l)!.label;
 
 /** home, selected work: the order Jawad can change */
-export const SELECTED = ["ignaru", "menufit", "okara", "shown-media", "derelict-depths", "ignura-seo", "palantir"]
+export const SELECTED = ["ignaru", "ignura-seo", "coresrent", "ignura"]
   .map((s) => projectBySlug(s))
   .filter((p): p is Project => Boolean(p));

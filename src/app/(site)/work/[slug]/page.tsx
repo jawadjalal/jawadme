@@ -53,26 +53,6 @@ function BlockView({ b }: { b: Block }) {
       );
     case "sequence":
       return <Media m={b.media} sizes="100vw" />;
-    case "compare": {
-      const cols = (0.62 * b.before.w) / b.before.h + "fr " + b.after.w / b.after.h + "fr";
-      return (
-        <section className="b-compare">
-          <h2 className="b-cmp-h" data-lines="">
-            {b.title}
-          </h2>
-          <div className="b-cmp" style={{ "--cols": cols } as React.CSSProperties}>
-            <figure>
-              <Media m={b.before} sizes="50vw" />
-              <figcaption className="lbl dim">As it ships</figcaption>
-            </figure>
-            <figure>
-              <Media m={b.after} sizes="50vw" delay={90} />
-              <figcaption className="lbl">My redesign</figcaption>
-            </figure>
-          </div>
-        </section>
-      );
-    }
   }
 }
 
@@ -85,7 +65,7 @@ export default async function Case({ params }: Props) {
     <main className={"case " + (p.cover.tone === "ink" ? "case-ink" : "")}>
       <TitleTab
         as="h1"
-        tag={[p.client && p.role ? p.role : laneLabel(p.lane), p.year, p.spec ? "Spec" : ""].filter(Boolean).join(", ")}
+        tag={[laneLabel(p.lane), p.year, p.spec ? "Spec" : ""].filter(Boolean).join(", ")}
         side={p.link ? <a href={p.link.href} target={p.link.href.startsWith("/") ? undefined : "_blank"} rel="noopener">{p.link.label} ↗</a> : undefined}
       >
         {p.name}
@@ -102,16 +82,6 @@ export default async function Case({ params }: Props) {
           </p>
         ))}
       </div>
-      {p.figs ? (
-        <div className="g16 figs case-figs">
-          {p.figs.map((f, i) => (
-            <div key={f.l} className="fig" data-in="" style={{ "--i": i } as React.CSSProperties}>
-              <p className="fig-n">{f.n}</p>
-              <p className="fig-l">{f.l}</p>
-            </div>
-          ))}
-        </div>
-      ) : null}
       <div className="wrap case-blocks">
         {p.blocks.map((b, i) => (
           <BlockView key={i} b={b} />
