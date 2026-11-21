@@ -59,7 +59,7 @@ export function Dock() {
             menu
           </button>
         </div>
-        <DockCta />
+        <DockCta hold={path === "/" || path === "/contact"} />
       </nav>
     </>
   );
