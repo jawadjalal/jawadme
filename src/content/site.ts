@@ -19,13 +19,6 @@ export const NAV = [
   { label: "contact", href: "/contact" },
 ] as const;
 
-export const SOCIAL = [
-  { label: "x", href: "https://x.com/jawadmakes" },
-  { label: "linkedin", href: "https://www.linkedin.com/in/jawad-jalal-designs" },
-  { label: "instagram", href: "https://www.instagram.com/j.awadjalal/" },
-  { label: "youtube", href: "https://www.youtube.com/@jawadmake" },
-];
-
 /** From Jawad's CV (public/jawad-jalal-cv.pdf), years only. He has left MenuFit and Okara; "8-figure" and Okara's
  *  launch views are company context he gave, not his own results. */
 export const TIMELINE = [

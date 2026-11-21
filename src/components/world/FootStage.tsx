@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { MAIL, trackEmail } from "@/components/MailLink";
-import { SITE, SOCIAL } from "@/content/site";
-import { IDENTITY } from "@/lib/profile";
+import { SITE } from "@/content/site";
+import { IDENTITY, SOCIALS } from "@/lib/profile";
 import type { Exit, FootV } from "./foot";
 import { Stage } from "./kit/Stage";
 
@@ -13,7 +13,7 @@ import { Stage } from "./kit/Stage";
 // work for keyboards and screen readers, and over the poster (a render of the same chamber) where the scene does not
 // run. ?footer=a|b|c picks the take.
 
-const X = SOCIAL.find((s) => s.label === "x")!.href;
+const X = SOCIALS.find((s) => s.label === "x")!.href;
 const LANES = SITE.lanes.join(", ");
 const CALL = (src: string): Exit => ({ key: "call", label: SITE.cta, sub: SITE.detail, href: "/cal?src=" + src, glyph: "call", main: true });
 
