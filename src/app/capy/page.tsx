@@ -2,6 +2,7 @@ import "../globals.css";
 import type { Metadata } from "next";
 import { Archivo, Inter } from "next/font/google";
 import Link from "next/link";
+import { BookLink } from "@/components/BookLink";
 import data from "./assets.json";
 import { Gallery, type Asset } from "./Gallery";
 import { Board } from "./Board";
@@ -61,9 +62,14 @@ export default function CapyPage() {
     <div className={`capy ${sans.variable} ${print.variable}`}>
       <Board assets={ASSETS} kinds={kinds}>
       <header className="cp-head">
-        <Link href="/" className="cp-name">
-          Jawad Jalal
-        </Link>
+        <div className="cp-top">
+          <Link href="/" className="cp-name">
+            Jawad Jalal
+          </Link>
+          <BookLink src="capy" className="cp-call">
+            Book a call ↗
+          </BookLink>
+        </div>
         <h1 className="cp-title" data-text={"Capy hackathon\nassets"}>
           Capy hackathon
           <br />
@@ -79,6 +85,7 @@ export default function CapyPage() {
       <Gallery assets={ASSETS} kinds={kinds} total={ASSETS.length} sets={sets} />
       <footer className="cp-foot">
         <Link href="/">jawadjalal.com</Link>
+        <BookLink src="capy-foot">Book a call</BookLink>
         <a href="https://x.com/jawadmakes">@jawadmakes</a>
       </footer>
       </Board>

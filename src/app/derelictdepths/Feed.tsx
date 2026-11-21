@@ -120,7 +120,7 @@ export function Feed({ feed, renderedAt }: { feed: FeedData | null; renderedAt: 
       <FeedMeta feed={feed} renderedAt={renderedAt} />
       {open.map((g) => (
         <section key={g.key} className="ml-hour">
-          <h4>{g.label} <span>{g.items.length} merged</span></h4>
+          <h3>{g.label} <span>{g.items.length} merged</span></h3>
           <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>{g.items.map((item) => <Pr key={item.n} item={item} />)}</ol>
         </section>
       ))}
@@ -129,7 +129,7 @@ export function Feed({ feed, renderedAt }: { feed: FeedData | null; renderedAt: 
           <summary>Older: {restCount} more PRs over {rest.length} hours</summary>
           {rest.map((g) => (
             <section key={g.key} className="ml-hour">
-              <h4>{g.label} <span>{g.items.length} merged</span></h4>
+              <h3>{g.label} <span>{g.items.length} merged</span></h3>
               <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>{g.items.map((item) => <Pr key={item.n} item={item} />)}</ol>
             </section>
           ))}

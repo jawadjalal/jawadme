@@ -39,7 +39,10 @@ html:has(.capy) body {
   column-gap: clamp(24px, 4vw, 72px);
   padding: 20px var(--edge) clamp(40px, 5vw, 72px);
 }
-.cp-name { grid-area: name; justify-self: start; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: clamp(48px, 7vw, 112px); }
+.cp-top { grid-area: name; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: clamp(48px, 7vw, 112px); }
+.cp-name { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.cp-call { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; transition: opacity 150ms; }
+.cp-call:hover, .cp-call:focus-visible { opacity: 0.86; }
 .cp-name:hover, .cp-name:focus-visible { color: var(--blue); }
 
 .cp-title {
@@ -266,7 +269,7 @@ video.cp-media, .cp-media[data-loaded] { opacity: 1; transform: none; }
 }
 @media (max-width: 1180px) {
   .cp-head { grid-template-columns: minmax(0, 1fr); grid-template-areas: "name" "title" "intro"; row-gap: 28px; }
-  .cp-name { margin-bottom: 40px; }
+  .cp-top { margin-bottom: 40px; }
   .cp-title { font-size: min(12.8vw, 116px); }
   .cp-intro { max-width: 34em; }
 }

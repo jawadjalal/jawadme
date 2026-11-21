@@ -88,7 +88,7 @@ function kit(c: SetCtx) {
   return { fires, platform, brazier, lamp, col, beam, mesh, words, glow, crystal };
 }
 
-/** /work, at the 3D break: Blade Ball's ball on a plinth and a steel blade driven into the floor beside it. */
+/** /work, at the 3D break: Blade Ball's ball on a plinth and its pink blade driven into the floor beside it. */
 function break3d(c: SetCtx): Set {
   const k = kit(c);
   const { B, m } = c;
@@ -97,7 +97,7 @@ function break3d(c: SetCtx): Set {
   const red = c.mk("#d3322b", { k: "stone", rim: 1.8 });
   const ball = k.mesh(prep(new THREE.SphereGeometry(1.55, 48, 32), false), red);
   ball.position.set(0, 2.6 + 1.55, 0);
-  const pink = c.mk("#d8cdbb", { k: "stone", rim: 2.2 }, { emissive: new THREE.Color("#ff5a1f"), emissiveIntensity: 0.12 });
+  const pink = c.mk("#e0569c", { k: "stone", rim: 1.8 }, { emissive: new THREE.Color("#ff2f8e"), emissiveIntensity: 0.12 });
   const sword = new THREE.Group();
   const part = (geo: THREE.BufferGeometry, mat: THREE.Material, y: number) => {
     const me = new THREE.Mesh(prep(geo, false), mat);

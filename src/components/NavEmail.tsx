@@ -1,9 +1,8 @@
 "use client";
 
-// The one action in the bar: a solid ink key, the strongest thing in the nav,
-// as ignura.com's Growth Check is. The envelope sits on a small paper tile so
-// its orange seal reads against the ink. It stays a real mailto in the markup,
-// so with no script it still reaches him.
+// The quiet second action in the bar, a soft key beside Book a call. The
+// envelope sits on a small paper tile; on phones the tile alone carries it. It
+// stays a real mailto in the markup, so with no script it still reaches him.
 
 import { Obj } from "./Obj";
 import { openContact } from "./contact";
@@ -18,13 +17,13 @@ export function NavEmail() {
         openContact();
       }}
       data-cur="say hi"
-      className="key key-ink h-9 gap-2 pl-1.5 pr-3 text-[14px]"
+      aria-label="Send an email"
+      className="key key-soft h-9 gap-2 px-1.5 text-[14px] sm:pr-3"
     >
       <span className="key-tile">
         <Obj name="contact" size={20} />
       </span>
-      <span className="hidden sm:inline">Send an email</span>
-      <span className="sm:hidden">Email</span>
+      <span className="hidden sm:inline">Email</span>
     </a>
   );
 }

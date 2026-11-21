@@ -48,6 +48,9 @@ html:has(.cb) body {
 
 /* ── the head ─────────────────────────────────────────────────────────── */
 .cb-head { position: absolute; left: 24px; top: 20px; pointer-events: none; }
+.cb-call { position: absolute; right: 20px; top: 20px; display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 999px; background: #0a0a0a; color: #fff; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18); transition: opacity 150ms; }
+.cb-call:hover, .cb-call:focus-visible { opacity: 0.86; }
+.cb-has-sel .cb-call, .cb-off .cb-call { opacity: 0; pointer-events: none; }
 .cb-head > * { pointer-events: auto; }
 .cb-name { display: inline-block; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
 .cb-name:hover { color: var(--blue); }
@@ -154,6 +157,7 @@ html:has(.cb) body {
 /* ── narrow screens: the cluster list folds into the toolbar ──────────── */
 @media (max-width: 899px) {
   .cb-head { left: 16px; top: 14px; }
+  .cb-call { right: 16px; top: 14px; height: 40px; padding: 0 14px; font-size: 14px; }
   .cb-title { font-size: 26px; }
   .cb-fan { font-size: 11px; max-width: 220px; }
   .cb-clusters { display: none; left: 50%; top: auto; bottom: 72px; transform: translateX(-50%); width: min(280px, calc(100vw - 32px)); }
