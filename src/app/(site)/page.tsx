@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Clock } from "@/components/ds/Clock";
 import { Footer } from "@/components/ds/Footer";
-import { Media, Placeholder } from "@/components/ds/Media";
+import { Media } from "@/components/ds/Media";
 import { RailPin } from "@/components/ds/RailPin";
 import { Sequence } from "@/components/ds/Sequence";
 import { TLink } from "@/components/ds/TLink";
@@ -33,7 +33,7 @@ export default function Home() {
               <i />
             </div>
             <div className="poster-3d pillar-poster">
-              <Image src="/three/pillar-illustration.webp" alt="" width={768} height={1152} priority sizes="(min-width: 1024px) 380px, 245px" />
+              <Image src="/three/pillar-illustration.webp" alt="" width={768} height={1152} priority fetchPriority="high" sizes="(min-width: 1024px) 380px, 245px" />
             </div>
           </div>
           <div className="hero-copy">
@@ -123,12 +123,12 @@ export default function Home() {
               <figcaption className="lbl">Mole King <span className="dim">· model</span></figcaption>
             </figure>
             <figure>
-              <Placeholder label="3D piece 01 · turntable (A5)" tone="ink" art="/three/mark-felt.webp" />
-              <figcaption className="lbl dim">Awaiting render</figcaption>
+              <Media m={{ src: "/three/pillar-poster.webp", w: 1600, h: 1523, alt: "The hero pillar, carved and lit in code for this site" }} ratio="4 / 5" fit="contain" sizes="25vw" />
+              <figcaption className="lbl">Pillar <span className="dim">· built in code</span></figcaption>
             </figure>
             <figure>
-              <Placeholder label="3D piece 02 · turntable (A5)" tone="ink" art="/three/mark-glass.webp" />
-              <figcaption className="lbl dim">Awaiting render</figcaption>
+              <Media m={{ src: "/three/signpost-poster.webp", w: 1000, h: 1200, alt: "The footer signpost, built in code for this site" }} ratio="4 / 5" fit="contain" sizes="25vw" />
+              <figcaption className="lbl">Signpost <span className="dim">· built in code</span></figcaption>
             </figure>
           </div>
         </div>

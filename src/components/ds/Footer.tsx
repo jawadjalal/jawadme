@@ -14,7 +14,7 @@ const HITS: [number, number, number, number, number][] = [
   [24, 34.5, 21, 7.4, 7],
   [55, 45.8, 24, 7.4, -7],
   [22, 55.8, 23, 7.4, 7],
-  [54, 69.1, 25, 7.9, -7],
+  [48, 69.6, 32, 7.9, -4],
 ];
 
 export function Footer({ src, sheet }: { src: string; sheet: string }) {

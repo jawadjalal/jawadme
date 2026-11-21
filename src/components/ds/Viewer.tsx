@@ -53,7 +53,7 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
         </div>
         <div className="v-info">
           <h1 className="v-title">{headline}</h1>
-          <p>{piece.spec ? `Spec ad for ${piece.group}` : piece.group}</p>
+          <p>{piece.spec ? `A spec ad for ${piece.group}, designed by Jawad Jalal.` : `${piece.group}, designed by Jawad Jalal.`}</p>
           {related.length ? (
             <nav className="v-strip" aria-label="More ads">
               {related.map((item) => (

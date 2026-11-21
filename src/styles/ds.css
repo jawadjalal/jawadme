@@ -496,6 +496,7 @@ html[data-gl="live"] [data-view] .poster-3d { opacity: 0; }
 .clients-row img { width: 40px; height: 40px; border-radius: 10px; filter: grayscale(1) brightness(1.1) contrast(1.05); opacity: 0.85; }
 .about { padding-bottom: calc(22 * var(--u)); align-items: end; }
 .about-pic { grid-column: 1 / span 3; }
+.about-pic img { filter: invert(1) sepia(0.35) saturate(0.8) brightness(0.92); }
 .about-line { grid-column: 5 / span 9; align-self: center; }
 @media (max-width: 767px) {
   .clients { grid-template-columns: 1fr; gap: 10px; }
@@ -572,6 +573,10 @@ html[data-gl="live"] [data-view] .poster-3d { opacity: 0; }
 @keyframes vin { from { opacity: 0; transform: scale(0.985); } }
 .v-info { display: grid; align-content: center; gap: 16px; max-height: 100%; overflow-y: auto; padding: 6px; }
 .v-info > p { font-size: 18px; }
+.v-top > *, .v-info > h1, .v-info > p, .v-bar > * { animation: rise 520ms var(--ease) both; }
+.v-info > h1 { animation-delay: 80ms; }
+.v-info > p { animation-delay: 160ms; }
+.v-bar > * { animation-delay: 240ms; }
 .v-title { font-family: var(--f-disp); font-size: clamp(28px, 4.2vw, 64px); font-weight: 700; line-height: 1; letter-spacing: 0.01em; }
 .v-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 640px; }
 .v-strip a { display: block; aspect-ratio: 4 / 5; opacity: 0.76; transition: opacity var(--t-fast); animation: rise 520ms var(--ease) both; }
@@ -630,7 +635,7 @@ html[data-gl="live"] [data-view] .poster-3d { opacity: 0; }
 .cal-side > :nth-child(4) { animation-delay: 230ms; }
 .cal-frame { animation-delay: 200ms; }
 @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
-@media (prefers-reduced-motion: reduce) { .call-rail-track, .cal-side > *, .cal-frame, .cal-fire i, .v-strip a, .v-stage img { animation: none; } .cal-fire { display: none; } }
+@media (prefers-reduced-motion: reduce) { .call-rail-track, .cal-side > *, .cal-frame, .cal-fire i, .v-strip a, .v-stage img, .v-top > *, .v-info > h1, .v-info > p, .v-bar > * { animation: none; } .cal-fire { display: none; } }
 @media (max-width: 1023px) {
   .cal-side, .cal-frame { grid-column: 1 / -1; }
   .cal-frame { padding: 12px; }

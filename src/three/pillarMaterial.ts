@@ -9,12 +9,14 @@ export type PillarUniforms = {
   uTime: { value: number };
   uOpen: { value: number };
   uCursor: { value: THREE.Vector2 };
+  uAtlas: { value: THREE.Texture | null };
 };
 
 export const pillarUniforms = (): PillarUniforms => ({
   uTime: { value: 0 },
   uOpen: { value: 0 },
   uCursor: { value: new THREE.Vector2(0.4, -0.2) },
+  uAtlas: { value: null },
 });
 
 const common = /* glsl */ `
@@ -102,6 +104,11 @@ float noise(vec3 x) {
 }
 float fbm(vec3 p) { return noise(p) * 0.55 + noise(p * 2.1) * 0.3 + noise(p * 4.7) * 0.15; }
 float band(float x, float a, float s) { return smoothstep(a - s, a + s, x); }
+uniform sampler2D uAtlas;
+float quad(vec2 uv, vec2 o, float mean) {
+  vec3 t = texture2D(uAtlas, o + 0.02 + fract(uv) * 0.46).rgb;
+  return clamp(dot(t, vec3(0.299, 0.587, 0.114)) / mean, 0.55, 1.6);
+}
 
 void main() {
   vec3 n = normalize(vN);
@@ -123,6 +130,8 @@ void main() {
   float vein = 1.0 - smoothstep(0.0, 0.05, abs(sin((vP.y * 0.8 + vP.x * 0.6 + fbm(vP * 1.7) * 3.2) * 2.6)));
   vec3 albedo = mix(SLATE, SLATE2, 0.35 + 0.4 * tone) * (0.88 + 0.24 * grain);
   albedo = mix(albedo, SLATE3, vein * 0.35);
+  vec2 cyl = vec2(atan(vP.z, vP.x) / 6.2831853 * 3.0, vP.y * 0.42);
+  albedo *= mix(1.0, quad(cyl, vec2(0.0, 0.5), 0.2), 0.75);
   float pits = smoothstep(0.7, 0.8, noise(vP * vec3(14.0, 3.0, 14.0))) * 0.12;
 
   float top = max(n.y, 0.0) * 0.5 + 0.5 * smoothstep(-1.0, 3.0, vW.y);
@@ -150,6 +159,7 @@ void main() {
   float sky = smoothstep(-0.1, 0.5, reflect(-v, n).y);
   gold += GOLD * 0.18 * sky;
   gold += vec3(1.0, 0.93, 0.72) * smoothstep(0.35, 0.5, spec) * 1.2;
+  gold *= mix(1.0, quad(cyl * 1.7, vec2(0.5, 0.5), 0.5), 0.6);
   float isGold = vGold * wear;
   vec3 col = mix(stone, gold, isGold);
 

@@ -31,7 +31,7 @@
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   align-items: center;
   gap: 24px;
-  padding: clamp(56px, 8vw, 120px) var(--g, 24px) 0;
+  padding: clamp(104px, 10vw, 144px) var(--g, 24px) 0;
 }
 .sp-copy { display: grid; gap: 28px; align-content: center; padding-bottom: 48px; }
 .sp-n, .sp-meta, .sp-link {
@@ -75,7 +75,7 @@
 .sp-poster { display: block; width: 100%; height: 100%; }
 .sp-hits a { position: absolute; display: grid; place-items: center; color: var(--sp-bone); font: 700 clamp(13px, 4.5cqw, 29px)/1 var(--sp-disp); white-space: nowrap; }
 .sp-hits a:hover { color: var(--sp-gold); }
-.sp-hits a:last-child { color: var(--sp-void); }
+.sp-hits a:last-child { color: var(--sp-void); font-size: clamp(13px, 3.4cqw, 22px); }
 .sp-hits a:last-child:hover { color: var(--sp-bone); }
 html[data-gl="live"] .sp-fallback { pointer-events: none; }
 

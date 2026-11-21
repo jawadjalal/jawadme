@@ -23,6 +23,14 @@ export function PillarView({ el }: { el: HTMLElement }) {
   const u = useMemo(pillarUniforms, []);
   const mats = useMemo(() => ({ stone: pillarMaterial(u), ink: inkMaterial(), ember: emberMaterial(u), pool: poolMaterial(u), haze: hazeMaterial(u) }), [u]);
   const embers = useMemo(() => emberGeometry(), []);
+  useEffect(() => {
+    const atlas = new THREE.TextureLoader().load("/three/materials.webp");
+    atlas.wrapS = atlas.wrapT = THREE.ClampToEdgeWrapping;
+    atlas.minFilter = THREE.LinearFilter;
+    atlas.generateMipmaps = false;
+    u.uAtlas.value = atlas;
+    return () => atlas.dispose();
+  }, [u]);
   const group = useRef<THREE.Group>(null);
   const cam = useRef<THREE.PerspectiveCamera>(null);
   const st = useRef({ px: 0.4, py: -0.2, born: 0, open: 0 });
