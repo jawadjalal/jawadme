@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AdGallery } from "@/components/ds/AdGallery";
 import { Footer } from "@/components/ds/Footer";
+import { LoaderA } from "@/components/loader/LoaderA";
 import { Hero, RING } from "@/components/ds/Hero";
 import { Media } from "@/components/ds/Media";
 import { Sequence } from "@/components/ds/Sequence";
@@ -21,6 +22,7 @@ const GALLERY = ADS.filter((a) => !IN_RING.has(a.id)).slice(0, 12);
 export default function Home() {
   return (
     <main>
+      <LoaderA />
       <Hero />
       <Timeline />
 

@@ -1,0 +1,59 @@
+/* Loader A, the board. Off unless the inline script in LoaderA sets html.ldrA-on. */
+@font-face {
+  font-family: "ldrA Kufi";
+  src: url("./loaderA-kufi.woff2") format("woff2");
+  font-weight: 700;
+  font-display: block;
+}
+
+.ldrA,
+.ldrA-cta { display: none; }
+html.ldrA-on .ldrA { display: block; position: fixed; inset: 0; z-index: 80; cursor: pointer; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+html.ldrA-on main h1 { visibility: hidden; }
+
+.ldrA-bg { position: absolute; inset: 0; background: #0f0c0a; }
+.ldrA-board { position: absolute; inset: 0; }
+.ldrA-c { position: absolute; perspective: 520px; transform-origin: 50% 50%; }
+.ldrA-c::after { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; background: rgb(15 12 10 / 0.5); }
+.ldrA-h,
+.ldrA-fl { position: absolute; inset: 0; }
+.ldrA-t { clip-path: inset(0 0 50% 0); }
+.ldrA-b { clip-path: inset(50% 0 0 0); }
+.ldrA-fl { z-index: 2; backface-visibility: hidden; transform-origin: 50% 50%; }
+.ldrA-f { position: absolute; inset: 0; overflow: hidden; border-radius: 3px; background: #f3ead8; color: #0b0b0b; }
+.ldrA-b .ldrA-f { background: #e9dfca; }
+.ldrA-ar { position: absolute; top: 0; text-align: center; white-space: nowrap; font-family: "ldrA Kufi", sans-serif; font-weight: 700; }
+.ldrA-m { visibility: hidden; left: 0; width: auto; }
+.ldrA-lt { position: absolute; }
+.ldrA-lt svg,
+.ldrA-l svg { display: block; fill: currentColor; }
+.ldrA-ls { position: absolute; inset: 0; pointer-events: none; }
+.ldrA-l { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+.ldrA-still .ldrA-board { display: none; }
+
+.ldrA-lbl { position: absolute; left: max(12px, calc(4 * var(--u))); top: max(12px, calc(4 * var(--u))); margin: 0; font: 600 12px/1 var(--f-bar); letter-spacing: 0.02em; color: rgb(243 234 216 / 0.56); }
+.ldrA-lbl b { margin-left: 6px; font-weight: 600; font-variant-numeric: tabular-nums; color: #f3ead8; }
+
+html.ldrA-on .ldrA-cta {
+  position: fixed;
+  z-index: 81;
+  right: 16px;
+  bottom: 16px;
+  height: 58px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 22px 0 24px;
+  border-radius: 3px;
+  background: var(--ember);
+  color: var(--ink);
+  font: 700 17px/1 var(--f-bar);
+  letter-spacing: -0.02em;
+}
+.ldrA-cta small { font-weight: 600; font-size: 13px; letter-spacing: -0.01em; opacity: 0.72; }
+html.ldrA-on .ldrA-cta:hover { background: #f3ead8; }
+@media (max-width: 767px) {
+  html.ldrA-on .ldrA-cta { right: 10px; bottom: 10px; height: 56px; padding: 0 20px 0 22px; }
+  .ldrA-cta small { display: none; }
+}
