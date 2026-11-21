@@ -1,7 +1,8 @@
 // Whether this device gets the live 3D, read once on the client. Only a desktop or laptop with a hardware GPU does.
 // Phones and tablets (a narrow or touch-first screen) keep the designed posters and never load three.js, even after
 // they interact, as do reduced motion, Save-Data, under 4 cores or 4 GB, no WebGL2 and software or weak GPUs (a
-// context that only exists with a major performance caveat counts as software). ?world=live|poster overrides it.
+// context that only exists with a major performance caveat counts as software). ?world=live (or ?world=rooms, the
+// rebuilt chambers) and ?world=poster override it, so captures under a software GPU still get the live scene.
 
 function capable(): boolean {
   if (innerWidth < 768 || matchMedia("(pointer: coarse)").matches) return false;
@@ -17,8 +18,8 @@ function capable(): boolean {
   return !/swiftshader|llvmpipe|softpipe|software|mali-[34t]|mali-g(31|51|52|57)\b|adreno \(tm\) [345]\d\d/i.test(name);
 }
 
-/** Whether this page's stages go live: ?world=live or ?world=poster, else what the device can carry. */
+/** Whether this page's stages go live: forced by ?world=live|rooms, refused by ?world=poster, else what the device can carry. */
 export function want3d(): boolean {
   const w = new URLSearchParams(location.search).get("world");
-  return w === "live" || (w !== "poster" && capable());
+  return w === "live" || w === "rooms" || (w !== "poster" && capable());
 }

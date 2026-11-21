@@ -7,7 +7,7 @@
 // the blog passes none and gets a single link back.
 
 import Link from "next/link";
-import { BookLink } from "./BookLink";
+import { Gilded } from "./gilded/Gilded";
 import { Face } from "./Obj";
 import { NavEmail } from "./NavEmail";
 import { NavMenu, type NavGroup } from "./NavMenu";
@@ -38,9 +38,7 @@ export function SiteNav({ groups, home = true }: { groups?: NavGroup[]; home?: b
           )}
           <Theme />
           <NavEmail />
-          <BookLink src={home ? "nav" : "blog-nav"} className="key key-ink h-9 px-3 text-[14px]">
-            book a call
-          </BookLink>
+          <Gilded variant="cta" src={home ? "nav" : "blog-nav"} size="dock" />
         </div>
       </div>
     </header>

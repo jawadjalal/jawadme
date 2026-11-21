@@ -1,14 +1,15 @@
 import { ACCENT } from "@/lib/accent";
 import * as THREE from "three";
 import { Batch, INK, NL, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, marks, painter, post, shared, view } from "@/components/world/kit";
+import { flames } from "@/components/world/kit/flame";
+import { flameOf } from "@/components/world/kit/lights";
 import type { Mount } from "@/components/world/kit/Stage";
 import { SETS, type SetName } from "./sets";
 
 // One route moment on the world kit: a set from ./sets on its own floating platform, lit by its fires, on flat ink,
-// with the kit's outline and bloom. The camera holds the set's shot and sways a little with the pointer. The braziers'
-// flames are the world's CSS flipbook (kit/flames.css), the same flames the posters carry: live, they stand over the
-// canvas where each fire projects this frame; with ?bare (posters.mjs) they are left out and their places written to
-// data-marks, where ./Moment lays them over the poster.
+// with the kit's outline and bloom. The camera holds the set's shot and sways a little with the pointer. Every fire
+// but a lamp carries the world's one flame (kit/flame), as on the home page; with ?bare (posters.mjs) the flames are
+// left out and their places written to data-marks, where ./Moment lays the same flame's flipbook over the poster.
 
 export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetName) {
   const S = shared();
@@ -35,21 +36,9 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
 
   const F = fx(scene, S, b);
   const n = (k: number) => Math.round(k * (ctx.small ? 0.6 : 1));
-  const warm = set.fires.filter((f) => !f.soul && !f.lamp);
-  const flames = warm.map((f) => ({ p: f.p, h: f.big ? 2.5 : 2.1 }));
-  const flip = ctx.bare ? null : document.createElement("span");
-  if (flip) {
-    flip.className = "pf pf-play mo-flip";
-    flip.setAttribute("aria-hidden", "true");
-    flames.forEach((_, i) => {
-      const el = document.createElement("i");
-      el.style.setProperty("--d", ((i * 0.37) % 1.6).toFixed(2));
-      el.append(document.createElement("b"));
-      flip.append(el);
-    });
-    host.append(flip);
-  }
-  F.halos(warm, ACCENT.glow);
+  const burning = set.fires.filter((f) => !f.lamp).map(flameOf);
+  flames(scene, ctx.bare ? [] : burning, { lights: false, time: S.time, ppu: F.u.ppu, bag: b, gain: 1.4 });
+  F.halos(set.fires.filter((f) => !f.soul && !f.lamp), ACCENT.glow);
   F.drift(n(110), [set.shot.w, 16, set.shot.w], 0.11, 1.1, ACCENT.glow, 1.4, 0);
   F.drift(n(36), [set.shot.w, 12, set.shot.w], 0.4, 0.35, "#" + SOUL.getHexString(THREE.SRGBColorSpace), 0.42, 1);
   F.drift(n(60), [set.shot.w, 12, set.shot.w], 0.06, 0.08, "#b49a80", 0.35, 1);
@@ -68,7 +57,6 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
   const cur = set.shot.t.clone();
   const want = new THREE.Vector3();
   let shown = false;
-  let at = "";
   function frame(dt: number) {
     S.time.value += dt;
     if (!ctx.still) {
@@ -86,27 +74,14 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
     set.update?.(dt, S.time.value);
     v.renderer.shadowMap.needsUpdate = true;
     P.render(scene, camera, vh);
-    if (flip) {
-      const now = flames.map((f) => marks(camera, [f])[0]);
-      const key = JSON.stringify(now);
-      if (key !== at) {
-        at = key;
-        now.forEach((m, i) => {
-          const s = (flip.children[i] as HTMLElement).style;
-          s.display = m ? "" : "none";
-          if (m) ["--x", "--y", "--h"].forEach((k, j) => s.setProperty(k, String(m[j])));
-        });
-      }
-    }
     if (!shown) {
       shown = true;
-      if (ctx.bare) host.dataset.marks = JSON.stringify(marks(camera, flames));
+      if (ctx.bare) host.dataset.marks = JSON.stringify(marks(camera, burning));
       ctx.ready();
     }
   }
 
   return () => {
-    flip?.remove();
     v.stop();
     removeEventListener("pointermove", move);
     drop(b);

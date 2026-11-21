@@ -1,0 +1,183 @@
+/* Gilded buttons. Gold leaf from flat tones only: a mid plate, a lit upper band and a shaded lower band of the frame's
+   own depth, a bright lip, a dark foot, a dark cut around the enamel and our own fret cut into the bands (a stepped key on
+   the large forms, a coarse square key at dock size, a thin square rim on pill and filter), each tile drawn on whole
+   pixels so the cuts stay crisp. Every edge is hard; the only soft light is the mint groove's glow. States are numbers on
+   the root (--hv hover, --op open, --lit light, --pr press) so each rule is written once. Forced states for the preview:
+   a data-state="hover|press|focus|selected" ancestor. */
+
+.gl {
+  --g0: #231703;
+  --g1: #5b3f10;
+  --g2: #8f6a22;
+  --g3: #c39a42;
+  --g4: #e6c46c;
+  --g5: #fff0b8;
+  --lip: var(--g5);
+  --top: var(--g4);
+  --face: var(--accent-ink);
+  --txt: #f4e6c4;
+  --h: 46px;
+  --r: 9px;
+  --pad: 1.15em;
+  --rad: 3px;
+  --key: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 7'%3E%3Cpath d='M0 6.5H8.5V.5H2.5V3.5H5.5' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+  --kw: 10px;
+  --kh: 7px;
+  --R: 0px;
+  --S: 0px;
+  --hv: 0;
+  --op: 0;
+  --lit: 0;
+  --pr: 0;
+  --spring: linear(0, 0.072, 0.235, 0.428, 0.613, 0.768, 0.887, 0.969, 1.019, 1.045, 1.054, 1.052, 1.044, 1.033, 1.023, 1.014, 1.007, 1.003, 0.999, 0.998, 1);
+  --out: cubic-bezier(0.3, 0.7, 0.2, 1);
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: var(--h);
+  margin: 0;
+  padding: 0 var(--pad);
+  border: 0;
+  background: none;
+  font: 700 16px/1 var(--f-bar, var(--f-geist, "Helvetica Neue")), Arial, sans-serif;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  white-space: nowrap;
+  color: var(--txt);
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.ds a.gl { color: var(--txt); }
+.ds .gl:focus-visible { outline: none; box-shadow: none; }
+.gl::before { content: ""; position: absolute; inset: min(0px, calc((var(--h) - 44px) / 2)) 0; }
+
+@media (hover: hover) { .gl:hover { --hv: 1; --op: 1; --lit: 1; } }
+.gl:is([data-open], [data-state="hover"] *, [data-state="press"] *) { --hv: 1; --op: 1; --lit: 1; }
+.gl:is(:active, [data-state="press"] *) { --pr: 1; --lip: var(--g4); --top: var(--g3); }
+.gl:is(:focus-visible, [data-state="focus"] *) { --op: 1; --lit: 1; }
+
+/* the shape: a dark outline, a coin edge and a hard cast shadow, as drop shadows of the whole outline so they follow the
+   clip as it opens. Hover lifts it; a press sets it back down. */
+.gl-s {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  translate: calc(var(--hv) * var(--nudge, 0px)) calc(var(--hv) * -2px + var(--pr) * 2px);
+  filter:
+    drop-shadow(1px 0 0 var(--g0)) drop-shadow(-1px 0 0 var(--g0)) drop-shadow(0 -1px 0 var(--g0))
+    drop-shadow(0 calc(2px - var(--pr) * 1px) 0 var(--g1))
+    drop-shadow(0 calc(3px + var(--hv) * 3px - var(--pr) * 4px) 0 rgb(0 0 0 / 0.26));
+  transition: translate 140ms var(--out), filter 140ms var(--out);
+}
+
+/* gold plate and caps: lip, lit band, plate, shaded band, foot */
+.gl-p, .gl-c {
+  background: var(--g3);
+  box-shadow: inset 0 1px 0 var(--lip), inset 0 var(--r) 0 var(--top), inset 0 -1px 0 var(--g1), inset 0 calc(-1 * var(--r)) 0 var(--g2);
+  transition: box-shadow 140ms var(--out);
+}
+.gl-p { position: absolute; inset: 0 calc(-1 * (var(--R) + var(--S))) 0 0; overflow: clip; border-radius: var(--rad); }
+.gl-s i { position: absolute; }
+
+/* the fret, cut into the upper band and, flipped, the lower */
+.gl-fr { left: var(--fx, 0px); right: var(--fx, 0px); top: 2px; height: var(--kh); background: var(--g1); mask: var(--key) 0 0 / var(--kw) var(--kh) repeat-x; }
+.gl-fr + .gl-fr { top: auto; bottom: 2px; scale: 1 -1; }
+
+/* light crossing the gold: two hard-edged bands over the whole frame (lip, bands, fret, caps), under the enamel so
+   only the metal catches it */
+.gl-sw { inset: 0; translate: -2.6em; }
+.gl-sw::before, .gl-sw::after { content: ""; position: absolute; inset: -2px auto; left: 0; width: 1.2em; background: rgb(255 251 236 / 0.86); transform: skewX(-22deg); }
+.gl-sw::after { left: 1.65em; width: 0.4em; }
+@media (hover: hover) { .gl:hover .gl-sw { animation: gl-sweep 700ms var(--out); } }
+.gl:is(:focus-visible, [data-open]) .gl-sw { animation: gl-sweep 700ms var(--out); }
+:is([data-state="hover"], [data-state="press"]) .gl-sw { translate: 30%; }
+.gl:is(:active, [data-state="press"] *) .gl-sw { opacity: 0.45; }
+@keyframes gl-sweep { from { translate: -2.6em; } to { translate: 100%; } }
+
+/* dark enamel: the frame's hard shadow across its top, a faint gloss band, sunk deeper by a press */
+.gl-f {
+  inset: var(--r);
+  border-radius: 1px;
+  background: var(--face);
+  box-shadow:
+    0 0 0 1px var(--g0),
+    inset 0 calc(2px + var(--pr) * 0.14em) 0 rgb(0 0 0 / 0.6),
+    inset 0 -1px 0 rgb(255 255 255 / 0.08),
+    inset 0 calc((var(--h) - 2 * var(--r)) * 0.45) 0 rgb(255 255 255 / calc(0.05 - var(--pr) * 0.03));
+  transition: box-shadow 140ms var(--out);
+}
+
+/* caps: the frame's sides, a mint-inlaid rivet in each, inside the plate so the sweep crosses them. The right cap
+   rides the clip edge. */
+.gl-c { inset: 0 auto 0 0; width: var(--r); border-radius: var(--rad) 0 0 var(--rad); box-shadow: inset -1px 0 0 var(--g0), inset 0 1px 0 var(--lip), inset 0 var(--r) 0 var(--top), inset 0 -1px 0 var(--g1), inset 0 calc(-1 * var(--r)) 0 var(--g2); }
+.gl-c::before, .gl-c::after { content: ""; position: absolute; left: calc(50% - 2.5px); top: calc(50% - 2.5px); width: 5px; height: 5px; rotate: 45deg; background: var(--accent-paper); box-shadow: 0 0 0 1px var(--g0); }
+.gl-c::after { background: var(--accent); box-shadow: 0 0 0 1px var(--g0), 0 0 6px 1px var(--accent-glow); opacity: var(--lit); transition: opacity 120ms; }
+.gl-cr { left: auto; right: calc(var(--R) + var(--S)); border-radius: 0 var(--rad) var(--rad) 0; box-shadow: inset 1px 0 0 var(--g0), inset 0 1px 0 var(--lip), inset 0 var(--r) 0 var(--top), inset 0 -1px 0 var(--g1), inset 0 calc(-1 * var(--r)) 0 var(--g2); translate: calc(var(--R) * var(--op)); transition: translate 340ms var(--out), box-shadow 140ms var(--out); }
+
+/* the label, and the mint groove under it: a hard bar, and a glow that wakes on hover and focus. A press drops both. */
+.gl-t { position: relative; translate: calc(var(--hv) * var(--nudge, 0px)) calc(-0.07em + var(--hv) * -2px + var(--pr) * (2px + 0.1em)); transition: translate 140ms var(--out); text-shadow: 0 -1px 0 rgb(0 0 0 / 0.6); }
+.gl-t::before, .gl-t::after { content: ""; position: absolute; left: -0.1em; right: -0.1em; top: calc(100% + 0.24em); height: 2px; border-radius: 1px; background: var(--groove, var(--accent)); }
+.gl-t::before { box-shadow: 0 0 0.7em 0.12em var(--accent-glow); opacity: calc(var(--lit) - var(--pr) * 0.5); transition: opacity 120ms; }
+.gl-t::after { box-shadow: 0 0 0 1px rgb(0 0 0 / 0.5); opacity: calc(0.4 + var(--lit) * 0.6 - var(--pr) * 0.25); transition: opacity 120ms; }
+.gl:is(:active, [data-state="press"] *) :is(.gl-s, .gl-t, .gl-f, .gl-p, .gl-c) { transition-duration: 60ms; }
+
+/* focus: a thick mint ring with an ink ring outside it, so it reads on ink and on ivory; it follows the open plate */
+.gl::after { content: ""; position: absolute; inset: -6px; right: calc(-6px - var(--R) * var(--op)); border: 3px solid var(--accent-glow); border-radius: calc(var(--rad) + 6px); box-shadow: 0 0 0 2px var(--accent-ink); opacity: 0; transition: opacity 120ms, right 340ms var(--out); pointer-events: none; }
+.gl:is(:focus-visible, [data-state="focus"] *)::after { opacity: 1; }
+
+/* cta: the plate runs past the label by the open width plus slack for the spring, clipped back to the label */
+.gl[data-v="cta"] { --R: calc(var(--mw, 0px) + 0.45em); --S: 0.6em; }
+.gl[data-v="cta"] .gl-p { clip-path: inset(0 calc(var(--R) * (1 - var(--op)) + var(--S)) 0 0 round var(--rad)); transition: clip-path 340ms var(--out), box-shadow 140ms var(--out); }
+.gl[data-v="cta"] .gl-f { clip-path: inset(-1px calc(var(--R) * (1 - var(--op)) + var(--S)) -1px -1px); transition: clip-path 340ms var(--out), box-shadow 140ms var(--out); }
+.gl[data-v="cta"]:is(:hover, :focus-visible, [data-open], [data-state] *) :is(.gl-p, .gl-f, .gl-cr, .gl-m) { transition-duration: 620ms, 140ms; transition-timing-function: var(--spring), var(--out); }
+.gl[data-size="hero"] { font-size: min(22px, 5.4vw); --h: 2.75em; --r: 11px; --pad: 1.3em; }
+.gl[data-size="dock"] { font-size: 15px; --r: 9px; --pad: 1.15em; }
+.gl-m { position: absolute; inset: 0 calc(var(--S) + var(--pad)) 0 auto; display: flex; align-items: center; gap: 0.4em; color: var(--g5); opacity: var(--op); transform: translateX(calc((1 - var(--op)) * -0.7em)); translate: 0 calc(var(--pr) * 0.1em); transition: transform 340ms var(--out), translate 140ms var(--out), opacity 340ms var(--out); }
+.gl-m b + * + b { color: var(--accent); }
+.gl-a { width: 1.4em; height: 1.4em; border-radius: 50%; background: var(--face); box-shadow: 0 0 0 1px var(--g0), 0 0 0 3px var(--g4), 0 0 0 4px var(--g0); }
+
+/* coarse key where the frame is small */
+.gl:is([data-size="dock"], [data-v="email"]) { --key: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 5'%3E%3Cpath d='M0 4.5H1.5V.5H5.5V4.5H8' fill='none' stroke='%23000'/%3E%3C/svg%3E"); --kw: 8px; --kh: 5px; }
+
+/* email: the same frame, a warm quieter face */
+.gl[data-v="email"] { --face: #15110b; }
+
+/* arm: the call as the footer pillar's sign, pointing on */
+.gl[data-v="arm"] { font-size: 18px; --h: 52px; --r: 11px; --nudge: 3px; padding-right: calc(var(--pad) + var(--h) * 0.4); }
+.gl[data-v="arm"] .gl-p { clip-path: polygon(0 0, calc(100% - var(--h) / 2) 0, 100% 50%, calc(100% - var(--h) / 2) 100%, 0 100%); }
+.gl[data-v="arm"] .gl-f { right: calc(var(--r) * 1.42); clip-path: polygon(0 0, calc(100% - var(--h) / 2 + var(--r)) 0, 100% 50%, calc(100% - var(--h) / 2 + var(--r)) 100%, 0 100%); }
+
+/* pill and filter: the small rounded forms, a thin fret rim on the straight runs */
+.gl:is([data-v="pill"], [data-v="filter"]) {
+  font-size: 14px;
+  --h: 36px;
+  --r: 6px;
+  --pad: 1.05em;
+  --rad: 99px;
+  --fx: 7px;
+  --key: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 3'%3E%3Cpath d='M0 2.5H1.5V.5H4.5V2.5H6' fill='none' stroke='%23000'/%3E%3C/svg%3E");
+  --kw: 6px;
+  --kh: 3px;
+}
+.gl[data-v="filter"] { font-size: 13px; --h: 34px; --pad: 0.95em; }
+.gl:is([data-v="pill"], [data-v="filter"]) .gl-fr { top: 1px; }
+.gl:is([data-v="pill"], [data-v="filter"]) .gl-fr + .gl-fr { top: auto; bottom: 1px; }
+.gl:is([data-v="pill"], [data-v="filter"]) .gl-f { border-radius: var(--rad); }
+.gl[data-v="pill"]:is([aria-current], [data-state="selected"] *) { --lit: 1; --txt: var(--accent-hi); }
+.gl[data-v="filter"]:is([aria-current], [aria-pressed="true"], [data-state="selected"] *) { --face: var(--g4); --txt: var(--g0); --groove: var(--g0); --lit: 0; }
+.gl[data-v="filter"]:is([aria-current], [aria-pressed="true"], [data-state="selected"] *) .gl-t { text-shadow: 0 1px 0 rgb(255 248 222 / 0.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .gl, .gl *, .gl::after, .gl *::before, .gl *::after { transition-duration: 0s !important; animation: none !important; }
+  .gl-sw { display: none; }
+}
+
+/* the email's "copied" tag rests hidden wherever the component goes; ds.css and motion-chrome.css style and spring it */
+.gl .mail-tag { position: absolute; left: 0; top: 100%; margin-top: 8px; padding: 5px 8px; font: 600 12px/1 var(--f-geist, Arial), sans-serif; background: var(--accent-ink); color: var(--accent-glow); white-space: nowrap; pointer-events: none; opacity: 0; }
+.gl[data-copied] .mail-tag { opacity: 1; }

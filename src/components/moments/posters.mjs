@@ -14,7 +14,7 @@ chromium.launch = async (o) => {
   const open = b.newPage.bind(b);
   b.newPage = async (p) => {
     const page = await open(p);
-    await page.addInitScript(() => addEventListener("DOMContentLoaded", () => document.head.append(Object.assign(document.createElement("style"), { textContent: ".dock, .bcb { display: none !important; }" }))));
+    await page.addInitScript(() => addEventListener("DOMContentLoaded", () => document.head.append(Object.assign(document.createElement("style"), { textContent: ".dock, .bcb, .gl-s { display: none !important; }" }))));
     return page;
   };
   return b;

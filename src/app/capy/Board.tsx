@@ -4,7 +4,7 @@
 // (engine.ts) owns the canvas, camera, input and tour; this file is the chrome around it and the exports.
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { BookCallB } from "@/components/cta/BookCallB";
+import { Gilded } from "@/components/gilded/Gilded";
 import { layoutBoard, type Asset, type Piece } from "./arrange";
 import { Engine, type EngineState } from "./engine";
 import * as X from "./exporters";
@@ -244,7 +244,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
         <p className="cb-fan">unofficial, unsolicited fan work. not made by or for capy or yc.</p>
       </header>
       <span className="cb-call">
-        <BookCallB src="capy" size="dock" />
+        <Gilded variant="cta" src="capy" size="dock" />
       </span>
 
       <nav className={`cb-clusters${clustersOpen ? " cb-open" : ""}`} aria-label="clusters">
