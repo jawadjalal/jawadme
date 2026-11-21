@@ -1,7 +1,7 @@
 "use client";
 
 import { track } from "@vercel/analytics";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IDENTITY } from "@/lib/profile";
 
 /** Email as a contact on par with booking: a plain mailto that logs email_open with where it was clicked, as ?src= does for the call.
@@ -24,6 +24,7 @@ function announce(text: string) {
 export function MailLink({ src, className, children }: { src: string; className?: string; children?: React.ReactNode }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef(0);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
   return (
     <a
       href={MAIL}
