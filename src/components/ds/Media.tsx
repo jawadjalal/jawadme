@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
+import { LoopVideo } from "@/components/ds/LoopVideo";
 import type { Media as M } from "@/content/work";
 
 /** A picture behind a plate of ground that slides off when it enters (Motion registers it). `fit` keeps an off-ratio
@@ -28,7 +29,7 @@ export function Media({
   return (
     <div className={`media ${fit === "contain" ? "contain" : ""} ${className}`} data-plate="" style={style}>
       {m.loop ? (
-        <video src={m.loop} poster={m.src} muted loop playsInline autoPlay preload="metadata" aria-label={m.alt} />
+        <LoopVideo src={m.loop} poster={m.src} label={m.alt} />
       ) : (
         <Image src={m.src} width={m.w} height={m.h} alt={m.alt} sizes={sizes} priority={priority} quality={86} />
       )}

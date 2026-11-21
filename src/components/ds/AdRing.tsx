@@ -49,11 +49,16 @@ export function AdRing({ ads, preset = "large" }: { ads: Ad[]; preset?: string }
     const pick = new URLSearchParams(location.search).get("ring") ?? preset;
     let off = false;
     let dispose = () => {};
-    import("three").then((T) => {
-      if (!off) dispose = mount(T, el, ads, RING_PRESETS[pick] ?? RING_PRESETS.outpace, (id) => router.push("/w/" + id), () => setLive(true));
-    });
+    const start = () =>
+      import("three").then((T) => {
+        if (!off) dispose = mount(T, el, ads, RING_PRESETS[pick] ?? RING_PRESETS.outpace, (id) => router.push("/w/" + id), () => setLive(true));
+      });
+    const idle = () => ("requestIdleCallback" in window ? requestIdleCallback(start, { timeout: 2500 }) : setTimeout(start, 300));
+    if (document.readyState === "complete") idle();
+    else addEventListener("load", idle, { once: true });
     return () => {
       off = true;
+      removeEventListener("load", idle);
       dispose();
     };
   }, [ads, preset, router]);
@@ -133,7 +138,7 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], P: Preset, open: (id: st
     tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
     const img = new window.Image();
     img.decoding = "async";
-    img.src = a.src;
+    img.src = "/_next/image?url=" + encodeURIComponent(a.src) + "&w=750&q=75";
     const line = headline(a);
     Promise.all([img.decode(), document.fonts.ready])
       .then(() => {
