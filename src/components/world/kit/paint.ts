@@ -4,7 +4,7 @@ import type { Bag } from "./bag";
 
 // The world's materials. Every lit surface is a toon material with four things written into its shader: painted
 // variation from world-space noise and brush strokes, fire light from up to 16 braziers (pools that fall off in soft
-// bands), a two-colour rim on the edges that turn away from the eye (soul cyan on the left, ember on the right), and a
+// bands), a two-colour rim on the edges that turn away from the eye (pale soul mint on the left, ember on the right), and a
 // fade to ink with depth for rock. Floors and trims draw their carving (flagstones, the running key) in the same
 // shader. A painted map from public/world/tex takes over the colour where one exists.
 
@@ -16,8 +16,8 @@ export const INK = new THREE.Color("#100b09");
  *  light are the accent arena's tuning of it for 3D (capy/accent-arena 231e615). */
 export const GLOW = { glow: SITE.glow, emissive: "#4dffae", core: "#5cffb8", fire: [0.59, 1.9, 1.15] } as const;
 export const ACCENT = new THREE.Color(GLOW.emissive);
-/** The second light: soul flames, the gate's glow and the cool side of the rim. */
-export const SOUL = new THREE.Color("#63e6ff");
+/** The second light: soul flames, the gate's glow and the cool side of the rim. The accent's pale tint, never blue. */
+export const SOUL = new THREE.Color(SITE.hi);
 /** A colour's sRGB components, scaled by k. */
 export const srgb = (c: THREE.Color, k = 1) => {
   const o = c.getRGB({ r: 0, g: 0, b: 0 }, THREE.SRGBColorSpace);
