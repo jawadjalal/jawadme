@@ -14,7 +14,13 @@ const BAR = 58;
 const dir = path.join(process.cwd(), "src/app/_og");
 
 async function pic(src: string, w: number, h: number) {
-  const buf = await sharp(path.join(process.cwd(), "public", src)).resize(w, h, { fit: "cover", position: "attention" }).jpeg({ quality: 84 }).toBuffer();
+  const img = sharp(path.join(process.cwd(), "public", src));
+  const { width = 1, height = 1 } = await img.metadata();
+  const buf = await img
+    .flatten({ background: "#d6d5d0" })
+    .resize(w, h, { fit: "cover", position: width / height > w / h + 0.3 ? "left" : "attention" })
+    .jpeg({ quality: 84 })
+    .toBuffer();
   return "data:image/jpeg;base64," + buf.toString("base64");
 }
 

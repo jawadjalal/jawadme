@@ -7,7 +7,12 @@ import { SITE } from "@/content/site";
 import { FAQ } from "@/lib/facts";
 import { ENTITY, JsonLd, PERSON_ID, abs, meta } from "@/lib/seo";
 
-export const metadata: Metadata = meta({ title: "About", description: ENTITY, path: "/about", type: "profile" });
+export const metadata: Metadata = meta({
+  title: "About",
+  description: "Jawad Jalal is a 15-year-old designer and founder in London. Where he has worked, what he designs and builds, and the short answers.",
+  path: "/about",
+  type: "profile",
+});
 
 const LD = [
   { "@type": "ProfilePage", "@id": abs("/about"), url: abs("/about"), name: "About Jawad Jalal", mainEntity: { "@id": PERSON_ID } },

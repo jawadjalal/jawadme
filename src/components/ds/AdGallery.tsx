@@ -34,17 +34,16 @@ function hang(aspects: number[], first: number, cycle: number[]): Slot[] {
 
 const vars = (d: Slot, m: Slot) => ({ "--dw": d.w, "--dn": d.n, "--mw": m.w, "--mn": m.n }) as CSSProperties;
 
-/** One hang. `lead` loads the opening row first, for the top of a page. */
+/** One hang. `lead` loads its first picture first, for the top of a page. */
 export function Hang({ entries, first = 0.5, cycle = [0.4, 0.3], lead = false }: { entries: Entry[]; first?: number; cycle?: number[]; lead?: boolean }) {
   const aspects = entries.map((e) => e.media.w / e.media.h);
   const wide = hang(aspects, first, cycle);
   const phone = hang(aspects, 1.2, [0.62, 0.62, 1.2]);
-  const opening = wide[0].n + 1;
   return (
     <div className="wrap hang">
       {entries.map((e, i) => (
         <TLink key={e.key} id={e.key} href={e.href} vt={e.href.startsWith("/w/") ? "piece" : "cover-" + e.href.split("/").pop()} className="hang-i" data-cursor="view" style={vars(wide[i], phone[i])}>
-          <Media m={e.media} sizes={`(min-width: 768px) ${Math.ceil(wide[i].w * 100)}vw, ${Math.ceil(phone[i].w * 100)}vw`} priority={lead && i < opening} delay={(i % 4) * 70} />
+          <Media m={e.media} sizes={`(min-width: 768px) ${Math.ceil(wide[i].w * 100)}vw, ${Math.ceil(phone[i].w * 100)}vw`} priority={lead && i === 0} delay={(i % 4) * 70} quality={75} />
           <span className="hang-cap">
             <span className="hang-co">{e.title}</span>
             <span className="hang-hl">{e.line}</span>

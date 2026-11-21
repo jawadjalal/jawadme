@@ -5,7 +5,6 @@ import { JsonLd, person, website } from "@/lib/seo";
 
 const TITLE = "Jawad Jalal, Design Mastermind: brand, ad, 3D and Roblox design";
 const DESCRIPTION = "Brands, ads, 3D and Roblox games. Designed by Jawad Jalal in London. Book a 15 minute call.";
-import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(IDENTITY.site),
@@ -52,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </filter>
         </svg>
         {children}
-        <Analytics />
+        {process.env.VERCEL ? <Analytics /> : null}
       </body>
     </html>
   );

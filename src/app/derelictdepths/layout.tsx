@@ -1,3 +1,4 @@
+import "../globals.css";
 import { BookLink } from "@/components/BookLink";
 
 // The game page's closing call band, added here so the page and its data pipeline stay untouched.

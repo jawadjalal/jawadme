@@ -60,6 +60,7 @@ export function Footer({ src }: { src: string }) {
               {s.label}
             </a>
           ))}
+          <Link href="/about">About</Link>
           <a href="/blog">Blog</a>
           <a href={SITE.cv}>CV</a>
         </span>
