@@ -231,7 +231,7 @@ export function buildFoot(ctx: Ctx, v: FootV, exits: Exit[]): Foot {
     return {
       fires,
       targets,
-      shot: { t: W(-3.5, 6.5, -3.5), h: 40, w: 50, floor: O.y },
+      shot: { t: W(-3.5, 9, -3.5), h: 44, w: 52, floor: O.y },
       focus: (k) => doors.find((d) => d.key === k)!.focus,
       update(dt, st) {
         const t = ctx.time.value;
