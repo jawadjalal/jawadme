@@ -93,7 +93,7 @@ export function LoaderB() {
     const vw = innerWidth;
     const vh = innerHeight;
     const tall = vh > vw * 1.1;
-    const dpr = Math.min(devicePixelRatio || 1, vw < 600 ? 1.25 : 1.5);
+    const dpr = Math.min(devicePixelRatio || 1, vw < 600 ? 1 : 1.5);
 
     let dead = false;
     let raf = 0;
@@ -306,7 +306,7 @@ export function LoaderB() {
       }
       await tick();
       if (dead) return;
-      const N = Math.min(2000, tpts.length / 2);
+      const N = Math.min(vw < 600 ? 1100 : 2000, tpts.length / 2);
       const pick = (arr: number[], n: number) => {
         const out: number[] = [];
         const total = arr.length / 2;
@@ -367,7 +367,7 @@ export function LoaderB() {
       const ctx = cv.getContext("2d")!;
       const flying = css(spark);
       const landed = css(mix(glow, ivory, 0.5));
-      const embers: Ember[] = Array.from({ length: Math.round(cfg.embers * (vw < 600 ? 0.6 : 1)) }, () => ({ x: Math.random() * vw, y: vh * (0.55 + Math.random() * 0.6), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
+      const embers: Ember[] = Array.from({ length: Math.round(cfg.embers * (vw < 600 ? 0.4 : 1)) }, () => ({ x: Math.random() * vw, y: vh * (0.55 + Math.random() * 0.6), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
 
       t0 = Math.max(T0, performance.now() - 1300);
       let last = t0;
@@ -423,24 +423,24 @@ export function LoaderB() {
         });
 
         if (t >= cfg.cond && t < cfg.markIn + 220) {
-          ctx.globalCompositeOperation = "lighter";
           const fade = 1 - clamp((t - cfg.markIn) / 180);
+          const pf = new Path2D();
+          const pl = new Path2D();
           for (let i = 0; i < N; i++) {
             const u = clamp((t - cfg.cond - dl[i]) / du[i]);
+            if (u === 0) continue;
             const e = ease(u);
             const bow = Math.sin(u * Math.PI);
             const x = sx[i] + (tx[i] - sx[i]) * e + ax[i] * bow;
             const y = sy[i] + (ty[i] - sy[i]) * e + ay[i] * bow;
-            ctx.globalAlpha = (u === 0 ? 0 : 0.5 + 0.5 * u) * fade * fadeOut;
             const s = 2.3 - u * 0.5;
-            ctx.fillStyle = u < 1 ? flying : landed;
-            ctx.fillRect(x - s / 2, y - s / 2, s, s);
-            if (i % 7 === 0) {
-              ctx.globalAlpha *= 0.35;
-              ctx.drawImage(spr, x - 5, y - 5, 10, 10);
-            }
+            (u < 1 ? pf : pl).rect(x - s / 2, y - s / 2, s, s);
           }
-          ctx.globalCompositeOperation = "source-over";
+          ctx.globalAlpha = 0.9 * fade * fadeOut;
+          ctx.fillStyle = flying;
+          ctx.fill(pf);
+          ctx.fillStyle = landed;
+          ctx.fill(pl);
         }
         ctx.globalAlpha = 1;
 
