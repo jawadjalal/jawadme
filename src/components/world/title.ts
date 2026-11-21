@@ -5,8 +5,8 @@ import { M, Q, box, prep, type Batch, type Fire, type Palette } from "./kit";
 
 // The name as the world's monument: "Design Mastermind" in his own lettering (the outlines Wordmark carries), cast in
 // gilt bronze, two lines standing on a plinth in the gate court, square to the viewer, the lit gate behind it.
-// Footlights set into the plinth light the faces from below. Each letter rises out of the plinth when the ignition
-// wave reaches it, so the name arrives with the fire on load; still frames show it risen.
+// Footlights set into the plinth light the faces from below. The name stands from the first frame; each letter
+// settles up out of the plinth as the ignition wave passes it, so it arrives with the fire on load.
 
 const LINE = 32;
 
@@ -48,10 +48,9 @@ export function buildTitle(o: { B: Batch; m: Palette; gilt: THREE.Material; scen
     /** Raise the letters for ignition time `ign` (a letter starts at 0.55 s plus 55 ms per letter and takes 0.8 s). */
     rise(ign: number) {
       for (const { mesh, k } of glyphs) {
-        const t = Math.min(1, Math.max(0, (ign - 0.55 - k * 0.055) / 0.8));
+        const t = Math.min(1, Math.max(0, (ign + 0.5 - k * 0.04) / 0.9));
         const e = t >= 1 ? 1 : 1 + 2.2 * Math.pow(t - 1, 3) + 1.2 * Math.pow(t - 1, 2);
-        mesh.visible = t > 0;
-        mesh.matrix.copy(L).multiply(lift.makeTranslation(0, -9.5 * (1 - e), 0));
+        mesh.matrix.copy(L).multiply(lift.makeTranslation(0, -1.2 * (1 - e), 0));
         mesh.matrixWorldNeedsUpdate = true;
       }
     },

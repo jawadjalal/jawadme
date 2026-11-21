@@ -19,7 +19,7 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], o: FootOpts)
   const { mk, palette } = painter(S, b);
   const floor = mk("#47413d", { k: "floor", rect: [-15, -15, 15, 15], border: 2, tile: 2.4 });
   const B = new Batch();
-  const foot = buildFoot({ B, m: palette, floor, scene, geos: b.geos, mats: b.mats, texs: b.texs, time: S.time, family: getComputedStyle(host).fontFamily, O: new THREE.Vector3() }, o.v, o.exits);
+  const foot = buildFoot({ B, m: palette, mk, floor, scene, geos: b.geos, mats: b.mats, texs: b.texs, time: S.time, family: getComputedStyle(host).fontFamily, O: new THREE.Vector3() }, o.v, o.exits);
   B.build(scene, b.geos);
 
   scene.add(new THREE.HemisphereLight("#6660a6", "#140c0a", 1.15));
@@ -37,7 +37,7 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], o: FootOpts)
   const F = fx(scene, S, b);
   F.flames(foot.fires.filter((f) => !f.soul && !f.lamp), false, ctx.small ? 14 : 24);
   F.flames(foot.fires.filter((f) => f.soul && !f.lamp), true, ctx.small ? 14 : 24);
-  F.halos(foot.fires.filter((f) => !f.soul && !f.lamp), "#ff6a24");
+  F.halos([...foot.fires.filter((f) => !f.soul && !f.lamp), ...(foot.halos ?? [])], "#ff6a24");
   F.drift(ctx.small ? 100 : 200, [60, 26, 60], 0.11, 1.1, "#ff6a24", 1.4, 0);
   F.drift(ctx.small ? 40 : 80, [60, 20, 60], 0.42, 0.35, "#63e6ff", 0.42, 1);
 

@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { MAIL, trackEmail } from "@/components/MailLink";
 import { SITE, SOCIAL } from "@/content/site";
+import { IDENTITY } from "@/lib/profile";
 import type { Exit, FootV } from "./foot";
 import { Stage } from "./kit/Stage";
 
@@ -12,20 +14,19 @@ import { Stage } from "./kit/Stage";
 // run. ?footer=a|b|c picks the take.
 
 const X = SOCIAL.find((s) => s.label === "X")!.href;
-const MAIL = "mailto:" + SITE.email;
 const LANES = SITE.lanes.join(", ");
 const CALL = (src: string): Exit => ({ key: "call", label: SITE.cta, sub: SITE.detail, href: "/cal?src=" + src, glyph: "call", main: true });
 
 export const EXITS: Record<FootV, Exit[]> = {
-  a: [CALL("footer-door"), { key: "work", label: "Work", sub: LANES, href: "/work", glyph: "work" }, { key: "x", label: "X", sub: "@" + new URL(X).pathname.slice(1), href: X, glyph: "x" }, { key: "mail", label: "Email", sub: SITE.email, href: MAIL, glyph: "mail" }],
-  b: [CALL("footer-card"), { key: "work", label: "See the work", sub: LANES, href: "/work", glyph: "work" }, { key: "hi", label: "Say hi", sub: SITE.email, href: MAIL, glyph: "mail" }],
+  a: [CALL("footer-door"), { key: "work", label: "Work", sub: LANES, href: "/work", glyph: "work" }, { key: "x", label: "X", sub: "@" + new URL(X).pathname.slice(1), href: X, glyph: "x" }, { key: "mail", label: "Email", sub: IDENTITY.email, href: MAIL, glyph: "mail" }],
+  b: [CALL("footer-card"), { key: "work", label: "See the work", sub: LANES, href: "/work", glyph: "work" }, { key: "hi", label: "Say hi", sub: IDENTITY.email, href: MAIL, glyph: "mail" }],
   c: [
     CALL("footer-die"),
     { key: "work", label: "Work", sub: LANES, href: "/work", glyph: "work" },
     { key: "ads", label: "Ads", sub: "Ads for startups", href: "/ads", glyph: "ads" },
     { key: "3d", label: "3D", sub: "Worlds and objects", href: "/work?f=3d", glyph: "cube" },
     { key: "roblox", label: "Roblox", sub: "Games I design and build", href: "/work?f=roblox", glyph: "roblox" },
-    { key: "hi", label: "Say hi", sub: SITE.email, href: MAIL, glyph: "mail" },
+    { key: "hi", label: "Say hi", sub: IDENTITY.email, href: MAIL, glyph: "mail" },
   ],
 };
 
@@ -59,7 +60,7 @@ export function FootStage() {
 
   const exits = EXITS[v];
   const shown = exits.find((e) => e.key === face) ?? exits[0];
-  const ext = (href: string) => (href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {});
+  const ext = (href: string) => (href.startsWith("http") ? { target: "_blank", rel: "noopener" } : href === MAIL ? { onClick: () => trackEmail("footer-" + v) } : {});
   return (
     <Stage load={load} poster={{ d: "/world/poster/foot-" + v + "-d.webp", m: "/world/poster/foot-" + v + "-m.webp" }} className="foot-stage" data-v={v}>
       <div className="foot-head">

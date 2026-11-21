@@ -255,7 +255,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     F.u.ppu.value = (H * dpr) / vh;
     F.u.center.value.copy(cur);
     lightFires(S, fires, cur, lit);
-    title.rise(ign.value);
+    title.rise(o.still ? 99 : ign.value);
 
     if (ptr.moved && ptr.cx >= 0) {
       ptr.moved = false;

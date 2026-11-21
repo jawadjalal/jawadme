@@ -1,10 +1,10 @@
 import * as THREE from "three";
 import type { Shot } from "./hall";
-import { BRAZIER, Batch, COS, DV, M, Q, RV, box, column, lathe, prep, rock, type Fire, type Palette } from "./kit";
+import { AMPHORA, BRAZIER, Batch, COS, DV, M, Q, RV, box, column, lathe, prep, rock, type Fire, type Kind, type Palette } from "./kit";
 
 // The footer's chamber: the last room of the run, one object to play with, and the ways out. Three takes, chosen by
 // ?footer: (a) exits, a portal for each destination with its glyph floating over the lintel, the call's portal square
-// to the viewer and lit; (b) three standing cards to choose between, the call's raised in the middle; (c) a die with
+// to the viewer and lit; (b) three relics on pedestals to choose between, the call's raised in the middle; (c) a die with
 // Jawad on the face toward you and a destination on each of the others, which you roll or fling. Every target is a
 // real link laid over the object (./scene projects their boxes); this file builds the geometry and moves it, given
 // which link is hot, which was picked, and how far the pointer has dragged.
@@ -17,6 +17,8 @@ export type Target = { key: string; at: THREE.Vector3; w: number; h: number };
 export type FootState = { hot: string | null; pick: string | null; pickT: number; tilt: THREE.Vector2; drag: THREE.Vector2 | null };
 export type Foot = {
   fires: Fire[];
+  /** Fires that get a halo but no flame (a glowing coal). */
+  halos?: Fire[];
   targets: Target[];
   shot: Shot;
   focus: (key: string) => THREE.Vector3;
@@ -24,7 +26,7 @@ export type Foot = {
   roll?: (fx?: number, fy?: number) => void;
   face?: (on: (key: string) => void) => void;
 };
-type Ctx = { B: Batch; m: Palette; floor: THREE.Material; scene: THREE.Scene; geos: THREE.BufferGeometry[]; mats: THREE.Material[]; texs: THREE.Texture[]; time: { value: number }; family: string; O: THREE.Vector3 };
+type Ctx = { B: Batch; m: Palette; mk: (color: string, kind: Kind) => THREE.Material; floor: THREE.Material; scene: THREE.Scene; geos: THREE.BufferGeometry[]; mats: THREE.Material[]; texs: THREE.Texture[]; time: { value: number }; family: string; O: THREE.Vector3 };
 
 const KEY = 32073823;
 const ease = (t: number) => 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 3);
@@ -122,7 +124,7 @@ export function buildFoot(ctx: Ctx, v: FootV, exits: Exit[]): Foot {
   };
 
   if (v === "a") return portals();
-  if (v === "b") return cards();
+  if (v === "b") return relics();
   return die();
 
   // ---------- (a) the exits: the call's portal square to the viewer in the back corner, the rest in the side walls
@@ -248,94 +250,133 @@ export function buildFoot(ctx: Ctx, v: FootV, exits: Exit[]): Foot {
     };
   }
 
-  // ---------- (b) the choice: three cards standing over a round dais, the call's raised in the middle
-  function cards(): Foot {
+  // ---------- (b) the choice: three relics on pedestals, one per way out, each lit from within or by its own lamp.
+  // The call's is an astrolabe of bronze rings turning around a coal (a quarter of its dial burns: fifteen minutes);
+  // the work's a terracotta amphora banded with the running key; hello's a scroll with a wax seal.
+  function relics(): Foot {
     platform(13, 12);
-    B.add(m.stone, new THREE.CylinderGeometry(10.5, 11, 1.1, 64), M(O.x, O.y, O.z), false);
-    B.add(m.pale, new THREE.CylinderGeometry(9.6, 9.8, 0.5, 64), M(O.x, O.y + 1.1, O.z), false);
-    B.add(m.dark, new THREE.CylinderGeometry(3.2, 3.6, 0.8, 40), M(O.x, O.y + 1.6, O.z), false);
-    const L = M(O.x, O.y, O.z, Q);
+    B.add(m.stone, new THREE.CylinderGeometry(12, 12.4, 1.1, 64), M(O.x, O.y, O.z), false);
+    B.add(m.pale, new THREE.CylinderGeometry(11.2, 11.4, 0.4, 64), M(O.x, O.y + 1.1, O.z), false);
+    const L = M(O.x, O.y + 1.5, O.z, Q);
+    const at = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z).applyMatrix4(L);
     for (const sx of [-1, 1]) {
-      B.add(m.pale, column(13, 0.6), L.clone().multiply(M(sx * 13.5, 0, -6)));
-      B.add(m.pale, column(6, 0.6, 1.4, sx * 3), L.clone().multiply(M(sx * 9.5, 0, -10.5)));
-      fire(new THREE.Vector3(sx * 11.5, 0, 3).applyMatrix4(L), true);
+      B.add(m.pale, column(14, 0.6), M(O.x, O.y, O.z, Q).multiply(M(sx * 13.8, 0, -7)));
+      fire(at(sx * 12.2, -1.5, 4.5), true);
     }
-    const k = 1 / COS;
+    const terra = ctx.mk("#a8512b", { k: "stone", rim: 1.1 });
+    const ivory = ctx.mk("#e4d6bb", { k: "stone", rim: 1.2 });
+    const wax = ctx.mk("#a3241b", { k: "stone", rim: 1.6 });
+    const halos: Fire[] = [];
     const list = [exits[1], exits[0], exits[2]];
     const targets: Target[] = [];
-    const cs = list.map((e, i) => {
+    const items = list.map((e, i) => {
       const main = !!e.main;
-      const w = main ? 6.6 : 5.4, h = main ? 9.4 : 7.7;
-      const cv = document.createElement("canvas");
-      cv.width = 640;
-      cv.height = Math.round((640 * h) / w);
-      const g = cv.getContext("2d")!;
-      const H = cv.height;
-      g.fillStyle = "#140e0b";
-      g.fillRect(0, 0, 640, H);
-      g.fillStyle = main ? "#ff5a1c" : "#c9a679";
-      for (const [x, y, ww, hh] of [[0, 0, 640, 14], [0, H - 14, 640, 14], [0, 0, 14, H], [626, 0, 14, H]]) g.fillRect(x, y, ww, hh);
-      drawKey(g, 40, 40, 560, 56);
-      drawKey(g, 40, H - 96, 560, 56);
-      g.save();
-      g.translate(320, H * 0.42);
-      g.fillStyle = g.strokeStyle = main ? "#ff7a3c" : "#f8e3c2";
-      drawGlyph(g, e.glyph, main ? 120 : 110);
-      g.restore();
-      g.fillStyle = "#f8e3c2";
-      g.textAlign = "center";
-      g.font = "700 " + (main ? 84 : 76) + "px " + ctx.family;
-      g.fillText(e.label, 320, H * 0.72, 560);
-      g.fillStyle = "#b9a184";
-      g.font = "600 36px " + ctx.family;
-      g.fillText(e.sub, 320, H * 0.72 + 62, 560);
-      const mat = new THREE.ShaderMaterial({
-        uniforms: { tC: { value: tex(cv) }, uHot: { value: 0 }, uDim: { value: 0 }, uTime: ctx.time, uMain: { value: main ? 1 : 0 } },
-        vertexShader: FLAT_VS,
-        fragmentShader: `
-          uniform sampler2D tC; uniform float uHot, uDim, uTime, uMain; varying vec2 vUv;
-          void main() {
-            vec3 c = texture2D(tC, vUv).rgb;
-            float e = min(min(vUv.x, 1.0 - vUv.x), min(vUv.y, 1.0 - vUv.y));
-            float sweep = smoothstep(0.08, 0.0, abs(vUv.x + vUv.y * 0.6 - fract(uTime * 0.45) * 2.4 + 0.4));
-            c += vec3(1.0, 0.9, 0.75) * sweep * (0.08 + 0.22 * uHot) * (0.4 + uMain);
-            c = mix(c, vec3(2.2, 2.0, 1.8), smoothstep(0.022, 0.0, e) * uHot);
-            c *= 1.0 - 0.45 * uDim;
-            gl_FragColor = vec4(c, 1.0);
-            #include <colorspace_fragment>
-          }`,
-      });
-      ctx.mats.push(mat);
-      const g3 = new THREE.Group();
-      const front = new THREE.Mesh(new THREE.PlaneGeometry(w, h * k), mat);
-      ctx.geos.push(front.geometry);
-      front.position.z = 0.16;
-      g3.add(front, mesh(prep(box(w + 0.3, h * k + 0.3, 0.26, 0.08)).translate(0, -(h * k + 0.3) / 2, 0), m.bronze));
-      const base = new THREE.Vector3((i - 1) * 8.2, (main ? 5.2 : 3.9) + (h * k) / 2, main ? 1.4 : -0.6).applyMatrix4(L);
-      g3.position.copy(base);
-      g3.rotation.y = Q - (i - 1) * 0.16;
-      ctx.scene.add(g3);
-      targets.push({ key: e.key, at: base.clone(), w: w * 1.04, h: h * 1.04 });
-      return { key: e.key, g: g3, mat, base, ry: g3.rotation.y, lift: 0, i };
+      const x = (i - 1) * 9.4, z = main ? 1.2 : -0.8, ph = main ? 4.4 : 3.0;
+      const P = L.clone().multiply(M(x, 0, z));
+      const add = (mat: THREE.Material, g: THREE.BufferGeometry, l: THREE.Matrix4) => B.add(mat, g, P.clone().multiply(l));
+      add(m.pale, box(4.6, 0.5, 4.6, 0.08), M(0, 0, 0));
+      add(m.stone, box(3.6, ph - 1.0, 3.6, 0.12), M(0, 0.5, 0));
+      add(m.trim, box(3.8, 0.7, 3.8, 0.05), M(0, ph - 1.2, 0));
+      add(m.pale, box(4.4, 0.5, 4.4, 0.08), M(0, ph - 0.5, 0));
+      const top = at(x, ph, z);
+      const disc = new THREE.Mesh(new THREE.CircleGeometry(2.1, 48).rotateX(-Math.PI / 2), glowMat(main ? "#ff6a24" : "#f2c48a", 0.4, "float f = smoothstep(0.5, 0.0, length(vUv - 0.5)); gl_FragColor = vec4(uC * f * f * uA, 1.0);"));
+      ctx.geos.push(disc.geometry);
+      disc.position.copy(top).setY(top.y + 0.03);
+      ctx.scene.add(disc);
+      const g = new THREE.Group();
+      const spin: THREE.Object3D[] = [];
+      if (e.glyph === "call") {
+        const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.95, 3), new THREE.MeshBasicMaterial({ color: new THREE.Color("#ff7a30").multiplyScalar(2.4) }));
+        ctx.geos.push(core.geometry);
+        ctx.mats.push(core.material as THREE.Material);
+        g.add(core);
+        [2.5, 2.05, 1.6].forEach((r, k) => {
+          const ring = mesh(prep(new THREE.TorusGeometry(r, 0.15 - k * 0.02, 10, 72)), m.bronze);
+          const pivot = new THREE.Group();
+          pivot.add(ring);
+          pivot.rotation.set(k === 1 ? Math.PI / 2 : 0.35 * k, k === 2 ? Math.PI / 2 : 0, 0.2 * k);
+          g.add(pivot);
+          spin.push(ring);
+        });
+        for (let t = 0; t < 12; t++) {
+          const a = (t / 12) * Math.PI * 2;
+          const tick = mesh(prep(box(0.16, t % 3 ? 0.35 : 0.6, 0.16, 0.03)).translate(0, -0.15, 0), m.bronze);
+          tick.position.set(Math.cos(a) * 2.85, Math.sin(a) * 2.85, 0);
+          tick.rotation.z = a - Math.PI / 2;
+          spin[0].add(tick);
+        }
+        const arc = new THREE.Mesh(new THREE.RingGeometry(2.6, 2.95, 32, 1, Math.PI / 2 - Math.PI / 2, Math.PI / 2), new THREE.MeshBasicMaterial({ color: new THREE.Color("#ff6a24").multiplyScalar(1.8), side: THREE.DoubleSide }));
+        ctx.geos.push(arc.geometry);
+        ctx.mats.push(arc.material as THREE.Material);
+        spin[0].add(arc);
+      } else if (e.glyph === "work") {
+        const s = 2.5;
+        g.add(mesh(prep(lathe(AMPHORA.map(([r, y]) => [r * s, y * s] as [number, number]), 40)).translate(0, (-1.8 * s) / 2, 0), terra));
+        const band = lathe([[0.55 * s, 0.62 * s], [0.565 * s, 0.8 * s], [0.53 * s, 1.0 * s]], 40).translate(0, (-1.8 * s) / 2, 0);
+        g.add(mesh(prep(band), m.trim));
+        for (const sx of [-1, 1]) {
+          const h = mesh(prep(new THREE.TorusGeometry(0.42 * s * 0.6, 0.09 * s, 8, 24, Math.PI)), terra);
+          h.position.set(sx * 0.38 * s, 0.45 * s, 0);
+          h.rotation.set(0, 0, sx > 0 ? -Math.PI / 2 : Math.PI / 2);
+          g.add(h);
+        }
+      } else {
+        const roll = new THREE.Group();
+        roll.add(mesh(prep(new THREE.CylinderGeometry(0.62, 0.62, 4.2, 36).rotateZ(Math.PI / 2)), ivory));
+        for (const sx of [-1, 1]) {
+          const knob = mesh(prep(lathe([[0, 0], [0.28, 0], [0.3, 0.25], [0.2, 0.55], [0.32, 0.8], [0, 0.95]], 20).rotateZ((-sx * Math.PI) / 2)), m.wood);
+          knob.position.x = sx * 2.1;
+          roll.add(knob);
+        }
+        const sheet = new THREE.PlaneGeometry(3.7, 3.4, 1, 16);
+        const sp = sheet.attributes.position;
+        for (let k = 0; k < sp.count; k++) {
+          const yy = sp.getY(k);
+          const t = (1.7 - yy) / 3.4;
+          sp.setXYZ(k, sp.getX(k), 0.1 - t * 3.0, 0.62 + Math.sin(t * Math.PI) * 0.35 - t * 0.2);
+        }
+        sheet.computeVertexNormals();
+        const sh = mesh(prep(sheet), ivory);
+        roll.add(sh);
+        const seal = mesh(prep(new THREE.CylinderGeometry(0.42, 0.46, 0.14, 24).rotateX(Math.PI / 2)), wax);
+        seal.position.set(0.6, -2.3, 1.2);
+        roll.add(seal);
+        roll.rotation.set(0.25, 0, -0.12);
+        roll.position.y = 0.8;
+        g.add(roll);
+      }
+      const base = top.clone().setY(top.y + (e.glyph === "work" ? 2.6 : 3.2));
+      g.position.copy(base);
+      g.rotation.y = Q;
+      ctx.scene.add(g);
+      const lamp: Fire = { p: base.clone().add(new THREE.Vector3(0, e.glyph === "call" ? 0 : 1.5, 0)).addScaledVector(DV, e.glyph === "call" ? 0 : 3), r: main ? 9 : 7, soul: false, big: false, lamp: true };
+      fires.push(lamp);
+      if (main) halos.push({ ...lamp, p: base.clone() });
+      const lo = O.y + 1.5, hi = base.y + 3.4;
+      targets.push({ key: e.key, at: new THREE.Vector3(base.x, (lo + hi) / 2, base.z), w: 6.6, h: (hi - lo) * COS });
+      return { key: e.key, g, base, spin, lamp, disc, main, lift: 0, i, r0: lamp.r };
     });
-    fires.push({ p: W(0, 3, 0), r: 10, soul: false, big: false, lamp: true });
 
     return {
       fires,
+      halos,
       targets,
-      shot: { t: W(0, 8.5, 0), h: 30, w: 46, floor: O.y },
-      focus: (key) => cs.find((c) => c.key === key)!.base,
+      shot: { t: W(0, 7.5, 0), h: 30, w: 44, floor: O.y },
+      focus: (key) => items.find((c) => c.key === key)!.base,
       update(dt, st) {
         const t = ctx.time.value;
-        for (const c of cs) {
+        for (const c of items) {
           const on = st.hot === c.key || st.pick === c.key ? 1 : 0;
-          c.lift += (on - c.lift) * (1 - Math.exp(-dt * 8));
+          c.lift += (on - c.lift) * (1 - Math.exp(-dt * 7));
           const pk = st.pick === c.key ? ease(st.pickT / 0.7) : 0;
-          c.g.position.copy(c.base).setY(c.base.y + Math.sin(t * 1.3 + c.i * 2.1) * 0.22 + c.lift * 0.9 + pk * 1.5);
-          c.g.scale.setScalar(1 + c.lift * 0.06);
-          c.g.rotation.set(-st.tilt.y * 0.16 * c.lift, c.ry + st.tilt.x * 0.24 * c.lift + pk * Math.PI * 2, 0);
-          c.mat.uniforms.uHot.value = c.lift;
-          c.mat.uniforms.uDim.value += (((st.hot || st.pick) && !on ? 1 : 0) - c.mat.uniforms.uDim.value) * (1 - Math.exp(-dt * 6));
+          const dim = (st.hot || st.pick) && !on ? 1 : 0;
+          c.g.position.copy(c.base).setY(c.base.y + Math.sin(t * 1.2 + c.i * 2.1) * 0.25 + c.lift * 0.8 + pk * 1.2);
+          c.g.rotation.y = Q + Math.sin(t * 0.5 + c.i) * 0.35 + c.lift * st.tilt.x * 0.4 + pk * Math.PI * 2;
+          c.g.rotation.x = -st.tilt.y * 0.15 * c.lift;
+          c.g.scale.setScalar(1 + c.lift * 0.08 + pk * 0.1);
+          c.spin.forEach((s, k) => (s.rotation.z += dt * (0.25 + k * 0.18) * (1 + c.lift * 3) * (k % 2 ? -1 : 1)));
+          c.lamp.r = c.r0 * (1 + c.lift * 0.6 + pk * 0.8) * (1 - 0.35 * dim);
+          (c.disc.material as THREE.ShaderMaterial).uniforms.uA.value = (c.main ? 0.55 : 0.3) + c.lift * 0.9 + pk;
         }
       },
     };
