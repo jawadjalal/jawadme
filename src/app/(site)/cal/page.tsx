@@ -29,9 +29,6 @@ export default async function Cal({ searchParams }: Props) {
         <span className="hide-s">Video</span>
         <span>Free</span>
       </header>
-      <div className="cal-embed">
-        <CalInline email={SITE.email} theme="light" />
-      </div>
       <p className="cal-mail">
         Rather write? <a href={"mailto:" + SITE.email + "?subject=Project"}>{SITE.email}</a>
         <span aria-hidden="true"> · </span>
@@ -39,6 +36,9 @@ export default async function Cal({ searchParams }: Props) {
           Open on Cal.com ↗
         </a>
       </p>
+      <div className="cal-embed">
+        <CalInline email={SITE.email} theme="light" />
+      </div>
     </main>
   );
 }

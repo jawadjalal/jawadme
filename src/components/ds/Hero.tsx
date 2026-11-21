@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
+import { Art } from "@/components/ds/Art";
 import { ADS } from "@/content/ads";
 import { SITE } from "@/content/site";
 
 // The home hero. The name is set as a mark across the full width; one crystal seam draws down through "Mastermind",
 // splits it a few pixels along the cut and cools to a hairline that stays. The ember bar of facts wipes in under it,
-// the statement follows word by word and the wall of ads rises, then drifts; each ad opens in the viewer.
-// Reduced motion: everything at rest and no seam.
+// then the painted panel opens below with the statement over its foot. The wall of ads sits right under the hero and
+// drifts; each ad opens in the viewer. Reduced motion: everything at rest and no seam.
 
 const SUB = "Hi! I'm Jawad Jalal. I'm 15 and in London, designing and building things.";
 const SHOW = ADS.slice(0, 9);
@@ -44,7 +45,6 @@ const chars = (w: string, from: number) =>
   ));
 
 export function Hero() {
-  const wall = [...SHOW, ...SHOW];
   return (
     <section className="hero" data-hero="">
       <h1 className="hero-mark" aria-label={SITE.headline}>
@@ -66,34 +66,44 @@ export function Hero() {
         <span>London</span>
         <span>{SITE.available}</span>
       </div>
-      <div className="hero-row">
-        <BookLink src="home-hero" className="hero-who" cursor>
-          <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="52px" priority />
-          <span>Book a 15 min call ↗</span>
-        </BookLink>
-        <p className="hero-say" aria-label={SUB}>
-          {SUB.split(" ").map((w, i) => (
-            <span key={i}>
-              <span className="hero-sw" aria-hidden="true">
-                <span style={{ animationDelay: 600 + i * 12 + "ms" }}>{w}</span>
-              </span>{" "}
-            </span>
-          ))}
-        </p>
-      </div>
-      <nav className="hero-wall" aria-label="Recent ads">
-        <div className="hero-track">
-          {wall.map((a, i) => {
-            const copy = i >= SHOW.length;
-            return (
-              <Link key={a.id + i} href={"/w/" + a.id} className="hero-card" data-cursor="view" style={{ animationDelay: 700 + Math.min(i, 5) * 40 + "ms" }} tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
-                <Image src={a.src} alt={copy ? "" : a.alt} width={a.w} height={a.h} sizes="(min-width: 768px) 30vw, 56vw" priority={i < 4} />
-                <span className="hero-tag">{a.campaign}</span>
-              </Link>
-            );
-          })}
+      <div className="hero-stage">
+        <Art k="hero" priority className="hero-art" />
+        <div className="hero-over">
+          <BookLink src="home-hero" className="hero-who" cursor>
+            <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="52px" priority />
+            <span>Book a 15 min call ↗</span>
+          </BookLink>
+          <p className="hero-say" aria-label={SUB}>
+            {SUB.split(" ").map((w, i) => (
+              <span key={i}>
+                <span className="hero-sw" aria-hidden="true">
+                  <span style={{ animationDelay: 760 + i * 12 + "ms" }}>{w}</span>
+                </span>{" "}
+              </span>
+            ))}
+          </p>
         </div>
-      </nav>
+      </div>
     </section>
+  );
+}
+
+/** The ads right under the hero: a wall that opens as it arrives, then drifts. */
+export function AdWall() {
+  const wall = [...SHOW, ...SHOW];
+  return (
+    <nav className="wall" aria-label="Recent ads" data-in="">
+      <div className="wall-track">
+        {wall.map((a, i) => {
+          const copy = i >= SHOW.length;
+          return (
+            <Link key={a.id + i} href={"/w/" + a.id} className="wall-card" data-cursor="view" style={{ "--i": Math.min(i, 6) } as React.CSSProperties} tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
+              <Image src={a.src} alt={copy ? "" : a.alt} width={a.w} height={a.h} sizes="(min-width: 768px) 24vw, 56vw" />
+              <span className="wall-tag">{a.campaign}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
   );
 }

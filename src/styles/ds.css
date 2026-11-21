@@ -10,6 +10,8 @@
   --white: #ffffff;
   --ink: #0b0b0b;
   --ember: #ff5314;
+  --bronze: #b5833f;
+  --under: #150f19;
 
   --bg: var(--ground);
   --fg: var(--ink);
@@ -256,11 +258,16 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
 
 /* The signpost. An ink post; white boards with an ink edge, cut to a point; the call board in ember. */
 .sign { grid-column: 9 / -1; position: relative; display: grid; padding-top: 34px; perspective: 1100px; }
+.art.sign-art { position: absolute; inset: -8% 0 -4%; background: none; z-index: 0; }
+.art.sign-art > img { object-fit: contain; }
+.art.sign-art .art-slot { left: calc(50% - 40px); right: auto; width: 80px; padding: 8px; background: var(--under); }
+.sign-art .art-spec { display: none; }
+.sign-art .art-slot .lbl { writing-mode: vertical-rl; font-size: 13px; }
 .sign-post { position: absolute; left: 50%; top: 0; bottom: 0; width: 20px; margin-left: -10px; background: linear-gradient(90deg, var(--ink) 0 62%, #2a2a29 62% 72%, var(--ink) 72%); }
 .sign-post::before { content: ""; position: absolute; left: -5px; right: -5px; top: -10px; height: 12px; background: var(--ink); }
 .sign-foot { position: relative; z-index: 0; justify-self: center; width: 46%; height: 14px; margin-top: 26px; background: radial-gradient(50% 50% at 50% 50%, rgb(0 0 0 / 0.22), transparent 72%); }
 .sign-arms { position: relative; z-index: 1; display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
-.sign-arm { display: grid; grid-template-columns: 1fr 1fr; filter: drop-shadow(0 6px 0 var(--ink)); }
+.sign-arm { display: grid; grid-template-columns: 1fr 1fr; filter: drop-shadow(2px 0 0 var(--ink)) drop-shadow(-2px 0 0 var(--ink)) drop-shadow(0 -2px 0 var(--ink)) drop-shadow(0 6px 0 var(--ink)); }
 .sign-board {
   --nub: 30px;
   display: inline-flex;
@@ -268,7 +275,7 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
   gap: 0.36em;
   height: calc(20 * var(--u));
   min-height: 52px;
-  background: var(--white);
+  background: #f1ede3;
   color: var(--ink);
   font: 900 max(24px, calc(11 * var(--u)))/1 var(--f-disp);
   letter-spacing: -0.05em;
@@ -338,11 +345,20 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 /* ── Placeholder ── */
 .ph { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; padding: 14px; background-color: var(--tile); background-image: var(--hatch); color: var(--fg); overflow: hidden; }
 
+/* ── Art: the painted Greek-myth pieces, and their marked slots until the files land ── */
+.art { position: relative; overflow: hidden; background: var(--under); }
+.art > img { object-fit: cover; object-position: var(--pos); }
+.art-slot { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; gap: 8px; padding: 24px; text-align: center; color: var(--ground); background: radial-gradient(60% 70% at 50% 108%, rgb(255 83 20 / 0.55), rgb(176 112 48 / 0.18) 45%, transparent 72%), radial-gradient(40% 50% at 18% 0%, rgb(120 70 140 / 0.28), transparent 70%), var(--under); outline: 1px dashed rgb(181 131 63 / 0.7); outline-offset: -10px; }
+.art-slot .lbl { font-size: 15px; }
+.art-spec { max-width: 46ch; color: rgb(230 229 225 / 0.62); font-weight: 600; }
+.art-band { aspect-ratio: 3 / 1; }
+@media (max-width: 767px) { .art-band { aspect-ratio: 3 / 2; } }
+
 /* ── Home: hero ──
    Load, about 1.2 s: letters rise (0 to 0.9 s), the seam draws down through "Mastermind" (0.3 to 0.72 s), the right
    half settles along the cut (0.62 to 1 s) and the seam cools to a hairline (0.8 to 1.25 s); the ember bar wipes in
-   (0.5 s), the statement follows (0.6 s) and the wall opens (0.7 s), then drifts. */
-.hero { position: relative; height: calc(100svh - var(--dock)); min-height: 600px; display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); overflow: hidden; }
+   (0.5 s), the painted panel opens (0.56 s) and the statement rises over its foot (0.76 s). */
+.hero { position: relative; height: calc(100svh - var(--dock)); min-height: 620px; display: grid; grid-template-rows: auto auto minmax(0, 1fr); overflow: hidden; }
 .hero-mark { display: flex; gap: 0.2em; padding: 0.16em var(--g) 0; font: 900 11.15vw/0.84 var(--f-disp); letter-spacing: -0.062em; font-feature-settings: "kern", "ss01", "cv11"; white-space: nowrap; }
 .hero-w { display: flex; overflow: hidden; padding-bottom: 0.13em; margin-bottom: -0.1em; }
 .hero-ch { display: block; animation: rise 640ms var(--ease) both; }
@@ -366,33 +382,44 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .hero-bar > span:nth-child(2) { animation-delay: 680ms; }
 .hero-bar > span:nth-child(3) { animation-delay: 720ms; }
 .hero-bar > span:nth-child(4) { animation-delay: 760ms; }
-.hero-row { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 24px; padding: 18px var(--g); }
-.hero-who { display: flex; align-items: center; gap: 12px; font: 700 17px/1 var(--f-bar); letter-spacing: -0.02em; animation: up 600ms 760ms var(--ease) both; }
+.hero-stage { position: relative; min-height: 0; margin: 12px var(--g) 12px; animation: open 760ms 560ms var(--ease-cut) both; }
+.hero-art { position: absolute; inset: 0; }
+.hero-art .art-slot { align-content: start; padding-top: 18%; }
+.hero-over { position: absolute; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: auto 1fr; align-items: end; gap: 24px; padding: 64px 18px 18px; color: var(--ground); background: linear-gradient(to top, rgb(14 9 18 / 0.72), rgb(14 9 18 / 0.36) 55%, transparent); }
+.hero-who { display: flex; align-items: center; gap: 12px; font: 700 17px/1 var(--f-bar); letter-spacing: -0.02em; animation: up 600ms 900ms var(--ease) both; }
 .hero-who img { width: 52px; height: auto; transition: transform 400ms var(--ease); }
 .hero-who:hover img { transform: rotate(-8deg) scale(1.06); }
 .hero-who:hover span { color: var(--ember); }
 .hero-say { justify-self: end; max-width: 15.2em; font: 700 clamp(22px, 2.43vw, 46px)/0.94 var(--f-bar); letter-spacing: -0.03em; text-align: right; text-wrap: balance; }
 .hero-sw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .hero-sw > span { display: inline-block; animation: rise 560ms var(--ease) both; }
-.hero-wall { min-height: 0; overflow: hidden; padding: 0 0 12px; }
-.hero-track { display: flex; gap: 12px; height: 100%; width: max-content; padding-left: var(--g); animation: hero-drift 110s linear 1.6s infinite; }
-.hero-wall:hover .hero-track, .hero-wall:focus-within .hero-track { animation-play-state: paused; }
-.hero-card { position: relative; height: 100%; aspect-ratio: 4 / 5; flex: none; overflow: hidden; background: var(--tile); animation: open 600ms var(--ease-cut) both; }
-.hero-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease); }
-.hero-card:hover img { transform: scale(1.035); }
-.hero-tag { position: absolute; left: 0; bottom: 0; padding: 5px 8px 4px; background: var(--ink); color: var(--white); font: 700 13px/1 var(--f-bar); letter-spacing: -0.01em; transform: translateY(100%); transition: transform 300ms var(--ease); }
-.hero-card:hover .hero-tag, .hero-card:focus-visible .hero-tag { transform: none; }
-@keyframes hero-drift { to { transform: translateX(calc(-50% - 6px)); } }
 @media (max-width: 767px) {
-  .hero { min-height: 620px; }
+  .hero { height: auto; min-height: 0; }
   .hero-mark { flex-direction: column; gap: 0; font-size: 16.6vw; }
-  .hero-row { grid-template-columns: 1fr; gap: 18px; }
+  .hero-stage { aspect-ratio: 4 / 5; margin-bottom: 0; }
+  .hero-art .art-slot { padding-top: 0; align-content: center; }
+  .hero-over { grid-template-columns: 1fr; gap: 16px; padding: 90px 14px 14px; }
   .hero-say { order: -1; justify-self: start; text-align: left; font-size: 27px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero *, .hero *::before { animation: none !important; }
   .hero-seam { display: none; }
 }
+
+/* ── Home: the wall of ads under the hero ── */
+.wall { height: clamp(300px, 50svh, 560px); overflow: hidden; padding: 0 0 12px; }
+.wall-track { display: flex; gap: 12px; height: 100%; width: max-content; padding-left: var(--g); animation: wall-drift 110s linear infinite; }
+.wall:hover .wall-track, .wall:focus-within .wall-track { animation-play-state: paused; }
+.wall-card { position: relative; height: 100%; aspect-ratio: 4 / 5; flex: none; overflow: hidden; background: var(--tile); }
+.js .wall[data-in] .wall-card { clip-path: inset(100% 0 0 0); }
+.js .wall[data-in].in .wall-card { clip-path: inset(0 0 0 0); transition: clip-path 700ms calc(var(--i) * 60ms) var(--ease-cut); }
+.wall-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease); }
+.wall-card:hover img { transform: scale(1.035); }
+.wall-tag { position: absolute; left: 0; bottom: 0; padding: 5px 8px 4px; background: var(--ink); color: var(--white); font: 700 13px/1 var(--f-bar); letter-spacing: -0.01em; transform: translateY(100%); transition: transform 300ms var(--ease); }
+.wall-card:hover .wall-tag, .wall-card:focus-visible .wall-tag { transform: none; }
+@keyframes wall-drift { to { transform: translateX(calc(-50% - 6px)); } }
+@media (max-width: 767px) { .wall { height: 76vw; padding-top: 12px; } }
+@media (prefers-reduced-motion: reduce) { .wall-track { animation: none; } .js .wall[data-in] .wall-card { clip-path: none; } }
 
 /* ── Cards ── */
 .card { position: relative; display: flex; flex-direction: column; gap: 12px; }
@@ -576,7 +603,7 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 
 /* ── /cal: the calendar is the page ── */
 .ds:has(.cal) { background-image: none; }
-.cal { min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; }
+.cal { min-height: 100svh; display: grid; grid-template-rows: auto auto 1fr; }
 .cal-bar { align-items: center; padding-block: 0; height: 40px; }
 .cal-bar > * { animation: fade 400ms 200ms both; }
 .cal-bar::before { animation: wipe 520ms var(--ease-cut) both; }
@@ -603,7 +630,7 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 }
 .cal-note { font: 500 15px/1.5 var(--f-sans); padding: 16px 0; }
 .cal-note a { text-decoration: underline; }
-.cal-mail { padding: 18px var(--g) 22px; font: 700 15px/1.4 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
+.cal-mail { padding: 12px var(--g) 0; font: 700 15px/1.4 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
 .cal-mail a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .cal-mail a:hover { color: var(--ember); }
 @media (max-width: 767px) {

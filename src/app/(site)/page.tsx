@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/ds/Footer";
-import { Hero } from "@/components/ds/Hero";
+import { Art } from "@/components/ds/Art";
+import { AdWall, Hero } from "@/components/ds/Hero";
 import { Media } from "@/components/ds/Media";
 import { RailPin } from "@/components/ds/RailPin";
 import { Sequence } from "@/components/ds/Sequence";
@@ -27,6 +28,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <AdWall />
 
       <section className="sel" aria-labelledby="sel-h">
         <TitleTab id="sel-h" tag={String(SELECTED.length).padStart(2, "0")} side={<Link href="/work">All work ↗</Link>}>
@@ -83,6 +85,8 @@ export default function Home() {
           </Link>
         </RailPin>
       </section>
+
+      <Art k="break" sizes="100vw" className="art-band" />
 
       <section className="room" data-room="ink" aria-labelledby="room-h">
         <TitleTab id="room-h" tag="Fracture" side={<Link href="/derelictdepths">The game ↗</Link>}>
