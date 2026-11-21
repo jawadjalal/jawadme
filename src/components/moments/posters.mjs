@@ -6,15 +6,15 @@
 import { chromium } from "playwright";
 import { posters, SIZES } from "../world/kit/posters.mjs";
 
-// the dock's ticket still paints over a stage under the kit's visibility rule, so every page the kit opens drops the
-// dock first (the kit shares this playwright instance)
+// the call ticket (in the dock, and on the 404) still paints over a stage under the kit's visibility rule, so every page
+// the kit opens drops it first (the kit shares this playwright instance)
 const launch = chromium.launch.bind(chromium);
 chromium.launch = async (o) => {
   const b = await launch(o);
   const open = b.newPage.bind(b);
   b.newPage = async (p) => {
     const page = await open(p);
-    await page.addInitScript(() => addEventListener("DOMContentLoaded", () => document.head.append(Object.assign(document.createElement("style"), { textContent: ".dock { display: none !important; }" }))));
+    await page.addInitScript(() => addEventListener("DOMContentLoaded", () => document.head.append(Object.assign(document.createElement("style"), { textContent: ".dock, .bcb { display: none !important; }" }))));
     return page;
   };
   return b;
