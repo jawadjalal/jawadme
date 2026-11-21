@@ -29,7 +29,7 @@ export default async function Work({ searchParams }: Props) {
           <span className="n">{count()}</span> All
         </Link>
         <span className="filters-r">
-          {LANES.map((l) => (
+          {LANES.filter((l) => count(l.key)).map((l) => (
             <Link key={l.key} href={`/work?f=${l.key}`} aria-current={lane === l.key ? "page" : undefined} scroll={false}>
               <span className="n">{count(l.key)}</span> {l.label}
             </Link>

@@ -26,7 +26,7 @@ function Nav({ onPick }: { onPick?: () => void }) {
   );
 }
 
-/** The fixed bottom bar on every page but /cal: the mark, four links, the booking status and the call block. */
+/** The fixed bottom bar on every page but /cal: the mark, four links, and the call block. */
 export function Dock() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
@@ -50,7 +50,7 @@ export function Dock() {
         <Suspense>
           <Nav onPick={() => setOpen(false)} />
         </Suspense>
-        <span className="lbl">● Booking {SITE.bookingMonth} · {SITE.detail}</span>
+        <span className="lbl">{SITE.detail}</span>
       </div>
       <nav className="dock" aria-label="Site" data-hide={hide && !open}>
         <Link href="/" className="dock-mark" aria-label="Jawad Jalal, home">
@@ -65,9 +65,6 @@ export function Dock() {
           <i aria-hidden="true" />
           Menu
         </button>
-        <span className="dock-status lbl">
-          <i aria-hidden="true" />Booking {SITE.bookingMonth}
-        </span>
         <BookLink src="dock" className="dock-cta" cursor>
           <span>
             {SITE.cta} <span className="arr">↗</span>

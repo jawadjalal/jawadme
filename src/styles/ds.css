@@ -230,9 +230,6 @@ html[data-room="ink"] .media { background: var(--ink-2); }
 .dock-nav a .lbl { letter-spacing: 0; }
 .dock-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform var(--t-base) var(--ease); }
 .dock-nav a:hover::after, .dock-nav a[aria-current="page"]::after { transform: scaleX(1); }
-.dock-status { margin-left: auto; display: flex; align-items: center; gap: 8px; padding: 0 20px; color: var(--dim); }
-.dock-status i { width: 7px; height: 7px; border-radius: 50%; background: var(--crystal); box-shadow: 0 0 0 3px rgb(95 227 224 / 0.2); animation: pulse 2.4s var(--ease-io) infinite; }
-@keyframes pulse { 50% { box-shadow: 0 0 0 7px rgb(95 227 224 / 0); } }
 .dock-cta {
   display: flex;
   align-items: center;
@@ -250,12 +247,13 @@ html[data-room="ink"] .media { background: var(--ink-2); }
 }
 .dock-cta small { font-weight: 500; font-size: 13px; letter-spacing: 0.06em; text-transform: none; opacity: 0.75; }
 .dock-cta:hover { background: var(--gold); }
+.dock .dock-cta { margin-left: auto; }
 .dock-cta .arr { display: inline-block; transition: transform var(--t-base) var(--ease); }
 .dock-cta:hover .arr { transform: translate(2px, -2px); }
 .dock-menu { display: none; }
 .dock-sheet { display: none; }
 @media (max-width: 767px) {
-  .dock-nav, .dock-status, .dock-cta small { display: none; }
+  .dock-nav, .dock-cta small { display: none; }
   .dock-mark { width: 56px; }
   .dock-menu { display: flex; align-items: center; gap: 8px; padding: 0 18px; background: none; border: 0; font: 600 13px/1 var(--f-sans); letter-spacing: 0.14em; text-transform: uppercase; color: inherit; }
   .dock-menu i { display: block; width: 14px; height: 8px; border-block: 2px solid currentColor; transition: transform var(--t-base) var(--ease); }

@@ -6,7 +6,6 @@ export const SITE = {
   lanes: ["Brands", "ads", "3D", "Roblox"] as const,
   cta: "Book a call",
   detail: "15 min, video",
-  bookingMonth: "Dec",
   email: "hijawadjalal@gmail.com",
   cv: "/jawad-jalal-cv.pdf",
   about: "I'm Jawad. I design it, and I build it.",

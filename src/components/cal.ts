@@ -16,7 +16,7 @@ export const THEME = {
   layout: "month_view",
   cssVarsPerTheme: {
     light: { "cal-brand": "#0a0a0a", "cal-brand-emphasis": "#262626", "cal-brand-text": "#ffffff" },
-    dark: { "cal-brand": "#ff8a2a", "cal-brand-emphasis": "#ffb43a", "cal-brand-text": "#07060b", "cal-bg": "#110f1b", "cal-bg-muted": "#1c1a2b", "cal-bg-emphasis": "#3a3852", "cal-border": "#3a3852", "cal-border-subtle": "#2a2840", "cal-text": "#ede4d3", "cal-text-muted": "#b9b0c9" },
+    dark: { "cal-brand": "#ff8a2a", "cal-brand-emphasis": "#ffb43a", "cal-brand-text": "#07060b", "cal-bg": "#07060b", "cal-bg-muted": "#141220", "cal-bg-emphasis": "#2a2840", "cal-border": "#2a2840", "cal-border-subtle": "#1c1a2b", "cal-text": "#ede4d3", "cal-text-muted": "#b9b0c9" },
   },
 } as const;
 

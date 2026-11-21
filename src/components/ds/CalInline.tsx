@@ -6,7 +6,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CAL_LINK, calApi, calConfig, cleanSrc } from "@/components/cal";
 
-export function CalInline({ email }: { email: string }) {
+export function CalInline({ email, theme }: { email: string; theme?: "light" | "dark" }) {
   const host = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<"loading" | "ready" | "failed">("loading");
   const [src, setSrc] = useState("direct");
@@ -16,12 +16,12 @@ export function CalInline({ email }: { email: string }) {
     const tag = cleanSrc(new URLSearchParams(location.search).get("src"));
     setSrc(tag);
     const api = calApi(tag);
-    api("inline", { elementOrSelector: el, calLink: CAL_LINK, config: calConfig(tag) });
+    api("inline", { elementOrSelector: el, calLink: CAL_LINK, config: theme ? { ...calConfig(tag), theme } : calConfig(tag) });
     api("on", { action: "linkReady", callback: () => setState("ready") });
     api("on", { action: "linkFailed", callback: () => setState("failed") });
     const t = window.setTimeout(() => setState((s) => (s === "loading" ? "failed" : s)), 15000);
     return () => window.clearTimeout(t);
-  }, []);
+  }, [theme]);
   return (
     <div className="cal-box" data-state={state}>
       <div ref={host} className="cal-host" />
