@@ -11,16 +11,16 @@ export function Footer({ src }: { src: string }) {
     <footer className="foot">
       <FootStage />
       <div className="foot-row">
-        <span className="foot-c">©2026 Jawad Jalal</span>
+        <span className="foot-c">©2026 jawad jalal</span>
         <span className="foot-links">
           {SOCIAL.map((s) => (
             <a key={s.label} href={s.href} target="_blank" rel="noopener">
               {s.label}
             </a>
           ))}
-          <a href="/about">About</a>
-          <a href="/blog">Blog</a>
-          <a href={SITE.cv}>CV</a>
+          <a href="/about">about</a>
+          <a href="/blog">blog</a>
+          <a href={SITE.cv}>cv</a>
         </span>
         <span className="foot-reach">
           <MailLink src="footer" className="foot-mail" />

@@ -16,13 +16,14 @@
 .world-flow { position: relative; z-index: 1; pointer-events: none; }
 .world-flow a, .world-flow button, .world-flow .w-ads { pointer-events: auto; }
 
-/* the gate court: the name stands in the scene as a monument (the h1 is for readers); the line and the call sit
-   beneath it on the void's ink, centred like a title screen's prompt */
-.w-gate { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; min-height: calc(100svh - var(--dock)); padding: 0 var(--g) calc(3 * var(--u) + 14px); }
-.w-say { display: grid; justify-items: center; gap: 14px; text-align: center; }
-.w-say .hero-say { animation: fade 500ms 1500ms both; max-width: 27em; padding: 12px 18px 14px; background: #100b09; color: #f8e3c2; font-size: clamp(18px, 1.45vw, 26px); line-height: 1.08; }
+/* the gate court: the name in his lettering at the top, the line under it, then the call; the void's ink falls
+   from the top edge behind them so they never sit on the busy part of the scene */
+.w-gate { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; min-height: calc(100svh - var(--dock)); padding: calc(4 * var(--u) + 16px) var(--g) 0; background: linear-gradient(#100b09 0, rgb(16 11 9 / 0.88) 22%, rgb(16 11 9 / 0) 44%); }
+.w-say { display: grid; justify-items: center; gap: 16px; text-align: center; }
+.w-gate .wm { width: min(44vw, 660px); margin: 0; padding: 0; gap: 1.1vw; color: #f8e3c2; }
+.w-say .hero-say { animation: fade 400ms 360ms both; max-width: 27em; color: #f8e3c2; font-size: clamp(18px, 1.45vw, 26px); line-height: 1.08; }
 .w-say .hero-sw > span { animation-duration: 700ms; }
-.w-say .hero-who { padding: 6px 18px 6px 6px; background: var(--ember); color: #140d09; animation-delay: 2300ms; }
+.w-say .hero-who { padding: 6px 18px 6px 6px; background: var(--ember); color: #140d09; animation-delay: 900ms; }
 .w-say .hero-who img { width: 36px; }
 .w-say .hero-who:hover { background: #f8e3c2; }
 .w-say .hero-who:hover span { color: inherit; }
@@ -81,6 +82,7 @@
 
 @media (max-width: 767px) {
   .w-say { gap: 12px; }
+  .w-gate .wm { width: 76vw; }
   .w-say .hero-say { font-size: 19px; }
   .stmt { min-height: 110svh; }
   .w-sign-board { font-size: 40px; }
