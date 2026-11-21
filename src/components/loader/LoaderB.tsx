@@ -352,11 +352,16 @@ export function LoaderB() {
       sg.shadowColor = css(spark, 0.9);
       sg.shadowBlur = 22;
       sg.fillStyle = css(hot);
-      for (let pass = 0; pass < 3; pass++) {
+      for (let pass = 0; pass < 4; pass++) {
         sg.beginPath();
-        sg.arc(32, 32, 7, 0, Math.PI * 2);
+        sg.arc(32, 32, 8, 0, Math.PI * 2);
         sg.fill();
       }
+      sg.shadowBlur = 0;
+      sg.fillStyle = "#fff";
+      sg.beginPath();
+      sg.arc(32, 32, 3.5, 0, Math.PI * 2);
+      sg.fill();
       cv.width = Math.round(vw * dpr);
       cv.height = Math.round(vh * dpr);
       const ctx = cv.getContext("2d")!;
@@ -395,7 +400,7 @@ export function LoaderB() {
             const x = e.x + Math.sin(age * e.sw + e.ph) * 18;
             if (y < -20) continue;
             ctx.globalAlpha = Math.min(1, clamp(y / (vh * 0.9)) * 1.1) * (0.55 + 0.45 * Math.sin(simT * 7 + e.ph * 3)) * fadeOut * clamp((t - e.at) / 300);
-            const s = e.r * 7;
+            const s = e.r * 8;
             ctx.drawImage(spr, x - s / 2, y - s / 2, s, s);
           }
         if (cut && t > cfg.cut[1] - 90) {
