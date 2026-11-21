@@ -3,7 +3,6 @@ import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
 import { Hang } from "@/components/ds/AdGallery";
 import { Footer } from "@/components/ds/Footer";
-import { TitleTab } from "@/components/ds/TitleTab";
 import { ADS } from "@/content/ads";
 import { REAL } from "@/content/work";
 import { GALLERY, ROOMS, roomByKey, type Room } from "@/lib/gallery";
@@ -43,17 +42,20 @@ const SAY = {
     { t: "Two 8-figure startups.", s: "Past roles at MenuFit, at 7-figure MRR, and Okara." },
   ],
   web: { t: "Sites, designed and built.", s: "For his studio, his 3D team and his clients." },
-  "3d": { t: "3D art for Blade Ball and Fish It!", s: "Two of the biggest games on Roblox, with over 11 billion visits between them." },
+  "3d": { t: "3D art for Blade Ball and Fish It,", tail: "two of Roblox's biggest games (over 11 billion visits between them)" },
 };
 
-type Say = { t: string; s: string };
+type Say = { t: string; tail?: string; s?: string };
 
 function Break({ say, n }: { say: Say; n: number }) {
   return (
-    <aside className="wrap brk" aria-label={say.t}>
-      <p className="brk-t">{say.t}</p>
+    <aside className="wrap brk" aria-label={say.t + (say.tail ? " " + say.tail : "")}>
+      <p className="brk-t">
+        {say.t}
+        {say.tail ? <span className="brk-tail"> {say.tail}</span> : null}
+      </p>
       <div className="brk-side">
-        <p className="brk-s">{say.s}</p>
+        {say.s ? <p className="brk-s">{say.s}</p> : null}
         <BookLink src={"work-break-" + n} className="brk-cta" cursor>
           Book a call <span className="arr">↗</span>
         </BookLink>
@@ -112,9 +114,14 @@ export default async function Work({ searchParams }: Props) {
   return (
     <main className="work">
       <JsonLd data={LD} />
-      <TitleTab as="h1" tag={ADS.length + " ads, then the sites and 3D"} side={<span className="tab-say">Ads first. Then websites, a design tool, 3D and a Roblox game, designed and built.</span>}>
-        Work
-      </TitleTab>
+      <header className="wrap wk-h">
+        <h1 className="wk-t" data-lines="">
+          Work
+        </h1>
+        <p className="wk-n">
+          <strong>{ADS.length} ads</strong> first. Then websites, a design tool, 3D and a Roblox game, designed and built.
+        </p>
+      </header>
       <div className="gal-hall" data-room="hall">
         <nav className="chips" aria-label="Rooms">
           <div className="chips-in">
