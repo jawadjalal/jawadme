@@ -29,7 +29,7 @@ export function CalInline({ email, theme }: { email: string; theme?: "light" | "
     <div className="cal-box" data-state={state}>
       <div ref={host} className="cal-host" />
       {state === "loading" ? (
-        <div className="cal-skel" aria-label="Loading the calendar" role="status">
+        <div className="cal-skel" aria-label="loading the calendar" role="status">
           <i className="cal-skel-head" />
           <span className="cal-skel-days">
             {DAYS.map((d) => (

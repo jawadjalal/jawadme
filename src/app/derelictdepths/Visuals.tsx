@@ -11,14 +11,14 @@ type Calibrated = { lane: string; score: number; at: string | null; note: string
 type Finals = { generatedAt: string; items: Item[]; calibrated?: Calibrated[] };
 
 const KIND: Record<string, [string, string]> = {
-  engine: ["In-engine capture", ""],
-  "engine-art": ["In-engine + key art", " art"],
-  box: ["Box render", " box"],
-  ai: ["AI-assisted key art", " ai"],
+  engine: ["in-engine capture", ""],
+  "engine-art": ["in-engine + key art", " art"],
+  box: ["box render", " box"],
+  ai: ["ai-assisted key art", " ai"],
 };
 
 const clock = (iso: string) =>
-  new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(iso));
+  new Intl.DateTimeFormat("en-gb", { timeZone: "Europe/London", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(iso)).toLowerCase();
 
 export function LatestVisuals() {
   const v = finals as Finals;
@@ -27,10 +27,10 @@ export function LatestVisuals() {
     <>
       <div className="ml-col">
         <p>
-          The newest finished frames from each lane, refreshed every hour. Every picture says what it is: an <b>in-engine capture</b> is a real frame from Roblox Studio, a <b>box render</b>{" "}
-          is drawn offline on a build box from the game's own files and is not the game itself, and <b>AI-assisted key art</b> is a thumbnail made from an in-engine capture with image tools.
+          the newest finished frames from each lane, refreshed every hour. every picture says what it is: an <b>in-engine capture</b> is a real frame from roblox studio, a <b>box render</b>{" "}
+          is drawn offline on a build box from the game's own files and is not the game itself, and <b>ai-assisted key art</b> is a thumbnail made from an in-engine capture with image tools.
         </p>
-        <p className="ml-vis-meta">Last changed {clock(v.generatedAt)}. The drive is checked every hour.</p>
+        <p className="ml-vis-meta">last changed {clock(v.generatedAt)}. the drive is checked every hour.</p>
       </div>
       <div className="ml-vis">
         {v.items.map((it, i) => {
@@ -39,7 +39,7 @@ export function LatestVisuals() {
             <article key={it.id} className={"ml-vis-item" + (it.pair ? " pair" : "")}>
               <header>
                 <span className={"ml-badge" + cls}>{label}</span>
-                {it.pair ? <span className="ml-badge pair">Before and after</span> : null}
+                {it.pair ? <span className="ml-badge pair">before and after</span> : null}
                 <b>{it.title}</b>
                 {it.time ? <span className="ml-vis-when">{it.time}</span> : null}
               </header>
@@ -61,29 +61,29 @@ export function LatestVisuals() {
         <h3 className="ml-h3">jawad's scale and his scores</h3>
       </div>
       <div className="ml-scale">
-        <div><b>6 / 10</b><span>Ready for beta testers. Every design, UI, art and thumbnail lane has to clear 6 before the beta.</span></div>
-        <div><b>8 / 10</b><span>Steam-level, award-winning. The aim for every lane.</span></div>
+        <div><b>6 / 10</b><span>ready for beta testers. every design, ui, art and thumbnail lane has to clear 6 before the beta.</span></div>
+        <div><b>8 / 10</b><span>steam-level, award-winning. the aim for every lane.</span></div>
       </div>
       <div className="ml-col">
         <Table
-          head={["17 Nov build", "jawad's score"]}
+          head={["17 nov build", "jawad's score"]}
           rows={[
-            ["Overall design", "2 / 10"],
-            ["The UI", "The worst part. On a phone it was very pixelly, weird and cluttered. On desktop it was pixelly, the buttons made no sense, and it looked unrefined."],
-            ["The map", "3 to 4 / 10"],
-            ["Thumbnail capsule A", "2.5 / 10"],
+            ["overall design", "2 / 10"],
+            ["the ui", "the worst part. on a phone it was very pixelly, weird and cluttered. on desktop it was pixelly, the buttons made no sense, and it looked unrefined."],
+            ["the map", "3 to 4 / 10"],
+            ["thumbnail capsule a", "2.5 / 10"],
           ]}
         />
         <p className="ml-note">
-          &ldquo;Self-ratings are way off&rdquo; (jawad). So this page no longer shows our own judges' scores. A score counts only when it comes from the locked check for that lane (JAW-156):
-          blind, side by side against real references (the top game thumbnails, and the best RPG game interfaces), and anchored on jawad's scored images. Every design, UI, art and thumbnail lane
+          &ldquo;self-ratings are way off&rdquo; (jawad). so this page no longer shows our own judges' scores. a score counts only when it comes from the locked check for that lane (jaw-156):
+          blind, side by side against real references (the top game thumbnails, and the best rpg game interfaces), and anchored on jawad's scored images. every design, ui, art and thumbnail lane
           climbs in small steps, and a step stays only if that check scores it higher.
         </p>
-        <h3 className="ml-h3">Calibrated lane scores</h3>
+        <h3 className="ml-h3">calibrated lane scores</h3>
         {calibrated.length ? (
-          <Table head={["Lane", "Score", "Checked", "Note"]} rows={calibrated.map((c) => [c.lane, c.score.toFixed(1) + " / 10", c.at ? clock(c.at) : "–", c.note ?? "–"])} num={[1]} />
+          <Table head={["lane", "score", "checked", "note"]} rows={calibrated.map((c) => [c.lane, c.score.toFixed(1) + " / 10", c.at ? clock(c.at) : "–", c.note ?? "–"])} num={[1]} />
         ) : (
-          <p className="ml-vis-meta">No lane has a calibrated score yet. Each lane's number appears here once its check passes calibration.</p>
+          <p className="ml-vis-meta">no lane has a calibrated score yet. each lane's number appears here once its check passes calibration.</p>
         )}
       </div>
     </>

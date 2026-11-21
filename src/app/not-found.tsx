@@ -7,7 +7,7 @@ import { LostMoment } from "@/components/moments/notfound";
 import { fontVars } from "./fonts";
 import "@/styles/ds.css";
 
-export const metadata: Metadata = { title: "Wrong turn", robots: { index: false } };
+export const metadata: Metadata = { title: "wrong turn", robots: { index: false } };
 
 export default function NotFound() {
   return (
@@ -15,13 +15,13 @@ export default function NotFound() {
       <main className="lost">
         <LostMoment>
           <p className="lost-k">404, nothing lives at this address</p>
-          <h1 className="lost-h">Wrong turn.</h1>
-          <p className="lost-line">The corridor caved in. The signpost knows the way back.</p>
-          <nav className="lost-ways" aria-label="Ways back">
-            <Link href="/work">Work ↗</Link>
-            <Link href="/">Home ↗</Link>
+          <h1 className="lost-h">wrong turn.</h1>
+          <p className="lost-line">the corridor caved in. the signpost knows the way back.</p>
+          <nav className="lost-ways" aria-label="ways back">
+            <Link href="/work">work ↗</Link>
+            <Link href="/">home ↗</Link>
             <BookLink src="404" className="lost-call">
-              Book a call ↗
+              book a call ↗
             </BookLink>
           </nav>
         </LostMoment>

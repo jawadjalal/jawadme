@@ -3,7 +3,7 @@ import path from "node:path";
 import { ImageResponse } from "next/og";
 import sharp from "sharp";
 
-// The share card for every page in the site group, in the page's own parts: Public Sans 700 on the warm ground, the
+// The share card for every page in the site group, in the page's own parts: Geist 700 on the warm ground, the
 // page's one line in the dim ink, the ember info bar along the foot, and the page's own pictures (an ad, a cover, a
 // strip of the gallery) cut edge to edge. Satori reads PNG and JPEG only, so the WebP pictures pass through sharp.
 
@@ -36,7 +36,7 @@ type Card = {
 };
 
 export async function card({ title, line, bar, side, strip, face }: Card) {
-  const [font, me] = await Promise.all([readFile(path.join(dir, "PublicSans-Bold.ttf")), readFile(path.join(dir, "jawad.png"))]);
+  const [font, me] = await Promise.all([readFile(path.join(dir, "Geist-Bold.ttf")), readFile(path.join(dir, "jawad.png"))]);
   const H = size.height - BAR;
   const stripH = 300;
   const [sidePic, stripPics] = await Promise.all([
@@ -47,7 +47,7 @@ export async function card({ title, line, bar, side, strip, face }: Card) {
   const big = strip ? 150 : title.length > 16 ? 92 : title.length > 10 ? 108 : 132;
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", background: "#e6e5e1", color: "#0b0b0b", fontFamily: "Public Sans" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", background: "#e6e5e1", color: "#0b0b0b", fontFamily: "Geist" }}>
         {stripPics ? (
           <div style={{ display: "flex", height: stripH }}>
             {stripPics.map((s, i) => (
@@ -60,7 +60,7 @@ export async function card({ title, line, bar, side, strip, face }: Card) {
             {face && !strip ? (
               <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 28, letterSpacing: -0.8 }}>
                 <img src={"data:image/png;base64," + me.toString("base64")} width={54} height={60} alt="" />
-                Jawad Jalal
+                jawad jalal
               </div>
             ) : null}
             <div style={{ display: "flex", flexDirection: "column", gap: strip ? 10 : 22 }}>
@@ -77,6 +77,6 @@ export async function card({ title, line, bar, side, strip, face }: Card) {
         </div>
       </div>
     ),
-    { ...size, fonts: [{ name: "Public Sans", data: font, weight: 700, style: "normal" }] },
+    { ...size, fonts: [{ name: "Geist", data: font, weight: 700, style: "normal" }] },
   );
 }

@@ -3,12 +3,12 @@ import { Analytics } from "@vercel/analytics/next";
 import { IDENTITY } from "@/lib/profile";
 import { JsonLd, person, website } from "@/lib/seo";
 
-const TITLE = "Jawad Jalal, Design Mastermind: brand, ad, 3D and Roblox design";
-const DESCRIPTION = "Brands, ads, 3D and Roblox games. Designed by Jawad Jalal in London. Book a 15 minute call.";
+const TITLE = "jawad jalal, design mastermind: brand, ad, 3d and roblox design";
+const DESCRIPTION = "brands, ads, 3d and roblox games. designed by jawad jalal in london. book a 15 minute call.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(IDENTITY.site),
-  title: { default: TITLE, template: "%s · Jawad Jalal" },
+  title: { default: TITLE, template: "%s · jawad jalal" },
   description: DESCRIPTION,
   openGraph: {
     title: TITLE,

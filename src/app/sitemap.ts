@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/work", 0.9, "weekly"),
     page("/about", 0.8),
     page("/cal", 0.8),
+    page("/contact", 0.7),
     ...REAL.map((p) => page("/work/" + p.slug, 0.7)),
     ...CURATED.map((a) => page("/w/" + a.id, 0.5)),
     page("/derelictdepths", 0.6),

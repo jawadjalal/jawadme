@@ -4,8 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { BookLink } from "@/components/BookLink";
-import { MailLink } from "@/components/MailLink";
+import { DockCta } from "./DockCta";
 import { NAV, SITE } from "@/content/site";
 
 function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
@@ -26,16 +25,6 @@ function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
         );
         return list ? <li key={n.href}>{link}</li> : link;
       })}
-      {list ? (
-        <li>
-          <MailLink src="dock">Email</MailLink>
-        </li>
-      ) : (
-        <MailLink src="menu">
-          Email
-          <span className="lbl dim" aria-hidden="true">↗</span>
-        </MailLink>
-      )}
     </>
   );
 }
@@ -55,9 +44,9 @@ export function Dock() {
         </Suspense>
         <span className="lbl">{SITE.detail}</span>
       </div>
-      <nav className="dock" aria-label="Site">
+      <nav className="dock" aria-label="site">
         <div className="dock-body">
-          <Link href="/" className="dock-mark" aria-label="Jawad Jalal, home">
+          <Link href="/" className="dock-mark" aria-label="jawad jalal, home">
             <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="40px" priority />
           </Link>
           <ul className="dock-nav">
@@ -67,15 +56,10 @@ export function Dock() {
           </ul>
           <button className="dock-menu" aria-expanded={open} aria-controls="dock-sheet" onClick={() => setOpen((o) => !o)}>
             <i aria-hidden="true" />
-            Menu
+            menu
           </button>
         </div>
-        <BookLink src="dock" className="dock-cta" cursor>
-          <span>
-            {SITE.cta} <span className="arr">↗</span>
-          </span>
-          <small>{SITE.detail}</small>
-        </BookLink>
+        <DockCta />
       </nav>
     </>
   );

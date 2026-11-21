@@ -25,7 +25,7 @@ const kinds = [...new Set(ASSETS.map((a) => a.kind))].sort((a, b) => {
   return r(a) - r(b);
 });
 
-/** "Manga strips, posters, banners and more": the kinds the page really holds, in order. */
+/** "manga strips, posters, banners and more": the kinds the page really holds, in order. */
 function kindList(): string {
   // the rebuilds are posters too, so the line names the strips and the kinds of thing
   const names = (kinds.length ? kinds : ["posters"]).filter((k) => k !== "rebuilds" && k !== "sponsors" && k !== "clean").map((k) => (k === "strips" ? "manga strips" : k));
@@ -36,11 +36,11 @@ function kindList(): string {
       : names.length === 1
         ? names[0]
         : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
-  return t.charAt(0).toUpperCase() + t.slice(1);
+  return t;
 }
 
-const TITLE = "Capy hackathon assets, by Jawad Jalal";
-const LEAD = `${kindList()} for The Consumer Mobile Hackathon, November 15. Copy anything.`;
+const TITLE = "capy hackathon assets, by jawad jalal";
+const LEAD = `${kindList()} for the consumer mobile hackathon, november 15. copy anything.`;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     description: LEAD,
     url: "/capy",
     type: "website",
-    images: data.og ? [{ url: data.og, width: 1200, height: 630, alt: "One of the posters from the page" }] : undefined,
+    images: data.og ? [{ url: data.og, width: 1200, height: 630, alt: "one of the posters from the page" }] : undefined,
   },
   twitter: { card: "summary_large_image", creator: "@jawadmakes", images: data.og ? [data.og] : undefined },
 };

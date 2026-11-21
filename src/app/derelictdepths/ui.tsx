@@ -1,8 +1,8 @@
 import sizes from "./diagrams.json";
 
 const AREA: Record<string, string> = {
-  Look: "#ffc043", Camera: "#7fd4ff", Combat: "#ff6b6b", Enemies: "#ff8fb1", Floors: "#9be37a", UI: "#c5a8ff",
-  Audio: "#6ee7d8", Heroes: "#ffd59a", Loop: "#ffb36b", Tools: "#a8b3ff", Tests: "#8fd3a8", Docs: "#b9addb", Perf: "#f5e663",
+  look: "#ffc043", camera: "#7fd4ff", combat: "#ff6b6b", enemies: "#ff8fb1", floors: "#9be37a", ui: "#c5a8ff",
+  audio: "#6ee7d8", heroes: "#ffd59a", loop: "#ffb36b", tools: "#a8b3ff", tests: "#8fd3a8", docs: "#b9addb", perf: "#f5e663",
 };
 
 export function Tag({ area }: { area: string }) {
@@ -21,10 +21,10 @@ export function Diagram({ name, alt, caption }: { name: string; alt: string; cap
       <div className="ml-fig-body">
         <img src={src} alt={alt} width={size.w} height={size.h} loading="lazy" decoding="async" style={{ maxWidth: size.w }} />
       </div>
-      {wide ? <div className="ml-hint">Scroll sideways, or open it full size.</div> : null}
+      {wide ? <div className="ml-hint">scroll sideways, or open it full size.</div> : null}
       <figcaption>
         <span>{caption}</span>
-        <a href={src} target="_blank" rel="noopener">Open full size</a>
+        <a href={src} target="_blank" rel="noopener">open full size</a>
       </figcaption>
     </figure>
   );
@@ -60,7 +60,7 @@ export function Still({ name, title, note, art = false, eager = false }: { name:
       />
       <figcaption>
         <b>{title}</b>
-        <span className={"ml-badge" + (art ? " art" : "")}>{art ? "In-engine + key art" : "In-engine capture"}</span>
+        <span className={"ml-badge" + (art ? " art" : "")}>{art ? "in-engine + key art" : "in-engine capture"}</span>
         {note}
       </figcaption>
     </figure>

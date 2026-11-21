@@ -7,7 +7,7 @@ import { CalMoment } from "@/components/moments/cal";
 import { SITE } from "@/content/site";
 import { meta } from "@/lib/seo";
 
-export const metadata: Metadata = meta({ title: "Book a call", description: "Book a free 15 minute video call with Jawad Jalal about brands, ads, sites, 3D and Roblox games.", path: "/cal" });
+export const metadata: Metadata = meta({ title: "book a call", description: "book a free 15 minute video call with jawad jalal about brands, ads, sites, 3d and roblox games.", path: "/cal" });
 
 // The calendar is the page: one ink bar of facts, then Cal.com's own month view across the grid, themed to the site.
 
@@ -21,17 +21,17 @@ export default async function Cal({ searchParams }: Props) {
       <header className="bar ink cal-bar">
         <Link href="/" className="cal-home">
           <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="22px" priority />
-          Jawad Jalal
+          jawad jalal
         </Link>
-        <h1 className="cal-h">Book a call</h1>
+        <h1 className="cal-h">book a call</h1>
         <span>15 min</span>
-        <span className="hide-s">Video</span>
-        <span>Free</span>
+        <span className="hide-s">video</span>
+        <span>free</span>
       </header>
       <p className="cal-mail">
-        Calendar not loading?{" "}
+        calendar not loading?{" "}
         <a href={"https://cal.com/jawad-jalal-hesqbk/15min?src=" + src} target="_blank" rel="noopener">
-          Open on Cal.com ↗
+          open on cal.com ↗
         </a>
       </p>
       <div className="cal-row">
@@ -40,7 +40,7 @@ export default async function Cal({ searchParams }: Props) {
             <CalInline email={SITE.email} theme="light" />
           </div>
           <p className="cal-mail cal-alt">
-            Rather write? <MailLink src="cal" />
+            rather write? <MailLink src="cal" />
           </p>
         </div>
         <CalMoment />

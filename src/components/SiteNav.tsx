@@ -28,18 +28,18 @@ export function SiteNav({ groups, home = true }: { groups?: NavGroup[]; home?: b
         </Link>
         <div className="flex items-center gap-1.5 md:gap-2">
           {groups ? (
-            <nav aria-label="Main" className="hidden md:block">
+            <nav aria-label="main" className="hidden md:block">
               <NavMenu groups={groups} />
             </nav>
           ) : (
             <Link href="/blog" className="nv-link max-sm:hidden">
-              Blog
+              blog
             </Link>
           )}
           <Theme />
           <NavEmail />
           <BookLink src={home ? "nav" : "blog-nav"} className="key key-ink h-9 px-3 text-[14px]">
-            Book a call
+            book a call
           </BookLink>
         </div>
       </div>
