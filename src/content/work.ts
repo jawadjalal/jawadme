@@ -5,7 +5,7 @@
 // Rules: at most three short lines per project, true facts only. Spec work says so.
 
 import sizes from "./feed-sizes.json";
-import { ADS } from "./ads";
+import { adsOf } from "./ads";
 
 export type Lane = "ads" | "brand-web" | "3d" | "roblox";
 export const LANES: { key: Lane; label: string }[] = [
@@ -44,7 +44,7 @@ const fd = (file: string, alt: string): Media => {
 const m = (src: string, w: number, h: number, alt: string, tone?: Media["tone"]): Media => ({ src, w, h, alt, tone });
 
 const campaign = (slug: string, name: string, year: number, lines: Project["lines"], disciplines = ["ad campaign", "art direction"]): Project => {
-  const ads = ADS.filter((a) => a.campaign.toLowerCase() === name).map((a) => ({ src: a.src, w: a.w, h: a.h, alt: a.alt }));
+  const ads = adsOf(name).map((a) => ({ src: a.src, w: a.w, h: a.h, alt: a.alt }));
   return {
     slug,
     name,
@@ -114,11 +114,11 @@ const PROJECTS_ALL: Project[] = [
   },
   {
     slug: "coresrent",
-    name: "CoresRent",
+    name: "coresrent",
     year: 2026,
     lane: "brand-web",
-    client: "CoresRent",
-    disciplines: ["website", "WebGL"],
+    client: "coresrent",
+    disciplines: ["website", "webgl"],
     link: { href: "https://coresrent.vercel.app", label: "coresrent.vercel.app" },
     lines: ["fund real gpus in verified data centres and earn rent every metered hour."],
     cover: m("/showcase/coresrent-1440.webp", 1440, 900, "coresrent, the first screen with its webgl scene"),

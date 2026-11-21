@@ -10,7 +10,7 @@ export const SITES: DesignPiece[] = [
   p("site-bevel", 1600, 1000, "bevel", "site for the 3d art team he founded", "the bevel.team home page: a dark hero beside a lit dungeon render, with the games the team has worked on along the foot."),
   p("site-mercy", 1600, 1000, "mercy", "perps trading that pays back liquidated margin", "the mercy home page: \"got liquidated? have mercy.\" over a green glow, a phone and floating usdc coins."),
   p("site-splittingpoint", 1400, 909, "splitting point", "landing page build", "the splitting point landing page: the logo in red over game cards and a strip of pixel art."),
-  p("site-menufit", 1440, 900, "MenuFit", "meal screens, in light and dark", "menufit's app screens side by side: meals, protein counts and a lunch log."),
+  p("site-menufit", 1440, 900, "menufit", "meal screens, in light and dark", "menufit's app screens side by side: meals, protein counts and a lunch log."),
 ];
 
 export const CONCEPTS: DesignPiece[] = [

@@ -15,8 +15,8 @@ export const SITE = {
 
 export const NAV = [
   { label: "work", href: "/work" },
-  { label: "sites", href: "/work?c=websites" },
-  { label: "roblox", href: "/work?c=fracture" },
+  { label: "about", href: "/about" },
+  { label: "contact", href: "/contact" },
 ] as const;
 
 export const SOCIAL = [
@@ -29,7 +29,7 @@ export const SOCIAL = [
 /** From Jawad's CV (public/jawad-jalal-cv.pdf), years only. He has left MenuFit and Okara; "8-figure" and Okara's
  *  launch views are company context he gave, not his own results. */
 export const TIMELINE = [
-  { co: "Ignura Studio", role: "Founder", what: "A design studio: websites for startups, built from scratch", years: "2026 to now", href: "https://ignura.com", now: true },
-  { co: "MenuFit", role: "Product designer", what: "An 8-figure startup at 7-figure MRR: the app for eating out healthy, used by 1.5 million people", years: "2026", href: "https://menufit.com", now: false },
-  { co: "Okara", role: "Product development intern", what: "An 8-figure AI startup, the AI CMO. 14M views at its launch", years: "2026", href: "https://okara.ai", now: false },
+  { co: "ignura studio", role: "founder", what: "a design studio: websites for startups, built from scratch", years: "2026 to now", href: "https://ignura.com", now: true },
+  { co: "menufit", role: "product designer", what: "an 8-figure startup at 7-figure mrr: the app for eating out healthy, used by 1.5 million people", years: "2026", href: "https://menufit.com", now: false },
+  { co: "okara", role: "product development intern", what: "an 8-figure ai startup, the ai cmo. 14m views at its launch", years: "2026", href: "https://okara.ai", now: false },
 ];
