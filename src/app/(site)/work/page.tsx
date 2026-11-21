@@ -108,7 +108,7 @@ function RoomView({ room, i, lead }: { room: Room; i: number; lead: boolean }) {
           <p className="rh-m">
             <Ink kind="ring">{room.count}</Ink>
             {room.caseHref ? (
-              <Link href={room.caseHref} className="rh-case">
+              <Link href={room.caseHref} className="rh-case" data-m="press lift">
                 case study <span className="arr">↗</span>
               </Link>
             ) : null}
@@ -141,11 +141,11 @@ export default async function Work({ searchParams }: Props) {
       <div className="gal-hall" data-room="hall">
         <nav className="chips" aria-label="rooms">
           <div className="chips-in">
-            <Link href="/work" aria-current={!pick ? "page" : undefined} scroll={false}>
+            <Link href="/work" aria-current={!pick ? "page" : undefined} scroll={false} data-m="press lift">
               all
             </Link>
             {ROOMS.map((r) => (
-              <Link key={r.key} href={"/work?c=" + r.key} aria-current={pick === r ? "page" : undefined} scroll={false}>
+              <Link key={r.key} href={"/work?c=" + r.key} aria-current={pick === r ? "page" : undefined} scroll={false} data-m="press lift">
                 {r.title}
               </Link>
             ))}

@@ -16,6 +16,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
+import { SPRINGS } from "@/lib/motion";
 
 type Win = Window & { __lenis?: Lenis; __vtDone?: () => void };
 
@@ -23,22 +24,62 @@ export function Motion() {
   const path = usePathname();
   const first = useRef(true);
 
-  // Every navigation after the first load, unless a cover morph is carrying it: the new page is cut in from the top
-  // edge on the site's cut ease while it settles up 24 px, in 400 ms. The first load has its own choreography per page.
+  // Every navigation after the first load, unless a cover morph is carrying it: the new page fades in over 180 ms while
+  // it settles up 14 px on the soft spring. Opacity and transform only; the dock sits outside <main>, so the call never
+  // waits on it. The first load has its own choreography per page and is never held back.
   useLayoutEffect(() => {
     if (first.current) {
       first.current = false;
       return;
     }
     if ((window as Win).__vtDone || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    document.querySelector("main")?.animate(
-      [
-        { clipPath: "inset(0 0 100% 0)", transform: "translateY(24px)" },
-        { clipPath: "inset(0 0 0% 0)", transform: "none" },
-      ],
-      { duration: 400, easing: "cubic-bezier(0.7, 0, 0.2, 1)" },
-    );
+    const main = document.querySelector("main");
+    main?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180, easing: "linear" });
+    main?.animate([{ transform: "translateY(14px)" }, { transform: "none" }], { duration: SPRINGS.soft.ms, easing: SPRINGS.soft.easing });
   }, [path]);
+
+  // data-m="tilt": the surface under a mouse pointer gets the pointer's place as --rx/--ry (-1..1), once a frame at most,
+  // from one listener for the whole site; motion.css turns it into the lean.
+  useEffect(() => {
+    if (matchMedia("(prefers-reduced-motion: reduce), (hover: none)").matches) return;
+    let el: HTMLElement | null = null;
+    let raf = 0;
+    let x = 0;
+    let y = 0;
+    const settle = () => {
+      el?.style.removeProperty("--rx");
+      el?.style.removeProperty("--ry");
+    };
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      const hit = (e.target as Element | null)?.closest?.<HTMLElement>('[data-m~="tilt"]') ?? null;
+      if (hit !== el) {
+        settle();
+        el = hit;
+      }
+      if (!el) return;
+      x = e.clientX;
+      y = e.clientY;
+      raf ||= requestAnimationFrame(() => {
+        raf = 0;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty("--rx", (((x - r.left) / r.width) * 2 - 1).toFixed(3));
+        el.style.setProperty("--ry", (((y - r.top) / r.height) * 2 - 1).toFixed(3));
+      });
+    };
+    const out = () => {
+      settle();
+      el = null;
+    };
+    document.addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("pointerleave", out);
+    return () => {
+      document.removeEventListener("pointermove", move);
+      document.documentElement.removeEventListener("pointerleave", out);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, SplitText);

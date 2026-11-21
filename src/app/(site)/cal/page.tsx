@@ -19,7 +19,7 @@ export default async function Cal({ searchParams }: Props) {
   return (
     <main className="cal no-dock">
       <header className="bar ink cal-bar">
-        <Link href="/" className="cal-home">
+        <Link href="/" className="cal-home" data-m="press">
           <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="22px" priority />
           jawad jalal
         </Link>

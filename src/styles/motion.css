@@ -1,0 +1,36 @@
+/* Motion primitives, one vocabulary for every surface: data-m="press lift pop tilt". The springs (--sp-press, --sp-pop,
+   --sp-soft and their -t settle times) come from src/lib/motion.ts. Transform and opacity only, plus colour fades;
+   :active is the press on touch too (the site layout adds the touchstart listener iOS needs). Reduced motion keeps the
+   colour and opacity feedback and drops every move. */
+
+[data-m] {
+  -webkit-tap-highlight-color: transparent;
+  transition: translate var(--sp-pop-t) var(--sp-pop), scale var(--sp-pop-t) var(--sp-pop), rotate var(--sp-pop-t) var(--sp-pop), opacity var(--t-fast), color var(--t-fast), background-color var(--t-fast);
+}
+[data-m~="press"]:active { scale: 0.95; transition-duration: var(--sp-press-t); transition-timing-function: var(--sp-press); }
+@media (hover: hover) {
+  [data-m~="lift"]:hover { translate: 0 -3px; }
+  [data-m~="pop"]:hover { scale: 1.04; }
+}
+
+/* tilt: Motion.tsx writes the pointer's place over the surface as --rx and --ry (-1..1); the picture leans toward it */
+[data-m~="tilt"] .media {
+  transform: perspective(900px) rotateX(calc(var(--ry, 0) * -4deg)) rotateY(calc(var(--rx, 0) * 5deg));
+  transition: transform var(--sp-pop-t) var(--sp-pop), translate var(--sp-pop-t) var(--sp-pop), scale var(--sp-press-t) var(--sp-press);
+}
+/* the rim and the sheen: a green edge that lights, and one hard-edged band that crosses once */
+[data-m~="tilt"] .media::after { content: ""; position: absolute; inset: 0; z-index: 3; box-shadow: inset 0 0 0 2px var(--accent); opacity: 0; transition: opacity var(--t-fast); pointer-events: none; }
+[data-m~="tilt"] .media::before { content: ""; position: absolute; top: -10%; bottom: -10%; left: 0; z-index: 3; width: 22%; background: rgb(255 255 255 / 0.16); transform: skewX(-16deg); translate: -160% 0; pointer-events: none; }
+@media (hover: hover) {
+  [data-m~="tilt"]:hover .media { translate: 0 -6px; }
+  [data-m~="tilt"]:hover .media::after { opacity: 1; }
+  [data-m~="tilt"]:hover .media::before { translate: 560% 0; transition: translate 720ms var(--ease); }
+}
+[data-m~="tilt"]:active .media { scale: 0.975; }
+[data-m~="tilt"]:active .media::after { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-m] { transition-property: opacity, color, background-color; }
+  [data-m]:is(:hover, :active), [data-m~="tilt"] .media { translate: none !important; scale: none !important; transform: none !important; }
+  [data-m~="tilt"] .media::before { display: none; }
+}

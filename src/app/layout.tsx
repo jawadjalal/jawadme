@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { IDENTITY } from "@/lib/profile";
 import { JsonLd, X_HANDLE, person, website } from "@/lib/seo";
 import { ACCENT_CSS } from "@/lib/accent";
+import { MOTION_CSS } from "@/lib/motion";
 
 const TITLE = "jawad jalal, design mastermind: brand, ad, 3d and roblox design";
 const DESCRIPTION = "brands, ads, 3d and roblox games. designed by jawad jalal in london. book a 15 minute call.";
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <style dangerouslySetInnerHTML={{ __html: ACCENT_CSS }} />
+        <style dangerouslySetInnerHTML={{ __html: ACCENT_CSS + MOTION_CSS }} />
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <JsonLd data={[person(), website()]} />
       </head>

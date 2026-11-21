@@ -6,6 +6,7 @@ import { Footer } from "@/components/ds/Footer";
 import { LostMoment } from "@/components/moments/notfound";
 import { fontVars } from "./fonts";
 import "@/styles/ds.css";
+import "@/styles/motion.css";
 
 export const metadata: Metadata = { title: "wrong turn", robots: { index: false } };
 
@@ -18,8 +19,8 @@ export default function NotFound() {
           <h1 className="lost-h">wrong turn.</h1>
           <p className="lost-line">the corridor caved in. the signpost knows the way back.</p>
           <nav className="lost-ways" aria-label="ways back">
-            <Link href="/work">work ↗</Link>
-            <Link href="/">home ↗</Link>
+            <Link href="/work" data-m="press lift">work ↗</Link>
+            <Link href="/" data-m="press lift">home ↗</Link>
             <BookCallB src="404" size="hero" />
           </nav>
         </LostMoment>

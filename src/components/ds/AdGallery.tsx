@@ -42,7 +42,7 @@ export function Hang({ entries, first = 0.5, cycle = [0.4, 0.3], lead = false }:
   return (
     <div className="wrap hang">
       {entries.map((e, i) => (
-        <TLink key={e.key} id={e.key} href={e.href} vt={e.href.startsWith("/w/") ? "piece" : "cover-" + e.href.split("/").pop()} className="hang-i" data-cursor="view" style={vars(wide[i], phone[i])}>
+        <TLink key={e.key} id={e.key} href={e.href} vt={e.href.startsWith("/w/") ? "piece" : "cover-" + e.href.split("/").pop()} className="hang-i" data-cursor="view" data-m="tilt" style={vars(wide[i], phone[i])}>
           <Media m={e.media} sizes={`(min-width: 768px) ${Math.ceil(wide[i].w * 100)}vw, calc(${Math.ceil(phone[i].w * 100)}vw - ${Math.round(24 * phone[i].w)}px)`} priority={lead && i === 0} delay={(i % 4) * 70} quality={75} />
           <span className="hang-cap">
             <span className="hang-co">{e.title}</span>

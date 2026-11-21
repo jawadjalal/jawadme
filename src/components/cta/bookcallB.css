@@ -6,7 +6,7 @@
   --ink: #17120e;
   --paper: #f4eddf;
   --paper-lo: #e9dfca;
-  --spring: cubic-bezier(0.3, 1.45, 0.45, 1);
+  --spring: var(--sp-pop);
   --hv: 0;
   --pr: 0;
   --fc: 0;

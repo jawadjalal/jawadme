@@ -47,7 +47,7 @@ export default function About() {
         <p>i made 3d art for blade ball and fish it, two of roblox&apos;s biggest games (over 11 billion visits between them).</p>
         <Contributions />
         <details className="ab-faq" id="faq">
-          <summary>the short answers</summary>
+          <summary data-m="press">the short answers</summary>
           <dl>
             {FAQ.map((f) => (
               <div key={f.q}>

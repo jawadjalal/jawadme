@@ -16,9 +16,9 @@ function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
   };
   return (
     <>
-      {NAV.map((n) => {
+      {NAV.map((n, i) => {
         const link = (
-          <Link key={n.href} href={n.href} aria-current={current(n.href)} onClick={onPick}>
+          <Link key={n.href} href={n.href} aria-current={current(n.href)} onClick={onPick} data-m="press" style={{ ["--i" as string]: i }}>
             {n.label}
             <span className="lbl dim" aria-hidden="true">↗</span>
           </Link>
@@ -46,7 +46,7 @@ export function Dock() {
       </div>
       <nav className="dock" aria-label="site">
         <div className="dock-body">
-          <Link href="/" className="dock-mark" aria-label="jawad jalal, home">
+          <Link href="/" className="dock-mark" aria-label="jawad jalal, home" data-m="press">
             <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="40px" priority />
           </Link>
           <ul className="dock-nav">
@@ -54,7 +54,7 @@ export function Dock() {
               <Nav list />
             </Suspense>
           </ul>
-          <button className="dock-menu" aria-expanded={open} aria-controls="dock-sheet" onClick={() => setOpen((o) => !o)}>
+          <button className="dock-menu" data-m="press" aria-expanded={open} aria-controls="dock-sheet" onClick={() => setOpen((o) => !o)}>
             <i aria-hidden="true" />
             menu
           </button>

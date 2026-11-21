@@ -89,7 +89,7 @@ export default async function Case({ params }: Props) {
           <BlockView key={i} b={b} />
         ))}
       </div>
-      <TLink href={"/work/" + next.slug} vt={"cover-" + next.slug} className="next wrap" data-cursor="view">
+      <TLink href={"/work/" + next.slug} vt={"cover-" + next.slug} className="next wrap" data-cursor="view" data-m="tilt">
         <span className="next-head">
           <span className="d-tab">next: {next.name} ↗</span>
         </span>
