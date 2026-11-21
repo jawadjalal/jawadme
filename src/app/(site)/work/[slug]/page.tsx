@@ -80,21 +80,20 @@ export default async function Case({ params }: Props) {
   const p = projectBySlug((await params).slug);
   if (!p) notFound();
   const next = nextOf(p);
-  const rows: [string, React.ReactNode][] = [
-    ["Client", p.client ?? (p.spec ? "Spec" : "Own")],
-    ...(p.role ? [["Role", p.role] as [string, React.ReactNode]] : []),
-    ["Discipline", p.disciplines.map((d) => <span key={d}>{d}</span>)],
-    ["Year", p.year],
-    ["Link", p.link ? <a href={p.link.href} target={p.link.href.startsWith("/") ? undefined : "_blank"} rel="noopener">{p.link.label} ↗</a> : "Not public"],
-  ];
   const tall = portrait(p.cover);
   return (
     <main className={"case " + (p.cover.tone === "ink" ? "case-ink" : "")}>
-      <TitleTab as="h1" tag={laneLabel(p.lane)}>
+      <TitleTab
+        as="h1"
+        tag={[p.client && p.role ? p.role : laneLabel(p.lane), p.year, p.spec ? "Spec" : ""].filter(Boolean).join(", ")}
+        side={p.link ? <a href={p.link.href} target={p.link.href.startsWith("/") ? undefined : "_blank"} rel="noopener">{p.link.label} ↗</a> : undefined}
+      >
         {p.name}
       </TitleTab>
-      <div className={"wrap case-cover " + (tall ? "tall hatch " : "") + (p.stage ? "staged" : "")}>
-        <Media m={p.cover} vt={"cover-" + p.slug} priority sizes={tall ? "40vw" : "100vw"} />
+      <div className={"wrap case-cover " + (tall ? "tall hatch" : "")}>
+        <div className="case-cover-in" style={tall ? undefined : { maxWidth: p.cover.w }}>
+          <Media m={p.cover} vt={"cover-" + p.slug} priority sizes={tall ? "40vw" : "(min-width: " + p.cover.w + "px) " + p.cover.w + "px, 100vw"} />
+        </div>
       </div>
       <div className="g16 case-lines">
         {p.lines.map((l) => (
@@ -103,22 +102,6 @@ export default async function Case({ params }: Props) {
           </p>
         ))}
       </div>
-      <dl className="g16 spec">
-        {rows.map(([k, v]) => (
-          <div key={k}>
-            <dt className="lbl dim">{k}</dt>
-            <dd>{v}</dd>
-          </div>
-        ))}
-        {p.spec ? (
-          <div className="spec-tag">
-            <dt className="lbl dim">Note</dt>
-            <dd>
-              <span className="lbl tag">Spec</span>
-            </dd>
-          </div>
-        ) : null}
-      </dl>
       {p.figs ? (
         <div className="g16 figs case-figs">
           {p.figs.map((f, i) => (

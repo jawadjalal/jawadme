@@ -37,8 +37,6 @@ export type Project = {
   spec?: boolean;
   lines: [string] | [string, string] | [string, string, string];
   cover: Media;
-  /** set the cover on an ink stage, for a product screenshot that would otherwise sit as a white card */
-  stage?: boolean;
   /** up to three figures, each traceable to the CV or his files */
   figs?: { n: string; l: string }[];
   blocks: Block[];
@@ -181,7 +179,6 @@ const PROJECTS_ALL: Project[] = [
       { n: "3", l: "redesigns, built as live React mockups" },
       { n: "14M", l: "views on Okara's launch, day one" },
     ],
-    stage: true,
     cover: m("/okara/morning.webp", 1200, 749, "My redesign of Okara's return visit: a morning note from your CMO"),
     blocks: [
       { kind: "compare", title: "A morning note from your CMO.", before: m("/okara/morning-before.webp", 1600, 1000, "Okara's dashboard on a return visit, as it ships"), after: m("/okara/morning.webp", 1200, 749, "The redesign: what the CMO found overnight, and one thing waiting for approval") },

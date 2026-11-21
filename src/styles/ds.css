@@ -702,13 +702,21 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .sel-big .card { grid-column: span 8; }
 .sel-big .card:first-child { grid-column: 1 / -1; }
 .sel-big .card:first-child .media { aspect-ratio: 21 / 9 !important; }
-.sel-big .card:not(:first-child) .media { aspect-ratio: 3 / 2 !important; }
+.sel-big .card:not(:first-child) .media { aspect-ratio: 16 / 10 !important; }
 .sel-big { row-gap: calc(12 * var(--u)); padding-bottom: calc(10 * var(--u)); }
 @media (max-width: 767px) { .sel-big .card, .sel-big .card:first-child { grid-column: 1 / -1; } .sel-big .card:first-child .media { aspect-ratio: 3 / 2 !important; } }
 
-/* ── Case: the cover leads; a UI cover stands on an ink stage ── */
+/* ── Case: the cover leads, never wider than its file ── */
 .case-cover { margin-top: 12px; margin-bottom: calc(14 * var(--u)); }
-.case-cover.staged { padding-block: calc(16 * var(--u)); background: var(--ink); background-clip: content-box; display: grid; place-items: center; }
-.case-cover.staged .media { width: 78%; box-shadow: 0 30px 80px rgb(0 0 0 / 0.45); }
-@media (max-width: 767px) { .case-cover.staged .media { width: 90%; } }
 .case-lines { padding-top: 0; }
+
+.case-cover-in { margin-inline: auto; }
+.case .tab { padding-top: calc(18 * var(--u)); }
+.case-lines { padding-block: calc(4 * var(--u)) calc(12 * var(--u)); }
+.xp-yr { white-space: nowrap; }
+@media (hover: none) {
+  .xp-row:hover, .sel-row:hover { background: none; }
+  .xp-row:hover .xp-co, .xp-row:hover .xp-go, .card:hover .d-name { color: inherit; }
+  .xp-row:hover .xp-role { color: var(--dim); }
+  .xp-row:hover .xp-go { transform: none; }
+}

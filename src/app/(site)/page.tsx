@@ -63,7 +63,7 @@ export default function Home() {
         <div className="g16 sel-big">
           {SELECTED.map((p, i) => (
             <TLink key={p.slug} href={"/work/" + p.slug} vt={"cover-" + p.slug} className="card" data-cursor="view">
-              <Media m={p.cover} ratio={i ? "3 / 2" : "21 / 9"} fit={p.cover.h > p.cover.w ? "contain" : "cover"} sizes={i ? "(min-width: 768px) 50vw, 100vw" : "100vw"} priority={i === 0} />
+              <Media m={p.cover} ratio={i ? "16 / 10" : "21 / 9"} fit={p.cover.h > p.cover.w ? "contain" : "cover"} sizes={i ? "(min-width: 768px) 50vw, 100vw" : "100vw"} priority={i === 0} />
               <span className="card-meta">
                 <span className="d-name">{p.name}</span>
                 <span className="lbl dim">
