@@ -134,8 +134,21 @@ export function LoaderB() {
       const r = src.getBoundingClientRect();
       return "translate(" + r.left + "px," + r.top + "px) scale(" + r.width / B.width + ")";
     };
-    const GLOW = "drop-shadow(0 0 7px rgba(255,110,30,0.75))";
-    const NOGLOW = "drop-shadow(0 0 0 rgba(255,110,30,0))";
+    const probe = document.createElement("canvas").getContext("2d", { willReadFrequently: true })!;
+    const token = (name: string, fallback: string) => {
+      probe.clearRect(0, 0, 1, 1);
+      probe.fillStyle = fallback;
+      probe.fillStyle = getComputedStyle(el).getPropertyValue(name).trim() || fallback;
+      probe.fillRect(0, 0, 1, 1);
+      return Array.from(probe.getImageData(0, 0, 1, 1).data.slice(0, 3));
+    };
+    const acc = token("--accent", "#ff5314");
+    const hi = token("--accent-hi", "#ffb060");
+    const mix = (a: number[], b: number[], u: number) => a.map((v, i) => Math.round(v + (b[i] - v) * u));
+    const css = (c: number[], a = 1) => "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a + ")";
+    const hot = mix(hi, [255, 255, 255], 0.4);
+    const GLOW = "drop-shadow(0 0 7px " + css(acc, 0.75) + ")";
+    const NOGLOW = "drop-shadow(0 0 0 " + css(acc, 0) + ")";
 
     const handoff = (dur: number) => {
       const opt = { duration: dur, fill: "forwards" as const };
@@ -185,9 +198,9 @@ export function LoaderB() {
       const gg = grain.getContext("2d")!;
       const gi = gg.createImageData(vw, vh);
       for (let p = 0; p < gi.data.length; p += 4) {
-        gi.data[p] = 255;
-        gi.data[p + 1] = 214;
-        gi.data[p + 2] = 170;
+        gi.data[p] = hot[0];
+        gi.data[p + 1] = hot[1];
+        gi.data[p + 2] = hot[2];
         gi.data[p + 3] = Math.random() * 4.5;
       }
       gg.putImageData(gi, 0, 0);
@@ -219,11 +232,11 @@ export function LoaderB() {
           g.textAlign = "center";
           if (glow) {
             const grad = g.createLinearGradient(0, oy - asc, 0, oy + h - asc);
-            grad.addColorStop(0, "#ffe4b8");
-            grad.addColorStop(0.5, "#ffa04e");
-            grad.addColorStop(1, "#e2531a");
+            grad.addColorStop(0, css(hot));
+            grad.addColorStop(0.5, css(hi));
+            grad.addColorStop(1, css(acc));
             g.fillStyle = grad;
-            g.shadowColor = "rgba(255,110,30,0.85)";
+            g.shadowColor = css(acc, 0.85);
             g.shadowBlur = 26;
             g.fillText(WORD_AR[it.i], ox, oy);
             g.shadowBlur = 0;
@@ -316,14 +329,16 @@ export function LoaderB() {
       spr.width = spr.height = 64;
       const sg = spr.getContext("2d")!;
       const rg = sg.createRadialGradient(32, 32, 0, 32, 32, 32);
-      rg.addColorStop(0, "rgba(255,214,150,1)");
-      rg.addColorStop(0.25, "rgba(255,140,60,0.7)");
-      rg.addColorStop(1, "rgba(255,80,20,0)");
+      rg.addColorStop(0, css(hot));
+      rg.addColorStop(0.25, css(hi, 0.7));
+      rg.addColorStop(1, css(acc, 0));
       sg.fillStyle = rg;
       sg.fillRect(0, 0, 64, 64);
       cv.width = Math.round(vw * dpr);
       cv.height = Math.round(vh * dpr);
       const ctx = cv.getContext("2d")!;
+      const flying = css(hi);
+      const landed = css(mix(hi, [244, 234, 216], 0.6));
       const embers: Ember[] = Array.from({ length: cfg.embers }, () => ({ x: Math.random() * vw, y: vh * (0.55 + Math.random() * 0.6), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
 
       t0 = Math.max(T0, performance.now() - 1300);
@@ -390,7 +405,7 @@ export function LoaderB() {
             const y = sy[i] + (ty[i] - sy[i]) * e + ay[i] * bow;
             ctx.globalAlpha = (u === 0 ? 0 : 0.5 + 0.5 * u) * fade * fadeOut;
             const s = 2.3 - u * 0.5;
-            ctx.fillStyle = u < 1 ? "#ffb060" : "#ffe6bd";
+            ctx.fillStyle = u < 1 ? flying : landed;
             ctx.fillRect(x - s / 2, y - s / 2, s, s);
             if (i % 7 === 0) {
               ctx.globalAlpha *= 0.35;
@@ -404,7 +419,7 @@ export function LoaderB() {
         if (t >= cfg.markIn && handoffAt < 0) {
           const u = ease(clamp((t - cfg.markIn) / 170));
           mark.style.opacity = String(u);
-          mark.style.filter = "drop-shadow(0 0 " + (5 + 10 * (1 - u)) + "px rgba(255,110,30," + (0.5 + 0.4 * (1 - u)) + "))";
+          mark.style.filter = "drop-shadow(0 0 " + (5 + 10 * (1 - u)) + "px " + css(acc, 0.5 + 0.4 * (1 - u)) + ")";
         }
         if (t >= cfg.handoff && handoffAt < 0) {
           handoffAt = t;

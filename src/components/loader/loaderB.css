@@ -22,8 +22,8 @@ html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor
   height: 4px;
   margin: -2px 0 0 -2px;
   border-radius: 50%;
-  background: #ffb066;
-  box-shadow: 0 0 16px 5px rgb(255 110 30 / 0.7);
+  background: var(--accent-hi, #ffb060);
+  box-shadow: 0 0 16px 5px color-mix(in srgb, var(--accent, #ff5314) 70%, transparent);
   animation: lb-seed 1100ms ease-in-out both;
 }
 @keyframes lb-seed {
@@ -48,7 +48,7 @@ html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor
   gap: 4px;
   padding: 0 22px 0 24px;
   border-radius: 3px;
-  background: #ff5314;
+  background: var(--accent, #ff5314);
   color: #0b0b0b;
   font: 700 17px/1 var(--f-bar, system-ui, sans-serif);
   letter-spacing: -0.02em;
