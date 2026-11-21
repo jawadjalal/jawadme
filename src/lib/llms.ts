@@ -25,6 +25,7 @@ const pages = () => [
   `- [work](${abs("/work")}): the gallery: ${ADS.length} ads grouped by brand first, then websites, his design tool ignaru, 3d and his roblox game`,
   `- [about](${abs("/about")}): who he is, where he has worked, and the short answers`,
   `- [book a call](${abs("/cal")}): a free 15 minute video call`,
+  `- [contact](${abs("/contact")}): book a call or email him, side by side`,
   `- [fracture, the game page](${abs("/derelictdepths")}): the roblox game he designs and builds`,
   "",
   "## case studies",
