@@ -7,45 +7,56 @@ import { useEffect, useRef, useState } from "react";
 import type { Ad } from "@/content/ads";
 
 /*
- * The hero's ads around the outside of a slow-turning drum, after Outpace's project ring: every card is bent to the
- * drum in WebGL (three, loaded after first paint), its name and headline under it bent with it. It turns on its own;
- * a drag or swipe takes it with momentum and lets it snap to the nearest card; a tap opens the viewer. With focus, the
- * arrow keys step and Enter opens. Until three has loaded, and with no WebGL, the same ads stand in a flat row of links,
- * which stay in the page for screen readers. The camera sits a little above the drum's middle, so the cards going away
- * rise and narrow towards its edges. Reduced motion: no turning on its own, no momentum, the snap is instant.
+ * The hero's ads around the outside of a slow-turning drum, after Outpace's project ring. Its geometry was measured
+ * from Outpace live (21 Nov 2026, 1440 by 900, fitted to the corners of its three front cards, 6.8 px rms): in its
+ * card widths, the drum's radius is 1.94, the camera stands 3.8 in front of the front card and 0.67 above its middle
+ * and looks at it (9.9 degrees down), the cards stand 0.08 apart, and its card is 36.6% of the viewport wide. Our ads
+ * are portrait, so a preset keeps the drum's size on screen (radius, distance and height in viewport widths) and lets
+ * more of the narrower cards go round; the back of the drum is never drawn. Every card is bent to the drum in
+ * WebGL (three, loaded after first paint), its name and headline under it bent with it, and the drum has fewer places
+ * than there are ads: a place that turns out of sight takes the next ad, so the strip never repeats while you watch.
+ * It turns on its own; a drag or swipe takes it with momentum and lets it snap to the nearest card; a tap opens the
+ * viewer. With focus, the arrow keys step and Enter opens. Until three has loaded, and with no WebGL, the same ads
+ * stand in a flat row of links, which stay in the page for screen readers. Reduced motion: no turning on its own, no
+ * momentum, the snap is instant.
  */
 
 type Three = typeof import("three");
+type Preset = { r: number; d: number; h: number; gap: number; fill: number };
+const OP = 0.366;
+export const RING_PRESETS: Record<string, Preset> = {
+  outpace: { r: 1.943 * OP, d: 3.805 * OP, h: 0.667 * OP, gap: 0.081, fill: 0.62 },
+  low: { r: 1.943 * OP, d: 3.0 * OP, h: 0.08 * OP, gap: 0.081, fill: 0.66 },
+  large: { r: 1.5 * OP, d: 3.3 * OP, h: 0.4 * OP, gap: 0.07, fill: 0.8 },
+};
 const TURN = 0.05;
-const GAP = 0.09;
-const SEG = 28;
+const SEG = 32;
 const TW = 576;
 const TH = 720;
 const CH = 116;
-const DIST = 9;
-const LIFT = 0.32;
 const headline = (a: Ad) => {
   const s = a.alt.split(". ")[0];
   return s.length <= 44 ? s.replace(/\.$/, "") : "";
 };
 
-export function AdRing({ ads }: { ads: Ad[] }) {
+export function AdRing({ ads, preset = "large" }: { ads: Ad[]; preset?: string }) {
   const box = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [live, setLive] = useState(false);
   useEffect(() => {
     const el = box.current;
     if (!el || !document.createElement("canvas").getContext("webgl2")) return;
+    const pick = new URLSearchParams(location.search).get("ring") ?? preset;
     let off = false;
     let dispose = () => {};
     import("three").then((T) => {
-      if (!off) dispose = mount(T, el, ads, (id) => router.push("/w/" + id), () => setLive(true));
+      if (!off) dispose = mount(T, el, ads, RING_PRESETS[pick] ?? RING_PRESETS.outpace, (id) => router.push("/w/" + id), () => setLive(true));
     });
     return () => {
       off = true;
       dispose();
     };
-  }, [ads, router]);
+  }, [ads, preset, router]);
   const n = ads.length;
   return (
     <div ref={box} className={"ring" + (live ? " live" : "")} tabIndex={0} role="region" aria-roledescription="carousel" aria-label="Ads. Drag, or use the arrow keys and Enter.">
@@ -63,10 +74,18 @@ export function AdRing({ ads }: { ads: Ad[] }) {
   );
 }
 
-function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => void, ready: () => void) {
-  const N = ads.length;
-  const pitch = (Math.PI * 2) / N;
-  const R = 1 / (pitch * (1 - GAP));
+function mount(T: Three, el: HTMLDivElement, ads: Ad[], P: Preset, open: (id: string) => void, ready: () => void) {
+  const A = ads.length;
+  const hp = (TH / TW) * ((TH + CH) / TH);
+  const cardPx = () => Math.min(el.clientWidth * (el.clientWidth < 768 ? 0.64 : 0.4), (P.fill * el.clientHeight) / hp);
+  const vw = (el.clientWidth || 1440) * (el.clientWidth < 768 ? 1.6 : 1);
+  const unit = vw / (cardPx() || 300);
+  const N = Math.max(5, Math.round((2 * Math.PI * P.r * unit) / (1 + P.gap)));
+  const pitch = (2 * Math.PI) / N;
+  const R = (1 + P.gap) / pitch;
+  const D = (P.d * unit * R) / (P.r * unit);
+  const CAMH = (P.h * unit * R) / (P.r * unit);
+  const arc = 1 / R;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -75,24 +94,23 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => vo
   canvas.className = "ring-gl";
   el.appendChild(canvas);
   const scene = new T.Scene();
-  const cam = new T.PerspectiveCamera(30, 1, 0.01, 10);
-  cam.position.set(0, LIFT, 0);
-  cam.lookAt(0, 0, -DIST);
-  const ring = new T.Group();
-  ring.position.z = -(DIST + R);
-  scene.add(ring);
+  const cam = new T.PerspectiveCamera(30, 1, 0.01, 40);
+  cam.position.set(0, CAMH, 0);
+  cam.lookAt(0, 0, -D);
+  const drum = new T.Group();
+  drum.position.z = -(D + R);
+  scene.add(drum);
 
-  const hc = TH / TW;
-  const hp = hc * ((TH + CH) / TH);
+  const top = TH / TW / 2;
   const pos: number[] = [];
   const uv: number[] = [];
   const idx: number[] = [];
   for (let k = 0; k <= SEG; k++) {
     const t = k / SEG;
-    const a = (t - 0.5) * pitch * (1 - GAP);
+    const a = (t - 0.5) * arc;
     const x = R * Math.sin(a);
     const z = R * Math.cos(a);
-    pos.push(x, hp / 2, z, x, -hp / 2, z);
+    pos.push(x, top, z, x, top - hp, z);
     uv.push(t, 1, t, 0);
     if (k < SEG) idx.push(2 * k, 2 * k + 1, 2 * k + 2, 2 * k + 1, 2 * k + 3, 2 * k + 2);
   }
@@ -101,43 +119,45 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => vo
   geo.setAttribute("uv", new T.Float32BufferAttribute(uv, 2));
   geo.setIndex(idx);
 
-  const css = getComputedStyle(el);
-  const family = css.fontFamily;
+  const family = getComputedStyle(el).fontFamily;
   let loaded = 0;
-  const cards = ads.map((a, i) => {
+  const texs = ads.map((a) => {
     const cv = document.createElement("canvas");
     cv.width = TW;
     cv.height = TH + CH;
     const g = cv.getContext("2d")!;
-    g.fillStyle = "#21182a";
+    g.fillStyle = "#221b16";
     g.fillRect(0, 0, TW, TH);
     const tex = new T.CanvasTexture(cv);
     tex.colorSpace = T.SRGBColorSpace;
     tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-    const mat = new T.MeshBasicMaterial({ map: tex, transparent: true, side: T.DoubleSide });
-    const mesh = new T.Mesh(geo, mat);
-    mesh.rotation.y = i * pitch;
-    mesh.userData.i = i;
-    ring.add(mesh);
     const img = new window.Image();
     img.decoding = "async";
     img.src = a.src;
     const line = headline(a);
-    Promise.all([img.decode(), document.fonts.ready]).then(() => {
-      g.drawImage(img, 0, 0, TW, TH);
-      g.fillStyle = "#e6e5e1";
-      g.font = "700 34px " + family;
-      g.textBaseline = "alphabetic";
-      g.fillText(a.campaign, 2, TH + 45);
-      if (line) {
-        g.fillStyle = "rgba(230, 229, 225, 0.58)";
-        g.font = "600 27px " + family;
-        g.fillText(line, 2, TH + 85);
-      }
-      tex.needsUpdate = true;
-      if (++loaded === 3) show();
-    }).catch(() => {});
-    return { mesh, mat, tex };
+    Promise.all([img.decode(), document.fonts.ready])
+      .then(() => {
+        g.drawImage(img, 0, 0, TW, TH);
+        g.fillStyle = "#e6e5e1";
+        g.font = "700 34px " + family;
+        g.fillText(a.campaign, 2, TH + 45);
+        if (line) {
+          g.fillStyle = "rgba(230, 229, 225, 0.58)";
+          g.font = "600 27px " + family;
+          g.fillText(line, 2, TH + 85);
+        }
+        tex.needsUpdate = true;
+        if (++loaded === 3) show();
+      })
+      .catch(() => {});
+    return tex;
+  });
+  const cards = Array.from({ length: N }, () => {
+    const mat = new T.MeshBasicMaterial({ map: texs[0], transparent: true });
+    const mesh = new T.Mesh(geo, mat);
+    mesh.userData.g = 0;
+    drum.add(mesh);
+    return { mesh, mat, g: NaN };
   });
 
   let W = 0;
@@ -147,25 +167,24 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => vo
     W = el.clientWidth;
     H = el.clientHeight;
     if (!W || !H) return;
-    const wc = Math.min(W * (W < 768 ? 0.62 : 0.22), (0.78 * H) / ((TH + CH) / TW));
-    const f = wc * DIST;
+    const f = cardPx() * D;
     cam.fov = (2 * Math.atan(H / 2 / f) * 180) / Math.PI;
     cam.aspect = W / H;
     cam.updateProjectionMatrix();
     renderer.setSize(W, H, false);
-    radPerPx = DIST / (f * R);
+    radPerPx = D / (f * R);
   };
   size();
   const ro = new ResizeObserver(size);
   ro.observe(el);
 
+  const mod = (i: number) => ((i % A) + A) % A;
   let rot = reduce ? 0 : -pitch * 1.6;
   let vel = 0;
   let target: number | null = reduce ? null : 0;
   let idleAt = performance.now() + 1200;
   let drag: { id: number; x: number; t: number; moved: number } | null = null;
   const nearest = (r: number) => Math.round(r / pitch) * pitch;
-  const front = () => (((Math.round(rot / pitch) % N) + N) % N);
   const snap = (r: number) => {
     vel = 0;
     if (reduce) {
@@ -181,8 +200,8 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => vo
     const b = canvas.getBoundingClientRect();
     ndc.set(((e.clientX - b.left) / b.width) * 2 - 1, -((e.clientY - b.top) / b.height) * 2 + 1);
     ray.setFromCamera(ndc, cam);
-    const h = ray.intersectObjects(ring.children, false)[0];
-    return h ? (h.object.userData.i as number) : -1;
+    const h = ray.intersectObjects(drum.children, false)[0];
+    return h ? (h.object.userData.g as number) : null;
   };
   const down = (e: PointerEvent) => {
     if (e.button !== 0) return;
@@ -193,7 +212,7 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => vo
   };
   const move = (e: PointerEvent) => {
     if (!drag) {
-      if (e.pointerType === "mouse") canvas.style.cursor = hit(e) >= 0 ? "pointer" : "";
+      if (e.pointerType === "mouse") canvas.style.cursor = hit(e) !== null ? "pointer" : "";
       return;
     }
     if (e.pointerId !== drag.id) return;
@@ -214,8 +233,8 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => vo
     drag = null;
     canvas.classList.remove("held");
     if (tap) {
-      const i = hit(e);
-      if (i >= 0) return open(ads[i].id);
+      const g = hit(e);
+      if (g !== null) return open(ads[mod(g)].id);
     }
     if (reduce || Math.abs(vel) < 0.4) snap(nearest(rot + (reduce ? 0 : vel * 0.25)));
     idleAt = performance.now() + 3000;
@@ -235,7 +254,7 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => vo
     const base = target ?? nearest(rot);
     if (e.key === "ArrowRight") snap(base + pitch);
     else if (e.key === "ArrowLeft") snap(base - pitch);
-    else if (e.key === "Enter" || e.key === " ") open(ads[front()].id);
+    else if (e.key === "Enter" || e.key === " ") open(ads[mod(Math.round(rot / pitch))].id);
     else return;
     e.preventDefault();
   };
@@ -263,12 +282,17 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => vo
         if (Math.abs(vel) < 0.4) snap(nearest(rot + vel * 0.25));
       } else if (!reduce && now > idleAt) rot += TURN * dt;
     }
-    ring.rotation.y = -rot;
-    for (let i = 0; i < N; i++) {
-      let a = i * pitch - rot;
-      a = Math.atan2(Math.sin(a), Math.cos(a));
-      const t = Math.min(1, Math.max(0, (Math.abs(a) - pitch * 0.5) / (pitch * 2.5)));
-      cards[i].mat.color.setScalar(1 - 0.5 * t * t * (3 - 2 * t));
+    drum.rotation.y = -rot;
+    const at = rot / pitch;
+    for (let j = 0; j < N; j++) {
+      const g = j + N * Math.round((at - j) / N);
+      const c = cards[j];
+      if (g !== c.g) {
+        c.g = g;
+        c.mesh.rotation.y = g * pitch;
+        c.mesh.userData.g = g;
+        c.mat.map = texs[mod(g)];
+      }
     }
     renderer.render(scene, cam);
   };
@@ -297,10 +321,8 @@ function mount(T: Three, el: HTMLDivElement, ads: Ad[], open: (id: string) => vo
     ro.disconnect();
     document.removeEventListener("visibilitychange", run);
     el.removeEventListener("keydown", key);
-    cards.forEach((c) => {
-      c.tex.dispose();
-      c.mat.dispose();
-    });
+    texs.forEach((t) => t.dispose());
+    cards.forEach((c) => c.mat.dispose());
     geo.dispose();
     renderer.dispose();
     canvas.remove();

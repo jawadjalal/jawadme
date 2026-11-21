@@ -1,7 +1,8 @@
 // The ad curation: one list feeds the home hero and gallery, /ads, the ad case studies and the viewer (/w/<id>).
 // Swap the list and everything follows. Source: JAWA-10's curation (every ad Jawad rated 6 or higher), in its order.
-// Every piece is spec work: made unasked, not commissioned. The type-pass set (handoffs/JAWA-11/new-ads, his picks in
-// type.html) leads, ahead of the JAWA-10 curation.
+// Every piece is independent work, not commissioned. Order: the four from his 21 Nov X post (Vercel, Midjourney, Mistral,
+// Lovable; x.com/jawadjalal/status/2124118088819834999), then the type-pass set (handoffs/JAWA-11/new-ads, his picks in
+// type.html), then the JAWA-10 curation.
 
 export type Ad = {
   /** the /w/<id> permalink */
@@ -31,6 +32,10 @@ const palantir = (id: string, alt: string, w: number, h: number): Ad => ({
 });
 
 const LIST = [
+  type("midjourney-a", "Midjourney", "We are all midjourney. Midjourney ad, a sailboat backlit by a low sun on still water."),
+  type("vercel-c", "Vercel", "Keep pushing forward. Vercel ad, a triangular skylight repeating into itself like the Vercel mark."),
+  type("mistral-a", "Mistral", "Frontier open models you own. Mistral ad, a tower of coloured window panels with the Mistral mark in its facade."),
+  type("lovable-a", "Lovable", "Build something Lovable. Lovable ad, a heart-shaped island seen from above."),
   type("linear-a", "Linear", "Purpose-built for planning. Linear ad, centre-pivot fields seen from above, one striped like the Linear mark."),
   type("vercel-a", "Vercel", "From zero to millions. Vercel ad, a mountain's triangular shadow cast on haze at sunrise."),
   type("cursor-a", "Cursor", "The new way to build software. Cursor ad, lit office windows drawing the Cursor mark on a night tower."),

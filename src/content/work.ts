@@ -70,7 +70,7 @@ const PROJECTS_ALL: Project[] = [
     lane: "brand-web",
     disciplines: ["Product design", "Brand", "Website", "Engineering"],
     link: { href: "https://ignaru.com", label: "ignaru.com" },
-    lines: ["My design tool.", "Circle what's wrong on the canvas. Your coding agent fixes it in your files."],
+    lines: ["Design tool.", "Circle what's wrong on the canvas. Your coding agent fixes it in your files."],
     cover: { ...m("/work/case/ignaru-live-1.webp", 1920, 1200, "ignaru.com today: agentic design that sells, over a grid of ads made in it", "ink"), loop: "/work/case/ignaru-scroll.mp4" },
     blocks: [
       { kind: "full", media: fd("ignaru-canvas-ads", "The Ignaru canvas: an ad set laid out as frames, layers on the left, the composer at the foot") },
@@ -86,7 +86,7 @@ const PROJECTS_ALL: Project[] = [
   },
   {
     slug: "ignura-seo",
-    name: "Ignura SEO",
+    name: "Ignura Studio SEO",
     year: 2026,
     lane: "brand-web",
     disciplines: ["Brand", "Website", "Illustration"],
@@ -103,7 +103,7 @@ const PROJECTS_ALL: Project[] = [
   },
   {
     slug: "ignura",
-    name: "Ignura",
+    name: "Ignura Studio",
     year: 2026,
     lane: "brand-web",
     disciplines: ["Brand", "Website"],
@@ -152,6 +152,6 @@ export const nextOf = (p: Project) => REAL[(REAL.indexOf(p) + 1) % REAL.length];
 export const laneLabel = (l: Lane) => LANES.find((x) => x.key === l)!.label;
 
 /** home, selected work: the order Jawad can change */
-export const SELECTED = ["ignaru", "ignura-seo", "coresrent", "ignura"]
+export const SELECTED = ["ignaru", "coresrent", "ignura-seo", "ignura"]
   .map((s) => projectBySlug(s))
   .filter((p): p is Project => Boolean(p));

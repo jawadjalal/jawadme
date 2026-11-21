@@ -1,7 +1,7 @@
 /* Design Mastermind: the design system for jawadjalal.com.
    A warm off-white ground, ink, and one ember accent for the info bars and the call. One face, Public Sans, set the
    way Joyco sets it: 700 for statements and titles at modest sizes, line-height near 0.94, tracking near -0.03em. The info bar, a strip of
-   facts on ember or ink, is the recurring motif. Cyan exists once: the seam through the hero wordmark. A 16 column
+   facts on ember or ink, is the recurring motif. There is no cyan. A 16 column
    grid, type sized on a 480 px canvas (--u) so every width reads as the same poster. */
 
 .ds {
@@ -11,7 +11,7 @@
   --ink: #0b0b0b;
   --ember: #ff5314;
   --bronze: #b5833f;
-  --under: #150f19;
+  --under: #17120e;
 
   --bg: var(--ground);
   --fg: var(--ink);
@@ -255,9 +255,9 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
 .art.sign-art { position: absolute; inset: -8% 0 -4%; background: none; z-index: 0; }
 .art.sign-art > img { object-fit: contain; }
 .art.sign-art { overflow: visible; }
-.sign-post { position: absolute; left: 50%; top: 0; bottom: 0; width: 20px; margin-left: -10px; background: linear-gradient(90deg, var(--ink) 0 62%, #2a2a29 62% 72%, var(--ink) 72%); }
+.sign-post { position: absolute; left: 50%; top: 0; bottom: 0; width: 20px; margin-left: -10px; background: var(--ink); }
 .sign-post::before { content: ""; position: absolute; left: -5px; right: -5px; top: -10px; height: 12px; background: var(--ink); }
-.sign-foot { position: relative; z-index: 0; justify-self: center; width: 46%; height: 14px; margin-top: 26px; background: radial-gradient(50% 50% at 50% 50%, rgb(0 0 0 / 0.22), transparent 72%); }
+.sign-foot { position: relative; z-index: 0; justify-self: center; width: 46%; height: 14px; margin-top: 26px; border-radius: 50%; background: rgb(0 0 0 / 0.14); }
 .sign-arms { position: relative; z-index: 1; display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
 .sign-arm { display: grid; grid-template-columns: 1fr 1fr; filter: drop-shadow(2px 0 0 var(--ink)) drop-shadow(-2px 0 0 var(--ink)) drop-shadow(0 -2px 0 var(--ink)) drop-shadow(0 6px 0 var(--ink)); }
 .sign-board {
@@ -342,10 +342,7 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 @media (max-width: 767px) { .art-band { aspect-ratio: 3 / 2; } }
 
 /* ── Home: hero ──
-   Load, about 1.6 s: letters rise (0 to 0.6 s), the seam draws down through "Mastermind" (0.3 to 0.72 s), the right
-   half settles along the cut (0.62 to 1 s) and the seam cools to a hairline (0.8 to 1.25 s); the five ads rise out of
-   the mark's foot from the middle outwards (0.82 to 1.6 s), each settling from a slight zoom; the ember bar wipes in
-   last. On scroll every ad drifts up at its own rate. */
+   Load: the statement rises, the lettered mark's glyphs rise in turn, the ring turns in, the ember bar wipes in last. */
 .hero { position: relative; padding-top: 18px; overflow: clip; }
 .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding: 0 var(--g); }
 .hero-say { margin: 0; max-width: 16.5em; font: 700 clamp(20px, 2.1vw, 40px)/0.98 var(--f-bar); letter-spacing: -0.03em; text-wrap: balance; }
@@ -355,33 +352,15 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .hero-who img { width: 44px; height: auto; transition: transform 400ms var(--ease); }
 .hero-who:hover img { transform: rotate(-8deg) scale(1.06); }
 .hero-who:hover span { color: var(--ember); }
-.hero-mark { position: relative; z-index: 0; display: flex; gap: 0.2em; margin: calc(9 * var(--u)) 0 0; padding: 0 var(--g); font: 700 var(--mark, 11.8vw)/0.8 var(--f-disp); letter-spacing: -0.055em; white-space: nowrap; }
-.hero-w { display: flex; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
-.hero-ch { display: block; animation: rise 640ms var(--ease) both; }
-.hero-mm { position: relative; padding: 0; }
-.hero-half { display: flex; padding: 0 0.06em 0.1em 0; }
-.hero-half.l { clip-path: var(--cl); }
-.hero-half.r { position: absolute; left: 0; top: 0; clip-path: var(--cr); animation: hero-split 380ms 620ms cubic-bezier(0.2, 0.9, 0.1, 1) forwards; }
-@keyframes hero-split { to { translate: 0.035em 0.04em; } }
-.hero-seam { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; animation: hero-draw 420ms 300ms var(--ease-cut) both, hero-cool 450ms 800ms ease-out forwards; filter: drop-shadow(0 0 2px #bffaf6) drop-shadow(0 0 9px rgb(95 227 224 / 0.85)) drop-shadow(0 0 30px rgb(95 227 224 / 0.55)); }
-.hero-seam path { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-.hero-core { stroke: #f2fffe; stroke-width: 3px; animation: hero-hair 450ms 800ms ease-out forwards; }
-.hero-glow { stroke: #9ff5f1; stroke-width: 10px; opacity: 0.75; animation: hero-glow 450ms 800ms ease-out forwards; }
-@keyframes hero-draw { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
-@keyframes hero-cool { to { filter: drop-shadow(0 0 0 transparent) drop-shadow(0 0 2px rgb(95 227 224 / 0.5)) drop-shadow(0 0 0 transparent); } }
-@keyframes hero-hair { to { stroke: #5fe3e0; stroke-width: 1.5px; } }
-@keyframes hero-glow { to { opacity: 0; } }
 .hero-bar { margin-top: calc(12 * var(--u)); }
 .hero-bar::before { animation: wipe 620ms 1350ms var(--ease-cut) both; }
 .hero-bar > * { animation: fade 400ms 1600ms both; }
 @media (max-width: 767px) {
   .hero-top { flex-direction: column; gap: 18px; }
   .hero-say { font-size: 24px; }
-  .hero-mark { flex-direction: column; gap: 0; --mark: 17.4vw; line-height: 0.86; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero *, .hero *::before { animation: none !important; }
-  .hero-seam { display: none; }
 }
 
 /* ── Cards ── */
@@ -651,19 +630,16 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 /* ── Home: Fracture's key art, one big scrubbed frame in the ink room ── */
 .room-one { padding-top: calc(10 * var(--u)); }
 
-/* ── The hall: where the ads are kept. Plum-black, lit from the floor like a brazier. The painting
-   (public/art/hero.webp) fills it when it lands; until then the floor light carries the space. ── */
+/* ── The hall: where the ads are kept. One flat field of warm ink. The painting
+   (public/art/hero.webp) fills it when it lands; until then the field is flat, with a whisper of grain. ── */
 .hall-art { position: absolute; inset: 0; }
-.hall-light { position: absolute; inset: 0; background:
-  linear-gradient(to top, rgb(255 83 20 / 0.30), rgb(255 83 20 / 0.08) 22%, transparent 48%),
-  linear-gradient(to bottom, rgb(0 0 0 / 0.5), transparent 30%); }
 .hero-bar { margin-top: 0; }
 @media (max-width: 767px) {
 }
 
-/* ── The gallery is the hall's second room: the page darkens to plum as you walk into it ── */
-html[data-room="hall"]:has(.ds) { background: #150f19; }
-html[data-room="hall"] .ds { --bg: #150f19; --fg: #e6e5e1; --dim: rgb(230 229 225 / 0.6); --rule: rgb(181 131 63 / 0.35); --tile: #21182a; }
+/* ── The gallery is the hall's second room: the page darkens to the same warm ink as you walk into it ── */
+html[data-room="hall"]:has(.ds) { background: #17120e; }
+html[data-room="hall"] .ds { --bg: #17120e; --fg: #e6e5e1; --dim: rgb(230 229 225 / 0.6); --rule: rgb(181 131 63 / 0.35); --tile: #221b16; }
 html[data-room="hall"] .bar.ink { color: var(--ink); }
 html[data-room="hall"] .bar.ink::before { background: var(--ground); }
 .gal-item .media, .gal-lead .media { outline: 1px solid rgb(181 131 63 / 0); outline-offset: 5px; transition: outline-color 600ms var(--ease-io); }
@@ -727,3 +703,16 @@ html[data-room="hall"] .gal-item:hover .media, html[data-room="hall"] .gal-lead:
   .ring-flat li { width: 62vw; }
 }
 .v-info .disclose { margin: 4px 0 0; padding: 0; font: 600 13px/1.4 var(--f-sans); letter-spacing: 0; color: var(--dim); }
+
+/* ── The lettered name (Wordmark): two words drawn as outlines, sized by their own widths ── */
+.wm { display: flex; align-items: flex-start; gap: 2.2vw; margin: calc(7 * var(--u)) 0 0; padding: 0 var(--g); }
+.wm-w { flex: var(--w) 1 0; min-width: 0; height: auto; overflow: hidden; fill: currentColor; }
+.wm-g { transform-box: fill-box; animation: wm-rise 680ms var(--ease) both; }
+@keyframes wm-rise { from { transform: translateY(108%); } }
+.hall::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.06; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); }
+@media (max-width: 767px) {
+  .wm { flex-direction: column; gap: 0; margin-top: 22px; }
+  .wm-w { flex: none; width: calc(var(--r) * 100%); }
+  .wm-w + .wm-w { margin-top: -5.2vw; }
+}
+@media (prefers-reduced-motion: reduce) { .wm-g { animation: none; } }
