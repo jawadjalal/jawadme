@@ -2,7 +2,8 @@
 
 // One ticker for the whole site: Lenis smooth scroll driven from gsap.ticker, ScrollTrigger kept in step with it.
 // On every route it wires the three page-wide effects by attribute, so pages stay server components:
-//   .media[data-plate]  the ink plate slides off when the picture enters (CSS does the move, this adds .in)
+//   .media[data-plate]  the picture opens from the bottom as it enters, and [data-in] (info bars, the signpost)
+//                       plays its entrance; CSS does the move, this adds .in
 //   [data-lines]        the text splits into lines that rise out of a mask, 50 ms apart
 //   [data-room]         the page flips to ink while the section is in the middle of the screen
 // Reduced motion: no Lenis, plates and lines rest at their end state (ds.css), rooms still flip without travel.
@@ -43,7 +44,7 @@ export function Motion() {
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const root = document.documentElement;
     const ctx = gsap.context(() => {
-      document.querySelectorAll<HTMLElement>(".media[data-plate]").forEach((el) =>
+      document.querySelectorAll<HTMLElement>(".media[data-plate], [data-in]").forEach((el) =>
         ScrollTrigger.create({ trigger: el, start: "top 94%", once: true, onEnter: () => el.classList.add("in") }),
       );
       document.querySelectorAll<HTMLElement>("[data-lines]").forEach((el) => {

@@ -12,11 +12,10 @@ type Cal = Queue & { ns: Record<string, Queue>; loaded?: boolean };
 export const CAL_LINK = new URL(BOOK).pathname.replace(/^\//, "");
 export const NS = "call";
 export const THEME = {
-  theme: "dark",
+  theme: "light",
   layout: "month_view",
   cssVarsPerTheme: {
-    light: { "cal-brand": "#0a0a0a", "cal-brand-emphasis": "#262626", "cal-brand-text": "#ffffff" },
-    dark: { "cal-brand": "#ff8a2a", "cal-brand-emphasis": "#ffb43a", "cal-brand-text": "#07060b", "cal-bg": "#07060b", "cal-bg-muted": "#141220", "cal-bg-emphasis": "#2a2840", "cal-border": "#2a2840", "cal-border-subtle": "#1c1a2b", "cal-text": "#ede4d3", "cal-text-muted": "#b9b0c9" },
+    light: { "cal-brand": "#ff5314", "cal-brand-emphasis": "#0b0b0b", "cal-brand-text": "#0b0b0b", "cal-bg": "#ffffff", "cal-bg-muted": "#f2f1ed", "cal-bg-emphasis": "#e6e5e1", "cal-border": "#dcdbd6", "cal-border-subtle": "#ecebe7", "cal-text": "#0b0b0b", "cal-text-muted": "#66655f" },
   },
 } as const;
 

@@ -1,80 +1,60 @@
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
 import { NAV, SITE, SOCIAL } from "@/content/site";
-import "@/styles/signpost.css";
 
-/** The page's last word: "Where to next?" beside a carved signpost whose five arms point at the sections and the
- *  call. The list on the left is the real navigation (keyboard, screen readers, no JS); with live 3D the shared canvas
- *  draws the post into the [data-view="signpost"] box, reads its labels from this list and clicks these links.
- *  Otherwise the poster shows with a link laid over each arm. */
+/** The page's last word: "Where to next?" beside a signpost in ink and ember. Each board is a real link pointing at a
+ *  section, the call board in ember at the foot of the post; they swing out from the post when the footer arrives. */
 
 const ARMS = [...NAV.map((n) => ({ label: n.label, href: n.href })), { label: "Book a call", href: "/cal?src=footer-signpost" }];
-const HITS: [number, number, number, number, number][] = [
-  [55, 22.0, 24, 7.4, -9],
-  [24, 34.5, 21, 7.4, 7],
-  [55, 45.8, 24, 7.4, -7],
-  [22, 55.8, 23, 7.4, 7],
-  [48, 69.6, 32, 7.9, -4],
-];
+const TILT = [-3, 2.5, -2, 3, -1.5];
 
-export function Footer({ src, sheet }: { src: string; sheet: string }) {
+export function Footer({ src }: { src: string }) {
   return (
-    <footer className="sp" data-signpost="">
-      <div className="sp-in">
-        <div className="sp-copy">
-          <h2 className="sp-title">Where to next?</h2>
-          <nav aria-label="Where to next">
-            <ol className="sp-list">
-              {ARMS.map((a, i) => (
-                <li key={a.label} data-arm={i} data-label={a.label}>
-                  {i === ARMS.length - 1 ? (
-                    <BookLink src="footer-signpost" className="sp-link sp-book" cursor>
-                      <span className="sp-n" aria-hidden="true">{["I", "II", "III", "IV", "V"][i]}</span>
-                      {a.label}
+    <footer className="foot">
+      <div className="foot-in">
+        <div className="foot-copy">
+          <h2 className="d-cta foot-h" data-lines="">
+            Where to next?
+          </h2>
+          <p className="t-line foot-line">
+            Brands, ads, 3D and Roblox games. <a href={"mailto:" + SITE.email + "?subject=Project"}>{SITE.email}</a>
+          </p>
+        </div>
+        <nav className="sign" aria-label="Where to next" data-in="">
+          <span className="sign-post" aria-hidden="true" />
+          <ol className="sign-arms">
+            {ARMS.map((a, i) => {
+              const book = i === ARMS.length - 1;
+              const side = book || i % 2 ? "r" : "l";
+              const style = { "--i": i, "--r": TILT[i] + "deg" } as React.CSSProperties;
+              const inner = (
+                <>
+                  {side === "l" ? <span className="arr" aria-hidden="true">←</span> : null}
+                  {a.label}
+                  {side === "r" ? <span className="arr" aria-hidden="true">→</span> : null}
+                </>
+              );
+              return (
+                <li key={a.label} className={"sign-arm " + side + (book ? " book" : "")} style={style}>
+                  {book ? (
+                    <BookLink src="footer-signpost" className="sign-board" cursor>
+                      {inner}
                     </BookLink>
                   ) : (
-                    <Link href={a.href} className="sp-link" data-cursor="view">
-                      <span className="sp-n" aria-hidden="true">{["I", "II", "III", "IV", "V"][i]}</span>
-                      {a.label}
+                    <Link href={a.href} className="sign-board" data-cursor="view">
+                      {inner}
                     </Link>
                   )}
                 </li>
-              ))}
-            </ol>
-          </nav>
-        </div>
-        <div className="sp-stage" data-view="signpost">
-          <div className="poster-3d sp-fallback">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="sp-poster" src="/three/signpost-illustration.webp" alt="" width={768} height={1152} loading="lazy" decoding="async" />
-            <div className="sp-hits" aria-hidden="true">
-              {ARMS.map((a, i) => (
-                <a
-                  key={a.label}
-                  href={a.href}
-                  tabIndex={-1}
-                  style={{
-                    left: `${HITS[i][0]}%`,
-                    top: `${HITS[i][1]}%`,
-                    width: `${HITS[i][2]}%`,
-                    height: `${HITS[i][3]}%`,
-                    transform: `rotate(${HITS[i][4]}deg)`,
-                  }}
-                >
-                  {a.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
+              );
+            })}
+          </ol>
+          <span className="sign-foot" aria-hidden="true" />
+        </nav>
       </div>
-      <div className="sp-meta">
+      <div className="bar ink foot-bar">
         <span>©2026 Jawad Jalal</span>
-        <a href={`mailto:${SITE.email}?subject=Project`}>{SITE.email}</a>
-        <BookLink src={src} className="sp-meta-book" cursor>
-          Book a call
-        </BookLink>
-        <span className="sp-social">
+        <span className="foot-links">
           {SOCIAL.map((s) => (
             <a key={s.label} href={s.href} target="_blank" rel="noopener">
               {s.label}
@@ -83,7 +63,9 @@ export function Footer({ src, sheet }: { src: string; sheet: string }) {
           <a href="/blog">Blog</a>
           <a href={SITE.cv}>CV</a>
         </span>
-        <span className="sp-sheet">{sheet}</span>
+        <BookLink src={src} className="foot-book" cursor>
+          Book a call ↗
+        </BookLink>
       </div>
     </footer>
   );

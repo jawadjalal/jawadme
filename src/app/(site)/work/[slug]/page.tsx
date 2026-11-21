@@ -109,7 +109,7 @@ export default async function Case({ params }: Props) {
         </span>
         <Media m={next.cover} ratio="21 / 9" sizes="100vw" fit={portrait(next.cover) ? "contain" : "cover"} />
       </TLink>
-      <Footer src={`case-${p.slug}`} sheet="S-03" />
+      <Footer src={`case-${p.slug}`} />
     </main>
   );
 }

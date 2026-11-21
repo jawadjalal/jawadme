@@ -45,7 +45,7 @@ export default async function Work({ searchParams }: Props) {
                 <span className="d-name">{p.name}</span>
                 <span className="lbl dim">{laneLabel(p.lane)}</span>
               </span>
-              <Placeholder label={p.placeholder} ratio="4 / 3" art={p.lane === "roblox" ? "/three/signpost-poster.webp" : "/three/pillar-poster.webp"} />
+              <Placeholder label={p.placeholder} ratio="4 / 3" />
             </div>
           ) : (
             <TLink key={p.slug} href={`/work/${p.slug}`} vt={`cover-${p.slug}`} className="card" data-cursor="view">
@@ -61,7 +61,7 @@ export default async function Work({ searchParams }: Props) {
           ),
         )}
       </div>
-      <Footer src="work" sheet="S-02" />
+      <Footer src="work" />
     </main>
   );
 }

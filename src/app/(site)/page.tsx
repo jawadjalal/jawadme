@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Clock } from "@/components/ds/Clock";
 import { Footer } from "@/components/ds/Footer";
+import { Hero } from "@/components/ds/Hero";
 import { Media } from "@/components/ds/Media";
 import { RailPin } from "@/components/ds/RailPin";
 import { Sequence } from "@/components/ds/Sequence";
@@ -15,42 +15,18 @@ import { SELECTED, laneLabel, projectBySlug } from "@/content/work";
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 const DD = projectBySlug("derelict-depths")!;
+const SIDE = [
+  { src: "/derelictdepths/img/look-king-front-1280.jpg", w: 1280, h: 873, alt: "The Mole King, modelled for Fracture", name: "Mole King", note: "model" },
+  { src: "/derelictdepths/img/smeltery-1280.jpg", w: 1280, h: 720, alt: "The smeltery in Fracture", name: "Smeltery", note: "level" },
+  { src: "/derelictdepths/img/ore-room-1280.jpg", w: 1280, h: 720, alt: "An ore room in Fracture", name: "Ore room", note: "level" },
+];
 
 export default function Home() {
   const big = SELECTED.slice(0, 2);
   const rows = SELECTED.slice(2);
   return (
     <main>
-      <section className="hero" data-hero="">
-        <div className="g16 hero-body">
-          <h1 className="d-hero hero-h1">
-            {SITE.headline.split(" ").map((word, i) => (
-              <span key={word}>{i ? " " : ""}{word}</span>
-            ))}
-          </h1>
-          <div className="hero-stage" data-view="pillar" aria-hidden="true">
-            <div className="hero-seal">
-              <i />
-            </div>
-            <div className="poster-3d pillar-poster">
-              <Image src="/three/pillar-illustration.webp" alt="" width={768} height={1152} priority fetchPriority="high" sizes="(min-width: 1024px) 380px, 245px" />
-            </div>
-          </div>
-          <div className="hero-copy">
-            <p className="hero-line">
-              Brands, ads, 3D and Roblox games.
-              <span className="dim">Designed by Jawad Jalal in London.</span>
-            </p>
-            <Link href="/work/derelict-depths" className="lbl hero-caption">Inspired by Fracture ↗</Link>
-          </div>
-        </div>
-        <div className="g16 hero-foot hair lbl">
-          <span className="hf-a">
-            <Clock />
-          </span>
-          <span className="hf-c">Scroll ↓</span>
-        </div>
-      </section>
+      <Hero />
 
       <section className="sel" aria-labelledby="sel-h">
         <TitleTab id="sel-h" tag={String(SELECTED.length).padStart(2, "0")} side={<Link href="/work">All work ↗</Link>}>
@@ -58,7 +34,7 @@ export default function Home() {
         </TitleTab>
         <div className="g16 sel-big">
           {big.map((p, i) => (
-            <TLink key={p.slug} href={`/work/${p.slug}`} vt={`cover-${p.slug}`} className="card" data-cursor="view">
+            <TLink key={p.slug} href={"/work/" + p.slug} vt={"cover-" + p.slug} className="card" data-cursor="view">
               <Media m={p.cover} ratio="4 / 5" sizes="(min-width: 768px) 50vw, 100vw" />
               <span className="card-meta">
                 <Badge n={i + 1} />
@@ -70,7 +46,7 @@ export default function Home() {
         </div>
         <div className="sel-rows">
           {rows.map((p, i) => (
-            <TLink key={p.slug} href={`/work/${p.slug}`} vt={`cover-${p.slug}`} className="g16 sel-row hair" data-cursor="view">
+            <TLink key={p.slug} href={"/work/" + p.slug} vt={"cover-" + p.slug} className="g16 sel-row hair" data-cursor="view">
               <span className="c-name">
                 <Badge n={i + 3} />
                 <span className="d-name">{p.name}</span>
@@ -79,7 +55,10 @@ export default function Home() {
                 <Media m={p.cover} ratio="16 / 10" sizes="(min-width: 768px) 28vw, 100vw" />
               </span>
               <span className="c-disc">{p.disciplines.join(", ")}</span>
-              <span className="c-year lbl">{p.year}{p.spec ? " · Spec" : ""}</span>
+              <span className="c-year lbl">
+                {p.year}
+                {p.spec ? " · Spec" : ""}
+              </span>
             </TLink>
           ))}
         </div>
@@ -91,7 +70,7 @@ export default function Home() {
         </TitleTab>
         <RailPin>
           {RAIL.map((a, i) => (
-            <Link key={a.id} href={`/w/${a.id}`} className="rail-item" data-cursor="view">
+            <Link key={a.id} href={"/w/" + a.id} className="rail-item" data-cursor="view">
               <Media m={{ src: a.src, w: a.w, h: a.h, alt: a.alt }} ratio="4 / 5" fit={fitsFrame(a) ? "cover" : "contain"} sizes="(min-width: 1024px) 28vw, 78vw" delay={(i % 4) * 60} />
               <span className="lbl rail-cap">
                 <span>{a.campaign}</span>
@@ -106,36 +85,34 @@ export default function Home() {
       </section>
 
       <section className="room" data-room="ink" aria-labelledby="room-h">
-        <TitleTab id="room-h" tag="Lights off" side={<Link href="/derelictdepths">The game ↗</Link>}>
+        <TitleTab id="room-h" tag="Fracture" side={<Link href="/derelictdepths">The game ↗</Link>}>
           3D &amp; Roblox
         </TitleTab>
         <div className="g16 room-grid">
           <div className="room-seq">
-            <Sequence frames={[DD.cover, ...DD.blocks.flatMap((b) => ("media" in b ? (Array.isArray(b.media) ? b.media : [b.media]) : []))].filter((m) => m.w / m.h > 1.7)} label="Fracture · stills until the A4 diorama turntable" />
+            <Sequence frames={[DD.cover, ...DD.blocks.flatMap((b) => ("media" in b ? (Array.isArray(b.media) ? b.media : [b.media]) : []))].filter((m) => m.w / m.h > 1.7)} label="Fracture · scroll to step through" />
             <span className="room-name">
               <span className="d-name">Fracture</span>
               <span className="lbl dim">Roblox · 2026</span>
             </span>
           </div>
           <div className="room-side">
-            <figure>
-              <Media m={{ src: "/derelictdepths/img/look-king-front-1280.jpg", w: 1280, h: 873, alt: "The Mole King, modelled for Fracture" }} ratio="4 / 5" sizes="25vw" />
-              <figcaption className="lbl">Mole King <span className="dim">· model</span></figcaption>
-            </figure>
-            <figure>
-              <Media m={{ src: "/three/pillar-poster.webp", w: 1600, h: 1523, alt: "The hero pillar, carved and lit in code for this site" }} ratio="4 / 5" fit="contain" sizes="25vw" />
-              <figcaption className="lbl">Pillar <span className="dim">· built in code</span></figcaption>
-            </figure>
-            <figure>
-              <Media m={{ src: "/three/signpost-poster.webp", w: 1000, h: 1200, alt: "The footer signpost, built in code for this site" }} ratio="4 / 5" fit="contain" sizes="25vw" />
-              <figcaption className="lbl">Signpost <span className="dim">· built in code</span></figcaption>
-            </figure>
+            {SIDE.map((s) => (
+              <figure key={s.name}>
+                <Media m={s} ratio="4 / 3" sizes="25vw" />
+                <figcaption className="lbl">
+                  {s.name} <span className="dim">· {s.note}</span>
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="clients wrap" aria-labelledby="cl-h">
-        <h2 id="cl-h" className="cl-h">Worked with</h2>
+        <h2 id="cl-h" className="d-name cl-h">
+          Worked with
+        </h2>
         <ul className="clients-row">
           {[
             ["/logos/menufit.png", "MenuFit"],
@@ -159,7 +136,7 @@ export default function Home() {
         </p>
       </section>
 
-      <Footer src="home-footer" sheet="S-06" />
+      <Footer src="home-footer" />
     </main>
   );
 }

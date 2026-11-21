@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import type { Media as M } from "@/content/work";
 
-/** A picture behind an ink plate that slides off when it enters (Motion registers it). `fit` keeps an off-ratio
+/** A picture behind a plate of ground that slides off when it enters (Motion registers it). `fit` keeps an off-ratio
  *  piece whole on a backdrop instead of cropping it. */
 export function Media({
   m,
@@ -38,11 +38,9 @@ export function Media({
 }
 
 /** A marked stand-in where Jawad's media is still to come. Never pretends to be work. */
-export function Placeholder({ label, ratio = "4 / 5", tone = "paper", art }: { label: string; ratio?: string; tone?: "paper" | "ink"; art?: string }) {
+export function Placeholder({ label, ratio = "4 / 5" }: { label: string; ratio?: string }) {
   return (
-    <div className={`ph hatch ${tone === "ink" ? "ph-ink" : ""}`} style={{ aspectRatio: ratio }}>
-      {art ? <Image className="ph-art" src={art} alt="" width={1100} height={744} sizes="40vw" /> : null}
-      <span className="marks"><i /></span>
+    <div className="ph" style={{ aspectRatio: ratio }}>
       <span className="lbl">Placeholder</span>
       <span className="lbl dim">{label}</span>
     </div>

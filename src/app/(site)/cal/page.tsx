@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { CalInline } from "@/components/ds/CalInline";
-import { RAIL } from "@/content/ads";
-import { SITE } from "@/content/site";
+import { NAV, SITE } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Book a call",
@@ -10,63 +10,78 @@ export const metadata: Metadata = {
   alternates: { canonical: "/cal" },
 };
 
-const EMBERS = Array.from({ length: 14 }, (_, i) => i);
+// Daylight and plain: the calendar is the page. The name of the page set as a mark, the ember bar of facts, a short
+// column on what the call is, and Cal's own calendar on white.
+
+const HEAD = "Book a call";
 
 type Props = { searchParams: Promise<{ src?: string }> };
 
 export default async function Cal({ searchParams }: Props) {
   const { src: raw } = await searchParams;
   const src = raw && /^[a-z0-9-]{1,40}$/.test(raw) ? raw : "cal-page";
-  const best = RAIL.slice(0, 8);
   return (
     <main className="cal no-dock">
-      <div className="cal-fire" aria-hidden="true">
-        {EMBERS.map((i) => (
-          <i key={i} style={{ "--i": i } as React.CSSProperties} />
-        ))}
-      </div>
-      <header className="cal-top wrap">
-        <a href="/" className="cal-home lbl">
-          ← Jawad Jalal
-        </a>
-        <span className="lbl dim">15 min · video · free</span>
-      </header>
-      <div className="g16 cal-grid">
-        <section className="cal-side" aria-labelledby="cal-h">
-          <h1 id="cal-h" className="d-hero cal-h">
-            Book a call
-          </h1>
-          <div className="rule-key" aria-hidden="true" />
-          <div className="cal-who">
-            <span className="cal-face">
-              <Image src="/design/jawad-die.webp" alt="Jawad's memoji" width={697} height={781} sizes="96px" priority />
-            </span>
-            <p className="cal-lead">
-              Fifteen minutes with me, Jawad. Bring the launch, the brand or the game. You leave with a plan, not a pitch.
-            </p>
-          </div>
-          <a href={`https://cal.com/jawad-jalal-hesqbk/15min?src=${src}`} className="cal-book" target="_blank" rel="noopener">
-            Open the calendar ↗
-          </a>
-          <p className="cal-alt">
-            <span className="dim">Prefer email? </span>
-            <a href={`mailto:${SITE.email}?subject=Project`}>{SITE.email}</a>
-          </p>
-        </section>
-        <div className="cal-frame">
-          <span className="marks" aria-hidden="true">
-            <i />
-          </span>
-          <CalInline email={SITE.email} />
-        </div>
-      </div>
-      <div className="call-rail" aria-hidden="true">
-        <div className="call-rail-track">
-          {[...best, ...best].map((a, i) => (
-            <Image key={i} src={a.sm} width={a.w} height={a.h} alt="" sizes="160px" />
+      <nav className="cal-nav" aria-label="Site">
+        <Link href="/" className="cal-home">
+          <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="28px" priority />
+          Jawad Jalal
+        </Link>
+        <span className="cal-links">
+          {NAV.map((n) => (
+            <Link key={n.href} href={n.href}>
+              {n.label}
+            </Link>
           ))}
-        </div>
+        </span>
+      </nav>
+      <h1 className="cal-mark" aria-label={HEAD}>
+        {HEAD.split(" ").map((w, i, all) => (
+          <span key={w} className="cal-w" aria-hidden="true">
+            {[...w].map((ch, j) => (
+              <span key={j} style={{ animationDelay: 40 + (all.slice(0, i).join("").length + j) * 22 + "ms" }}>
+                {ch}
+              </span>
+            ))}
+          </span>
+        ))}
+      </h1>
+      <div className="bar cal-bar">
+        <span>Jawad Jalal</span>
+        <span className="hide-s">[ {SITE.detail} ]</span>
+        <span className="hide-s">London</span>
+        <span>{SITE.available}</span>
       </div>
+      <section className="cal-grid">
+        <header className="cal-copy">
+          <div className="cal-who">
+            <Image src="/design/jawad-die.webp" alt="Jawad's memoji" width={697} height={781} sizes="84px" priority />
+            <p className="cal-sub">Fifteen minutes on video with me. Bring the launch, the brand or the game, and leave with a plan.</p>
+          </div>
+          <dl className="cal-facts">
+            <div>
+              <dt>Length</dt>
+              <dd>15 min</dd>
+            </div>
+            <div>
+              <dt>Where</dt>
+              <dd>Video</dd>
+            </div>
+            <div>
+              <dt>Cost</dt>
+              <dd>Free</dd>
+            </div>
+          </dl>
+          <p className="cal-mail">
+            Rather write? <a href={"mailto:" + SITE.email + "?subject=Project"}>{SITE.email}</a>
+            <br />
+            Or <a href={"https://cal.com/jawad-jalal-hesqbk/15min?src=" + src} target="_blank" rel="noopener">open the calendar on Cal.com ↗</a>
+          </p>
+        </header>
+        <div className="cal-frame">
+          <CalInline email={SITE.email} theme="light" />
+        </div>
+      </section>
     </main>
   );
 }

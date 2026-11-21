@@ -55,7 +55,7 @@ export default async function Ads({ searchParams }: Props) {
           ) : null}
         </div>
       ))}
-      <Footer src="ads" sheet="S-04" />
+      <Footer src="ads" />
     </main>
   );
 }

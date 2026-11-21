@@ -41,7 +41,7 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
         touch.current = null;
       }}
     >
-      <header className="v-top lbl">
+      <header className="bar v-top">
         <Link href="/ads" className="v-close" aria-label="Back to all ads">
           ← All ads
         </Link>
