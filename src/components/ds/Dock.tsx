@@ -69,7 +69,7 @@ function DockNav() {
   return (
     <ul className="dock-nav" ref={ref} onPointerLeave={() => show()}>
       <Nav list onHover={show} />
-      <span className="dock-nav-line" aria-hidden="true" />
+      <li className="dock-nav-track" aria-hidden="true"><span className="dock-nav-line" /></li>
     </ul>
   );
 }
