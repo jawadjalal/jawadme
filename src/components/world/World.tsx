@@ -2,15 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { capable } from "./kit/gate";
+import { pickTier } from "./kit/gate";
 import type { WorldAd } from "./scene";
 
 // The stage behind the home page. First paint is a poster of the gate court before its fires are lit, rendered from
 // the scene itself. Once the page has loaded, the live scene lights them in a wave out from the gate; without it, a
 // lit poster fades in over the dark one. The other chambers' posters load after the page and cross-fade as the page
-// reaches them. On a capable desktop GPU
-// the live scene (./scene, three.js) loads once the page is idle and takes over. Phones, reduced motion, weak or
-// software GPUs and no WebGL2 keep the posters. ?world=live|poster overrides the choice; ?shot=0..4 holds the camera
+// reaches them. The live scene (./scene, three.js) loads once the page is idle and takes over at the device's tier
+// (./kit/gate): "full" on a desktop GPU, "lite" on a mid-range phone (DPR 1, no shadows, 8 lights, fewer particles,
+// 30 fps). Low-end phones, reduced motion, Save-Data, weak or software GPUs and no WebGL2 keep the posters, and
+// three.js never loads. ?world=live|lite|poster overrides the choice; ?shot=0..4 holds the camera
 // on one shot (posters.mjs renders the posters that way) and ?snap drops the camera's easing (for screenshots).
 //
 // The camera follows five keys measured from the page's [data-world-stop] blocks: the gate (top of the page), the
@@ -33,8 +34,8 @@ export function World({ ads }: { ads: WorldAd[] }) {
     const section = el?.closest<HTMLElement>("[data-world]");
     if (!el || !section) return;
     const q = new URLSearchParams(location.search);
-    const w = q.get("world");
-    const go3d = w === "live" || (w !== "poster" && capable());
+    const tier = pickTier();
+    const go3d = tier !== "poster";
     section.dataset.mode = go3d ? "live" : "poster";
 
     let keys = [0, 1, 2, 3, 4];
@@ -73,10 +74,16 @@ export function World({ ads }: { ads: WorldAd[] }) {
         off = m.mount(el, {
           progress: shot === null ? progress : () => Number(shot),
           ads,
+          lite: tier === "lite",
           small: innerWidth < 1100,
           still: shot !== null || q.has("snap"),
           dim: q.has("dim"),
           open: (id) => router.push("/w/" + id),
+          enter: () => {
+            const lenis = (window as Window & { __lenis?: { scrollTo: (y: number) => void } }).__lenis;
+            if (lenis) lenis.scrollTo(keys[1]);
+            else scrollTo({ top: keys[1], behavior: "smooth" });
+          },
           ready: () => setLive(true),
         });
       });

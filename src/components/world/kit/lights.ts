@@ -1,10 +1,10 @@
 import * as THREE from "three";
-import { ACCENT, NL, SOUL, srgb, type Shared } from "./paint";
+import { GLOW, NL, SOUL, srgb, type Shared } from "./paint";
 
-const WARM = srgb(ACCENT, 3);
+const WARM = GLOW.fire;
 const COLD = srgb(SOUL, 2);
 
-/** A light source the painted materials see: a brazier (the accent), a soul flame (SOUL), or a lamp (always lit, no flame). */
+/** A light source the painted materials see: a brazier (GLOW.fire), a soul flame (SOUL), or a lamp (always lit, no flame). */
 export type Fire = { p: THREE.Vector3; r: number; soul: boolean; big: boolean; lamp?: boolean };
 
 /** Give the NL - 1 fires nearest `c` the shader's light slots, flickering; `lit` scales each (0 dark, 1 full). Slot NL - 1 stays free for a hand-held light. */

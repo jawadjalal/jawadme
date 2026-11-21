@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { BRAZIER, Batch, M, Q, box, column, lathe, type Fire } from "./kit";
+import { BRAZIER, Batch, GLOW, M, Q, box, column, lathe, type Fire } from "./kit";
 import { HALL, type Mats } from "./map";
 
 // The hall of ads: every ad woven into a cloth banner with a gold border and its caption band, hung square to the
@@ -11,7 +11,7 @@ import { HALL, type Mats } from "./map";
 // for hover and keyboard focus, and how far it has unrolled.
 
 export type Shot = { t: THREE.Vector3; h: number; w: number; floor: number };
-export type Slot = { i: number; pos: THREE.Vector3; pick: THREE.Object3D; ad: (t: THREE.Texture) => void; cap: (t: THREE.Texture) => void; hot: (on: number) => void; drop: (v: number) => void };
+export type Slot = { i: number; pos: THREE.Vector3; pick: THREE.Object3D; ad: (t: THREE.Texture) => void; cap: (t: THREE.Texture) => void; hot: (on: number, knock: number) => void; drop: (v: number) => void };
 type Ctx = { B: Batch; m: Mats; scene: THREE.Scene; geos: THREE.BufferGeometry[]; mats: THREE.Material[]; time: { value: number }; n: number; pitch: number };
 
 const PITCH = 12.5;
@@ -48,7 +48,7 @@ export function buildHall(ctx: Ctx) {
     ban.matrix.copy(F.clone().multiply(M(0, top, 0.12)));
     ctx.scene.add(ban);
     const u = (ban.material as THREE.ShaderMaterial).uniforms;
-    slots.push({ i: j, pos: new THREE.Vector3(x, top - 4, back ? BACK : FRONT), pick: ban, ad: (t) => ((u.tAd.value = t), (u.uHas.value = 1)), cap: (t) => (u.tCap.value = t), hot: (on) => (u.uHot.value += (on - u.uHot.value) * 0.25), drop: (v) => (u.uDrop.value = v) });
+    slots.push({ i: j, pos: new THREE.Vector3(x, top - 4, back ? BACK : FRONT), pick: ban, ad: (t) => ((u.tAd.value = t), (u.uHas.value = 1)), cap: (t) => (u.tCap.value = t), hot: (on, knock) => ((u.uHot.value = on), (u.uKnock.value = knock)), drop: (v) => (u.uDrop.value = v) });
   }
   const t = (j: number) => new THREE.Vector3(at(j) + 0.4, HALL.y + 8.6, (FRONT + BACK) / 2);
   const shots: [Shot, Shot] = [
@@ -59,27 +59,29 @@ export function buildHall(ctx: Ctx) {
 }
 
 // A banner: the ad in the middle, a woven band with its caption below, a valance above, fringe at the hem; it hangs
-// from y = 0 and moves in the updraft, more at the hem than at the rod. Hot, its border burns white.
+// from y = 0 and moves in the updraft, more at the hem than at the rod. Hot (hover or focus), it sways wider, its hem
+// lifts toward the viewer and its border burns in the accent; knocked (a press), it swings on its rod.
 function banner(ctx: Ctx, i: number, k: number) {
   const W = 5.4, H = 7.6;
   const geo = new THREE.PlaneGeometry(W, H * k, 8, 24).translate(0, (-H * k) / 2, 0);
   ctx.geos.push(geo);
   const mat = new THREE.ShaderMaterial({
     side: THREE.DoubleSide,
-    uniforms: { uTime: ctx.time, tAd: { value: null }, tCap: { value: null }, uHas: { value: 0 }, uHot: { value: 0 }, uDrop: { value: 1 }, uSeed: { value: i * 1.7 } },
+    uniforms: { uTime: ctx.time, tAd: { value: null }, tCap: { value: null }, uHas: { value: 0 }, uHot: { value: 0 }, uKnock: { value: 0 }, uAcc: { value: new THREE.Color(GLOW.glow).multiplyScalar(2.2) }, uDrop: { value: 1 }, uSeed: { value: i * 1.7 } },
     vertexShader: `
-      uniform float uTime, uSeed; varying vec2 vUv; varying float vS;
+      uniform float uTime, uSeed, uHot, uKnock; varying vec2 vUv; varying float vS;
       void main() {
         vUv = uv;
         vec3 p = position;
         float hang = pow(1.0 - uv.y, 1.3);
-        float w = sin(uTime * 1.1 + p.x * 0.7 + uSeed) * 0.22 * hang + sin(uTime * 2.3 + p.y * 1.4 + uSeed * 2.0) * 0.06 * hang;
-        p.z += w;
+        float w = (sin(uTime * 1.1 + p.x * 0.7 + uSeed) * 0.22 + sin(uTime * 2.3 + p.y * 1.4 + uSeed * 2.0) * 0.06) * hang * (1.0 + 1.3 * uHot);
+        p.z += w + (0.45 * uHot + 0.9 * uKnock) * hang;
+        p.x += 0.35 * uKnock * hang;
         vS = cos(uTime * 1.1 + p.x * 0.7 + uSeed) * hang;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
       }`,
     fragmentShader: `
-      uniform sampler2D tAd, tCap; uniform float uHas, uHot, uDrop; varying vec2 vUv; varying float vS;
+      uniform sampler2D tAd, tCap; uniform float uHas, uHot, uDrop; uniform vec3 uAcc; varying vec2 vUv; varying float vS;
       void main() {
         float edge = vUv.y - (1.0 - uDrop);
         if (edge < 0.0) discard;
@@ -88,7 +90,8 @@ function banner(ctx: Ctx, i: number, k: number) {
         float tooth = abs(fract(q.x * 3.0) - 0.5) * 0.36;
         if (q.y < tooth) discard;
         vec3 cloth = vec3(0.27, 0.06, 0.035) * (0.86 + 0.14 * sin(q.x * 90.0) * sin(q.y * 90.0));
-        vec3 gold = mix(vec3(0.62, 0.42, 0.18), vec3(2.4, 2.25, 2.0), uHot);
+        float hot = clamp(uHot, 0.0, 1.0);
+        vec3 gold = mix(vec3(0.62, 0.42, 0.18), uAcc, hot);
         vec3 c = cloth;
         vec2 a0 = vec2(0.4, 1.55), a1 = vec2(5.0, 7.3);
         float inAd = step(a0.x, q.x) * step(q.x, a1.x) * step(a0.y, q.y) * step(q.y, a1.y);
@@ -99,8 +102,8 @@ function banner(ctx: Ctx, i: number, k: number) {
           vec4 t = texture2D(tCap, vec2((q.x - 0.35) / 4.7, (q.y - 0.35) / 1.0));
           c = mix(c, t.rgb, t.a);
         }
-        if (inAd > 0.5) c = uHas > 0.5 ? texture2D(tAd, (q - a0) / (a1 - a0)).rgb * (0.88 + 0.12 * uHot) : vec3(0.13, 0.1, 0.08);
-        else c *= (0.92 + 0.3 * vS) * (1.0 + 0.35 * uHot);
+        if (inAd > 0.5) c = uHas > 0.5 ? texture2D(tAd, (q - a0) / (a1 - a0)).rgb * (0.88 + 0.12 * hot) : vec3(0.13, 0.1, 0.08);
+        else c *= (0.92 + 0.3 * vS) * (1.0 + 0.35 * hot);
         if (uDrop < 1.0) c = mix(c, vec3(0.5, 0.33, 0.14) * (0.6 + 0.4 * sin(edge * 900.0)), step(edge, 0.018));
         gl_FragColor = vec4(c, 1.0);
         #include <colorspace_fragment>

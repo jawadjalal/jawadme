@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { ACCENT as SITE_ACCENT } from "@/lib/accent";
+import { ACCENT as SITE } from "@/lib/accent";
 import type { Bag } from "./bag";
 
 // The world's materials. Every lit surface is a toon material with four things written into its shader: painted
@@ -10,9 +10,12 @@ import type { Bag } from "./bag";
 
 export const NL = 16;
 export const INK = new THREE.Color("#100b09");
-/** The world's light, one colour for every fire, flame, halo, spark and the warm side of the rim; stone and bronze keep
- *  their own colours. It is the site's accent (src/lib/accent.ts), so the world relights with the site. */
-export const ACCENT = new THREE.Color(SITE_ACCENT.accent);
+/** The world's light: `glow` for halos, sparks and the rim, `emissive` for flames and the gate's glow, `core` for the
+ *  hottest part of a flame, `fire` for the light a brazier throws (linear RGB, HDR). Stone and bronze keep their own
+ *  colours, so the green is the one cool thing. `glow` is the site's (src/lib/accent.ts); the emissive, core and fire
+ *  light are the accent arena's tuning of it for 3D (capy/accent-arena 231e615). */
+export const GLOW = { glow: SITE.glow, emissive: "#4dffae", core: "#5cffb8", fire: [0.59, 1.9, 1.15] } as const;
+export const ACCENT = new THREE.Color(GLOW.emissive);
 /** The second light: soul flames, the gate's glow and the cool side of the rim. */
 export const SOUL = new THREE.Color("#63e6ff");
 /** A colour's sRGB components, scaled by k. */
@@ -47,12 +50,15 @@ export type Shared = {
   time: { value: number };
   fl: { value: THREE.Vector4[] };
   fc: { value: THREE.Vector3[] };
+  /** How many of the NL light slots the shader reads (fewer on phones). */
+  n: { value: number };
 };
 
 export const shared = (): Shared => ({
   time: { value: 0 },
   fl: { value: Array.from({ length: NL }, () => new THREE.Vector4(0, -999, 0, 1)) },
   fc: { value: Array.from({ length: NL }, () => new THREE.Vector3()) },
+  n: { value: NL },
 });
 
 export type Kind =
@@ -120,6 +126,7 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
     uTime: S.time,
     uFL: S.fl,
     uFC: S.fc,
+    uN: S.n,
     uRim: { value: kind.k === "stone" ? (kind.rim ?? 1) : kind.k === "rock" ? 0.5 : 0.7 },
     uA: { value: new THREE.Vector4(a[0], a[1], a[2], a[3]) },
     uB: { value: new THREE.Vector4(b[0], b[1], 0, 0) },
@@ -146,7 +153,7 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
         vWN = normalize(mat3(modelMatrix) * wn);`,
       );
     s.fragmentShader =
-      `varying vec3 vWP;\nvarying vec3 vWN;\nvarying float vH;\nuniform float uTime, uRim, uHasTex;\nuniform vec4 uFL[${NL}];\nuniform vec3 uFC[${NL}];\nuniform vec4 uA, uB;\nuniform sampler2D uTex;\n` +
+      `varying vec3 vWP;\nvarying vec3 vWN;\nvarying float vH;\nuniform float uTime, uRim, uHasTex;\nuniform vec4 uFL[${NL}];\nuniform vec3 uFC[${NL}];\nuniform int uN;\nuniform vec4 uA, uB;\nuniform sampler2D uTex;\n` +
       NOISE +
       MEANDER +
       s.fragmentShader
@@ -171,6 +178,7 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
           `vec3 fwn = normalize(vWN);
           vec3 fire = vec3(0.0);
           for (int i = 0; i < ${NL}; i++) {
+            if (i >= uN) break;
             vec3 d = uFL[i].xyz - vWP;
             float r = length(d);
             float fa = clamp(1.0 - r / uFL[i].w, 0.0, 1.0);
@@ -184,7 +192,7 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
           outgoingLight += diffuseColor.rgb * fire;
           float rimv = 1.0 - clamp(abs(normal.z), 0.0, 1.0);
           float rm = smoothstep(0.72, 0.88, rimv) * uRim;
-          vec3 rc = mix(${glsl(SOUL, 0.6)}, mix(${glsl(ACCENT)}, vec3(1.0), 0.18) * 0.75, smoothstep(-0.25, 0.25, normal.x));
+          vec3 rc = mix(${glsl(SOUL, 0.6)}, ${glsl(new THREE.Color(GLOW.glow), 0.75)}, smoothstep(-0.25, 0.25, normal.x));
           outgoingLight += rc * rm * (0.3 + 0.7 * smoothstep(-0.2, 0.5, normal.y)) + diffuseColor.rgb * fire * rm * 1.4;
           ${kind.k === "rock" ? "outgoingLight = mix(outgoingLight, vec3(0.012, 0.008, 0.007), smoothstep(-0.5, -9.0, vH));" : ""}
           #include <opaque_fragment>`,
