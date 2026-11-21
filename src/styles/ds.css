@@ -631,7 +631,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
   .cal *, .cal *::before, .cal-skel-days i, .v-strip a, .v-stage img, .v-top::before, .v-info > h1, .v-info > p, .v-bar > * { animation: none !important; }
 }
 
-.has-cursor .ds, .has-cursor .ds a, .has-cursor .ds button { cursor: none; }
 
 /* ── Home: experience. Each row's words rise out of their own line, a row at a time; the rule draws in first. ── */
 .xp-rows { margin: calc(10 * var(--u)) 0 0; padding: 0; list-style: none; }
@@ -689,3 +688,27 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
   .js .fig[data-in] .fig-l { opacity: 1; }
 }
 .case-figs .fig-n { font-size: max(44px, calc(20 * var(--u))); }
+
+/* ── 404 ── */
+.lost { padding-top: 18px; }
+.lost-h { margin: calc(24 * var(--u)) var(--g) 0; font: 700 max(64px, calc(40 * var(--u)))/0.86 var(--f-disp); letter-spacing: -0.05em; animation: up 700ms 120ms var(--ease) both; }
+.lost-line { margin: 22px var(--g) calc(10 * var(--u)); max-width: 22em; font: 700 max(20px, calc(7 * var(--u)))/1.05 var(--f-sans); letter-spacing: -0.025em; color: var(--dim); text-wrap: balance; animation: fade 600ms 380ms both; }
+@media (prefers-reduced-motion: reduce) { .lost-h, .lost-line { animation: none; } }
+
+.cursor-dot { transition-property: width, height, margin, background-color, transform, opacity; }
+.cursor:not([data-mode]) .cursor-dot { transform: scale(0); opacity: 0; }
+
+/* ── Home: selected work, every project at size ── */
+.sel-big .card { grid-column: span 8; }
+.sel-big .card:first-child { grid-column: 1 / -1; }
+.sel-big .card:first-child .media { aspect-ratio: 21 / 9 !important; }
+.sel-big .card:not(:first-child) .media { aspect-ratio: 3 / 2 !important; }
+.sel-big { row-gap: calc(12 * var(--u)); padding-bottom: calc(10 * var(--u)); }
+@media (max-width: 767px) { .sel-big .card, .sel-big .card:first-child { grid-column: 1 / -1; } .sel-big .card:first-child .media { aspect-ratio: 3 / 2 !important; } }
+
+/* ── Case: the cover leads; a UI cover stands on an ink stage ── */
+.case-cover { margin-top: 12px; margin-bottom: calc(14 * var(--u)); }
+.case-cover.staged { padding-block: calc(16 * var(--u)); background: var(--ink); background-clip: content-box; display: grid; place-items: center; }
+.case-cover.staged .media { width: 78%; box-shadow: 0 30px 80px rgb(0 0 0 / 0.45); }
+@media (max-width: 767px) { .case-cover.staged .media { width: 90%; } }
+.case-lines { padding-top: 0; }

@@ -54,7 +54,7 @@ function BlockView({ b }: { b: Block }) {
     case "sequence":
       return <Media m={b.media} sizes="100vw" />;
     case "compare": {
-      const cols = b.before.w / b.before.h + "fr " + b.after.w / b.after.h + "fr";
+      const cols = (0.62 * b.before.w) / b.before.h + "fr " + b.after.w / b.after.h + "fr";
       return (
         <section className="b-compare">
           <h2 className="b-cmp-h" data-lines="">
@@ -93,6 +93,9 @@ export default async function Case({ params }: Props) {
       <TitleTab as="h1" tag={laneLabel(p.lane)}>
         {p.name}
       </TitleTab>
+      <div className={"wrap case-cover " + (tall ? "tall hatch " : "") + (p.stage ? "staged" : "")}>
+        <Media m={p.cover} vt={"cover-" + p.slug} priority sizes={tall ? "40vw" : "100vw"} />
+      </div>
       <div className="g16 case-lines">
         {p.lines.map((l) => (
           <p key={l} className="t-line" data-lines="">
@@ -116,9 +119,6 @@ export default async function Case({ params }: Props) {
           </div>
         ) : null}
       </dl>
-      <div className={"wrap case-cover " + (tall ? "tall hatch" : "")}>
-        <Media m={p.cover} vt={"cover-" + p.slug} priority sizes={tall ? "40vw" : "100vw"} />
-      </div>
       {p.figs ? (
         <div className="g16 figs case-figs">
           {p.figs.map((f, i) => (

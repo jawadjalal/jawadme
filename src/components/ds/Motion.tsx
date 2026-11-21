@@ -9,7 +9,7 @@
 // Reduced motion: no Lenis, plates and lines rest at their end state (ds.css), rooms still flip without travel.
 
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
@@ -19,6 +19,24 @@ type Win = Window & { __lenis?: Lenis; __vtDone?: () => void };
 
 export function Motion() {
   const path = usePathname();
+  const first = useRef(true);
+
+  // Every navigation after the first load, unless a cover morph is carrying it: the new page is cut in from the top
+  // edge on the site's cut ease while it settles up 24 px. The first load has its own choreography per page.
+  useLayoutEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if ((window as Win).__vtDone || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.querySelector("main")?.animate(
+      [
+        { clipPath: "inset(0 0 100% 0)", transform: "translateY(24px)" },
+        { clipPath: "inset(0 0 0% 0)", transform: "none" },
+      ],
+      { duration: 640, easing: "cubic-bezier(0.7, 0, 0.2, 1)" },
+    );
+  }, [path]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, SplitText);

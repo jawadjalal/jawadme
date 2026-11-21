@@ -28,8 +28,8 @@ export const SOCIAL = [
 
 /** From Jawad's CV (public/jawad-jalal-cv.pdf). Nothing here is written from memory. */
 export const EXPERIENCE = [
-  { co: "Ignaru", role: "Founder", years: "2026 to now", href: "/work/ignaru" },
-  { co: "Ignura", role: "Founder, design studio", years: "2026 to now", href: "/work/ignura" },
+  { co: "Ignaru", role: "Founder, design canvas", years: "Since 2026", href: "/work/ignaru" },
+  { co: "Ignura", role: "Founder, design studio", years: "Since 2026", href: "/work/ignura" },
   { co: "MenuFit", role: "Product designer", years: "2026", href: "/work/menufit" },
   { co: "Okara", role: "Product development intern", years: "2026", href: "/work/okara" },
 ];

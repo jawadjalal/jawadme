@@ -11,7 +11,7 @@ import { TLink } from "@/components/ds/TLink";
 import { TitleTab } from "@/components/ds/TitleTab";
 import { RAIL, fitsFrame } from "@/content/ads";
 import { EXPERIENCE, FIGURES, SITE } from "@/content/site";
-import { SELECTED, laneLabel, projectBySlug } from "@/content/work";
+import { SELECTED, projectBySlug } from "@/content/work";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -23,8 +23,6 @@ const SIDE = [
 ];
 
 export default function Home() {
-  const big = SELECTED.slice(0, 2);
-  const rows = SELECTED.slice(2);
   return (
     <main>
       <Hero />
@@ -63,29 +61,15 @@ export default function Home() {
           Selected work
         </TitleTab>
         <div className="g16 sel-big">
-          {big.map((p) => (
+          {SELECTED.map((p, i) => (
             <TLink key={p.slug} href={"/work/" + p.slug} vt={"cover-" + p.slug} className="card" data-cursor="view">
-              <Media m={p.cover} ratio="4 / 5" sizes="(min-width: 768px) 50vw, 100vw" />
+              <Media m={p.cover} ratio={i ? "3 / 2" : "21 / 9"} fit={p.cover.h > p.cover.w ? "contain" : "cover"} sizes={i ? "(min-width: 768px) 50vw, 100vw" : "100vw"} priority={i === 0} />
               <span className="card-meta">
                 <span className="d-name">{p.name}</span>
-                <span className="lbl dim">{laneLabel(p.lane)}</span>
-              </span>
-            </TLink>
-          ))}
-        </div>
-        <div className="sel-rows">
-          {rows.map((p) => (
-            <TLink key={p.slug} href={"/work/" + p.slug} vt={"cover-" + p.slug} className="g16 sel-row hair" data-cursor="view">
-              <span className="c-name">
-                <span className="d-name">{p.name}</span>
-              </span>
-              <span className="c-media">
-                <Media m={p.cover} ratio="16 / 10" sizes="(min-width: 768px) 28vw, 100vw" />
-              </span>
-              <span className="c-disc">{p.disciplines.join(", ")}</span>
-              <span className="c-year lbl">
-                {p.year}
-                {p.spec ? " · Spec" : ""}
+                <span className="lbl dim">
+                  {p.disciplines.slice(0, 2).join(", ")}
+                  {p.spec ? " · Spec" : ""}
+                </span>
               </span>
             </TLink>
           ))}
