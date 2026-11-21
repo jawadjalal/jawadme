@@ -10,8 +10,9 @@ import type { WorldAd } from "./scene";
 // lit poster fades in over the dark one. The other chambers' posters load after the page and cross-fade as the page
 // reaches them. The live scene (./scene, three.js) loads once the page is idle and takes over at the device's tier
 // (./kit/gate): "full" on a desktop GPU, "lite" on a mid-range phone (DPR 1, no shadows, 8 lights, fewer particles,
-// 30 fps). Low-end phones, reduced motion, Save-Data, weak or software GPUs and no WebGL2 keep the posters, and
-// three.js never loads. ?world=live|lite|poster overrides the choice; ?shot=0..4 holds the camera
+// 30 fps, and only after the first scroll, tap or key, so a phone that only glances at the page never pays for it).
+// Low-end phones, reduced motion, Save-Data, weak or software GPUs and no WebGL2 keep the posters, and three.js never
+// loads. ?world=live|lite|poster overrides the choice; ?shot=0..4 holds the camera
 // on one shot (posters.mjs renders the posters that way) and ?snap drops the camera's easing (for screenshots).
 //
 // The camera follows five keys measured from the page's [data-world-stop] blocks: the gate (top of the page), the
@@ -88,7 +89,13 @@ export function World({ ads }: { ads: WorldAd[] }) {
         });
       });
     };
-    const idle = () => ("requestIdleCallback" in window ? requestIdleCallback(go, { timeout: 2500 }) : setTimeout(go, 300));
+    const soon = () => ("requestIdleCallback" in window ? requestIdleCallback(go, { timeout: 2500 }) : setTimeout(go, 300));
+    const ASK = ["scroll", "pointerdown", "keydown"];
+    const asked = () => {
+      ASK.forEach((t) => removeEventListener(t, asked));
+      soon();
+    };
+    const idle = () => (tier === "lite" ? ASK.forEach((t) => addEventListener(t, asked, { once: true, passive: true })) : soon());
     if (document.readyState === "complete") idle();
     else addEventListener("load", idle, { once: true });
     return () => {
@@ -97,6 +104,7 @@ export function World({ ads }: { ads: WorldAd[] }) {
       cancelAnimationFrame(raf);
       removeEventListener("scroll", onScroll);
       removeEventListener("load", idle);
+      ASK.forEach((t) => removeEventListener(t, asked));
       off?.();
     };
   }, [ads, router]);
