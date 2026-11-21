@@ -62,9 +62,11 @@ export function Gilded(p: Props) {
     <>
       <span className="gl-s" aria-hidden="true">
         <span className="gl-p">
+          <i className="gl-fr" />
+          <i className="gl-fr" />
+          {(cta || p.variant === "email" || p.variant === "arm") && <i className="gl-c" />}
+          {(cta || p.variant === "email") && <i className="gl-c gl-cr" />}
           <i className="gl-sw" />
-          <i className="gl-fr" />
-          <i className="gl-fr" />
           <i className="gl-f" />
           {cta && (
             <span className="gl-m" ref={more}>
@@ -74,8 +76,6 @@ export function Gilded(p: Props) {
             </span>
           )}
         </span>
-        {(cta || p.variant === "email" || p.variant === "arm") && <i className="gl-c" />}
-        {(cta || p.variant === "email") && <i className="gl-c gl-cr" />}
       </span>
       <span className="gl-t">{label}</span>
     </>
