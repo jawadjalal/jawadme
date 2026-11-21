@@ -1,5 +1,5 @@
 /* Loader B: dark ink, ember light, Arabic words that gather into the name. Font: Aref Ruqaa Bold (SIL OFL 1.1, aliftype),
-   subset to seven words, calt/init/medi/fina kept so the joining and the ruqaa stacking stay correct. */
+   subset to four words, calt/init/medi/fina kept so the joining and the ruqaa stacking stay correct. */
 @font-face {
   font-family: "LoaderB Aref Ruqaa";
   src: url("./aref-ruqaa-b.woff2") format("woff2");
@@ -12,7 +12,7 @@
 html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor: pointer; touch-action: none; overscroll-behavior: contain; }
 
 .lb-ground { position: absolute; inset: 0; background: #100b09; }
-.lb-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.lb-cv, .lb-grain { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
 
 .lb-seed {
   position: absolute;
@@ -33,16 +33,8 @@ html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor
   100% { opacity: 0; transform: translateY(-40px) scale(0.6); }
 }
 
-.lb-mark {
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: block;
-  transform-origin: 0 0;
-  color: #f4ead8;
-  opacity: 0;
-  pointer-events: none;
-}
+.lb-mark { position: absolute; left: 0; top: 0; transform-origin: 0 0; opacity: 0; pointer-events: none; }
+.lb-mark .wm-g { animation: none; }
 
 .lb-cta {
   position: absolute;
