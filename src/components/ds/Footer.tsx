@@ -28,7 +28,7 @@ export function Footer({ src }: { src: string }) {
           <a href="/about">about</a>
         </span>
         <span className="foot-reach">
-          <MailLink src="footer" className="foot-mail" />
+          <MailLink src="footer" />
           <BookLink src={src} className="foot-book" cursor>
             {SITE.cta} ↗
           </BookLink>

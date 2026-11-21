@@ -1,5 +1,5 @@
 import { BookLink } from "@/components/BookLink";
-import { BookCallB } from "@/components/cta/BookCallB";
+import { Gilded } from "@/components/gilded/Gilded";
 import { AdRing } from "@/components/ds/AdRing";
 import { Statement } from "@/components/ds/Statement";
 import { Wordmark } from "@/components/ds/Wordmark";
@@ -40,7 +40,7 @@ export function Hero() {
                 </span>
               ))}
             </p>
-            <BookCallB src="home-hero" size="hero" />
+            <Gilded variant="cta" src="home-hero" size="hero" />
           </div>
         </div>
         <section className="w-hall" data-world-stop="hall" aria-labelledby="hall-h">

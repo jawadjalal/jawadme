@@ -1,20 +1,6 @@
-/* Motion for the site's chrome: the dock, the menu sheet, page changes and the email copy state. Springs come from
+/* Motion for the site's chrome: the dock, the menu sheet, page changes and the email copy state (the copied tag is a .mail-tag inside the gilded email; the frame owns ::after). Springs come from
    src/lib/motion.ts (--sp-*); the tile, chip and card primitives live in motion.css. */
 
-.dock-nav li.dock-nav-track { position: absolute; inset: 0; pointer-events: none; }
-.dock-nav-line {
-  position: absolute;
-  left: 0;
-  top: calc(50% + 0.62em);
-  width: 1px;
-  height: 2px;
-  background: var(--accent-paper);
-  opacity: 0;
-  transform-origin: left;
-  pointer-events: none;
-  transition: transform var(--sp-pop-t) var(--sp-pop), opacity 100ms;
-}
-.dock-nav[data-line] .dock-nav-line { opacity: 1; }
 .dock-mark:focus-visible img { transform: rotate(-10deg) scale(1.08); }
 
 @media (max-width: 767px) {
@@ -50,7 +36,7 @@
   }
 }
 
-a[data-mail]::after {
+a[data-mail] > .mail-tag {
   z-index: 2;
   opacity: 0;
   translate: 0 -5px;
@@ -59,7 +45,7 @@ a[data-mail]::after {
   transform-origin: left bottom;
   transition: opacity 110ms ease-in, translate 145ms var(--sp-press), scale 145ms var(--sp-press), rotate 145ms var(--sp-press);
 }
-a[data-mail][data-copied]::after {
+a[data-mail][data-copied] > .mail-tag {
   opacity: 1;
   translate: none;
   scale: 1;
@@ -68,7 +54,6 @@ a[data-mail][data-copied]::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dock-nav-line { transition: opacity 100ms; }
   .dock-mark:is(:hover, :focus-visible) img { transform: none; transition: none; }
   .dock-sheet, .dock-sheet[data-open="true"], .dock-sheet a, .dock-sheet[data-open="true"] a {
     translate: none !important;
@@ -78,7 +63,7 @@ a[data-mail][data-copied]::after {
     transition: opacity 100ms, visibility 0s 100ms;
   }
   .dock-sheet[data-open="true"] { transition: opacity 100ms; }
-  a[data-mail]::after, a[data-mail][data-copied]::after {
+  a[data-mail] > .mail-tag, a[data-mail][data-copied] > .mail-tag {
     translate: none;
     scale: none;
     rotate: none;

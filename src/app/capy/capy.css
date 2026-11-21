@@ -83,19 +83,16 @@ html:has(.capy) body {
 }
 .cp-filter-in {
   display: flex;
-  align-items: baseline;
-  gap: 4px 26px;
+  align-items: center;
+  gap: 8px;
   padding: 14px var(--edge);
   overflow-x: auto;
   scrollbar-width: none;
   white-space: nowrap;
 }
 .cp-filter-in::-webkit-scrollbar { display: none; }
-.cp-filter button { font-size: 16px; font-weight: 500; color: var(--ink-3); letter-spacing: -0.01em; transition: color 150ms; }
-.cp-filter button span { font-size: 12px; font-weight: 500; vertical-align: 0.45em; margin-left: 1px; font-variant-numeric: tabular-nums; }
-.cp-filter button:hover, .cp-filter button:focus-visible { color: var(--ink); }
-.cp-filter button[aria-pressed="true"] { color: var(--ink); font-weight: 650; }
-.cp-filter button[aria-pressed="true"] span { color: var(--blue); }
+.cp-filter .gl { flex: none; }
+.cp-filter .gl-t > span { font-size: 12px; vertical-align: 0.45em; margin-left: 2px; font-variant-numeric: tabular-nums; }
 .cp-count { margin-left: auto; padding-left: 24px; font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 
 /* ── Kinds and designs ────────────────────────────────────────────────── */

@@ -9,7 +9,7 @@ import { ADS } from "@/content/ads";
 import { REAL } from "@/content/work";
 import { GALLERY, ROOMS, roomByKey, type Room } from "@/lib/gallery";
 import { JsonLd, PERSON_ID, abs, caseWork, meta, pieceWork } from "@/lib/seo";
-import { BookCallB } from "@/components/cta/BookCallB";
+import { Gilded } from "@/components/gilded/Gilded";
 
 export const metadata: Metadata = meta({
   title: "work",
@@ -59,7 +59,7 @@ function Break({ say, n }: { say: Say; n: number }) {
       </p>
       <div className="brk-side">
         {say.s ? <p className="brk-s">{say.s}</p> : null}
-        <BookCallB src={"work-break-" + n} size="hero" />
+        <Gilded variant="cta" src={"work-break-" + n} size="hero" />
       </div>
     </>
   );
@@ -141,13 +141,13 @@ export default async function Work({ searchParams }: Props) {
       <div className="gal-hall" data-room="hall">
         <nav className="chips" aria-label="rooms">
           <div className="chips-in">
-            <Link href="/work" aria-current={!pick ? "page" : undefined} scroll={false} data-m="press lift">
+            <Gilded variant="filter" href="/work" selected={!pick}>
               all
-            </Link>
+            </Gilded>
             {ROOMS.map((r) => (
-              <Link key={r.key} href={"/work?c=" + r.key} aria-current={pick === r ? "page" : undefined} scroll={false} data-m="press lift">
+              <Gilded key={r.key} variant="filter" href={"/work?c=" + r.key} selected={pick === r}>
                 {r.title}
-              </Link>
+              </Gilded>
             ))}
           </div>
         </nav>

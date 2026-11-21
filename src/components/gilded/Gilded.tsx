@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, type MouseEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import { callHref, openBooking } from "@/components/cal";
-import { MAIL, trackEmail } from "@/components/MailLink";
+import { MAIL, copyEmail, trackEmail } from "@/lib/mail";
 import "./gilded.css";
 
 type Props =
@@ -34,6 +34,9 @@ export function Gilded(p: Props) {
   const ref = useRef<HTMLAnchorElement>(null);
   const more = useRef<HTMLSpanElement>(null);
   const touch = useRef(false);
+  const copiedFor = useRef(0);
+  const [copied, setCopied] = useState(false);
+  useEffect(() => () => window.clearTimeout(copiedFor.current), []);
   const router = useRouter();
   const cta = p.variant === "cta";
   const hero = cta && p.size === "hero";
@@ -90,8 +93,26 @@ export function Gilded(p: Props) {
   }
   if (p.variant === "email") {
     return (
-      <a href={MAIL} className="gl" data-v="email" onClick={() => trackEmail(p.src)}>
+      <a
+        href={MAIL}
+        className="gl"
+        data-v="email"
+        data-mail=""
+        data-copied={copied ? "" : undefined}
+        onClick={() => {
+          trackEmail(p.src);
+          copyEmail().then((ok) => {
+            if (!ok) return;
+            setCopied(true);
+            window.clearTimeout(copiedFor.current);
+            copiedFor.current = window.setTimeout(() => setCopied(false), 1800);
+          });
+        }}
+      >
         {face(p.children ?? "email me")}
+        <span className="mail-tag" aria-hidden="true">
+          copied
+        </span>
       </a>
     );
   }

@@ -177,3 +177,7 @@
   .gl, .gl *, .gl::after, .gl *::before, .gl *::after { transition-duration: 0s !important; animation: none !important; }
   .gl-sw { display: none; }
 }
+
+/* the email's "copied" tag rests hidden wherever the component goes; ds.css and motion-chrome.css style and spring it */
+.gl .mail-tag { position: absolute; left: 0; top: 100%; margin-top: 8px; padding: 5px 8px; font: 600 12px/1 var(--f-geist, Arial), sans-serif; background: var(--accent-ink); color: var(--accent-glow); white-space: nowrap; pointer-events: none; opacity: 0; }
+.gl[data-copied] .mail-tag { opacity: 1; }
