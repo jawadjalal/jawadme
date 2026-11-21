@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { track } from "@/lib/track";
 import "./loaderB.css";
 
 // Loader B, on home for every hard load (the long beat on a first visit, a short one on repeats); ?loader=0 turns it
@@ -169,6 +170,7 @@ export function LoaderB() {
       if (handoffAt >= 0) return;
       const t = performance.now() - t0;
       handoffAt = t;
+      track("loader_skip", { at: Math.round(t) });
       if (reduced || t < cfg.markIn - 200) {
         anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }), cta.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }));
         timers.push(window.setTimeout(finish, 210));
