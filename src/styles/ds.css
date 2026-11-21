@@ -20,7 +20,7 @@
 
   --u: calc(min(100vw, 1920px) / 480);
   --g: max(12px, calc(4 * var(--u)));
-  --dock: 40px;
+  --dock: 44px;
 
   --t-press: 120ms;
   --t-fast: 160ms;
@@ -189,10 +189,11 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
 .dock-mark { display: grid; place-items: center; width: 52px; }
 .dock-mark img { width: 26px; height: auto; transition: transform var(--t-base) var(--ease); }
 .dock-mark:hover img { transform: rotate(-10deg) scale(1.08); }
-.dock-nav { display: flex; align-items: center; gap: 22px; padding: 0 8px; margin: 0; list-style: none; }
-.dock-nav a { position: relative; padding-block: 6px; }
+.dock-nav { display: flex; align-items: stretch; gap: 22px; padding: 0 8px; margin: 0; list-style: none; }
+.dock-nav li { display: flex; }
+.dock-nav a { position: relative; display: flex; align-items: center; }
 .dock-nav a .lbl { display: none; }
-.dock-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px; background: var(--ember); transform: scaleX(0); transform-origin: left; transition: transform var(--t-base) var(--ease); }
+.dock-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 10px; height: 2px; background: var(--ember); transform: scaleX(0); transform-origin: left; transition: transform var(--t-base) var(--ease); }
 .dock-nav a:hover::after, .dock-nav a[aria-current="page"]::after { transform: scaleX(1); }
 .dock-cta {
   display: flex;
@@ -689,6 +690,25 @@ html[data-room="hall"] .bar.ink::before { background: var(--ground); }
 .rh-case:hover .arr { transform: translate(2px, -2px); }
 .rh-case:active { scale: 0.97; }
 .room-w + .room-w { margin-top: calc(26 * var(--u)); }
+.room-w ~ .room-w { content-visibility: auto; contain-intrinsic-size: auto 1400px; }
+.room-sm .rh-t { font-size: max(34px, calc(13 * var(--u))); letter-spacing: -0.04em; }
+.room-sm .rh-n { font-size: max(15px, calc(3.8 * var(--u))); }
+
+/* ── A break between rooms: one line at display size and the call booked from that spot ── */
+.brk { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 20px 48px; margin-block: calc(30 * var(--u)); padding-top: calc(7 * var(--u)); border-top: 1px solid var(--rule); }
+.brk-t { margin: 0; max-width: 11em; font: 700 max(40px, calc(30 * var(--u)))/0.88 var(--f-disp); letter-spacing: -0.045em; text-wrap: balance; }
+.brk-side { display: grid; gap: 18px; justify-items: start; max-width: 24em; padding-bottom: 6px; }
+.brk-s { margin: 0; font: 600 max(16px, calc(4.6 * var(--u)))/1.3 var(--f-sans); letter-spacing: -0.01em; color: var(--dim); text-wrap: pretty; }
+.brk-cta { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 20px; background: var(--ember); color: var(--ink) !important; font: 700 17px/1 var(--f-bar); letter-spacing: -0.02em; transition: background-color var(--t-fast), color var(--t-fast), scale var(--t-press) var(--ease); }
+.brk-cta .arr { display: inline-block; transition: transform var(--t-base) var(--ease); }
+.brk-cta:hover { background: var(--fg); color: var(--bg) !important; }
+.brk-cta:hover .arr { transform: translate(2px, -2px); }
+.brk-cta:active { scale: 0.97; }
+@media (max-width: 767px) {
+  .brk { grid-template-columns: minmax(0, 1fr); margin-block: 72px; padding-top: 28px; }
+  .brk-t { font-size: 12vw; }
+  .room-sm .rh-t { font-size: 10vw; }
+}
 @media (max-width: 767px) {
   .hang { --gap: 10px; row-gap: 24px; }
   .hang-i { --w: var(--mw); --n: var(--mn); }

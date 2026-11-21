@@ -5,7 +5,7 @@ import { ADS } from "@/content/ads";
 import { SITE, TIMELINE } from "@/content/site";
 import { REAL, laneLabel } from "@/content/work";
 import { FAQ } from "@/lib/facts";
-import { headline } from "@/lib/gallery";
+import { ROOMS, headline } from "@/lib/gallery";
 import { ENTITY, abs } from "@/lib/seo";
 
 const head = () => [
@@ -22,7 +22,7 @@ const pages = () => [
   "## Pages",
   "",
   `- [Home](${abs("/")}): the hero, his experience, a selection of ads and work`,
-  `- [Work](${abs("/work")}): the gallery, ${ADS.length} ads grouped by brand, with his products, sites and Roblox game`,
+  `- [Work](${abs("/work")}): the gallery: ${ADS.length} ads grouped by brand first, then websites, his design tool Ignaru, 3D and his Roblox game`,
   `- [About](${abs("/about")}): who he is, where he has worked, and the short answers`,
   `- [Book a call](${abs("/cal")}): a free 15 minute video call`,
   `- [Fracture, the game page](${abs("/derelictdepths")}): the Roblox game he designs and builds`,
@@ -79,6 +79,14 @@ export function llmsFull() {
     "",
     ...ADS.map((a) => `- [${a.campaign}: ${headline(a)}](${abs("/w/" + a.id)}): ${a.alt}`),
     "",
+    ...ROOMS.filter((r) => r.section !== "ads").flatMap((r) => [
+      `## ${r.title}`,
+      "",
+      r.note,
+      "",
+      ...r.entries.map((e) => `- [${e.title}: ${e.line}](${abs(e.href)})${e.piece ? ", " + e.piece.credit : ""}: ${e.media.alt}`),
+      "",
+    ]),
     "## Contact",
     "",
     `- Book a call: ${abs("/cal")}`,

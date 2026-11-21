@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 import { preload } from "react-dom";
 import { BookLink } from "@/components/BookLink";
 
-type Piece = { id: string; src: string; w: number; h: number; alt: string; group: string; spec: boolean };
+type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; spec: boolean };
 type Near = { id: string; src: string; w: number; h: number };
 type At = { n: number; of: number; prev: Near; next: Near; strip: { id: string; sm: string; alt: string }[] } | null;
 
@@ -41,7 +41,6 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
     addEventListener("keydown", key);
     return () => removeEventListener("keydown", key);
   }, [at, router, back]);
-  const headline = piece.alt.split(". ").slice(0, -1).join(". ") || piece.alt;
   const related = at?.strip.filter((item) => item.id !== piece.id).slice(1, 5) ?? [];
   return (
     <main
@@ -65,10 +64,10 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
           <Image key={piece.id} src={piece.src} width={piece.w} height={piece.h} alt={piece.alt} priority sizes={SIZES} quality={90} style={{ viewTransitionName: "piece" }} />
         </div>
         <div className="v-info">
-          <h1 className="v-title">{headline}</h1>
-          <p>{`${piece.group}, designed by Jawad Jalal.`}</p>
+          <h1 className="v-title">{piece.line}</h1>
+          <p>{`${piece.group}, ${piece.credit}.`}</p>
           {related.length ? (
-            <nav className="v-strip" aria-label="More ads">
+            <nav className="v-strip" aria-label="More work">
               {related.map((item) => (
                 <Link key={item.id} href={`/w/${item.id}`} replace scroll={false}>
                   <Image src={item.sm} width={160} height={200} alt={item.alt} sizes="(min-width: 1024px) 11vw, 1px" />

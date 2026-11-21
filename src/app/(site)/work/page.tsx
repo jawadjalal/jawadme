@@ -6,12 +6,12 @@ import { Footer } from "@/components/ds/Footer";
 import { TitleTab } from "@/components/ds/TitleTab";
 import { ADS } from "@/content/ads";
 import { REAL } from "@/content/work";
-import { ROOMS, headline, roomByKey, type Room } from "@/lib/gallery";
-import { JsonLd, PERSON_ID, abs, adWork, caseWork, meta } from "@/lib/seo";
+import { GALLERY, ROOMS, roomByKey, type Room } from "@/lib/gallery";
+import { JsonLd, PERSON_ID, abs, caseWork, meta, pieceWork } from "@/lib/seo";
 
 export const metadata: Metadata = meta({
   title: "Work",
-  description: `Work by Jawad Jalal: ${ADS.length} ads (${ROOMS.filter((r) => r.count.endsWith(" ads") && r.key !== "more-brands").slice(0, 4).map((r) => r.title).join(", ")} and more), with the products, sites and Roblox game around them.`,
+  description: `Work by Jawad Jalal: ${ADS.length} ads (${ROOMS.filter((r) => r.section === "ads" && r.key !== "more-brands").slice(0, 4).map((r) => r.title).join(", ")} and more), then the websites, 3D and the Roblox game around them.`,
   path: "/work",
 });
 
@@ -21,7 +21,7 @@ const LD = {
   url: abs("/work"),
   name: "Work by Jawad Jalal",
   author: { "@id": PERSON_ID },
-  hasPart: [...ADS.map((a) => adWork(a, headline(a))), ...REAL.map(caseWork)],
+  hasPart: [...GALLERY.filter((p) => p.credit.includes("Jawad Jalal")).map(pieceWork), ...REAL.map(caseWork)],
 };
 
 type Props = { searchParams: Promise<{ c?: string; f?: string }> };
@@ -31,11 +31,59 @@ const SHAPES = [
   { first: 0.42, cycle: [0.6, 0.3] },
   { first: 0.6, cycle: [0.4, 0.3] },
 ];
+const WEB = { first: 0.4, cycle: [0.26, 0.3] };
+const SMALL = { first: 0.3, cycle: [0.22, 0.26] };
+
+/** The text between rooms: one sourced line, big, and a call booked from that spot. They sit after every third ad
+ *  room and where the gallery turns from ads to websites and from websites to 3D. */
+const SAY = {
+  ads: [
+    { t: "15, in London.", s: "Designing and building things. The ads come first." },
+    { t: "Ignura Studio.", s: "His ad and brand studio: ads and brands people stop for." },
+    { t: "Two 8-figure startups.", s: "Past roles at MenuFit, at 7-figure MRR, and Okara." },
+  ],
+  web: { t: "Sites, designed and built.", s: "For his studio, his 3D team and his clients." },
+  "3d": { t: "3D art for Blade Ball and Fish It!", s: "Two of the biggest games on Roblox, with over 11 billion visits between them." },
+};
+
+type Say = { t: string; s: string };
+
+function Break({ say, n }: { say: Say; n: number }) {
+  return (
+    <aside className="wrap brk" aria-label={say.t}>
+      <p className="brk-t">{say.t}</p>
+      <div className="brk-side">
+        <p className="brk-s">{say.s}</p>
+        <BookLink src={"work-break-" + n} className="brk-cta" cursor>
+          Book a call <span className="arr">↗</span>
+        </BookLink>
+      </div>
+    </aside>
+  );
+}
+
+/** The hall in order: each room, with a break before it when the section changes or three ad rooms have passed. */
+function hall(rooms: Room[]) {
+  const out: ({ room: Room; i: number } | { say: Say; n: number })[] = [];
+  let since = 0;
+  let n = 0;
+  rooms.forEach((room, i) => {
+    const prev = rooms[i - 1];
+    const say = !prev ? null : prev.section !== room.section ? SAY[room.section as "web" | "3d"] : room.section === "ads" && since === 3 ? SAY.ads[n] : null;
+    if (say) {
+      out.push({ say, n: ++n });
+      since = 0;
+    }
+    out.push({ room, i });
+    since++;
+  });
+  return out;
+}
 
 function RoomView({ room, i, lead }: { room: Room; i: number; lead: boolean }) {
-  const shape = SHAPES[i % SHAPES.length];
+  const shape = room.section === "3d" ? SMALL : room.section === "web" ? WEB : SHAPES[i % SHAPES.length];
   return (
-    <section className="room-w" aria-labelledby={"r-" + room.key}>
+    <section className={"room-w" + (room.section === "3d" ? " room-sm" : "")} aria-labelledby={"r-" + room.key}>
       <header className="wrap rh">
         <h2 className="rh-t" id={"r-" + room.key}>
           {room.title}
@@ -64,7 +112,7 @@ export default async function Work({ searchParams }: Props) {
   return (
     <main className="work">
       <JsonLd data={LD} />
-      <TitleTab as="h1" tag={ADS.length + " ads, and the work around them"} side={<span className="tab-say">Brands, ads, sites and Roblox games, designed and built.</span>}>
+      <TitleTab as="h1" tag={ADS.length + " ads, then the sites and 3D"} side={<span className="tab-say">Ads first. Then websites, a design tool, 3D and a Roblox game, designed and built.</span>}>
         Work
       </TitleTab>
       <div className="gal-hall" data-room="hall">
@@ -80,9 +128,7 @@ export default async function Work({ searchParams }: Props) {
             ))}
           </div>
         </nav>
-        {rooms.map((r, i) => (
-          <RoomView key={r.key} room={r} i={i} lead={i === 0} />
-        ))}
+        {(pick ? rooms.map((room, i) => ({ room, i })) : hall(rooms)).map((x) => ("room" in x ? <RoomView key={x.room.key} room={x.room} i={x.i} lead={x.i === 0} /> : <Break key={"b" + x.n} say={x.say} n={x.n} />))}
         <p className="wrap disclose">Independent work. Not commissioned by or affiliated with the brands shown.</p>
       </div>
       <BookLink src="work-inline" className="strip" cursor>

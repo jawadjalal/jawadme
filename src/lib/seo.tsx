@@ -3,9 +3,9 @@
 // opengraph-image file. Facts come from src/content and src/lib/profile.ts only.
 
 import type { Metadata } from "next";
-import type { Ad } from "@/content/ads";
 import { SITE, TIMELINE } from "@/content/site";
 import { laneLabel, type Project } from "@/content/work";
+import type { Piece } from "@/lib/gallery";
 import { IDENTITY, SOCIALS } from "@/lib/profile";
 
 export const URL_ = IDENTITY.site;
@@ -73,14 +73,15 @@ export const caseWork = (p: Project) => ({
   ...(p.link && !p.link.href.startsWith("/") ? { sameAs: p.link.href } : {}),
 });
 
-export const adWork = (a: Ad, headline: string) => ({
+/** One picture at /w/<id>. Only pieces he made carry him as creator; the Bevel team's pieces are left out by callers. */
+export const pieceWork = (p: Piece) => ({
   "@type": "VisualArtwork",
-  "@id": abs("/w/" + a.id) + "#work",
-  name: `${a.campaign} ad: ${headline}`,
-  description: a.alt,
-  artform: "Advertising design",
-  url: abs("/w/" + a.id),
-  image: { "@type": "ImageObject", url: abs(a.src), width: a.w, height: a.h },
+  "@id": abs("/w/" + p.id) + "#work",
+  name: `${p.group}: ${p.line}`,
+  description: p.alt,
+  artform: p.kind,
+  url: abs("/w/" + p.id),
+  image: { "@type": "ImageObject", url: abs(p.src), width: p.w, height: p.h },
   creator: { "@id": PERSON_ID },
   isPartOf: { "@id": abs("/work") + "#gallery" },
 });
