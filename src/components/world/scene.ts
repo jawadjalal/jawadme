@@ -1,448 +1,602 @@
 import * as THREE from "three";
-import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { buildHall, type Shot, type Slot } from "./hall";
+import { buildFoot, type Exit, type FootState, type FootV } from "./foot";
+import { Batch } from "./kit";
+import { COURT, DV, HALL, LAND, Q, RV, SIGN, THEATRE, buildMap, type Fire, type Mats } from "./map";
+import { EMBER, INK, NL, NOISE, SOUL, paint, setMap, shared, type Kind } from "./kit";
 
-// The underworld behind the home page. Original work, modelled here in code: a gate under a broken pediment, a hall of
-// fluted columns lit by braziers, a great arch over a stair that goes down to a river of souls, and a lit portal on the
-// far bank. Toon shading on a four-step ramp, painted variation from world-space noise, an ink outline (inverted hull)
-// and a hard rim light. The page's scroll walks the camera through four stops; the cursor sways it and carries a light.
-// Texture slots (public/world/tex/manifest.json) take painted maps when they exist; until then everything is procedural.
+// The underworld under the home page, seen the way an isometric action game sees its rooms: an orthographic camera
+// at a fixed yaw of 45 degrees and a pitch of 34, panning across one hand-built map (./map) chamber by chamber as the
+// page scrolls. One canvas does everything, the ads included (./hall). The frame is drawn to a target with its depth,
+// then finished in one pass: an ink line wherever depth breaks or folds (the Laplacian of orthographic depth is zero
+// on any flat face, so only real edges ink), bloom on fire and souls, smoke in the void, vignette and grain.
 
-export type WorldOpts = { progress: () => number; ready: () => void; small: boolean };
+export type WorldAd = { id: string; campaign: string; alt: string; src: string };
+/** The footer's chamber alone, on flat ink, in place of the world: which take, its exits, the link laid over each target, and what to do on a pick or a roll. */
+export type FootOpts = { v: FootV; exits: Exit[]; el: (key: string) => HTMLElement | null; go: (href: string) => void; face: (key: string) => void };
+export type WorldOpts = { progress: () => number; ads: WorldAd[]; small: boolean; still: boolean; dim: boolean; open: (id: string) => void; ready: () => void; foot?: FootOpts };
 
-const INK = "#17120e";
-const EMBER = new THREE.Color("#ff5314");
-const SOUL = new THREE.Color("#5fe3ff");
-
-const NOISE = `
-float h21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
-float n2(vec2 p) {
-  vec2 i = floor(p), f = fract(p);
-  f = f * f * (3.0 - 2.0 * f);
-  return mix(mix(h21(i), h21(i + vec2(1.0, 0.0)), f.x), mix(h21(i + vec2(0.0, 1.0)), h21(i + vec2(1.0, 1.0)), f.x), f.y);
-}
-float fbm(vec2 p) { float a = 0.5, s = 0.0; for (int i = 0; i < 4; i++) { s += a * n2(p); p = p * 2.03 + 1.7; a *= 0.5; } return s; }
-`;
-
-const TILES = `
-vec2 tg = vWP.xz / vec2(2.4, 1.6);
-tg.x += step(1.0, mod(floor(tg.y), 2.0)) * 0.5;
-vec2 tf = fract(tg);
-float te = min(min(tf.x, 1.0 - tf.x) * 2.4, min(tf.y, 1.0 - tf.y) * 1.6) + (n2(vWP.xz * 3.0) - 0.5) * 0.05;
-diffuseColor.rgb *= (0.74 + 0.4 * h21(floor(tg))) * mix(0.25, 1.0, smoothstep(0.03, 0.07, te));
-`;
-
-// [camera, target] at each stop: the gate, the hall (the ring hangs here), the head of the stair, the river.
-const KEYS: [number, number, number, number, number, number][] = [
-  [0, 3.2, 23, 0, 5.6, -6],
-  [0, 2.5, -3, 0, 3.1, -20],
-  [0, 3.4, -24.5, 0, -6.5, -44],
-  [0, -5.4, -41.5, 0, -5.2, -66],
-];
+const PITCH = (34 * Math.PI) / 180;
+const DIR = new THREE.Vector3(Math.sin(Q) * Math.cos(PITCH), Math.sin(PITCH), Math.cos(Q) * Math.cos(PITCH));
+const UP = new THREE.Vector3(-Math.sin(PITCH) * Math.sin(Q), Math.cos(PITCH), -Math.sin(PITCH) * Math.cos(Q));
+const NEAR = 1, FAR = 700;
 
 export function mount(host: HTMLElement, o: WorldOpts) {
-  const renderer = new THREE.WebGLRenderer({ antialias: !o.small, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, o.small ? 1.25 : 1.75));
-  renderer.setClearColor(INK);
+  const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
+  const dpr = Math.min(window.devicePixelRatio || 1, o.still ? 2 : o.small ? 1.25 : 1.75);
+  renderer.setPixelRatio(dpr);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
+  renderer.shadowMap.autoUpdate = false;
   host.appendChild(renderer.domElement);
+  const canvas = renderer.domElement;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(INK);
-  scene.fog = new THREE.Fog(INK, 16, 62);
-  const camera = new THREE.PerspectiveCamera(55, 1.6, 0.1, 160);
-  const time = { value: 0 };
-  const px = { value: 600 };
+  scene.background = INK;
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, NEAR, FAR);
+  const S = shared();
+  const geos: THREE.BufferGeometry[] = [];
+  const mats: THREE.Material[] = [];
+  const texs: THREE.Texture[] = [];
 
-  const ramp = new THREE.DataTexture(new Uint8Array([26, 74, 150, 236]), 4, 1, THREE.RedFormat);
+  const ramp = new THREE.DataTexture(new Uint8Array([26, 72, 150, 240]), 4, 1, THREE.RedFormat);
   ramp.minFilter = ramp.magFilter = THREE.NearestFilter;
   ramp.needsUpdate = true;
-
-  const mats: THREE.Material[] = [];
-  const geos: THREE.BufferGeometry[] = [];
-  const toon = (color: string, rim: THREE.Color = EMBER, tiles = false) => {
-    const m = new THREE.MeshToonMaterial({ color, gradientMap: ramp });
-    const uRim = { value: rim.clone().multiplyScalar(tiles ? 0 : 0.5) };
-    m.onBeforeCompile = (s) => {
-      s.uniforms.uRim = uRim;
-      s.vertexShader = "varying vec3 vWP;\nvarying vec3 vWN;\n" + s.vertexShader.replace(
-        "#include <begin_vertex>",
-        `#include <begin_vertex>
-        vec3 n0 = objectNormal;
-        #ifdef USE_INSTANCING
-          vWP = (modelMatrix * instanceMatrix * vec4(transformed, 1.0)).xyz;
-          n0 = mat3(instanceMatrix) * n0;
-        #else
-          vWP = (modelMatrix * vec4(transformed, 1.0)).xyz;
-        #endif
-        vWN = normalize(mat3(modelMatrix) * n0);`,
-      );
-      s.fragmentShader = "varying vec3 vWP;\nvarying vec3 vWN;\nuniform vec3 uRim;\n" + NOISE + s.fragmentShader
-        .replace(
-          "#include <color_fragment>",
-          `#include <color_fragment>
-          float pb = fbm(vec2(vWP.x * 0.9 + vWP.z * 0.9, vWP.y * 3.2));
-          float pc = fbm(vWP.xz * 0.35 + vWP.y * 0.4);
-          diffuseColor.rgb *= mix(0.68, 1.25, pb * 0.6 + pc * 0.5);
-          ${tiles ? TILES : ""}`,
-        )
-        .replace(
-          "#include <dithering_fragment>",
-          `#include <dithering_fragment>
-          float rr = 1.0 - max(dot(normal, normalize(vViewPosition)), 0.0);
-          gl_FragColor.rgb += uRim * smoothstep(0.58, 0.64, rr) * (1.0 - 0.75 * fogFactor) * smoothstep(0.6, 0.2, abs(vWN.y));`,
-        );
-    };
-    mats.push(m);
-    return m;
+  texs.push(ramp);
+  const mk = (color: string, kind: Kind) => {
+    const mm = paint(S, ramp, color, kind);
+    mats.push(mm);
+    return mm;
   };
-  const outline = new THREE.MeshBasicMaterial({ color: 0x050302, side: THREE.BackSide });
-  outline.onBeforeCompile = (s) => {
-    s.vertexShader = s.vertexShader.replace("#include <begin_vertex>", "#include <begin_vertex>\ntransformed += normal * 0.045;");
-  };
-  mats.push(outline);
-
-  const q = new THREE.Quaternion();
-  const e = new THREE.Euler();
-  const at = (x: number, y: number, z: number, sx = 1, sy = sx, sz = sx, ry = 0, rx = 0, rz = 0) =>
-    new THREE.Matrix4().compose(new THREE.Vector3(x, y, z), q.setFromEuler(e.set(rx, ry, rz)), new THREE.Vector3(sx, sy, sz));
-  const place = (geo: THREE.BufferGeometry, mat: THREE.Material, list: THREE.Matrix4[], ink = true) => {
-    geos.push(geo);
-    const m = new THREE.InstancedMesh(geo, mat, list.length);
-    list.forEach((x, i) => m.setMatrixAt(i, x));
-    scene.add(m);
-    if (ink) {
-      const l = new THREE.InstancedMesh(geo, outline, list.length);
-      l.instanceMatrix = m.instanceMatrix;
-      scene.add(l);
-    }
-    return m;
+  const m: Mats = {
+    stone: mk("#7a7068", { k: "stone" }),
+    pale: mk("#a69d90", { k: "stone", rim: 1.2 }),
+    dark: mk("#302a29", { k: "stone", rim: 0.8 }),
+    rock: mk("#2d2725", { k: "rock" }),
+    bronze: mk("#8a5f33", { k: "stone", rim: 1.4 }),
+    wood: mk("#5e3e27", { k: "stone", rim: 0.8 }),
+    trim: mk("#90867a", { k: "trim", y0: 14, band: 1.2 }),
+    court: mk("#504a46", { k: "floor", rect: [COURT.x0, COURT.z0, COURT.x1, COURT.z1], border: 2.4, tile: 2.6 }),
+    hall: mk("#4b4541", { k: "floor", rect: [HALL.x0, HALL.z0, HALL.x1 + 22, HALL.z1], border: 2.2, tile: 2.4 }),
+    orch: mk("#1c1817", { k: "ring", c: [THEATRE.c.x, THEATRE.c.z], r: THEATRE.r, border: 2.4, tile: 2.6 }),
+    land: mk("#47413d", { k: "floor", rect: [LAND.c.x - LAND.half, LAND.c.z - LAND.half, LAND.c.x + LAND.half, LAND.c.z + LAND.half], border: 1.8, tile: 2.2 }),
   };
 
-  const flute = (g: THREE.BufferGeometry, top: (a: number) => number = () => 0) => {
-    const p = g.attributes.position;
-    for (let i = 0; i < p.count; i++) {
-      const x = p.getX(i), z = p.getZ(i), y = p.getY(i);
-      const a = Math.atan2(z, x);
-      const r = Math.hypot(x, z);
-      const f = r > 0.2 ? 1 - 0.07 * Math.pow(0.5 + 0.5 * Math.cos(a * 16), 2) : 1;
-      p.setXYZ(i, x * f, y > 0 ? y - top(a) : y, z * f);
-    }
-    g.computeVertexNormals();
-    return g;
-  };
-  const column = (h: number, broken = false) => {
-    const shaft = flute(new THREE.CylinderGeometry(0.42, 0.5, h, 48, 4), broken ? (a) => 0.9 * Math.abs(Math.sin(a * 2.5 + 1.3)) + 0.25 * Math.abs(Math.sin(a * 9)) : undefined);
-    shaft.translate(0, h / 2 + 0.5, 0);
-    const parts = [
-      new THREE.BoxGeometry(1.4, 0.3, 1.4).translate(0, 0.15, 0),
-      new THREE.CylinderGeometry(0.6, 0.66, 0.2, 32).translate(0, 0.4, 0),
-      shaft,
-    ];
-    if (!broken) {
-      parts.push(new THREE.CylinderGeometry(0.74, 0.46, 0.36, 32).translate(0, h + 0.68, 0));
-      parts.push(new THREE.BoxGeometry(1.62, 0.28, 1.62).translate(0, h + 1.0, 0));
-    }
-    return mergeGeometries(parts)!;
-  };
-  const arch = (w: number, h: number, iw: number, spring: number, d: number) => {
-    const s = new THREE.Shape();
-    s.moveTo(-w / 2, 0).lineTo(w / 2, 0).lineTo(w / 2, h).lineTo(-w / 2, h).lineTo(-w / 2, 0);
-    const hole = new THREE.Path();
-    hole.moveTo(-iw / 2, 0).lineTo(-iw / 2, spring).absarc(0, spring, iw / 2, Math.PI, 0, true).lineTo(iw / 2, 0).lineTo(-iw / 2, 0);
-    s.holes.push(hole);
-    return new THREE.ExtrudeGeometry(s, { depth: d, bevelEnabled: false, curveSegments: 28 }).translate(0, 0, -d / 2);
-  };
+  const B = new Batch();
+  const world = o.foot ? null : buildMap(B, m);
+  const hall = o.foot ? null : buildHall({ B, m, scene, geos, mats, time: S.time, n: o.ads.length, pitch: PITCH });
+  const floor = mk("#47413d", { k: "floor", rect: [-15, -15, 15, 15], border: 2, tile: 2.4 });
+  const foot = o.foot ? buildFoot({ B, m, floor, scene, geos, mats, texs, time: S.time, family: getComputedStyle(host).fontFamily, O: new THREE.Vector3() }, o.foot.v, o.foot.exits) : null;
+  B.build(scene, geos);
+  const fires: Fire[] = [...(world?.fires ?? []), ...(hall?.fires ?? []), ...(foot?.fires ?? [])];
+  const door = world?.door ?? new THREE.Vector3();
 
-  const stone = toon("#7d6b5b");
-  const pale = toon("#9a8673");
-  const floor = toon("#3e332b", EMBER, true);
-  const far = toon("#3d4b52", SOUL);
-  const dark = toon("#2d241e", new THREE.Color(0));
-  const block = toon("#7d6b5b", new THREE.Color(0));
+  // light: a cool sky and warm ground for the shadows, one warm key that casts, and the fires (in the shader)
+  scene.add(new THREE.HemisphereLight("#6660a6", "#140c0a", 1.15));
+  const key = new THREE.DirectionalLight("#ffcf9e", 1.1);
+  const LDIR = new THREE.Vector3(-0.5, 1, 0.12).normalize();
+  key.castShadow = true;
+  key.shadow.mapSize.set(o.small ? 1024 : 2048, o.small ? 1024 : 2048);
+  key.shadow.bias = -0.0004;
+  key.shadow.normalBias = 0.05;
+  key.shadow.camera.near = 1;
+  key.shadow.camera.far = 260;
+  scene.add(key, key.target);
 
-  // floors, the landing and the far bank
-  const plane = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
-  place(plane, floor, [at(0, 0, 3, 90, 1, 60), at(0, -8, -43.2, 60, 1, 3.6), at(0, -8, -78, 120, 1, 30)], false);
-  place(new THREE.BoxGeometry(1, 1, 1), dark, [at(0, -8.6, -43.2, 40, 1.2, 3.6), at(14.1, -4.25, -34.5, 20, 8.5, 15), at(-14.1, -4.25, -34.5, 20, 8.5, 15), at(13.5, 1.6, -10, 1.2, 3.2, 34), at(-13.5, 1.6, -10, 1.2, 3.2, 34)]);
-
-  // the stair down, and its balustrades
-  const steps: THREE.Matrix4[] = [];
-  for (let i = 0; i < 16; i++) {
-    const top = -0.5 * (i + 1);
-    steps.push(at(0, (top - 8.6) / 2, -27 - 0.9 * i - 0.45, 7, top + 8.6, 0.9));
-  }
-  place(new THREE.BoxGeometry(1, 1, 1), pale, steps);
-  const slope = Math.atan2(8, 14.4);
-  place(new THREE.BoxGeometry(1, 1, 1), block, [at(3.8, -3.4, -34.2, 0.6, 1.3, 16.6, 0, -slope), at(-3.8, -3.4, -34.2, 0.6, 1.3, 16.6, 0, -slope)]);
-
-  // the colonnade: the gate's two, two rows down the hall, a ruined outer row
-  const hallZ = [-4, -8, -12, -16, -20, -24];
-  const whole: THREE.Matrix4[] = [];
-  const ruin: THREE.Matrix4[] = [];
-  for (const z of hallZ) {
-    for (const x of [-6.5, 6.5]) ((x > 0 && z === -12) || (x < 0 && z === -20) ? ruin : whole).push(at(x, 0, z, 1, 1, 1, z * 0.7));
-    for (const x of [-10.5, 10.5]) (Math.abs(z + x) % 3 < 1.5 ? ruin : whole).push(at(x, 0, z - 2, 0.95, 0.95, 0.95, z));
-  }
-  place(column(7), pale, whole);
-  place(column(9), pale, [at(-3.4, 0, 0, 1.15), at(3.4, 0, 0, 1.15)]);
-  place(column(2.6, true), pale, ruin);
-  const drum = flute(new THREE.CylinderGeometry(0.46, 0.46, 1.1, 40, 1));
-  place(drum, pale, [at(7.6, 0.46, -11, 1, 1, 1, 0.4, 0, Math.PI / 2), at(9.1, 0.46, -12.6, 1, 1, 1, -0.9, 0, Math.PI / 2), at(-7.8, 0.46, -21.2, 1, 1, 1, 1.2, 0, Math.PI / 2), at(-5.2, 0.55, 5, 1, 1, 1, 0.2, 0.3, Math.PI / 2)]);
-  const beam = new THREE.BoxGeometry(1, 1, 1);
-  place(beam, block, [at(-6.5, 8.62, -5.6, 1.7, 0.7, 8), at(-6.5, 8.62, -15.2, 1.7, 0.7, 7.2), at(6.5, 8.62, -6.2, 1.7, 0.7, 6.8), at(6.5, 8.62, -19.8, 1.7, 0.7, 10.4), at(0, 11.7, 0, 9.6, 0.95, 1.9), at(-6.5, 0.5, -8.4, 1.6, 0.6, 2.2, 0.5, 0, 0.12)]);
-
-  // the broken pediment over the gate, and the piece that fell
-  const ped = new THREE.Shape();
-  [[-5, 0], [2.9, 0], [2.4, 0.35], [2.75, 0.62], [1.9, 0.95], [1.4, 1.5], [0.7, 1.7], [0, 2.4]].forEach(([x, y], i) => (i ? ped.lineTo(x, y) : ped.moveTo(x, y)));
-  const pedGeo = new THREE.ExtrudeGeometry(ped, { depth: 1.5, bevelEnabled: false }).translate(0, 0, -0.75);
-  place(pedGeo, stone, [at(0, 12.17, 0)]);
-  const chip = new THREE.Shape();
-  [[0, 0], [2.4, 0], [0.4, 1.3]].forEach(([x, y], i) => (i ? chip.lineTo(x, y) : chip.moveTo(x, y)));
-  place(new THREE.ExtrudeGeometry(chip, { depth: 1.4, bevelEnabled: false }), stone, [at(4.6, 0, 6, 1, 1, 1, 0.9, -Math.PI / 2 + 0.25)]);
-
-  // the great arch over the stair, the portal on the far bank, and the far ruins
-  place(arch(13, 13.5, 7.6, 6.6, 1.8), stone, [at(0, 0, -26.4)]);
-  place(arch(20, 21, 9.5, 8, 2.4), far, [at(0, -8, -70)]);
-  const farCols: THREE.Matrix4[] = [];
-  for (const x of [-15, -11.5, 11.5, 15]) farCols.push(at(x, -8, -67, 1.25, 1.25, 1.25, x));
-  place(column(9), far, farCols);
-  place(column(3.4, true), far, [at(-19, -8, -64, 1.2), at(18.5, -8, -65, 1.1, 1.1, 1.1, 2)]);
-
-  // rubble
-  const rubble: THREE.Matrix4[] = [];
-  let seed = 7;
-  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-  for (let i = 0; i < 34; i++) {
-    const side = rnd() < 0.5 ? -1 : 1;
-    const z = 8 - rnd() * 34;
-    rubble.push(at(side * (4.8 + rnd() * 7), 0.12, z, 0.25 + rnd() * 0.5, 0.2 + rnd() * 0.35, 0.25 + rnd() * 0.5, rnd() * 6, rnd(), rnd()));
-  }
-  place(new THREE.DodecahedronGeometry(1, 0), stone, rubble);
-
-  // braziers: four of fire on this side, two of souls on the far bank
-  const pans: [number, number, number, number][] = [[-5.4, 0, 4, 0], [5.4, 0, 4, 0], [-5.2, 0, -11.5, 0], [5.2, 0, -11.5, 0], [-6.6, -8, -63.5, 1], [6.6, -8, -63.5, 1]];
-  const bowl = new THREE.LatheGeometry([0.05, 0.3, 0.68, 0.92, 1.0, 0.94, 0.7, 0.05].map((x, i) => new THREE.Vector2(x, [0, 0.04, 0.2, 0.42, 0.62, 0.68, 0.5, 0.42][i])), 28);
-  const stand = mergeGeometries([new THREE.CylinderGeometry(0.55, 0.62, 0.18, 24).translate(0, 0.09, 0), new THREE.CylinderGeometry(0.07, 0.13, 2.1, 12).translate(0, 1.15, 0), bowl.clone().translate(0, 2.1, 0)])!;
-  geos.push(bowl);
-  place(stand, dark, pans.map(([x, y, z]) => at(x, y, z)));
-
-  // light
-  scene.add(new THREE.HemisphereLight("#4a3a2e", "#0c0807", 1.1));
-  const moon = new THREE.DirectionalLight("#8fd6ff", 1.4);
-  moon.position.set(-8, 16, -60);
-  scene.add(moon);
-  const key = new THREE.DirectionalLight("#ffb27a", 0.55);
-  key.position.set(10, 18, 20);
-  scene.add(key);
-  const fires = pans.map(([x, y, z, soul]) => {
-    const l = new THREE.PointLight(soul ? "#5fe3ff" : "#ff8a3a", soul ? 60 : 30, 22, 1.6);
-    l.position.set(x, y + 3.1, z);
-    scene.add(l);
-    return l;
-  });
-  const hand = new THREE.PointLight("#ffc08a", 16, 16, 1.6);
-  scene.add(hand);
-
-  // fire, embers, dust and souls: one points material, each system with its own box, speed and colour
-  const pts = (n: number, min: number[], size: number[], o: { color: THREE.Color; hot?: THREE.Color; r: number; up: number; sway: number; soft: number; a: number; fire?: number[][] }) => {
-    const pos = new Float32Array(n * 3);
-    const sd = new Float32Array(n);
-    for (let i = 0; i < n; i++) {
-      if (o.fire) {
-        const f = o.fire[i % o.fire.length];
-        pos.set([f[0], f[1], f[2]], i * 3);
-      } else pos.set([min[0] + rnd() * size[0], min[1] + rnd() * size[1], min[2] + rnd() * size[2]], i * 3);
-      sd[i] = rnd();
-    }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-    g.setAttribute("aSeed", new THREE.BufferAttribute(sd, 1));
-    geos.push(g);
-    const m = new THREE.ShaderMaterial({
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      uniforms: { uTime: time, uPx: px, uC: { value: o.color }, uH: { value: o.hot ?? o.color }, uMin: { value: new THREE.Vector3(...min) }, uSize: { value: new THREE.Vector3(...size) }, uR: { value: o.r }, uUp: { value: o.up }, uSway: { value: o.sway }, uSoft: { value: o.soft }, uA: { value: o.a }, uFire: { value: o.fire ? 1 : 0 } },
-      vertexShader: `
-        uniform float uTime, uPx, uR, uUp, uSway, uFire; uniform vec3 uMin, uSize;
-        attribute float aSeed; varying float vT;
-        void main() {
-          vec3 p = position;
-          float t;
-          if (uFire > 0.5) {
-            t = fract(uTime * (0.7 + aSeed * 0.5) + aSeed * 7.13);
-            float an = aSeed * 40.0, rd = (1.0 - t) * 0.5 * fract(aSeed * 13.7);
-            p += vec3(cos(an) * rd + sin(uTime * 3.0 + aSeed * 20.0) * 0.1 * t, 2.45 + t * 1.7, sin(an) * rd);
-          } else {
-            p.y = uMin.y + mod(p.y - uMin.y + uTime * uUp * (0.6 + aSeed * 0.8), uSize.y);
-            p.x += sin(uTime * 0.5 + aSeed * 31.0) * uSway;
-            p.z += cos(uTime * 0.37 + aSeed * 17.0) * uSway;
-            t = (p.y - uMin.y) / uSize.y;
-          }
-          vT = t;
-          vec4 mv = modelViewMatrix * vec4(p, 1.0);
-          float s = uFire > 0.5 ? (1.0 - t * 0.75) : (0.5 + fract(aSeed * 5.1));
-          gl_PointSize = -mv.z < 2.0 ? 0.0 : clamp(uR * s * uPx / -mv.z, 1.5, 40.0);
-          gl_Position = projectionMatrix * mv;
-        }`,
-      fragmentShader: `
-        uniform vec3 uC, uH; uniform float uSoft, uA, uFire; varying float vT;
-        void main() {
-          float d = length(gl_PointCoord - 0.5);
-          if (d > 0.5) discard;
-          float edge = mix(1.0 - smoothstep(0.34, 0.4, d), pow(1.0 - d * 2.0, 2.0), uSoft);
-          float life = uFire > 0.5 ? (1.0 - vT) : smoothstep(0.0, 0.12, vT) * smoothstep(1.0, 0.7, vT);
-          vec3 c = uFire > 0.5 ? mix(uH, uC, vT) : uC;
-          gl_FragColor = vec4(c * edge * life * uA, 1.0);
-        }`,
-    });
-    mats.push(m);
-    const p = new THREE.Points(g, m);
-    p.frustumCulled = false;
-    scene.add(p);
-  };
-  const warm = pans.filter((p) => !p[3]);
-  const cold = pans.filter((p) => p[3]);
-  pts(o.small ? 160 : 320, [0, 0, 0], [1, 1, 1], { color: new THREE.Color("#ff4a12"), hot: new THREE.Color("#ffd27a"), r: 0.42, up: 0, sway: 0, soft: 0, a: 1.3, fire: warm.map(([x, y, z]) => [x, y, z]) });
-  pts(o.small ? 80 : 150, [0, 0, 0], [1, 1, 1], { color: new THREE.Color("#1d8fbf"), hot: new THREE.Color("#c8fbff"), r: 0.5, up: 0, sway: 0, soft: 0, a: 1.3, fire: cold.map(([x, y, z]) => [x, y, z]) });
-  pts(o.small ? 140 : 300, [-14, -1, -30], [28, 15, 42], { color: EMBER, r: 0.07, up: 0.55, sway: 0.5, soft: 0, a: 1.2 });
-  pts(o.small ? 120 : 260, [-12, 0, -28], [24, 11, 36], { color: new THREE.Color("#8a7a68"), r: 0.05, up: 0.04, sway: 0.6, soft: 1, a: 0.5 });
-  pts(o.small ? 90 : 170, [-22, -8.4, -64], [44, 10, 20], { color: SOUL, r: 0.34, up: 0.3, sway: 0.8, soft: 1, a: 0.55 });
-  pts(o.small ? 24 : 48, [-3, -8, -42], [6, 14, 8], { color: SOUL, r: 0.22, up: 0.45, sway: 0.4, soft: 1, a: 0.45 });
-
-  // shafts of light into the hall, and the glow in the portal
-  const glowMat = (c: THREE.Color, a: number, round: boolean) => {
-    const m = new THREE.ShaderMaterial({
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      side: THREE.DoubleSide,
-      uniforms: { uC: { value: c }, uA: { value: a }, uTime: time },
-      vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
-      fragmentShader: round
-        ? "uniform vec3 uC; uniform float uA, uTime; varying vec2 vUv; void main() { float d = length((vUv - 0.5) * vec2(1.0, 1.7)); float f = smoothstep(0.5, 0.0, d); gl_FragColor = vec4(uC * f * f * uA * (0.9 + 0.1 * sin(uTime * 1.3)), 1.0); }"
-        : "uniform vec3 uC; uniform float uA; varying vec2 vUv; void main() { float f = sin(vUv.x * 3.14159) * pow(vUv.y, 1.6); gl_FragColor = vec4(uC * f * uA, 1.0); }",
-    });
-    mats.push(m);
-    return m;
-  };
-  const shaft = new THREE.PlaneGeometry(1, 1).translate(0, 0.5, 0);
-  geos.push(shaft);
-  const shafts: [number, number, number, number][] = [[-2.2, -9, 0.35, 0.5], [2.6, -17, -0.3, 0.42], [-1.2, -22, 0.2, 0.3]];
-  for (const [x, z, tilt, a] of shafts) {
-    for (const ry of [0, Math.PI / 2]) {
-      const m = new THREE.Mesh(shaft, glowMat(new THREE.Color("#ffcf9a"), a * 0.32, false));
-      m.position.set(x, 0, z);
-      m.scale.set(3.4, 16, 1);
-      m.rotation.set(0, ry + 0.4, tilt);
-      scene.add(m);
-    }
-  }
-  const portal = new THREE.Mesh(new THREE.PlaneGeometry(16, 22), glowMat(SOUL, 1.1, true));
-  geos.push(portal.geometry);
-  portal.position.set(0, 0.5, -70.8);
-  scene.add(portal);
-
-  // the river
+  // the river of souls, the glow in the gate, and the fire, ember, soul and halo particles
   const riverMat = new THREE.ShaderMaterial({
-    uniforms: { uTime: time, uFog: { value: new THREE.Color(INK) }, uSoul: { value: SOUL } },
+    uniforms: { uTime: S.time, uSoul: { value: SOUL } },
     vertexShader: "varying vec3 vWP; void main() { vec4 w = modelMatrix * vec4(position, 1.0); vWP = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }",
     fragmentShader: `
-      uniform float uTime; uniform vec3 uFog, uSoul; varying vec3 vWP;
+      uniform float uTime; uniform vec3 uSoul; varying vec3 vWP;
       ${NOISE}
       void main() {
-        vec2 p = vWP.xz * vec2(0.16, 0.42);
-        p.x -= uTime * 0.22;
-        float n = fbm(p);
-        float s = fbm(p * 2.4 + vec2(-uTime * 0.35, n));
-        float streak = smoothstep(0.6, 0.64, n * 0.55 + s * 0.5);
-        vec3 c = vec3(0.025, 0.06, 0.07) + uSoul * (streak * 0.55 + smoothstep(0.45, 0.85, n) * 0.12);
-        c += uSoul * 0.35 * smoothstep(9.0, 0.0, abs(vWP.x)) * smoothstep(-58.0, -70.0, vWP.z) * (0.6 + 0.4 * s);
-        float fd = smoothstep(16.0, 62.0, length(vWP - cameraPosition));
-        gl_FragColor = vec4(mix(c, uFog, fd * 0.85), 1.0);
+        float al = dot(vWP.xz, vec2(0.7071, -0.7071)), ac = dot(vWP.xz, vec2(0.7071, 0.7071)) - ${(LAND.c.x + LAND.c.z) * 0.7071 + 15};
+        vec2 p = vec2(al * 0.035 - uTime * 0.09, ac * 0.42);
+        float n = fbm(p + vec2(0.0, fbm(p * 1.7 + uTime * 0.03) * 0.8));
+        float s = fbm(vec2(al * 0.11 - uTime * 0.32, ac * 1.3) + n);
+        float lanes = smoothstep(0.62, 0.7, s) * smoothstep(0.35, 0.6, n);
+        float bank = smoothstep(13.0, 8.5, abs(ac));
+        vec3 c = mix(vec3(0.006, 0.02, 0.03), vec3(0.02, 0.09, 0.12), smoothstep(0.3, 0.8, n));
+        c += uSoul * (lanes * 1.1 + smoothstep(0.78, 0.95, s) * 0.6);
+        c += uSoul * 0.25 * smoothstep(0.5, 0.0, abs(abs(ac) - 10.5)) * (0.5 + 0.5 * s);
+        c *= mix(0.15, 1.0, bank);
+        gl_FragColor = vec4(c, 1.0);
       }`,
   });
   mats.push(riverMat);
-  const river = new THREE.Mesh(new THREE.PlaneGeometry(140, 19).rotateX(-Math.PI / 2), riverMat);
-  geos.push(river.geometry);
-  river.position.set(0, -8.35, -54.5);
-  scene.add(river);
+  const riverGeo = new THREE.PlaneGeometry(520, 26).rotateX(-Math.PI / 2).rotateY(Q);
+  geos.push(riverGeo);
+  const river = new THREE.Mesh(riverGeo, riverMat);
+  river.position.copy(LAND.c).addScaledVector(DV, 15).setY(LAND.c.y - 1.7);
+  if (!foot) scene.add(river);
 
-  // painted texture slots
-  const sky = new THREE.Mesh(new THREE.PlaneGeometry(260, 110), new THREE.MeshBasicMaterial({ color: INK, fog: false }));
-  geos.push(sky.geometry);
-  mats.push(sky.material);
-  sky.position.set(0, 20, -110);
-  scene.add(sky);
-  const loader = new THREE.TextureLoader();
-  const slots: Record<string, (t: THREE.Texture) => void> = {
-    stone: (t) => [stone, pale, dark].forEach((m) => ((m.map = t), (m.needsUpdate = true))),
-    floor: (t) => ((t.repeat.set(24, 16), (floor.map = t)), (floor.needsUpdate = true)),
-    far: (t) => ((far.map = t), (far.needsUpdate = true)),
-    sky: (t) => ((sky.material.map = t), (sky.material.color.set("#ffffff")), (sky.material.needsUpdate = true)),
+  const glowMat = (c: THREE.Color, a: number) => {
+    const g = new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      uniforms: { uC: { value: c }, uA: { value: a }, uTime: S.time },
+      vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
+      fragmentShader: "uniform vec3 uC; uniform float uA, uTime; varying vec2 vUv; void main() { vec2 d = (vUv - vec2(0.5, 0.32)) * vec2(1.0, 0.7); float f = smoothstep(0.62, 0.0, length(d)); gl_FragColor = vec4(uC * (f * f * 1.4 + 0.25) * uA * (0.92 + 0.08 * sin(uTime * 1.7)), 1.0); }",
+    });
+    mats.push(g);
+    return g;
   };
-  let gone = false;
-  fetch("/world/tex/manifest.json")
-    .then((r) => (r.ok ? r.json() : {}))
-    .then((j: Record<string, string | null>) => {
-      for (const [k, file] of Object.entries(j)) {
-        if (!file || !slots[k] || gone) continue;
-        loader.load("/world/tex/" + file, (t) => {
-          if (gone) return t.dispose();
-          t.colorSpace = THREE.SRGBColorSpace;
-          t.wrapS = t.wrapT = THREE.RepeatWrapping;
-          slots[k](t);
-        });
-      }
-    })
-    .catch(() => {});
+  for (const gl of world?.glows ?? []) {
+    const geo = new THREE.PlaneGeometry(gl.w, gl.h);
+    geos.push(geo);
+    const mesh = new THREE.Mesh(geo, glowMat(gl.soul ? SOUL : EMBER, 1.2));
+    mesh.matrixAutoUpdate = false;
+    mesh.matrix.copy(gl.m);
+    scene.add(mesh);
+  }
 
-  // camera, cursor and loop
-  const K = KEYS.map((k) => [new THREE.Vector3(k[0], k[1], k[2]), new THREE.Vector3(k[3], k[4], k[5])]);
-  const want = new THREE.Vector3();
-  const look = new THREE.Vector3();
-  const cur = new THREE.Vector3().copy(K[0][0]);
-  const curLook = new THREE.Vector3().copy(K[0][1]);
-  const ptr = { x: 0, y: 0, tx: 0, ty: 0 };
-  const move = (ev: PointerEvent) => {
-    ptr.tx = (ev.clientX / window.innerWidth) * 2 - 1;
-    ptr.ty = -((ev.clientY / window.innerHeight) * 2 - 1);
+  const ign = { value: foot ? 99 : o.still ? (o.dim ? -99 : 99) : -0.5 };
+  const doorU = { value: door };
+  const center = { value: new THREE.Vector3() };
+  const ppu = { value: 60 };
+  let seed = 3;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const points = (n: number, at: (i: number) => [number, number, number], u: Record<string, THREE.IUniform>, vs: string, fs: string) => {
+    const pos = new Float32Array(n * 3);
+    const sd = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      pos.set(at(i), i * 3);
+      sd.set([rnd(), rnd(), rnd()], i * 3);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    g.setAttribute("aSeed", new THREE.BufferAttribute(sd, 3));
+    geos.push(g);
+    const mat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: { uTime: S.time, uC: center, uPx: ppu, uIgn: ign, uDoor: doorU, ...u }, vertexShader: "uniform float uTime, uPx, uIgn; uniform vec3 uC, uDoor; attribute vec3 aSeed; varying float vT; varying vec3 vS;\n" + vs, fragmentShader: "varying float vT; varying vec3 vS;\n" + fs });
+    mats.push(mat);
+    const p = new THREE.Points(g, mat);
+    p.frustumCulled = false;
+    scene.add(p);
   };
-  window.addEventListener("pointermove", move, { passive: true });
+  const flameVS = `
+    void main() {
+      vS = aSeed;
+      float t = fract(uTime * (0.8 + aSeed.x * 0.6) + aSeed.y * 7.13);
+      float an = aSeed.z * 40.0, rd = (1.0 - t) * 0.55 * fract(aSeed.x * 13.7);
+      vec3 p = position + vec3(cos(an) * rd + sin(uTime * 3.0 + aSeed.y * 20.0) * 0.12 * t, t * 2.1, sin(an) * rd);
+      vT = t;
+      float ig = clamp((uIgn - 0.15 - length(position - uDoor) / 26.0) / 0.45, 0.0, 1.0);
+      gl_PointSize = uPx * 0.62 * (1.0 - t * 0.7) * (0.7 + aSeed.z * 0.6) * ig;
+      gl_Position = projectionMatrix * viewMatrix * vec4(p, 1.0);
+    }`;
+  const flameFS = (hot: string, cold: string) => `
+    void main() {
+      float d = length(gl_PointCoord - 0.5);
+      if (d > 0.5) discard;
+      float e = 1.0 - smoothstep(0.3, 0.5, d);
+      vec3 c = mix(vec3(${hot}), vec3(${cold}), smoothstep(0.0, 0.7, vT));
+      gl_FragColor = vec4(c * e * (1.0 - vT) * 1.6, 1.0);
+    }`;
+  const warm = fires.filter((f) => !f.soul && !f.lamp), cold = fires.filter((f) => f.soul && !f.lamp);
+  const per = o.small ? 14 : 24;
+  points(warm.length * per, (i) => warm[i % warm.length].p.toArray() as [number, number, number], {}, flameVS, flameFS("1.0, 0.85, 0.45", "1.0, 0.24, 0.05"));
+  points(cold.length * per, (i) => cold[i % cold.length].p.toArray() as [number, number, number], {}, flameVS, flameFS("0.8, 1.0, 1.0", "0.1, 0.55, 0.9"));
+  const halo = (list: Fire[], col: string) =>
+    points(list.length, (i) => list[i].p.toArray() as [number, number, number], { uCol: { value: new THREE.Color(col) } }, `
+      void main() {
+        vS = aSeed; vT = 0.0;
+        float ig = clamp((uIgn - 0.15 - length(position - uDoor) / 26.0) / 0.45, 0.0, 1.0);
+        gl_PointSize = uPx * 6.5 * ig * (1.0 + 0.6 * exp(-max(0.0, uIgn - 0.6 - length(position - uDoor) / 26.0) * 3.0));
+        gl_Position = projectionMatrix * viewMatrix * vec4(position + vec3(0.0, 0.6, 0.0), 1.0);
+      }`, `
+      uniform vec3 uCol;
+      void main() {
+        float d = length(gl_PointCoord - 0.5);
+        float f = pow(max(0.0, 1.0 - d * 2.0), 2.2);
+        gl_FragColor = vec4(uCol * f * 0.3, 1.0);
+      }`);
+  halo(warm, "#ff6a24");
+  halo(cold, "#4fd8ff");
+  const drift = (n: number, box: [number, number, number], size: number, up: number, color: string, alpha: number, soft: number) =>
+    points(n, () => [0, 0, 0], { uBox: { value: new THREE.Vector3(...box) }, uCol: { value: new THREE.Color(color) }, uSize: { value: size }, uUp: { value: up }, uAl: { value: alpha }, uSoft: { value: soft } }, `
+      uniform vec3 uBox; uniform float uSize, uUp;
+      void main() {
+        vS = aSeed;
+        vec3 p = aSeed;
+        p.y = fract(p.y + uTime * uUp * (0.6 + aSeed.x * 0.8) / uBox.y - uC.y / uBox.y);
+        p.x = fract(p.x + sin(uTime * 0.31 + aSeed.z * 30.0) * 0.6 / uBox.x - uC.x / uBox.x);
+        p.z = fract(p.z + cos(uTime * 0.23 + aSeed.x * 20.0) * 0.6 / uBox.z - uC.z / uBox.z);
+        vT = p.y;
+        vec3 w = uC + (p - 0.5) * uBox;
+        gl_PointSize = uSize * uPx * (0.5 + fract(aSeed.x * 7.0)) * clamp((uIgn - 0.5) / 1.2, 0.0, 1.0);
+        gl_Position = projectionMatrix * viewMatrix * vec4(w, 1.0);
+      }`, `
+      uniform vec3 uCol; uniform float uAl, uSoft;
+      void main() {
+        float d = length(gl_PointCoord - 0.5);
+        if (d > 0.5) discard;
+        float e = mix(1.0 - smoothstep(0.32, 0.42, d), pow(1.0 - d * 2.0, 2.0), uSoft);
+        float life = smoothstep(0.0, 0.15, vT) * smoothstep(1.0, 0.65, vT);
+        gl_FragColor = vec4(uCol * e * life * uAl * (0.6 + 0.4 * sin(vS.z * 50.0 + vT * 20.0)), 1.0);
+      }`);
+  drift(o.small ? 160 : 320, [70, 26, 70], 0.11, 1.1, "#ff6a24", 1.4, 0);
+  drift(o.small ? 60 : 120, [70, 20, 70], 0.42, 0.35, "#63e6ff", 0.42, 1);
+  drift(o.small ? 90 : 180, [60, 16, 60], 0.06, 0.08, "#b49a80", 0.35, 1);
 
+  // the frame: scene to a target with depth, bloom at a quarter, one finishing pass
+  const rt = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: o.small ? 0 : 4, depthTexture: new THREE.DepthTexture(1, 1) });
+  const bA = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType });
+  const bB = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType });
+  const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
+  geos.push(quad.geometry);
+  const flat = new THREE.Scene();
+  flat.add(quad);
+  const qcam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const VS = "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }";
+  const bright = new THREE.ShaderMaterial({ uniforms: { t: { value: rt.texture } }, vertexShader: VS, fragmentShader: "uniform sampler2D t; varying vec2 vUv; void main() { vec3 c = texture2D(t, vUv).rgb; float l = max(c.r, max(c.g, c.b)); gl_FragColor = vec4(c * smoothstep(0.62, 1.4, l), 1.0); }" });
+  const blur = new THREE.ShaderMaterial({ uniforms: { t: { value: null }, d: { value: new THREE.Vector2() } }, vertexShader: VS, fragmentShader: "uniform sampler2D t; uniform vec2 d; varying vec2 vUv; void main() { vec3 c = texture2D(t, vUv).rgb * 0.227; c += (texture2D(t, vUv + d * 1.385).rgb + texture2D(t, vUv - d * 1.385).rgb) * 0.316; c += (texture2D(t, vUv + d * 3.23).rgb + texture2D(t, vUv - d * 3.23).rgb) * 0.07; gl_FragColor = vec4(c, 1.0); }" });
+  const fin = new THREE.ShaderMaterial({
+    uniforms: { tC: { value: rt.texture }, tD: { value: rt.depthTexture }, tB: { value: bA.texture }, uRes: { value: new THREE.Vector2() }, uPx: { value: 0.02 }, uTh: { value: 1 }, uTime: S.time, uOff: { value: new THREE.Vector2() }, uInk: { value: INK }, uGrain: { value: o.still || foot ? 0 : 0.018 }, uFlat: { value: foot ? 1 : 0 }, uFade: { value: 0 } },
+    vertexShader: VS,
+    fragmentShader: `
+      uniform sampler2D tC, tD, tB; uniform vec2 uRes, uOff; uniform float uPx, uTh, uTime, uGrain, uFlat, uFade; uniform vec3 uInk; varying vec2 vUv;
+      ${NOISE}
+      float D(vec2 o) { return texture2D(tD, vUv + o / uRes).x * ${FAR - NEAR}.0; }
+      void main() {
+        float d0 = D(vec2(0.0));
+        float a = D(vec2(uTh, 0.0)), b = D(vec2(-uTh, 0.0)), c = D(vec2(0.0, uTh)), e = D(vec2(0.0, -uTh));
+        float a2 = D(vec2(uTh, uTh)), b2 = D(vec2(-uTh, -uTh)), c2 = D(vec2(-uTh, uTh)), e2 = D(vec2(uTh, -uTh));
+        float lap = max(abs(a + b + c + e - 4.0 * d0), abs(a2 + b2 + c2 + e2 - 4.0 * d0) * 0.5);
+        float jump = max(max(abs(a - d0), abs(b - d0)), max(abs(c - d0), abs(e - d0)));
+        float px = uPx * uTh;
+        float ink = max(smoothstep(px * 0.7, px * 1.8, lap), smoothstep(px * 2.5, px * 6.0, jump));
+        vec3 col = texture2D(tC, vUv).rgb;
+        bool sky = d0 > ${FAR - NEAR - 1}.0;
+        vec2 sp = (vUv - 0.5) * vec2(uRes.x / uRes.y, 1.0) + uOff;
+        if (sky) {
+          float s = fbm(sp * 2.2 + vec2(uTime * 0.012, -uTime * 0.02));
+          float s2 = fbm(sp * 5.0 - vec2(uTime * 0.02, uTime * 0.01));
+          col = uFlat > 0.5 ? uInk : uInk * (0.8 + 0.4 * s) + vec3(0.02, 0.008, 0.003) * smoothstep(0.6, 0.85, s2);
+        }
+        col = mix(col, vec3(0.02, 0.013, 0.01), ink * 0.92 * smoothstep(0.012, 0.05, dot(col, vec3(0.3, 0.5, 0.2))));
+        col += texture2D(tB, vUv).rgb * 0.9;
+        if (!sky || uFlat < 0.5) col *= vec3(1.04, 1.0, 0.95);
+        float v = smoothstep(1.25, 0.35, length((vUv - 0.5) * vec2(1.1, 1.3)));
+        col *= mix(mix(0.5, 1.0, v), 1.0, uFlat);
+        col = mix(col, uInk, uFade);
+        col += (h21(vUv * uRes + fract(uTime) * 91.0) - 0.5) * uGrain;
+        gl_FragColor = vec4(max(col, 0.0), 1.0);
+        #include <colorspace_fragment>
+      }`,
+  });
+  mats.push(bright, blur, fin);
+
+  // camera: the five shots (gate, hall in, hall out, theatre, landing), eased between, with a pull back mid-move
+  const shots: Shot[] = hall
+    ? [
+        { t: new THREE.Vector3(0, COURT.y + 3, 0).addScaledVector(UP, -9), h: 52, w: 70, floor: COURT.y },
+        hall.shots[0],
+        hall.shots[1],
+        { t: THEATRE.c.clone().add(new THREE.Vector3(-1, 1.5, -1)), h: 56, w: 74, floor: THEATRE.c.y },
+        { t: SIGN.clone().add(new THREE.Vector3(0, 5.3, 0)).addScaledVector(UP, -3), h: 28, w: 40, floor: LAND.c.y },
+      ]
+    : Array(5).fill(foot!.shot);
+  const want = new THREE.Vector3(), cur = shots[0].t.clone();
+  let wantH = shots[0].h, curH = shots[0].h, wantW = shots[0].w, curW = shots[0].w, floorY = COURT.y;
+  const ptr = { x: 0, y: 0, tx: 0, ty: 0, moved: false, cx: -1, cy: -1, over: false };
+  let W = 1, H = 1;
   const size = () => {
-    const w = host.clientWidth || 1, h = host.clientHeight || 1;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.fov = w / h < 1 ? 72 : 55;
-    camera.updateProjectionMatrix();
-    px.value = (h * renderer.getPixelRatio()) / (2 * Math.tan((camera.fov * Math.PI) / 360));
+    W = host.clientWidth || 1;
+    H = host.clientHeight || 1;
+    renderer.setSize(W, H, false);
+    const w = Math.floor(W * dpr), h = Math.floor(H * dpr);
+    rt.setSize(w, h);
+    bA.setSize(w >> 2, h >> 2);
+    bB.setSize(w >> 2, h >> 2);
+    fin.uniforms.uRes.value.set(w, h);
+    fin.uniforms.uTh.value = Math.max(1, dpr * 0.95);
   };
   size();
   const ro = new ResizeObserver(size);
   ro.observe(host);
 
-  const clock = new THREE.Clock();
-  let shown = false;
+  // ad textures and captions, loaded after first paint, nearest the hall's start first
+  const family = getComputedStyle(host).fontFamily;
+  let gone = false;
+  const caption = (a: WorldAd) => {
+    const cv = document.createElement("canvas");
+    cv.width = 1024;
+    cv.height = 200;
+    const g = cv.getContext("2d")!;
+    g.fillStyle = "#17110d";
+    g.fillRect(0, 0, 1024, 200);
+    g.fillStyle = "#f4eadb";
+    g.font = "700 96px " + family;
+    g.fillText(a.campaign, 40, 112, 944);
+    const line = a.alt.split(". ")[0].replace(/\.$/, "");
+    g.fillStyle = "#cdb89c";
+    g.font = "600 42px " + family;
+    g.fillText(line.length > 40 ? line.slice(0, 39) + "…" : line, 42, 172, 940);
+    const t = new THREE.CanvasTexture(cv);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    texs.push(t);
+    return t;
+  };
+  const loader = new THREE.TextureLoader();
+  const queue = [...(hall?.slots ?? [])];
+  const pump = () => {
+    const s = queue.shift();
+    if (!s || gone) return;
+    const a = o.ads[s.i];
+    loader.load(
+      "/_next/image?url=" + encodeURIComponent(a.src) + "&w=750&q=75",
+      (t) => {
+        if (gone) return t.dispose();
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+        texs.push(t);
+        s.ad(t);
+        pump();
+      },
+      undefined,
+      () => pump(),
+    );
+  };
+  document.fonts.ready.then(() => !gone && hall?.slots.forEach((s) => s.cap(caption(o.ads[s.i]))));
+  for (let i = 0; i < 4; i++) pump();
+
+  // painted texture slots (public/world/tex/manifest.json), triplanar, multiplying the procedural colour
+  const slotMats: Record<string, THREE.Material[]> = { stone: [m.stone, m.pale, m.trim], floor: [m.court, m.hall, m.land], rock: [m.rock], wood: [m.wood] };
+  fetch("/world/tex/manifest.json")
+    .then((r) => (r.ok ? r.json() : {}))
+    .then((j: Record<string, string | null>) => {
+      for (const [k, file] of Object.entries(j)) {
+        if (!file || !slotMats[k] || gone) continue;
+        new THREE.TextureLoader().load("/world/tex/" + file, (t) => {
+          if (gone) return t.dispose();
+          t.colorSpace = THREE.SRGBColorSpace;
+          t.wrapS = t.wrapT = THREE.RepeatWrapping;
+          texs.push(t);
+          slotMats[k].forEach((mm) => setMap(mm, t));
+        });
+      }
+    })
+    .catch(() => {});
+
+  // pointer: a sway of the camera, a hand-held light on the floor, hover and click on the ads
+  const ray = new THREE.Raycaster();
+  const ndc = new THREE.Vector2();
+  const picks = hall?.slots.map((s) => s.pick) ?? [];
+  let hot = -1;
+  const move = (e: PointerEvent) => {
+    ptr.tx = (e.clientX / innerWidth) * 2 - 1;
+    ptr.ty = -((e.clientY / innerHeight) * 2 - 1);
+    const b = canvas.getBoundingClientRect();
+    ptr.cx = e.clientX - b.left;
+    ptr.cy = e.clientY - b.top;
+    ptr.over = e.target === canvas;
+    ptr.moved = true;
+  };
+  const click = (e: MouseEvent) => {
+    if (e.target !== canvas || hot < 0) return;
+    if (hall) o.open(o.ads[hall.slots[hot].i].id);
+  };
+
+  // the footer's links: hover and focus make a target hot, a click picks it (the camera walks in, the frame goes to
+  // ink, then the page navigates), and the die rolls on a click or follows a drag
+  const LEAVE = 0.9;
+  const fst: FootState = { hot: null, pick: null, pickT: 0, tilt: new THREE.Vector2(), drag: null };
+  const fels = foot && o.foot ? foot.targets.map((t) => o.foot!.el(t.key)) : [];
+  const offs: (() => void)[] = [];
+  let leaveTo = "", dragged = 0, dx = 0, dy = 0;
+  if (foot && o.foot) {
+    const fo = o.foot;
+    foot.face?.(fo.face);
+    fels.forEach((el, i) => {
+      if (!el) return;
+      const k = foot.targets[i].key;
+      const on = <E extends Event>(type: string, fn: (e: E) => void) => {
+        el.addEventListener(type, fn as EventListener);
+        offs.push(() => el.removeEventListener(type, fn as EventListener));
+      };
+      const cool = () => void (fst.hot === k && (fst.hot = null));
+      on("pointerenter", () => (fst.hot = k));
+      on("pointerleave", cool);
+      on("focus", () => (fst.hot = k));
+      on("blur", cool);
+      on<PointerEvent>("pointermove", (e) => {
+        const b = el.getBoundingClientRect();
+        fst.tilt.set(((e.clientX - b.left) / b.width) * 2 - 1, -(((e.clientY - b.top) / b.height) * 2 - 1));
+        if (!fst.drag) return;
+        fst.drag.x += e.clientX - dx;
+        fst.drag.y += e.clientY - dy;
+        dragged += Math.abs(e.clientX - dx) + Math.abs(e.clientY - dy);
+        dx = e.clientX;
+        dy = e.clientY;
+      });
+      if (k === "die") {
+        on<PointerEvent>("pointerdown", (e) => {
+          fst.drag = new THREE.Vector2();
+          dragged = 0;
+          dx = e.clientX;
+          dy = e.clientY;
+          el.setPointerCapture(e.pointerId);
+        });
+        on("pointerup", () => (fst.drag = null));
+        on("pointercancel", () => (fst.drag = null));
+        on<MouseEvent>("click", (e) => {
+          e.preventDefault();
+          if (dragged < 6) foot.roll?.();
+        });
+        return;
+      }
+      on<MouseEvent>("click", (e) => {
+        const href = (el as HTMLAnchorElement).getAttribute("href");
+        if (!href || (el as HTMLAnchorElement).target === "_blank" || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || fst.pick) return;
+        e.preventDefault();
+        fst.pick = k;
+        fst.pickT = 0;
+        leaveTo = href;
+      });
+    });
+    const back = () => ((fst.pick = null), (fin.uniforms.uFade.value = 0));
+    addEventListener("pageshow", back);
+    offs.push(() => removeEventListener("pageshow", back));
+  }
+  const placed: string[] = [];
+  addEventListener("pointermove", move, { passive: true });
+  addEventListener("click", click);
+
+  // the fires nearest the view get the 15 light slots; slot 16 is the hand
+  const order = fires.map((_, i) => i);
+  const lit = (f: Fire) => {
+    if (f.lamp) return 1;
+    const d = 0.15 + f.p.distanceTo(door) / 26;
+    const v = Math.min(1, Math.max(0, (ign.value - d) / 0.45));
+    return 0.08 + 0.92 * v * (1 + 0.7 * Math.exp(-Math.max(0, ign.value - d - 0.45) * 3));
+  };
+  const pickLights = (t: number, c: THREE.Vector3) => {
+    order.sort((a, b) => fires[a].p.distanceToSquared(c) - fires[b].p.distanceToSquared(c));
+    for (let j = 0; j < NL - 1; j++) {
+      const f = fires[order[j]];
+      if (!f) continue;
+      const fl = (0.84 + 0.16 * Math.sin(t * 11 + j * 1.7) * Math.sin(t * 6.3 + j)) * lit(f);
+      S.fl.value[j].set(f.p.x, f.p.y + 0.4, f.p.z, f.r * (f.big ? 1.15 : 1));
+      if (f.soul) S.fc.value[j].set(0.35 * fl * 2.0, 0.9 * fl * 2.0, 1.0 * fl * 2.0);
+      else S.fc.value[j].set(1.0 * fl * 3.0, 0.42 * fl * 3.0, 0.12 * fl * 3.0);
+    }
+  };
+
+  const unroll: number[] = [];
+  let last = performance.now(), shown = false, shadowAt = new THREE.Vector3(1e9, 0, 0), shadowH = 0;
+  const p0 = new THREE.Vector3(), tmp = new THREE.Vector3();
+  const smoother = (f: number) => f * f * f * (f * (f * 6 - 15) + 10);
   const tick = () => {
-    const dt = Math.min(clock.getDelta(), 0.1);
-    time.value += dt;
-    const p = Math.min(3, Math.max(0, o.progress()));
-    const i = Math.min(2, Math.floor(p));
-    let f = p - i;
-    f = f * f * (3 - 2 * f);
-    want.lerpVectors(K[i][0], K[i + 1][0], f);
-    look.lerpVectors(K[i][1], K[i + 1][1], f);
-    ptr.x += (ptr.tx - ptr.x) * (1 - Math.exp(-dt * 3));
-    ptr.y += (ptr.ty - ptr.y) * (1 - Math.exp(-dt * 3));
-    want.x += ptr.x * 0.6;
-    want.y += ptr.y * 0.3;
-    const k = 1 - Math.exp(-dt * 5);
+    const now = performance.now();
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    S.time.value += dt;
+    if (!o.still) ign.value += dt;
+    const p = Math.min(4, Math.max(0, o.progress()));
+    const i = Math.min(3, Math.floor(p));
+    const f = i === 1 ? p - i : smoother(p - i);
+    const A = shots[i], Z = shots[i + 1];
+    want.lerpVectors(A.t, Z.t, f);
+    wantH = A.h + (Z.h - A.h) * f + (i === 1 ? 0 : Math.sin(Math.PI * f) * 10);
+    wantW = A.w + (Z.w - A.w) * f;
+    const intro = Math.min(1, Math.max(0, (ign.value - 0.3) / 3.2));
+    wantH -= (1 - Math.pow(1 - intro, 3)) * 3 * Math.max(0, 1 - p * 2);
+    floorY = A.floor + (Z.floor - A.floor) * f;
+    if (foot && fst.pick) {
+      fst.pickT += dt;
+      const u = Math.min(1, fst.pickT / LEAVE);
+      want.lerp(foot.focus(fst.pick), u * u * 0.8);
+      wantH *= 1 - 0.62 * u * u;
+      wantW *= 1 - 0.62 * u * u;
+      fin.uniforms.uFade.value = Math.max(0, (u - 0.55) / 0.45);
+      if (u >= 1 && leaveTo) {
+        o.foot!.go(leaveTo);
+        leaveTo = "";
+        setTimeout(() => ((fst.pick = null), (fin.uniforms.uFade.value = 0)), 1500);
+      }
+    }
+    if (!o.still) {
+      ptr.x += (ptr.tx - ptr.x) * (1 - Math.exp(-dt * 2.5));
+      ptr.y += (ptr.ty - ptr.y) * (1 - Math.exp(-dt * 2.5));
+      want.addScaledVector(RV, ptr.x * 0.5).addScaledVector(UP, ptr.y * 0.3);
+    }
+    const k = o.still ? 1 : 1 - Math.exp(-dt * (fst.pick ? 3 : 6));
     cur.lerp(want, k);
-    curLook.lerp(look, k);
-    camera.position.copy(cur);
-    camera.lookAt(curLook);
-    hand.position.set(curLook.x + ptr.x * 7, curLook.y + 1 + ptr.y * 4, curLook.z + 5);
-    fires.forEach((l, j) => (l.intensity = (pans[j][3] ? 60 : 30) * (0.86 + 0.14 * Math.sin(time.value * 11 + j * 1.7) * Math.sin(time.value * 6.3 + j))));
+    curH += (wantH - curH) * k;
+    curW += (wantW - curW) * k;
+    const asp = W / H;
+    const vh = Math.max(curH, curW / asp);
+    camera.top = vh / 2;
+    camera.bottom = -vh / 2;
+    camera.left = (-vh * asp) / 2;
+    camera.right = (vh * asp) / 2;
+    camera.position.copy(cur).addScaledVector(DIR, 300);
+    camera.up.copy(UP);
+    camera.lookAt(cur);
+    camera.updateProjectionMatrix();
+    ppu.value = (H * dpr) / vh;
+    fin.uniforms.uPx.value = vh / (H * dpr);
+    fin.uniforms.uOff.value.set(cur.dot(RV) / vh, cur.dot(UP) / vh);
+    center.value.copy(cur);
+    pickLights(S.time.value, cur);
+
+    if (ptr.moved && ptr.cx >= 0) {
+      ptr.moved = false;
+      ndc.set((ptr.cx / W) * 2 - 1, -(ptr.cy / H) * 2 + 1);
+      ray.setFromCamera(ndc, camera);
+      const h = ptr.over ? ray.intersectObjects(picks, false)[0] : undefined;
+      hot = h ? picks.indexOf(h.object) : -1;
+      canvas.style.cursor = hot >= 0 ? "pointer" : "";
+      const t = (floorY + 1.6 - ray.ray.origin.y) / ray.ray.direction.y;
+      p0.copy(ray.ray.origin).addScaledVector(ray.ray.direction, t);
+    }
+    const focus = Number((document.activeElement as HTMLElement | null)?.dataset?.ad ?? -1);
+    if (foot) {
+      foot.update(dt, fst);
+      const px = H / vh;
+      fels.forEach((el, j) => {
+        if (!el) return;
+        const t = foot.targets[j];
+        tmp.copy(t.at).project(camera);
+        const css = "translate(" + (((tmp.x + 1) / 2) * W).toFixed(1) + "px," + (((1 - tmp.y) / 2) * H).toFixed(1) + "px)|" + (t.w * px).toFixed(1) + "|" + (t.h * px).toFixed(1);
+        if (placed[j] === css) return;
+        placed[j] = css;
+        const [tr, w, h] = css.split("|");
+        el.style.transform = tr;
+        if (!t.w) return;
+        el.style.width = w + "px";
+        el.style.height = h + "px";
+      });
+    }
+    hall?.slots.forEach((s: Slot, j) => {
+      s.hot(j === hot || s.i === focus ? 1 : 0);
+      if (o.still) return s.drop(1);
+      if (!unroll[j] && s.pos.distanceTo(cur) < 30) unroll[j] = S.time.value + 0.12 * (j % 4);
+      const u = unroll[j] ? Math.min(1, Math.max(0, (S.time.value - unroll[j]) / 0.9)) : 0;
+      s.drop(1 - Math.pow(1 - u, 3));
+    });
+    S.fl.value[NL - 1].set(p0.x, p0.y, p0.z, ptr.over && !o.still ? 8 : 0.001);
+    S.fc.value[NL - 1].set(1.1, 0.62, 0.32);
+
+    if (shadowAt.distanceTo(cur) > 1.5 || Math.abs(shadowH - vh) > vh * 0.08) {
+      shadowAt.copy(cur);
+      shadowH = vh;
+      const ext = vh * 1.25 + 8;
+      const sc = key.shadow.camera;
+      sc.left = -ext;
+      sc.right = ext;
+      sc.top = ext;
+      sc.bottom = -ext;
+      sc.updateProjectionMatrix();
+      key.target.position.copy(cur);
+      key.position.copy(cur).addScaledVector(LDIR, 120);
+      key.target.updateMatrixWorld();
+      key.updateMatrixWorld();
+      renderer.shadowMap.needsUpdate = true;
+    }
+
+    renderer.setRenderTarget(rt);
     renderer.render(scene, camera);
+    quad.material = bright;
+    renderer.setRenderTarget(bA);
+    renderer.render(flat, qcam);
+    quad.material = blur;
+    for (let r = 0; r < 2; r++) {
+      blur.uniforms.t.value = bA.texture;
+      blur.uniforms.d.value.set((1 + r) / bA.width, 0);
+      renderer.setRenderTarget(bB);
+      renderer.render(flat, qcam);
+      blur.uniforms.t.value = bB.texture;
+      blur.uniforms.d.value.set(0, (1 + r) / bA.height);
+      renderer.setRenderTarget(bA);
+      renderer.render(flat, qcam);
+    }
+    quad.material = fin;
+    renderer.setRenderTarget(null);
+    renderer.render(flat, qcam);
     if (!shown) {
       shown = true;
       o.ready();
@@ -453,11 +607,13 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   const run = () => renderer.setAnimationLoop(seen && !document.hidden ? tick : null);
   const io = new IntersectionObserver(([en]) => {
     seen = en.isIntersecting;
+    last = performance.now();
     run();
   });
   io.observe(host);
   document.addEventListener("visibilitychange", run);
-  renderer.compile(scene, camera);
+  scene.updateMatrixWorld(true);
+  tmp.set(0, 0, 0);
   run();
 
   return () => {
@@ -466,12 +622,14 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     io.disconnect();
     ro.disconnect();
     document.removeEventListener("visibilitychange", run);
-    window.removeEventListener("pointermove", move);
+    removeEventListener("pointermove", move);
+    removeEventListener("click", click);
+    offs.forEach((f) => f());
     geos.forEach((g) => g.dispose());
-    mats.forEach((m) => m.dispose());
-    ramp.dispose();
+    mats.forEach((mm) => mm.dispose());
+    texs.forEach((t) => t.dispose());
+    [rt, bA, bB].forEach((r) => r.dispose());
     renderer.dispose();
-    renderer.domElement.remove();
+    canvas.remove();
   };
 }
-
