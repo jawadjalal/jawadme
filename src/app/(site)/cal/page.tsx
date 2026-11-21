@@ -3,12 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { CalInline } from "@/components/ds/CalInline";
 import { SITE } from "@/content/site";
+import { meta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Book a call",
-  description: "Book a 15 minute video call with Jawad Jalal about brands, ads, 3D and Roblox games.",
-  alternates: { canonical: "/cal" },
-};
+export const metadata: Metadata = meta({ title: "Book a call", description: "Book a free 15 minute video call with Jawad Jalal about brands, ads, sites, 3D and Roblox games.", path: "/cal" });
 
 // The calendar is the page: one ink bar of facts, then Cal.com's own month view across the grid, themed to the site.
 

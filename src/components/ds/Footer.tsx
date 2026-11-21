@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
-import { Art } from "@/components/ds/Art";
 import { NAV, SITE, SOCIAL } from "@/content/site";
 
-/** The page's last word: "Where to next?" beside a painted Greek signpost. Each board is a real link pointing at a
+/** The page's last word: "Where to next?" beside a signpost. Each board is a real link pointing at a
  *  section, the call board in ember at the foot of the post; they swing out from the post when the footer arrives. */
 
 const ARMS = [...NAV.map((n) => ({ label: n.label, href: n.href })), { label: "Book a call", href: "/cal?src=footer-signpost" }];
@@ -22,7 +21,7 @@ export function Footer({ src }: { src: string }) {
           </p>
         </div>
         <nav className="sign" aria-label="Where to next" data-in="">
-          <Art k="sign" sizes="(min-width: 768px) 30vw, 70vw" className="sign-art" fallback={<span className="sign-post" aria-hidden="true" />} />
+          <span className="sign-post" aria-hidden="true" />
           <ol className="sign-arms">
             {ARMS.map((a, i) => {
               const book = i === ARMS.length - 1;

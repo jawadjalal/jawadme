@@ -23,7 +23,7 @@ export function Motion() {
   const first = useRef(true);
 
   // Every navigation after the first load, unless a cover morph is carrying it: the new page is cut in from the top
-  // edge on the site's cut ease while it settles up 24 px. The first load has its own choreography per page.
+  // edge on the site's cut ease while it settles up 24 px, in 420 ms. The first load has its own choreography per page.
   useLayoutEffect(() => {
     if (first.current) {
       first.current = false;
@@ -35,7 +35,7 @@ export function Motion() {
         { clipPath: "inset(0 0 100% 0)", transform: "translateY(24px)" },
         { clipPath: "inset(0 0 0% 0)", transform: "none" },
       ],
-      { duration: 640, easing: "cubic-bezier(0.7, 0, 0.2, 1)" },
+      { duration: 420, easing: "cubic-bezier(0.7, 0, 0.2, 1)" },
     );
   }, [path]);
 
@@ -57,7 +57,10 @@ export function Motion() {
 
   useEffect(() => {
     const w = window as Win;
-    w.__lenis?.scrollTo(0, { immediate: true, force: true });
+    const mark = location.hash.length > 1 ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+    const y = mark ? Math.max(0, mark.getBoundingClientRect().top + scrollY - innerHeight * 0.18) : 0;
+    if (w.__lenis) w.__lenis.scrollTo(y, { immediate: true, force: true });
+    else if (mark) scrollTo(0, y);
     w.__vtDone?.();
     delete w.__vtDone;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;

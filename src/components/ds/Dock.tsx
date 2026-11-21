@@ -9,10 +9,10 @@ import { NAV, SITE } from "@/content/site";
 
 function Nav({ onPick }: { onPick?: () => void }) {
   const path = usePathname();
-  const f = useSearchParams().get("f");
+  const c = useSearchParams().get("c");
   const current = (href: string) => {
-    const [p, q] = href.split("?f=");
-    return path === p && (q ? f === q : !f) ? "page" : undefined;
+    const [p, q] = href.split("?c=");
+    return path === p && (q ? c === q : !c) ? "page" : undefined;
   };
   return (
     <>

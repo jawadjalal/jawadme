@@ -4,6 +4,7 @@ import { Footer } from "@/components/ds/Footer";
 import { Media } from "@/components/ds/Media";
 import { TLink } from "@/components/ds/TLink";
 import { TitleTab } from "@/components/ds/TitleTab";
+import { JsonLd, abs, caseWork, meta } from "@/lib/seo";
 import { REAL, laneLabel, nextOf, projectBySlug, type Block, type Media as M } from "@/content/work";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -14,13 +15,7 @@ export const generateStaticParams = () => REAL.map((p) => ({ slug: p.slug }));
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = projectBySlug((await params).slug);
   if (!p) return {};
-  const description = p.lines.join(" ");
-  return {
-    title: p.name,
-    description,
-    alternates: { canonical: "/work/" + p.slug },
-    openGraph: { title: p.name + ", by Jawad Jalal", description },
-  };
+  return meta({ title: p.name, description: `${p.lines.join(" ")} ${p.disciplines.join(", ")} by Jawad Jalal, ${p.year}.`, path: "/work/" + p.slug, type: "article" });
 }
 
 const portrait = (m: M) => m.h > m.w;
@@ -63,6 +58,12 @@ export default async function Case({ params }: Props) {
   const tall = portrait(p.cover);
   return (
     <main className={"case " + (p.cover.tone === "ink" ? "case-ink" : "")}>
+      <JsonLd
+        data={[
+          caseWork(p),
+          { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Work", item: abs("/work") }, { "@type": "ListItem", position: 2, name: p.name, item: abs("/work/" + p.slug) }] },
+        ]}
+      />
       <TitleTab
         as="h1"
         tag={[laneLabel(p.lane), p.year].join(", ")}

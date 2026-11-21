@@ -16,6 +16,7 @@ const nextConfig = {
   async redirects() {
     return [
       { source: "/call", destination: "/cal", permanent: true },
+      { source: "/ads", destination: "/work", permanent: true },
       { source: "/work/okara", destination: "/", permanent: false },
       { source: "/work/menufit", destination: "/", permanent: false },
       { source: "/minelight", destination: "/derelictdepths", permanent: true },

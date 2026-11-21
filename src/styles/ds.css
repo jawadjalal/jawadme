@@ -252,9 +252,6 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
 
 /* The signpost. An ink post; white boards with an ink edge, cut to a point; the call board in ember. */
 .sign { grid-column: 9 / -1; position: relative; display: grid; padding-top: 34px; perspective: 1100px; }
-.art.sign-art { position: absolute; inset: -8% 0 -4%; background: none; z-index: 0; }
-.art.sign-art > img { object-fit: contain; }
-.art.sign-art { overflow: visible; }
 .sign-post { position: absolute; left: 50%; top: 0; bottom: 0; width: 20px; margin-left: -10px; background: var(--ink); }
 .sign-post::before { content: ""; position: absolute; left: -5px; right: -5px; top: -10px; height: 12px; background: var(--ink); }
 .sign-foot { position: relative; z-index: 0; justify-self: center; width: 46%; height: 14px; margin-top: 26px; border-radius: 50%; background: rgb(0 0 0 / 0.14); }
@@ -335,11 +332,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 ::view-transition-group(*) { animation-duration: 560ms; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
 
 
-/* ── Art: the painted Greek-myth pieces, and their marked slots until the files land ── */
-.art { position: relative; overflow: hidden; background: var(--under); }
-.art > img { object-fit: cover; object-position: var(--pos); }
-.art-band { aspect-ratio: 3 / 1; }
-@media (max-width: 767px) { .art-band { aspect-ratio: 3 / 2; } }
 
 /* ── Home: hero ──
    Load: the statement rises, the lettered mark's glyphs rise in turn, the ring turns in, the ember bar wipes in last. */
@@ -402,21 +394,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
   .about-pic { grid-column: 1 / span 2; } .about-line { grid-column: 1 / -1; margin-top: 16px; font-size: 28px; }
 }
 
-/* ── Filters ── */
-.filters { display: flex; flex-wrap: wrap; gap: 8px 6px; align-items: baseline; padding-block: 12px; border-bottom: 1px solid var(--rule); font: 700 17px/1 var(--f-bar); letter-spacing: -0.02em; }
-.filters-r { display: flex; flex-wrap: wrap; gap: 8px 6px; margin-left: auto; }
-.filters a { padding: 6px 9px 5px; color: var(--dim); transition: color var(--t-fast), background-color var(--t-fast); }
-.filters a:hover { color: var(--fg); }
-.filters a[aria-current="page"] { background: var(--ink); color: var(--ground); }
-.filters .n { font-size: 0.72em; vertical-align: 0.4em; margin-right: 2px; }
-@media (max-width: 767px) { .filters-r { margin-left: 0; } }
-
-/* ── /work ── */
-.work-grid { row-gap: calc(14 * var(--u)); padding-block: calc(10 * var(--u)); }
-.work-grid .card { grid-column: span 8; }
-.work-grid .card-meta { order: 1; }
-@media (max-width: 767px) { .work-grid .card { grid-column: 1 / -1; } }
-
 /* ── Case study ── */
 .spec { padding-block: calc(6 * var(--u)) calc(10 * var(--u)); row-gap: 16px; }
 .spec > div { grid-column: span 3; border-top: 1px solid var(--rule); padding-top: 10px; display: grid; gap: 8px; align-content: start; }
@@ -450,15 +427,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
   .b-inset .media { width: 88%; } .b-inset.tall .media, .case-cover.tall .media { width: 72%; }
   .next-head { flex-direction: column; align-items: start; }
 }
-
-/* ── /ads ── */
-.ad-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; padding-top: calc(10 * var(--u)); }
-.m-item { display: block; }
-.m-item:hover .media.in > img { transform: scale(1.025); transition: transform 900ms var(--ease); }
-.strip { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin: calc(14 * var(--u)) 0 calc(14 * var(--u)); padding: calc(8 * var(--u)) var(--g) calc(6 * var(--u)); background: var(--ember); color: var(--ink) !important; transition: background-color var(--t-fast), color var(--t-fast); }
-.strip:hover { background: var(--ink); color: var(--ground) !important; }
-.strip-cta { font: 700 calc(16 * var(--u))/0.94 var(--f-disp); letter-spacing: -0.035em; }
-@media (max-width: 767px) { .ad-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .strip { flex-direction: column; align-items: start; } .strip-cta { font-size: 13vw; } }
 
 /* ── Viewer ── */
 .viewer { position: fixed; inset: 0; z-index: 70; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background-color: var(--ground); color: var(--ink); }
@@ -597,15 +565,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
   .js .tl-rows[data-in] .tl-node::before, .js .tl-rows[data-in] .tl-node::after, .js .tl-rows[data-in] .tl-row > * { transform: none; scale: 1; opacity: 1; translate: none; }
 }
 
-/* ── Ads: hung, not tiled. Three columns of pieces at their own proportions, so nothing is cropped to fit a cell ── */
-.gal { column-count: 3; column-gap: 12px; padding-top: calc(10 * var(--u)); padding-bottom: calc(10 * var(--u)); }
-.gal-item { display: grid; gap: 10px; break-inside: avoid; margin-bottom: 36px; }
-.gal-cap { display: flex; justify-content: space-between; font: 700 14px/1 var(--f-bar); letter-spacing: -0.015em; transition: color var(--t-fast); }
-.gal-item .media > img { transition: transform 900ms var(--ease); }
-.gal-item:hover .media.in > img { transform: scale(1.03); }
-.gal-item:hover .gal-cap span:first-child { color: var(--ember); }
-@media (max-width: 767px) { .gal { column-count: 2; column-gap: 10px; } .gal-item { margin-bottom: 24px; } }
-
 /* ── Home: selected work, an index that alternates sides ── */
 .idx-row { padding-block: calc(12 * var(--u)); align-items: end; row-gap: 18px; }
 .idx-row + .idx-row { border-top: 1px solid var(--rule); }
@@ -625,7 +584,7 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 @media (max-width: 767px) {
   .idx-row .idx-media, .idx-row .idx-text, .idx-row.flip .idx-media, .idx-row.flip .idx-text, .idx-row.tall .idx-media, .idx-row.tall .idx-text, .idx-row.tall.flip .idx-media, .idx-row.tall.flip .idx-text { grid-column: 1 / -1; grid-row: auto; }
 }
-@media (hover: none) { .idx-row:hover .idx-name, .gal-item:hover .gal-cap span:first-child { color: inherit; } }
+@media (hover: none) { .idx-row:hover .idx-name { color: inherit; } }
 
 /* ── Home: Fracture's key art, one big scrubbed frame in the ink room ── */
 .room-one { padding-top: calc(10 * var(--u)); }
@@ -642,39 +601,7 @@ html[data-room="hall"]:has(.ds) { background: #17120e; }
 html[data-room="hall"] .ds { --bg: #17120e; --fg: #e6e5e1; --dim: rgb(230 229 225 / 0.6); --rule: rgb(181 131 63 / 0.35); --tile: #221b16; }
 html[data-room="hall"] .bar.ink { color: var(--ink); }
 html[data-room="hall"] .bar.ink::before { background: var(--ground); }
-.gal-item .media, .gal-lead .media { outline: 1px solid rgb(181 131 63 / 0); outline-offset: 5px; transition: outline-color 600ms var(--ease-io); }
-html[data-room="hall"] .gal-item .media, html[data-room="hall"] .gal-lead .media { outline-color: rgb(181 131 63 / 0.55); }
-html[data-room="hall"] .gal-item:hover .media, html[data-room="hall"] .gal-lead:hover .media { outline-color: var(--ember); }
 .ads-home { padding-bottom: calc(10 * var(--u)); }
-
-/* ── Gallery rooms: one piece hung large and alone, its name beside it, then the hang ── */
-.gal-room { padding-top: calc(10 * var(--u)); }
-.gal-room + .gal-room { border-top: 1px solid var(--rule); margin-top: calc(4 * var(--u)); }
-.gal-room .gal { padding-top: calc(10 * var(--u)); padding-bottom: 0; }
-.gal-feat { display: flex; align-items: stretch; gap: 12px; }
-.gal-side { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: calc(8 * var(--u)); padding-left: calc(4 * var(--u)); }
-.gal-feat.flip .gal-side { padding: 0 calc(4 * var(--u)) 0 0; }
-.gal-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: end; text-align: left; }
-.gal-pair .gal-item { margin-bottom: 0; }
-.gal-feat.flip { flex-direction: row-reverse; text-align: right; }
-.gal-lead { flex: none; display: block; width: min(56%, calc(84vh * var(--r))); }
-.gal-lead .media > img { transition: transform 900ms var(--ease); }
-.gal-lead:hover .media.in > img { transform: scale(1.03); }
-.gal-feat-cap { display: grid; gap: 14px; padding-top: 2px; font: 600 max(15px, calc(4 * var(--u)))/1.2 var(--f-sans); }
-.gal-feat-co { font: 700 max(40px, calc(16 * var(--u)))/0.86 var(--f-disp); letter-spacing: -0.05em; transition: color var(--t-fast); }
-.gal-feat-cap:hover .gal-feat-co { color: var(--ember); }
-.gal-cap { font: 700 14px/1 var(--f-bar); letter-spacing: -0.015em; transition: color var(--t-fast); }
-.gal-item:hover .gal-cap { color: var(--ember); }
-.ads .tab { padding-top: calc(16 * var(--u)); }
-@media (max-width: 767px) {
-  .gal-feat, .gal-feat.flip { flex-direction: column; align-items: stretch; text-align: left; gap: 14px; }
-  .gal-lead { width: 100%; }
-  .gal-side { padding: 0; gap: 24px; }
-  .gal-feat.flip .gal-side { padding: 0; }
-  .gal-pair { gap: 10px; }
-  .ads .tab { padding-top: 64px; }
-}
-@media (hover: none) { .gal-item:hover .gal-cap, .gal-feat-cap:hover .gal-feat-co { color: inherit; } }
 
 /* The hero is one screen: the hall grows to meet the dock */
 @media (min-width: 768px) {
@@ -696,7 +623,6 @@ html[data-room="hall"] .gal-item:hover .media, html[data-room="hall"] .gal-lead:
 .ring-flat img { display: block; width: 100%; height: auto; }
 .ring-cap { font: 700 15px/1 var(--f-bar); letter-spacing: -0.02em; }
 .ring.live .ring-flat { opacity: 0; pointer-events: none; }
-.disclose { margin: 0; padding-block: 28px; font: 600 13px/1.4 var(--f-sans); color: var(--dim); }
 @media (max-width: 767px) {
   .hero-ring { flex: none; height: 104vw; min-height: 0; }
   .ring-flat { gap: 12px; }
@@ -709,10 +635,15 @@ html[data-room="hall"] .gal-item:hover .media, html[data-room="hall"] .gal-lead:
 .wm-w { flex: var(--w) 1 0; min-width: 0; height: auto; overflow: hidden; fill: currentColor; }
 .wm-g { transform-box: fill-box; animation: wm-rise 680ms var(--ease) both; }
 @keyframes wm-rise { from { transform: translateY(108%); } }
-.hall::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.06; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); }
-@media (max-width: 767px) {
-  .wm { flex-direction: column; gap: 0; margin-top: 22px; }
-  .wm-w { flex: none; width: calc(var(--r) * 100%); }
-  .wm-w + .wm-w { margin-top: -5.2vw; }
+/* ── The hang (/work and the home gallery): justified rows, each piece at its own proportions ── */
+.hang { --gap: 16px; display: flex; flex-wrap: wrap; align-items: flex-start; column-gap: var(--gap); row-gap: 34px; .rh { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 40px; padding-bottom: calc(6 * var(--u)); }
+.rh-t { font: 700 max(48px, calc(30 * var(--u)))/0.84 var(--f-disp); letter-spacing: -0.05em; }
+.rh-side { display: grid; gap: 14px; justify-items: end; max-width: 30em; padding-bottom: 4px; text-align: right; }
+.rh-n { font: 600 max(16px, calc(4.6 * var(--u)))/1.25 var(--f-sans); letter-spacing: -0.01em; text-wrap: balance; }
+.rh-m { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 18px; font: 700 15px/1 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
+.rh-case { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px; background: var(--fg); color: var(--bg) !important; transition: background-color var(--t-fast), color var(--t-fast), transform var(--t-press) var(--ease); }
+.rh-case .arr { display: inline-block; transition: transform var(--t-base) var(--ease); }
+.rh-case:hover { background: var(--ember); color: var(--ink) !important; }
+.rh-case:hover .arr { transform: translate(2px, -2px); }
+.rh-case:active { transform: scale(0.97); }
 }
-@media (prefers-reduced-motion: reduce) { .wm-g { animation: none; } }

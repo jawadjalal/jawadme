@@ -1,37 +1,61 @@
-import Link from "next/link";
+import type { CSSProperties } from "react";
 import { Media } from "@/components/ds/Media";
+import { TLink } from "@/components/ds/TLink";
 import type { Ad } from "@/content/ads";
+import { adEntry, type Entry } from "@/lib/gallery";
 
-/** The ads as rooms of a gallery. Each room opens on one piece hung large, its name beside it at display size and
- *  two smaller pieces standing on the same floor; the rest of the room hangs in three columns at their own
- *  proportions, nothing cropped to fit a cell. The large piece swaps sides from room to room. */
-export function AdGallery({ ads }: { ads: Ad[] }) {
-  const rooms: Ad[][] = [];
-  for (let i = 0; i < ads.length; i += 9) rooms.push(ads.slice(i, i + 9));
-  const piece = (a: Ad, i: number, sizes: string) => (
-    <Link key={a.id} href={"/w/" + a.id} className="gal-item" data-cursor="view">
-      <Media m={{ src: a.src, w: a.w, h: a.h, alt: a.alt }} sizes={sizes} delay={(i % 3) * 70} />
-      <span className="gal-cap">{a.campaign}</span>
-    </Link>
-  );
+/** Pieces hung salon style: rows that run edge to edge, each piece at its own proportions and every piece in a row the
+ *  same height, so nothing is cropped, no tile is left empty and the last row closes flush. The rhythm comes from the
+ *  target height of each row, as a share of the width: one large opening row, then denser runs. A wide screen and a
+ *  phone get their own hang, both worked out here; the stylesheet picks one, so the markup is one list of links. */
+
+type Slot = { w: number; n: number };
+
+function hang(aspects: number[], first: number, cycle: number[]): Slot[] {
+  const out: Slot[] = [];
+  const target = (r: number) => (r === 0 ? first : cycle[(r - 1) % cycle.length]);
+  let i = 0;
+  for (let r = 0; i < aspects.length; r++) {
+    const t = target(r);
+    let k = i;
+    let sum = 0;
+    while (k < aspects.length && sum + aspects[k] <= 1 / t) sum += aspects[k++];
+    if (k < aspects.length && (k === i || Math.abs(1 / (sum + aspects[k]) - t) < Math.abs(1 / sum - t))) sum += aspects[k++];
+    const rest = aspects.slice(k).reduce((a, b) => a + b, 0);
+    if (k < aspects.length && rest < 0.6 / target(r + 1)) {
+      sum += rest;
+      k = aspects.length;
+    }
+    for (let j = i; j < k; j++) out.push({ w: aspects[j] / sum, n: k - i - 1 });
+    i = k;
+  }
+  return out;
+}
+
+const vars = (d: Slot, m: Slot) => ({ "--dw": d.w, "--dn": d.n, "--mw": m.w, "--mn": m.n }) as CSSProperties;
+
+/** One hang. `lead` loads the opening row first, for the top of a page. */
+export function Hang({ entries, first = 0.5, cycle = [0.4, 0.3], lead = false }: { entries: Entry[]; first?: number; cycle?: number[]; lead?: boolean }) {
+  const aspects = entries.map((e) => e.media.w / e.media.h);
+  const wide = hang(aspects, first, cycle);
+  const phone = hang(aspects, 1.2, [0.62, 0.62, 1.2]);
+  const opening = wide[0].n + 1;
   return (
-    <div className="gal-rooms">
-      {rooms.map(([lead, ...rest], k) => (
-        <div key={lead.id} className="wrap gal-room">
-          <div className={"gal-feat" + (k % 2 ? " flip" : "")} style={{ "--r": lead.w / lead.h } as React.CSSProperties}>
-            <Link href={"/w/" + lead.id} className="gal-lead" data-cursor="view">
-              <Media m={{ src: lead.src, w: lead.w, h: lead.h, alt: lead.alt }} sizes="(min-width: 768px) 50vw, 100vw" />
-            </Link>
-            <div className="gal-side">
-              <Link href={"/w/" + lead.id} className="gal-feat-cap">
-                <span className="gal-feat-co">{lead.campaign}</span>
-              </Link>
-              {rest.length ? <div className="gal-pair">{rest.slice(0, 2).map((a, i) => piece(a, i, "(min-width: 768px) 22vw, 50vw"))}</div> : null}
-            </div>
-          </div>
-          {rest.length > 2 ? <div className="gal">{rest.slice(2).map((a, i) => piece(a, i, "(min-width: 768px) 33vw, 50vw"))}</div> : null}
-        </div>
+    <div className="wrap hang">
+      {entries.map((e, i) => (
+        <TLink key={e.key} id={e.key} href={e.href} vt={e.href.startsWith("/w/") ? "piece" : "cover-" + e.href.split("/").pop()} className="hang-i" data-cursor="view" style={vars(wide[i], phone[i])}>
+          <Media m={e.media} sizes={`(min-width: 768px) ${Math.ceil(wide[i].w * 100)}vw, ${Math.ceil(phone[i].w * 100)}vw`} priority={lead && i < opening} delay={(i % 4) * 70} />
+          <span className="hang-cap">
+            <span className="hang-co">{e.title}</span>
+            <span className="hang-hl">{e.line}</span>
+          </span>
+        </TLink>
       ))}
     </div>
   );
+}
+
+/** The ads on the home page: one hang, linking through to the viewer. */
+export function AdGallery({ ads }: { ads: Ad[] }) {
+  return <Hang entries={ads.map(adEntry)} first={0.56} />;
 }
