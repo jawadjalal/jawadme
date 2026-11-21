@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
 import { Hang } from "@/components/ds/AdGallery";
 import { Footer } from "@/components/ds/Footer";
+import { WorkMoment } from "@/components/moments/work";
 import { ADS } from "@/content/ads";
 import { REAL } from "@/content/work";
 import { GALLERY, ROOMS, roomByKey, type Room } from "@/lib/gallery";
@@ -42,14 +43,14 @@ const SAY = {
     { t: "Two 8-figure startups.", s: "Past roles at MenuFit, at 7-figure MRR, and Okara." },
   ],
   web: { t: "Sites, designed and built.", s: "For his studio, his 3D team and his clients." },
-  "3d": { t: "3D art for Blade Ball and Fish It,", tail: "two of Roblox's biggest games (over 11 billion visits between them)" },
+  "3d": { t: "3D art for Blade Ball and Fish It,", tail: "two of Roblox's biggest games (over 11 billion visits between them)", moment: true },
 };
 
-type Say = { t: string; tail?: string; s?: string };
+type Say = { t: string; tail?: string; s?: string; moment?: boolean };
 
 function Break({ say, n }: { say: Say; n: number }) {
-  return (
-    <aside className="wrap brk" aria-label={say.t + (say.tail ? " " + say.tail : "")}>
+  const copy = (
+    <>
       <p className="brk-t">
         {say.t}
         {say.tail ? <span className="brk-tail"> {say.tail}</span> : null}
@@ -60,6 +61,18 @@ function Break({ say, n }: { say: Say; n: number }) {
           Book a call <span className="arr">↗</span>
         </BookLink>
       </div>
+    </>
+  );
+  return (
+    <aside className={"wrap brk" + (say.moment ? " brk-m" : "")} aria-label={say.t + (say.tail ? " " + say.tail : "")}>
+      {say.moment ? (
+        <>
+          <div className="brk-copy">{copy}</div>
+          <WorkMoment />
+        </>
+      ) : (
+        copy
+      )}
     </aside>
   );
 }

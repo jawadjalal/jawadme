@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { preload } from "react-dom";
 import { BookLink } from "@/components/BookLink";
+import { ViewerMoment } from "@/components/moments/viewer";
 
 type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; spec: boolean };
 type Near = { id: string; src: string; w: number; h: number };
@@ -60,9 +61,9 @@ export function Viewer({ piece, at }: { piece: Piece; at: At }) {
         {at ? <span>{at.n} / {at.of}</span> : null}
       </header>
       <div className="v-main">
-        <div className="v-stage">
+        <ViewerMoment>
           <Image key={piece.id} src={piece.src} width={piece.w} height={piece.h} alt={piece.alt} priority sizes={SIZES} quality={90} style={{ viewTransitionName: "piece" }} />
-        </div>
+        </ViewerMoment>
         <div className="v-info">
           <h1 className="v-title">{piece.line}</h1>
           <p>{`${piece.group}, ${piece.credit}.`}</p>

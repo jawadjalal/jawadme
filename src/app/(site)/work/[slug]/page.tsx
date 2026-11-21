@@ -4,6 +4,7 @@ import { Footer } from "@/components/ds/Footer";
 import { Media } from "@/components/ds/Media";
 import { TLink } from "@/components/ds/TLink";
 import { TitleTab } from "@/components/ds/TitleTab";
+import { CaseMoment } from "@/components/moments/case";
 import { JsonLd, abs, caseWork, meta } from "@/lib/seo";
 import { REAL, laneLabel, nextOf, projectBySlug, type Block, type Media as M } from "@/content/work";
 
@@ -71,11 +72,11 @@ export default async function Case({ params }: Props) {
       >
         {p.name}
       </TitleTab>
-      <div className={"wrap case-cover " + (tall ? "tall hatch" : "")}>
-        <div className="case-cover-in" style={tall ? undefined : { maxWidth: p.cover.w }}>
-          <Media m={p.cover} vt={"cover-" + p.slug} priority sizes={tall ? "40vw" : "(min-width: " + p.cover.w + "px) " + p.cover.w + "px, 100vw"} />
+      <CaseMoment lane={p.lane} tall={tall}>
+        <div className="case-cover-in">
+          <Media m={p.cover} vt={"cover-" + p.slug} priority sizes={tall ? "(min-width: 768px) 30vw, 72vw" : "(min-width: 768px) 58vw, 72vw"} />
         </div>
-      </div>
+      </CaseMoment>
       <div className="g16 case-lines">
         {p.lines.map((l) => (
           <p key={l} className="t-line" data-lines="">

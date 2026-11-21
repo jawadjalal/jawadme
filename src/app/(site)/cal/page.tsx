@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CalInline } from "@/components/ds/CalInline";
+import { CalMoment } from "@/components/moments/cal";
 import { SITE } from "@/content/site";
 import { meta } from "@/lib/seo";
 
@@ -33,8 +34,11 @@ export default async function Cal({ searchParams }: Props) {
           Open on Cal.com ↗
         </a>
       </p>
-      <div className="cal-embed">
-        <CalInline email={SITE.email} theme="light" />
+      <div className="cal-row">
+        <div className="cal-embed">
+          <CalInline email={SITE.email} theme="light" />
+        </div>
+        <CalMoment />
       </div>
     </main>
   );

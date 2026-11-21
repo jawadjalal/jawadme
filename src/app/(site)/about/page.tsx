@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/ds/Footer";
 import { Media } from "@/components/ds/Media";
 import { Timeline } from "@/components/ds/Timeline";
+import { AboutMoment } from "@/components/moments/about";
 import { TitleTab } from "@/components/ds/TitleTab";
 import { SITE } from "@/content/site";
 import { FAQ } from "@/lib/facts";
@@ -32,6 +33,7 @@ export default function About() {
         </div>
         <p className="t-line ab-line">{ENTITY}</p>
       </section>
+      <AboutMoment />
       <Timeline />
       <section className="faq" aria-labelledby="faq-h">
         <TitleTab id="faq-h" tag="The short answers">

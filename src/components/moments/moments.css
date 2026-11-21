@@ -1,0 +1,34 @@
+/* Route moments (./Moment on the world kit's Stage): flat world ink behind every set, the page's own HTML over it. */
+.mo { background: #100b09; }
+.mo > :not(.stage-poster):not(.stage-gl) { position: relative; z-index: 1; }
+
+.mo-brk { width: 100%; aspect-ratio: 16 / 10; }
+
+.mo-case { display: grid; place-items: center; aspect-ratio: 16 / 8.4; margin: 12px var(--g, 16px) calc(14 * var(--u, 3px)); }
+.mo-case .case-cover-in { width: min(58%, 1040px); }
+.mo-case.tall .case-cover-in { width: min(30%, 440px); }
+.mo-case .media { box-shadow: 0 30px 80px rgb(0 0 0 / 0.55); }
+
+.mo-view { background: #100b09; }
+.mo-view .stage-poster, .mo-view .stage-gl { opacity: 0.55; }
+.mo-view[data-live] .stage-gl { opacity: 0.55; }
+.mo-view > img { padding: 4%; }
+
+.mo-cal { width: 100%; aspect-ratio: 4 / 5; position: sticky; top: 24px; }
+
+.mo-about { aspect-ratio: 16 / 7; margin: calc(14 * var(--u, 3px)) var(--g, 16px) 0; }
+
+.mo-shaft { width: 100%; aspect-ratio: 16 / 5.6; }
+
+.mo-lost { min-height: calc(100svh - 76px); display: grid; align-content: end; padding: 28px var(--g, 16px) 40px; color: #f1e6d2; }
+
+.mo-blog { width: 100%; aspect-ratio: 16 / 6; }
+
+@media (max-width: 767px) {
+  .mo-case { aspect-ratio: 4 / 5; }
+  .mo-case .case-cover-in, .mo-case.tall .case-cover-in { width: 72%; }
+  .mo-about { aspect-ratio: 4 / 3.4; }
+  .mo-shaft { aspect-ratio: 4 / 3; }
+  .mo-blog { aspect-ratio: 4 / 3; }
+  .mo-brk { aspect-ratio: 4 / 3.6; }
+}
