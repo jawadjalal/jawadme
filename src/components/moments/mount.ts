@@ -5,9 +5,10 @@ import type { Mount } from "@/components/world/kit/Stage";
 import { SETS, type SetName } from "./sets";
 
 // One route moment on the world kit: a set from ./sets on its own floating platform, lit by its fires, on flat ink,
-// with the kit's outline and bloom. The camera holds the set's shot and sways a little with the pointer. With ?bare
-// (posters.mjs) the braziers' flames are left out of the frame and their places written to data-marks, so the poster
-// carries them as the world's CSS flipbook (./Moment) the way the home posters do.
+// with the kit's outline and bloom. The camera holds the set's shot and sways a little with the pointer. The braziers'
+// flames are the world's CSS flipbook (kit/flames.css), the same flames the posters carry: live, they stand over the
+// canvas where each fire projects this frame; with ?bare (posters.mjs) they are left out and their places written to
+// data-marks, where ./Moment lays them over the poster.
 
 export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetName) {
   const S = shared();
@@ -34,10 +35,19 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
 
   const F = fx(scene, S, b);
   const n = (k: number) => Math.round(k * (ctx.small ? 0.6 : 1));
-  const warm = set.fires.filter((f) => !f.soul && !f.lamp), cold = set.fires.filter((f) => f.soul && !f.lamp);
-  if (!ctx.bare) {
-    F.flames(warm, false, n(22));
-    F.flames(cold, true, n(22));
+  const warm = set.fires.filter((f) => !f.soul && !f.lamp);
+  const flames = warm.map((f) => ({ p: f.p, h: f.big ? 2.5 : 2.1 }));
+  const flip = ctx.bare ? null : document.createElement("span");
+  if (flip) {
+    flip.className = "pf pf-play mo-flip";
+    flip.setAttribute("aria-hidden", "true");
+    flames.forEach((_, i) => {
+      const el = document.createElement("i");
+      el.style.setProperty("--d", ((i * 0.37) % 1.6).toFixed(2));
+      el.append(document.createElement("b"));
+      flip.append(el);
+    });
+    host.append(flip);
   }
   F.halos(warm, ACCENT.glow);
   F.drift(n(110), [set.shot.w, 16, set.shot.w], 0.11, 1.1, ACCENT.glow, 1.4, 0);
@@ -58,6 +68,7 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
   const cur = set.shot.t.clone();
   const want = new THREE.Vector3();
   let shown = false;
+  let at = "";
   function frame(dt: number) {
     S.time.value += dt;
     if (!ctx.still) {
@@ -75,14 +86,27 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
     set.update?.(dt, S.time.value);
     v.renderer.shadowMap.needsUpdate = true;
     P.render(scene, camera, vh);
+    if (flip) {
+      const now = flames.map((f) => marks(camera, [f])[0]);
+      const key = JSON.stringify(now);
+      if (key !== at) {
+        at = key;
+        now.forEach((m, i) => {
+          const s = (flip.children[i] as HTMLElement).style;
+          s.display = m ? "" : "none";
+          if (m) ["--x", "--y", "--h"].forEach((k, j) => s.setProperty(k, String(m[j])));
+        });
+      }
+    }
     if (!shown) {
       shown = true;
-      if (ctx.bare) host.dataset.marks = JSON.stringify(marks(camera, [...warm, ...cold].map((f) => ({ p: f.p, h: f.big ? 2.5 : 2.1 }))));
+      if (ctx.bare) host.dataset.marks = JSON.stringify(marks(camera, flames));
       ctx.ready();
     }
   }
 
   return () => {
+    flip?.remove();
     v.stop();
     removeEventListener("pointermove", move);
     drop(b);

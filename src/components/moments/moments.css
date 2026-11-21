@@ -10,6 +10,8 @@
 /* the poster's flames stay until the live scene has drawn (the kit hides them as soon as a stage decides to go live) */
 .mo.stage[data-mode="live"]:not([data-live]) .pf { display: block; }
 .mo-poster .pf { animation: mo-in 600ms ease-out both; }
+/* live, the scene stands the same flipbook over its canvas (./mount) */
+.mo.stage .stage-gl > .pf.mo-flip { display: block; z-index: 1; }
 .mo-poster .pf-still > i > b { width: 100%; height: 100%; background-image: url("/moments/flame-still.webp"); animation: none; }
 @keyframes mo-in { from { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .mo-poster .pf { animation: none; } }
