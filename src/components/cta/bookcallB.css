@@ -27,6 +27,7 @@
   user-select: none;
   touch-action: manipulation;
 }
+.ds .bcb { color: var(--ink); }
 .bcb[data-size="hero"] { font-size: min(24px, 5.6vw); }
 .bcb[data-size="hero"] .bcb-arrow { stroke-width: 2.6; }
 .bcb::before { content: ""; position: absolute; inset: -0.3em; }

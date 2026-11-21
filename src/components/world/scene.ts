@@ -117,7 +117,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
 
   // camera: the five shots (gate, hall in, hall out, theatre, landing), eased between, with a pull back mid-move
   const shots: Shot[] = [
-    { t: new THREE.Vector3(0, COURT.y + 3, 0).addScaledVector(UP, -9), h: 52, w: 70, floor: COURT.y },
+    { t: new THREE.Vector3(0, COURT.y + 3, 0).addScaledVector(UP, 2), h: 52, w: 70, floor: COURT.y },
     hall.shots[0],
     hall.shots[1],
     { t: THEATRE.c.clone().add(new THREE.Vector3(-1, 1.5, -1)), h: 56, w: 74, floor: THEATRE.c.y },

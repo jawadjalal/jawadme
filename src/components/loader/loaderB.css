@@ -1,0 +1,83 @@
+/* Loader B: dark ink, ember light, Arabic words that gather into the name. Font: Aref Ruqaa Bold (SIL OFL 1.1, aliftype),
+   subset to four words, calt/init/medi/fina kept so the joining and the ruqaa stacking stay correct. */
+@font-face {
+  font-family: "LoaderB Aref Ruqaa";
+  src: url("./aref-ruqaa-b.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+.lb, .lb[hidden] { display: none; }
+html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor: pointer; touch-action: none; overscroll-behavior: contain; }
+
+.lb-ground { position: absolute; inset: 0; background: #100b09; }
+.lb-cv, .lb-grain { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+
+.lb-seed {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: var(--accent-hi, #ffb060);
+  box-shadow: 0 0 16px 5px color-mix(in srgb, var(--accent, #ff5314) 70%, transparent);
+  animation: lb-seed 1100ms ease-in-out both;
+}
+@keyframes lb-seed {
+  0% { opacity: 0; transform: scale(0.4); }
+  35% { opacity: 1; transform: scale(1); }
+  60% { opacity: 0.55; transform: scale(1.5); }
+  100% { opacity: 0; transform: translateY(-40px) scale(0.6); }
+}
+
+.lb-mark { position: absolute; left: 0; top: 0; transform-origin: 0 0; opacity: 0; pointer-events: none; }
+.lb-mark .wm-g { animation: none; }
+
+.lb-cta {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2;
+  height: 58px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 22px 0 24px;
+  border-radius: 3px;
+  background: var(--accent, #ff5314);
+  color: #0b0b0b;
+  font: 700 17px/1 var(--f-bar, system-ui, sans-serif);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  cursor: pointer;
+}
+.lb-cta small { font-weight: 600; font-size: 13px; letter-spacing: -0.01em; opacity: 0.72; }
+.lb-cta:hover { background: #f4ead8; }
+.lb-cta:active { scale: 0.97; }
+
+.lb-hint {
+  position: absolute;
+  left: 16px;
+  bottom: 22px;
+  font: 600 12px/1 var(--f-bar, system-ui, sans-serif);
+  letter-spacing: 0.02em;
+  color: #f4ead8;
+  opacity: 0;
+  animation: lb-hint 400ms 500ms forwards;
+  pointer-events: none;
+}
+@keyframes lb-hint { to { opacity: 0.42; } }
+
+@media (max-width: 767px) {
+  .lb-cta { right: 10px; bottom: 10px; height: 56px; }
+  .lb-cta small { display: none; }
+  .lb-hint { left: 12px; bottom: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-seed, .lb-hint { display: none; }
+}
