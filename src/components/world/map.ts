@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { AMPHORA, BRAZIER, Batch, M, box, column, lathe, rock, stone, type Palette } from "./kit";
+import { AMPHORA, BRAZIER, Batch, DV, M, Q, box, column, lathe, rock, stone, type Fire, type Palette } from "./kit";
 
 // The map: four chambers on one diorama, seen from the south-east, stepping down toward the viewer. The gate court
 // (top, y 6) under a broken pediment; a stair to the long hall of ads (y 0) that runs east along its back wall; a
@@ -8,12 +8,8 @@ import { AMPHORA, BRAZIER, Batch, M, box, column, lathe, rock, stone, type Palet
 // hall's ads are built by ./hall, the moving things (fire, river, souls) by ./scene.
 
 export type Mats = Palette & Record<"court" | "hall" | "orch" | "land", THREE.Material>;
-export type Fire = { p: THREE.Vector3; r: number; soul: boolean; big: boolean; lamp?: boolean };
 export type Glow = { m: THREE.Matrix4; w: number; h: number; soul: boolean };
 
-export const RV = new THREE.Vector3(1, 0, -1).normalize();
-export const DV = new THREE.Vector3(1, 0, 1).normalize();
-export const Q = Math.PI / 4;
 
 export const COURT = { y: 6, x0: -16, z0: -16, x1: 16, z1: 16 };
 export const HALL = { y: 0, x0: 22, z0: -16, x1: 186, z1: 0 };

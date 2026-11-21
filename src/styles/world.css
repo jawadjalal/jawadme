@@ -12,6 +12,7 @@
 .world-gl canvas { display: block; width: 100%; height: 100%; }
 .world-stage.live .world-gl { opacity: 1; }
 .world-stage.live .world-poster { transition-delay: 1200ms; opacity: 0; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .world-flow { position: relative; z-index: 1; pointer-events: none; }
 .world-flow a, .world-flow button, .world-flow .w-ads { pointer-events: auto; }
 .ds:has(.hero.world) .dock[data-hide="true"] { transform: none; }
@@ -64,7 +65,7 @@
 /* the theatre */
 .stmt { display: grid; place-items: center; min-height: 140svh; padding: 18svh var(--g); }
 .stmt-p { max-width: 14.5em; margin: 0 auto; text-align: center; font: 700 clamp(38px, 6vw, 108px)/0.98 var(--f-disp); letter-spacing: -0.045em; text-wrap: balance; color: #f7efe4; }
-.st-t { opacity: clamp(0.2, calc(var(--p, 0) * var(--n) - var(--i)), 1); transition: opacity 240ms linear; }
+.st-t { opacity: clamp(0.46, calc(var(--p, 0) * var(--n) - var(--i)), 1); transition: opacity 240ms linear; }
 .st-nb { white-space: nowrap; }
 .st-chip { display: inline-block; width: 1.72em; height: 1.04em; margin: 0 0.06em; overflow: hidden; border-radius: 0.08em; vertical-align: -0.14em; background: #241b15; }
 .st-chip img { display: block; width: 100%; height: 100%; object-fit: cover; }

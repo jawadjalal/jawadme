@@ -17,6 +17,7 @@ export function Footer({ src }: { src: string }) {
               {s.label}
             </a>
           ))}
+          <a href="/about">About</a>
           <a href="/blog">Blog</a>
           <a href={SITE.cv}>CV</a>
           <a href={"mailto:" + SITE.email}>{SITE.email}</a>

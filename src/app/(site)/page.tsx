@@ -25,7 +25,7 @@ export default function Home() {
       <Timeline />
 
       <section className="ads-home" data-room="hall" aria-labelledby="ads-h">
-        <TitleTab id="ads-h" tag={ADS.length + " ads"} side={<Link href="/ads">All ads ↗</Link>}>
+        <TitleTab id="ads-h" tag={ADS.length + " ads"} side={<Link href="/work">All work ↗</Link>}>
           Ads
         </TitleTab>
         <AdGallery ads={GALLERY} />

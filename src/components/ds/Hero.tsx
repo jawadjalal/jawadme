@@ -30,7 +30,8 @@ export function Hero() {
         <div className="w-gate" data-world-stop="gate">
           <div className="hero-top">
             <div className="w-say">
-              <p className="hero-say" aria-label={SUB}>
+              <p className="hero-say">
+                <span className="vh">{SUB}</span>
                 {SUB.split(" ").map((w, i) => (
                   <span key={i}>
                     <span className="hero-sw" aria-hidden="true">
