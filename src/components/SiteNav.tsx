@@ -32,7 +32,7 @@ export function SiteNav({ groups, home = true }: { groups?: NavGroup[]; home?: b
               <NavMenu groups={groups} />
             </nav>
           ) : (
-            <Link href="/blog" className="nv-link">
+            <Link href="/blog" className="nv-link max-sm:hidden">
               Blog
             </Link>
           )}
