@@ -62,7 +62,7 @@ export function Sound() {
         <i />
         <i />
       </span>
-      {on ? "The river is playing" : "Hear the river"}
+      {on ? "the river is playing" : "hear the river"}
     </button>
   );
 }

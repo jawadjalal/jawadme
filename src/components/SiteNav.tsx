@@ -7,6 +7,7 @@
 // the blog passes none and gets a single link back.
 
 import Link from "next/link";
+import { BookLink } from "./BookLink";
 import { Face } from "./Obj";
 import { NavEmail } from "./NavEmail";
 import { NavMenu, type NavGroup } from "./NavMenu";
@@ -31,12 +32,15 @@ export function SiteNav({ groups, home = true }: { groups?: NavGroup[]; home?: b
               <NavMenu groups={groups} />
             </nav>
           ) : (
-            <Link href="/blog" className="nv-link">
+            <Link href="/blog" className="nv-link max-sm:hidden">
               Blog
             </Link>
           )}
           <Theme />
           <NavEmail />
+          <BookLink src={home ? "nav" : "blog-nav"} className="key key-ink h-9 px-3 text-[14px]">
+            Book a call
+          </BookLink>
         </div>
       </div>
     </header>

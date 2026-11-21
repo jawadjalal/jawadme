@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import { buildHall, type Shot, type Slot } from "./hall";
-import { buildTitle } from "./title";
 import { Batch, DV, EMBER, INK, NL, NOISE, PITCH, Q, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, setMap, shared, view, type Fire } from "./kit";
 import { COURT, HALL, LAND, SIGN, THEATRE, buildMap, type Mats } from "./map";
 
@@ -31,9 +30,8 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   const B = new Batch();
   const world = buildMap(B, m);
   const hall = buildHall({ B, m, scene, geos: b.geos, mats: b.mats, time: S.time, n: o.ads.length, pitch: PITCH });
-  const title = buildTitle({ B, m, gilt: mk("#e2b56c", { k: "stone", rim: 1.8 }, { emissive: "#5c3612", emissiveIntensity: 0.5 }), scene, geos: b.geos, at: new THREE.Vector3(2.1, COURT.y, 2.1) });
   B.build(scene, b.geos);
-  const fires: Fire[] = [...world.fires, ...hall.fires, ...title.fires];
+  const fires: Fire[] = [...world.fires, ...hall.fires];
   const door = world.door;
 
   // light: a cool sky and warm ground for the shadows, one warm key that casts, and the fires (in the shader)
@@ -255,7 +253,6 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     F.u.ppu.value = (H * dpr) / vh;
     F.u.center.value.copy(cur);
     lightFires(S, fires, cur, lit);
-    title.rise(o.still ? 99 : ign.value);
 
     if (ptr.moved && ptr.cx >= 0) {
       ptr.moved = false;

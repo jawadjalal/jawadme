@@ -121,11 +121,11 @@ function zoomPath(a: [number, number, number], b: [number, number, number], rho:
 }
 
 // ── pictures ──────────────────────────────────────────────────────────────
-// Level 0 and 1 are 256 and 640 wide copies from the image optimizer, 2 is the site's web preview (about 1200 on the
-// long side), 3 is the original file. A piece asks for the smallest level that is sharp at its size on screen.
+// Levels 0, 1 and 2 are 128, 256 and 640 wide copies from the image optimizer, 3 is the site's web preview (about 1200
+// on the long side), 4 is the original file. A piece asks for the smallest level that is sharp at its size on screen.
 type Tex = { img: HTMLImageElement | null; state: 0 | 1 | 2 | 3; used: number; at?: number };
 const ST = { none: 0, loading: 1, ready: 2, failed: 3 } as const;
-const BUDGET = [Infinity, 160, 48, 6];
+const BUDGET = [Infinity, 240, 160, 48, 6];
 
 class Pictures {
   tex: Tex[][];
@@ -139,24 +139,26 @@ class Pictures {
     private pieces: Piece[],
     onReady: () => void,
   ) {
-    this.tex = pieces.map(() => [0, 1, 2, 3].map(() => ({ img: null, state: ST.none, used: 0 }) as Tex));
+    this.tex = pieces.map(() => [0, 1, 2, 3, 4].map(() => ({ img: null, state: ST.none, used: 0 }) as Tex));
     this.onReady = onReady;
   }
   url(i: number, l: number) {
     const a = this.pieces[i].a;
-    if (l === 0) return sized(a.preview, 256);
-    if (l === 1) return sized(a.preview, 640);
-    if (l === 2) return a.preview;
+    if (l === 0) return sized(a.preview, 128);
+    if (l === 1) return sized(a.preview, 256);
+    if (l === 2) return sized(a.preview, 640);
+    if (l === 3) return a.preview;
     return a.original;
   }
   /** The level a piece wants for `px` device pixels of width on screen. */
   want(i: number, px: number) {
     const a = this.pieces[i].a;
-    if (px <= 300) return 0;
-    if (px <= 720) return 1;
+    if (px <= 120) return 0;
+    if (px <= 300) return 1;
+    if (px <= 720) return 2;
     const pw = a.w * Math.min(1, 1200 / Math.max(a.w, a.h));
-    if (px <= pw * 1.3 || a.type !== "image") return 2;
-    return 3;
+    if (px <= pw * 1.3 || a.type !== "image") return 3;
+    return 4;
   }
   request(i: number, l: number, pri: number) {
     const t = this.tex[i][l];
@@ -191,7 +193,7 @@ class Pictures {
         .catch(() => {
           t.state = ST.failed;
           // no optimizer (a plain static host): the small levels fall back to the preview
-          if (l < 2) this.request(i, 2, 0);
+          if (l < 3) this.request(i, 3, 0);
         })
         .finally(() => {
           this.inflight--;
@@ -203,7 +205,7 @@ class Pictures {
   best(i: number, l: number, now: number): HTMLImageElement | null {
     const ts = this.tex[i];
     for (let k = l; k >= 0; k--) if (ts[k].state === ST.ready) return (ts[k].used = now), ts[k].img;
-    for (let k = l + 1; k < 4; k++) if (ts[k].state === ST.ready) return (ts[k].used = now), ts[k].img;
+    for (let k = l + 1; k < 5; k++) if (ts[k].state === ST.ready) return (ts[k].used = now), ts[k].img;
     return null;
   }
   /** 0 to 1: how far the first picture of a piece has popped in */
@@ -290,6 +292,8 @@ export class Engine {
   private miniDrag = false;
   /** prefers-reduced-motion: flights cut, no throw, no drift */
   calm = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /** phones skip the idle turn: redrawing every picture each frame costs a phone more than the motion gives back */
+  still = typeof matchMedia !== "undefined" && matchMedia("(max-width: 899px), (pointer: coarse)").matches;
   private off: (() => void)[] = [];
   private born = performance.now();
 
@@ -797,7 +801,7 @@ export class Engine {
     }
     // until anyone touches it, the globe turns slowly on its own
     // (for the first minute, so a page left open goes quiet)
-    if (!this.touched && !this.tour && !this.flight && this.manual === null && !this.calm && now - this.born < 60000) {
+    if (!this.touched && !this.tour && !this.flight && this.manual === null && !this.calm && !this.still && now - this.born < 60000) {
       const f = this.fitView(this.board);
       const a = (now / 52000) * Math.PI * 2;
       this.view = { x: f.x + Math.cos(a) * this.R * 0.3, y: f.y + Math.sin(a) * this.R * 0.18, z: f.z };

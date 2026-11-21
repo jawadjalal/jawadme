@@ -50,7 +50,7 @@ export function Still({ name, title, note, art = false, eager = false }: { name:
     <figure className="ml-still">
       <img
         src={"/derelictdepths/img/" + name + "-1280.jpg"}
-        srcSet={"/derelictdepths/img/" + name + "-640.jpg 640w, /derelictdepths/img/" + name + "-1280.jpg 1280w"}
+        srcSet={"/derelictdepths/img/" + name + "-640.jpg 640w, /derelictdepths/img/" + name + "-768.jpg 768w, /derelictdepths/img/" + name + "-1280.jpg 1280w"}
         sizes="(min-width: 760px) 520px, 100vw"
         width={1280}
         height={720}
@@ -73,7 +73,7 @@ export function Shot({ name, w, h, title, note, kind, eager = false }: { name: s
     <figure className="ml-shot">
       <img
         src={"/derelictdepths/img/" + name + "-1280.jpg"}
-        srcSet={"/derelictdepths/img/" + name + "-640.jpg 640w, /derelictdepths/img/" + name + "-1280.jpg 1280w"}
+        srcSet={"/derelictdepths/img/" + name + "-640.jpg 640w, /derelictdepths/img/" + name + "-768.jpg 768w, /derelictdepths/img/" + name + "-1280.jpg 1280w"}
         sizes="(min-width: 760px) 520px, 100vw"
         width={w}
         height={h}

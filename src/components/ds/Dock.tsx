@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { BookLink } from "@/components/BookLink";
+import { MailLink } from "@/components/MailLink";
 import { NAV, SITE } from "@/content/site";
 
 function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
@@ -25,6 +26,16 @@ function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
         );
         return list ? <li key={n.href}>{link}</li> : link;
       })}
+      {list ? (
+        <li>
+          <MailLink src="dock">Email</MailLink>
+        </li>
+      ) : (
+        <MailLink src="menu">
+          Email
+          <span className="lbl dim" aria-hidden="true">↗</span>
+        </MailLink>
+      )}
     </>
   );
 }
