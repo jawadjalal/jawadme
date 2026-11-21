@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { ACCENT as SITE_ACCENT } from "@/lib/accent";
 import type { Bag } from "./bag";
 
 // The world's materials. Every lit surface is a toon material with four things written into its shader: painted
@@ -10,8 +11,8 @@ import type { Bag } from "./bag";
 export const NL = 16;
 export const INK = new THREE.Color("#100b09");
 /** The world's light, one colour for every fire, flame, halo, spark and the warm side of the rim; stone and bronze keep
- *  their own colours. It is the site's accent: change it here and the whole world relights. */
-export const ACCENT = new THREE.Color("#ff5a1c");
+ *  their own colours. It is the site's accent (src/lib/accent.ts), so the world relights with the site. */
+export const ACCENT = new THREE.Color(SITE_ACCENT.accent);
 /** The second light: soul flames, the gate's glow and the cool side of the rim. */
 export const SOUL = new THREE.Color("#63e6ff");
 /** A colour's sRGB components, scaled by k. */
