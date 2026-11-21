@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import type { Bag } from "./bag";
-import type { Fire } from "./lights";
-import { GLOW, SOUL, glsl, type Shared } from "./paint";
+import { flames } from "./flame";
+import { flameOf, type Fire } from "./lights";
+import type { Shared } from "./paint";
 
-// The particle systems, all GPU points: flames over each fire, a halo around it, and drifting motes (embers, souls,
-// dust) in a box that follows the camera. `u.ign` is ignition time: a fire lights when ign passes its distance from
+// The particle systems, all GPU points: a halo around each fire and drifting motes (embers, souls, dust) in a box that
+// follows the camera; flames() puts the world's one flame (./flame) over each fire. `u.ign` is ignition time: a fire lights when ign passes its distance from
 // `u.door` / 26, with a flare (set it high to have everything lit). `u.center` and `u.ppu` (pixels per world unit) are
 // the stage's to update every frame.
 
@@ -32,27 +33,10 @@ export function fx(scene: THREE.Scene, S: Shared, b: Bag) {
   const IG = "clamp((uIgn - 0.15 - length(position - uDoor) / 26.0) / 0.45, 0.0, 1.0)";
   return {
     u,
-    /** Flames over each fire, `per` points apiece, green (GLOW) or soul-cyan. */
-    flames(list: Fire[], soul: boolean, per = 24) {
-      if (!list.length) return;
-      const [hot, cold] = soul ? [glsl(SOUL.clone().lerp(new THREE.Color(1, 1, 1), 0.6)), glsl(SOUL, 0.95)] : [glsl(new THREE.Color(GLOW.core).lerp(new THREE.Color(1, 1, 1), 0.45)), glsl(new THREE.Color(GLOW.emissive), 0.95)];
-      points(list.length * per, (i) => list[i % list.length].p.toArray() as [number, number, number], {}, `
-        void main() {
-          vS = aSeed;
-          float t = fract(uTime * (0.8 + aSeed.x * 0.6) + aSeed.y * 7.13);
-          float an = aSeed.z * 40.0, rd = (1.0 - t) * 0.55 * fract(aSeed.x * 13.7);
-          vec3 p = position + vec3(cos(an) * rd + sin(uTime * 3.0 + aSeed.y * 20.0) * 0.12 * t, t * 2.1, sin(an) * rd);
-          vT = t;
-          gl_PointSize = uPx * 0.62 * (1.0 - t * 0.7) * (0.7 + aSeed.z * 0.6) * ${IG};
-          gl_Position = projectionMatrix * viewMatrix * vec4(p, 1.0);
-        }`, `
-        void main() {
-          float d = length(gl_PointCoord - 0.5);
-          if (d > 0.5) discard;
-          float e = 1.0 - smoothstep(0.3, 0.5, d);
-          vec3 c = mix(${hot}, ${cold}, smoothstep(0.0, 0.7, vT));
-          gl_FragColor = vec4(c * e * (1.0 - vT) * 1.6, 1.0);
-        }`);
+    /** The world's flame (./flame) over each fire, on the stage's clock; it does not follow `u.ign`. Each fire's kind
+     *  comes from the fire itself, so `soul` and `per` are ignored; they stay until ../../moments calls ./flame directly. */
+    flames(list: Fire[], _soul?: boolean, _per?: number) {
+      if (list.length) flames(scene, list.map(flameOf), { lights: false, time: S.time, ppu: u.ppu, bag: b, gain: 1.4 });
     },
     /** A soft halo around each fire. */
     halos(list: Fire[], color: string) {

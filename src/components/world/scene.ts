@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { buildHall, type Shot, type Slot } from "./hall";
 import { ACCENT, Batch, GLOW, DV, INK, NL, NOISE, PITCH, Q, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, marks, painter, post, setMap, shared, view, type Fire } from "./kit";
+import { flames } from "./kit/flame";
+import { flameOf } from "./kit/lights";
 import { COURT, HALL, LAND, SIGN, THEATRE, buildMap, type Mats } from "./map";
 
 // The underworld under the home page, seen the way an isometric action game sees its rooms: the kit's orthographic
@@ -97,18 +99,16 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     if (gl.soul) gateGlows.push(mesh);
   }
 
-  // fire, souls and motes; the ignition wave starts from the gate
+  // fire, souls and motes; the ignition wave starts from the gate. Every fire but a lamp carries the kit's flame
+  // (./kit/flame), lit by the same wave; a bare poster leaves the flames to CSS and marks where they stand.
   const F = fx(scene, S, b);
   const ign = F.u.ign;
   ign.value = o.still ? (o.dim ? -99 : 99) : -0.5;
   F.u.door.value.copy(door);
   const warm = fires.filter((f) => !f.soul && !f.lamp), cold = fires.filter((f) => f.soul && !f.lamp);
-  const per = o.small ? 14 : 24;
+  const burning = fires.filter((f) => !f.lamp);
+  const FL = flames(scene, o.bare ? [] : burning.map(flameOf), { lights: false, time: S.time, ppu: F.u.ppu, bag: b, gain: 1.4 });
   const motes = o.small ? 0.5 : 1;
-  if (!o.bare) {
-    F.flames(warm, false, per);
-    F.flames(cold, true, per);
-  }
   F.halos(warm, GLOW.glow);
   F.halos(cold, "#" + SOUL.getHexString(THREE.SRGBColorSpace));
   F.drift(Math.round(320 * motes), [70, 26, 70], 0.11, 1.1, GLOW.glow, 1.4, 0);
@@ -292,6 +292,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     F.u.ppu.value = (H * dpr) / vh;
     F.u.center.value.copy(cur);
     lightFires(S, fires, cur, lit);
+    if (!o.bare) for (let j = 0; j < burning.length; j++) FL.level(j, lit(burning[j]));
 
     if (ptr.moved && ptr.over && ptr.mouse) {
       ptr.moved = false;
@@ -341,7 +342,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     P.render(scene, camera, vh, off.set(cur.dot(RV) / vh, cur.dot(UP) / vh));
     if (!shown) {
       shown = true;
-      if (o.bare) host.dataset.marks = JSON.stringify(marks(camera, [...warm, ...cold].map((f) => ({ p: f.p, h: 2.1 }))));
+      if (o.bare) host.dataset.marks = JSON.stringify(marks(camera, burning.map(flameOf)));
       o.ready();
     }
   }
