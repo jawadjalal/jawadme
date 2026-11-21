@@ -65,7 +65,7 @@ export default async function Case({ params }: Props) {
     <main className={"case " + (p.cover.tone === "ink" ? "case-ink" : "")}>
       <TitleTab
         as="h1"
-        tag={[laneLabel(p.lane), p.year, p.spec ? "Spec" : ""].filter(Boolean).join(", ")}
+        tag={[laneLabel(p.lane), p.year].join(", ")}
         side={p.link ? <a href={p.link.href} target={p.link.href.startsWith("/") ? undefined : "_blank"} rel="noopener">{p.link.label} ↗</a> : undefined}
       >
         {p.name}

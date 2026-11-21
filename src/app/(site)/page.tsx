@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AdGallery } from "@/components/ds/AdGallery";
 import { Footer } from "@/components/ds/Footer";
-import { Hero } from "@/components/ds/Hero";
+import { Hero, RING } from "@/components/ds/Hero";
 import { Media } from "@/components/ds/Media";
 import { Sequence } from "@/components/ds/Sequence";
 import { TLink } from "@/components/ds/TLink";
@@ -15,8 +15,8 @@ import { SELECTED, projectBySlug } from "@/content/work";
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 const FR = projectBySlug("derelict-depths")!;
-const HERO_IDS = new Set(["vercel-a", "cursor-a", "perplexity-a", "linear-a", "elevenlabs-a"]);
-const GALLERY = ADS.filter((a) => !HERO_IDS.has(a.id)).slice(0, 12);
+const IN_RING = new Set(RING.map((a) => a.id));
+const GALLERY = ADS.filter((a) => !IN_RING.has(a.id)).slice(0, 12);
 
 export default function Home() {
   return (
@@ -25,7 +25,7 @@ export default function Home() {
       <Timeline />
 
       <section className="ads-home" data-room="hall" aria-labelledby="ads-h">
-        <TitleTab id="ads-h" tag={ADS.length + " spec ads"} side={<Link href="/ads">All ads ↗</Link>}>
+        <TitleTab id="ads-h" tag={ADS.length + " ads"} side={<Link href="/ads">All ads ↗</Link>}>
           Ads
         </TitleTab>
         <AdGallery ads={GALLERY} />
@@ -47,7 +47,6 @@ export default function Home() {
                 <span className="idx-line">{p.lines[0]}</span>
                 <span className="lbl dim">
                   {p.disciplines.slice(0, 2).join(", ")}, {p.year}
-                  {p.spec ? ", spec" : ""}
                 </span>
               </span>
             </TLink>

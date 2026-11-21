@@ -1,25 +1,20 @@
 import Image from "next/image";
-import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
+import { AdRing } from "@/components/ds/AdRing";
 import { Art } from "@/components/ds/Art";
-import { ADS, adById } from "@/content/ads";
+import { ADS } from "@/content/ads";
 import { SITE } from "@/content/site";
 
 // The home hero. The statement and the call sit on the top line; under them the name runs the full width as a mark,
-// and below its baseline the hall opens: the painted underworld gallery (public/art/hero.webp), or until it lands the
-// same space in plum-black, lit from the floor.
 // with one crystal seam drawn down through "Mastermind" that splits it a few pixels along the cut and cools to a
-// hairline. Five ads stand in the hall in arched niches, breaking up out of it into the mark's foot, the middle one
-// larger, each at its own height, so the work is the treasure and the name is its caption. Load, about 1.6 s: letters rise, the seam draws and splits, then the
-// ads rise out of the mark from the middle outwards and the ember bar wipes in. On scroll each ad drifts at its own
-// rate. Reduced motion: everything at rest and no seam.
+// hairline. Below the mark the hall opens: the painted underworld gallery (public/art/hero.webp), or until it lands the
+// same space in plum-black, lit from the floor, and in it the ads turn on a ring (AdRing). Load, about 1.6 s: letters
+// rise, the seam draws and splits, the hall opens, the ring curves into place and the ember bar wipes in.
+// Reduced motion: everything at rest and no seam.
 
 const SUB = "Hi! I'm Jawad Jalal. I'm 15 and in London, designing and building things.";
 const [W1, W2] = SITE.headline.split(" ");
-const PICK = ["vercel-a", "cursor-a", "perplexity-a", "linear-a", "elevenlabs-a"].map((id) => adById(id)!);
-const ORDER = [2, 1, 0, 3, 4];
-const LIFT = [6, 2, 0, 4, 9];
-const DRIFT = [14, 6, 0, 10, 18];
+export const RING = ADS.filter((a) => a.w * 5 === a.h * 4).slice(0, 20);
 
 type Pt = [number, number];
 
@@ -82,28 +77,15 @@ export function Hero() {
           </svg>
         </span>
       </h1>
-      <nav className="hero-ads" aria-label="Five recent ads">
+      <div className="hero-ring">
         <div className="hall" aria-hidden="true">
           <Art k="hero" priority className="hall-art" fallback={<span className="hall-light" />} />
         </div>
-        {PICK.map((a, i) => (
-          <Link
-            key={a.id}
-            href={"/w/" + a.id}
-            className={"hero-ad" + (i === 2 ? " big" : "")}
-            data-par={DRIFT[i]}
-            style={{ "--o": ORDER[i], "--lift": LIFT[i] } as React.CSSProperties}
-          >
-            <span className="hero-ad-in">
-              <Image src={a.src} alt={a.alt} width={a.w} height={a.h} sizes={i === 2 ? "(min-width: 768px) 26vw, 60vw" : "(min-width: 768px) 19vw, 46vw"} priority />
-            </span>
-            <span className="hero-ad-tag">{a.campaign}</span>
-          </Link>
-        ))}
-      </nav>
+        <AdRing ads={RING} />
+      </div>
       <div className="bar hero-bar">
         <span>Jawad Jalal</span>
-        <span className="hide-s">{ADS.length} spec ads, made unasked</span>
+        <span className="hide-s">{SITE.available}</span>
         <span>London</span>
       </div>
     </section>

@@ -166,7 +166,7 @@ export const NOW: Item[] = [
     role: "Product designer",
     period: "2026",
     status: "Past",
-    blurb: "An 8-figure startup: the app for eating out healthy, used by 1.5 million people. I was its product designer.",
+    blurb: "An 8-figure startup at 7-figure MRR: the app for eating out healthy, used by 1.5 million people. I was its product designer.",
     tags: [
       { brand: "figmacolour", label: "Product design" },
       { label: "iOS" },

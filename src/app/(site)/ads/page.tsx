@@ -8,7 +8,7 @@ import { ADS, CAMPAIGNS, campaignOf } from "@/content/ads";
 
 export const metadata: Metadata = {
   title: "Ads",
-  description: "Ads by Jawad Jalal for Shown Media, Palantir, Whop, Outpace and more. Spec work.",
+  description: "Ads by Jawad Jalal: Shown Media, Palantir, Whop, Outpace and more.",
   alternates: { canonical: "/ads" },
 };
 
@@ -22,7 +22,7 @@ export default async function Ads({ searchParams }: Props) {
   const list = pick ? ADS.filter((a) => campaignOf(a) === pick) : ADS;
   return (
     <main className="ads">
-      <TitleTab as="h1" tag={ADS.length + " spec ads"} side={<span className="tab-say">Spec ads for real brands, made unasked.</span>}>
+      <TitleTab as="h1" tag={ADS.length + " ads"}>
         Ads
       </TitleTab>
       <nav className="filters wrap" aria-label="Filter by campaign">
@@ -39,6 +39,7 @@ export default async function Ads({ searchParams }: Props) {
       </nav>
       <div className="ads-hall" data-room="hall">
         <AdGallery ads={list} />
+        <p className="wrap disclose">Independent work. Not commissioned by or affiliated with the brands shown.</p>
       </div>
       <BookLink src="ads-inline" className="strip" cursor>
         <span className="d-name">Want ads like these?</span>

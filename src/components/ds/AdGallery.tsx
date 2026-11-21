@@ -25,7 +25,6 @@ export function AdGallery({ ads }: { ads: Ad[] }) {
             <div className="gal-side">
               <Link href={"/w/" + lead.id} className="gal-feat-cap">
                 <span className="gal-feat-co">{lead.campaign}</span>
-                <span className="dim">Spec ad, made unasked</span>
               </Link>
               {rest.length ? <div className="gal-pair">{rest.slice(0, 2).map((a, i) => piece(a, i, "(min-width: 768px) 22vw, 50vw"))}</div> : null}
             </div>

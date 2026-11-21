@@ -43,7 +43,7 @@ export default async function Work({ searchParams }: Props) {
               <span className="d-name">{p.name}</span>
               <span className="lbl dim">
                 {laneLabel(p.lane)}
-                {p.spec ? " · Spec" : ""}
+                
               </span>
             </span>
             <Media m={p.cover} ratio="4 / 3" fit={p.cover.h > p.cover.w ? "contain" : "cover"} sizes="(min-width: 768px) 50vw, 100vw" />
