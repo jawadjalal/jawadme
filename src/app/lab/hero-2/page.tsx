@@ -3,9 +3,15 @@ import Link from "next/link";
 import { CAL, HEAD, NAV, SHOW, SUB } from "../copy";
 
 // Direction 2. Outpace's restraint: one small centred headline in Inter Display Bold, the sentence, one black button,
-// and the work on the inside of a slowly turning ring, so the hero is the portfolio.
+// the work on the inside of a slowly turning ring, and who it was for underneath. Load: the name, the headline, the
+// sentence and the button lift in turn, then the ring swings round into place from the side.
 
 const N = 14;
+const CLIENTS: [string, string][] = [
+  ["/logos/menufit.png", "MenuFit"],
+  ["/logos/okara.png", "Okara"],
+  ["/logos/bevel.png", "Bevel"],
+];
 
 export default function Hero2() {
   const ring = Array.from({ length: N }, (_, i) => SHOW[i % SHOW.length]);
@@ -35,18 +41,28 @@ export default function Hero2() {
         </Link>
       </header>
       <div className="h2x-ring" aria-label="Recent ads">
-        <div className="h2x-spin" style={{ ["--n" as string]: N }}>
-          {ring.map((a, i) => (
-            <Link key={i} href={"/w/" + a.id} className="h2x-card" style={{ ["--i" as string]: i }} tabIndex={i < SHOW.length ? 0 : -1} aria-hidden={i >= SHOW.length}>
-              <Image src={a.src} alt={i < SHOW.length ? a.alt : ""} width={a.w} height={a.h} sizes="(min-width: 768px) 18vw, 46vw" priority={i < 3 || i > N - 3} />
-              <span className="h2x-cap">
-                <b>{a.brand}</b>
-                <span>Spec ad</span>
-              </span>
-            </Link>
-          ))}
+        <div className="h2x-tilt">
+          <div className="h2x-spin" style={{ ["--n" as string]: N }}>
+            {ring.map((a, i) => (
+              <Link key={i} href={"/w/" + a.id} className="h2x-card" style={{ ["--i" as string]: i }} tabIndex={i < SHOW.length ? 0 : -1} aria-hidden={i >= SHOW.length}>
+                <Image src={a.src} alt={i < SHOW.length ? a.alt : ""} width={a.w} height={a.h} sizes="(min-width: 768px) 18vw, 46vw" priority={i < 3 || i > N - 3} />
+                <span className="h2x-cap">
+                  <b>{a.brand}</b>
+                  <span>Spec ad</span>
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
+      <ul className="h2x-clients" aria-label="Worked with">
+        {CLIENTS.map(([src, name]) => (
+          <li key={name}>
+            <Image src={src} alt="" width={56} height={56} />
+            {name}
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }
