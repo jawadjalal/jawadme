@@ -702,6 +702,8 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
   .ct-c { min-height: 200px; padding: 22px 22px 24px; }
   .ct .ct-m { font-size: 6.2vw; }
   .ab-text { padding-top: 64px; }
+  .ct-p .ct { padding-top: 32px; padding-bottom: 16px; }
+  .ct-p .ct-h { margin-bottom: auto; padding-bottom: 32px; font-size: 24vw; line-height: 0.82; letter-spacing: -0.06em; }
 }
 
 /* ── GitHub: a square a day on flat ink, accent levels, the total counting up ── */
