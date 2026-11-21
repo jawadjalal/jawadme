@@ -5,6 +5,7 @@ import { BookLink } from "@/components/BookLink";
 import { MailLink } from "@/components/MailLink";
 import { SITE } from "@/content/site";
 import { SOCIALS } from "@/lib/profile";
+import { Flames } from "./kit/Flames";
 import { Stage } from "./kit/Stage";
 import type { Sign } from "./pillarScene";
 
@@ -46,6 +47,7 @@ export function Pillar() {
         <p className="foot-hint">pick a sign.</p>
       </div>
       <Stage load={load} poster={{ d: "/world/poster/pillar-d.webp", m: "/world/poster/pillar-m.webp" }} className="pl-stage" margin="1200px 0px">
+        <Flames of="pillar" />
         <nav className="pl-ui" aria-label="where to next">
           <span className="pl-a main" data-sign="cal" style={at("cal")}>
             <BookLink src="footer-pillar">

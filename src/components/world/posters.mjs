@@ -4,9 +4,9 @@
 import { posters } from "./kit/posters.mjs";
 
 const [base = "http://localhost:3000", only] = process.argv.slice(2);
-const ROOMS = [["gate", "0&dim"], ["gate-lit", "0"], ["hall", "1"], ["theatre", "3"], ["river", "4"]];
+const ROOMS = [["gate", "0&dim"], ["gate-lit", "0&bare"], ["hall", "1&bare"], ["theatre", "3&bare"], ["river", "4&bare"]];
 const jobs = [
   ...ROOMS.map(([name, k]) => ({ name, path: "/?shot=" + k, stage: ".world-stage" })),
-  { name: "pillar", path: "/about", stage: ".pl-stage", scroll: true },
+  { name: "pillar", path: "/about?bare", stage: ".pl-stage", scroll: true },
 ].filter((j) => !only || only.split(",").includes(j.name));
-await posters({ base, out: new URL("../../../public/world/poster/", import.meta.url).pathname, jobs });
+await posters({ base, out: new URL("../../../public/world/poster/", import.meta.url).pathname, jobs, marks: new URL("./marks.json", import.meta.url).pathname });

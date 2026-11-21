@@ -50,15 +50,12 @@ export type Shared = {
   time: { value: number };
   fl: { value: THREE.Vector4[] };
   fc: { value: THREE.Vector3[] };
-  /** How many of the NL light slots the shader reads (fewer on phones). */
-  n: { value: number };
 };
 
 export const shared = (): Shared => ({
   time: { value: 0 },
   fl: { value: Array.from({ length: NL }, () => new THREE.Vector4(0, -999, 0, 1)) },
   fc: { value: Array.from({ length: NL }, () => new THREE.Vector3()) },
-  n: { value: NL },
 });
 
 export type Kind =
@@ -126,7 +123,6 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
     uTime: S.time,
     uFL: S.fl,
     uFC: S.fc,
-    uN: S.n,
     uRim: { value: kind.k === "stone" ? (kind.rim ?? 1) : kind.k === "rock" ? 0.5 : 0.7 },
     uA: { value: new THREE.Vector4(a[0], a[1], a[2], a[3]) },
     uB: { value: new THREE.Vector4(b[0], b[1], 0, 0) },
@@ -153,7 +149,7 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
         vWN = normalize(mat3(modelMatrix) * wn);`,
       );
     s.fragmentShader =
-      `varying vec3 vWP;\nvarying vec3 vWN;\nvarying float vH;\nuniform float uTime, uRim, uHasTex;\nuniform vec4 uFL[${NL}];\nuniform vec3 uFC[${NL}];\nuniform int uN;\nuniform vec4 uA, uB;\nuniform sampler2D uTex;\n` +
+      `varying vec3 vWP;\nvarying vec3 vWN;\nvarying float vH;\nuniform float uTime, uRim, uHasTex;\nuniform vec4 uFL[${NL}];\nuniform vec3 uFC[${NL}];\nuniform vec4 uA, uB;\nuniform sampler2D uTex;\n` +
       NOISE +
       MEANDER +
       s.fragmentShader
@@ -178,7 +174,6 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
           `vec3 fwn = normalize(vWN);
           vec3 fire = vec3(0.0);
           for (int i = 0; i < ${NL}; i++) {
-            if (i >= uN) break;
             vec3 d = uFL[i].xyz - vWP;
             float r = length(d);
             float fa = clamp(1.0 - r / uFL[i].w, 0.0, 1.0);

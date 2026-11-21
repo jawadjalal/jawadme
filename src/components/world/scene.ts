@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { buildHall, type Shot, type Slot } from "./hall";
-import { ACCENT, Batch, GLOW, DV, INK, NL, NOISE, PITCH, Q, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, setMap, shared, view, type Fire } from "./kit";
+import { ACCENT, Batch, GLOW, DV, INK, NL, NOISE, PITCH, Q, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, marks, painter, post, setMap, shared, view, type Fire } from "./kit";
 import { COURT, HALL, LAND, SIGN, THEATRE, buildMap, type Mats } from "./map";
 
 // The underworld under the home page, seen the way an isometric action game sees its rooms: the kit's orthographic
@@ -9,12 +9,11 @@ import { COURT, HALL, LAND, SIGN, THEATRE, buildMap, type Mats } from "./map";
 // void, vignette and grain. The fires light in a wave out from the gate on load.
 
 export type WorldAd = { id: string; campaign: string; alt: string; src: string };
-export type WorldOpts = { progress: () => number; ads: WorldAd[]; lite: boolean; small: boolean; still: boolean; dim: boolean; open: (id: string) => void; enter: () => void; ready: () => void };
+export type WorldOpts = { progress: () => number; ads: WorldAd[]; small: boolean; still: boolean; bare: boolean; dim: boolean; open: (id: string) => void; enter: () => void; ready: () => void };
 
 export function mount(host: HTMLElement, o: WorldOpts) {
-  const dpr = Math.min(window.devicePixelRatio || 1, o.still ? 2 : o.lite ? 1 : o.small ? 1.25 : 1.75);
+  const dpr = Math.min(window.devicePixelRatio || 1, o.still ? 2 : o.small ? 1.25 : 1.75);
   const S = shared();
-  if (o.lite) S.n.value = 8;
   const b = bag();
   const scene = new THREE.Scene();
   scene.background = INK;
@@ -39,7 +38,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   scene.add(new THREE.HemisphereLight("#6660a6", "#140c0a", 1.15));
   const key = new THREE.DirectionalLight("#ffcf9e", 1.1);
   const LDIR = new THREE.Vector3(-0.5, 1, 0.12).normalize();
-  key.castShadow = !o.lite;
+  key.castShadow = true;
   key.shadow.mapSize.set(o.small ? 1024 : 2048, o.small ? 1024 : 2048);
   key.shadow.bias = -0.0004;
   key.shadow.normalBias = 0.05;
@@ -104,17 +103,19 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   ign.value = o.still ? (o.dim ? -99 : 99) : -0.5;
   F.u.door.value.copy(door);
   const warm = fires.filter((f) => !f.soul && !f.lamp), cold = fires.filter((f) => f.soul && !f.lamp);
-  const per = o.lite ? 8 : o.small ? 14 : 24;
-  const motes = o.lite ? 0.35 : o.small ? 0.5 : 1;
-  F.flames(warm, false, per);
-  F.flames(cold, true, per);
+  const per = o.small ? 14 : 24;
+  const motes = o.small ? 0.5 : 1;
+  if (!o.bare) {
+    F.flames(warm, false, per);
+    F.flames(cold, true, per);
+  }
   F.halos(warm, GLOW.glow);
   F.halos(cold, "#" + SOUL.getHexString(THREE.SRGBColorSpace));
   F.drift(Math.round(320 * motes), [70, 26, 70], 0.11, 1.1, GLOW.glow, 1.4, 0);
   F.drift(Math.round(120 * motes), [70, 20, 70], 0.42, 0.35, "#" + SOUL.getHexString(THREE.SRGBColorSpace), 0.42, 1);
   F.drift(Math.round(180 * motes), [60, 16, 60], 0.06, 0.08, "#b49a80", 0.35, 1);
 
-  const v = view(host, (dt, fresh) => tick(dt, fresh), { dpr, fps: o.lite ? 30 : undefined });
+  const v = view(host, (dt, fresh) => tick(dt, fresh), { dpr });
   const renderer = v.renderer;
   const canvas = v.canvas;
   const P = post(renderer, S, b, { small: o.small, still: o.still, flat: false });
@@ -313,7 +314,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     spring(gate, hot === GATE || tap === GATE ? 1 : 0, dt, 200, 0.7);
     spring(flare, 0, dt, 90, 0.9);
     for (const g of gateGlows) (g.material as THREE.ShaderMaterial).uniforms.uA.value = 1.2 + 0.6 * gate.x + 0.5 * flare.x;
-    spring(hand, ptr.over && ptr.mouse && !o.still && !o.lite ? 1 : 0, dt, 120, 1);
+    spring(hand, ptr.over && ptr.mouse && !o.still ? 1 : 0, dt, 120, 1);
     if (hand.x < 0.02) hp.copy(p0), hv.set(0, 0, 0);
     hv.addScaledVector(hd.subVectors(p0, hp), 140 * dt).multiplyScalar(Math.max(0, 1 - 2 * Math.sqrt(140) * dt));
     hp.addScaledVector(hv, dt);
@@ -340,6 +341,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     P.render(scene, camera, vh, off.set(cur.dot(RV) / vh, cur.dot(UP) / vh));
     if (!shown) {
       shown = true;
+      if (o.bare) host.dataset.marks = JSON.stringify(marks(camera, [...warm, ...cold].map((f) => ({ p: f.p, h: 2.1 }))));
       o.ready();
     }
   }

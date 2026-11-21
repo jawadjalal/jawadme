@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { ACCENT } from "@/lib/accent";
-import { GLOW, INK, view } from "./kit";
+import { GLOW, INK, marks, view } from "./kit";
 import type { Mount } from "./kit/Stage";
 
 // The footer's waymarker: one baked GLB (public/world/pillar, built in Blender, unlit with its light baked in) under a
@@ -213,6 +213,11 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], o: PillarOpt
     v.renderer.render(scene, camera);
     if (loaded && !shown) {
       shown = true;
+      if (ctx.bare && flames) {
+        const box = new THREE.Box3().setFromObject(flames);
+        host.dataset.marks = JSON.stringify(marks(camera, [{ p: box.getCenter(p).setY(box.min.y).clone(), h: box.max.y - box.min.y }]));
+        flames.visible = false;
+      }
       ctx.ready();
     }
   }

@@ -3,11 +3,25 @@
    the void under the gate court, ink plates, the theatre's orchestra. Poster layout is the default; the live layout
    applies once World has chosen the live scene (data-mode="live"). ── */
 .hero.world { display: block; min-height: 0; padding-top: 0; overflow: visible; color: #f4ece1; background: #100b09; }
-.world-stage { position: sticky; top: 0; z-index: 0; height: 100svh; margin-bottom: -100svh; overflow: hidden; background: #100b09; }
+.world-stage { position: sticky; top: 0; z-index: 0; height: 100svh; margin-bottom: -100svh; overflow: hidden; background: #100b09; container-type: size; }
 .world-poster { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms var(--ease-io); }
 .world-lit { transition-duration: 1600ms; }
 .world-poster[data-on] { opacity: 1; }
-.world-poster img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* the poster's frame covers the stage at the poster's own aspect (1440x900, phones 390x844), so its flames land on its fires */
+.world-frame { position: absolute; left: 50%; top: 50%; width: max(100cqw, 160cqh); height: max(100cqh, 62.5cqw); transform: translate(-50%, -50%); }
+.world-frame img { display: block; width: 100%; height: 100%; }
+@media (max-width: 767px) {
+  .world-frame { width: max(100cqw, 46.21cqh); height: max(100cqh, 216.41cqw); }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero.world[data-mode="poster"] .world-frame { animation: w-drift linear both; animation-timeline: scroll(root); }
+  }
+}
+@keyframes w-drift {
+  from { transform: translate(-50%, -50%) scale(1.08) translateY(3%); }
+  to { transform: translate(-50%, -50%) scale(1.08) translateY(-3%); }
+}
 .world-gl { position: absolute; inset: 0; opacity: 0; transition: opacity 1200ms var(--ease-io); }
 .world-gl canvas { display: block; width: 100%; height: 100%; }
 .world-stage.live .world-gl { opacity: 1; }

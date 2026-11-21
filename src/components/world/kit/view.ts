@@ -4,7 +4,7 @@ import * as THREE from "three";
 // frame function); every animation frame the most visible view draws, and the canvas moves into its host if it is
 // elsewhere. Nothing draws while no view is on screen or the tab is hidden.
 
-type V = { host: HTMLElement; frame: (dt: number, fresh: boolean) => void; seen: number; dpr: number; step: number; acc: number };
+type V = { host: HTMLElement; frame: (dt: number, fresh: boolean) => void; seen: number; dpr: number };
 let R: THREE.WebGLRenderer | null = null;
 const views = new Set<V>();
 let last = 0;
@@ -22,10 +22,6 @@ function tick() {
   let best: V | null = null;
   for (const v of views) if (v.seen > (best?.seen ?? 0)) best = v;
   if (!best || !R) return;
-  best.acc += dt;
-  if (best.acc < best.step) return;
-  const step = Math.min(0.05, best.acc);
-  best.acc = 0;
   const fresh = owner !== best;
   owner = best;
   if (R.domElement.parentElement !== best.host) best.host.appendChild(R.domElement);
@@ -33,11 +29,11 @@ function tick() {
   const W = best.host.clientWidth || 1, H = best.host.clientHeight || 1;
   const s = R.getSize(new THREE.Vector2());
   if (s.x !== W || s.y !== H) R.setSize(W, H, false);
-  best.frame(step, fresh);
+  best.frame(dt, fresh);
 }
 
-/** Register a stage: `frame(dt, fresh)` runs each animation frame while this host is the most visible one (`fresh` when it has just taken the canvas), or at most `fps` times a second when given. */
-export function view(host: HTMLElement, frame: (dt: number, fresh: boolean) => void, o: { dpr: number; fps?: number }) {
+/** Register a stage: `frame(dt, fresh)` runs each animation frame while this host is the most visible one (`fresh` when it has just taken the canvas). */
+export function view(host: HTMLElement, frame: (dt: number, fresh: boolean) => void, o: { dpr: number }) {
   if (!R) {
     R = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
     R.outputColorSpace = THREE.SRGBColorSpace;
@@ -48,7 +44,7 @@ export function view(host: HTMLElement, frame: (dt: number, fresh: boolean) => v
     document.addEventListener("visibilitychange", run);
   }
   const renderer = R;
-  const v: V = { host, frame, seen: 0, dpr: o.dpr, step: o.fps ? 1 / o.fps - 0.004 : 0, acc: 0 };
+  const v: V = { host, frame, seen: 0, dpr: o.dpr };
   views.add(v);
   const io = new IntersectionObserver(
     ([e]) => {
