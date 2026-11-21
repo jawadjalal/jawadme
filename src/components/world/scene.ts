@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { buildHall, type Shot, type Slot } from "./hall";
+import { buildTitle } from "./title";
 import { Batch, DV, EMBER, INK, NL, NOISE, PITCH, Q, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, setMap, shared, view, type Fire } from "./kit";
 import { COURT, HALL, LAND, SIGN, THEATRE, buildMap, type Mats } from "./map";
 
@@ -30,8 +31,9 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   const B = new Batch();
   const world = buildMap(B, m);
   const hall = buildHall({ B, m, scene, geos: b.geos, mats: b.mats, time: S.time, n: o.ads.length, pitch: PITCH });
+  const title = buildTitle({ B, m, gilt: mk("#e2b56c", { k: "stone", rim: 1.8 }, { emissive: "#5c3612", emissiveIntensity: 0.5 }), scene, geos: b.geos, at: new THREE.Vector3(2.1, COURT.y, 2.1) });
   B.build(scene, b.geos);
-  const fires: Fire[] = [...world.fires, ...hall.fires];
+  const fires: Fire[] = [...world.fires, ...hall.fires, ...title.fires];
   const door = world.door;
 
   // light: a cool sky and warm ground for the shadows, one warm key that casts, and the fires (in the shader)
@@ -215,7 +217,6 @@ export function mount(host: HTMLElement, o: WorldOpts) {
 
   // a fire lights when the ignition wave reaches it, with a flare
   const lit = (f: Fire) => {
-    if (f.lamp) return 1;
     const d = 0.15 + f.p.distanceTo(door) / 26;
     const x = Math.min(1, Math.max(0, (ign.value - d) / 0.45));
     return 0.08 + 0.92 * x * (1 + 0.7 * Math.exp(-Math.max(0, ign.value - d - 0.45) * 3));
@@ -236,6 +237,8 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     want.lerpVectors(A.t, Z.t, f);
     wantH = A.h + (Z.h - A.h) * f + (i === 1 ? 0 : Math.sin(Math.PI * f) * 10);
     wantW = A.w + (Z.w - A.w) * f;
+    const [W, H] = v.size();
+    if (W / H < 0.8) wantW = Math.min(wantW, 40);
     const intro = Math.min(1, Math.max(0, (ign.value - 0.3) / 3.2));
     wantH -= (1 - Math.pow(1 - intro, 3)) * 3 * Math.max(0, 1 - p * 2);
     floorY = A.floor + (Z.floor - A.floor) * f;
@@ -248,11 +251,11 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     cur.lerp(want, k);
     curH += (wantH - curH) * k;
     curW += (wantW - curW) * k;
-    const [W, H] = v.size();
     const vh = aim(camera, cur, curH, curW, W / H);
     F.u.ppu.value = (H * dpr) / vh;
     F.u.center.value.copy(cur);
     lightFires(S, fires, cur, lit);
+    title.rise(ign.value);
 
     if (ptr.moved && ptr.cx >= 0) {
       ptr.moved = false;

@@ -67,7 +67,7 @@ export default function Home() {
         <div className="about-pic">
           <Media m={SITE.portrait} ratio="1 / 1" sizes="(min-width: 768px) 25vw, 60vw" />
         </div>
-        <p className="t-line about-line" data-lines="">
+        <p className="t-line about-line">
           {SITE.about}
         </p>
       </section>
