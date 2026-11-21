@@ -1,7 +1,7 @@
 "use client";
 
-import { track } from "@vercel/analytics";
 import { useEffect, useRef, useState } from "react";
+import { track } from "@/lib/track";
 import { IDENTITY } from "@/lib/profile";
 
 /** Email as a contact on par with booking: a plain mailto that logs email_open with where it was clicked, as ?src= does for the call.
