@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node --experimental-strip-types scripts/github-snapshot.mjs --soft",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "cv": "node --experimental-strip-types scripts/cv.mjs",
     "og": "node --experimental-strip-types scripts/og.mjs",
-    "og:cards": "node scripts/og-cards.mjs"
+    "og:cards": "node scripts/og-cards.mjs",
+    "gh:snapshot": "node --experimental-strip-types scripts/github-snapshot.mjs",
+    "test": "node --experimental-strip-types --test src/lib/contributions.test.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

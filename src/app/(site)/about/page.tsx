@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Contact } from "@/components/ds/Contact";
+import { Contributions } from "@/components/ds/Contributions";
 import { Footer } from "@/components/ds/Footer";
 import { ADS } from "@/content/ads";
 import { TIMELINE } from "@/content/site";
@@ -44,6 +45,7 @@ export default function About() {
           product development intern at <a href="https://okara.ai">okara</a>, an 8-figure ai startup.
         </p>
         <p>i made 3d art for blade ball and fish it, two of roblox&apos;s biggest games (over 11 billion visits between them).</p>
+        <Contributions />
         <details className="ab-faq" id="faq">
           <summary>the short answers</summary>
           <dl>
