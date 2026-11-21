@@ -187,9 +187,9 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
   letter-spacing: -0.02em;
   filter: drop-shadow(0 10px 24px rgb(0 0 0 / 0.28));
 }
-.dock-body, .dock > .bcb { align-self: center; }
-.dock > .bcb { transition: opacity var(--t-base) var(--ease), translate var(--t-base) var(--ease), visibility 0s; }
-html[data-call-in-view] .dock > .bcb, html:not([data-call-seen]) .dock > .bcb[data-hold] { opacity: 0; translate: 0 14px; visibility: hidden; transition: opacity var(--t-fast) var(--ease), translate var(--t-fast) var(--ease), visibility 0s var(--t-fast); }
+.dock-body, .dock > :is(.bcb, .gl) { align-self: center; }
+.dock > :is(.bcb, .gl) { transition: opacity var(--t-base) var(--ease), translate var(--t-base) var(--ease), visibility 0s; }
+html[data-call-in-view] .dock > :is(.bcb, .gl), html:not([data-call-seen]) .dock > :is(.bcb, .gl)[data-hold] { opacity: 0; translate: 0 14px; visibility: hidden; transition: opacity var(--t-fast) var(--ease), translate var(--t-fast) var(--ease), visibility 0s var(--t-fast); }
 .dock-body { --nx: 100%; display: flex; align-items: stretch; padding-right: 10px; background: var(--ivory); color: var(--ink); border-radius: 3px 0 0 3px; }
 .dock-mark { display: grid; place-items: center; width: 56px; }
 .dock-mark img { width: 30px; height: auto; transition: transform var(--sp-pop-t) var(--sp-pop); }
