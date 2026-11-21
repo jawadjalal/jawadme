@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { IDENTITY } from "@/lib/profile";
 import { JsonLd, person, website } from "@/lib/seo";
+import "@/styles/accent-arena.css";
 
 const TITLE = "jawad jalal, design mastermind: brand, ad, 3d and roblox design";
 const DESCRIPTION = "brands, ads, 3d and roblox games. designed by jawad jalal in london. book a 15 minute call.";
@@ -33,6 +34,8 @@ try {
   var d = s ? s === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   if (d) document.documentElement.dataset.theme = 'dark';
 } catch (e) {}
+var acc = new URLSearchParams(location.search).get('accent');
+if (acc === 'a' || acc === 'b' || acc === 'c') document.documentElement.dataset.accent = acc;
 `;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

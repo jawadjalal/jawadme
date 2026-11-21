@@ -1,0 +1,51 @@
+/* Accent arena harness (throwaway). ?accent=a|b|c sets html[data-accent] before paint (root layout); these rules swap
+   the ember tokens for one green set. --acc fills and lights, --acc-hi is its hover, --acc-ink the text on it,
+   --acc-paper the text-safe variant for type and focus rings on the paper ground. Flat fills only: the ticket's
+   gradients are replaced by solids here. The 3D side reads the same choice in world/kit/accent.ts. */
+
+html[data-accent="a"] { --acc: #8af5c6; --acc-hi: #c4ffe4; --acc-ink: #06140e; --acc-paper: #0b6a4b; }
+html[data-accent="b"] { --acc: #a6f03c; --acc-hi: #cbff78; --acc-ink: #0e1503; --acc-paper: #3d6600; }
+html[data-accent="c"] { --acc: #17c46c; --acc-hi: #3fe28c; --acc-ink: #03140b; --acc-paper: #006b3b; }
+
+html[data-accent] .ds { --ember: var(--acc); --acc-t: var(--acc-paper); }
+html[data-accent]:is([data-room="ink"], [data-room="hall"]) .ds { --acc-t: var(--acc); }
+
+/* accent as type, a rule or a focus ring on the paper ground: the text-safe variant */
+html[data-accent] .ds :focus-visible { outline-color: var(--acc-t); }
+html[data-accent] .ds .ring:focus-visible { box-shadow: inset 0 0 0 2px var(--acc-t); }
+html[data-accent] .ds :is(.tab-side a:hover, .hero-who:hover span, .card:hover .d-name, .spec dd a:hover, .next:hover .d-tab, .cal-mail a:hover, .tl-row.now .tl-co, .tl-co:hover, .idx-row:hover .idx-name, .hang-i:hover .hang-co, .ab-text p a:hover) { color: var(--acc-t); }
+html[data-accent] .ds .dock-nav a::after { background: var(--acc-paper); }
+html[data-accent] .ds .dock-sheet a[aria-current="page"] { color: var(--acc-paper); }
+html[data-accent] .ds .world :focus-visible, html[data-accent] .ds .foot :focus-visible, html[data-accent] .ds .mo :focus-visible { outline-color: var(--acc); }
+
+/* the hard-coded ember hovers and the warm inks set on ember */
+html[data-accent] .ds :is(.lost-ways .lost-call:hover, .ct .ct-call:hover) { background: var(--acc-hi); }
+html[data-accent] .ds .w-sign-board, html[data-accent] .ds .w-sign .w-sign-board { color: var(--acc-ink); }
+html[data-accent] .ds .w-sign-board:hover { background: var(--acc-hi); }
+html[data-accent] .ds .w-sound[aria-pressed="true"] .w-sound-i { color: var(--acc-ink); }
+html[data-accent] .ds .foot-x.main .foot-x-s { color: var(--acc-ink); }
+
+/* the ticket: a solid stub in the accent, solid paper, the glow a blur of the accent */
+html[data-accent] .bcb { --ember: var(--acc); }
+html[data-accent] .bcb-card {
+  filter:
+    drop-shadow(0 0 0.03em rgb(23 18 14 / 0.75))
+    drop-shadow(0 0.04em 0 rgb(23 18 14 / 0.55))
+    drop-shadow(0 -0.01em 0.05em rgb(255 205 150 / 0.7))
+    drop-shadow(0 calc(0.28em - var(--pr) * 0.18em) calc(0.5em - var(--pr) * 0.3em) rgb(0 0 0 / calc(0.32 + var(--hv) * 0.12)))
+    drop-shadow(0 0.12em 0.9em rgb(from var(--acc) r g b / calc(0.16 + var(--hv) * 0.16)));
+}
+html[data-accent] .bcb-body {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .18 0 0 0 0 .1 .4 0 0 0 -.14'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"),
+    var(--paper);
+}
+html[data-accent] .bcb-stub {
+  color: var(--acc-ink);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 .12 0 0 0 0 .06 .4 0 0 0 -.14'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"),
+    var(--acc);
+  box-shadow: inset 0 0.06em 0 rgb(255 255 255 / 0.4), inset 0 -0.08em 0 rgb(from var(--acc-ink) r g b / 0.3);
+}
+html[data-accent] .bcb-arrow { filter: drop-shadow(0 0.05em 0 rgb(from var(--acc-hi) r g b / 0.6)); }
+html[data-accent] :is(.bcb-body, .bcb-stub)::after { display: none; }

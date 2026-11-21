@@ -1,4 +1,5 @@
 // The world kit: everything a stage needs to draw a chamber of the world. See README.md. The React side is ./Stage.
+export { GLOW } from "./accent";
 export { bag, drop, type Bag } from "./bag";
 export { fx } from "./fx";
 export { AMPHORA, BRAZIER, Batch, M, box, column, lathe, prep, rock, stone } from "./geo";

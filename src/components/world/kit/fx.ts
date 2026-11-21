@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { GLOW } from "./accent";
 import type { Bag } from "./bag";
 import type { Fire } from "./lights";
 import type { Shared } from "./paint";
@@ -35,7 +36,7 @@ export function fx(scene: THREE.Scene, S: Shared, b: Bag) {
     /** Flames over each fire, `per` points apiece, warm or soul-cyan. */
     flames(list: Fire[], soul: boolean, per = 24) {
       if (!list.length) return;
-      const [hot, cold] = soul ? ["0.8, 1.0, 1.0", "0.1, 0.55, 0.9"] : ["1.0, 0.85, 0.45", "1.0, 0.24, 0.05"];
+      const [hot, cold] = soul ? ["0.8, 1.0, 1.0", "0.1, 0.55, 0.9"] : [GLOW.hot, GLOW.cold];
       points(list.length * per, (i) => list[i % list.length].p.toArray() as [number, number, number], {}, `
         void main() {
           vS = aSeed;

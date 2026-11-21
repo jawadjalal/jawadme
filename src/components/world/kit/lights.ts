@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { GLOW } from "./accent";
 import { NL, type Shared } from "./paint";
 
 /** A light source the painted materials see: a brazier (warm), a soul flame (cyan), or a lamp (always lit, no flame). */
@@ -17,6 +18,6 @@ export function lightFires(S: Shared, fires: Fire[], c: THREE.Vector3, lit: (f: 
     const fl = (0.84 + 0.16 * Math.sin(t * 11 + j * 1.7) * Math.sin(t * 6.3 + j)) * lit(f);
     S.fl.value[j].set(f.p.x, f.p.y + 0.4, f.p.z, f.r * (f.big ? 1.15 : 1));
     if (f.soul) S.fc.value[j].set(0.7 * fl, 1.8 * fl, 2.0 * fl);
-    else S.fc.value[j].set(3.0 * fl, 1.26 * fl, 0.36 * fl);
+    else S.fc.value[j].set(GLOW.fire[0] * fl, GLOW.fire[1] * fl, GLOW.fire[2] * fl);
   }
 }

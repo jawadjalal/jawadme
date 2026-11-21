@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { buildFoot, type Exit, type FootState, type FootV } from "./foot";
-import { Batch, INK, NL, RV, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, shared, view } from "./kit";
+import { Batch, GLOW, INK, NL, RV, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, shared, view } from "./kit";
 import type { Mount } from "./kit/Stage";
 
 // The footer's chamber alone on flat ink (./foot builds the take), on the world kit. The links laid over it come from
@@ -37,8 +37,8 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], o: FootOpts)
   const F = fx(scene, S, b);
   F.flames(foot.fires.filter((f) => !f.soul && !f.lamp), false, ctx.small ? 14 : 24);
   F.flames(foot.fires.filter((f) => f.soul && !f.lamp), true, ctx.small ? 14 : 24);
-  F.halos([...foot.fires.filter((f) => !f.soul && !f.lamp), ...(foot.halos ?? [])], "#ff6a24");
-  F.drift(ctx.small ? 100 : 200, [60, 26, 60], 0.11, 1.1, "#ff6a24", 1.4, 0);
+  F.halos([...foot.fires.filter((f) => !f.soul && !f.lamp), ...(foot.halos ?? [])], GLOW.halo);
+  F.drift(ctx.small ? 100 : 200, [60, 26, 60], 0.11, 1.1, GLOW.halo, 1.4, 0);
   F.drift(ctx.small ? 40 : 80, [60, 20, 60], 0.42, 0.35, "#63e6ff", 0.42, 1);
 
   const dpr = Math.min(window.devicePixelRatio || 1, ctx.still ? 2 : ctx.small ? 1.25 : 1.75);

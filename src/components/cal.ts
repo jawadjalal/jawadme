@@ -11,12 +11,15 @@ type Cal = Queue & { ns: Record<string, Queue>; loaded?: boolean };
 
 export const CAL_LINK = new URL(BOOK).pathname.replace(/^\//, "");
 export const NS = "call";
+const ACC = typeof document === "undefined" ? undefined : ({ a: "#8af5c6", b: "#a6f03c", c: "#17c46c" } as Record<string, string>)[document.documentElement.dataset.accent ?? ""];
+const BRAND = ACC ?? "#ff5314";
+
 export const THEME = {
   theme: "light",
   layout: "month_view",
-  styles: { branding: { brandColor: "#ff5314" } },
+  styles: { branding: { brandColor: BRAND } },
   cssVarsPerTheme: {
-    light: { "cal-brand": "#ff5314", "cal-brand-emphasis": "#0b0b0b", "cal-brand-text": "#0b0b0b", "cal-bg": "#e6e5e1", "cal-bg-muted": "#dcdbd6", "cal-bg-emphasis": "#d6d5d0", "cal-bg-subtle": "#dcdbd6", "cal-border": "#c9c8c2", "cal-border-emphasis": "#0b0b0b", "cal-border-subtle": "#d6d5d0", "cal-border-booker": "#c9c8c2", "cal-text": "#0b0b0b", "cal-text-emphasis": "#0b0b0b", "cal-text-subtle": "#66655f", "cal-text-muted": "#66655f" },
+    light: { "cal-brand": BRAND, "cal-brand-emphasis": "#0b0b0b", "cal-brand-text": "#0b0b0b", "cal-bg": "#e6e5e1", "cal-bg-muted": "#dcdbd6", "cal-bg-emphasis": "#d6d5d0", "cal-bg-subtle": "#dcdbd6", "cal-border": "#c9c8c2", "cal-border-emphasis": "#0b0b0b", "cal-border-subtle": "#d6d5d0", "cal-border-booker": "#c9c8c2", "cal-text": "#0b0b0b", "cal-text-emphasis": "#0b0b0b", "cal-text-subtle": "#66655f", "cal-text-muted": "#66655f" },
   },
 } as const;
 

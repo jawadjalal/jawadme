@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { GLOW } from "./accent";
 import type { Bag } from "./bag";
 
 // The world's materials. Every lit surface is a toon material with four things written into its shader: painted
@@ -9,7 +10,7 @@ import type { Bag } from "./bag";
 
 export const NL = 16;
 export const INK = new THREE.Color("#100b09");
-export const EMBER = new THREE.Color("#ff5a1c");
+export const EMBER = new THREE.Color(GLOW.core);
 export const SOUL = new THREE.Color("#63e6ff");
 
 export const NOISE = /* glsl */ `
@@ -173,7 +174,7 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
           outgoingLight += diffuseColor.rgb * fire;
           float rimv = 1.0 - clamp(abs(normal.z), 0.0, 1.0);
           float rm = smoothstep(0.72, 0.88, rimv) * uRim;
-          vec3 rc = mix(vec3(0.39, 0.9, 1.0) * 0.6, vec3(1.0, 0.48, 0.18) * 0.75, smoothstep(-0.25, 0.25, normal.x));
+          vec3 rc = mix(vec3(0.39, 0.9, 1.0) * 0.6, vec3(${GLOW.rim}) * 0.75, smoothstep(-0.25, 0.25, normal.x));
           outgoingLight += rc * rm * (0.3 + 0.7 * smoothstep(-0.2, 0.5, normal.y)) + diffuseColor.rgb * fire * rm * 1.4;
           ${kind.k === "rock" ? "outgoingLight = mix(outgoingLight, vec3(0.012, 0.008, 0.007), smoothstep(-0.5, -9.0, vH));" : ""}
           #include <opaque_fragment>`,

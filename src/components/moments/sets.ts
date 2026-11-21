@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { BRAZIER, AMPHORA, Batch, COS, M, Q, RV, box, column, lathe, prep, rock, type Bag, type Fire, type Palette } from "@/components/world/kit";
+import { BRAZIER, AMPHORA, Batch, COS, GLOW, M, Q, RV, box, column, lathe, prep, rock, type Bag, type Fire, type Palette } from "@/components/world/kit";
 
 // The sets each route stands on: one floating platform of the world apiece, built from the kit's pieces and lit by
 // its own fires. Every set faces the iso camera (screen right runs along RV, the near corner is +x +z), returns the
@@ -170,7 +170,7 @@ function gate(c: SetCtx): Set {
   for (const s of [-1, 1]) k.col(along(P, s * 2.3), 7.2, 0.58, 0, s + 2);
   B.add(m.trim, box(6.2, 1, 1.5, 0.1), M(P.x, P.y + 7.2, P.z, Q));
   B.add(m.pale, box(6.8, 0.4, 1.9, 0.1), M(P.x, P.y + 8.2, P.z, Q));
-  const g = k.glow(P.clone().setY(P.y + 3.6), 3.6, 7, "#ff6a24", 1.1);
+  const g = k.glow(P.clone().setY(P.y + 3.6), 3.6, 7, GLOW.halo, 1.1);
   k.lamp(P.clone().setY(P.y + 2.6).add(V(0.8, 0, 0.8)), 10);
   k.brazier(V(3.4, 0, 0.8));
   k.brazier(V(0.8, 0, 3.4));
@@ -246,8 +246,8 @@ function deadend(c: SetCtx): Set {
   B.add(m.rock, rock(3, 3, 1.2, 8, true), M(-5.4, 1.2, -0.6, 0.5, [1, 0.8, 1]));
   const post = V(4.2, 0, 4.2);
   B.add(m.wood, box(0.34, 6, 0.34, 0.06), M(post.x, 0, post.z));
-  [[5.1, 0.25, "#efe4d0"], [4.1, -0.35, "#efe4d0"], [3.1, 0.15, "#ff5a1c"]].forEach(([y, a, col]) => {
-    const mat = col === "#ff5a1c" ? c.mk("#ff5a1c", { k: "stone", rim: 1.4 }) : m.pale;
+  [[5.1, 0.25, "#efe4d0"], [4.1, -0.35, "#efe4d0"], [3.1, 0.15, GLOW.core]].forEach(([y, a, col]) => {
+    const mat = col === GLOW.core ? c.mk(GLOW.core, { k: "stone", rim: 1.4 }) : m.pale;
     B.add(mat, box(2.8, 0.62, 0.16, 0.06), M(post.x + Math.cos(Q + (a as number)) * 1.2, y as number, post.z - Math.sin(Q + (a as number)) * 1.2, Q + (a as number)));
   });
   k.brazier(V(-1.2, 0, 1.2), true);
