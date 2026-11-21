@@ -320,7 +320,7 @@ for (const a of found) {
     fs.mkdirSync(dir, { recursive: true });
     const rel = (f) => `/capy/${a.kind}/${f}`;
     const entry = {
-      id, title: a.setTitle, group: a.set, kind: a.kind, size: a.key && !/^\d+(px)?$/i.test(a.key) ? sizeLabel(a.key) : `${w} × ${h}`, w, h,
+      id, title: a.setTitle.toLowerCase(), group: a.set, kind: a.kind, size: (a.key && !/^\d+(px)?$/i.test(a.key) ? sizeLabel(a.key) : `${w} × ${h}`).toLowerCase(), w, h,
       type: "image", preview: "", original: "",
     };
     if (VIDEO.test(a.src) || GIF.test(a.src)) {

@@ -160,7 +160,7 @@ function Actions({ a, big }: { a: Asset; big?: boolean }) {
 function Tile({ a, r, width, onOpen, eager, named }: { a: Asset; r: number; width?: number; onOpen: (a: Asset) => void; eager: boolean; named?: boolean }) {
   return (
     <figure className="cp-tile" style={(width ? { width } : { "--r": r }) as React.CSSProperties}>
-      <button type="button" className="cp-frame" onClick={() => onOpen(a)} aria-label={`Open ${a.title}, ${a.size}`}>
+      <button type="button" className="cp-frame" onClick={() => onOpen(a)} aria-label={`open ${a.title}, ${a.size}`}>
         <span className="cp-box" style={{ aspectRatio: `${r}` }}>
           <Media a={a} eager={eager} />
         </span>
@@ -303,7 +303,7 @@ function Lightbox({ a, sizes, onPick, onClose }: { a: Asset; sizes: Asset[]; onP
       </div>
       <div className="cp-lb-foot">
         {sizes.length > 1 ? (
-          <div className="cp-sizes" role="group" aria-label="Sizes">
+          <div className="cp-sizes" role="group" aria-label="sizes">
             {sizes.map((s) => (
               <button key={s.id} type="button" aria-pressed={s.id === a.id} onClick={() => onPick(s)}>
                 <span className="cp-thumb" style={{ aspectRatio: `${s.w / s.h}` }}>
@@ -311,7 +311,7 @@ function Lightbox({ a, sizes, onPick, onClose }: { a: Asset; sizes: Asset[]; onP
                   <img src={s.preview} alt="" loading="lazy" />
                 </span>
                 {s.size}
-                {s.type === "video" ? " MP4" : s.type === "gif" ? " GIF" : ""}
+                {s.type === "video" ? " mp4" : s.type === "gif" ? " gif" : ""}
               </button>
             ))}
           </div>
@@ -330,19 +330,19 @@ function Lightbox({ a, sizes, onPick, onClose }: { a: Asset; sizes: Asset[]; onP
 }
 
 const KIND_NAME: Record<string, string> = {
-  clean: "Clean text posters",
-  sponsors: "Capy posters v3, with every sponsor",
-  strips: "Manga strips",
-  rebuilds: "Level-up rebuilds",
-  posters: "Posters",
-  banners: "Banners",
-  stickers: "Stickers",
-  wallpapers: "Wallpapers",
-  social: "Social",
-  badges: "Badges",
-  signs: "Signs",
-  slides: "Slides",
-  motion: "Motion",
+  clean: "clean text posters",
+  sponsors: "capy posters v3, with every sponsor",
+  strips: "manga strips",
+  rebuilds: "level-up rebuilds",
+  posters: "posters",
+  banners: "banners",
+  stickers: "stickers",
+  wallpapers: "wallpapers",
+  social: "social",
+  badges: "badges",
+  signs: "signs",
+  slides: "slides",
+  motion: "motion",
 };
 const typeRank = { video: 0, image: 1, gif: 2 } as const;
 /** The pieces of a design worth a tile each: one per aspect, the video first, then the largest. */
@@ -356,7 +356,7 @@ function faces(g: Asset[]): Asset[] {
   return g.filter((a) => [...by.values()].includes(a));
 }
 
-const kindName = (k: string) => KIND_NAME[k] ?? k.charAt(0).toUpperCase() + k.slice(1).replace(/-/g, " ");
+const kindName = (k: string) => KIND_NAME[k] ?? k.replace(/-/g, " ");
 
 export function Gallery({ assets, kinds, total, sets }: { assets: Asset[]; kinds: string[]; total: number; sets: number }) {
   const [kind, setKind] = useState<string>("all");
@@ -388,15 +388,15 @@ export function Gallery({ assets, kinds, total, sets }: { assets: Asset[]; kinds
   let n = 0;
 
   if (!assets.length) {
-    return <p className="cp-empty">The first assets land here tonight.</p>;
+    return <p className="cp-empty">the first assets land here tonight.</p>;
   }
 
   return (
     <main className="cp-main">
-      <nav className="cp-filter" aria-label="Kinds">
+      <nav className="cp-filter" aria-label="kinds">
         <div className="cp-filter-in">
           <button type="button" aria-pressed={kind === "all"} onClick={() => setKind("all")}>
-            All <span>{total}</span>
+            all <span>{total}</span>
           </button>
           {kinds.map((k) => (
             <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}>
@@ -433,7 +433,7 @@ export function Gallery({ assets, kinds, total, sets }: { assets: Asset[]; kinds
             ))}
             {singles.length ? (
               <div className="cp-set">
-                {multi.length ? <h3 className="cp-set-title">More {kindName(k).toLowerCase()}</h3> : null}
+                {multi.length ? <h3 className="cp-set-title">more {kindName(k).toLowerCase()}</h3> : null}
                 <Rows named items={singles} onOpen={setOpen} eagerFrom={(n += singles.length) - singles.length} />
               </div>
             ) : null}

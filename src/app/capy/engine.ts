@@ -965,7 +965,7 @@ export class Engine {
       ctx.font = `italic 900 ${size}px ${this.fonts.print}`;
       setStretch(ctx, "extra-condensed");
       ctx.textBaseline = "alphabetic";
-      const t = c.name.toUpperCase();
+      const t = c.name;
       const w = ctx.measureText(t).width;
       // lettered like a sound effect: a slight tilt, a white knockout stroke, the blue plate off register, black on top
       const tilt = (c.kind.length % 3) - 1;
@@ -1418,7 +1418,7 @@ export class Engine {
       const y = vh - pad * 1.4;
       ctx.font = `italic 900 ${s}px ${this.fonts.print}`;
       setStretch(ctx, "extra-condensed");
-      const tw = ctx.measureText(c.c.title.toUpperCase()).width;
+      const tw = ctx.measureText(c.c.title).width;
       setStretch(ctx, "normal");
       const ns = s * 0.3;
       ctx.font = `500 ${ns}px ${this.fonts.sans}`;
@@ -1443,9 +1443,9 @@ export class Engine {
       ctx.font = `italic 900 ${s}px ${this.fonts.print}`;
       setStretch(ctx, "extra-condensed");
       ctx.fillStyle = BLUE;
-      ctx.fillText(c.c.title.toUpperCase(), x + pad + s * 0.035, y - pad + s * 0.03 + lift);
+      ctx.fillText(c.c.title, x + pad + s * 0.035, y - pad + s * 0.03 + lift);
       ctx.fillStyle = "#fff";
-      ctx.fillText(c.c.title.toUpperCase(), x + pad, y - pad + lift);
+      ctx.fillText(c.c.title, x + pad, y - pad + lift);
       setStretch(ctx, "normal");
       ctx.restore();
     }

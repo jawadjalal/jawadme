@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Archivo, Inter } from "next/font/google";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
+import { BookCallB } from "@/components/cta/BookCallB";
 import { X_HANDLE, X_HREF } from "@/lib/seo";
 import data from "./assets.json";
 import { Gallery, type Asset } from "./Gallery";
@@ -65,28 +66,26 @@ export default function CapyPage() {
       <header className="cp-head">
         <div className="cp-top">
           <Link href="/" className="cp-name">
-            Jawad Jalal
+            jawad jalal
           </Link>
-          <BookLink src="capy" className="cp-call">
-            Book a call ↗
-          </BookLink>
+          <BookCallB src="capy" size="dock" />
         </div>
-        <h1 className="cp-title" data-text={"Capy hackathon\nassets"}>
-          Capy hackathon
+        <h1 className="cp-title" data-text={"capy hackathon\nassets"}>
+          capy hackathon
           <br />
           assets
         </h1>
         <div className="cp-intro">
           <p className="cp-lead">{LEAD}</p>
           <p className="cp-note">
-            Made by Jawad, not an official Capy or YC page. Capy&apos;s characters and logos belong to Capy.
+            made by jawad, not an official capy or yc page. capy&apos;s characters and logos belong to capy.
           </p>
         </div>
       </header>
       <Gallery assets={ASSETS} kinds={kinds} total={ASSETS.length} sets={sets} />
       <footer className="cp-foot">
         <Link href="/">jawadjalal.com</Link>
-        <BookLink src="capy-foot">Book a call</BookLink>
+        <BookLink src="capy-foot">book a call</BookLink>
         {X_HREF ? <a href={X_HREF}>{X_HANDLE}</a> : null}
       </footer>
       </Board>

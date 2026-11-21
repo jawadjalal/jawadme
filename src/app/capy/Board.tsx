@@ -4,7 +4,7 @@
 // (engine.ts) owns the canvas, camera, input and tour; this file is the chrome around it and the exports.
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { BookLink } from "@/components/BookLink";
+import { BookCallB } from "@/components/cta/BookCallB";
 import { layoutBoard, type Asset, type Piece } from "./arrange";
 import { Engine, type EngineState } from "./engine";
 import * as X from "./exporters";
@@ -208,7 +208,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     return (
       <div ref={root} className="cb-list">
         <button className="cb-back" onClick={() => setList(false)}>
-          Back to the board
+          back to the board
         </button>
         {children}
       </div>
@@ -232,22 +232,22 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
       </div>
     )}
     <div ref={root} className={`cb${asked ? " cb-asked" : ""}${chromeOff ? " cb-off" : ""}${st.selected.length ? " cb-has-sel" : ""}`}>
-      <canvas ref={canvas} className="cb-canvas" role="img" aria-label={`A board of ${board.pieces.length} Capy hackathon assets in ${board.clusters.length} clusters. Drag to pan, scroll or pinch to zoom, click a piece to fly to it.`} />
+      <canvas ref={canvas} className="cb-canvas" role="img" aria-label={`a board of ${board.pieces.length} capy hackathon assets in ${board.clusters.length} clusters. drag to pan, scroll or pinch to zoom, click a piece to fly to it.`} />
 
       <header className="cb-head">
         <a href="/" className="cb-name">
-          Jawad Jalal
+          jawad jalal
         </a>
-        <h1 className="cb-title" data-text="Capy hackathon assets">
-          Capy hackathon assets
+        <h1 className="cb-title" data-text="capy hackathon assets">
+          capy hackathon assets
         </h1>
-        <p className="cb-fan">Unofficial, unsolicited fan work. Not made by or for Capy or YC.</p>
+        <p className="cb-fan">unofficial, unsolicited fan work. not made by or for capy or yc.</p>
       </header>
-      <BookLink src="capy" className="cb-call">
-        Book a call ↗
-      </BookLink>
+      <span className="cb-call">
+        <BookCallB src="capy" size="dock" />
+      </span>
 
-      <nav className={`cb-clusters${clustersOpen ? " cb-open" : ""}`} aria-label="Clusters">
+      <nav className={`cb-clusters${clustersOpen ? " cb-open" : ""}`} aria-label="clusters">
         <ol>
           {board.clusters.map((k, i) => (
             <li key={k.kind}>
@@ -278,16 +278,16 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
             {oneCluster.name} {one.i - oneCluster.first + 1} of {oneCluster.last - oneCluster.first + 1}
           </p>
           <div className="cb-info-row">
-            <button onClick={() => e?.step(-1)} aria-label="Previous piece">
+            <button onClick={() => e?.step(-1)} aria-label="previous piece">
               ←
             </button>
-            <button onClick={() => e?.step(1)} aria-label="Next piece">
+            <button onClick={() => e?.step(1)} aria-label="next piece">
               →
             </button>
             <a href={one.a.original} download>
-              Original
+              original
             </a>
-            <button onClick={() => run("piece", "png")}>PNG</button>
+            <button onClick={() => run("piece", "png")}>png</button>
           </div>
         </aside>
       )}
@@ -295,40 +295,40 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
         <aside className="cb-info">
           <p className="cb-info-title">{selPieces.length} pieces selected</p>
           <div className="cb-info-row">
-            <button onClick={() => setExp(true)}>Export…</button>
-            <button onClick={() => e?.select([], false)}>Clear</button>
+            <button onClick={() => setExp(true)}>export…</button>
+            <button onClick={() => e?.select([], false)}>clear</button>
           </div>
         </aside>
       )}
 
-      <div className="cb-bar" role="toolbar" aria-label="Board">
-        <button onClick={() => e?.zoomBy(1 / 1.6)} aria-label="Zoom out">
+      <div className="cb-bar" role="toolbar" aria-label="board">
+        <button onClick={() => e?.zoomBy(1 / 1.6)} aria-label="zoom out">
           −
         </button>
         <button className="cb-zoom" onClick={() => e?.actualSize()} title="100% (0)">
           {pct}%
         </button>
-        <button onClick={() => e?.zoomBy(1.6)} aria-label="Zoom in">
+        <button onClick={() => e?.zoomBy(1.6)} aria-label="zoom in">
           +
         </button>
         <i />
-        <button onClick={() => e?.fit()} title="Fit the board (1)">
-          Fit
+        <button onClick={() => e?.fit()} title="fit the board (1)">
+          fit
         </button>
         <button className="cb-mob" onClick={() => setClustersOpen((v) => !v)}>
-          {c?.name ?? "Clusters"}
+          {c?.name ?? "clusters"}
         </button>
-        <button onClick={() => e?.startTour()} title="Auto tour (T)">
-          Tour <kbd>T</kbd>
+        <button onClick={() => e?.startTour()} title="auto tour (t)">
+          tour <kbd>t</kbd>
         </button>
         <button onClick={() => setExp((v) => !v)} aria-expanded={exp}>
-          Export
+          export
         </button>
         <i className="cb-wide" />
         <button className="cb-wide" onClick={() => setList(true)}>
-          List
+          list
         </button>
-        <button className="cb-wide" onClick={() => setHelp((v) => !v)} aria-label="Shortcuts">
+        <button className="cb-wide" onClick={() => setHelp((v) => !v)} aria-label="shortcuts">
           ?
         </button>
       </div>
@@ -336,34 +336,34 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
       {exp && <ExportPanel sel={selPieces} onRun={run} onClose={() => setExp(false)} />}
 
       {help && (
-        <div className="cb-help" role="dialog" aria-label="Shortcuts">
+        <div className="cb-help" role="dialog" aria-label="shortcuts">
           <dl>
-            <dt>Drag</dt>
-            <dd>Pan, with a throw</dd>
-            <dt>Pinch, {isMac() ? "⌘" : "Ctrl"} scroll</dt>
-            <dd>Zoom toward the cursor</dd>
-            <dt>Click</dt>
-            <dd>Fly to a piece</dd>
-            <dt>Shift drag</dt>
-            <dd>Select several</dd>
+            <dt>drag</dt>
+            <dd>pan, with a throw</dd>
+            <dt>pinch, {isMac() ? "⌘" : "ctrl"} scroll</dt>
+            <dd>zoom toward the cursor</dd>
+            <dt>click</dt>
+            <dd>fly to a piece</dd>
+            <dt>shift drag</dt>
+            <dd>select several</dd>
             <dt>← →  ↑ ↓</dt>
-            <dd>Step through a cluster, or across clusters</dd>
-            <dt>Esc</dt>
-            <dd>Fly back out</dd>
-            <dt>T</dt>
-            <dd>Auto tour, 20 seconds</dd>
-            <dt>H</dt>
-            <dd>Hide everything</dd>
+            <dd>step through a cluster, or across clusters</dd>
+            <dt>esc</dt>
+            <dd>fly back out</dd>
+            <dt>t</dt>
+            <dd>auto tour, 20 seconds</dd>
+            <dt>h</dt>
+            <dd>hide everything</dd>
             <dt>1, 0, + −</dt>
-            <dd>Fit, 100%, zoom</dd>
-            <dt>E</dt>
-            <dd>Export</dd>
+            <dd>fit, 100%, zoom</dd>
+            <dt>e</dt>
+            <dd>export</dd>
           </dl>
         </div>
       )}
 
-      <p className="cb-hint">Drag to pan. Pinch or scroll to zoom. Click to fly in, Esc to fly out. T for the tour.</p>
-      {st.touring && !hidden && <p className="cb-tourhint">Esc to stop · H hides this</p>}
+      <p className="cb-hint">drag to pan. pinch or scroll to zoom. click to fly in, esc to fly out. t for the tour.</p>
+      {st.touring && !hidden && <p className="cb-tourhint">esc to stop · h hides this</p>}
       {toast && (
         <p className="cb-toast" role="status">
           {toast}
@@ -376,19 +376,19 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
 
 function ExportPanel({ sel, onRun, onClose }: { sel: Piece[]; onRun: (s: Scope, f: Fmt) => void; onClose: () => void }) {
   const scopes: { id: Scope; label: string }[] = [
-    ...(sel.length === 1 ? [{ id: "piece" as Scope, label: "This piece" }] : []),
-    ...(sel.length > 1 ? [{ id: "selection" as Scope, label: `Selection (${sel.length})` }] : []),
-    { id: "view", label: "Current view" },
-    { id: "board", label: "Whole board" },
+    ...(sel.length === 1 ? [{ id: "piece" as Scope, label: "this piece" }] : []),
+    ...(sel.length > 1 ? [{ id: "selection" as Scope, label: `selection (${sel.length})` }] : []),
+    { id: "view", label: "current view" },
+    { id: "board", label: "whole board" },
   ];
   const [scope, setScope] = useState<Scope>(scopes[0].id);
   useEffect(() => setScope(scopes[0].id), [sel.length]); // eslint-disable-line react-hooks/exhaustive-deps
   const one = scope === "piece" ? sel[0]?.a : null;
   return (
-    <div className="cb-exp" role="dialog" aria-label="Export">
+    <div className="cb-exp" role="dialog" aria-label="export">
       <div className="cb-exp-head">
-        <p>Export</p>
-        <button onClick={onClose} aria-label="Close">
+        <p>export</p>
+        <button onClick={onClose} aria-label="close">
           ×
         </button>
       </div>
@@ -400,22 +400,22 @@ function ExportPanel({ sel, onRun, onClose }: { sel: Piece[]; onRun: (s: Scope, 
         ))}
       </div>
       <div className="cb-fmts">
-        <button onClick={() => onRun(scope, "png")}>PNG</button>
-        <button onClick={() => onRun(scope, "svg")}>SVG</button>
-        <button onClick={() => onRun(scope, "html")}>HTML</button>
-        <button onClick={() => onRun(scope, "copy-svg")}>Copy SVG</button>
-        <button onClick={() => onRun(scope, "copy-html")}>Copy HTML</button>
+        <button onClick={() => onRun(scope, "png")}>png</button>
+        <button onClick={() => onRun(scope, "svg")}>svg</button>
+        <button onClick={() => onRun(scope, "html")}>html</button>
+        <button onClick={() => onRun(scope, "copy-svg")}>copy svg</button>
+        <button onClick={() => onRun(scope, "copy-html")}>copy html</button>
         {one?.type === "video" && (
           <a href={one.original} download>
-            MP4
+            mp4
           </a>
         )}
       </div>
       <p className="cb-exp-note">
         {one && X.isVector(one)
-          ? "This SVG is true vector."
-          : "SVG and HTML wrap the pictures: none of these pieces has a vector source, so the SVG is not true vector."}{" "}
-        {scope === "view" ? "The view PNG is what you see, at 2x." : scope === "board" ? "The board exports use small copies so the file stays sendable." : ""} Every file carries the fan work line.
+          ? "this svg is true vector."
+          : "svg and html wrap the pictures: none of these pieces has a vector source, so the svg is not true vector."}{" "}
+        {scope === "view" ? "the view png is what you see, at 2x." : scope === "board" ? "the board exports use small copies so the file stays sendable." : ""} every file carries the fan work line.
       </p>
     </div>
   );

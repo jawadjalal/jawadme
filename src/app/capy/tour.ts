@@ -28,16 +28,16 @@ export type Shot = {
 export const TOUR: Shot[] = [
   // the title card over the whole board, pushing in
   { to: { all: true }, move: 1900, hold: 0, ease: "out", drift: 0 },
-  { to: { cluster: "strips" }, move: 1200, hold: 650, ease: "glide", rho: 1, caption: { n: "01", title: "Manga strips", sub: "91 pages, panel by panel" } },
+  { to: { cluster: "strips" }, move: 1200, hold: 650, ease: "glide", rho: 1, caption: { n: "01", title: "manga strips", sub: "91 pages, panel by panel" } },
   { to: { piece: "strips-s2-clock-a4" }, move: 950, hold: 450, ease: "glide", rho: 0.8 },
   { to: { piece: "strips-s2-clock-a4", frac: [0, 0.02, 1, 0.38] }, move: 750, hold: 850, ease: "glide", rho: 0.4 },
   { to: { piece: "strips-s2-clock-a4", frac: [0, 0.33, 1, 0.69] }, move: 700, hold: 850, ease: "glide", rho: 0.2 },
   { to: { piece: "strips-s2-clock-a4", frac: [0, 0.63, 1, 0.99] }, move: 700, hold: 650, ease: "glide", rho: 0.2 },
-  { to: { cluster: "rebuilds" }, move: 1150, hold: 350, ease: "whip", rho: 1.2, caption: { n: "02", title: "Rebuilds", sub: "72 posters, every size" } },
+  { to: { cluster: "rebuilds" }, move: 1150, hold: 350, ease: "whip", rho: 1.2, caption: { n: "02", title: "rebuilds", sub: "72 posters, every size" } },
   { to: { piece: "tankobon-15-poster-24x36" }, move: 800, hold: 900, ease: "glide", rho: 0.8 },
-  { to: { cluster: "stickers" }, move: 1000, hold: 300, ease: "whip", rho: 1.2, caption: { n: "03", title: "Stickers", sub: "41 die-cuts" } },
+  { to: { cluster: "stickers" }, move: 1000, hold: 300, ease: "whip", rho: 1.2, caption: { n: "03", title: "stickers", sub: "41 die-cuts" } },
   { to: { piece: "stickers-m-sticker-03-boom-1200x1200" }, move: 700, hold: 750, ease: "glide", rho: 0.8 },
-  { to: { cluster: "signs" }, move: 950, hold: 700, ease: "whip", rho: 1.2, caption: { n: "04", title: "Signs", sub: "Wayfinding for the day" } },
+  { to: { cluster: "signs" }, move: 950, hold: 700, ease: "whip", rho: 1.2, caption: { n: "04", title: "signs", sub: "wayfinding for the day" } },
   { to: { all: true }, move: 1500, hold: 1900, ease: "glide", rho: 1.2, drift: 0.02 },
 ];
 

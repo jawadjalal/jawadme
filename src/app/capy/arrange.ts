@@ -37,21 +37,21 @@ export type Cluster = Rect & { kind: string; name: string; count: number; title:
 export type Board = Rect & { pieces: Piece[]; clusters: Cluster[]; labels: Label[] };
 
 export const KIND_NAME: Record<string, string> = {
-  clean: "Clean text posters",
-  sponsors: "Capy posters v3, with every sponsor",
-  strips: "Manga strips",
-  rebuilds: "Level-up rebuilds",
-  posters: "Posters",
-  banners: "Banners",
-  stickers: "Stickers",
-  wallpapers: "Wallpapers",
-  social: "Social",
-  badges: "Badges",
-  signs: "Signs",
-  slides: "Slides",
-  motion: "Motion",
+  clean: "clean text posters",
+  sponsors: "capy posters v3, with every sponsor",
+  strips: "manga strips",
+  rebuilds: "level-up rebuilds",
+  posters: "posters",
+  banners: "banners",
+  stickers: "stickers",
+  wallpapers: "wallpapers",
+  social: "social",
+  badges: "badges",
+  signs: "signs",
+  slides: "slides",
+  motion: "motion",
 };
-export const kindName = (k: string) => KIND_NAME[k] ?? k.charAt(0).toUpperCase() + k.slice(1).replace(/-/g, " ");
+export const kindName = (k: string) => KIND_NAME[k] ?? k.replace(/-/g, " ");
 
 /** Row height per kind, in world units: the strips lead and are set largest. */
 const ROW: Record<string, number> = {
