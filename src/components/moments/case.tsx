@@ -7,7 +7,7 @@ import { Moment } from "./Moment";
 export function CaseMoment({ lane, tall, children }: { lane: Lane; tall: boolean; children: ReactNode }) {
   const set = lane === "ads" ? "niche-ads" : lane === "roblox" || lane === "3d" ? "niche-game" : "niche-web";
   return (
-    <Moment set={set} className={"mo-case" + (tall ? " tall" : "")}>
+    <Moment set={set} first className={"mo-case" + (tall ? " tall" : "")}>
       {children}
     </Moment>
   );

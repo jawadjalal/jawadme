@@ -53,7 +53,7 @@ export const ROOMS: Room[] = [
   { key: "websites", title: "Websites", note: "For his studio, his 3D team and his clients.", count: sites.length + " sites", entries: sites, section: "web" },
   { key: "ignaru", title: "Ignaru", note: ignaru.lines.join(" "), count: "Design tool", entries: [projectEntry(ignaru), ...IGNARU.map(design("designed and built by Jawad Jalal", "Product design"))], section: "web", caseHref: "/work/ignaru" },
   { key: "concepts", title: "Concepts", note: "Pitch sites, redesigns and templates.", count: CONCEPTS.length + " sites", entries: CONCEPTS.map(web), section: "web" },
-  { key: "cosmos-models", title: "Cosmos Models", note: "His 3D portfolio from age 13, and 3D art for Blade Ball and Fish It!", count: COSMOS.length + " pieces", entries: COSMOS.map(design("3D by Jawad Jalal", "3D")), section: "3d" },
+  { key: "cosmos-models", title: "Cosmos Models", note: "His 3D portfolio from age 13, and 3D art for Blade Ball and Fish It, two of Roblox's biggest games (over 11 billion visits between them).", count: COSMOS.length + " pieces", entries: COSMOS.map(design("3D by Jawad Jalal", "3D")), section: "3d" },
   { key: "bevel", title: "Bevel", note: "The 3D art team he founded. These pieces are the team's.", count: BEVEL.length + " pieces", entries: BEVEL.map(design("made by the 3D art team he founded", "3D")), section: "3d" },
   {
     key: "fracture",

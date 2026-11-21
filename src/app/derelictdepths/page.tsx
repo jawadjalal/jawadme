@@ -168,7 +168,7 @@ export default async function MinelightPage() {
             </p>
           </div>
           <figure className="ml-poster">
-            <img src="/derelictdepths/img/poster-1280.jpg" fetchPriority="high" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="A miner raises a pickaxe in the Golden Room in front of the Mole King" />
+            <img src="/derelictdepths/img/poster-1280.jpg" fetchPriority="high" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-768.jpg 768w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="(min-width: 900px) 540px, 100vw" width={1280} height={720} alt="A miner raises a pickaxe in the Golden Room in front of the Mole King" />
             <figcaption><span className="ml-badge art">In-engine + key art</span>A real in-engine capture of the Golden Room, graded, with rays and the title added.</figcaption>
           </figure>
         </header>
@@ -197,11 +197,11 @@ export default async function MinelightPage() {
           </div>
           <div className="ml-art">
             <figure className="ml-logo-fig">
-              <img src="/derelictdepths/img/logo-1280.webp" srcSet="/derelictdepths/img/logo-640.webp 640w, /derelictdepths/img/logo-1280.webp 1280w" sizes="(min-width: 760px) 720px, 100vw" width={1280} height={727} alt="The Derelict Depths wordmark" loading="lazy" decoding="async" />
+              <img src="/derelictdepths/img/logo-1280.webp" srcSet="/derelictdepths/img/logo-640.webp 640w, /derelictdepths/img/logo-768.webp 768w, /derelictdepths/img/logo-1280.webp 1280w" sizes="(min-width: 760px) 720px, 100vw" width={1280} height={727} alt="The Derelict Depths wordmark" loading="lazy" decoding="async" />
               <figcaption><b>The wordmark</b><span className="ml-badge">Logo</span>Built in code, so every size is a redraw rather than a stretched image.</figcaption>
             </figure>
             <figure className="ml-icon-fig">
-              <img src="/derelictdepths/img/icon-256.png" width={256} height={256} alt="The Derelict Depths icon" loading="lazy" decoding="async" />
+              <img src="/derelictdepths/img/icon-256.jpg" width={256} height={256} alt="The Derelict Depths icon" loading="lazy" decoding="async" />
               <figcaption><b>The icon</b><span className="ml-badge">Store icon</span>What a player sees at thumbnail size in a list of games.</figcaption>
             </figure>
           </div>
@@ -212,7 +212,7 @@ export default async function MinelightPage() {
           <div className="ml-pair">
             <Shot name="thumb-ore" w={1280} h={720} kind="Store thumbnail" title="Capsule three: the ore room" note="A real capture of a Topsoil ore room." />
             <div className="ml-card">
-              <h4>How the capsules were picked</h4>
+              <h3>How the capsules were picked</h3>
               <p>Each capsule has one default and one or two alternates. The defaults are the ones a store upload reads; the alternates stay as labelled options for jawad&apos;s pick. Every file is 1920 × 1080 and carries the same wordmark, and none of them introduces a game, a name or a look that isn&apos;t in the build.</p>
             </div>
           </div>
@@ -234,7 +234,7 @@ export default async function MinelightPage() {
           <div className="ml-sys">
             {SYSTEMS.map((s) => (
               <div className="ml-card" key={s.name}>
-                <h4>{s.name}</h4>
+                <h3>{s.name}</h3>
                 <p>{s.body}</p>
                 <small>{s.code}</small>
               </div>
@@ -440,11 +440,11 @@ export default async function MinelightPage() {
           />
           <div className="ml-grid two">
             <div className="ml-card">
-              <h4>Thornmaw, The Old Bulb</h4>
+              <h3>Thornmaw, The Old Bulb</h3>
               <p>Topsoil&apos;s miniboss. 30 HP, a ranged plant with a 42-frame tell. Break its bark, then hit the bulb, and stay out of the circles and the thorn lines.</p>
             </div>
             <div className="ml-card">
-              <h4>Rattletrap, The Runaway Cart</h4>
+              <h3>Rattletrap, The Runaway Cart</h3>
               <p>Iron Halls&apos; miniboss. 34 HP, a charger with a 45-frame tell. Jump out of its lane twice, then kick its kegs back at it.</p>
             </div>
           </div>
@@ -482,9 +482,9 @@ export default async function MinelightPage() {
             ]}
           />
           <div className="ml-grid three">
-            <div className="ml-card"><h4>Levels</h4><p>Cap 50. Each level needs 80 × L<sup>1.45</sup> XP: 8,099 in total for level 10, 130,288 for 30, 463,101 for 50.</p></div>
-            <div className="ml-card"><h4>Skill points</h4><p>One per level, two at levels 10 and 25, spent in a shared mining tree and one constellation tree per class. A node needs any one of its prerequisites; the root is free.</p></div>
-            <div className="ml-card"><h4>Rebirth</h4><p>From level 30 with a Heartstone. It resets gear and the bank, keeps classes and cosmetics, and adds x0.25 yield each time, up to x5.</p></div>
+            <div className="ml-card"><h3>Levels</h3><p>Cap 50. Each level needs 80 × L<sup>1.45</sup> XP: 8,099 in total for level 10, 130,288 for 30, 463,101 for 50.</p></div>
+            <div className="ml-card"><h3>Skill points</h3><p>One per level, two at levels 10 and 25, spent in a shared mining tree and one constellation tree per class. A node needs any one of its prerequisites; the root is free.</p></div>
+            <div className="ml-card"><h3>Rebirth</h3><p>From level 30 with a Heartstone. It resets gear and the bank, keeps classes and cosmetics, and adds x0.25 yield each time, up to x5.</p></div>
           </div>
           <div className="ml-col">
             <p>
@@ -552,9 +552,9 @@ export default async function MinelightPage() {
           />
           <h3 className="ml-h3">Controls</h3>
           <div className="ml-grid three">
-            <div className="ml-card"><h4>PC</h4><p>WASD to move, <strong>click to swing</strong>, Space to dash, E for a bomb, F for the ability, R for the ult, 1 to 9 for the hotbar.</p></div>
-            <div className="ml-card"><h4>Phone</h4><p>A thumbstick and one big SWING button, with the dash, bomb, ability and ult on an arc around it. The hotbar sits along the bottom and takes a tap.</p></div>
-            <div className="ml-card"><h4>Click to swing</h4><p>The client plays the swing at once and sends an intent; the server decides what it hit. A hit is never the client&apos;s claim.</p></div>
+            <div className="ml-card"><h3>PC</h3><p>WASD to move, <strong>click to swing</strong>, Space to dash, E for a bomb, F for the ability, R for the ult, 1 to 9 for the hotbar.</p></div>
+            <div className="ml-card"><h3>Phone</h3><p>A thumbstick and one big SWING button, with the dash, bomb, ability and ult on an arc around it. The hotbar sits along the bottom and takes a tap.</p></div>
+            <div className="ml-card"><h3>Click to swing</h3><p>The client plays the swing at once and sends an intent; the server decides what it hit. A hit is never the client&apos;s claim.</p></div>
           </div>
           <Diagram name="input" alt="Sequence diagram of one swing: the player clicks, the client plays the swing and sends an Attack intent, the server rate-limits and validates it, resolves the hit and broadcasts it, and every client plays the flash, sound and number." caption={<><b>One click, end to end.</b></>} />
         </Section>

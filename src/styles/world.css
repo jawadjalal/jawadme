@@ -15,7 +15,6 @@
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .world-flow { position: relative; z-index: 1; pointer-events: none; }
 .world-flow a, .world-flow button, .world-flow .w-ads { pointer-events: auto; }
-.ds:has(.hero.world) .dock[data-hide="true"] { transform: none; }
 
 /* the gate court: the name in his lettering at the top, the line under it, then the call; the void's ink falls
    from the top edge behind them so they never sit on the busy part of the scene */
