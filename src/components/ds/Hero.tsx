@@ -7,7 +7,7 @@ import { SITE } from "@/content/site";
 
 // The home hero. The name is set as a mark across the full width; one crystal seam draws down through "Mastermind",
 // splits it a few pixels along the cut and cools to a hairline that stays. The ember bar of facts wipes in under it,
-// then the painted panel opens below with the statement over its foot. The wall of ads sits right under the hero and
+// the statement stands beside the name, and the painted panel opens below with the call at its foot. The wall of ads sits right under the hero and
 // drifts; each ad opens in the viewer. Reduced motion: everything at rest and no seam.
 
 const SUB = "Hi! I'm Jawad Jalal. I'm 15 and in London, designing and building things.";
@@ -47,19 +47,30 @@ const chars = (w: string, from: number) =>
 export function Hero() {
   return (
     <section className="hero" data-hero="">
-      <h1 className="hero-mark" aria-label={SITE.headline}>
-        <span className="hero-w" aria-hidden="true">
-          {chars(W1, 0)}
-        </span>
-        <span className="hero-w hero-mm" aria-hidden="true" style={{ "--cl": poly("l"), "--cr": poly("r") } as React.CSSProperties}>
-          <span className="hero-half l">{chars(W2, W1.length)}</span>
-          <span className="hero-half r">{chars(W2, W1.length)}</span>
-          <svg className="hero-seam" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d={D} className="hero-glow" />
-            <path d={D} className="hero-core" />
-          </svg>
-        </span>
-      </h1>
+      <div className="hero-top">
+        <h1 className="hero-mark" aria-label={SITE.headline}>
+          <span className="hero-w" aria-hidden="true">
+            {chars(W1, 0)}
+          </span>
+          <span className="hero-w hero-mm" aria-hidden="true" style={{ "--cl": poly("l"), "--cr": poly("r") } as React.CSSProperties}>
+            <span className="hero-half l">{chars(W2, W1.length)}</span>
+            <span className="hero-half r">{chars(W2, W1.length)}</span>
+            <svg className="hero-seam" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d={D} className="hero-glow" />
+              <path d={D} className="hero-core" />
+            </svg>
+          </span>
+        </h1>
+        <p className="hero-say" aria-label={SUB}>
+          {SUB.split(" ").map((w, i) => (
+            <span key={i}>
+              <span className="hero-sw" aria-hidden="true">
+                <span style={{ animationDelay: 760 + i * 12 + "ms" }}>{w}</span>
+              </span>{" "}
+            </span>
+          ))}
+        </p>
+      </div>
       <div className="bar hero-bar">
         <span>Jawad Jalal</span>
         <span className="hide-s">[ Brands, ads, 3D, Roblox ]</span>
@@ -73,15 +84,6 @@ export function Hero() {
             <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="52px" priority />
             <span>Book a 15 min call ↗</span>
           </BookLink>
-          <p className="hero-say" aria-label={SUB}>
-            {SUB.split(" ").map((w, i) => (
-              <span key={i}>
-                <span className="hero-sw" aria-hidden="true">
-                  <span style={{ animationDelay: 760 + i * 12 + "ms" }}>{w}</span>
-                </span>{" "}
-              </span>
-            ))}
-          </p>
         </div>
       </div>
     </section>
