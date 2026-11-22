@@ -1,6 +1,11 @@
-/* /work/<case>: the lead still and every block at most its own pixels wide, pairs set level, the facts under the lines */
+/* /work/<case>: the lead still and every block at most its own pixels wide, pairs set level, the lines labelled with
+   the beat they tell, the facts under them. An ink lead narrower than the page sits centred on an ink card that runs
+   gutter to gutter, so it meets the title row's edges without being scaled up. */
 .case-lead { margin-block: 12px calc(14 * var(--u)); }
-.case-lead > .media { max-inline-size: var(--nw); }
+.case-lead > .media { max-inline-size: var(--nw); margin-inline: auto; }
+.case-lead-ink { background: var(--ink) content-box; }
+.case .case-beat { grid-column: 1 / -1; color: var(--dim); }
+.case .t-line + .case-beat { margin-top: 0.9em; }
 .case .b-full > .media { max-inline-size: var(--nw); margin-inline: auto; }
 .case .b-inset .media { max-inline-size: var(--nw); }
 .case-facts { padding-block: 0 calc(16 * var(--u)); }

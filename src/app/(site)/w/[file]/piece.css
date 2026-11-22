@@ -1,11 +1,15 @@
-/* /w/<piece>: the picture in one frame cut to its own shape, its facts, the rest of its campaign, the steps beside the
-   count on a wide screen and under the picture on a phone */
+/* /w/<piece>: the picture in one frame cut to its own shape and as tall as the screen allows, its facts, the rest of
+   its campaign, the steps beside the count on a wide screen and under the picture on a phone, and the site's dock over
+   the viewer with room left under the facts for it */
+.ds:has(.viewer) .dock { z-index: 80; }
+.ds:has(.viewer) .dock-sheet { z-index: 79; }
 .viewer .v-top { align-items: center; }
+.viewer .v-main { grid-template-columns: minmax(0, min(62%, calc((100svh - 64px) * var(--ar)))) minmax(0, 1fr); gap: clamp(24px, 3vw, 56px); padding-block: 12px; }
 .v-count { min-width: 4.4em; text-align: center; font-variant-numeric: tabular-nums; }
 .v-pic { container-type: size; height: 100%; min-height: 0; display: grid; place-items: center; }
 .viewer .v-stage { width: min(100cqw, 100cqh * var(--ar)); height: auto; }
 .viewer .v-stage img { object-fit: cover; }
-.viewer .v-info { gap: 22px; }
+.viewer .v-info { gap: 22px; padding-bottom: var(--dock); }
 .viewer .v-said { max-width: 30em; font: 600 clamp(18px, 1.45vw, 22px)/1.3 var(--f-sans); letter-spacing: -0.015em; color: var(--ink); text-wrap: pretty; }
 .v-facts { display: grid; margin: 0; max-width: 34em; font: 600 clamp(16px, 1.25vw, 19px)/1.3 var(--f-sans); letter-spacing: -0.01em; border-bottom: 1px solid var(--rule); }
 .v-facts div { display: grid; grid-template-columns: 5.5em minmax(0, 1fr); gap: 12px; padding: 9px 0; border-top: 1px solid var(--rule); }
@@ -15,10 +19,9 @@
 .viewer .v-strip img { object-fit: cover; }
 .viewer .v-strip a[aria-current] { opacity: 1; outline: 2px solid var(--ink); outline-offset: 3px; }
 .v-step { display: none; }
-.viewer .v-cta { padding: 0 var(--g) 12px; }
 @media (max-width: 1023px) {
-  .viewer .v-main { display: flex; flex-direction: column; align-items: stretch; gap: 14px; overflow-y: auto; padding-top: 14px; }
-  .viewer .v-info { display: contents; }
+  .viewer .v-main { display: flex; flex-direction: column; align-items: stretch; gap: 14px; overflow-y: auto; padding-top: 14px; padding-bottom: calc(var(--dock) + 8px); }
+  .viewer .v-info { display: contents; padding-bottom: 0; }
   .viewer .v-main > *, .viewer .v-info > * { flex-shrink: 0; }
   .viewer .v-pic { order: 1; container-type: normal; display: block; height: auto; }
   .viewer .v-stage { width: min(100%, (100svh - 300px) * var(--ar)); margin-inline: auto; }
@@ -28,7 +31,6 @@
   .v-facts div { padding: 7px 0; }
   .viewer .v-info .disclose { order: 5; }
   .viewer .v-top .v-nav { display: none; }
-  .viewer .v-cta { padding-bottom: 10px; }
 }
 @media (max-width: 520px) {
   .viewer .v-close { font-size: 17px; }
