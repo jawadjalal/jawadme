@@ -28,6 +28,12 @@ export default async function Cal({ searchParams }: Props) {
         <h1 className="cal-h">book a call</h1>
         <p className="cal-meta">15 min · video · free · europe/london</p>
       </header>
+      <p className="cal-mail cal-fb">
+        calendar not loading?{" "}
+        <a href={"https://cal.com/jawad-jalal-hesqbk/15min?src=" + src} target="_blank" rel="noopener">
+          open on cal.com ↗
+        </a>
+      </p>
       <div className="cal-row">
         <div>
           <div className="cal-intro">
@@ -39,12 +45,6 @@ export default async function Cal({ searchParams }: Props) {
           <div className="cal-embed">
             <CalInline email={IDENTITY.email} theme="light" />
           </div>
-          <p className="cal-mail">
-            calendar not loading?{" "}
-            <a href={"https://cal.com/jawad-jalal-hesqbk/15min?src=" + src} target="_blank" rel="noopener">
-              open on cal.com ↗
-            </a>
-          </p>
           <p className="cal-mail cal-alt">
             rather write? <MailLink src="cal" />
           </p>

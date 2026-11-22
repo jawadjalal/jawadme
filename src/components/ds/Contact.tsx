@@ -4,12 +4,13 @@ import "./contact.css";
 
 /** The two ways to reach him, side by side and equal: the call on the left, an email on the right. Both carry
  *  the page's src, so /cal?src= and email_open say where the ask came from. */
-export function Contact({ src, as: H = "h2" }: { src: string; as?: "h1" | "h2" }) {
+export function Contact({ src, as: H = "h2", lede }: { src: string; as?: "h1" | "h2"; lede?: string }) {
   return (
     <section className="ct" aria-labelledby={"ct-h-" + src}>
       <H id={"ct-h-" + src} className="ct-h">
         contact
       </H>
+      {lede ? <p className="ct-lede">{lede}</p> : null}
       <div className="ct-two">
         <div className="ct-c ct-call">
           <span className="ct-k">a 15 minute call</span>

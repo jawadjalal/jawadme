@@ -12,8 +12,8 @@ export const metadata: Metadata = meta({
 export default function ContactPage() {
   return (
     <main className="ct-p">
-      <Contact src="contact" as="h1" />
-      <Footer src="contact" first />
+      <Contact src="contact" as="h1" lede="two ways in, both one click." />
+      <Footer src="contact" first book={false} />
     </main>
   );
 }
