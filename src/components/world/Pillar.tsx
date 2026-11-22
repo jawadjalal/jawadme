@@ -2,7 +2,8 @@
 
 import { useCallback } from "react";
 import { BookLink } from "@/components/BookLink";
-import { MailLink } from "@/components/MailLink";
+import { Gilded } from "@/components/gilded/Gilded";
+import { MAIL, copyEmail, trackEmail } from "@/lib/mail";
 import { SITE } from "@/content/site";
 import { SOCIALS } from "@/lib/profile";
 import { Flames } from "./kit/Flames";
@@ -12,7 +13,9 @@ import type { Sign } from "./pillarScene";
 // The footer's object: a waymarker at a crossroads in the underworld, one sign per way out (./pillarScene on the world
 // kit's Stage). Each sign is a real link laid over the object: live, the scene moves it onto its sign every frame and
 // lights the sign for it; over the poster (phones, weak GPUs, reduced motion) it sits where the poster shows that sign.
-// "book a call" and "email" are the top arms, so booking lives on the pillar itself.
+// "book a call" and "email" are the top arms, so booking lives on the pillar itself. The call's arm is gilded like the
+// site's call: live, the 3D arm is gold leaf on dark enamel; over the poster (rendered without that arm) it is the
+// Gilded arm itself.
 
 const SOCIAL = ["x", "github", "instagram", "tiktok", "youtube"] as const;
 const SIGNS: readonly Sign[] = ["cal", "email", ...SOCIAL];
@@ -53,11 +56,20 @@ export function Pillar() {
             <BookLink src="footer-pillar">
               <span className="vh">{SITE.cta}</span>
             </BookLink>
+            <span className="pl-gild">
+              <Gilded variant="arm" src="footer-pillar" />
+            </span>
           </span>
           <span className="pl-a" data-sign="email" style={at("email")}>
-            <MailLink src="footer-pillar">
+            <a
+              href={MAIL}
+              onClick={() => {
+                trackEmail("footer-pillar");
+                void copyEmail();
+              }}
+            >
               <span className="vh">email</span>
-            </MailLink>
+            </a>
           </span>
           {SOCIAL.map((k) => (
             <span key={k} className="pl-a" data-sign={k} style={at(k)}>

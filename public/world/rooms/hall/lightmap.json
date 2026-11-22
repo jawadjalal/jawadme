@@ -1,0 +1,13 @@
+{
+ "file": "lightmap.webp",
+ "png": "lightmap.png",
+ "uv": "TEXCOORD_1",
+ "size": 640,
+ "encoding": "sRGB 8-bit",
+ "scale": 9.1235,
+ "note": "decode as sRGB to linear, multiply by scale = diffuse irradiance (Cycles diffuse light pass). three.js: lightMap.colorSpace = SRGBColorSpace, lightMap.channel = 1, flipY = false, lightMapIntensity = scale * PI",
+ "three_lightMapIntensity": 28.6623,
+ "fires_at": "rest level 0.4",
+ "pool_target_mint": "#8af5c6",
+ "loom_glow": "baked at full (the loom has no runtime flame)"
+}

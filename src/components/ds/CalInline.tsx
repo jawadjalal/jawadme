@@ -45,7 +45,7 @@ export function CalInline({ email, theme }: { email: string; theme?: "light" | "
       ) : null}
       {state === "failed" ? (
         <p className="cal-note">
-          The calendar did not load. <a href={"https://cal.com/" + CAL_LINK + "?src=" + src}>Open it on Cal.com</a> or email <a href={"mailto:" + email}>{email}</a>.
+          the calendar did not load. <a href={"https://cal.com/" + CAL_LINK + "?src=" + src}>open it on cal.com</a> or email <a href={"mailto:" + email}>{email}</a>.
         </p>
       ) : null}
     </div>

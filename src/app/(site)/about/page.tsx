@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Contact } from "@/components/ds/Contact";
 import { Contributions } from "@/components/ds/Contributions";
@@ -29,6 +30,9 @@ export default function About() {
       <JsonLd data={LD} />
       <article className="ab-text">
         <h1 className="ab-k">about</h1>
+        <figure className="ab-face">
+          <Image src="/portrait.png" alt="jawad jalal" width={400} height={400} sizes="400px" />
+        </figure>
         <p className="ab-lead">hi! i&apos;m jawad jalal. i&apos;m 15 and in london, designing and building things.</p>
         <p>
           brands, ads, websites, 3d and roblox games. i design it, and i build it: the brand, the interface, and the thing that
