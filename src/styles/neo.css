@@ -29,7 +29,7 @@ html:has(.ds) {
   --display: var(--f-disp);
   --f-bar: var(--f-display), var(--f-geist), "Helvetica Neue", Arial, sans-serif;
   --f-sans: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
-  --f-mono: var(--f-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --f-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   background-color: var(--bg);
   color: var(--fg);

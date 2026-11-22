@@ -1,10 +1,10 @@
 import localFont from "next/font/local";
-import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { GeistMono } from "geist/font/mono";
 
-// Neo-Industrial editorial typography inspired by Brass Hands, Joyco & Outpace:
-// - Space Grotesk: crisp geometric industrial display headlines with tight tracking
-// - JetBrains Mono: technical uppercase telemetry, specs, navigation & bracketed indices
-// - Geist: ultra-clean variable sans for body copy and long-form UI
+// 100% local, zero-network-flake industrial typography:
+// - Cabinet Grotesk (700/800): tight geometric industrial display
+// - Geist Variable: crisp Swiss body & UI
+// - Geist Mono: sharp technical monospace for telemetry, nav & indices
 
 export const geist = localFont({
   src: [{ path: "../fonts/Geist-var.woff2", weight: "100 900", style: "normal" }],
@@ -14,18 +14,15 @@ export const geist = localFont({
   fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });
 
-export const display = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+export const display = localFont({
+  src: [
+    { path: "../fonts/CabinetGrotesk-700.woff2", weight: "700", style: "normal" },
+    { path: "../fonts/CabinetGrotesk-800.woff2", weight: "800", style: "normal" },
+  ],
   variable: "--f-display",
   display: "swap",
+  adjustFontFallback: "Arial",
+  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });
 
-export const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--f-mono",
-  display: "swap",
-});
-
-export const fontVars = `${geist.variable} ${display.variable} ${mono.variable}`;
+export const fontVars = `${geist.variable} ${display.variable} ${GeistMono.variable}`;
