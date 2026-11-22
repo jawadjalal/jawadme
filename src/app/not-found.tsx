@@ -28,7 +28,7 @@ export default function NotFound() {
           </nav>
         </LostMoment>
       </main>
-      <Footer src="404" />
+      <Footer src="404" pillar={false} />
       <Dock />
     </div>
   );
