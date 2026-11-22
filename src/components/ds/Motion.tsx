@@ -137,7 +137,19 @@ export function Motion() {
         }),
       { rootMargin: "0px 0px -6% 0px" },
     );
-    document.querySelectorAll(".media[data-plate], [data-in]").forEach((el) => io.observe(el));
+    const SEL = ".media[data-plate]:not(.in), [data-in]:not(.in)";
+    document.querySelectorAll(SEL).forEach((el) => io.observe(el));
+    // pictures that mount later on the same route (a query change, a client list) register as they arrive
+    const mo = new MutationObserver((ms) =>
+      ms.forEach((r) =>
+        r.addedNodes.forEach((n) => {
+          if (!(n instanceof Element)) return;
+          if (n.matches(SEL)) io.observe(n);
+          n.querySelectorAll(SEL).forEach((el) => io.observe(el));
+        }),
+      ),
+    );
+    mo.observe(document.body, { childList: true, subtree: true });
     let off: (() => void) | undefined;
     let dead = false;
     loadKit().then(({ gsap, ScrollTrigger, SplitText }) => {
@@ -187,6 +199,7 @@ export function Motion() {
       dead = true;
       off?.();
       io.disconnect();
+      mo.disconnect();
       delete root.dataset.room;
     };
   }, [path]);

@@ -4,6 +4,7 @@
 
 import { ADS, HALL } from "@/content/ads";
 import { FEED, type Picture } from "@/content/feed";
+import sizes from "@/content/feed-sizes.json";
 import { GALLERY, adPiece, type Piece } from "@/lib/gallery";
 
 export type { Piece };
@@ -23,6 +24,11 @@ const OLD: Piece[] = FEED.filter((e): e is Picture => "file" in e && !("embed" i
   credit: "designed by jawad jalal",
   kind: "ad design",
   spec: Boolean(p.unsolicited),
+  slides: p.slides?.map((f) => {
+    const [w, h] = (sizes as Record<string, number[]>)[f];
+    return { src: `/work/2026-11/${f}.webp`, w, h };
+  }),
+  video: p.video && `/work/2026-11/${p.video}`,
 }));
 
 export const CURATED = GALLERY;

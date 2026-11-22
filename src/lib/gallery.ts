@@ -7,7 +7,9 @@ import { PROJECTS, type Media, type Project } from "@/content/work";
 import { BEVEL, CONCEPTS, COSMOS, IGNARU, SITES, type DesignPiece } from "@/lib/design";
 
 /** A picture with its own address at /w/<id>. */
-export type Piece = { id: string; src: string; sm: string; w: number; h: number; alt: string; line: string; group: string; credit: string; kind: string; spec: boolean };
+export type Piece = { id: string; src: string; sm: string; w: number; h: number; alt: string; line: string; group: string; credit: string; kind: string; spec: boolean; slides?: Pic[]; video?: string };
+/** a breakdown's slide after its cover */
+export type Pic = { src: string; w: number; h: number };
 /** `fact` and `year` only where the repo has them (a role's company context, a case's year); never made up. */
 export type Entry = { key: string; href: string; media: Media; title: string; line: string; piece?: Piece; fact?: string; year?: number };
 export type Section = "ads" | "web" | "3d";

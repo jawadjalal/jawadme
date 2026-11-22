@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { preload } from "react-dom";
+import { LoopVideo } from "@/components/ds/LoopVideo";
 import { Gilded } from "@/components/gilded/Gilded";
 
-type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; kind: string; spec: boolean };
+type Pic = { src: string; w: number; h: number };
+type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; kind: string; spec: boolean; slides?: Pic[]; video?: string };
 type Near = { id: string; src: string; w: number; h: number };
 type At = { n: number; of: number; prev: Near; next: Near; strip: { id: string; sm: string; alt: string; said: string }[] } | null;
 type Facts = { client: string; year?: number; format: string; of?: string };
@@ -78,8 +80,17 @@ export function Viewer({ piece, said, at, facts, camp }: { piece: Piece; said: s
       <div className="v-main">
         <div className="v-pic">
           <div className="v-stage" style={{ aspectRatio: `${piece.w} / ${piece.h}` }}>
-            <Image key={piece.id} src={piece.src} width={piece.w} height={piece.h} alt={piece.alt} priority sizes={SIZES} quality={90} style={{ viewTransitionName: "piece" }} />
+            {piece.video ? (
+              <LoopVideo key={piece.id} src={piece.video} poster={piece.src} label={piece.alt} />
+            ) : (
+              <Image key={piece.id} src={piece.src} width={piece.w} height={piece.h} alt={piece.alt} priority sizes={SIZES} quality={90} style={{ viewTransitionName: "piece" }} />
+            )}
           </div>
+          {piece.slides?.map((s, k) => (
+            <div key={s.src} className="v-stage v-slide" style={{ aspectRatio: `${s.w} / ${s.h}` }}>
+              <Image src={s.src} width={s.w} height={s.h} alt={`${piece.alt} slide ${k + 2} of ${piece.slides!.length + 1}.`} sizes={SIZES} quality={86} />
+            </div>
+          ))}
         </div>
         <div className="v-info">
           <h1 className="v-title">{piece.line}</h1>

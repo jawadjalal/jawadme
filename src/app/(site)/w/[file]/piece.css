@@ -52,3 +52,8 @@
 @media (max-width: 520px) {
   .viewer .v-close { font-size: 17px; }
 }
+/* a loop plays in the stage on its poster; a breakdown's slides follow its cover in one scrolling column */
+.viewer .v-stage video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.viewer .v-pic:has(.v-slide) { container-type: inline-size; display: grid; gap: 16px; place-items: start center; overflow-y: auto; overscroll-behavior: contain; }
+.viewer .v-pic:has(.v-slide) .v-stage { width: min(100%, 72svh * var(--ar)); height: auto; }
+.viewer .v-slide img { object-fit: contain; }

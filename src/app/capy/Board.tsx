@@ -39,6 +39,9 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   const [list, setList] = useState(false);
   /** phones open on the list; the canvas loads only once they ask for the board */
   const [asked, setAsked] = useState(false);
+  /** null until the first client check; the desktop board mounts its engine whenever the screen is wide or asked for */
+  const [phone, setPhone] = useState<boolean | null>(null);
+  const [engine, setEngine] = useState<Engine | null>(null);
   const [exp, setExp] = useState(false);
   const [help, setHelp] = useState(false);
   const [clustersOpen, setClustersOpen] = useState(false);
@@ -51,12 +54,21 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     toastT.current = setTimeout(() => setToast(null), ms);
   }, []);
 
-  // the engine, once
   useEffect(() => {
-    if (list || !canvas.current) return;
-    if (!asked && matchMedia(PHONE).matches) return;
+    const mq = matchMedia(PHONE);
+    const f = () => setPhone(mq.matches);
+    f();
+    mq.addEventListener("change", f);
+    return () => mq.removeEventListener("change", f);
+  }, []);
+
+  // the engine, whenever the board is on screen: a wide screen, or a phone that asked for it
+  const on = asked || phone === false;
+  useEffect(() => {
+    if (list || !on || !canvas.current) return;
     const e = new Engine(canvas.current, board);
     eng.current = e;
+    setEngine(e);
     e.redraw();
     e.onChange = setSt;
     const cs = getComputedStyle(root.current!);
@@ -86,13 +98,14 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     return () => {
       e.destroy();
       eng.current = null;
+      setEngine(null);
       delete w.__capy;
     };
-  }, [board, list, asked]);
+  }, [board, list, on]);
 
-  // the chrome's footprint, so fits and flights land in the clear part of the screen
+  // the chrome's footprint, so fits and flights land in the clear part of the screen; set up for every engine
   useEffect(() => {
-    const e = eng.current;
+    const e = engine;
     if (!e) return;
     const set = () => {
       const wide = window.innerWidth >= 900;
@@ -104,7 +117,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     set();
     window.addEventListener("resize", set);
     return () => window.removeEventListener("resize", set);
-  }, [hidden, list]);
+  }, [hidden, engine]);
 
   // the selection rides in the URL so a piece can be linked
   useEffect(() => {
