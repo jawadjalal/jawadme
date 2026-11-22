@@ -98,9 +98,6 @@
 /* the landing: the signpost's board is the call */
 .w-river { position: relative; height: 100svh; }
 .w-sign { position: absolute; top: calc(50% - 10svh); left: 50%; display: grid; justify-items: center; gap: 12px; transform: translate(-50%, -50%); }
-.w-sign-board { display: inline-flex; align-items: baseline; gap: 0.35em; padding: 0.36em 0.62em 0.42em; background: var(--accent); color: #140d09; font: 700 clamp(34px, 4.4vw, 78px)/1 var(--f-disp); letter-spacing: -0.045em; white-space: nowrap; transition: background var(--t-fast), transform var(--t-base) var(--ease); }
-.w-sign .w-sign-board { color: #140d09; }
-.w-sign-board:hover { background: #ff7b3d; transform: translateY(-3px); }
 .w-sign-p { margin: 0; padding: 8px 12px; background: #100b09; font: 600 17px/1.2 var(--f-bar); color: #e9dccb; }
 .w-river .hero-bar { position: absolute; right: 0; bottom: var(--dock); left: 0; }
 
@@ -109,7 +106,6 @@
   .w-gate .wm { width: 76vw; }
   .w-say .hero-say { font-size: 19px; }
   .stmt { min-height: 110svh; }
-  .w-sign-board { font-size: 40px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .world-poster, .world-gl { transition: none; }

@@ -1,4 +1,3 @@
-import { BookLink } from "@/components/BookLink";
 import { Gilded } from "@/components/gilded/Gilded";
 import { AdRing } from "@/components/ds/AdRing";
 import { Statement } from "@/components/ds/Statement";
@@ -55,9 +54,7 @@ export function Hero() {
         <Statement />
         <div className="w-river" data-world-stop="river">
           <div className="w-sign">
-            <BookLink src="home-world" className="w-sign-board" cursor>
-              book a call <span aria-hidden="true">↗</span>
-            </BookLink>
+            <Gilded variant="cta" src="home-world" size="hero" />
             <p className="w-sign-p">15 minutes, on a day that suits you.</p>
             <Sound />
           </div>
