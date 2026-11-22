@@ -13,7 +13,7 @@ export default function ContactPage() {
   return (
     <main className="ct-p">
       <Contact src="contact" as="h1" />
-      <Footer src="contact" />
+      <Footer src="contact" first />
     </main>
   );
 }
