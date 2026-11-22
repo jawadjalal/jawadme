@@ -9,8 +9,9 @@ import { Gilded } from "@/components/gilded/Gilded";
 
 type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; kind: string; spec: boolean };
 type Near = { id: string; src: string; w: number; h: number };
-type At = { n: number; of: number; prev: Near; next: Near; strip: { id: string; sm: string; alt: string }[] } | null;
+type At = { n: number; of: number; prev: Near; next: Near; strip: { id: string; sm: string; alt: string; said: string }[] } | null;
 type Facts = { client: string; year?: number; format: string; of?: string };
+type Camp = { count: string; note?: string; caseHref?: string; next: { id: string; said: string } } | null;
 
 const SIZES = "(min-width: 1024px) 58vw, 100vw";
 
@@ -21,13 +22,13 @@ function warm(p: Near) {
 }
 
 /** The piece full size in a frame cut to its own shape, its name, picture and facts beside it with the rest of its
- *  campaign, previous and next beside the count (under the picture on a phone, or by arrow keys and swipe), Escape back
+ *  campaign (each piece with what it shows, the campaign's line and case study, and the way on to its next piece),
+ *  previous and next beside the count (under the picture on a phone, or by arrow keys and swipe), Escape back
  *  to the wall. The site's dock carries the way round and the call. */
-export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Facts }) {
+export function Viewer({ piece, said, at, facts, camp }: { piece: Piece; said: string; at: At; facts: Facts; camp: Camp }) {
   const router = useRouter();
   const back = "/work#" + piece.id;
   const touch = useRef<number | null>(null);
-  const said = piece.alt.startsWith(piece.line + ". ") ? piece.alt.slice(piece.line.length + 2) : piece.alt;
   useEffect(() => {
     if (at) {
       router.prefetch(`/w/${at.next.id}`);
@@ -113,14 +114,32 @@ export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Fact
               <dd>{piece.credit}</dd>
             </div>
           </dl>
-          {at?.strip.length ? (
-            <nav className="v-strip" aria-label={piece.group} style={{ ["--n" as string]: at.strip.length > 4 ? Math.ceil(at.strip.length / 2) : at.strip.length }}>
-              {at.strip.map((item) => (
-                <Link key={item.id} href={`/w/${item.id}`} replace scroll={false} aria-current={item.id === piece.id ? "page" : undefined}>
-                  <Image src={item.sm} width={160} height={200} alt={item.alt} sizes="(min-width: 1024px) 14vw, 1px" />
-                </Link>
-              ))}
-            </nav>
+          {at?.strip.length && camp ? (
+            <section className="v-camp" aria-labelledby="v-camp-h">
+              <header className="v-camp-top">
+                <h2 className="v-camp-h" id="v-camp-h">
+                  {piece.group} <span className="v-camp-c">{camp.count}</span>
+                </h2>
+                {camp.caseHref ? (
+                  <Gilded variant="pill" href={camp.caseHref}>
+                    case study ↗
+                  </Gilded>
+                ) : null}
+              </header>
+              {camp.note ? <p className="v-camp-n">{camp.note}</p> : null}
+              <nav className="v-strip" aria-label={piece.group} style={{ ["--n" as string]: at.strip.length > 4 ? Math.ceil(at.strip.length / 2) : at.strip.length }}>
+                {at.strip.map((item) => (
+                  <Link key={item.id} href={`/w/${item.id}`} replace scroll={false} aria-current={item.id === piece.id ? "page" : undefined}>
+                    <Image src={item.sm} width={160} height={200} alt={item.alt} sizes={`(min-width: 1024px) ${at.strip.length > 4 ? 10 : 14}vw, ${at.strip.length > 4 ? 25 : 33}vw`} />
+                    {at.strip.length > 4 ? null : <span className="v-strip-t">{item.said}</span>}
+                  </Link>
+                ))}
+              </nav>
+              <Link href={`/w/${camp.next.id}`} replace scroll={false} className="v-next">
+                <span className="v-next-k">next in {piece.group} →</span>
+                <span className="v-next-t">{camp.next.said}</span>
+              </Link>
+            </section>
           ) : null}
           {piece.spec ? <p className="disclose">independent work. not commissioned by or affiliated with the brands shown.</p> : null}
         </div>
