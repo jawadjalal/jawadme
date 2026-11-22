@@ -163,8 +163,10 @@ export function paint(S: Shared, ramp: THREE.Texture, color: string, kind: Kind,
           }
           vec2 bp = an.y > 0.6 ? vWP.xz : vec2(vWP.x - vWP.z, vWP.y);
           float big = fbm(bp * 0.16);
+          big = mix(big, (floor(big * 4.0) + smoothstep(0.42, 0.58, fract(big * 4.0))) / 4.0, 0.8);
           float brush = n2(vec2(bp.x * 0.9 + bp.y * 0.3, bp.y * 5.0 - bp.x * 0.4)) * 0.6 + n2(bp * vec2(3.0, 0.7)) * 0.4;
-          diffuseColor.rgb *= mix(0.74, 1.22, big) * mix(0.86, 1.1, brush);
+          brush = smoothstep(0.38, 0.46, brush) * 0.55 + smoothstep(0.58, 0.64, brush) * 0.45;
+          diffuseColor.rgb *= mix(0.74, 1.22, big) * mix(0.88, 1.08, brush);
           diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(0.84, 0.94, 1.14), smoothstep(0.55, 0.78, big) * 0.6);
           ${kind.k === "stone" ? "diffuseColor.rgb *= mix(0.5, 1.0, smoothstep(0.0, 1.8, vH));" : ""}
           ${PATTERN[kind.k]}`,
