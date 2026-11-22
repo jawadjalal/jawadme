@@ -29,8 +29,8 @@ const mark = () => {
  *  label, the right cap rides the clip edge, so the label never moves and nothing lays out. A tap holds it open on touch,
  *  then navigates. arm is the call as the footer pillar's sign, email the frame with a warmer face, pill and filter the
  *  small rounded forms with a thin fret rim and a selected state. Like BookCallB, a hero cta in view sets
- *  html[data-call-in-view] and the first observation sets html[data-call-seen], which releases a dock cta with `hold`; a
- *  pill with `call` (the call set as a pill) counts the same way. */
+ *  html[data-call-in-view] and the first observation sets html[data-call-seen], which releases a dock cta with `hold`; the
+ *  footer pillar's arm and a pill with `call` (the call set as a pill) count the same way. */
 export function Gilded(p: Props) {
   const ref = useRef<HTMLAnchorElement>(null);
   const more = useRef<HTMLSpanElement>(null);
@@ -40,7 +40,7 @@ export function Gilded(p: Props) {
   useEffect(() => () => window.clearTimeout(copiedFor.current), []);
   const router = useRouter();
   const cta = p.variant === "cta";
-  const watch = (cta && p.size === "hero") || (p.variant === "pill" && !!p.call);
+  const watch = (cta && p.size === "hero") || p.variant === "arm" || (p.variant === "pill" && !!p.call);
   useEffect(() => {
     const el = ref.current;
     const m = more.current;
