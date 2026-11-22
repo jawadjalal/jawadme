@@ -367,8 +367,7 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .v-close:hover { color: var(--white) !important; }
 .v-main { min-height: 0; display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr); gap: var(--g); align-items: center; padding: 18px var(--g); }
 .v-stage { min-width: 0; min-height: 0; height: 100%; display: grid; place-items: center; overflow: hidden; }
-.v-stage img { height: 100%; width: 100%; min-height: 0; object-fit: contain; animation: vin 420ms var(--ease); }
-@keyframes vin { from { opacity: 0; transform: scale(0.985); } }
+.v-stage img { height: 100%; width: 100%; min-height: 0; object-fit: contain; }
 .v-info { display: grid; align-content: center; gap: 16px; max-height: 100%; overflow-y: auto; padding: 6px; }
 .v-info > p { font: 700 20px/1.1 var(--f-bar); letter-spacing: -0.025em; color: var(--dim); }
 .v-top::before { animation: wipe 520ms var(--ease-cut) both; }
@@ -399,7 +398,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .ds:has(.cal) { background-image: none; }
 .cal { min-height: 100svh; display: grid; grid-template-rows: auto 1fr; }
 .cal-bar { align-items: center; padding-block: 0; height: 40px; }
-.cal-bar > * { animation: fade 400ms 200ms both; }
 .cal-bar::before { animation: wipe 520ms var(--ease-cut) both; }
 .cal-home { display: flex; align-items: center; gap: 8px; min-height: 44px; }
 .cal-home img { width: 22px; height: auto; transition: transform var(--sp-pop-t) var(--sp-pop); }

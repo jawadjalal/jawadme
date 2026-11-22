@@ -43,7 +43,7 @@ export function Media({
       {m.loop && !c ? (
         <LoopVideo src={m.loop} poster={m.src} label={m.alt} />
       ) : (
-        <Image src={m.src} width={m.w} height={m.h} alt={m.alt} sizes={c ? `(min-width: 768px) ${Math.ceil((100 * m.w) / wide[2])}vw, ${Math.ceil((100 * m.w) / phone[2])}vw` : sizes} priority={priority} fetchPriority={priority ? "high" : undefined} quality={quality} />
+        <Image src={m.src} width={m.w} height={m.h} alt={m.alt} sizes={c ? `(min-width: 768px) ${Math.ceil((100 * m.w) / wide[2])}vw, min(${Math.ceil((100 * m.w) / phone[2])}vw, 1100px)` : sizes} priority={priority} fetchPriority={priority ? "high" : undefined} quality={quality} />
       )}
       {priority ? null : <i className="plate" style={delay ? { transitionDelay: `${delay}ms` } : undefined} />}
     </div>
