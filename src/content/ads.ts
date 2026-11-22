@@ -1,6 +1,6 @@
 // The ad curation: one list feeds the home hero and gallery, /ads, the ad case studies and the viewer (/w/<id>).
 // Swap the list and everything follows. Source: JAWA-10's curation (every ad Jawad rated 6 or higher), in its order.
-// Every piece is independent work, not commissioned, except thauma, which is captioned only as its brand and hangs only in
+// The nine brand concepts of 22 Nov (cisco to whoop) lead; they are spec work like the rest. Every piece is independent work, not commissioned, except thauma, which is captioned only as its brand and hangs only in
 // the home hall (HALL below), never on /work. Order: the seven
 // from his 21 Nov ads drop (blind-ranked, handoffs/JAWA-11/new-ads), then the four from his 21 Nov X post (Vercel, Midjourney, Mistral,
 // Lovable; x.com/jawadjalal/status/2124118088819834999), then the type-pass set (handoffs/JAWA-11/new-ads, his picks in
@@ -38,6 +38,15 @@ const palantir = (id: string, alt: string, w: number, h: number): Ad => ({
 });
 
 const LIST = [
+  fresh("cisco", "cisco", "the bridge to possible. cisco concept, the golden gate bridge rising through fog over san francisco."),
+  fresh("subaru", "subaru", "named after these stars. subaru concept, the pleiades star cluster glowing blue."),
+  fresh("asana", "asana", "plan. automate. execute. asana concept, a three-towered castle from above, shaped like the asana mark."),
+  fresh("tesla", "tesla", "sustainable abundance. tesla concept, a t-shaped pier in green water, seen from above."),
+  fresh("twilio", "twilio", "ask your developer. twilio concept, four trees in a roundabout forming the twilio mark."),
+  fresh("strava", "strava", "train, track, share. strava concept, a cyclist's hand on the bars in orange duotone."),
+  fresh("on", "on", "run on clouds. on concept, a running shoe mid-stride in blue duotone."),
+  fresh("spacex", "spacex", "making life multiplanetary. spacex concept, a rocket climbing on a plume of smoke."),
+  fresh("whoop", "whoop", "unlock human performance. whoop concept, a swimmer seen from above in blue duotone."),
   fresh("thauma-moon", "thauma", "thauma: roblox studio brand. a moon cut into a staircase on black.", false),
   fresh("nike-runner", "nike", "nike concept. a motion-blurred runner in duotone with the swoosh crossing the frame."),
   fresh("sam-embrace", "sam", "sam concept. a motion-smeared embrace in grain."),
