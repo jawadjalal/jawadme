@@ -20,13 +20,8 @@ const shape = (w: number, h: number) => {
   return w / d <= 21 && h / d <= 21 ? `${w / d}:${h / d}` : `${w} × ${h}`;
 };
 
-/** The four pieces beside this one: the rest of its room first, then its neighbours on the wall. */
-function beside(i: number) {
-  const n = CURATED.length;
-  const own = CURATED.filter((c, j) => j !== i && c.group === CURATED[i].group);
-  const ring = [1, -1, 2, -2, 3, -3, 4, -4].map((d) => CURATED[(i + d + n) % n]);
-  return [...own, ...ring.filter((c) => !own.includes(c))].slice(0, 4).map((c) => ({ id: c.id, sm: c.sm, alt: c.alt }));
-}
+/** Every piece of this one's campaign, itself included. */
+const campaign = (i: number) => CURATED.filter((c) => c.group === CURATED[i].group);
 
 export const dynamicParams = false;
 export const generateStaticParams = () => PIECES.map((p) => ({ file: p.id }));
@@ -43,8 +38,9 @@ export default async function Piece({ params }: Props) {
   const p = pieceById(file);
   if (!p) notFound();
   const n = CURATED.length;
-  const at = i >= 0 ? { n: i + 1, of: n, prev: near(CURATED[(i - 1 + n) % n]), next: near(CURATED[(i + 1) % n]), strip: beside(i) } : null;
-  const facts = { client: p.group, year: PROJECTS.find((c) => c.name === p.group)?.year, role: `${p.kind}, ${shape(p.w, p.h)}` };
+  const own = i >= 0 ? campaign(i) : [];
+  const at = i >= 0 ? { n: i + 1, of: n, prev: near(CURATED[(i - 1 + n) % n]), next: near(CURATED[(i + 1) % n]), strip: own.length > 1 ? own.map((c) => ({ id: c.id, sm: c.sm, alt: c.alt })) : [] } : null;
+  const facts = { client: p.group, year: PROJECTS.find((c) => c.name === p.group)?.year, format: shape(p.w, p.h), of: own.length > 1 ? `${own.findIndex((c) => c.id === p.id) + 1} of ${own.length}` : undefined };
   return (
     <>
       {p.credit.includes("jawad jalal") ? <JsonLd data={pieceWork(p)} /> : null}

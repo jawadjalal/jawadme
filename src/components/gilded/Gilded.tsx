@@ -12,7 +12,7 @@ type Props =
   | { variant: "cta"; src: string; size: "dock" | "hero"; hold?: boolean }
   | { variant: "arm"; src: string }
   | { variant: "email"; src: string; children?: ReactNode }
-  | { variant: "pill"; href: string; selected?: boolean; onClick?: () => void; children: ReactNode }
+  | { variant: "pill"; href: string; selected?: boolean; onClick?: () => void; call?: boolean; prefetch?: boolean; children: ReactNode }
   | { variant: "filter"; href: string; selected?: boolean; children: ReactNode }
   | { variant: "filter"; onClick: () => void; selected?: boolean; children: ReactNode };
 
@@ -29,7 +29,8 @@ const mark = () => {
  *  label, the right cap rides the clip edge, so the label never moves and nothing lays out. A tap holds it open on touch,
  *  then navigates. arm is the call as the footer pillar's sign, email the frame with a warmer face, pill and filter the
  *  small rounded forms with a thin fret rim and a selected state. Like BookCallB, a hero cta in view sets
- *  html[data-call-in-view] and the first observation sets html[data-call-seen], which releases a dock cta with `hold`. */
+ *  html[data-call-in-view] and the first observation sets html[data-call-seen], which releases a dock cta with `hold`; a
+ *  pill with `call` (the call set as a pill) counts the same way. */
 export function Gilded(p: Props) {
   const ref = useRef<HTMLAnchorElement>(null);
   const more = useRef<HTMLSpanElement>(null);
@@ -39,14 +40,14 @@ export function Gilded(p: Props) {
   useEffect(() => () => window.clearTimeout(copiedFor.current), []);
   const router = useRouter();
   const cta = p.variant === "cta";
-  const hero = cta && p.size === "hero";
+  const watch = (cta && p.size === "hero") || (p.variant === "pill" && !!p.call);
   useEffect(() => {
     const el = ref.current;
     const m = more.current;
-    if (!el || !m) return;
-    const ro = new ResizeObserver(() => el.style.setProperty("--mw", m.offsetWidth + "px"));
-    ro.observe(m);
-    if (!hero) return () => ro.disconnect();
+    if (!el) return;
+    const ro = m ? new ResizeObserver(() => el.style.setProperty("--mw", m.offsetWidth + "px")) : null;
+    if (m) ro?.observe(m);
+    if (!watch) return () => ro?.disconnect();
     const io = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) inView.add(el);
       else inView.delete(el);
@@ -54,12 +55,12 @@ export function Gilded(p: Props) {
     });
     io.observe(el);
     return () => {
-      ro.disconnect();
+      ro?.disconnect();
       io.disconnect();
       inView.delete(el);
       mark();
     };
-  }, [hero]);
+  }, [watch]);
 
   const face = (label: ReactNode) => (
     <>
@@ -119,12 +120,14 @@ export function Gilded(p: Props) {
   if (p.variant === "pill" || p.variant === "filter") {
     return (
       <Link
+        ref={ref}
         href={p.href}
         className="gl"
         data-v={p.variant}
         aria-current={p.selected ? "page" : undefined}
         scroll={p.variant === "filter" ? false : undefined}
         onClick={p.variant === "pill" ? p.onClick : undefined}
+        prefetch={p.variant === "pill" ? p.prefetch : undefined}
       >
         {face(p.children)}
       </Link>

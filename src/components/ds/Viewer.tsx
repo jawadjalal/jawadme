@@ -7,10 +7,10 @@ import { useEffect, useRef } from "react";
 import { preload } from "react-dom";
 import { Gilded } from "@/components/gilded/Gilded";
 
-type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; spec: boolean };
+type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; kind: string; spec: boolean };
 type Near = { id: string; src: string; w: number; h: number };
 type At = { n: number; of: number; prev: Near; next: Near; strip: { id: string; sm: string; alt: string }[] } | null;
-type Facts = { client: string; year?: number; role: string };
+type Facts = { client: string; year?: number; format: string; of?: string };
 
 const SIZES = "(min-width: 1024px) 58vw, 100vw";
 
@@ -20,12 +20,14 @@ function warm(p: Near) {
   preload(props.src, { as: "image", imageSrcSet: props.srcSet, imageSizes: props.sizes, fetchPriority: "low" });
 }
 
-/** The piece full size in a frame cut to its own shape, its name and facts beside it, previous and next beside the
- *  count (or by arrow keys and swipe), Escape back to the wall, and the call block in the corner. */
+/** The piece full size in a frame cut to its own shape, its name, picture and facts beside it with the rest of its
+ *  campaign, previous and next beside the count (under the picture on a phone, or by arrow keys and swipe), Escape back
+ *  to the wall, and the call block in the corner. */
 export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Facts }) {
   const router = useRouter();
   const back = "/work#" + piece.id;
   const touch = useRef<number | null>(null);
+  const said = piece.alt.startsWith(piece.line + ". ") ? piece.alt.slice(piece.line.length + 2) : piece.alt;
   useEffect(() => {
     if (at) {
       router.prefetch(`/w/${at.next.id}`);
@@ -79,7 +81,7 @@ export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Fact
         </div>
         <div className="v-info">
           <h1 className="v-title">{piece.line}</h1>
-          <p>{`${piece.group}, ${piece.credit}.`}</p>
+          <p className="v-said">{said}</p>
           <dl className="v-facts">
             <div>
               <dt>client</dt>
@@ -92,21 +94,45 @@ export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Fact
               </div>
             ) : null}
             <div>
-              <dt>role</dt>
-              <dd>{facts.role}</dd>
+              <dt>work</dt>
+              <dd>{piece.kind}</dd>
+            </div>
+            <div>
+              <dt>format</dt>
+              <dd>{facts.format}</dd>
+            </div>
+            {facts.of ? (
+              <div>
+                <dt>piece</dt>
+                <dd>{facts.of}</dd>
+              </div>
+            ) : null}
+            <div>
+              <dt>credit</dt>
+              <dd>{piece.credit}</dd>
             </div>
           </dl>
           {at?.strip.length ? (
-            <nav className="v-strip" aria-label="more work">
+            <nav className="v-strip" aria-label={piece.group} style={{ ["--n" as string]: at.strip.length > 4 ? Math.ceil(at.strip.length / 2) : at.strip.length }}>
               {at.strip.map((item) => (
-                <Link key={item.id} href={`/w/${item.id}`} replace scroll={false}>
-                  <Image src={item.sm} width={160} height={200} alt={item.alt} sizes="(min-width: 1024px) 11vw, 1px" />
+                <Link key={item.id} href={`/w/${item.id}`} replace scroll={false} aria-current={item.id === piece.id ? "page" : undefined}>
+                  <Image src={item.sm} width={160} height={200} alt={item.alt} sizes="(min-width: 1024px) 14vw, 1px" />
                 </Link>
               ))}
             </nav>
           ) : null}
           {piece.spec ? <p className="disclose">independent work. not commissioned by or affiliated with the brands shown.</p> : null}
         </div>
+        {at ? (
+          <nav className="v-step" aria-label="pieces">
+            <Gilded variant="pill" href={`/w/${at.prev.id}`}>
+              ← prev
+            </Gilded>
+            <Gilded variant="pill" href={`/w/${at.next.id}`}>
+              next →
+            </Gilded>
+          </nav>
+        ) : null}
       </div>
       <footer className="v-bar">
         <span className="v-cta">

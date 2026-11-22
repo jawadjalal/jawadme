@@ -1,21 +1,35 @@
-/* /w/<piece>: the picture in one frame cut to its own shape, its facts, even thumbnails, the steps beside the count */
+/* /w/<piece>: the picture in one frame cut to its own shape, its facts, the rest of its campaign, the steps beside the
+   count on a wide screen and under the picture on a phone */
 .viewer .v-top { align-items: center; }
 .v-count { min-width: 4.4em; text-align: center; font-variant-numeric: tabular-nums; }
 .v-pic { container-type: size; height: 100%; min-height: 0; display: grid; place-items: center; }
 .viewer .v-stage { width: min(100cqw, 100cqh * var(--ar)); height: auto; }
 .viewer .v-stage img { object-fit: cover; }
-.v-facts { display: grid; gap: 6px; margin: 4px 0 6px; font: 600 16px/1.3 var(--f-sans); letter-spacing: -0.01em; }
-.v-facts div { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); gap: 12px; }
+.viewer .v-info { gap: 22px; }
+.viewer .v-said { max-width: 30em; font: 600 clamp(18px, 1.45vw, 22px)/1.3 var(--f-sans); letter-spacing: -0.015em; color: var(--ink); text-wrap: pretty; }
+.v-facts { display: grid; margin: 0; max-width: 34em; font: 600 clamp(16px, 1.25vw, 19px)/1.3 var(--f-sans); letter-spacing: -0.01em; border-bottom: 1px solid var(--rule); }
+.v-facts div { display: grid; grid-template-columns: 5.5em minmax(0, 1fr); gap: 12px; padding: 9px 0; border-top: 1px solid var(--rule); }
 .v-facts dt { color: var(--dim); }
 .v-facts dd { margin: 0; }
+.viewer .v-strip { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 12px; max-width: 34em; }
 .viewer .v-strip img { object-fit: cover; }
+.viewer .v-strip a[aria-current] { opacity: 1; outline: 2px solid var(--ink); outline-offset: 3px; }
+.v-step { display: none; }
 .viewer .v-cta { padding: 0 var(--g) 12px; }
 @media (max-width: 1023px) {
-  .v-facts { gap: 2px; margin: 4px 0 2px; font-size: 15px; }
+  .viewer .v-main { display: flex; flex-direction: column; align-items: stretch; gap: 14px; overflow-y: auto; padding-top: 14px; }
+  .viewer .v-info { display: contents; }
+  .viewer .v-main > *, .viewer .v-info > * { flex-shrink: 0; }
+  .viewer .v-pic { order: 1; container-type: normal; display: block; height: auto; }
+  .viewer .v-stage { width: min(100%, (100svh - 300px) * var(--ar)); margin-inline: auto; }
+  .v-step { order: 2; display: flex; justify-content: space-between; gap: 12px; }
+  .viewer .v-said { order: 3; margin-top: 6px; font-size: 17px; }
+  .v-facts { order: 4; font-size: 15px; }
+  .v-facts div { padding: 7px 0; }
+  .viewer .v-info .disclose { order: 5; }
+  .viewer .v-top .v-nav { display: none; }
   .viewer .v-cta { padding-bottom: 10px; }
 }
 @media (max-width: 520px) {
   .viewer .v-close { font-size: 17px; }
-  .viewer .v-nav { gap: 6px; }
-  .viewer .v-count { min-width: 3.6em; font-size: 16px; }
 }

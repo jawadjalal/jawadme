@@ -1,0 +1,6 @@
+/* ── Contact, round 2: the heading clear of the cards, and each card one dense band (its words, then its button) ── */
+.ct .ct-h { margin-bottom: max(28px, calc(10 * var(--u))); }
+.ct .ct-c { flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 24px; min-height: 0; padding: calc(5 * var(--u)) calc(6 * var(--u)); }
+@media (max-width: 767px) {
+  .ct .ct-c { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 20px 22px; }
+}

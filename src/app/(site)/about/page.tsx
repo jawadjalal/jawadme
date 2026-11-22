@@ -8,6 +8,7 @@ import { ADS } from "@/content/ads";
 import { TIMELINE } from "@/content/site";
 import { FAQ } from "@/lib/facts";
 import { JsonLd, PERSON_ID, abs, meta } from "@/lib/seo";
+import "./about.css";
 
 export const metadata: Metadata = meta({
   title: "about",
@@ -30,9 +31,6 @@ export default function About() {
       <JsonLd data={LD} />
       <article className="ab-text">
         <h1 className="ab-k">about</h1>
-        <figure className="ab-face">
-          <Image src="/portrait.png" alt="jawad jalal" width={400} height={400} sizes="400px" />
-        </figure>
         <p className="ab-lead">hi! i&apos;m jawad jalal. i&apos;m 15 and in london, designing and building things.</p>
         <p>
           brands, ads, websites, 3d and roblox games. i design it, and i build it: the brand, the interface, and the thing that
@@ -50,6 +48,9 @@ export default function About() {
           <span className="nw">8-figure</span> ai startup.
         </p>
         <p>i made 3d art for blade ball and fish it, two of roblox&apos;s biggest games (over 11 billion visits between them).</p>
+        <figure className="ab-face">
+          <Image src="/portrait.png" alt="jawad jalal" width={400} height={400} sizes="(max-width: 767px) 300px, 400px" />
+        </figure>
         <Contributions />
         <details className="ab-faq" id="faq">
           <summary data-m="press">the short answers</summary>

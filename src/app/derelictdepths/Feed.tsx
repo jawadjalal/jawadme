@@ -82,18 +82,13 @@ function Pr({ item }: { item: Item }) {
   );
 }
 
-export function FeedMeta({ feed, renderedAt }: { feed: FeedData; renderedAt: number }) {
-  const at = new Date(feed.generated_at);
-  const ageMin = Math.max(0, Math.round((renderedAt - at.getTime()) / 60000));
+export function FeedMeta({ feed }: { feed: FeedData }) {
   return (
     <div className="ml-feed-head">
       <span className="ml-live"><i />live feed</span>
       <span>
-        refreshed by the build box at <b>{hms.format(at)}</b> london
-        {ageMin > 0 ? ", " + ageMin + " min before this page was built" : ""}
+        refreshed by the build box at <b>{hms.format(new Date(feed.generated_at))}</b> london
       </span>
-      <span>page built {hms.format(new Date(renderedAt))}</span>
-      <span>{feed.merged_24h} merged in the last 24 hours</span>
     </div>
   );
 }
@@ -106,7 +101,7 @@ export function LatestShipped({ feed }: { feed: FeedData }) {
   );
 }
 
-export function Feed({ feed, renderedAt }: { feed: FeedData | null; renderedAt: number }) {
+export function Feed({ feed }: { feed: FeedData | null }) {
   if (!feed || feed.items.length === 0) {
     return <p className="ml-note">the live feed is unavailable right now. it refreshes every 3 minutes, so check back shortly.</p>;
   }
@@ -116,7 +111,7 @@ export function Feed({ feed, renderedAt }: { feed: FeedData | null; renderedAt: 
   const restCount = rest.reduce((n, g) => n + g.items.length, 0);
   return (
     <div>
-      <FeedMeta feed={feed} renderedAt={renderedAt} />
+      <FeedMeta feed={feed} />
       {open.map((g) => (
         <section key={g.key} className="ml-hour">
           <h3>{g.label} <span>{g.items.length} merged</span></h3>

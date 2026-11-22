@@ -10,6 +10,7 @@ import { REAL } from "@/content/work";
 import { GALLERY, ROOMS, roomByKey, type Room } from "@/lib/gallery";
 import { JsonLd, PERSON_ID, abs, caseWork, meta, pieceWork } from "@/lib/seo";
 import { Gilded } from "@/components/gilded/Gilded";
+import { Chips } from "./Chips";
 import "./work.css";
 
 export const metadata: Metadata = meta({
@@ -149,7 +150,7 @@ export default async function Work({ searchParams }: Props) {
       </header>
       <div className="gal-hall" data-room="hall">
         <nav className="chips" aria-label="rooms">
-          <div className="chips-in">
+          <Chips>
             <Gilded variant="filter" href="/work" selected={!pick}>
               all
             </Gilded>
@@ -158,7 +159,7 @@ export default async function Work({ searchParams }: Props) {
                 {r.title}
               </Gilded>
             ))}
-          </div>
+          </Chips>
         </nav>
         {(pick ? rooms.map((room, i) => ({ room, i })) : hall(rooms)).map((x) => ("room" in x ? <RoomView key={x.room.key} room={x.room} i={x.i} lead={x.i === 0} /> : <Break key={"b" + x.n} say={x.say} n={x.n} />))}
         <p className="wrap disclose">independent work. not commissioned by or affiliated with the brands shown.</p>

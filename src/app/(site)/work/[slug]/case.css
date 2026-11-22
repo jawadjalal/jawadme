@@ -1,8 +1,14 @@
-/* /work/<case>: a screenshot cover shown as a crop at reading size, and the crops themselves */
-.case-crop { margin-block: 12px calc(14 * var(--u)); }
-.media[data-crop] { aspect-ratio: var(--ca); }
-.media[data-crop] > img { position: absolute; left: calc(var(--cx) * -100%); top: calc(var(--cy) * -100%); width: calc(var(--cw) * 100%); max-width: none; height: auto; object-fit: fill; }
-@media (max-width: 767px) {
-  .media[data-crop] { aspect-ratio: var(--pa); }
-  .media[data-crop] > img { left: calc(var(--px) * -100%); top: calc(var(--py) * -100%); width: calc(var(--pw) * 100%); }
+/* /work/<case>: the lead still and every block at most its own pixels wide, pairs set level, the facts under the lines */
+.case-lead { margin-block: 12px calc(14 * var(--u)); }
+.case-lead > .media { max-inline-size: var(--nw); }
+.case .b-full > .media { max-inline-size: var(--nw); margin-inline: auto; }
+.case .b-inset .media { max-inline-size: var(--nw); }
+.case-facts { padding-block: 0 calc(16 * var(--u)); }
+.case-facts dd { font-size: max(17px, calc(4.4 * var(--u))); text-wrap: balance; }
+.case-facts .wide { grid-column: span 6; }
+@media (max-width: 767px) { .case-facts .wide { grid-column: 1 / -1; } }
+.case .tab-side .gl { margin-top: 4px; }
+.case .next .media { outline: 1px solid var(--rule); outline-offset: -1px; }
+@media (min-width: 768px) {
+  .case .b-level { grid-template-columns: var(--cols); max-inline-size: var(--nw); margin-inline: auto; inline-size: 100%; }
 }
