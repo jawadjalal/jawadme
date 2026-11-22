@@ -53,7 +53,7 @@ export function ContribGraph({ data, href, size }: { data: Contributions; href: 
         };
         raf = requestAnimationFrame(step);
       },
-      { threshold: 0.4 },
+      { threshold: 0 },
     );
     io.observe(el);
     return () => {
