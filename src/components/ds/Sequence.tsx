@@ -1,7 +1,7 @@
 "use client";
 
 // A scroll-scrubbed frame sequence: the frames sit stacked and scroll progress through the box picks which one
-// shows, like a turntable. Today it scrubs real Derelict Depths stills; the rendered 48-frame diorama (A4) drops in
+// shows, like a turntable. Today it scrubs real fracture stills; the rendered 48-frame diorama (A4) drops in
 // as the same list. Reduced motion shows the first frame.
 
 import Image from "next/image";

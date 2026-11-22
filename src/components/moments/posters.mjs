@@ -28,10 +28,10 @@ const jobs = [
   { name: "break3d", path: "/work", stage: ".mo-break3d", scroll: true },
   { name: "niche-ads", path: "/work/outpace", stage: ".mo-niche-ads" },
   { name: "niche-web", path: "/work/ignura", stage: ".mo-niche-web" },
-  { name: "niche-game", path: "/work/derelict-depths", stage: ".mo-niche-game" },
+  { name: "niche-game", path: "/work/fracture", stage: ".mo-niche-game" },
   { name: "niche-view", path: "/w/midjourney-a", stage: ".mo-niche-view" },
   { name: "gate", path: "/cal", stage: ".mo-gate", sizes: [{ ...SIZES[0], width: 900 }] },
-  { name: "shaft", path: "/derelictdepths", stage: ".mo-shaft" },
+  { name: "shaft", path: "/fracture", stage: ".mo-shaft" },
   { name: "deadend", path: "/nope", stage: ".mo-deadend" },
   { name: "reading", path: "/blog", stage: ".mo-reading" },
 ].filter((j) => !only || only.split(",").includes(j.name));

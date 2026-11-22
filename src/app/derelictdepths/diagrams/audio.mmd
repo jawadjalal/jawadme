@@ -1,9 +1,0 @@
-flowchart TB
-  cat["Audio catalog (generated)<br/>every cue with its judged volume"] --> mix
-  ev["Game events: swing, hit, dig, pickup,<br/>boss, find, results"] --> cues["Cues: layered transient · body · tail"]
-  cues --> mix["Mixer: caps per category,<br/>the louder or nearer sound wins,<br/>small pitch and volume takes"]
-  mix --> sfx["SoundGroup Sfx<br/>tames the top end for phone speakers"]
-  dir["Adaptive music director<br/>tension stems rise in fights and lairs"] --> mus["SoundGroup Music"]
-  mix -. "big moment: duck" .-> dir
-  guard(["Guards: every loop moment has a cue,<br/>per-bus loudness windows"]):::gate -.-> cat
-  classDef gate fill:#3d300f,stroke:#ffc043,color:#fff3d6

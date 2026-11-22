@@ -31,9 +31,9 @@ const [ads, ...rest] = ROOMS;
 const cut = (e: Entry) => (e.line.startsWith(e.title + ": ") ? e.line.slice(e.title.length + 2) : e.line);
 
 /** The 3d moments that stand between the sections, before the room they lead into. */
-const MOMENTS: Record<string, { set: "break3d" | "shaft"; t: string; tail: string }> = {
-  "cosmos-models": { set: "break3d", t: "3d art for blade ball and fish it,", tail: "two of roblox's biggest games (over 11 billion visits between them)" },
-  fracture: { set: "shaft", t: "fracture.", tail: "a roblox mining game i design and build" },
+const MOMENTS: Record<string, { set: "break3d" | "shaft"; cls: string; t: string; tail: string }> = {
+  "cosmos-models": { set: "break3d", cls: "mo-brk", t: "3d art for blade ball and fish it,", tail: "two of roblox's biggest games (over 11 billion visits between them)" },
+  fracture: { set: "shaft", cls: "mo-shaft", t: "fracture.", tail: "a roblox mining game i design and build" },
 };
 
 /** One ad in the rail, at the rail's height and its own width. */
@@ -136,7 +136,7 @@ export default function Work() {
                   {m.t}
                   <span className="wk-mo-tail"> {m.tail}</span>
                 </p>
-                <Moment set={m.set} className="mo-brk" />
+                <Moment set={m.set} className={m.cls} />
               </aside>
             ) : null}
             <Section room={room} />

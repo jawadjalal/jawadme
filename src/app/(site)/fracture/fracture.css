@@ -1,0 +1,15 @@
+/* /fracture: the title, one line, the 3d moment, a short paragraph. Type and air; the moment carries the page. */
+.fr-h { display: grid; gap: 14px; padding-top: calc(18 * var(--u)); padding-bottom: calc(10 * var(--u)); }
+.fr-t { margin: 0; font: 700 calc(34 * var(--u))/0.8 var(--f-disp); letter-spacing: -0.055em; }
+.fr-line { margin: 0; max-width: 24em; font: 500 max(19px, calc(6 * var(--u)))/1.3 var(--f-sans); letter-spacing: -0.015em; color: var(--dim); text-wrap: balance; }
+.fr-body { display: grid; gap: 22px; max-width: calc(36em + 2 * var(--g)); padding-top: calc(16 * var(--u)); padding-bottom: calc(22 * var(--u)); }
+.fr-body p { margin: 0; font: 400 20px/1.6 var(--f-sans); letter-spacing: -0.01em; text-wrap: pretty; }
+.fr-body .fr-more { font: 600 16px/1 var(--f-bar); }
+.fr-more a { text-decoration: underline; text-decoration-color: #c39a42; text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
+.fr-more a:hover { color: var(--accent-text); }
+@media (max-width: 767px) {
+  .fr-h { padding-top: 40px; padding-bottom: 28px; }
+  .fr-t { font-size: 24vw; }
+  .fr-body { padding-top: 48px; padding-bottom: 72px; }
+  .fr-body p { font-size: 18px; }
+}

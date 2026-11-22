@@ -27,7 +27,7 @@ type Org = { name: string; role: string; href?: string; mark?: string };
 type Chapter = { when: string; orgs: Org[]; text: string; rows: Row[] };
 
 const ignaru = projectBySlug("ignaru")!;
-const fracture = projectBySlug("derelict-depths")!;
+const fracture = projectBySlug("fracture")!;
 
 // Dated facts only: the roles and years from his cv (scripts/cv.mjs), the company context from content/site.ts.
 const JOURNEY: Chapter[] = [

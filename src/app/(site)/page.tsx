@@ -15,7 +15,7 @@ import { SELECTED, projectBySlug } from "@/content/work";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-const FR = projectBySlug("derelict-depths")!;
+const FR = projectBySlug("fracture")!;
 const IN_RING = new Set(RING.map((a) => a.id));
 const GALLERY = ADS.filter((a) => !IN_RING.has(a.id)).slice(0, 12);
 
@@ -57,7 +57,7 @@ export default function Home() {
       </section>
 
       <section className="room" data-room="ink" aria-labelledby="room-h">
-        <TitleTab id="room-h" tag="a roblox game i design and build" side={<Link href="/work/derelict-depths">fracture ↗</Link>}>
+        <TitleTab id="room-h" tag="a roblox game i design and build" side={<Link href="/work/fracture">fracture ↗</Link>}>
           3d &amp; roblox
         </TitleTab>
         <div className="wrap room-one">

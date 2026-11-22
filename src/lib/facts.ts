@@ -8,7 +8,7 @@ import { IDENTITY } from "@/lib/profile";
 import { ENTITY } from "@/lib/seo";
 
 const ignaru = projectBySlug("ignaru");
-const fracture = projectBySlug("derelict-depths");
+const fracture = projectBySlug("fracture");
 const past = TIMELINE.filter((t) => !t.now);
 const now = TIMELINE.find((t) => t.now);
 
@@ -19,6 +19,6 @@ export const FAQ: { q: string; a: string }[] = [
   ...(now ? [{ q: `what is ${now.co}?`, a: `${now.co} is the design studio jawad founded and runs, from 2026 to now. it designs websites for startups and builds them from scratch.` }] : []),
   ...(ignaru ? [{ q: "what is ignaru?", a: `ignaru is a design tool jawad designs and builds. ${ignaru.lines.slice(1).join(" ")}` }] : []),
   { q: "where has he worked?", a: past.map((t) => `${t.role} at ${t.co} (${t.years}): ${t.what.charAt(0).toLowerCase() + t.what.slice(1).replace(/\. 14m views at its launch$/i, "")}.`).join(" ") + " both roles are in the past." },
-  ...(fracture ? [{ q: "what is fracture?", a: `fracture is a roblox mining game jawad designs and builds, formerly called derelict depths. ${fracture.lines[1] ?? ""}`.trim() }] : []),
+  ...(fracture ? [{ q: "what is fracture?", a: `fracture is a roblox mining game jawad designs and builds. ${fracture.lines[1] ?? ""}`.trim() }] : []),
   { q: "how do i work with him?", a: `book a free 15 minute video call at jawadjalal.com/cal, or email ${IDENTITY.email}.` },
 ];

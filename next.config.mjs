@@ -17,23 +17,25 @@ const nextConfig = {
   },
   // the Jobbie hero pitch is a static folder in public/jobbie; its pages resolve assets through <base href="/jobbie/">
   // /magnitude is the Magnitude game (repo jawadjalal/game), served under the same base path on its own deployment
-  // the page moved to /derelictdepths when the game was renamed; every old link must keep working
+  // the game page is /fracture; every older address for it (the earlier names, its book) lands there
   async redirects() {
     return [
       { source: "/call", destination: "/cal", permanent: true },
       { source: "/ads", destination: "/work", permanent: true },
       { source: "/work/okara", destination: "/", permanent: false },
       { source: "/work/menufit", destination: "/", permanent: false },
-      { source: "/minelight", destination: "/derelictdepths", permanent: true },
-      { source: "/minelight/:path*", destination: "/derelictdepths/:path*", permanent: true },
-      { source: "/mine-for-light", destination: "/derelictdepths", permanent: true },
+      { source: "/derelictdepths", destination: "/fracture", permanent: true },
+      { source: "/derelictdepths/:path*", destination: "/fracture", permanent: true },
+      { source: "/minelight", destination: "/fracture", permanent: true },
+      { source: "/minelight/:path*", destination: "/fracture", permanent: true },
+      { source: "/mine-for-light", destination: "/fracture", permanent: true },
+      { source: "/reading/:path*", destination: "/fracture", permanent: true },
+      { source: "/work/derelict-depths", destination: "/work/fracture", permanent: true },
     ];
   },
   async rewrites() {
     return [
       { source: "/jobbie", destination: "/jobbie/journey.html" },
-      // the Derelict Depths book is one self-contained HTML file in public/reading; serve it at its folder URL
-      { source: "/reading/derelict-depths-book", destination: "/reading/derelict-depths-book/index.html" },
       { source: "/magnitude", destination: "https://magnitude-game.vercel.app/magnitude" },
       { source: "/magnitude/:path*", destination: "https://magnitude-game.vercel.app/magnitude/:path*" },
     ];

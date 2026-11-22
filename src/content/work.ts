@@ -135,13 +135,13 @@ const PROJECTS_ALL: Project[] = [
   campaign("whop", "whop", 2026, ["the new economy, painted, printed and flown."]),
   campaign("outpace", "outpace", 2026, ["their orange as a running track, wherever it fits."]),
   {
-    slug: "derelict-depths",
+    slug: "fracture",
     name: "fracture",
     year: 2026,
     lane: "roblox",
     disciplines: ["game design", "3d", "ui", "engineering"],
-    link: { href: "/derelictdepths", label: "jawadjalal.com/derelictdepths" },
-    lines: ["a roblox mining game i design and build, formerly derelict depths.", "68 ores, six floors, one mole king."],
+    link: { href: "/fracture", label: "jawadjalal.com/fracture" },
+    lines: ["a roblox mining game i design and build.", "68 ores, six floors, one mole king."],
     beats: ["build"],
     cover: m("/work/fracture/mole-king.webp", 1920, 1080, "fracture key art: a miner swings at the armoured mole king in a torchlit hall", "ink"),
     blocks: [

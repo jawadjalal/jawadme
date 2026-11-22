@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/contact", 0.7),
     ...REAL.map((p) => page("/work/" + p.slug, 0.7)),
     ...CURATED.map((a) => page("/w/" + a.id, 0.5)),
-    page("/derelictdepths", 0.6),
+    page("/fracture", 0.6),
     page("/capy", 0.5, "weekly"),
     page("/blog", 0.5, "weekly"),
     ...POSTS.map((p) => ({ url: abs("/blog/" + p.slug), lastModified: new Date(p.date), changeFrequency: "yearly" as const, priority: 0.4 })),

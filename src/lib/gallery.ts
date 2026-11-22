@@ -29,7 +29,7 @@ export const caseOf = (brand: string) => PROJECTS.find((p) => p.lane === "ads" &
 
 const web = design("designed and built by jawad jalal", "web design");
 const ignaru = project("ignaru");
-const fracture = project("derelict-depths");
+const fracture = project("fracture");
 
 const sites = [project("ignura"), project("ignura-seo"), project("coresrent")].map(projectEntry).concat(SITES.map(web));
 

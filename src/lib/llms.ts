@@ -27,7 +27,7 @@ const pages = () => [
   `- [about](${abs("/about")}): who he is, where he has worked, and the short answers`,
   `- [book a call](${abs("/cal")}): a free 15 minute video call`,
   `- [contact](${abs("/contact")}): book a call or email him, side by side`,
-  `- [fracture, the game page](${abs("/derelictdepths")}): the roblox game he designs and builds`,
+  `- [fracture, the game page](${abs("/fracture")}): the roblox game he designs and builds`,
   "",
   "## case studies",
   "",
