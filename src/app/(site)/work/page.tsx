@@ -24,7 +24,7 @@ const LD = {
   url: abs("/work"),
   name: "work by jawad jalal",
   author: { "@id": PERSON_ID },
-  hasPart: [...GALLERY.filter((p) => p.credit.includes("Jawad Jalal")).map(pieceWork), ...REAL.map(caseWork)],
+  hasPart: [...GALLERY.filter((p) => p.credit.includes("jawad jalal")).map(pieceWork), ...REAL.map(caseWork)],
 };
 
 /** The rooms the filter row names: the newest drop, the biggest campaigns, then one way into each other section. Any

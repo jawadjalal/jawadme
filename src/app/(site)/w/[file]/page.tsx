@@ -47,7 +47,7 @@ export default async function Piece({ params }: Props) {
   const facts = { client: p.group, year: PROJECTS.find((c) => c.name === p.group)?.year, role: `${p.kind}, ${shape(p.w, p.h)}` };
   return (
     <>
-      {p.credit.includes("Jawad Jalal") ? <JsonLd data={pieceWork(p)} /> : null}
+      {p.credit.includes("jawad jalal") ? <JsonLd data={pieceWork(p)} /> : null}
       <Viewer piece={p} at={at} facts={facts} />
     </>
   );
