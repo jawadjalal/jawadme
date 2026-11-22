@@ -21,7 +21,7 @@ const pieceEntry = (p: Piece): Entry => ({ key: p.id, href: "/w/" + p.id, media:
 const adPiece = (a: Ad): Piece => ({ id: a.id, src: a.src, sm: a.sm, w: a.w, h: a.h, alt: a.alt, line: headline(a), group: a.campaign, credit: "designed by jawad jalal", kind: "ad design", spec: a.spec });
 export const adEntry = (a: Ad): Entry => pieceEntry(adPiece(a));
 const design = (credit: string, kind: string) => (d: DesignPiece) => pieceEntry({ ...d, credit, kind });
-const projectEntry = (p: Project): Entry => ({ key: p.slug, href: "/work/" + p.slug, media: p.cover, title: p.name, line: p.lines[0] });
+const projectEntry = (p: Project): Entry => ({ key: p.slug, href: "/work/" + p.slug, media: { ...p.cover, crop: undefined, cropM: undefined }, title: p.name, line: p.lines[0] });
 const project = (s: string) => PROJECTS.find((p) => p.slug === s)!;
 const caseOf = (brand: string) => PROJECTS.find((p) => p.lane === "ads" && p.name === brand);
 

@@ -1,0 +1,14 @@
+/* /work: the filter row, each room's opening piece, its captions and the air between rooms */
+@media (min-width: 768px) {
+  .work .chips-in { flex-wrap: wrap; overflow-x: visible; }
+}
+.work .rh-c { font: 700 15px/1 var(--f-bar); color: var(--dim); }
+.work .hang-top { display: flex; align-items: flex-start; gap: var(--gap); width: 100%; }
+.work .hang-side { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: flex-start; column-gap: var(--gap); row-gap: 34px; }
+.work .hang-cap { font-size: 16px; }
+.work .hang-hl { color: var(--ivory); }
+.work .room-w + .room-w { margin-top: calc(40 * var(--u)); }
+@media (max-width: 767px) {
+  .work .hang-top, .work .hang-side { display: contents; }
+  .work .room-w + .room-w { margin-top: 96px; }
+}
