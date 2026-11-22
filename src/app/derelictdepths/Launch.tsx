@@ -86,14 +86,14 @@ function Burndown({ history }: { history: Point[] }) {
   const x = (t: string) => L + ((new Date(t).getTime() - t0) / (t1 - t0)) * (W - L - 8);
   const y = (v: number) => T + (1 - v / top) * (H - T - B);
   const area = (f: (p: Point) => number) =>
-    "m" + x(history[0].t) + "," + y(0) + history.map((p) => " l" + x(p.t).toFixed(1) + "," + y(f(p)).toFixed(1)).join("") + " l" + x(history[history.length - 1].t) + "," + y(0) + " z";
+    "m" + x(history[0].t) + "," + y(0) + history.map((p) => " L" + x(p.t).toFixed(1) + "," + y(f(p)).toFixed(1)).join("") + " L" + x(history[history.length - 1].t) + "," + y(0) + " z";
   return (
     <figure className="ml-lb-chart">
       <svg viewBox={"0 0 " + W + " " + H} role="img" aria-label={"open lines over time, from " + (history[0].red + history[0].amber) + " to " + (history[history.length - 1].red + history[history.length - 1].amber)}>
         <line x1={L} x2={W - 8} y1={y(0)} y2={y(0)} stroke="#3a2f63" />
         <line x1={L} x2={W - 8} y1={y(top)} y2={y(top)} stroke="#2c2350" strokeDasharray="4 4" />
-        <text x={L - 6} y={y(top) + 4} textAnchor="end">{top}</text>
-        <text x={L - 6} y={y(0) + 4} textAnchor="end">0</text>
+        <text x={L - 6} y={y(top)} textAnchor="end" dominantBaseline="central">{top}</text>
+        <text x={L - 6} y={y(0)} textAnchor="end" dominantBaseline="central">0</text>
         <path d={area((p) => p.red + p.amber)} fill="#ffc043" opacity="0.9" />
         <path d={area((p) => p.red)} fill="#ff6b6b" />
         <text x={L} y={H - 4}>{hm.format(new Date(history[0].t))}</text>
