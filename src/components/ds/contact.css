@@ -4,3 +4,17 @@
 @media (max-width: 767px) {
   .ct .ct-c { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 20px 22px; }
 }
+
+/* ── /contact, round 3: the page's own masthead (the word large, its one line beside it), then the two cards at full height ── */
+.ct-p .ct { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: end; column-gap: calc(10 * var(--u)); padding-top: calc(10 * var(--u)); }
+.ct-p .ct .ct-h { margin: 0; font-size: max(56px, calc(56 * var(--u))); line-height: 0.8; letter-spacing: -0.06em; }
+.ct-p .ct-lede { max-width: 12em; margin: 0 0 0.2em; font: 700 max(24px, calc(14 * var(--u)))/1 var(--f-disp); letter-spacing: -0.035em; text-wrap: balance; }
+.ct-p .ct-two { grid-column: 1 / -1; margin-top: calc(10 * var(--u)); }
+.ct-p .ct .ct-c { flex-direction: column; align-items: flex-start; justify-content: space-between; min-height: clamp(200px, 17vw, 280px); padding: calc(6 * var(--u)) calc(7 * var(--u)) calc(7 * var(--u)); }
+@media (max-width: 767px) {
+  .ct-p .ct { grid-template-columns: minmax(0, 1fr); }
+  .ct-p .ct .ct-h { padding-bottom: 0; font-size: 24vw; line-height: 0.82; }
+  .ct-p .ct-lede { margin: 14px 0 0; font-size: 28px; }
+  .ct-p .ct-two { margin-top: 28px; }
+  .ct-p .ct .ct-c { min-height: 170px; gap: 24px; padding: 22px 22px 24px; }
+}
