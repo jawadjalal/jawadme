@@ -38,7 +38,6 @@ export function ContribGraph({ data, href, size }: { data: Contributions; href: 
     const el = root.current;
     if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     el.dataset.arm = "";
-    if (num.current) num.current.textContent = "0";
     let raf = 0;
     const io = new IntersectionObserver(
       ([e]) => {
