@@ -9,14 +9,13 @@ import "@/styles/footer.css";
 const LINKS = SOCIALS.filter((s) => s.href.startsWith("https://") && s.label !== "linkedin");
 
 /** The page's last word on every page: the waymarker (Pillar), one sign per way out, then his GitHub year on its own
- *  row and a quiet row of every link. A page whose own scene already holds a signpost (the 404) leaves the Pillar out; a
- *  page where the Pillar is the largest paint (/contact) sets `first` so its poster loads eagerly at high priority. A page
- *  that already carries its own call (/contact) sets `book={false}` so the row keeps only the email, and a page that already
+ *  row and a quiet row of every link. A page whose own scene already holds a signpost (the 404) leaves the Pillar out. A
+ *  page that already carries its own call (/contact) sets `book={false}` so the row keeps only the email, and a page that already
  *  shows his GitHub year (/about) sets `graph={false}`. */
-export function Footer({ src, pillar = true, first, book = true, graph = true }: { src: string; pillar?: boolean; first?: boolean; book?: boolean; graph?: boolean }) {
+export function Footer({ src, pillar = true, book = true, graph = true }: { src: string; pillar?: boolean; book?: boolean; graph?: boolean }) {
   return (
     <footer className="foot">
-      {pillar ? <Pillar first={first} /> : null}
+      {pillar ? <Pillar /> : null}
       {graph ? (
         <div className="foot-cg">
           <Contributions size="mini" />

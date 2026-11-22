@@ -13,7 +13,7 @@ export default function ContactPage() {
   return (
     <main className="ct-p">
       <Contact src="contact" as="h1" lede="two ways in, both one click." />
-      <Footer src="contact" first book={false} />
+      <Footer src="contact" book={false} />
     </main>
   );
 }
