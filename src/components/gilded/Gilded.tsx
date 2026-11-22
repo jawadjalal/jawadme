@@ -13,6 +13,8 @@ type Props =
   | { variant: "arm"; src: string }
   | { variant: "email"; src: string; children?: ReactNode }
   | { variant: "pill"; href: string; selected?: boolean; onClick?: () => void; call?: boolean; prefetch?: boolean; children: ReactNode }
+  | { variant: "pill"; onClick: () => void; href?: never; download?: never; selected?: never; call?: never; prefetch?: never; children: ReactNode }
+  | { variant: "pill"; href: string; download: string | true; onClick?: never; selected?: never; call?: never; prefetch?: never; children: ReactNode }
   | { variant: "filter"; href: string; selected?: boolean; children: ReactNode }
   | { variant: "filter"; onClick: () => void; selected?: boolean; children: ReactNode };
 
@@ -28,7 +30,8 @@ const mark = () => {
  *  cta is the book-a-call that opens to "· [jawad] + you": its plate is drawn at the open width and clipped back to the
  *  label, the right cap rides the clip edge, so the label never moves and nothing lays out. A tap holds it open on touch,
  *  then navigates. arm is the call as the footer pillar's sign, email the frame with a warmer face, pill and filter the
- *  small rounded forms with a thin fret rim and a selected state. Like BookCallB, a hero cta in view sets
+ *  small rounded forms with a thin fret rim and a selected state; a pill with no href is a button, and one with `download` a
+ *  plain download link. Like BookCallB, a hero cta in view sets
  *  html[data-call-in-view] and the first observation sets html[data-call-seen], which releases a dock cta with `hold`; the
  *  footer pillar's arm and a pill with `call` (the call set as a pill) count the same way. */
 export function Gilded(p: Props) {
@@ -114,6 +117,20 @@ export function Gilded(p: Props) {
         <span className="mail-tag" aria-hidden="true">
           copied
         </span>
+      </a>
+    );
+  }
+  if (p.variant === "pill" && p.href === undefined) {
+    return (
+      <button type="button" className="gl" data-v="pill" onClick={p.onClick}>
+        {face(p.children)}
+      </button>
+    );
+  }
+  if (p.variant === "pill" && "download" in p) {
+    return (
+      <a href={p.href} download={p.download} className="gl" data-v="pill">
+        {face(p.children)}
       </a>
     );
   }

@@ -163,23 +163,25 @@ function Actions({ a, big }: { a: Asset; big?: boolean }) {
   const [state, copy] = useCopy(a);
   return (
     <span className="cp-actions" data-big={big || undefined}>
-      <button type="button" className="cp-copy" data-state={state} onClick={copy} aria-live="polite">
-        {LABEL[state]}
-      </button>
-      <a className="cp-dl" href={a.original} download={fileName(a)}>
+      <span className="cp-copy" data-state={state} aria-live="polite">
+        <Gilded variant="pill" onClick={copy}>
+          {LABEL[state]}
+        </Gilded>
+      </span>
+      <Gilded variant="pill" href={a.original} download={fileName(a)}>
         download
-      </a>
+      </Gilded>
       {big && a.pdf ? (
-        <a className="cp-dl" href={a.pdf} download={fileName(a, a.pdf)}>
+        <Gilded variant="pill" href={a.pdf} download={fileName(a, a.pdf)}>
           print pdf
-        </a>
+        </Gilded>
       ) : null}
     </span>
   );
 }
 
 /** One tile. `r` is the box's aspect; very tall pieces (a 33.5 × 80 banner) sit contained in a wider box. */
-function Tile({ a, r, width, onOpen, eager, named }: { a: Asset; r: number; width?: number; onOpen: (a: Asset) => void; eager: boolean; named?: boolean }) {
+function Tile({ a, r, width, onOpen, eager, named, near }: { a: Asset; r: number; width?: number; onOpen: (a: Asset) => void; eager: boolean; named?: boolean; near: boolean }) {
   return (
     <figure className="cp-tile" style={(width ? { width } : { "--r": r }) as React.CSSProperties}>
       <button type="button" className="cp-frame" onClick={() => onOpen(a)} aria-label={`open ${a.title}, ${a.size}`}>
@@ -189,7 +191,7 @@ function Tile({ a, r, width, onOpen, eager, named }: { a: Asset; r: number; widt
       </button>
       <figcaption className="cp-cap">
         <span className="cp-size" title={named ? `${a.title}, ${a.size}` : a.size}>{named ? a.title : a.size}</span>
-        <Actions a={a} />
+        {near ? <Actions a={a} /> : null}
       </figcaption>
     </figure>
   );
@@ -232,12 +234,26 @@ function partition(rs: number[], k: number): number[][] {
 function Rows({ items, onOpen, eagerFrom, named }: { items: Asset[]; onOpen: (a: Asset) => void; eagerFrom: number; named?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [W, setW] = useState(0);
+  // a set's gilded actions mount once it is within a screen or so, so the page does not hydrate two hundred of them at load
+  const [near, setNear] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const ro = new ResizeObserver(([e]) => setW(Math.floor(e.contentRect.width)));
     ro.observe(el);
-    return () => ro.disconnect();
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        setNear(true);
+        io.disconnect();
+      },
+      { rootMargin: "800px 0px" },
+    );
+    io.observe(el);
+    return () => {
+      ro.disconnect();
+      io.disconnect();
+    };
   }, []);
 
   const phone = W > 0 && W < 600;
@@ -251,7 +267,7 @@ function Rows({ items, onOpen, eagerFrom, named }: { items: Asset[]; onOpen: (a:
     return (
       <div className="cp-rows" ref={ref}>
         {items.map((a, i) => (
-          <Tile key={a.id} a={a} r={rs[i]} onOpen={onOpen} eager={eagerFrom + i < 4} named={named} />
+          <Tile key={a.id} a={a} r={rs[i]} onOpen={onOpen} eager={eagerFrom + i < 4} named={named} near={near} />
         ))}
       </div>
     );
@@ -271,7 +287,7 @@ function Rows({ items, onOpen, eagerFrom, named }: { items: Asset[]; onOpen: (a:
         return (
           <div className="cp-row" key={row[0]} style={{ gap }}>
             {row.map((i) => (
-              <Tile key={items[i].id} a={items[i]} r={rs[i]} width={Math.floor(rs[i] * h)} onOpen={onOpen} eager={eagerFrom + i < 4} named={named} />
+              <Tile key={items[i].id} a={items[i]} r={rs[i]} width={Math.floor(rs[i] * h)} onOpen={onOpen} eager={eagerFrom + i < 4} named={named} near={near} />
             ))}
           </div>
         );

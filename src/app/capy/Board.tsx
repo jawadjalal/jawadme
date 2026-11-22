@@ -292,10 +292,12 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
             <button onClick={() => e?.step(1)} aria-label="next piece">
               →
             </button>
-            <a href={one.a.original} download>
+            <Gilded variant="pill" href={one.a.original} download>
               original
-            </a>
-            <button onClick={() => run("piece", "png")}>png</button>
+            </Gilded>
+            <Gilded variant="pill" onClick={() => run("piece", "png")}>
+              png
+            </Gilded>
           </div>
         </aside>
       )}
@@ -408,15 +410,15 @@ function ExportPanel({ sel, onRun, onClose }: { sel: Piece[]; onRun: (s: Scope, 
         ))}
       </div>
       <div className="cb-fmts">
-        <button onClick={() => onRun(scope, "png")}>png</button>
-        <button onClick={() => onRun(scope, "svg")}>svg</button>
-        <button onClick={() => onRun(scope, "html")}>html</button>
-        <button onClick={() => onRun(scope, "copy-svg")}>copy svg</button>
-        <button onClick={() => onRun(scope, "copy-html")}>copy html</button>
+        {(["png", "svg", "html", "copy-svg", "copy-html"] as const).map((f) => (
+          <Gilded key={f} variant="pill" onClick={() => onRun(scope, f)}>
+            {f.replace("-", " ")}
+          </Gilded>
+        ))}
         {one?.type === "video" && (
-          <a href={one.original} download>
+          <Gilded variant="pill" href={one.original} download>
             mp4
-          </a>
+          </Gilded>
         )}
       </div>
       <p className="cb-exp-note">
