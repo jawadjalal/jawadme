@@ -51,6 +51,9 @@ const OUT = [380, 300, 400, 0];
 
 const ease = (u: number) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
+// Every canvas but the live one is drawn once (some read back), so keep them on the CPU: a GPU-backed canvas makes each
+// readback wait for its queued shadow blurs, which on a software GPU (SwiftShader, weak phones) blocks the main thread.
+const soft = (c: HTMLCanvasElement) => c.getContext("2d", { willReadFrequently: true })!;
 
 type Ember = { x: number; y: number; vy: number; r: number; ph: number; sw: number; at: number };
 type Word = { cv: HTMLCanvasElement; ox: number; oy: number; x: number; y: number; at: number; out: number; simAt: number; pts: number[] };
@@ -64,7 +67,7 @@ export function LoaderB() {
   const rootRef = useRef<HTMLDivElement>(null);
   const groundRef = useRef<HTMLDivElement>(null);
   const cvRef = useRef<HTMLCanvasElement>(null);
-  const grainRef = useRef<HTMLCanvasElement>(null);
+  const grainRef = useRef<HTMLDivElement>(null);
   const markRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -111,7 +114,7 @@ export function LoaderB() {
       try {
         localStorage.setItem(KEY, "1");
       } catch {}
-      root.classList.remove("lb-on");
+      root.classList.remove("lb-on", "lb-bare");
       el.hidden = true;
       setGone(true);
     };
@@ -119,6 +122,7 @@ export function LoaderB() {
     const src = document.querySelector<HTMLElement>("main h1");
     const B = src?.getBoundingClientRect();
     if (!src || !B || B.width < 40 || scrollY > 10 || B.top > vh * 0.5) {
+      root.classList.add("lb-bare");
       anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" }));
       timers.push(window.setTimeout(finish, 230));
       return finish;
@@ -134,18 +138,15 @@ export function LoaderB() {
       const r = src.getBoundingClientRect();
       return "translate(" + r.left + "px," + r.top + "px) scale(" + r.width / B.width + ")";
     };
-    const probe = document.createElement("canvas").getContext("2d", { willReadFrequently: true })!;
+    const swatch = el.appendChild(document.createElement("i"));
     const token = (name: string, fallback: string) => {
-      probe.clearRect(0, 0, 1, 1);
-      probe.fillStyle = fallback;
-      probe.fillStyle = getComputedStyle(el).getPropertyValue(name).trim() || fallback;
-      probe.fillRect(0, 0, 1, 1);
-      return Array.from(probe.getImageData(0, 0, 1, 1).data.slice(0, 3));
+      swatch.style.color = "var(" + name + ", " + fallback + ")";
+      return getComputedStyle(swatch).color.match(/[\d.]+/g)!.slice(0, 3).map(Number);
     };
-    const acc = token("--accent", "#73e8b5");
     const glow = token("--accent-glow", "#8af5c6");
     const spark = token("--accent-spark", "#4dffae");
     const ivory = token("--ivory", "#f8e3c2");
+    swatch.remove();
     const mix = (a: number[], b: number[], u: number) => a.map((v, i) => Math.round(v + (b[i] - v) * u));
     const css = (c: number[], a = 1) => "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a + ")";
     const hot = mix(spark, [255, 255, 255], 0.4);
@@ -168,6 +169,7 @@ export function LoaderB() {
       handoffAt = t;
       track("loader_skip", { at: Math.round(t) });
       if (reduced || t < cfg.markIn - 200) {
+        root.classList.add("lb-bare");
         anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }));
         timers.push(window.setTimeout(finish, 210));
         return;
@@ -198,7 +200,7 @@ export function LoaderB() {
       const tick = () => new Promise<void>((r) => setTimeout(r));
       const tile = document.createElement("canvas");
       tile.width = tile.height = 128;
-      const tg0 = tile.getContext("2d")!;
+      const tg0 = soft(tile);
       const gi = tg0.createImageData(128, 128);
       for (let p = 0; p < gi.data.length; p += 4) {
         gi.data[p] = glow[0];
@@ -207,11 +209,7 @@ export function LoaderB() {
         gi.data[p + 3] = Math.random() * 4.5;
       }
       tg0.putImageData(gi, 0, 0);
-      grain.width = vw;
-      grain.height = vh;
-      const gg = grain.getContext("2d")!;
-      gg.fillStyle = gg.createPattern(tile, "repeat")!;
-      gg.fillRect(0, 0, vw, vh);
+      grain.style.backgroundImage = "url(" + tile.toDataURL() + ")";
       await tick();
       if (dead) return;
 
@@ -224,7 +222,7 @@ export function LoaderB() {
         const halo = [Math.max(24, size * 0.18), Math.max(8, size * 0.055)];
         const P = Math.ceil(halo[0] * 1.6);
         const f = font.replace("%s", String(size));
-        const probe = document.createElement("canvas").getContext("2d")!;
+        const probe = soft(document.createElement("canvas"));
         probe.font = f;
         probe.direction = "rtl";
         probe.textAlign = "center";
@@ -232,7 +230,7 @@ export function LoaderB() {
         const sc = document.createElement("canvas");
         sc.width = Math.ceil(probe.measureText(WORD_AR[it.i]).width) + 2 * pad;
         sc.height = 3 * pad;
-        const sg0 = sc.getContext("2d", { willReadFrequently: true })!;
+        const sg0 = soft(sc);
         sg0.font = f;
         sg0.direction = "rtl";
         sg0.textAlign = "center";
@@ -261,7 +259,7 @@ export function LoaderB() {
           const c = document.createElement("canvas");
           c.width = Math.ceil((wd + 2 * P) * scale);
           c.height = Math.ceil((h + 2 * P) * scale);
-          const g = c.getContext("2d")!;
+          const g = soft(c);
           g.scale(scale, scale);
           g.font = f;
           g.direction = "rtl";
@@ -307,7 +305,7 @@ export function LoaderB() {
         const tc = document.createElement("canvas");
         tc.width = rw;
         tc.height = rh;
-        const tg = tc.getContext("2d")!;
+        const tg = soft(tc);
         svgs.forEach((s) => {
           const r = s.getBoundingClientRect();
           const vb = (s.getAttribute("viewBox") ?? "0 0 1 1").split(" ").map(Number);
@@ -369,7 +367,7 @@ export function LoaderB() {
 
       const spr = document.createElement("canvas");
       spr.width = spr.height = 64;
-      const sg = spr.getContext("2d")!;
+      const sg = soft(spr);
       sg.shadowColor = css(spark, 0.9);
       sg.shadowBlur = 22;
       sg.fillStyle = css(hot);
@@ -490,7 +488,7 @@ export function LoaderB() {
       <script dangerouslySetInnerHTML={{ __html: SCRIPT }} />
       <div className="lb-ground" ref={groundRef} aria-hidden="true">
         <canvas className="lb-cv" ref={cvRef} />
-        <canvas className="lb-grain" ref={grainRef} />
+        <div className="lb-grain" ref={grainRef} />
         <i className="lb-seed" />
         <span className="lb-hint">
           <span className="lb-hint-p">click</span>
