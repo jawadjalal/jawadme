@@ -6,6 +6,7 @@ import { TLink } from "@/components/ds/TLink";
 import { TitleTab } from "@/components/ds/TitleTab";
 import { CaseMoment } from "@/components/moments/case";
 import { JsonLd, abs, caseWork, meta } from "@/lib/seo";
+import "./case.css";
 import { REAL, laneLabel, nextOf, projectBySlug, type Block, type Media as M } from "@/content/work";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -72,11 +73,17 @@ export default async function Case({ params }: Props) {
       >
         {p.name}
       </TitleTab>
-      <CaseMoment lane={p.lane} tall={tall}>
-        <div className="case-cover-in">
-          <Media m={p.cover} vt={"cover-" + p.slug} priority sizes={tall ? "(min-width: 768px) 30vw, 72vw" : "(min-width: 768px) 58vw, 72vw"} />
+      {p.cover.crop ? (
+        <div className="wrap case-crop">
+          <Media m={p.cover} vt={"cover-" + p.slug} priority />
         </div>
-      </CaseMoment>
+      ) : (
+        <CaseMoment lane={p.lane} tall={tall}>
+          <div className="case-cover-in">
+            <Media m={p.cover} vt={"cover-" + p.slug} priority sizes={tall ? "(min-width: 768px) 30vw, 72vw" : "(min-width: 768px) 58vw, 72vw"} />
+          </div>
+        </CaseMoment>
+      )}
       <div className="g16 case-lines">
         {p.lines.map((l) => (
           <p key={l} className="t-line" data-lines="">
@@ -89,11 +96,11 @@ export default async function Case({ params }: Props) {
           <BlockView key={i} b={b} />
         ))}
       </div>
-      <TLink href={"/work/" + next.slug} vt={"cover-" + next.slug} className="next wrap" data-cursor="view" data-m="tilt">
+      <TLink href={"/work/" + next.slug} vt={"cover-" + next.slug} className="next wrap" data-cursor="view">
         <span className="next-head">
           <span className="d-tab">next: {next.name} ↗</span>
         </span>
-        <Media m={next.cover} ratio="21 / 9" sizes="100vw" fit={portrait(next.cover) ? "contain" : "cover"} />
+        <Media m={{ ...next.cover, loop: undefined, crop: undefined, cropM: undefined }} ratio="21 / 9" sizes="100vw" fit={portrait(next.cover) ? "contain" : "cover"} />
       </TLink>
       <Footer src={"case-" + p.slug} />
     </main>
