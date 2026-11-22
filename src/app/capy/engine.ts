@@ -8,6 +8,7 @@
 // d from the camera sits at angle d / R round a sphere of radius R, so zoomed out the board is a planet with its edges
 // curving away, and zoomed in (where d is tiny next to R) it is flat again. Panning spins the globe.
 
+import { ACCENT } from "@/lib/accent";
 import type { Board, Piece, Rect } from "./arrange";
 import { sized } from "./exporters";
 import { END_CARD, TITLE_CARD, TOUR, TOUR_MS, type Shot, type TourTarget } from "./tour";
@@ -25,9 +26,13 @@ export type EngineState = {
 
 type Flight = { t0: number; dur: number; at: (t: number) => View; ease: (t: number) => number; done?: () => void };
 
-const BLUE = "#3b5de8";
+const BLUE = ACCENT.paper;
 const INK = "#0a0a0a";
 export const GROUND = "#ffffff";
+/** the page round the globe: the site's warm ground */
+const PAGE = "#e6e5e1";
+/** the first view's zoom: a poster about 1400 units tall reads at about 220 px */
+const OPEN_Z = 0.16;
 const TILE = "#e2ded3";
 const Z_MAX = 6;
 const HALF_PI = Math.PI / 2;
@@ -295,7 +300,6 @@ export class Engine {
   /** phones skip the idle turn: redrawing every picture each frame costs a phone more than the motion gives back */
   still = typeof matchMedia !== "undefined" && matchMedia("(max-width: 899px), (pointer: coarse)").matches;
   private off: (() => void)[] = [];
-  private born = performance.now();
 
   constructor(canvas: HTMLCanvasElement, board: Board) {
     this.canvas = canvas;
@@ -308,7 +312,7 @@ export class Engine {
     this.videoBox.style.cssText = "position:fixed;left:0;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none";
     document.body.appendChild(this.videoBox);
     this.resize();
-    this.view = this.fitView(board, 1);
+    this.view = this.openView();
     this.bind();
     this.loop = this.loop.bind(this);
     this.raf = requestAnimationFrame(this.loop);
@@ -332,13 +336,21 @@ export class Engine {
     this.dpr = Math.min(2, window.devicePixelRatio || 1);
     this.canvas.width = Math.round(this.vw * this.dpr);
     this.canvas.height = Math.round(this.vh * this.dpr);
-    if (!this.touched && this.board) this.view = this.fitView(this.board);
+    if (!this.touched && this.board) this.view = this.openView();
     this.dirty = true;
   }
 
   // ── camera maths ────────────────────────────────────────────────────────
   get zMin() {
     return this.fitView(this.board, 1).z * 0.45;
+  }
+  /** The first view: flown into the biggest cluster, centred in the clear part of the screen, at a zoom where its posters
+   *  read. The globe is one fit or one Esc away. */
+  openView(): View {
+    const c = this.board.clusters.reduce((a, b) => (b.count > a.count ? b : a));
+    const r = unionRect(this.board.pieces.slice(c.first, c.last + 1));
+    const z = this.vw < 900 ? OPEN_Z / 2 : OPEN_Z;
+    return { x: r.x + r.w / 2 - (this.inset.l - this.inset.r) / 2 / z, y: r.y + r.h / 2 - (this.inset.t - this.inset.b) / 2 / z, z };
   }
   /** The view that frames `r` in the clear part of the screen, with `pad` as a share of it left around. */
   fitView(r: Rect, pad = 1, inset = this.inset): View {
@@ -799,14 +811,6 @@ export class Engine {
       this.vel.y *= k;
       this.dirty = true;
     }
-    // until anyone touches it, the globe turns slowly on its own
-    // (for the first minute, so a page left open goes quiet)
-    if (!this.touched && !this.tour && !this.flight && this.manual === null && !this.calm && !this.still && now - this.born < 60000) {
-      const f = this.fitView(this.board);
-      const a = (now / 52000) * Math.PI * 2;
-      this.view = { x: f.x + Math.cos(a) * this.R * 0.3, y: f.y + Math.sin(a) * this.R * 0.18, z: f.z };
-      this.dirty = true;
-    }
     // the camera never leaves the board, so the globe never turns to an empty face
     const b = this.board;
     this.view.x = clamp(this.view.x, b.x, b.x + b.w);
@@ -937,7 +941,7 @@ export class Engine {
     const shake = punch * punch * 5;
     const L = this.lens(view, vw / 2 + Math.sin(now * 0.11) * shake, vh / 2 + Math.cos(now * 0.13) * shake, z);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = GROUND;
+    ctx.fillStyle = PAGE;
     ctx.fillRect(0, 0, vw, vh);
     // screentone in the corners of the page, like the edge of a printed panel
     if (live) ctx.drawImage(this.cornerTone(vw, vh, dpr), 0, 0, vw, vh);
@@ -962,7 +966,7 @@ export class Engine {
       const y = P.y;
       if (y < -size || y - size > vh || x > vw || x < -size * 30) continue;
       ctx.globalAlpha = al;
-      ctx.font = `italic 900 ${size}px ${this.fonts.print}`;
+      ctx.font = `700 ${size}px ${this.fonts.print}`;
       setStretch(ctx, "extra-condensed");
       ctx.textBaseline = "alphabetic";
       const t = c.name;
@@ -1416,7 +1420,7 @@ export class Engine {
       const pad = Math.max(16, u * 0.022);
       const x = pad * 1.4;
       const y = vh - pad * 1.4;
-      ctx.font = `italic 900 ${s}px ${this.fonts.print}`;
+      ctx.font = `700 ${s}px ${this.fonts.print}`;
       setStretch(ctx, "extra-condensed");
       const tw = ctx.measureText(c.c.title).width;
       setStretch(ctx, "normal");
@@ -1440,7 +1444,7 @@ export class Engine {
         ctx.font = `500 ${ns}px ${this.fonts.sans}`;
         ctx.fillText(c.c.sub, x + pad + ns * 2.2, y - bh + pad + ns + lift);
       }
-      ctx.font = `italic 900 ${s}px ${this.fonts.print}`;
+      ctx.font = `700 ${s}px ${this.fonts.print}`;
       setStretch(ctx, "extra-condensed");
       ctx.fillStyle = BLUE;
       ctx.fillText(c.c.title, x + pad + s * 0.035, y - pad + s * 0.03 + lift);
@@ -1454,12 +1458,12 @@ export class Engine {
       const a = EASE.out(clamp((t - END_CARD) / 600, 0, 1));
       ctx.fillStyle = `rgba(255,255,255,${0.8 * a})`;
       ctx.fillRect(0, 0, vw, vh);
-      this.bigType(ctx, ["JAWADJALAL.COM/CAPY"], vw / 2, vh / 2 + (1 - a) * u * 0.03, u * 0.085, a, "center");
+      this.bigType(ctx, ["jawadjalal.com/capy"], vw / 2, vh / 2 + (1 - a) * u * 0.03, u * 0.085, a, "center");
       ctx.globalAlpha = a;
       ctx.font = `500 ${Math.max(12, u * 0.016)}px ${this.fonts.sans}`;
       ctx.fillStyle = "#4a4a4a";
       ctx.textAlign = "center";
-      ctx.fillText("Unofficial, unsolicited fan work. Not made by or for Capy or YC.", vw / 2, vh / 2 + u * 0.09);
+      ctx.fillText("unofficial, unsolicited fan work. not made by or for capy or yc.", vw / 2, vh / 2 + u * 0.09);
       ctx.textAlign = "left";
       ctx.globalAlpha = 1;
     }
@@ -1471,7 +1475,7 @@ export class Engine {
   }
   private bigType(ctx: CanvasRenderingContext2D, lines: string[], x: number, cy: number, s: number, a: number, align: CanvasTextAlign) {
     ctx.globalAlpha = a;
-    ctx.font = `italic 900 ${s}px ${this.fonts.print}`;
+    ctx.font = `700 ${s}px ${this.fonts.print}`;
     setStretch(ctx, "extra-condensed");
     ctx.textAlign = align;
     const lh = s * 0.86;

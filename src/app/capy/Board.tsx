@@ -3,7 +3,7 @@
 // jawadjalal.com/capy as a board: every piece laid out once, seen from above, explorable like a design file. The engine
 // (engine.ts) owns the canvas, camera, input and tour; this file is the chrome around it and the exports.
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Gilded } from "@/components/gilded/Gilded";
 import { layoutBoard, type Asset, type Piece } from "./arrange";
 import { Engine, type EngineState } from "./engine";
@@ -13,6 +13,20 @@ type Scope = "piece" | "selection" | "view" | "board";
 type Fmt = "png" | "svg" | "html" | "copy-svg" | "copy-html";
 
 const PHONE = "(max-width: 899px)";
+/** the way from the page to the board, which the page's top bar shows: "see the board" on a phone, "back to the board" from the list */
+const ToBoard = createContext<{ label: string; go: () => void } | null>(null);
+
+export function BoardLink() {
+  const to = useContext(ToBoard);
+  if (!to) return null;
+  return (
+    <span className="cp-board">
+      <Gilded variant="pill" href="#board" onClick={to.go}>
+        {to.label}
+      </Gilded>
+    </span>
+  );
+}
 const isMac = () => typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
 
 export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: string[]; children: ReactNode }) {
@@ -46,11 +60,11 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     e.redraw();
     e.onChange = setSt;
     const cs = getComputedStyle(root.current!);
-    const sans = cs.getPropertyValue("--cp-sans").trim();
-    const print = cs.getPropertyValue("--cp-print").trim();
-    if (sans) e.fonts.sans = `${sans}, ui-sans-serif, system-ui, sans-serif`;
-    if (print) e.fonts.print = `${print}, Impact, sans-serif`;
-    Promise.all([document.fonts.load(`italic 900 40px ${e.fonts.print}`), document.fonts.load(`500 12px ${e.fonts.sans}`)])
+    const sans = cs.getPropertyValue("--f-geist").trim();
+    const print = cs.getPropertyValue("--f-display").trim();
+    if (sans) e.fonts.sans = `${sans}, "Helvetica Neue", Arial, sans-serif`;
+    if (print) e.fonts.print = `${print}, "Helvetica Neue", Arial, sans-serif`;
+    Promise.all([document.fonts.load(`700 40px ${e.fonts.print}`), document.fonts.load(`500 12px ${e.fonts.sans}`)])
       .catch(() => {})
       .finally(() => e.redraw());
     // a link to one piece (#id) opens on it
@@ -82,9 +96,9 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     if (!e) return;
     const set = () => {
       const wide = window.innerWidth >= 900;
-      e.inset = hidden ? { t: 24, r: 24, b: 24, l: 24 } : { t: wide ? 96 : 136, r: wide ? 24 : 16, b: wide ? 96 : 88, l: wide ? 228 : 16 };
+      e.inset = hidden ? { t: 24, r: 24, b: 24, l: 24 } : { t: wide ? 96 : 250, r: wide ? 24 : 16, b: wide ? 96 : 88, l: wide ? 228 : 16 };
       e.hidden = hidden;
-      if (!e.touched) e.view = e.fitView(e.board);
+      if (!e.touched) e.view = e.openView();
       e.redraw();
     };
     set();
@@ -107,9 +121,9 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
       const e = eng.current;
       if (!e) return;
       const ps: Piece[] = scope === "piece" || scope === "selection" ? selPieces : scope === "view" ? e.visiblePieces() : board.pieces;
-      if (!ps.length) return say("Nothing in view to export");
+      if (!ps.length) return say("nothing in view to export");
       const base = scope === "piece" ? X.fileBase(ps[0].a) : `capy-${scope}${scope === "selection" ? `-${ps.length}` : ""}`;
-      const title = scope === "board" ? "Capy hackathon assets, the board" : scope === "view" ? "Capy hackathon assets, the view" : `Capy hackathon assets, ${ps.length} pieces`;
+      const title = scope === "board" ? "capy hackathon assets, the board" : scope === "view" ? "capy hackathon assets, the view" : `capy hackathon assets, ${ps.length} pieces`;
       const svg = () => (scope === "piece" ? X.svgOf(ps[0].a).then((r) => r.text) : X.svgSheet(ps));
       const html = () =>
         scope === "piece"
@@ -122,31 +136,31 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
               )
             : X.htmlSheet(ps, title);
       try {
-        say(fmt.startsWith("copy") ? "Copying…" : "Exporting…", 60000);
+        say(fmt.startsWith("copy") ? "copying…" : "exporting…", 60000);
         if (fmt === "png") {
           let blob: Blob;
           if (scope === "piece") blob = await X.pngOf(ps[0].a);
           else if (scope === "view") blob = await X.viewPng(e.vw, e.vh, 2, (ctx) => e.draw(ctx, e.view, e.vw, e.vh, 2, false));
           else blob = await X.pngSheet(ps, scope === "board" ? 8000 : 6000);
           X.save(blob, `${base}.png`);
-          say(`Saved ${base}.png, ${X.mb(blob.size)}`);
+          say(`saved ${base}.png, ${X.mb(blob.size)}`);
         } else if (fmt === "svg") {
           const t = await svg();
           X.save(new Blob([t], { type: "image/svg+xml" }), `${base}.svg`);
-          say(`Saved ${base}.svg, ${X.mb(t.length)}`);
+          say(`saved ${base}.svg, ${X.mb(t.length)}`);
         } else if (fmt === "html") {
           const t = await html();
           X.save(new Blob([t], { type: "text/html" }), `${base}.html`);
-          say(`Saved ${base}.html, ${X.mb(t.length)}`);
+          say(`saved ${base}.html, ${X.mb(t.length)}`);
         } else if (fmt === "copy-svg") {
           await X.copyText(svg());
-          say("Copied as SVG");
+          say("copied as svg");
         } else {
           await X.copyText(html());
-          say("Copied as HTML");
+          say("copied as html");
         }
       } catch {
-        say("That export failed. Try PNG, or a smaller selection.", 3500);
+        say("that export failed. try png, or a smaller selection.", 3500);
       }
     },
     [board, selPieces, say],
@@ -207,10 +221,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   if (list)
     return (
       <div ref={root} className="cb-list">
-        <button className="cb-back" onClick={() => setList(false)}>
-          back to the board
-        </button>
-        {children}
+        <ToBoard.Provider value={{ label: "back to the board", go: () => setList(false) }}>{children}</ToBoard.Provider>
       </div>
     );
 
@@ -225,19 +236,16 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     <>
     {asked ? null : (
       <div className="cb-phone">
-        {children}
-        <button className="cb-back" onClick={() => setAsked(true)}>
-          see the board
-        </button>
+        <ToBoard.Provider value={{ label: "see the board", go: () => setAsked(true) }}>{children}</ToBoard.Provider>
       </div>
     )}
-    <div ref={root} className={`cb${asked ? " cb-asked" : ""}${chromeOff ? " cb-off" : ""}${st.selected.length ? " cb-has-sel" : ""}`}>
+    <div ref={root} id="board" className={`cb${asked ? " cb-asked" : ""}${chromeOff ? " cb-off" : ""}${st.selected.length ? " cb-has-sel" : ""}`}>
       <canvas ref={canvas} className="cb-canvas" role="img" aria-label={`a board of ${board.pieces.length} capy hackathon assets in ${board.clusters.length} clusters. drag to pan, scroll or pinch to zoom, click a piece to fly to it.`} />
 
       <header className="cb-head">
-        <a href="/" className="cb-name">
-          jawad jalal
-        </a>
+        <Gilded variant="pill" href="/">
+          ← jawad jalal
+        </Gilded>
         <h1 className="cb-title" data-text="capy hackathon assets">
           capy hackathon assets
         </h1>
