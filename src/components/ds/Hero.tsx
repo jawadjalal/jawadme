@@ -4,7 +4,7 @@ import { Statement } from "@/components/ds/Statement";
 import { Wordmark } from "@/components/ds/Wordmark";
 import { Sound } from "@/components/world/Sound";
 import { World } from "@/components/world/World";
-import { ADS } from "@/content/ads";
+import { HALL } from "@/content/ads";
 import { SITE } from "@/content/site";
 
 // The home hero is a world (World): an isometric underworld the page pans across chamber by chamber. The gate court,
@@ -14,7 +14,7 @@ import { SITE } from "@/content/site";
 // to a call. The HTML stays on top of the scene and works without it.
 
 const SUB = "hi! i'm jawad jalal. i'm 15 and in london, designing and building things.";
-const RING_ADS = ADS.filter((a) => a.w * 5 === a.h * 4).slice(0, 24);
+const RING_ADS = HALL.filter((a) => a.w * 5 === a.h * 4).slice(0, 24);
 const BY_CAMPAIGN = Object.values(Object.groupBy(RING_ADS, (a) => a.campaign)) as (typeof RING_ADS)[];
 export const RING = Array.from({ length: Math.max(...BY_CAMPAIGN.map((g) => g.length)) }, (_, k) => BY_CAMPAIGN.map((g) => g[k]))
   .flat()

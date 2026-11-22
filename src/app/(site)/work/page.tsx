@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
 import { BookLink } from "@/components/BookLink";
-import { Hang } from "@/components/ds/AdGallery";
-import { Ink } from "@/components/ds/display/Ink";
 import { Footer } from "@/components/ds/Footer";
-import { WorkMoment } from "@/components/moments/work";
-import { ADS } from "@/content/ads";
+import { Media } from "@/components/ds/Media";
+import { TLink } from "@/components/ds/TLink";
+import { Moment } from "@/components/moments/Moment";
+import { ADS, CAMPAIGNS } from "@/content/ads";
+import { SITE } from "@/content/site";
 import { REAL } from "@/content/work";
-import { GALLERY, ROOMS, roomByKey, type Room } from "@/lib/gallery";
+import { GALLERY, ROOMS, type Entry, type Room } from "@/lib/gallery";
 import { JsonLd, PERSON_ID, abs, caseWork, meta, pieceWork } from "@/lib/seo";
-import { Gilded } from "@/components/gilded/Gilded";
-import { Chips } from "./Chips";
+import { Rail } from "./Rail";
 import "./work.css";
 
 export const metadata: Metadata = meta({
   title: "work",
-  description: `work by jawad jalal: ${ADS.length} ads (${ROOMS.filter((r) => r.section === "ads" && r.key !== "more-brands").slice(0, 4).map((r) => r.title).join(", ")} and more), then the websites, 3d and the roblox game around them.`,
+  description: `work by jawad jalal: ${ADS.length} ads (${CAMPAIGNS.slice(0, 4).join(", ")} and more), then the websites, a design tool, 3d and the roblox game around them.`,
   path: "/work",
 });
 
@@ -27,142 +27,122 @@ const LD = {
   hasPart: [...GALLERY.filter((p) => p.credit.includes("jawad jalal")).map(pieceWork), ...REAL.map(caseWork)],
 };
 
-/** The rooms the filter row names: the newest drop, the biggest campaigns, then one way into each other section. Any
- *  room still opens by its own address, and a picked room joins the row. */
-const CHIPS = ["thauma", "nike", "sam", "linear", "outpace", "whop", "shown-media", "websites", "ignaru", "cosmos-models", "fracture"].flatMap((k) => roomByKey(k) ?? []);
+const [ads, ...rest] = ROOMS;
+const cut = (e: Entry) => (e.line.startsWith(e.title + ": ") ? e.line.slice(e.title.length + 2) : e.line);
 
-type Props = { searchParams: Promise<{ c?: string; f?: string }> };
-
-const SHAPES = [
-  { first: 0.6, cycle: [0.3, 0.4] },
-  { first: 0.42, cycle: [0.6, 0.3] },
-  { first: 0.6, cycle: [0.4, 0.3] },
-];
-const WEB = { first: 0.4, cycle: [0.26, 0.3] };
-const SMALL = { first: 0.3, cycle: [0.22, 0.26] };
-
-/** The text between rooms: one sourced line, big, and a call booked from that spot. They sit after every third ad
- *  room and where the gallery turns from ads to websites and from websites to 3D. */
-const SAY = {
-  ads: [
-    { t: "15, in london.", s: "designing and building things. the ads come first." },
-    { t: "ignura studio.", s: "his ad and brand studio: ads and brands people stop for." },
-    { t: "two 8-figure startups.", s: "past roles at menufit, at 7-figure mrr, and okara." },
-  ],
-  web: { t: "sites, designed and built.", s: "for his studio, his 3d team and his clients." },
-  "3d": { t: "3d art for blade ball and fish it,", tail: "two of roblox's biggest games (over 11 billion visits between them)", moment: true },
+/** The 3d moments that stand between the sections, before the room they lead into. */
+const MOMENTS: Record<string, { set: "break3d" | "shaft"; t: string; tail: string }> = {
+  "cosmos-models": { set: "break3d", t: "3d art for blade ball and fish it,", tail: "two of roblox's biggest games (over 11 billion visits between them)" },
+  fracture: { set: "shaft", t: "fracture.", tail: "a roblox mining game i design and build" },
 };
 
-/** The first rooms of the websites and the 3d, where the break just before them already says their line. */
-const NOTE: Record<string, string> = { websites: "", "cosmos-models": "his 3d portfolio from age 13." };
-
-type Say = { t: string; tail?: string; s?: string; moment?: boolean };
-
-function Break({ say, n }: { say: Say; n: number }) {
-  const copy = (
-    <>
-      <p className="brk-t">
-        {say.t}
-        {say.tail ? <span className="brk-tail"> {say.tail}</span> : null}
-      </p>
-      <div className="brk-side">
-        {say.s ? <p className="brk-s">{say.s}</p> : null}
-        <Gilded variant="cta" src={"work-break-" + n} size="hero" />
-      </div>
-    </>
-  );
+/** One ad in the rail, at the rail's height and its own width. */
+function Slide({ e, lead }: { e: Entry; lead: boolean }) {
+  const ar = e.media.w / e.media.h;
   return (
-    <aside className={"wrap brk" + (say.moment ? " brk-m" : "")} aria-label={say.t + (say.tail ? " " + say.tail : "")}>
-      {say.moment ? (
-        <>
-          <div className="brk-copy">{copy}</div>
-          <WorkMoment />
-        </>
-      ) : (
-        copy
-      )}
-    </aside>
+    <li className="rail-i" style={{ ["--ar" as string]: ar }}>
+      <TLink id={e.key} href={e.href} vt="piece" className="rail-a" data-cursor="view">
+        <Media m={e.media} sizes={`(min-width: 768px) ${Math.ceil(70 * ar)}vh, ${Math.min(96, Math.ceil(110 * ar))}vw`} priority={lead} quality={75} />
+        <span className="rail-cap">
+          <span className="rail-co">{e.title}</span>
+          <span className="rail-hl">{cut(e)}</span>
+        </span>
+      </TLink>
+    </li>
   );
 }
 
-/** The hall in order: each room, with a break before it when the section changes or three ad rooms have passed. */
-function hall(rooms: Room[]) {
-  const out: ({ room: Room; i: number } | { say: Say; n: number })[] = [];
-  let since = 0;
-  let n = 0;
-  rooms.forEach((room, i) => {
-    const prev = rooms[i - 1];
-    const say = !prev ? null : prev.section !== room.section ? SAY[room.section as "web" | "3d"] : room.section === "ads" && since === 3 ? SAY.ads[n] : null;
-    if (say) {
-      out.push({ say, n: ++n });
-      since = 0;
-    }
-    out.push({ room, i });
-    since++;
-  });
-  return out;
+/** One piece in the list: the work as the picture, then its name, one line, a fact and the year where they exist. */
+function Item({ e }: { e: Entry }) {
+  const tall = e.media.h > e.media.w;
+  return (
+    <li className={"ed-i" + (tall ? " tall" : "")}>
+      <TLink id={e.key} href={e.href} vt={e.href.startsWith("/w/") ? "piece" : "cover-" + e.href.split("/").pop()} className="ed-a" data-cursor="view">
+        <Media m={e.media} sizes={tall ? "(min-width: 768px) 36vw, 100vw" : "(min-width: 768px) 64vw, 100vw"} quality={75} />
+        <span className="ed-row">
+          <span className="ed-n">{e.title}</span>
+          <span className="ed-l">{cut(e)}</span>
+          <span className="ed-f">{[e.fact, e.year].filter(Boolean).join(", ")}</span>
+        </span>
+      </TLink>
+    </li>
+  );
 }
 
-function RoomView({ room, i, lead }: { room: Room; i: number; lead: boolean }) {
-  const note = NOTE[room.key] ?? room.note;
-  const shape = room.section === "3d" ? SMALL : room.section === "web" ? WEB : SHAPES[i % SHAPES.length];
+function Section({ room }: { room: Room }) {
   return (
-    <section className={"room-w" + (room.section === "3d" ? " room-sm" : "")} aria-labelledby={"r-" + room.key}>
-      <header className="wrap rh">
-        <h2 className="rh-t" id={"r-" + room.key}>
+    <section className="ed" aria-labelledby={"r-" + room.key}>
+      <header className="ed-h">
+        <h2 className="ed-t" id={"r-" + room.key}>
           {room.title}
         </h2>
-        <div className="rh-side">
-          {note ? <p className="rh-n">{note}</p> : null}
-          <p className="rh-m">
-            <span className="rh-c">{room.count}</span>
-            {room.caseHref ? (
-              <Gilded variant="pill" href={room.caseHref}>
-                case study ↗
-              </Gilded>
-            ) : null}
-          </p>
-        </div>
+        {room.note ? <p className="ed-note">{room.note}</p> : null}
+        {room.caseHref ? (
+          <TLink href={room.caseHref} className="ed-case">
+            case study
+          </TLink>
+        ) : null}
       </header>
-      <Hang entries={room.entries} first={shape.first} cycle={shape.cycle} lead={lead} feature />
+      <ol className="ed-list">
+        {room.entries.map((e) => (
+          <Item key={e.key} e={e} />
+        ))}
+      </ol>
     </section>
   );
 }
 
-export default async function Work({ searchParams }: Props) {
-  const q = await searchParams;
-  const pick = roomByKey(q.c ?? q.f);
-  const rooms = pick ? [pick] : ROOMS;
+export default function Work() {
   return (
     <main className="work">
       <JsonLd data={LD} />
       <header className="wrap wk-h">
-        <h1 className="wk-t" data-lines="">
-          work
-        </h1>
-        <p className="wk-n">
-          <Ink kind="under">
-            <strong>{ADS.length} ads</strong>
-          </Ink>{" "}
-          first. then websites, a design tool, 3d and a roblox game, designed and built.
-        </p>
+        <h1 className="wk-t">work</h1>
+        <dl className="wk-stat">
+          <div>
+            <dt>status</dt>
+            <dd>{SITE.available}</dd>
+          </div>
+          <div>
+            <dt>field</dt>
+            <dd>{SITE.lanes.join(", ")}</dd>
+          </div>
+          <div>
+            <dt>city</dt>
+            <dd>london</dd>
+          </div>
+        </dl>
+        <p className="wk-own">all work is my own. bevel&apos;s pieces are its team&apos;s.</p>
+        <p className="wk-n">{ADS.length} ads first. then websites, a design tool, 3d and a roblox game, designed and built.</p>
       </header>
-      <div className="gal-hall" data-room="hall">
-        <nav className="chips" aria-label="rooms">
-          <Chips at={pick?.key ?? ""}>
-            <Gilded variant="filter" href="/work" selected={!pick}>
-              all
-            </Gilded>
-            {(pick && !CHIPS.includes(pick) ? [...CHIPS, pick] : CHIPS).map((r) => (
-              <Gilded key={r.key} variant="filter" href={"/work?c=" + r.key} selected={pick === r}>
-                {r.title}
-              </Gilded>
-            ))}
-          </Chips>
-        </nav>
-        {(pick ? rooms.map((room, i) => ({ room, i })) : hall(rooms)).map((x) => ("room" in x ? <RoomView key={x.room.key} room={x.room} i={x.i} lead={x.i === 0} /> : <Break key={"b" + x.n} say={x.say} n={x.n} />))}
+      <section className="wk-ads" data-room="hall" aria-labelledby="r-ads">
+        <h2 className="wrap ed-t" id="r-ads">
+          ads
+        </h2>
+        <Rail label="ads" n={ads.entries.length}>
+          {ads.entries.map((e, i) => (
+            <Slide key={e.key} e={e} lead={i === 0} />
+          ))}
+        </Rail>
         <p className="wrap disclose">independent work. not commissioned by or affiliated with the brands shown.</p>
-      </div>
+      </section>
+      {rest.map((room) => {
+        const m = MOMENTS[room.key];
+        return (
+          <div key={room.key}>
+            {m ? (
+              <aside className="wrap wk-mo" aria-label={m.t + " " + m.tail}>
+                <p className="wk-mo-t">
+                  {m.t}
+                  <span className="wk-mo-tail"> {m.tail}</span>
+                </p>
+                <Moment set={m.set} className="mo-brk" />
+              </aside>
+            ) : null}
+            <Section room={room} />
+          </div>
+        );
+      })}
       <BookLink src="work-inline" className="strip" cursor>
         <span className="d-name">want work like this?</span>
         <span className="strip-cta">book a call ↗</span>

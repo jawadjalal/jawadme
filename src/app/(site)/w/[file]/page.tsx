@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Viewer } from "@/components/ds/Viewer";
 import { PROJECTS } from "@/content/work";
-import { ROOMS } from "@/lib/gallery";
+import { caseOf } from "@/lib/gallery";
 import { CURATED, PIECES, pieceById, type Piece as P } from "@/lib/pieces";
 import { JsonLd, meta, pieceWork } from "@/lib/seo";
 import "./piece.css";
@@ -44,9 +44,9 @@ export default async function Piece({ params }: Props) {
   const n = CURATED.length;
   const own = i >= 0 ? campaign(i) : [];
   const k = own.findIndex((c) => c.id === p.id);
-  const room = ROOMS.find((r) => r.title === p.group && r.entries.length === own.length);
+  const cs = caseOf(p.group);
   const at = i >= 0 ? { n: i + 1, of: n, prev: near(CURATED[(i - 1 + n) % n]), next: near(CURATED[(i + 1) % n]), strip: own.length > 1 ? own.map((c) => ({ id: c.id, sm: c.sm, alt: c.alt, said: said(c) })) : [] } : null;
-  const camp = own.length > 1 ? { count: room?.count ?? own.length + " pieces", note: room?.note || undefined, caseHref: room?.caseHref, next: { id: own[(k + 1) % own.length].id, said: said(own[(k + 1) % own.length]) } } : null;
+  const camp = own.length > 1 ? { count: own.length + (p.kind === "ad design" ? " ads" : " pieces"), note: cs?.lines[0], caseHref: cs ? "/work/" + cs.slug : undefined, next: { id: own[(k + 1) % own.length].id, said: said(own[(k + 1) % own.length]) } } : null;
   const facts = { client: p.group, year: PROJECTS.find((c) => c.name === p.group)?.year, format: shape(p.w, p.h), of: own.length > 1 ? `${k + 1} of ${own.length}` : undefined };
   return (
     <>

@@ -263,8 +263,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 ::view-transition-group(*) { animation-duration: 400ms; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
 @media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
 
-
-
 /* ── Home: hero ──
    Load: the statement rises, the lettered mark's glyphs rise in turn, the ring turns in, the accent bar wipes in last. */
 .hero { position: relative; padding-top: 18px; overflow: clip; }
@@ -390,7 +388,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 }
 @media (max-height: 540px) and (min-width: 1024px) { .v-strip { display: none; } }
 
-
 /* ── /cal: the calendar is the page ── */
 .ds:has(.cal) { background-image: none; }
 .cal { min-height: 100svh; display: grid; grid-template-rows: auto auto 1fr; }
@@ -433,7 +430,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 @media (prefers-reduced-motion: reduce) {
   .cal *, .cal *::before, .v-strip a, .v-stage img, .v-top::before, .v-info > h1, .v-info > p { animation: none !important; }
 }
-
 
 /* ── 404 ── */
 .lost { padding-top: 0; }
@@ -508,8 +504,6 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
    (public/art/hero.webp) fills it when it lands; until then the field is flat, with a whisper of grain. ── */
 .hall-art { position: absolute; inset: 0; }
 .hero-bar { margin-top: 0; }
-@media (max-width: 767px) {
-}
 
 /* ── The gallery is the hall's second room: the page darkens to the same warm ink as you walk into it ── */
 html[data-room="hall"]:has(.ds) { background: #17120e; }
@@ -558,15 +552,7 @@ html[data-room="hall"] .bar.ink::before { background: var(--ground); }
 }
 @media (prefers-reduced-motion: reduce) { .wm-g { animation: none; } }
 
-/* ── Marginalia (display/Ink): a stroke drawn with the name's nib over the text it marks, warm ivory in the dark rooms ── */
-.mg { --mg: var(--fg); position: relative; display: inline-block; }
-html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
-.mg svg { position: absolute; pointer-events: none; overflow: visible; fill: var(--mg); }
-.mg-under svg { left: -3%; bottom: -0.2em; width: 106%; height: 0.26em; }
-.mg-ring { margin-inline: 0.6em; }
-.mg-ring svg { left: -0.6em; top: -0.5em; width: calc(100% + 1.2em); height: calc(100% + 1em); }
-
-/* ── The hang (/work and the home gallery): justified rows, each piece at its own proportions ── */
+/* ── The hang (the home gallery): justified rows, each piece at its own proportions ── */
 .hang { --gap: 16px; display: flex; flex-wrap: wrap; align-items: flex-start; column-gap: var(--gap); row-gap: 34px; }
 .hang-i { --w: var(--dw); --n: var(--dn); width: calc((100% - var(--gap) * var(--n)) * var(--w) - 0.5px); min-width: 0; display: grid; gap: 12px; -webkit-tap-highlight-color: transparent; }
 .hang-i .media > img, .hang-i .media > video { transition: transform var(--sp-soft-t) var(--sp-soft); }
@@ -577,55 +563,10 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
   .hang-i:hover .hang-co { color: var(--accent-text); }
 }
 
-/* ── A room's heading: its name at display size, its line and the way to its case study ── */
-.rh { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 40px; padding-bottom: calc(6 * var(--u)); }
-.rh-t { font: 700 max(44px, calc(24 * var(--u)))/0.84 var(--f-disp); letter-spacing: -0.05em; }
-.rh-side { display: grid; gap: 14px; justify-items: end; max-width: 30em; padding-bottom: 4px; text-align: right; }
-.rh-n { font: 600 max(16px, calc(4.6 * var(--u)))/1.25 var(--f-sans); letter-spacing: -0.01em; text-wrap: balance; }
-.rh-m { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 18px; font: 700 15px/1 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
-.room-w + .room-w { margin-top: calc(26 * var(--u)); }
-.room-w ~ .room-w { content-visibility: auto; contain-intrinsic-size: auto 1400px; }
-.room-sm .rh-t { font-size: max(34px, calc(13 * var(--u))); letter-spacing: -0.04em; }
-.room-sm .rh-n { font-size: max(15px, calc(3.8 * var(--u))); }
-
-/* ── A break between rooms: one line at display size and the call booked from that spot ── */
-.brk { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 20px 48px; margin-block: calc(30 * var(--u)); padding-top: calc(7 * var(--u)); border-top: 1px solid var(--rule); }
-.brk-t { margin: 0; max-width: 11em; font: 700 max(40px, calc(30 * var(--u)))/0.88 var(--f-disp); letter-spacing: -0.045em; text-wrap: balance; }
-.brk-m { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; }
-.brk-copy { display: grid; gap: calc(8 * var(--u)); }
-.brk-m .brk-t { font-size: max(40px, calc(22 * var(--u))); }
-.brk-tail { display: block; margin-top: 0.3em; font-size: 0.42em; line-height: 1.05; letter-spacing: -0.03em; color: var(--dim); }
-.wk-h { display: grid; grid-template-columns: auto minmax(0, 26em); align-items: end; justify-content: space-between; gap: 16px 48px; padding-top: calc(12 * var(--u)); padding-bottom: calc(5 * var(--u)); }
-.wk-t { margin: 0; font: 700 calc(46 * var(--u))/0.8 var(--f-disp); letter-spacing: -0.055em; }
-.wk-n { margin: 0; padding-bottom: 0.4em; font: 600 max(17px, calc(5.4 * var(--u)))/1.25 var(--f-sans); letter-spacing: -0.015em; color: var(--dim); text-wrap: pretty; }
-.wk-n strong { color: var(--fg); font-weight: 700; }
-@media (max-width: 767px) {
-  .wk-h { grid-template-columns: minmax(0, 1fr); padding-top: 28px; padding-bottom: 20px; }
-  .wk-t { font-size: 27vw; }
-}
-.brk-side { display: grid; gap: 18px; justify-items: start; max-width: 24em; padding-bottom: 6px; }
-.brk-s { margin: 0; font: 600 max(16px, calc(4.6 * var(--u)))/1.3 var(--f-sans); letter-spacing: -0.01em; color: var(--dim); text-wrap: pretty; }
-@media (max-width: 767px) {
-  .brk { grid-template-columns: minmax(0, 1fr); margin-block: 72px; padding-top: 28px; }
-  .brk-m { gap: 28px; }
-  .brk-t { font-size: 12vw; }
-  .room-sm .rh-t { font-size: 10vw; }
-}
 @media (max-width: 767px) {
   .hang { --gap: 10px; row-gap: 24px; }
   .hang-i { --w: var(--mw); --n: var(--mn); }
-  .rh { flex-direction: column; align-items: stretch; gap: 14px; padding-bottom: 18px; }
-  .rh-t { font-size: 13vw; }
-  .rh-side { justify-items: start; text-align: left; }
-  .rh-m { justify-content: space-between; }
-  .room-w + .room-w { margin-top: 72px; }
 }
-
-/* ── Rooms: one row of chips that sticks to the top while you walk the hall, and scrolls sideways on a phone ── */
-.chips { position: sticky; top: 0; z-index: 20; margin-bottom: calc(8 * var(--u)); background: var(--bg); transition: background-color var(--t-room) var(--ease-io); }
-.chips-in { display: flex; gap: 8px; align-items: center; padding: 8px var(--g); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scroll-padding-inline: var(--g); scrollbar-width: none; }
-.chips-in::-webkit-scrollbar { display: none; }
-.chips .gl { flex: none; scroll-snap-align: start; }
 
 /* ── The call strip under the hall ── */
 .strip { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin: calc(14 * var(--u)) 0; padding: calc(8 * var(--u)) var(--g) calc(6 * var(--u)); background: var(--accent); color: var(--accent-ink) !important; transition: background-color var(--t-fast), color var(--t-fast); }

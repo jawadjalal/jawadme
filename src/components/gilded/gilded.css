@@ -153,25 +153,16 @@
 .gl[data-v="arm"] .gl-p { clip-path: polygon(0 0, calc(100% - var(--h) / 2) 0, 100% 50%, calc(100% - var(--h) / 2) 100%, 0 100%); }
 .gl[data-v="arm"] .gl-f { right: calc(var(--r) * 1.42); clip-path: polygon(0 0, calc(100% - var(--h) / 2 + var(--r)) 0, 100% 50%, calc(100% - var(--h) / 2 + var(--r)) 100%, 0 100%); }
 
-/* pill and filter: the small rounded forms, a thin fret rim on the straight runs */
-.gl:is([data-v="pill"], [data-v="filter"]) {
-  font-size: 14px;
-  --h: 36px;
-  --r: 6px;
-  --pad: 1.05em;
-  --rad: 99px;
-  --fx: 7px;
-  --key: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 3'%3E%3Cpath d='M0 2.5H1.5V.5H4.5V2.5H6' fill='none' stroke='%23000'/%3E%3C/svg%3E");
-  --kw: 6px;
-  --kh: 3px;
-}
-.gl[data-v="filter"] { font-size: 13px; --h: 34px; --pad: 0.95em; }
-.gl:is([data-v="pill"], [data-v="filter"]) .gl-fr { top: 1px; }
-.gl:is([data-v="pill"], [data-v="filter"]) .gl-fr + .gl-fr { top: auto; bottom: 1px; }
-.gl:is([data-v="pill"], [data-v="filter"]) .gl-f { border-radius: var(--rad); }
-.gl[data-v="pill"]:is([aria-current], [data-state="selected"] *) { --lit: 1; --txt: var(--accent-hi); }
-.gl[data-v="filter"]:is([aria-current], [aria-pressed="true"], [data-state="selected"] *) { --face: var(--g4); --txt: var(--g0); --groove: var(--g0); --lit: 0; }
-.gl[data-v="filter"]:is([aria-current], [aria-pressed="true"], [data-state="selected"] *) .gl-t { text-shadow: 0 1px 0 rgb(255 248 222 / 0.6); }
+/* pill and filter: no plate and no rounded form, plain lowercase text on a gilded underline (the plate's own lit band
+   over its foot). Hover and the selected one light it. */
+.gl:is([data-v="pill"], [data-v="filter"]) { --h: 36px; --pad: 0px; --txt: var(--fg, currentColor); font-size: 15px; font-weight: 600; }
+.gl:is([data-v="pill"], [data-v="filter"]) .gl-s { display: none; }
+.gl:is([data-v="pill"], [data-v="filter"]) .gl-t { translate: 0 calc(var(--pr) * 1px); text-shadow: none; transition: color 120ms; }
+.gl:is([data-v="pill"], [data-v="filter"]) .gl-t::after { left: 0; right: 0; top: calc(100% + 0.22em); height: 2px; border-radius: 0; background: var(--g3); box-shadow: 0 1px 0 var(--g1); opacity: 1; }
+.gl:is([data-v="pill"], [data-v="filter"]) .gl-t::before { left: 0; right: 0; top: calc(100% + 0.22em); border-radius: 0; background: var(--g4); box-shadow: 0 0 0.6em 0.08em rgb(230 196 108 / 0.55); }
+.gl:is([data-v="pill"], [data-v="filter"]):is(:hover, :focus-visible) { --txt: var(--accent-text, currentColor); }
+.gl:is([data-v="pill"], [data-v="filter"])::after { inset: -4px -8px; right: -8px; border-width: 2px; border-radius: 2px; }
+.gl:is([data-v="pill"], [data-v="filter"]):is([aria-current], [aria-pressed="true"], [data-state="selected"] *) { --lit: 1; --txt: var(--accent-text, currentColor); }
 
 @media (prefers-reduced-motion: reduce) {
   .gl, .gl *, .gl::after, .gl *::before, .gl *::after { transition-duration: 0s !important; animation: none !important; }

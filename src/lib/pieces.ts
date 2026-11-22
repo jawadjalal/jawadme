@@ -1,8 +1,10 @@
-// Every piece that has its own address at /w/<id>: the gallery's pieces first, in the order /work hangs them, then
-// every older permalink from the previous wall, whose files are unchanged, as pieces on their own.
+// Every piece that has its own address at /w/<id>: the gallery's pieces first, in the order /work hangs them, then the
+// home hall's ads that are off the wall, then every older permalink from the previous wall, whose files are unchanged,
+// as pieces on their own.
 
+import { ADS, HALL } from "@/content/ads";
 import { FEED, type Picture } from "@/content/feed";
-import { GALLERY, type Piece } from "@/lib/gallery";
+import { GALLERY, adPiece, type Piece } from "@/lib/gallery";
 
 export type { Piece };
 
@@ -24,5 +26,7 @@ const OLD: Piece[] = FEED.filter((e): e is Picture => "file" in e && !("embed" i
 }));
 
 export const CURATED = GALLERY;
-export const PIECES: Piece[] = [...GALLERY, ...OLD.filter((o) => !GALLERY.some((c) => c.id === o.id))];
+/** the hall's ads that are off the wall (thauma) keep their addresses, outside the wall's order */
+const HALL_ONLY = HALL.filter((a) => !ADS.includes(a)).map(adPiece);
+export const PIECES: Piece[] = [...GALLERY, ...HALL_ONLY, ...OLD.filter((o) => !GALLERY.some((c) => c.id === o.id))];
 export const pieceById = (id: string) => PIECES.find((p) => p.id === id);

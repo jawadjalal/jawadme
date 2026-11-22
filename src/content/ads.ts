@@ -1,6 +1,7 @@
 // The ad curation: one list feeds the home hero and gallery, /ads, the ad case studies and the viewer (/w/<id>).
 // Swap the list and everything follows. Source: JAWA-10's curation (every ad Jawad rated 6 or higher), in its order.
-// Every piece is independent work, not commissioned, except thauma, which is captioned only as its brand. Order: the seven
+// Every piece is independent work, not commissioned, except thauma, which is captioned only as its brand and hangs only in
+// the home hall (HALL below), never on /work. Order: the seven
 // from his 21 Nov ads drop (blind-ranked, handoffs/JAWA-11/new-ads), then the four from his 21 Nov X post (Vercel, Midjourney, Mistral,
 // Lovable; x.com/jawadjalal/status/2124118088819834999), then the type-pass set (handoffs/JAWA-11/new-ads, his picks in
 // type.html), then the JAWA-10 curation, then the rest of his 6s from ~/night/real/ad-replay/replay-manifest.json
@@ -100,8 +101,11 @@ const LIST = [
   more("launchpoint", "launchpoint", "copied videos don't get paid. launchpoint ad."),
 ];
 
-export const ADS: Ad[] = LIST;
-export const adById = (id: string) => ADS.find((a) => a.id === id);
+/** The home hall hangs every ad. Thauma, his roblox studio's own brand, hangs there and keeps its /w address, but is
+ *  never on the /work wall, its counts or its filters. */
+export const HALL: Ad[] = LIST;
+export const ADS: Ad[] = LIST.filter((a) => a.campaign !== "thauma");
+export const adById = (id: string) => HALL.find((a) => a.id === id);
 export const adsOf = (campaign: string) => ADS.filter((a) => a.campaign === campaign);
 
 /** campaigns with two or more pieces get their own filter, case study and title; the rest sit under Other */
