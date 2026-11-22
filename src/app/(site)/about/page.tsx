@@ -65,7 +65,7 @@ export default function About() {
         </details>
       </article>
       <Contact src="about" />
-      <Footer src="about" />
+      <Footer src="about" graph={false} />
     </main>
   );
 }

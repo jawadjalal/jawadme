@@ -23,7 +23,7 @@ export type Block =
   | { kind: "grid"; media: Media[] }
   | { kind: "sequence"; media: Media };
 
-export type Beat = "build" | "result";
+export type Beat = "build";
 export type Project = {
   slug: string;
   name: string;
@@ -142,7 +142,7 @@ const PROJECTS_ALL: Project[] = [
     disciplines: ["game design", "3d", "ui", "engineering"],
     link: { href: "/derelictdepths", label: "jawadjalal.com/derelictdepths" },
     lines: ["a roblox mining game i design and build, formerly derelict depths.", "68 ores, six floors, one mole king."],
-    beats: ["build", "result"],
+    beats: ["build"],
     cover: m("/work/fracture/mole-king.webp", 1920, 1080, "fracture key art: a miner swings at the armoured mole king in a torchlit hall", "ink"),
     blocks: [
       { kind: "full", media: m("/work/fracture/strike.webp", 1920, 1080, "fracture key art: a miner splits a gold vein, sparks and ore flying", "ink") },
