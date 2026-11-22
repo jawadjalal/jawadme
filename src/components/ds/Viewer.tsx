@@ -9,7 +9,7 @@ import { Gilded } from "@/components/gilded/Gilded";
 
 type Piece = { id: string; src: string; w: number; h: number; alt: string; line: string; group: string; credit: string; kind: string; spec: boolean };
 type Near = { id: string; src: string; w: number; h: number };
-type At = { n: number; of: number; prev: Near; next: Near; strip: { id: string; sm: string; alt: string; said: string }[] } | null;
+type At = { n: number; of: number; in: string; prev: Near; next: Near; strip: { id: string; sm: string; alt: string; said: string }[] } | null;
 type Facts = { client: string; year?: number; format: string; of?: string };
 type Camp = { count: string; note?: string; caseHref?: string; next: { id: string; said: string } } | null;
 
@@ -67,7 +67,7 @@ export function Viewer({ piece, said, at, facts, camp }: { piece: Piece; said: s
               ← prev
             </Gilded>
             <span className="v-count">
-              {at.n} / {at.of} in all work
+              {at.n} / {at.of} in {at.in}
             </span>
             <Gilded variant="pill" href={`/w/${at.next.id}`}>
               next →

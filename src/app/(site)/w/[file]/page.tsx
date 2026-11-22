@@ -24,6 +24,9 @@ const shape = (w: number, h: number) => {
 /** What the picture shows: its alt text after its own line. */
 const said = (c: P) => (c.alt.startsWith(c.line + ". ") ? c.alt.slice(c.line.length + 2) : c.alt);
 
+/** Which part of /work each gallery piece hangs in: the ads, the web or the 3d. */
+const SECTION = new Map(ROOMS.flatMap((r) => r.entries.flatMap((e) => (e.piece ? [[e.piece.id, r.section] as const] : []))));
+
 /** Every piece of this one's campaign, itself included. */
 const campaign = (i: number) => CURATED.filter((c) => c.group === CURATED[i].group);
 
@@ -45,7 +48,8 @@ export default async function Piece({ params }: Props) {
   const own = i >= 0 ? campaign(i) : [];
   const k = own.findIndex((c) => c.id === p.id);
   const room = ROOMS.find((r) => r.title === p.group && r.entries.length === own.length);
-  const at = i >= 0 ? { n: i + 1, of: n, prev: near(CURATED[(i - 1 + n) % n]), next: near(CURATED[(i + 1) % n]), strip: own.length > 1 ? own.map((c) => ({ id: c.id, sm: c.sm, alt: c.alt, said: said(c) })) : [] } : null;
+  const part = CURATED.filter((c) => SECTION.get(c.id) === SECTION.get(file));
+  const at = i >= 0 ? { n: part.findIndex((c) => c.id === file) + 1, of: part.length, in: SECTION.get(file) ?? "", prev: near(CURATED[(i - 1 + n) % n]), next: near(CURATED[(i + 1) % n]), strip: own.length > 1 ? own.map((c) => ({ id: c.id, sm: c.sm, alt: c.alt, said: said(c) })) : [] } : null;
   const camp = own.length > 1 ? { count: room?.count ?? own.length + " pieces", note: room?.note || undefined, caseHref: room?.caseHref, next: { id: own[(k + 1) % own.length].id, said: said(own[(k + 1) % own.length]) } } : null;
   const facts = { client: p.group, year: PROJECTS.find((c) => c.name === p.group)?.year, format: shape(p.w, p.h), of: own.length > 1 ? `${k + 1} of ${own.length}` : undefined };
   return (

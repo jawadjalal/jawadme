@@ -404,7 +404,7 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .cal-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 26vw); align-items: start; gap: var(--g); padding-right: var(--g); }
 .cal-embed { padding: calc(6 * var(--u)) var(--g) 0; }
 .cal-row .mo-cal { margin-top: calc(6 * var(--u)); }
-@media (max-width: 1099px) { .cal-row { grid-template-columns: minmax(0, 1fr); padding-right: 0; } .cal-row .mo-cal { display: none; } }
+@media (max-width: 1279px) { .cal-row { grid-template-columns: minmax(0, 1fr); padding-right: 0; } .cal-row .mo-cal { display: none; } }
 .cal-box { position: relative; min-height: 900px; }
 .cal-host { width: 100%; }
 .cal-host iframe { background: transparent; }
@@ -412,9 +412,12 @@ html[data-room="ink"] .cursor[data-mode="view"] .cursor-dot span { color: var(--
 .cal-skel { position: absolute; inset: 0; padding: calc(6 * var(--u)) calc(7 * var(--u)); background: var(--ink); color: var(--ground); pointer-events: none; }
 .cal-skel p { margin: 0; font: 700 max(36px, calc(16 * var(--u)))/0.94 var(--f-disp); letter-spacing: -0.04em; }
 @media (min-width: 1024px) {
-  .cal-host { zoom: 1.45; }
-  .cal-box { min-height: 830px; }
+  .cal-host { zoom: 1.2; }
+  .cal-box { min-height: 690px; }
 }
+@media (min-width: 1280px) { .cal-host { zoom: 1.05; } .cal-box { min-height: 600px; } }
+@media (min-width: 1440px) { .cal-host { zoom: 1.2; } .cal-box { min-height: 690px; } }
+@media (min-width: 1680px) { .cal-host { zoom: 1.4; } .cal-box { min-height: 800px; } }
 .cal-note { font: 500 15px/1.5 var(--f-sans); padding: 16px 0; }
 .cal-note a { text-decoration: underline; }
 .cal-mail { padding: 12px var(--g) 0; font: 700 15px/1.4 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
