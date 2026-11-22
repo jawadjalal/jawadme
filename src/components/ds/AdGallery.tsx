@@ -60,7 +60,7 @@ function feature(aspects: number[], files: number[]) {
       const q = rows.reduce((s, r, k) => s + (GAP * (r.length - 1)) / sums[k], 0);
       const wl = ((W - GAP) * p - q + (CAP + ROW) * (rows.length - 1)) / (1 / aspects[0] + p);
       const l = wl / (W - GAP);
-      if (l < 0.4 || l > 0.72 || wl > files[0] || wl / aspects[0] > 0.85 * W || Math.abs(l - 0.6) >= off) continue;
+      if (l < 0.4 || l > 0.72 || wl > files[0] || wl / aspects[0] > 0.55 * W || Math.abs(l - 0.6) >= off) continue;
       const ws = W - GAP - wl;
       const side = rows.flatMap((r, k) => r.map((j) => ({ w: aspects[j] / sums[k], n: r.length - 1 })));
       if (side.some((s, i) => (ws - GAP * s.n) * s.w > files[i + 1])) continue;
