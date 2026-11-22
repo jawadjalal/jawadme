@@ -4,23 +4,22 @@ import path from "node:path";
 import { ImageResponse } from "next/og";
 import sharp from "sharp";
 
-// The share card for every page in the site group, in the page's own parts: Geist 700 on the warm ground, the
-// page's one line in the dim ink, the accent info bar along the foot, and the page's own pictures (an ad, a cover, a
-// strip of the gallery) cut edge to edge. Satori reads PNG and JPEG only, so the WebP pictures pass through sharp.
+// Ultra-clean Brass Hands industrial dark OG card (1200x630):
+// Matte #1e1e1e ground, crisp 1px hairlines, #f2f2f0 type, tactical orange (#ff6200) accents, and uncropped work frames.
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const BAR = 58;
+const BAR = 56;
 const dir = path.join(process.cwd(), "src/app/_og");
 
 async function pic(src: string, w: number, h: number) {
   const img = sharp(path.join(process.cwd(), "public", src));
   const { width = 1, height = 1 } = await img.metadata();
   const buf = await img
-    .flatten({ background: "#d6d5d0" })
+    .flatten({ background: "#1e1e1e" })
     .resize(w, h, { fit: "cover", position: width / height > w / h + 0.3 ? "left" : "attention" })
-    .jpeg({ quality: 84 })
+    .jpeg({ quality: 88 })
     .toBuffer();
   return "data:image/jpeg;base64," + buf.toString("base64");
 }
@@ -37,43 +36,123 @@ type Card = {
 };
 
 export async function card({ title, line, bar, side, strip, face }: Card) {
-  const [font, me] = await Promise.all([readFile(path.join(dir, "Geist-Bold.ttf")), readFile(path.join(dir, "jawad.png"))]);
+  const [font, me] = await Promise.all([
+    readFile(path.join(dir, "Geist-Bold.ttf")),
+    readFile(path.join(dir, "jawad.png")),
+  ]);
   const H = size.height - BAR;
-  const stripH = 300;
+  const stripH = 296;
   const [sidePic, stripPics] = await Promise.all([
     side ? pic(side.src, side.w, H) : null,
     strip ? Promise.all(strip.map((s) => pic(s, Math.round(size.width / strip.length), stripH))) : null,
   ]);
   const textW = size.width - (side?.w ?? 0) - 112;
-  const big = strip ? 150 : title.length > 16 ? 92 : title.length > 10 ? 108 : 132;
+  const big = strip ? 112 : title.length > 16 ? 78 : title.length > 11 ? 92 : 108;
+
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", background: "#e6e5e1", color: "#0b0b0b", fontFamily: "Geist" }}>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          background: "#1e1e1e",
+          color: "#f2f2f0",
+          fontFamily: "Geist",
+        }}
+      >
         {stripPics ? (
-          <div style={{ display: "flex", height: stripH }}>
+          <div style={{ display: "flex", height: stripH, borderBottom: "1px solid rgba(255,255,255,0.12)" }}>
             {stripPics.map((s, i) => (
-              <img key={i} src={s} width={Math.round(size.width / stripPics.length)} height={stripH} alt="" />
+              <img
+                key={i}
+                src={s}
+                width={Math.round(size.width / stripPics.length)}
+                height={stripH}
+                alt=""
+                style={{ borderRight: i < stripPics.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none" }}
+              />
             ))}
           </div>
         ) : null}
+
         <div style={{ flexGrow: 1, display: "flex" }}>
-          <div style={{ width: textW + 112, display: "flex", flexDirection: "column", justifyContent: strip ? "flex-end" : "space-between", padding: strip ? "0 56px 26px" : "48px 56px 34px" }}>
+          <div
+            style={{
+              width: textW + 112,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: strip ? "flex-end" : "space-between",
+              padding: strip ? "0 56px 28px" : "48px 56px 40px",
+            }}
+          >
             {face && !strip ? (
-              <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 28, letterSpacing: -0.8 }}>
-                <img src={"data:image/png;base64," + me.toString("base64")} width={54} height={60} alt="" />
-                jawad jalal
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                <img src={"data:image/png;base64," + me.toString("base64")} width={46} height={52} alt="" />
+                <span style={{ fontSize: 22, letterSpacing: 2.4, color: "#adb3b7" }}>JAWAD JALAL</span>
               </div>
             ) : null}
-            <div style={{ display: "flex", flexDirection: "column", gap: strip ? 10 : 22 }}>
-              <div style={{ display: "flex", fontSize: big, lineHeight: 0.9, letterSpacing: -big * 0.045, maxWidth: textW }}>{title}</div>
-              <div style={{ display: "flex", fontSize: strip ? 30 : 34, lineHeight: 1.12, letterSpacing: -1, maxWidth: textW, color: "rgba(11,11,11,0.62)" }}>{line}</div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: strip ? 10 : 18 }}>
+              <div
+                style={{
+                  display: "flex",
+                  fontSize: big,
+                  lineHeight: 0.96,
+                  letterSpacing: -big * 0.04,
+                  maxWidth: textW,
+                  color: "#f2f2f0",
+                }}
+              >
+                {title}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  fontSize: strip ? 26 : 30,
+                  lineHeight: 1.24,
+                  letterSpacing: -0.6,
+                  maxWidth: textW,
+                  color: "#adb3b7",
+                }}
+              >
+                {line}
+              </div>
             </div>
           </div>
-          {sidePic ? <img src={sidePic} width={side!.w} height={H} alt="" style={{ marginLeft: "auto" }} /> : null}
+
+          {sidePic ? (
+            <div
+              style={{
+                display: "flex",
+                marginLeft: "auto",
+                borderLeft: "1px solid rgba(255,255,255,0.12)",
+              }}
+            >
+              <img src={sidePic} width={side!.w} height={H} alt="" />
+            </div>
+          ) : null}
         </div>
-        <div style={{ height: BAR, display: "flex", alignItems: "center", justifyContent: "space-between", background: ACCENT.accent, color: ACCENT.ink, padding: "0 56px", fontSize: 28, letterSpacing: -0.8 }}>
-          {bar.map((b) => (
-            <span key={b}>{b}</span>
+
+        <div
+          style={{
+            height: BAR,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            background: "#242424",
+            borderTop: `1px solid ${ACCENT.accent}`,
+            padding: "0 56px",
+            fontSize: 18,
+            letterSpacing: 1.8,
+            color: "#adb3b7",
+          }}
+        >
+          {bar.map((b, i) => (
+            <span key={b} style={{ color: i === bar.length - 1 ? ACCENT.accent : "#adb3b7" }}>
+              {b.toUpperCase()}
+            </span>
           ))}
         </div>
       </div>

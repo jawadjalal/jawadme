@@ -2,8 +2,14 @@ import { card } from "@/app/_og/card";
 import { ADS } from "@/content/ads";
 export { contentType, size } from "@/app/_og/card";
 
-export const alt = "design mastermind. hi! i'm jawad jalal. i'm 15 and in london, designing and building things.";
+export const alt = "Jawad Jalal. Ads, brands, sites, and 3D in London.";
 
 export default function Image() {
-  return card({ title: "design mastermind", line: "hi! i'm jawad jalal. i'm 15 and in london, designing and building things.", bar: ["jawad jalal", "brands, ads, 3d and roblox", "london"], side: { src: ADS[0].src, w: 458 }, face: true });
+  return card({
+    title: "Jawad Jalal",
+    line: "Designing and building ads, brands, sites, and 3D in London.",
+    bar: ["ADS · BRANDS · SITES · 3D", "LONDON, UK", "JAWADJALAL.COM"],
+    side: { src: ADS[0].src, w: 460 },
+    face: true,
+  });
 }

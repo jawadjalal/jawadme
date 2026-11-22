@@ -6,8 +6,8 @@ import { JsonLd, X_HANDLE, person, website } from "@/lib/seo";
 import { ACCENT_CSS } from "@/lib/accent";
 import { MOTION_CSS } from "@/lib/motion";
 
-const TITLE = "jawad jalal, design mastermind: brand, ad, 3d and roblox design";
-const DESCRIPTION = "brands, ads, 3d and roblox games. designed by jawad jalal in london. book a 15 minute call.";
+const TITLE = "Jawad Jalal | Ads, Brands, Sites & 3D";
+const DESCRIPTION = "Designing and building ads, brands, sites, and 3D in London. Book a 15-minute call.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(IDENTITY.site),
