@@ -1,0 +1,6 @@
+/* ── 404, round 2: one screen (no footer under it), room under the headline's descender, the kicker on an ink chip ── */
+.ds:has(.lost) { padding-bottom: 0; }
+.lost .mo-lost { min-height: 100svh; padding-bottom: calc(var(--dock) + 16px); }
+.lost .lost-h { margin: 12px 0 0; }
+.lost .lost-line { margin: calc(4 * var(--u) + 30px) 0 0; }
+.lost .lost-k { display: inline-block; padding: 7px 10px 6px; background: var(--ink); color: #f1e6d2; font-size: 16px; text-shadow: none; }

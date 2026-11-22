@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Gilded } from "@/components/gilded/Gilded";
+import { BookPill } from "@/components/ds/BookPill";
 import { Dock } from "@/components/ds/Dock";
-import { Footer } from "@/components/ds/Footer";
 import { LostMoment } from "@/components/moments/notfound";
 import { fontVars } from "./fonts";
 import "@/styles/ds.css";
 import "@/styles/motion.css";
+import "./lost.css";
 
 export const metadata: Metadata = { title: "wrong turn", robots: { index: false } };
 
@@ -24,11 +25,10 @@ export default function NotFound() {
             <Gilded variant="pill" href="/">
               home
             </Gilded>
-            <Gilded variant="cta" src="404" size="hero" />
+            <BookPill src="404" />
           </nav>
         </LostMoment>
       </main>
-      <Footer src="404" />
       <Dock />
     </div>
   );

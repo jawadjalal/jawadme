@@ -1,5 +1,6 @@
 import { Gilded } from "@/components/gilded/Gilded";
 import { MailLink } from "@/components/MailLink";
+import "./contact.css";
 
 /** The two ways to reach him, side by side and equal: the call on the left, an email on the right. Both carry
  *  the page's src, so /cal?src= and email_open say where the ask came from. */
