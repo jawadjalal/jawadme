@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/ds/Footer";
 import { Hero } from "@/components/ds/Hero";
+import { InlineGlyph } from "@/components/ds/InlineGlyph";
 import { LogoMarquee } from "@/components/ds/LogoMarquee";
 import { OrbitMarquee } from "@/components/ds/OrbitMarquee";
 import { WorkShowcase, type ShowcaseItem } from "@/components/ds/WorkShowcase";
@@ -39,25 +40,8 @@ const ignura = projectBySlug("ignura")!;
 const fracture = projectBySlug("fracture")!;
 const menufit = SITES.find((s) => s.id === "site-menufit");
 
-const COMPACT_ADS = [
-  "on",
-  "cisco",
-  "subaru",
-  "asana",
-  "tesla",
-  "spacex",
-  "vercel-c",
-  "linear-a",
-  "midjourney-a",
-  "strava",
-  "whoop",
-  "palantir-carrier",
-]
-  .map(adTile)
-  .filter((x): x is ShowcaseItem => Boolean(x));
-
-// Compact, high-density work showcase: 2 flagship builds + 12-tile 6-across ad sheet + 3 studio/product builds
-const COMPACT_WORK: ShowcaseItem[] = [
+// Band 1: 2 flagship builds (wide 2-up)
+const FLAGSHIP_BAND: ShowcaseItem[] = [
   {
     id: ignaru.slug,
     href: `/work/${ignaru.slug}`,
@@ -81,7 +65,22 @@ const COMPACT_WORK: ShowcaseItem[] = [
     alt: fracture.cover.alt,
     span: "half",
   },
-  ...COMPACT_ADS,
+];
+
+// Band 2: 6 selected ads in one crisp 6-across strip
+const ADS_BAND: ShowcaseItem[] = [
+  "on",
+  "cisco",
+  "subaru",
+  "asana",
+  "tesla",
+  "spacex",
+]
+  .map(adTile)
+  .filter((x): x is ShowcaseItem => Boolean(x));
+
+// Band 3: 3 studio & product builds (3-up)
+const STUDIO_BAND: ShowcaseItem[] = [
   {
     id: ignuraSeo.slug,
     href: `/work/${ignuraSeo.slug}`,
@@ -133,17 +132,19 @@ export default function Home() {
 
       <LogoMarquee />
 
-      {/* Joyco-inspired ruled editorial statement section */}
+      {/* Joyco-inspired ruled editorial statement with tactile inline graphics */}
       <section className="joy-stmt" aria-label="Statement">
         <div className="joy-stmt-grid">
           <div className="joy-stmt-main">
             <h2 className="joy-stmt-h">
-              Sharp brands, scroll-stopping ads, and high-craft sites built from scratch.
+              Sharp <InlineGlyph kind="brands" tilt={-3} /> brands,{" "}
+              <InlineGlyph kind="bolt" tilt={3} /> scroll-stopping ads, and high-craft{" "}
+              <InlineGlyph kind="sites" tilt={-2} /> sites built from scratch.
             </h2>
           </div>
           <div className="joy-stmt-side">
             <p className="joy-stmt-p">
-              Founder of Ignura Studio. Previously product design at MenuFit (1.5M users) and Okara (14M launch views), plus 3D art for Roblox games with 11B+ visits.
+              Founder of Ignura Studio in London. I work directly with founders on launches, brand identities, 3D visuals, and web experiences that convert.
             </p>
             <div className="joy-stmt-links">
               <Link href="/work" className="joy-link">
@@ -157,12 +158,46 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Compact, high-density work showcase */}
-      <WorkShowcase items={COMPACT_WORK} />
+      {/* Band 1: 2 Flagship Builds */}
+      <WorkShowcase id="work" items={FLAGSHIP_BAND} />
+
+      {/* Short editorial beat breaking up the work */}
+      <div className="ed-beat">
+        <p className="ed-beat-text">
+          <InlineGlyph kind="ads" size="sm" tilt={-3} />
+          <span>Scroll-stopping campaign art &amp; static ads for tech and consumer brands.</span>
+        </p>
+        <Link href="/work" className="ed-beat-link">
+          ALL ADS ↗
+        </Link>
+      </div>
+
+      {/* Band 2: 6 Selected Ads (1 tight row) */}
+      <WorkShowcase items={ADS_BAND} />
+
+      {/* Short editorial beat about Jawad with icons */}
+      <div className="ed-beat">
+        <p className="ed-beat-text">
+          <InlineGlyph kind="studio" size="sm" tilt={3} />
+          <span>
+            Previously product design at MenuFit (1.5M users) &amp; Okara (14M launch views), plus{" "}
+          </span>
+          <InlineGlyph kind="cube" size="sm" tilt={-3} />
+          <span>3D art for Roblox worlds with 11B+ visits.</span>
+        </p>
+        <Link href="/about" className="ed-beat-link">
+          MY JOURNEY ↗
+        </Link>
+      </div>
+
+      {/* Band 3: 3 Studio & Product Builds */}
+      <WorkShowcase items={STUDIO_BAND} />
 
       <div className="ws-archive-strip">
         <Link href="/work" className="ws-archive-link">
-          <span>OPEN THE EXPLORABLE WORK WORLD</span>
+          <span>
+            <InlineGlyph kind="reach" size="sm" tilt={-2} /> OPEN THE EXPLORABLE WORK WORLD
+          </span>
           <span className="ws-archive-n">110+ PIECES ↗</span>
         </Link>
       </div>

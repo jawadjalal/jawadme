@@ -19,7 +19,13 @@ export type ShowcaseItem = {
 
 /** Pure, silent, Brass Hands–framed visual work wall with smooth scroll-reveal refresh.
  *  Zero filter pills, zero text overlays, zero chrome clutter. */
-export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
+export function WorkShowcase({
+  items,
+  id,
+}: {
+  items: ShowcaseItem[];
+  id?: string;
+}) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -69,7 +75,7 @@ export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
   }, [items]);
 
   return (
-    <section className="ws-sec" id="work" aria-label="Selected work">
+    <section className="ws-sec" id={id} aria-label="Selected work">
       <div ref={gridRef} className="ws-grid">
         {items.map((item, idx) => {
           const spanClass =
