@@ -1,5 +1,14 @@
-/** The one accent. Every accent on the site, CSS and JS, reads from here: the root layout writes these as
- *  --accent, --accent-hi, --accent-glow, --accent-ink and --accent-paper on :root, and the OG cards, the Cal embed and the route moments import them. */
-export const ACCENT = { accent: "#73e8b5", hi: "#c4ffe4", glow: "#8af5c6", ink: "#06140e", paper: "#0b6a4b" } as const;
+/** Hades 2 Spectral Viridian + Gilded Gold accent system.
+ *  Every surface (CSS, OG cards, Cal embed, GitHub graph) reads from these tokens. */
+export const ACCENT = {
+  accent: "#5fe3b8",
+  hi: "#a8f7dc",
+  glow: "#5fe3b8",
+  ink: "#0c1210",
+  paper: "#147a5b",
+  gold: "#d4a84b",
+  goldHi: "#f0d07a",
+  goldDim: "#8f6e28",
+} as const;
 
-export const ACCENT_CSS = `:root{--accent:${ACCENT.accent};--accent-hi:${ACCENT.hi};--accent-glow:${ACCENT.glow};--accent-ink:${ACCENT.ink};--accent-paper:${ACCENT.paper}}`;
+export const ACCENT_CSS = `:root{--accent:${ACCENT.accent};--accent-hi:${ACCENT.hi};--accent-glow:${ACCENT.glow};--accent-ink:${ACCENT.ink};--accent-paper:${ACCENT.paper};--gold:${ACCENT.gold};--gold-hi:${ACCENT.goldHi};--gold-dim:${ACCENT.goldDim}}`;

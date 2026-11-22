@@ -1,69 +1,153 @@
-import { Gilded } from "@/components/gilded/Gilded";
-import { AdRing } from "@/components/ds/AdRing";
-import { Statement } from "@/components/ds/Statement";
-import { Wordmark } from "@/components/ds/Wordmark";
-import { Sound } from "@/components/world/Sound";
-import { World } from "@/components/world/World";
-import { HALL } from "@/content/ads";
+import Image from "next/image";
+import Link from "next/link";
+import { BookLink } from "@/components/BookLink";
 import { SITE } from "@/content/site";
 
-// The home hero is a world (World): an isometric underworld the page pans across chamber by chamber. The gate court,
-// with the name in his own lettering (Wordmark) at the top, the line and the call under it; the hall of ads, where the ads stand
-// in the scene and a real list of links (AdRing) serves keyboards, screen readers and the poster fallback; the
-// theatre, whose dark orchestra holds the statement (Statement); the landing on the river, where the signpost points
-// to a call. The HTML stays on top of the scene and works without it.
+const TICKER = [
+  "IGNARU",
+  "MENUFIT · 1.5M USERS",
+  "OKARA · 14M LAUNCH VIEWS",
+  "IGNURA STUDIO",
+  "CORESRENT",
+  "FRACTURE",
+  "BLADE BALL · 3D",
+  "FISH IT · 3D",
+  "BEVEL",
+];
 
-const SUB = "hi! i'm jawad jalal. i'm 15 and in london, designing and building things.";
-const RING_ADS = HALL.filter((a) => a.w * 5 === a.h * 4).slice(0, 24);
-const BY_CAMPAIGN = Object.values(Object.groupBy(RING_ADS, (a) => a.campaign)) as (typeof RING_ADS)[];
-export const RING = Array.from({ length: Math.max(...BY_CAMPAIGN.map((g) => g.length)) }, (_, k) => BY_CAMPAIGN.map((g) => g[k]))
-  .flat()
-  .filter(Boolean);
-const WORLD_ADS = RING.map(({ id, campaign, alt, src }) => ({ id, campaign, alt, src }));
-
+/** Neo-Industrial Hero combining Brass Hands' telemetry authority with a framed
+ *  ember-graded Hades isometric architectural diagram. Zero broken 3D scroll hijacking. */
 export function Hero() {
   return (
-    <section className="hero world" data-hero="" data-world="">
-      <World ads={WORLD_ADS} />
-      <div className="world-flow">
-        <div className="w-gate" data-world-stop="gate">
-          <div className="w-say">
-            <Wordmark label={SITE.headline} />
-            <p className="hero-say">
-              <span className="vh">{SUB}</span>
-              {SUB.split(" ").map((w, i) => (
-                <span key={i} aria-hidden="true">
-                  <span className="hero-sw">
-                    <span style={{ animationDelay: 520 + i * 16 + "ms" }}>{w}</span>
-                  </span>{" "}
-                </span>
-              ))}
-            </p>
-            <Gilded variant="cta" src="home-hero" size="hero" />
-          </div>
+    <section className="nh" data-hero="">
+      {/* Top Brass Hands–style telemetry bar */}
+      <header className="nh-top">
+        <Link href="/" className="nh-brand" aria-label="Jawad Jalal home">
+          <span className="nh-mark" aria-hidden="true">
+            <Image src="/design/jawad-die.webp" alt="" width={64} height={72} sizes="36px" priority />
+          </span>
+          <span className="nh-word">
+            <span>JAWAD</span>
+            <span>JALAL</span>
+          </span>
+        </Link>
+
+        <div className="nh-telemetry">
+          <span>DESIGN &amp; ENGINEERING FOR FRONTIER TECH</span>
+          <span>
+            <i className="nh-dot" aria-hidden="true" /> STATUS: {SITE.available.toUpperCase()}
+          </span>
+          <span>BRANDS / ADS / 3D / ROBLOX</span>
         </div>
-        <section className="w-hall" data-world-stop="hall" aria-labelledby="hall-h">
-          <div className="w-hall-head">
-            <h2 id="hall-h" className="w-hall-h">
-              the hall of ads
-            </h2>
-            <p className="w-hall-p">{RING.length} ads. pick one to open it.</p>
-          </div>
-          <AdRing ads={RING} />
-        </section>
-        <Statement />
-        <div className="w-river" data-world-stop="river">
-          <div className="w-sign">
-            <Gilded variant="cta" src="home-world" size="hero" />
-            <p className="w-sign-p">15 minutes, on a day that suits you.</p>
-            <Sound />
-          </div>
-          <div className="bar hero-bar">
-            <span>jawad jalal</span>
-            <span>{SITE.available}</span>
-            <span>london</span>
-          </div>
+
+        <nav className="nh-top-nav" aria-label="Primary">
+          <Link href="/work">WORK</Link>
+          <Link href="/about">ABOUT</Link>
+          <Link href="/contact">CONTACT</Link>
+          <span className="nh-loc">LONDON, UK</span>
+        </nav>
+
+        <BookLink src="home-top" className="bh-cta">
+          <span className="bh-cta-in">BOOK A CALL ↗</span>
+        </BookLink>
+      </header>
+
+      {/* Dashed Brass Hands ticker */}
+      <div className="nh-ticker" aria-label="Selected companies and projects">
+        <div className="nh-ticker-track">
+          {[...TICKER, ...TICKER].map((item, i) => (
+            <span key={i} className="nh-ticker-item">
+              <span className="nh-ticker-sep" aria-hidden="true">◆</span>
+              {item}
+            </span>
+          ))}
         </div>
+      </div>
+
+      {/* Main asymmetric hero grid */}
+      <div className="nh-grid">
+        <div className="nh-copy">
+          <div className="nh-kicker">
+            <span>[00] // PORTFOLIO 2026</span>
+            <span>AGE 15 · LONDON</span>
+          </div>
+          <h1 className="nh-h1">
+            DESIGNING &amp; BUILDING AT{" "}
+            <span className="nh-accent">STUDIO SCALE.</span>
+          </h1>
+          <p className="nh-lead">
+            I&apos;m <strong>Jawad Jalal</strong> — designer and builder in London. Founder of{" "}
+            <a href="https://ignura.com" target="_blank" rel="noopener">
+              Ignura Studio
+            </a>
+            . Previously product design at <strong>MenuFit</strong> (1.5M users) and{" "}
+            <strong>Okara</strong> (14M launch views). I design brands, 70+ ad concepts, websites,
+            and 3D Roblox worlds — and ship them myself.
+          </p>
+
+          <div className="nh-actions">
+            <BookLink src="home-hero" className="bh-cta bh-cta-lg">
+              <span className="bh-cta-in">BOOK A 15-MIN CALL ↗</span>
+            </BookLink>
+            <a href="#marquee" className="bh-btn-sec">
+              EXPLORE WORK ↓
+            </a>
+          </div>
+
+          <dl className="nh-stats">
+            <div>
+              <dt>AD CONCEPTS</dt>
+              <dd>70+</dd>
+            </div>
+            <div>
+              <dt>PRODUCT SCALE</dt>
+              <dd>1.5M USERS</dd>
+            </div>
+            <div>
+              <dt>3D GAME VISITS</dt>
+              <dd>11B+</dd>
+            </div>
+            <div>
+              <dt>RESPONSE TIME</dt>
+              <dd>&lt; 24 HRS</dd>
+            </div>
+          </dl>
+        </div>
+
+        {/* Framed Hades-style isometric diagram */}
+        <figure className="nh-diagram">
+          <div className="nh-diagram-head">
+            <span>FIG. 00 // THE GATE</span>
+            <span>ISO 30° · HADES II PALETTE</span>
+          </div>
+          <div className="nh-diagram-frame">
+            <Image
+              src="/world/poster/gate-d.webp"
+              alt="Hades-style isometric architectural gate diagram"
+              width={1440}
+              height={900}
+              priority
+              sizes="(min-width: 1024px) 46vw, 100vw"
+              className="nh-diagram-img"
+            />
+            <span className="nh-pin nh-pin-1">
+              <i aria-hidden="true" />
+              <span>01 · BRAND SYSTEMS</span>
+            </span>
+            <span className="nh-pin nh-pin-2">
+              <i aria-hidden="true" />
+              <span>02 · 70+ AD CONCEPTS</span>
+            </span>
+            <span className="nh-pin nh-pin-3">
+              <i aria-hidden="true" />
+              <span>03 · 3D &amp; ROBLOX</span>
+            </span>
+          </div>
+          <figcaption className="nh-diagram-foot">
+            <span>ARCHITECTURE: ISOMETRIC TEMPLE PLATE</span>
+            <span>51.5074° N, 0.1278° W</span>
+          </figcaption>
+        </figure>
       </div>
     </section>
   );

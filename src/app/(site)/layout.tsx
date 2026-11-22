@@ -5,9 +5,9 @@ import "@/styles/ds.css";
 import "@/styles/motion.css";
 import "@/styles/motion-chrome.css";
 import "@/styles/world.css";
+import "@/styles/neo.css";
 
-// The chrome for every page in this group: the type, the dock, and the one ticker. The game pages, the
-// blog and the unlisted pages keep their own layouts.
+// The chrome for every page in this group: Neo-Industrial type, floating Brass Hands command dock, and motion system.
 
 const JS = "document.documentElement.classList.add('js');document.addEventListener('touchstart',function(){},{passive:true})";
 

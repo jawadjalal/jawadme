@@ -1,8 +1,10 @@
 import localFont from "next/font/local";
+import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 
-// Two files, both SIL OFL 1.1 (licence in src/fonts). Geist for the body and the UI, the variable file subset to Latin,
-// so every weight the site sets comes from one request. Mastermind Display for the headings: Geist lettered by
-// src/components/ds/display/letter.py, the face the name on home is drawn in, one static weight that serves 600 to 900.
+// Neo-Industrial editorial typography inspired by Brass Hands, Joyco & Outpace:
+// - Space Grotesk: crisp geometric industrial display headlines with tight tracking
+// - JetBrains Mono: technical uppercase telemetry, specs, navigation & bracketed indices
+// - Geist: ultra-clean variable sans for body copy and long-form UI
 
 export const geist = localFont({
   src: [{ path: "../fonts/Geist-var.woff2", weight: "100 900", style: "normal" }],
@@ -12,12 +14,18 @@ export const geist = localFont({
   fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });
 
-export const display = localFont({
-  src: [{ path: "../fonts/Mastermind-Display.woff2", weight: "600 900", style: "normal" }],
+export const display = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
   variable: "--f-display",
   display: "swap",
-  adjustFontFallback: "Arial",
-  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });
 
-export const fontVars = geist.variable + " " + display.variable;
+export const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--f-mono",
+  display: "swap",
+});
+
+export const fontVars = `${geist.variable} ${display.variable} ${mono.variable}`;

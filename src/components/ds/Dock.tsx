@@ -2,93 +2,100 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useRef, useState } from "react";
-import { DockCta } from "./DockCta";
-import { Gilded } from "@/components/gilded/Gilded";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { BookLink } from "@/components/BookLink";
 import { NAV, SITE } from "@/content/site";
 
-function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
-  const path = usePathname();
-  const c = useSearchParams().get("c");
-  const current = (href: string) => {
-    const [p, q] = href.split("?c=");
-    return path === p && (q ? c === q : !c);
-  };
-  return (
-    <>
-      {NAV.map((n, i) =>
-        list ? (
-          <li key={n.href}>
-            <Gilded variant="pill" href={n.href} selected={current(n.href)}>
-              {n.label}
-            </Gilded>
-          </li>
-        ) : (
-          <Link key={n.href} href={n.href} aria-current={current(n.href) ? "page" : undefined} onClick={onPick} data-m="press" style={{ ["--i" as string]: i }}>
-            {n.label}
-            <span className="lbl dim" aria-hidden="true">↗</span>
-          </Link>
-        ),
-      )}
-    </>
-  );
-}
+const ITEMS = [{ label: "home", href: "/" }, ...NAV];
 
-/** The ticket pinned to the corner of every page but /cal: the mark and the way round on its body, the
- *  call on its accent stub. The call stays on screen at every depth, so it is always one tap away; the body tucks away
- *  while the reader scrolls down, so it never sits over what they are reading, and returns on scroll up or a pause. */
+/** Brass Hands–inspired floating matte-obsidian bottom command dock.
+ *  Centered, crisp 1px border, architectural corner ticks, active ember indicator,
+ *  and direct Book a Call CTA. Clean mobile drawer included. */
 export function Dock() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
-  const dock = useRef<HTMLElement>(null);
-  useEffect(() => setOpen(false), [path]);
+
   useEffect(() => {
-    const el = dock.current;
-    if (!el) return;
-    let last = window.scrollY;
-    let idle = 0;
-    const show = () => el.removeAttribute("data-tuck");
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (y > last + 2 && y > 80) el.setAttribute("data-tuck", "");
-      else if (y < last - 2) show();
-      last = y;
-      window.clearTimeout(idle);
-      idle = window.setTimeout(show, 260);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.clearTimeout(idle);
-      show();
-    };
+    setOpen(false);
   }, [path]);
+
   if (path === "/cal") return null;
+
+  const isActive = (href: string) => {
+    if (href === "/") return path === "/";
+    return path === href || path.startsWith(href + "/");
+  };
+
   return (
     <>
-      <div className="dock-sheet" data-open={open} id="dock-sheet" aria-hidden={!open}>
-        <Suspense>
-          <Nav onPick={() => setOpen(false)} />
-        </Suspense>
-        <span className="lbl">{SITE.detail}</span>
-      </div>
-      <nav ref={dock} className="dock" aria-label="site">
-        <div className="dock-body">
-          <Link href="/" className="dock-mark" aria-label="jawad jalal, home" data-m="press">
-            <Image src="/design/jawad-die.webp" alt="" width={697} height={781} sizes="40px" priority />
-          </Link>
-          <ul className="dock-nav">
-            <Suspense>
-              <Nav list />
-            </Suspense>
-          </ul>
-          <button className="dock-menu" data-m="press" aria-expanded={open} aria-controls="dock-sheet" onClick={() => setOpen((o) => !o)}>
-            <i aria-hidden="true" />
-            menu
-          </button>
+      <div className="bh-sheet" data-open={open} id="bh-dock-sheet" aria-hidden={!open}>
+        <div className="bh-sheet-head">
+          <span>NAVIGATION</span>
+          <span>{SITE.available.toUpperCase()}</span>
         </div>
-        <DockCta hold={path === "/" || path === "/contact"} />
+        <div className="bh-sheet-links">
+          {ITEMS.map((item, i) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
+              <span className="bh-sheet-idx">0{i + 1}</span>
+              <span className="bh-sheet-lbl">{item.label.toUpperCase()}</span>
+              <span className="bh-sheet-arr" aria-hidden="true">↗</span>
+            </Link>
+          ))}
+        </div>
+        <div className="bh-sheet-foot">
+          <span>LONDON, UK</span>
+          <span>{SITE.detail.toUpperCase()}</span>
+        </div>
+      </div>
+
+      <nav className="bh-dock" aria-label="Site navigation">
+        <div className="bh-dock-shell">
+          <Link href="/" className="bh-dock-brand" aria-label="Jawad Jalal, home">
+            <Image src="/design/jawad-die.webp" alt="" width={64} height={72} sizes="28px" />
+            <span>JAWAD</span>
+          </Link>
+
+          <span className="bh-dock-div" aria-hidden="true" />
+
+          <ul className="bh-dock-nav">
+            {ITEMS.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={"bh-dock-link" + (active ? " is-active" : "")}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {active ? <i className="bh-dock-dot" aria-hidden="true" /> : null}
+                    <span>{item.label.toUpperCase()}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          <button
+            type="button"
+            className="bh-dock-menu"
+            aria-expanded={open}
+            aria-controls="bh-dock-sheet"
+            onClick={() => setOpen((o) => !o)}
+          >
+            <span>{open ? "CLOSE" : "MENU"}</span>
+            <i aria-hidden="true" />
+          </button>
+
+          <BookLink src="dock" className="bh-dock-cta">
+            BOOK A CALL ↗
+          </BookLink>
+        </div>
       </nav>
     </>
   );
