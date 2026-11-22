@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalInline } from "@/components/ds/CalInline";
+import { LondonClock } from "@/components/ds/LondonClock";
 import { MailLink } from "@/components/MailLink";
 import { IDENTITY } from "@/lib/profile";
 import { meta } from "@/lib/seo";
@@ -14,7 +15,7 @@ export const metadata: Metadata = meta({
 
 type Props = { searchParams: Promise<{ src?: string }> };
 
-/** Simplistic, distraction-free dark booking page. */
+/** Simplistic, Brass Hands–grade industrial dark booking page. */
 export default async function Cal({ searchParams }: Props) {
   const { src: raw } = await searchParams;
   const src = raw && /^[a-z0-9-]{1,40}$/.test(raw) ? raw : "cal-page";
@@ -25,11 +26,16 @@ export default async function Cal({ searchParams }: Props) {
         <Link href="/" className="cal-back">
           ← JAWAD JALAL
         </Link>
-        <span className="cal-simple-meta">15 MIN · VIDEO · LONDON</span>
+        <span className="cal-simple-meta">
+          LONDON, UK <span className="cal-sep">/</span> <LondonClock />
+        </span>
       </header>
 
       <div className="cal-simple-body">
-        <h1 className="cal-simple-h">Book a call</h1>
+        <div className="cal-simple-head">
+          <h1 className="cal-simple-h">Book a 15-min call</h1>
+          <span className="cal-simple-sub">BRANDS · ADS · SITES · 3D</span>
+        </div>
         <div className="cal-simple-frame">
           <CalInline email={IDENTITY.email} theme="dark" />
         </div>

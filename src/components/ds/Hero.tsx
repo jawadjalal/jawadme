@@ -4,11 +4,12 @@ import { BookLink } from "@/components/BookLink";
 import { MailLink } from "@/components/MailLink";
 import gh from "@/content/github-contributions.json";
 import { SITE } from "@/content/site";
+import { LondonClock } from "./LondonClock";
 
-const LAST_DAYS = (gh.levels as number[]).slice(-112); // 16 weeks x 7 days
+const LAST_DAYS = (gh.levels as number[]).slice(-112);
 
-/** Brass Hands top bar with inline GitHub contributions, CV download, Email, and square glossy Book a Call.
- *  Followed by the minimal centered bio so the curved Outpace work marquee leads immediately. */
+/** Brass Hands industrial top bar with live London time, GitHub contributions, CV, Email,
+ *  and square glossy orange Book a Call CTA. Clean centered bio without age. */
 export function Hero() {
   return (
     <section className="nh-bh" data-hero="">
@@ -29,20 +30,27 @@ export function Hero() {
           </span>
         </Link>
 
-        <a
-          href="https://github.com/jawadjalal"
-          target="_blank"
-          rel="noopener"
-          className="bh-gh"
-          aria-label={`${gh.total.toLocaleString()} GitHub contributions in the past year`}
-        >
-          <span className="bh-gh-grid" aria-hidden="true">
-            {LAST_DAYS.map((lvl, i) => (
-              <i key={i} data-l={lvl} />
-            ))}
-          </span>
-          <span className="bh-gh-num">{gh.total.toLocaleString()}</span>
-        </a>
+        <div className="bh-ops">
+          <div className="bh-ops-line">
+            <span>LONDON, UK</span>
+            <span className="bh-ops-sep">/</span>
+            <LondonClock />
+          </div>
+          <a
+            href="https://github.com/jawadjalal"
+            target="_blank"
+            rel="noopener"
+            className="bh-gh"
+            aria-label={`${gh.total.toLocaleString()} GitHub contributions in the past year`}
+          >
+            <span className="bh-gh-grid" aria-hidden="true">
+              {LAST_DAYS.map((lvl, i) => (
+                <i key={i} data-l={lvl} />
+              ))}
+            </span>
+            <span className="bh-gh-num">{gh.total.toLocaleString()} COMMITS</span>
+          </a>
+        </div>
 
         <nav className="bh-topnav" aria-label="Primary">
           <Link href="/work">WORK</Link>
@@ -61,7 +69,7 @@ export function Hero() {
 
       <div className="bh-hero-center">
         <h1 className="bh-hero-bio">
-          I&apos;m Jawad, 15 in London. I design and build ads, brands, sites, and 3D.
+          I&apos;m Jawad in London. I design and build ads, brands, sites, and 3D.
         </h1>
       </div>
     </section>

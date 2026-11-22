@@ -4,7 +4,6 @@ import { Hero } from "@/components/ds/Hero";
 import { LogoMarquee } from "@/components/ds/LogoMarquee";
 import { OrbitMarquee } from "@/components/ds/OrbitMarquee";
 import { WorkShowcase, type ShowcaseItem } from "@/components/ds/WorkShowcase";
-import { LoaderB } from "@/components/loader/LoaderB";
 import { ADS } from "@/content/ads";
 import { projectBySlug } from "@/content/work";
 import { COSMOS, SITES } from "@/lib/design";
@@ -116,7 +115,6 @@ const ALL_WORK: ShowcaseItem[] = [
 export default function Home() {
   return (
     <main className="neo-home">
-      <LoaderB />
       <Hero />
 
       <section className="om-sec" id="marquee" aria-label="Selected work">

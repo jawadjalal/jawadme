@@ -1,14 +1,13 @@
-/** Hades 2 Spectral Viridian + Gilded Gold accent system.
- *  Every surface (CSS, OG cards, Cal embed, GitHub graph) reads from these tokens. */
+/** Brass Hands & Outpace Industrial Tactical Orange accent system. */
 export const ACCENT = {
-  accent: "#5fe3b8",
-  hi: "#a8f7dc",
-  glow: "#5fe3b8",
-  ink: "#0c1210",
-  paper: "#147a5b",
-  gold: "#d4a84b",
-  goldHi: "#f0d07a",
-  goldDim: "#8f6e28",
+  accent: "#ff6200",
+  hi: "#ff8533",
+  glow: "#ff7235",
+  ink: "#141414",
+  paper: "#d94e00",
+  gold: "#ff6200",
+  goldHi: "#ff8533",
+  goldDim: "#b84400",
 } as const;
 
 export const ACCENT_CSS = `:root{--accent:${ACCENT.accent};--accent-hi:${ACCENT.hi};--accent-glow:${ACCENT.glow};--accent-ink:${ACCENT.ink};--accent-paper:${ACCENT.paper};--gold:${ACCENT.gold};--gold-hi:${ACCENT.goldHi};--gold-dim:${ACCENT.goldDim}}`;
