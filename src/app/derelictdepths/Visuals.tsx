@@ -75,7 +75,7 @@ export function LatestVisuals() {
           ]}
         />
         <p className="ml-note">
-          &ldquo;self-ratings are way off&rdquo; (jawad). so this page no longer shows our own judges' scores. a score counts only when it comes from the locked check for that lane (jaw-156):
+          &ldquo;self-ratings are way off&rdquo; (jawad). so this page no longer shows our own judges' scores. a score counts only when it comes from the locked check for that lane:
           blind, side by side against real references (the top game thumbnails, and the best rpg game interfaces), and anchored on jawad's scored images. every design, ui, art and thumbnail lane
           climbs in small steps, and a step stays only if that check scores it higher.
         </p>

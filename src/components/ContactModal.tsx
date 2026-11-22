@@ -81,14 +81,14 @@ export function ContactModal() {
       setState("error");
       setProblem(
         error === "rate_limited"
-          ? "That is a few messages in a short while. Try again in a little bit."
+          ? "that is a few messages in a short while. try again in a little bit."
           : error === "bad_email"
-            ? "That email address does not look right."
-            : "That did not send. Try again, or email me directly.",
+            ? "that email address does not look right."
+            : "that did not send. try again, or email me directly.",
       );
     } catch {
       setState("error");
-      setProblem("That did not send. Check your connection, or email me directly.");
+      setProblem("that did not send. check your connection, or email me directly.");
     }
   }
 
@@ -104,17 +104,17 @@ export function ContactModal() {
         }}
       >
         <div className="cm-card">
-          <button type="button" onClick={close} aria-label="Close" data-cur="close" className="cm-x">
+          <button type="button" onClick={close} aria-label="close" data-cur="close" className="cm-x">
             <Icon name="chev" size={14} />
           </button>
 
           {state === "unconfigured" ? (
             <div className="cm-done">
               <h2 className="font-display text-lg font-semibold tracking-tight">
-                Email me directly
+                email me directly
               </h2>
               <p className="mt-1 text-[13px] text-muted-foreground">
-                The form is not connected yet, so this is the quickest way.
+                the form is not connected yet, so this is the quickest way.
               </p>
               <a href={`mailto:${IDENTITY.email}`} className="cm-send mt-4">
                 {IDENTITY.email}
@@ -126,21 +126,21 @@ export function ContactModal() {
               <span className="cm-done-mark" aria-hidden="true">
                 <Icon name="check" size={22} />
               </span>
-              <h2 className="font-display text-lg font-semibold">That has sent.</h2>
+              <h2 className="font-display text-lg font-semibold">that has sent.</h2>
               <p className="mt-1 text-[13px] text-muted-foreground">
-                It lands in my inbox and I reply to the address you gave.
+                it lands in my inbox and i reply to the address you gave.
               </p>
               <button type="button" onClick={close} className="cm-send mt-4">
-                Close
+                close
               </button>
             </div>
           ) : (
             <>
               <h2 className="font-display text-lg font-semibold tracking-tight">
-                Send me an email
+                send me an email
               </h2>
               <p className="mt-0.5 text-[13px] text-muted-foreground">
-                Straight to my inbox. I read everything.
+                straight to my inbox. i read everything.
               </p>
 
               <form onSubmit={submit} className="mt-4 space-y-2.5">
@@ -159,11 +159,11 @@ export function ContactModal() {
 
                 <div className="grid gap-2.5 sm:grid-cols-2">
                   <label className="cm-field">
-                    <span>Name</span>
+                    <span>name</span>
                     <input ref={first} name="name" required maxLength={80} autoComplete="name" />
                   </label>
                   <label className="cm-field">
-                    <span>Email</span>
+                    <span>email</span>
                     <input
                       name="email"
                       type="email"
@@ -176,7 +176,7 @@ export function ContactModal() {
                 </div>
 
                 <label className="cm-field">
-                  <span>Message</span>
+                  <span>message</span>
                   <textarea name="message" required rows={5} maxLength={4000} />
                 </label>
 
@@ -197,7 +197,7 @@ export function ContactModal() {
                     data-cur="send"
                     className="cm-send"
                   >
-                    {state === "sending" ? "Sending" : "Send"}
+                    {state === "sending" ? "sending" : "send"}
                     <Icon name="send" size={13} />
                   </button>
                 </div>

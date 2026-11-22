@@ -179,7 +179,7 @@ export function Viewer({ pieces, initial, hire }: { pieces: Picture[]; initial?:
         <span className="vw-count">
           {String(at.i + 1).padStart(2, "0")} <i>/ {pieces.length}</i>
         </span>
-        <button ref={closeBtn} className="vw-x" onClick={close} aria-label="Close">
+        <button ref={closeBtn} className="vw-x" onClick={close} aria-label="close">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 6l12 12M18 6 6 18" />
           </svg>

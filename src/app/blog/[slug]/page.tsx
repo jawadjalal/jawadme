@@ -95,7 +95,7 @@ export default async function PostPage({ params }: Props) {
       <div className="post px-4 py-6 sm:px-6">
         {post.body}
 
-        <h2>FAQ</h2>
+        <h2>faq</h2>
         {post.faq.map((f) => (
           <div key={f.q}>
             <h3>{f.q}</h3>

@@ -6,8 +6,8 @@ import { SITE, TIMELINE } from "@/content/site";
 export function Timeline() {
   return (
     <section className="tl" aria-labelledby="tl-h">
-      <TitleTab id="tl-h" tag="Where I've worked" side={<a href={SITE.cv}>CV ↗</a>}>
-        Experience
+      <TitleTab id="tl-h" tag="where i've worked" side={<a href={SITE.cv}>cv ↗</a>}>
+        experience
       </TitleTab>
       <ol className="tl-rows" data-in="">
         {TIMELINE.map((t, i) => (

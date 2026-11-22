@@ -10,6 +10,7 @@ import { REAL } from "@/content/work";
 import { GALLERY, ROOMS, roomByKey, type Room } from "@/lib/gallery";
 import { JsonLd, PERSON_ID, abs, caseWork, meta, pieceWork } from "@/lib/seo";
 import { Gilded } from "@/components/gilded/Gilded";
+import "./work.css";
 
 export const metadata: Metadata = meta({
   title: "work",
@@ -23,8 +24,12 @@ const LD = {
   url: abs("/work"),
   name: "work by jawad jalal",
   author: { "@id": PERSON_ID },
-  hasPart: [...GALLERY.filter((p) => p.credit.includes("Jawad Jalal")).map(pieceWork), ...REAL.map(caseWork)],
+  hasPart: [...GALLERY.filter((p) => p.credit.includes("jawad jalal")).map(pieceWork), ...REAL.map(caseWork)],
 };
+
+/** The rooms the filter row names: the newest drop, the biggest campaigns, then one way into each other section. Any
+ *  room still opens by its own address, and a picked room joins the row. */
+const CHIPS = ["thauma", "nike", "sam", "linear", "outpace", "whop", "shown-media", "websites", "ignaru", "cosmos-models", "fracture"].flatMap((k) => roomByKey(k) ?? []);
 
 type Props = { searchParams: Promise<{ c?: string; f?: string }> };
 
@@ -47,6 +52,9 @@ const SAY = {
   web: { t: "sites, designed and built.", s: "for his studio, his 3d team and his clients." },
   "3d": { t: "3d art for blade ball and fish it,", tail: "two of roblox's biggest games (over 11 billion visits between them)", moment: true },
 };
+
+/** The first rooms of the websites and the 3d, where the break just before them already says their line. */
+const NOTE: Record<string, string> = { websites: "", "cosmos-models": "his 3d portfolio from age 13." };
 
 type Say = { t: string; tail?: string; s?: string; moment?: boolean };
 
@@ -96,6 +104,7 @@ function hall(rooms: Room[]) {
 }
 
 function RoomView({ room, i, lead }: { room: Room; i: number; lead: boolean }) {
+  const note = NOTE[room.key] ?? room.note;
   const shape = room.section === "3d" ? SMALL : room.section === "web" ? WEB : SHAPES[i % SHAPES.length];
   return (
     <section className={"room-w" + (room.section === "3d" ? " room-sm" : "")} aria-labelledby={"r-" + room.key}>
@@ -104,9 +113,9 @@ function RoomView({ room, i, lead }: { room: Room; i: number; lead: boolean }) {
           {room.title}
         </h2>
         <div className="rh-side">
-          {room.note ? <p className="rh-n">{room.note}</p> : null}
+          {note ? <p className="rh-n">{note}</p> : null}
           <p className="rh-m">
-            <Ink kind="ring">{room.count}</Ink>
+            <span className="rh-c">{room.count}</span>
             {room.caseHref ? (
               <Link href={room.caseHref} className="rh-case" data-m="press lift">
                 case study <span className="arr">↗</span>
@@ -115,7 +124,7 @@ function RoomView({ room, i, lead }: { room: Room; i: number; lead: boolean }) {
           </p>
         </div>
       </header>
-      <Hang entries={room.entries} first={shape.first} cycle={shape.cycle} lead={lead} />
+      <Hang entries={room.entries} first={shape.first} cycle={shape.cycle} lead={lead} feature />
     </section>
   );
 }
@@ -144,7 +153,7 @@ export default async function Work({ searchParams }: Props) {
             <Gilded variant="filter" href="/work" selected={!pick}>
               all
             </Gilded>
-            {ROOMS.map((r) => (
+            {(pick && !CHIPS.includes(pick) ? [...CHIPS, pick] : CHIPS).map((r) => (
               <Gilded key={r.key} variant="filter" href={"/work?c=" + r.key} selected={pick === r}>
                 {r.title}
               </Gilded>

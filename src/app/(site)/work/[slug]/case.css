@@ -1,0 +1,8 @@
+/* /work/<case>: a screenshot cover shown as a crop at reading size, and the crops themselves */
+.case-crop { margin-block: 12px calc(14 * var(--u)); }
+.media[data-crop] { aspect-ratio: var(--ca); }
+.media[data-crop] > img { position: absolute; left: calc(var(--cx) * -100%); top: calc(var(--cy) * -100%); width: calc(var(--cw) * 100%); max-width: none; height: auto; object-fit: fill; }
+@media (max-width: 767px) {
+  .media[data-crop] { aspect-ratio: var(--pa); }
+  .media[data-crop] > img { left: calc(var(--px) * -100%); top: calc(var(--py) * -100%); width: calc(var(--pw) * 100%); }
+}

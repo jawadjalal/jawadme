@@ -1,27 +1,26 @@
-/* jawadjalal.com/capy: the home page's white, black and Inter, its print face for the big words, and one blue taken
-   from Capy (#3b5de8) as the plate a hair off register under the title and the colour of "copied". The assets are the
-   design; the chrome is type and space. */
+/* jawadjalal.com/capy: the site's warm ground and ink, Geist, the display face for the big words, and the one accent as
+   the colour of "copied". The assets are the design; the chrome is type and space. */
 
 html:has(.capy),
 html:has(.capy) body {
-  background: #fff;
+  background: #e6e5e1;
   color-scheme: light;
 }
 
 .capy {
-  --ink: #0a0a0a;
-  --ink-2: #5e5e5e;
-  --ink-3: #707070;
-  --ground: #fff;
-  --tint: #f4f4f3;
-  --blue: #3b5de8;
+  --ink: #0b0b0b;
+  --ink-2: #3f3e3a;
+  --ink-3: #55544f;
+  --ground: #e6e5e1;
+  --tint: #d6d5d0;
+  --acc: var(--accent-paper);
   --edge: clamp(16px, 2.4vw, 36px);
   --row: 360px;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   background: var(--ground);
   color: var(--ink);
-  font-family: var(--cp-sans), ui-sans-serif, system-ui, sans-serif;
-  font-feature-settings: "cv11", "ss01";
+  font-family: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   min-height: 100dvh;
   overflow-x: clip;
@@ -40,39 +39,25 @@ html:has(.capy) body {
   padding: 20px var(--edge) clamp(40px, 5vw, 72px);
 }
 .cp-top { grid-area: name; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: clamp(48px, 7vw, 112px); }
-.cp-name { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
-.cp-name:hover, .cp-name:focus-visible { color: var(--blue); }
+.cp-board { margin-left: auto; }
 
 .cp-title {
   grid-area: title;
   position: relative;
   isolation: isolate;
   margin: 0;
-  font-family: var(--cp-print), Impact, sans-serif;
-  font-style: italic;
-  font-weight: 900;
-  font-variation-settings: "wdth" 62;
-  font-size: clamp(48px, 7.8vw, 150px);
-  line-height: 0.84;
-  letter-spacing: -0.012em;
+  font-family: var(--f-display), var(--f-geist), "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(44px, 6.4vw, 124px);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
   white-space: nowrap;
   color: var(--ink);
-}
-/* the blue plate, printed a hair off register */
-.cp-title::before {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  color: var(--blue);
-  transform: translate(0.035em, 0.03em);
-  white-space: pre-line;
-  pointer-events: none;
 }
 
 .cp-intro { grid-area: intro; padding-bottom: 0.3em; }
 .cp-lead { margin: 0; font-size: 19px; line-height: 1.42; letter-spacing: -0.012em; font-weight: 500; text-wrap: pretty; }
-.cp-note { margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.cp-note { margin: 14px 0 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
 
 /* ── The filter: quiet words, sticky ──────────────────────────────────── */
 .cp-filter {
@@ -101,20 +86,16 @@ html:has(.capy) body {
 .cp-kind + .cp-kind { padding-top: clamp(96px, 10vw, 160px); }
 .cp-kind-title {
   margin: 0 0 clamp(20px, 2.4vw, 36px);
-  font-family: var(--cp-print), Impact, sans-serif;
-  font-style: italic;
-  font-weight: 900;
-  font-variation-settings: "wdth" 62;
-  font-size: clamp(44px, 5.2vw, 84px);
-  line-height: 0.9;
-  letter-spacing: -0.01em;
+  font-family: var(--f-display), var(--f-geist), "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(40px, 4.6vw, 76px);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
 }
 .cp-kind-title span,
 .cp-set-title span {
-  font-family: var(--cp-sans), ui-sans-serif, system-ui, sans-serif;
-  font-style: normal;
+  font-family: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
   font-weight: 500;
-  font-variation-settings: normal;
   font-size: 14px;
   letter-spacing: 0;
   color: var(--ink-3);
@@ -185,7 +166,7 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
 }
 .cp-copy:hover, .cp-copy:focus-visible { background: #2b2b2b !important; }
 .cp-copy:active { transform: translateY(1px) scale(0.98); }
-.cp-copy[data-state="image"], .cp-copy[data-state="link"] { background: var(--blue) !important; }
+.cp-copy[data-state="image"], .cp-copy[data-state="link"] { background: var(--acc) !important; }
 .cp-copy[data-state="busy"] { background: #3a3a3a !important; }
 .cp-copy[data-state="failed"] { background: #b3261e !important; }
 .cp-dl { font-size: 13px; font-weight: 600; color: var(--ink); white-space: nowrap; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color 150ms; }
@@ -206,7 +187,7 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
   color: #f2f2f2;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
-  font-family: var(--cp-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--f-geist), "Helvetica Neue", Arial, sans-serif;
   animation: cp-in 220ms var(--ease);
 }
 .cp-lb::backdrop { background: #0b0b0b; }
@@ -215,7 +196,7 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
 .cp-lb-title { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cp-lb-title span { font-weight: 500; color: #9a9a9a; margin-left: 6px; }
 .cp-close { font-size: 15px; font-weight: 600; color: #f2f2f2 !important; padding: 8px 2px !important; }
-.cp-close:hover, .cp-close:focus-visible { color: #9cb2ff !important; }
+.cp-close:hover, .cp-close:focus-visible { color: var(--accent) !important; }
 .cp-lb-stage { position: relative; min-height: 0; margin: 0 var(--edge); cursor: zoom-out; }
 .cp-lb-stage .cp-media { transform: none; transition: opacity 260ms var(--ease); cursor: default; width: 100%; height: 100%; }
 .cp-lb-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 16px var(--edge) 18px; }
@@ -243,7 +224,7 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
 .cp-actions[data-big] { gap: 18px; }
 .capy .cp-actions[data-big] .cp-copy { height: 40px; padding: 0 16px; font-size: 15px !important; background: #f2f2f2 !important; color: var(--ink) !important; }
 .cp-actions[data-big] .cp-copy:hover, .cp-actions[data-big] .cp-copy:focus-visible { background: #fff !important; }
-.cp-actions[data-big] .cp-copy[data-state="image"], .cp-actions[data-big] .cp-copy[data-state="link"] { background: var(--blue) !important; color: #fff !important; }
+.cp-actions[data-big] .cp-copy[data-state="image"], .cp-actions[data-big] .cp-copy[data-state="link"] { background: var(--acc) !important; color: #fff !important; }
 .cp-actions[data-big] .cp-dl { color: #f2f2f2; font-size: 15px; }
 
 /* ── The foot ─────────────────────────────────────────────────────────── */
@@ -262,10 +243,18 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
 @media (max-width: 1180px) {
   .cp-head { grid-template-columns: minmax(0, 1fr); grid-template-areas: "name" "title" "intro"; row-gap: 28px; }
   .cp-top { margin-bottom: 40px; }
-  .cp-title { font-size: min(12.8vw, 116px); }
+  .cp-title { font-size: min(11vw, 104px); }
   .cp-intro { max-width: 34em; }
 }
+@media (max-width: 899px) {
+  /* the way to the board takes its own row under the name and the call, clear of the posters */
+  .cp-top { flex-wrap: wrap; row-gap: 12px; }
+  .cp-board { order: 3; flex-basis: 100%; margin-left: 0; }
+}
 @media (max-width: 760px) {
+  /* every kind in reach at once: the chips wrap onto rows, and the filter scrolls away with the page */
+  .cp-filter { position: static; }
+  .cp-filter-in { flex-wrap: wrap; overflow: visible; white-space: normal; }
   /* the count sits on its own line under the heading, whole, instead of breaking after "91" */
   .cp-kind-title span { display: block; margin: 10px 0 0; vertical-align: baseline; }
   .capy { --row: 190px; }
@@ -276,9 +265,8 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
   .cp-lb-foot { flex-direction: column; align-items: stretch; gap: 14px; }
   .cp-lb-actions { justify-content: space-between; }
   .cp-actions[data-big] .cp-copy { height: 44px; }
-  .cp-name, .cp-foot a { display: inline-flex; align-items: center; min-height: 44px; }
+  .cp-foot a { display: inline-flex; align-items: center; min-height: 44px; }
   .cp-foot { flex-wrap: wrap; gap: 0 24px; padding-bottom: 24px; }
-  .cp-note { font-size: 14px; }
   .cp-copy, .cp-dl { position: relative; }
   .cp-copy::after, .cp-dl::after { content: ""; position: absolute; inset: -7px -6px; }
 }
