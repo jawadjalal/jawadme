@@ -31,7 +31,7 @@ const AT: Record<Sign, [number, number, number, number]> = {
   instagram: [0.2729, 0.6761, 0.3, 0.5857],
 };
 
-export function Pillar() {
+export function Pillar({ first }: { first?: boolean }) {
   const load = useCallback(
     () =>
       import("./pillarScene").then((m) => (host: HTMLElement, ctx: Parameters<typeof m.mount>[1]) =>
@@ -49,7 +49,7 @@ export function Pillar() {
         <h2 className="foot-h">where to next?</h2>
         <p className="foot-hint">pick a sign.</p>
       </div>
-      <Stage load={load} poster={{ d: "/world/poster/pillar-d.webp", m: "/world/poster/pillar-m.webp" }} className="pl-stage" margin="1200px 0px">
+      <Stage load={load} poster={{ d: "/world/poster/pillar-d.webp", m: "/world/poster/pillar-m.webp", first }} className="pl-stage" margin="1200px 0px">
         <Flames of="pillar" />
         <nav className="pl-ui" aria-label="where to next">
           <span className="pl-a main" data-sign="cal" style={at("cal")}>
