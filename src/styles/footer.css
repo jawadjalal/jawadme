@@ -1,0 +1,52 @@
+/* ── Footer (Footer, world/Pillar): the waymarker at the underworld's last crossroads, the same object on every page, one
+   sign per way out, then one quiet row of every link. Each sign is a real link laid over the object: live, the scene
+   moves it onto its sign and lights the sign; over the poster (phones, weak GPUs, reduced motion) it sits where the
+   poster shows that sign and draws its own ring on hover and focus. ── */
+.foot { position: relative; background: #100b09; color: #f4ece1; }
+.pl { position: relative; }
+.pl-stage { width: 100%; aspect-ratio: 1440 / 846; }
+.pl-head { position: absolute; left: 56%; top: 36%; z-index: 3; pointer-events: none; }
+.foot-h { margin: 0; font: 700 max(44px, calc(17 * var(--u)))/0.88 var(--f-disp); letter-spacing: -0.05em; color: var(--ivory); }
+.pl-head .foot-hint { margin: 14px 0 0; font: 600 max(20px, calc(5.4 * var(--u)))/1.1 var(--f-bar); letter-spacing: -0.02em; color: #c9b498; }
+.pl-ui { position: absolute; inset: 0; z-index: 2; }
+.pl-a { position: absolute; left: calc(var(--dx) * 100%); top: calc(var(--dy) * 100%); width: 10.5%; height: 7%; translate: -50% -50%; }
+.pl-a.main { width: 16%; height: 9%; }
+.pl-a[data-sign="instagram"] { width: 6%; height: 9.5%; }
+.pl-a > a { --w-spring: linear(0, 0.062, 0.213, 0.408, 0.61, 0.795, 0.946, 1.055, 1.124, 1.157, 1.162, 1.146, 1.118, 1.086, 1.053, 1.025, 1.002, 0.987, 0.977, 0.974, 0.974, 0.977, 0.982, 0.988, 1); position: absolute; inset: 0; border-radius: 12px; outline: none; -webkit-tap-highlight-color: transparent; transition: transform 500ms var(--w-spring); }
+.pl-a > a::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; box-shadow: 0 0 0 1.5px var(--accent), 0 0 22px var(--accent-glow); opacity: 0; transition: opacity var(--t-fast); }
+.pl-a > a:focus-visible::after, .pl-stage[data-mode="poster"] .pl-a > a:hover::after { opacity: 1; }
+.pl-stage[data-mode="poster"] .pl-a > a:active { transform: scale(0.96); transition-duration: 90ms; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* the call's sign: live, the 3D arm is gilded and the plain link rides it; over the poster (rendered without that arm)
+   it is the site's gilded call as a sign (Gilded arm) */
+.pl-gild { position: absolute; left: 50%; top: 50%; translate: -50% -50%; white-space: nowrap; }
+.pl-stage[data-mode="live"] .pl-gild, .pl-stage[data-mode="poster"] .pl-a.main > a { display: none; }
+
+/* the footer reserves the dock's room itself, so the page adds none below it */
+.ds:has(.foot) { padding-bottom: 0; }
+.foot-cg { padding: 20px var(--g) 12px; box-shadow: inset 0 1px 0 rgb(248 227 194 / 0.14); }
+.foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 24px; padding: 6px var(--g) calc(var(--dock) + 40px + env(safe-area-inset-bottom)); font: 700 18px/1.2 var(--f-bar); letter-spacing: -0.02em; }
+.foot-c { color: #b9a184; }
+.foot-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; }
+.foot-row a { display: inline-flex; align-items: center; min-height: 44px; color: #f4ece1; transition: color var(--t-fast); }
+.foot-row a:hover { color: var(--accent); }
+.foot-row a:not(.gl) { position: relative; }
+.foot-row a:not(.gl)::before { content: ""; position: absolute; inset: 0 min(0px, calc(100% - 32px)) 0 min(0px, calc(100% - 24px)); }
+.foot-reach { display: flex; flex-wrap: wrap; gap: 0 24px; }
+.foot-row .foot-book { color: var(--accent); }
+.foot-row .foot-book:hover { color: var(--accent-hi); }
+
+@media (max-width: 767px) {
+  .pl-head { position: relative; left: auto; top: auto; padding: 56px var(--g) 4px; }
+  .pl-stage { aspect-ratio: 390 / 700; }
+  .pl-a { left: calc(var(--mx) * 100%); top: calc(var(--my) * 100%); width: 27%; height: 7%; min-height: 48px; }
+  .pl-a.main { width: 40%; }
+  .pl-gild .gl { font-size: 15px; --h: 44px; }
+  .pl-a[data-sign="instagram"] { width: 16%; height: 9.5%; }
+  .foot-cg { padding-top: 16px; }
+  .foot-row { display: grid; gap: 4px; padding: 4px var(--g) calc(var(--dock) + 40px + env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl-a > a { transition: none; }
+  .pl-stage[data-mode="poster"] .pl-a > a:active { transform: none; }
+}

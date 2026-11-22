@@ -1,0 +1,88 @@
+{
+ "target_three": [
+  -2.6096999645233154,
+  5.4716477394104,
+  -2.6096999645233154
+ ],
+ "frustum_h": 52.0,
+ "yaw_deg": 45,
+ "pitch_deg": 34,
+ "gate_top_up": 18.856900453567505,
+ "framing": {
+  "desktop": {
+   "fh": 32.5,
+   "top": 0.19
+  },
+  "phone": {
+   "width": 30.0,
+   "top": 0.33
+  }
+ },
+ "clear_spot": {
+  "centre": [
+   2.0,
+   0,
+   2.0
+  ],
+  "size": 10,
+  "holds": "tree"
+ },
+ "banners": [
+  {
+   "name": "banner_0",
+   "ad": "thauma-moon",
+   "default_ad": "thauma-moon",
+   "aspect": [
+    4,
+    5
+   ],
+   "pivot": [
+    5.375,
+    9.35,
+    -12.7
+   ]
+  },
+  {
+   "name": "banner_1",
+   "ad": "nike-runner",
+   "default_ad": "nike-runner",
+   "aspect": [
+    4,
+    5
+   ],
+   "pivot": [
+    -12.7,
+    9.35,
+    5.375
+   ]
+  },
+  {
+   "name": "banner_2",
+   "ad": "sam-embrace",
+   "default_ad": "sam-embrace",
+   "aspect": [
+    4,
+    5
+   ],
+   "pivot": [
+    11.125,
+    9.35,
+    -12.7
+   ]
+  },
+  {
+   "name": "banner_3",
+   "ad": "thauma-construction",
+   "default_ad": "thauma-construction",
+   "aspect": [
+    4,
+    5
+   ],
+   "pivot": [
+    -12.7,
+    9.35,
+    11.125
+   ]
+  }
+ ]
+}

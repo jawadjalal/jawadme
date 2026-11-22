@@ -3,7 +3,8 @@
 // jawadjalal.com/capy as a board: every piece laid out once, seen from above, explorable like a design file. The engine
 // (engine.ts) owns the canvas, camera, input and tour; this file is the chrome around it and the exports.
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Gilded } from "@/components/gilded/Gilded";
 import { layoutBoard, type Asset, type Piece } from "./arrange";
 import { Engine, type EngineState } from "./engine";
 import * as X from "./exporters";
@@ -11,6 +12,21 @@ import * as X from "./exporters";
 type Scope = "piece" | "selection" | "view" | "board";
 type Fmt = "png" | "svg" | "html" | "copy-svg" | "copy-html";
 
+const PHONE = "(max-width: 899px)";
+/** the way from the page to the board, which the page's top bar shows: "see the board" on a phone, "back to the board" from the list */
+const ToBoard = createContext<{ label: string; go: () => void } | null>(null);
+
+export function BoardLink() {
+  const to = useContext(ToBoard);
+  if (!to) return null;
+  return (
+    <span className="cp-board">
+      <Gilded variant="pill" href="#board" onClick={to.go}>
+        {to.label}
+      </Gilded>
+    </span>
+  );
+}
 const isMac = () => typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
 
 export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: string[]; children: ReactNode }) {
@@ -21,6 +37,11 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   const [st, setSt] = useState<EngineState>({ z: 0, selected: [], cluster: 0, touring: false, hover: -1 });
   const [hidden, setHidden] = useState(false);
   const [list, setList] = useState(false);
+  /** phones open on the list; the canvas loads only once they ask for the board */
+  const [asked, setAsked] = useState(false);
+  /** null until the first client check; the desktop board mounts its engine whenever the screen is wide or asked for */
+  const [phone, setPhone] = useState<boolean | null>(null);
+  const [engine, setEngine] = useState<Engine | null>(null);
   const [exp, setExp] = useState(false);
   const [help, setHelp] = useState(false);
   const [clustersOpen, setClustersOpen] = useState(false);
@@ -33,19 +54,29 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     toastT.current = setTimeout(() => setToast(null), ms);
   }, []);
 
-  // the engine, once
   useEffect(() => {
-    if (list || !canvas.current) return;
+    const mq = matchMedia(PHONE);
+    const f = () => setPhone(mq.matches);
+    f();
+    mq.addEventListener("change", f);
+    return () => mq.removeEventListener("change", f);
+  }, []);
+
+  // the engine, whenever the board is on screen: a wide screen, or a phone that asked for it
+  const on = asked || phone === false;
+  useEffect(() => {
+    if (list || !on || !canvas.current) return;
     const e = new Engine(canvas.current, board);
     eng.current = e;
+    setEngine(e);
     e.redraw();
     e.onChange = setSt;
     const cs = getComputedStyle(root.current!);
-    const sans = cs.getPropertyValue("--cp-sans").trim();
-    const print = cs.getPropertyValue("--cp-print").trim();
-    if (sans) e.fonts.sans = `${sans}, ui-sans-serif, system-ui, sans-serif`;
-    if (print) e.fonts.print = `${print}, Impact, sans-serif`;
-    Promise.all([document.fonts.load(`italic 900 40px ${e.fonts.print}`), document.fonts.load(`500 12px ${e.fonts.sans}`)])
+    const sans = cs.getPropertyValue("--f-geist").trim();
+    const print = cs.getPropertyValue("--f-display").trim();
+    if (sans) e.fonts.sans = `${sans}, "Helvetica Neue", Arial, sans-serif`;
+    if (print) e.fonts.print = `${print}, "Helvetica Neue", Arial, sans-serif`;
+    Promise.all([document.fonts.load(`700 40px ${e.fonts.print}`), document.fonts.load(`500 12px ${e.fonts.sans}`)])
       .catch(() => {})
       .finally(() => e.redraw());
     // a link to one piece (#id) opens on it
@@ -67,25 +98,26 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     return () => {
       e.destroy();
       eng.current = null;
+      setEngine(null);
       delete w.__capy;
     };
-  }, [board, list]);
+  }, [board, list, on]);
 
-  // the chrome's footprint, so fits and flights land in the clear part of the screen
+  // the chrome's footprint, so fits and flights land in the clear part of the screen; set up for every engine
   useEffect(() => {
-    const e = eng.current;
+    const e = engine;
     if (!e) return;
     const set = () => {
       const wide = window.innerWidth >= 900;
-      e.inset = hidden ? { t: 24, r: 24, b: 24, l: 24 } : { t: wide ? 96 : 136, r: wide ? 24 : 16, b: wide ? 96 : 88, l: wide ? 228 : 16 };
+      e.inset = hidden ? { t: 24, r: 24, b: 24, l: 24 } : { t: wide ? 96 : 250, r: wide ? 24 : 16, b: wide ? 96 : 88, l: wide ? 24 : 16 };
       e.hidden = hidden;
-      if (!e.touched) e.view = e.fitView(e.board);
+      if (!e.touched) e.view = e.openView();
       e.redraw();
     };
     set();
     window.addEventListener("resize", set);
     return () => window.removeEventListener("resize", set);
-  }, [hidden, list]);
+  }, [hidden, engine]);
 
   // the selection rides in the URL so a piece can be linked
   useEffect(() => {
@@ -102,9 +134,9 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
       const e = eng.current;
       if (!e) return;
       const ps: Piece[] = scope === "piece" || scope === "selection" ? selPieces : scope === "view" ? e.visiblePieces() : board.pieces;
-      if (!ps.length) return say("Nothing in view to export");
+      if (!ps.length) return say("nothing in view to export");
       const base = scope === "piece" ? X.fileBase(ps[0].a) : `capy-${scope}${scope === "selection" ? `-${ps.length}` : ""}`;
-      const title = scope === "board" ? "Capy hackathon assets, the board" : scope === "view" ? "Capy hackathon assets, the view" : `Capy hackathon assets, ${ps.length} pieces`;
+      const title = scope === "board" ? "capy hackathon assets, the board" : scope === "view" ? "capy hackathon assets, the view" : `capy hackathon assets, ${ps.length} pieces`;
       const svg = () => (scope === "piece" ? X.svgOf(ps[0].a).then((r) => r.text) : X.svgSheet(ps));
       const html = () =>
         scope === "piece"
@@ -117,31 +149,31 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
               )
             : X.htmlSheet(ps, title);
       try {
-        say(fmt.startsWith("copy") ? "Copying…" : "Exporting…", 60000);
+        say(fmt.startsWith("copy") ? "copying…" : "exporting…", 60000);
         if (fmt === "png") {
           let blob: Blob;
           if (scope === "piece") blob = await X.pngOf(ps[0].a);
           else if (scope === "view") blob = await X.viewPng(e.vw, e.vh, 2, (ctx) => e.draw(ctx, e.view, e.vw, e.vh, 2, false));
           else blob = await X.pngSheet(ps, scope === "board" ? 8000 : 6000);
           X.save(blob, `${base}.png`);
-          say(`Saved ${base}.png, ${X.mb(blob.size)}`);
+          say(`saved ${base}.png, ${X.mb(blob.size)}`);
         } else if (fmt === "svg") {
           const t = await svg();
           X.save(new Blob([t], { type: "image/svg+xml" }), `${base}.svg`);
-          say(`Saved ${base}.svg, ${X.mb(t.length)}`);
+          say(`saved ${base}.svg, ${X.mb(t.length)}`);
         } else if (fmt === "html") {
           const t = await html();
           X.save(new Blob([t], { type: "text/html" }), `${base}.html`);
-          say(`Saved ${base}.html, ${X.mb(t.length)}`);
+          say(`saved ${base}.html, ${X.mb(t.length)}`);
         } else if (fmt === "copy-svg") {
           await X.copyText(svg());
-          say("Copied as SVG");
+          say("copied as svg");
         } else {
           await X.copyText(html());
-          say("Copied as HTML");
+          say("copied as html");
         }
       } catch {
-        say("That export failed. Try PNG, or a smaller selection.", 3500);
+        say("that export failed. try png, or a smaller selection.", 3500);
       }
     },
     [board, selPieces, say],
@@ -202,10 +234,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   if (list)
     return (
       <div ref={root} className="cb-list">
-        <button className="cb-back" onClick={() => setList(false)}>
-          Back to the board
-        </button>
-        {children}
+        <ToBoard.Provider value={{ label: "back to the board", go: () => setList(false) }}>{children}</ToBoard.Provider>
       </div>
     );
 
@@ -217,20 +246,29 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
   const e = eng.current;
 
   return (
-    <div ref={root} className={`cb${chromeOff ? " cb-off" : ""}${st.selected.length ? " cb-has-sel" : ""}`}>
-      <canvas ref={canvas} className="cb-canvas" role="img" aria-label={`A board of ${board.pieces.length} Capy hackathon assets in ${board.clusters.length} clusters. Drag to pan, scroll or pinch to zoom, click a piece to fly to it.`} />
+    <>
+    {asked ? null : (
+      <div className="cb-phone">
+        <ToBoard.Provider value={{ label: "see the board", go: () => setAsked(true) }}>{children}</ToBoard.Provider>
+      </div>
+    )}
+    <div ref={root} id="board" className={`cb${asked ? " cb-asked" : ""}${chromeOff ? " cb-off" : ""}${st.selected.length ? " cb-has-sel" : ""}`}>
+      <canvas ref={canvas} className="cb-canvas" role="img" aria-label={`a board of ${board.pieces.length} capy hackathon assets in ${board.clusters.length} clusters. drag to pan, scroll or pinch to zoom, click a piece to fly to it.`} />
 
       <header className="cb-head">
-        <a href="/" className="cb-name">
-          Jawad Jalal
-        </a>
-        <h1 className="cb-title" data-text="Capy hackathon assets">
-          Capy hackathon assets
+        <Gilded variant="pill" href="/">
+          ← jawad jalal
+        </Gilded>
+        <h1 className="cb-title" data-text="capy hackathon assets">
+          capy hackathon assets
         </h1>
-        <p className="cb-fan">Unofficial, unsolicited fan work. Not made by or for Capy or YC.</p>
+        <p className="cb-fan">unofficial, unsolicited fan work. not made by or for capy or yc.</p>
       </header>
+      <span className="cb-call">
+        <Gilded variant="cta" src="capy" size="dock" />
+      </span>
 
-      <nav className={`cb-clusters${clustersOpen ? " cb-open" : ""}`} aria-label="Clusters">
+      <nav className={`cb-clusters${clustersOpen ? " cb-open" : ""}`} aria-label="clusters">
         <ol>
           {board.clusters.map((k, i) => (
             <li key={k.kind}>
@@ -261,16 +299,18 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
             {oneCluster.name} {one.i - oneCluster.first + 1} of {oneCluster.last - oneCluster.first + 1}
           </p>
           <div className="cb-info-row">
-            <button onClick={() => e?.step(-1)} aria-label="Previous piece">
+            <button onClick={() => e?.step(-1)} aria-label="previous piece">
               ←
             </button>
-            <button onClick={() => e?.step(1)} aria-label="Next piece">
+            <button onClick={() => e?.step(1)} aria-label="next piece">
               →
             </button>
-            <a href={one.a.original} download>
-              Original
-            </a>
-            <button onClick={() => run("piece", "png")}>PNG</button>
+            <Gilded variant="pill" href={one.a.original} download>
+              original
+            </Gilded>
+            <Gilded variant="pill" onClick={() => run("piece", "png")}>
+              png
+            </Gilded>
           </div>
         </aside>
       )}
@@ -278,40 +318,40 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
         <aside className="cb-info">
           <p className="cb-info-title">{selPieces.length} pieces selected</p>
           <div className="cb-info-row">
-            <button onClick={() => setExp(true)}>Export…</button>
-            <button onClick={() => e?.select([], false)}>Clear</button>
+            <button onClick={() => setExp(true)}>export…</button>
+            <button onClick={() => e?.select([], false)}>clear</button>
           </div>
         </aside>
       )}
 
-      <div className="cb-bar" role="toolbar" aria-label="Board">
-        <button onClick={() => e?.zoomBy(1 / 1.6)} aria-label="Zoom out">
+      <div className="cb-bar" role="toolbar" aria-label="board">
+        <button onClick={() => e?.zoomBy(1 / 1.6)} aria-label="zoom out">
           −
         </button>
         <button className="cb-zoom" onClick={() => e?.actualSize()} title="100% (0)">
           {pct}%
         </button>
-        <button onClick={() => e?.zoomBy(1.6)} aria-label="Zoom in">
+        <button onClick={() => e?.zoomBy(1.6)} aria-label="zoom in">
           +
         </button>
         <i />
-        <button onClick={() => e?.fit()} title="Fit the board (1)">
-          Fit
+        <button onClick={() => e?.fit()} title="fit the board (1)">
+          fit
         </button>
-        <button className="cb-mob" onClick={() => setClustersOpen((v) => !v)}>
-          {c?.name ?? "Clusters"}
+        <button className="cb-mob" onClick={() => setClustersOpen((v) => !v)} aria-expanded={clustersOpen}>
+          {c?.name ?? "clusters"}
         </button>
-        <button onClick={() => e?.startTour()} title="Auto tour (T)">
-          Tour <kbd>T</kbd>
+        <button onClick={() => e?.startTour()} title="auto tour (t)">
+          tour <kbd>t</kbd>
         </button>
         <button onClick={() => setExp((v) => !v)} aria-expanded={exp}>
-          Export
+          export
         </button>
         <i className="cb-wide" />
         <button className="cb-wide" onClick={() => setList(true)}>
-          List
+          list
         </button>
-        <button className="cb-wide" onClick={() => setHelp((v) => !v)} aria-label="Shortcuts">
+        <button className="cb-wide" onClick={() => setHelp((v) => !v)} aria-label="shortcuts">
           ?
         </button>
       </div>
@@ -319,58 +359,59 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
       {exp && <ExportPanel sel={selPieces} onRun={run} onClose={() => setExp(false)} />}
 
       {help && (
-        <div className="cb-help" role="dialog" aria-label="Shortcuts">
+        <div className="cb-help" role="dialog" aria-label="shortcuts">
           <dl>
-            <dt>Drag</dt>
-            <dd>Pan, with a throw</dd>
-            <dt>Pinch, {isMac() ? "⌘" : "Ctrl"} scroll</dt>
-            <dd>Zoom toward the cursor</dd>
-            <dt>Click</dt>
-            <dd>Fly to a piece</dd>
-            <dt>Shift drag</dt>
-            <dd>Select several</dd>
+            <dt>drag</dt>
+            <dd>pan, with a throw</dd>
+            <dt>pinch, {isMac() ? "⌘" : "ctrl"} scroll</dt>
+            <dd>zoom toward the cursor</dd>
+            <dt>click</dt>
+            <dd>fly to a piece</dd>
+            <dt>shift drag</dt>
+            <dd>select several</dd>
             <dt>← →  ↑ ↓</dt>
-            <dd>Step through a cluster, or across clusters</dd>
-            <dt>Esc</dt>
-            <dd>Fly back out</dd>
-            <dt>T</dt>
-            <dd>Auto tour, 20 seconds</dd>
-            <dt>H</dt>
-            <dd>Hide everything</dd>
+            <dd>step through a cluster, or across clusters</dd>
+            <dt>esc</dt>
+            <dd>fly back out</dd>
+            <dt>t</dt>
+            <dd>auto tour, 20 seconds</dd>
+            <dt>h</dt>
+            <dd>hide everything</dd>
             <dt>1, 0, + −</dt>
-            <dd>Fit, 100%, zoom</dd>
-            <dt>E</dt>
-            <dd>Export</dd>
+            <dd>fit, 100%, zoom</dd>
+            <dt>e</dt>
+            <dd>export</dd>
           </dl>
         </div>
       )}
 
-      <p className="cb-hint">Drag to pan. Pinch or scroll to zoom. Click to fly in, Esc to fly out. T for the tour.</p>
-      {st.touring && !hidden && <p className="cb-tourhint">Esc to stop · H hides this</p>}
+      <p className="cb-hint">drag to pan. pinch or scroll to zoom. click to fly in, esc to fly out. t for the tour.</p>
+      {st.touring && !hidden && <p className="cb-tourhint">esc to stop · h hides this</p>}
       {toast && (
         <p className="cb-toast" role="status">
           {toast}
         </p>
       )}
     </div>
+    </>
   );
 }
 
 function ExportPanel({ sel, onRun, onClose }: { sel: Piece[]; onRun: (s: Scope, f: Fmt) => void; onClose: () => void }) {
   const scopes: { id: Scope; label: string }[] = [
-    ...(sel.length === 1 ? [{ id: "piece" as Scope, label: "This piece" }] : []),
-    ...(sel.length > 1 ? [{ id: "selection" as Scope, label: `Selection (${sel.length})` }] : []),
-    { id: "view", label: "Current view" },
-    { id: "board", label: "Whole board" },
+    ...(sel.length === 1 ? [{ id: "piece" as Scope, label: "this piece" }] : []),
+    ...(sel.length > 1 ? [{ id: "selection" as Scope, label: `selection (${sel.length})` }] : []),
+    { id: "view", label: "current view" },
+    { id: "board", label: "whole board" },
   ];
   const [scope, setScope] = useState<Scope>(scopes[0].id);
   useEffect(() => setScope(scopes[0].id), [sel.length]); // eslint-disable-line react-hooks/exhaustive-deps
   const one = scope === "piece" ? sel[0]?.a : null;
   return (
-    <div className="cb-exp" role="dialog" aria-label="Export">
+    <div className="cb-exp" role="dialog" aria-label="export">
       <div className="cb-exp-head">
-        <p>Export</p>
-        <button onClick={onClose} aria-label="Close">
+        <p>export</p>
+        <button onClick={onClose} aria-label="close">
           ×
         </button>
       </div>
@@ -382,22 +423,22 @@ function ExportPanel({ sel, onRun, onClose }: { sel: Piece[]; onRun: (s: Scope, 
         ))}
       </div>
       <div className="cb-fmts">
-        <button onClick={() => onRun(scope, "png")}>PNG</button>
-        <button onClick={() => onRun(scope, "svg")}>SVG</button>
-        <button onClick={() => onRun(scope, "html")}>HTML</button>
-        <button onClick={() => onRun(scope, "copy-svg")}>Copy SVG</button>
-        <button onClick={() => onRun(scope, "copy-html")}>Copy HTML</button>
+        {(["png", "svg", "html", "copy-svg", "copy-html"] as const).map((f) => (
+          <Gilded key={f} variant="pill" onClick={() => onRun(scope, f)}>
+            {f.replace("-", " ")}
+          </Gilded>
+        ))}
         {one?.type === "video" && (
-          <a href={one.original} download>
-            MP4
-          </a>
+          <Gilded variant="pill" href={one.original} download>
+            mp4
+          </Gilded>
         )}
       </div>
       <p className="cb-exp-note">
         {one && X.isVector(one)
-          ? "This SVG is true vector."
-          : "SVG and HTML wrap the pictures: none of these pieces has a vector source, so the SVG is not true vector."}{" "}
-        {scope === "view" ? "The view PNG is what you see, at 2x." : scope === "board" ? "The board exports use small copies so the file stays sendable." : ""} Every file carries the fan work line.
+          ? "this svg is true vector."
+          : "svg and html wrap the pictures: none of these pieces has a vector source, so the svg is not true vector."}{" "}
+        {scope === "view" ? "the view png is what you see, at 2x." : scope === "board" ? "the board exports use small copies so the file stays sendable." : ""} every file carries the fan work line.
       </p>
     </div>
   );

@@ -1,0 +1,146 @@
+/* ── Home: the world (World, world/scene). The stage holds still behind the hero while the page scrolls over it; the
+   posters are first paint and the fallback, the live scene fades in over them. Type sits on the world's own dark:
+   the void under the gate court, ink plates, the theatre's orchestra. Poster layout is the default; the live layout
+   applies once World has chosen the live scene (data-mode="live"). ── */
+.hero.world { display: block; min-height: 0; padding-top: 0; overflow: clip; color: #f4ece1; background: #100b09; }
+.world-stage { position: sticky; top: 0; z-index: 0; height: 100svh; margin-bottom: -100svh; overflow: hidden; background: #100b09; container-type: size; }
+.world-poster { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms var(--ease-io); }
+.world-lit { transition-duration: 1600ms; }
+.world-poster[data-on] { opacity: 1; }
+/* the poster's frame covers the stage at the poster's own aspect (1440x900, phones 390x844), so its flames land on its fires */
+.world-frame { position: absolute; left: 50%; top: 50%; width: max(100cqw, 160cqh); height: max(100cqh, 62.5cqw); transform: translate(-50%, -50%); }
+.world-frame img { display: block; width: 100%; height: 100%; }
+@media (max-width: 767px) {
+  .world-frame { width: max(100cqw, 46.21cqh); height: max(100cqh, 216.41cqw); }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero.world[data-mode="poster"] .world-frame { animation: w-drift linear both; animation-timeline: scroll(root); }
+  }
+}
+@keyframes w-drift {
+  from { transform: translate(-50%, -50%) scale(1.08) translateY(3%); }
+  to { transform: translate(-50%, -50%) scale(1.08) translateY(-3%); }
+}
+.world-gl { position: absolute; inset: 0; opacity: 0; transition: opacity 1200ms var(--ease-io); }
+.world-gl canvas { display: block; width: 100%; height: 100%; }
+.world-stage.live .world-gl { opacity: 1; }
+.world-stage.live .world-poster { transition-delay: 1200ms; opacity: 0; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.world-flow { position: relative; z-index: 1; pointer-events: none; }
+.world-flow a, .world-flow button, .world-flow .w-ads { pointer-events: auto; }
+
+/* the gate court: the name in his lettering at the top, the line under it, then the call, over the void above the court */
+.w-gate { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; min-height: calc(100svh - var(--dock)); padding: calc(4 * var(--u) + 16px) var(--g) 0; }
+.w-say { display: grid; justify-items: center; gap: 16px; text-align: center; }
+.w-gate .wm { width: min(44vw, 660px); margin: 0; padding: 0; gap: 1.1vw; color: var(--ivory); }
+.w-say .hero-say { animation: fade 400ms 360ms both; max-width: 27em; color: var(--ivory); font-size: clamp(18px, 1.45vw, 26px); line-height: 1.08; }
+.w-say .hero-sw > span { animation-duration: 700ms; }
+.w-sound { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border: 0; border-radius: 3px; background: #100b09; color: inherit; font: 600 15px/1 var(--f-bar); letter-spacing: -0.01em; cursor: pointer; animation: fade 500ms 900ms both; transition: background var(--t-fast); }
+.w-sound:hover { background: #2a1d16; }
+.w-sound-i { display: inline-flex; align-items: center; justify-content: center; gap: 3px; width: 30px; height: 30px; border-radius: 50%; background: #2b1f18; }
+.w-sound-i i { width: 3px; height: 6px; border-radius: 2px; background: currentColor; transform-origin: center; }
+.w-sound[aria-pressed="true"] .w-sound-i { color: var(--accent-glow, var(--accent)); box-shadow: 0 0 0 1.5px var(--accent), 0 0 14px -2px var(--accent-glow, var(--accent)); }
+.w-sound[aria-pressed="true"] .w-sound-i i { animation: w-wave 900ms ease-in-out infinite alternate; }
+.w-sound-i i:nth-child(2) { height: 11px; animation-delay: -300ms !important; }
+.w-sound-i i:nth-child(3) { height: 8px; animation-delay: -600ms !important; }
+.w-sound-i i:nth-child(4) { animation-delay: -150ms !important; }
+@keyframes w-wave { to { transform: scaleY(2.1); } }
+/* the sound toggle answers on a spring (an underdamped curve sampled into linear()): hover tips the dial and lifts the
+   bars, a press sinks the pill, release overshoots back; touch gets the press through :active */
+.w-sound { --w-spring: linear(0, 0.062, 0.213, 0.408, 0.61, 0.795, 0.946, 1.055, 1.124, 1.157, 1.162, 1.146, 1.118, 1.086, 1.053, 1.025, 1.002, 0.987, 0.977, 0.974, 0.974, 0.977, 0.982, 0.988, 1); transition: background var(--t-fast), transform 500ms var(--w-spring); -webkit-tap-highlight-color: transparent; }
+.w-sound-i { transition: transform 500ms var(--w-spring); }
+.w-sound-i i { transition: transform 360ms var(--w-spring); }
+.w-sound-i i:nth-child(2) { transition-delay: 30ms; }
+.w-sound-i i:nth-child(3) { transition-delay: 60ms; }
+.w-sound-i i:nth-child(4) { transition-delay: 90ms; }
+@media (hover: hover) and (pointer: fine) {
+  .w-sound:hover .w-sound-i { transform: scale(1.12) rotate(-10deg); }
+  .w-sound:not([aria-pressed="true"]):hover .w-sound-i i { transform: scaleY(1.7); }
+}
+.w-sound:active { transform: scale(0.94); transition-duration: 90ms, 90ms; }
+.w-sound:active .w-sound-i { transform: scale(0.86); transition-duration: 90ms; }
+
+/* the hall of ads: by default (posters) a strip of the ads to swipe and tap */
+.w-hall { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 100svh; padding-bottom: calc(var(--dock) + 20px); }
+.w-hall-head { padding: 18px var(--g) 0; }
+.w-hall-h { display: inline-block; margin: 0; padding: 10px 14px 8px; background: #100b09; font: 700 clamp(30px, 3.4vw, 60px)/0.95 var(--f-disp); letter-spacing: -0.04em; }
+.w-hall-p { width: fit-content; margin: 0; padding: 0 14px 12px; background: #100b09; font: 600 17px/1.3 var(--f-bar); color: #e9dccb; }
+.w-ads { display: flex; gap: 14px; margin: 0; padding: 18px var(--g) 8px; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.w-ads::-webkit-scrollbar { display: none; }
+.w-ads li { flex: 0 0 min(74vw, 300px); scroll-snap-align: start; }
+.w-ads a { display: grid; background: #100b09; }
+.w-ads img, .w-ad-ph { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; background: #241b15; }
+.w-ad-cap { display: grid; gap: 4px; padding: 12px 14px 14px; }
+.w-ad-cap b { font: 700 21px/1 var(--f-bar); letter-spacing: -0.02em; }
+.w-ad-cap span { font: 600 15px/1.25 var(--f-bar); color: #d9c8b2; }
+.w-ads a:hover .w-ad-cap b { color: var(--accent); }
+
+/* live: the hall is a long walk; the list is a column of focus stops, one per ad, invisible until focused */
+.hero.world[data-mode="live"] .w-gate { min-height: 100svh; }
+.hero.world[data-mode="live"] .w-hall { height: 340svh; min-height: 0; padding: 0; }
+.hero.world[data-mode="live"] .w-hall-head { position: sticky; bottom: calc(var(--dock) + 20px); z-index: 1; padding-bottom: 0; }
+.hero.world[data-mode="live"] .w-hall-h { font-size: clamp(26px, 2.4vw, 40px); }
+.hero.world[data-mode="live"] .w-ads { position: absolute; inset: 0; display: block; padding: 0; overflow: visible; pointer-events: none; }
+.hero.world[data-mode="live"] .w-ads li { position: absolute; left: 50%; top: calc(50svh + var(--f) * (100% - 100svh)); width: 1px; height: 1px; }
+.hero.world[data-mode="live"] .w-ads a { position: absolute; top: 33svh; left: 0; width: max-content; transform: translateX(-50%); opacity: 0; pointer-events: none; }
+.hero.world[data-mode="live"] .w-ads a:focus-visible { opacity: 1; }
+.hero.world[data-mode="live"] .w-ads img, .hero.world[data-mode="live"] .w-ad-ph { display: none; }
+
+/* the theatre */
+.stmt { display: grid; place-items: center; min-height: 140svh; padding: 18svh var(--g); }
+.stmt-p { max-width: 14.5em; margin: 0 auto; text-align: center; font: 700 clamp(38px, 6vw, 108px)/0.98 var(--f-disp); letter-spacing: -0.045em; text-wrap: balance; color: #f7efe4; }
+.st-t { opacity: clamp(0.46, calc(var(--p, 0) * var(--n) - var(--i)), 1); transition: opacity 240ms linear; }
+.st-nb { white-space: nowrap; }
+.st-chip { display: inline-block; width: 1.72em; height: 1.04em; margin: 0 0.06em; overflow: hidden; border-radius: 0.08em; vertical-align: -0.14em; background: #241b15; }
+.st-chip img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* the landing: the signpost's board is the call */
+.w-river { position: relative; height: 100svh; }
+.w-sign { position: absolute; top: calc(50% - 10svh); left: 50%; display: grid; justify-items: center; gap: 12px; transform: translate(-50%, -50%); }
+.w-sign-p { margin: 0; padding: 8px 12px; background: #100b09; font: 600 17px/1.2 var(--f-bar); color: #e9dccb; }
+.w-river .hero-bar { position: absolute; right: 0; bottom: var(--dock); left: 0; }
+
+@media (max-width: 767px) {
+  .w-say { gap: 12px; }
+  .w-gate .wm { width: 76vw; }
+  .w-say .hero-say { font-size: 19px; }
+  .stmt { min-height: 110svh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-poster, .world-gl { transition: none; }
+  .w-sound[aria-pressed="true"] .w-sound-i i { animation: none; }
+  .w-sound, .w-sound-i, .w-sound-i i { transition-property: background, opacity; }
+  .w-sound:hover .w-sound-i, .w-sound:hover .w-sound-i i, .w-sound:active, .w-sound:active .w-sound-i { transform: none; }
+}
+
+/* the world's lower edge, where the page's ground rises over it: a gilded meander rule rather than a raw cut */
+.hero.world::after { content: ""; position: absolute; right: 0; bottom: 0; left: 0; z-index: 2; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 7'%3E%3Cpath d='M0 6.5H8.5V.5H2.5V3.5H5.5' fill='none' stroke='%235b3f10'/%3E%3C/svg%3E") 0 50% / 10px 7px repeat-x, #c39a42; box-shadow: inset 0 1px 0 #e6c46c, inset 0 -2px 0 #5b3f10; pointer-events: none; }
+
+/* home sections under the world: their dim lines follow the text colour, which flips with the page's ground (light
+   or ink), so they stay at 4.5:1 and up on either */
+.idx .idx-line, .idx .lbl.dim { color: inherit; opacity: 0.74; }
+
+/* ?world=rooms: the banners' anchors (moved onto each banner by ./rooms every frame) and the ad dialog */
+.rooms-ui { position: sticky; top: 0; z-index: 1; height: 100svh; margin-bottom: -100svh; overflow: clip; pointer-events: none; }
+.rooms-ui[hidden] { display: block; visibility: hidden; }
+.rooms-a { position: absolute; left: 0; top: 0; width: 0; height: 0; will-change: transform; }
+.rooms-a > a { position: absolute; inset: 0; pointer-events: auto; outline: none; -webkit-tap-highlight-color: transparent; }
+.rooms-a > a::after { content: ""; position: absolute; inset: -4px; box-shadow: 0 0 0 1.5px var(--accent), 0 0 22px var(--accent-glow); opacity: 0; transition: opacity var(--t-fast); }
+.rooms-a > a:focus-visible::after { opacity: 1; }
+html.ad-open { overflow: hidden; }
+.ad-dialog { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #100b09; color: #f4ece1; overscroll-behavior: contain; }
+.ad-dialog[open] { display: grid; place-items: center; }
+.ad-dialog::backdrop { background: #100b09; }
+.ad-dialog-f { display: grid; justify-items: center; gap: 14px; margin: 0; padding: 72px var(--g) 28px; max-width: 100%; max-height: 100%; }
+.ad-dialog-f img { display: block; width: auto; height: auto; max-width: min(100%, 960px); max-height: calc(100dvh - 190px); object-fit: contain; background: #241b15; }
+.ad-dialog-f figcaption { display: grid; gap: 4px; max-width: 62ch; text-align: center; font: 600 16px/1.35 var(--f-bar); color: #e9dccb; }
+.ad-dialog-f figcaption b { font: 700 22px/1.1 var(--f-disp); letter-spacing: -0.02em; color: #f4ece1; }
+.ad-dialog-x { position: fixed; top: 18px; right: var(--g); min-width: 48px; min-height: 48px; padding: 0 18px; border: 0; border-radius: 3px; background: #2b1f18; color: #f4ece1; font: 700 16px/1 var(--f-bar); cursor: pointer; }
+.ad-dialog-x:hover { background: #3a2a20; }
+.ad-dialog-x:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .ad-dialog[open] .ad-dialog-f { animation: ad-rise 360ms var(--ease-io) both; }
+}
+@keyframes ad-rise { from { transform: translateY(14px) scale(0.98); } }
+

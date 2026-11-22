@@ -24,7 +24,7 @@
   --ink-2: #6b6b6b;
   --ink-read: #4f4f4f;
   --ink-hover: #2b2b2b;
-  --pop: #f05a00;
+  --pop: var(--accent-paper);
   --sheet: #ffffff;
   --lift: 0 1px 2px rgb(0 0 0 / 0.05), 0 8px 20px -6px rgb(0 0 0 / 0.1), 0 28px 56px -16px rgb(0 0 0 / 0.16);
   --rim: 0 0 0 1px color-mix(in srgb, var(--ink) 7%, transparent);
@@ -73,7 +73,7 @@
   --ink-2: #a3a3a3;
   --ink-read: #c8c8c8;
   --ink-hover: #d6d6d6;
-  --pop: #ff7a2e;
+  --pop: var(--accent);
   --sheet: #161616;
   --rim: 0 0 0 1px rgb(255 255 255 / 0.07);
   --contact: 0 2px 8px -2px rgb(0 0 0 / 0.6);
@@ -121,11 +121,7 @@
 /* The diagonal hatch that fills the dead space either side of the column and
    the gaps between sections. It is what stops the empty margin reading as an
    unfinished page. */
-.hatch {
-  background-image: repeating-linear-gradient(
-    -45deg, var(--hatch) 0 1px, transparent 1px 7px
-  );
-}
+.hatch { background-color: var(--hatch); }
 
 
 /* ── Streaming text ───────────────────────────────────────────────────────
@@ -379,17 +375,12 @@
 }
 .pv-load::after {
   content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    oklch(from var(--foreground) l c h / 7%) 50%,
-    transparent 100%
-  );
+  position: absolute; inset-block: 0; left: 0; width: 40%;
+  background: oklch(from var(--foreground) l c h / 7%);
   transform: translateX(-100%);
   animation: pv-sweep 1.15s var(--ease) infinite;
 }
-@keyframes pv-sweep { to { transform: translateX(100%); } }
+@keyframes pv-sweep { to { transform: translateX(250%); } }
 
 /* The page-level loader: the same sweep, one hairline wide, pinned to the
    top of the column. */
@@ -401,7 +392,7 @@
 .page-load::after {
   content: "";
   position: absolute; inset-block: 0; left: 0; width: 40%;
-  background: linear-gradient(90deg, transparent, var(--foreground), transparent);
+  background: var(--foreground);
   animation: pv-sweep 0.9s var(--ease) infinite;
 }
 
@@ -1296,7 +1287,7 @@ body { font-family: var(--font); background: var(--paper); color: var(--ink); }
   position: absolute;
   inset: auto 0 0 0;
   height: 60%;
-  background: linear-gradient(to bottom, transparent, var(--paper));
+  background: none;
   pointer-events: none;
 }
 
@@ -1477,7 +1468,7 @@ body { font-family: var(--font); background: var(--paper); color: var(--ink); }
   position: absolute;
   inset: 0 0 auto 0;
   height: 50%;
-  background: linear-gradient(to bottom, var(--paper), transparent);
+  background: none;
   pointer-events: none;
   z-index: 1;
 }
@@ -1941,7 +1932,7 @@ main, .foot { position: relative; }
 }
 .fx-hl {
   padding: 0 0.18em; margin: 0 -0.08em;
-  background: linear-gradient(100deg, transparent 0.12em, color-mix(in srgb, var(--fx) 42%, transparent) 0.2em, color-mix(in srgb, var(--fx) 34%, transparent) 88%, transparent calc(100% - 0.05em)) no-repeat 0 62% / 100% 70%;
+  background: color-mix(in srgb, var(--fx) 38%, transparent);
   border-radius: 0.3em 0.6em 0.4em 0.7em;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
@@ -1966,7 +1957,7 @@ main, .foot { position: relative; }
 .nv .face, [data-theme="dark"] .nv .face { background: transparent; box-shadow: none; border-radius: 0; }
 .nv .face { mix-blend-mode: multiply; }
 [data-theme="dark"] .nv .face { filter: invert(1); mix-blend-mode: screen; }
-[data-theme="dark"] .fx-hl { background-image: linear-gradient(100deg, transparent 0.12em, color-mix(in srgb, var(--fx) 62%, transparent) 0.2em, color-mix(in srgb, var(--fx) 52%, transparent) 88%, transparent calc(100% - 0.05em)); color: #fff; }
+[data-theme="dark"] .fx-hl { background: color-mix(in srgb, var(--fx) 56%, transparent); color: #fff; }
 
 /* the hero sketch stays a plain drawing at night too: chalk lines straight
    on the page, not the pinned white card the smaller faces use */

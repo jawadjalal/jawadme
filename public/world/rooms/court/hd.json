@@ -1,0 +1,25 @@
+{
+ "materials": {
+  "floor": {
+   "albedo": "hd/floor_albedo.ktx2",
+   "normal": "hd/floor_normal.ktx2"
+  },
+  "tree_stone": {
+   "albedo": "hd/tree_stone_albedo.ktx2",
+   "normal": "hd/tree_stone_normal.ktx2"
+  },
+  "stone": {
+   "albedo": "hd/stone_albedo.ktx2",
+   "normal": "hd/stone_normal.ktx2"
+  },
+  "bronze": {
+   "albedo": "hd/bronze_albedo.ktx2",
+   "normal": "hd/bronze_normal.ktx2"
+  },
+  "tree_bronze": {
+   "albedo": "hd/tree_bronze_albedo.ktx2",
+   "normal": "hd/tree_bronze_normal.ktx2"
+  }
+ },
+ "note": "desktop only, fetch after first frame; swap material.map (sRGB) and material.normalMap (linear) on TEXCOORD_0 by material name"
+}

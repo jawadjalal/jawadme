@@ -1,0 +1,80 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { AdGallery } from "@/components/ds/AdGallery";
+import { Footer } from "@/components/ds/Footer";
+import { Hero, RING } from "@/components/ds/Hero";
+import { LoaderB } from "@/components/loader/LoaderB";
+import { Media } from "@/components/ds/Media";
+import { Sequence } from "@/components/ds/Sequence";
+import { TLink } from "@/components/ds/TLink";
+import { Timeline } from "@/components/ds/Timeline";
+import { TitleTab } from "@/components/ds/TitleTab";
+import { ADS } from "@/content/ads";
+import { SITE } from "@/content/site";
+import { SELECTED, projectBySlug } from "@/content/work";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
+
+const FR = projectBySlug("fracture")!;
+const IN_RING = new Set(RING.map((a) => a.id));
+const GALLERY = ADS.filter((a) => !IN_RING.has(a.id)).slice(0, 12);
+
+export default function Home() {
+  return (
+    <main>
+      <LoaderB />
+      <Hero />
+      <Timeline />
+
+      <section className="ads-home" data-room="hall" aria-labelledby="ads-h">
+        <TitleTab id="ads-h" tag={ADS.length + " ads"} side={<Link href="/work">all work ↗</Link>}>
+          ads
+        </TitleTab>
+        <AdGallery ads={GALLERY} />
+      </section>
+
+      <section className="idx" aria-labelledby="idx-h">
+        <TitleTab id="idx-h" tag="brands, sites and products" side={<Link href="/work">all work ↗</Link>}>
+          selected work
+        </TitleTab>
+        {SELECTED.map((p, i) => {
+          const tall = p.cover.h > p.cover.w;
+          return (
+            <TLink key={p.slug} href={"/work/" + p.slug} vt={"cover-" + p.slug} className={"g16 idx-row" + (i % 2 ? " flip" : "") + (tall ? " tall" : "")} data-cursor="view">
+              <span className="idx-media">
+                <Media m={p.cover} ratio={tall ? "4 / 5" : "16 / 10"} sizes={tall ? "(min-width: 768px) 36vw, 100vw" : "(min-width: 768px) 62vw, 100vw"} />
+              </span>
+              <span className="idx-text">
+                <span className="idx-name">{p.name}</span>
+                <span className="idx-line">{p.lines[0]}</span>
+                <span className="lbl dim">
+                  {p.disciplines.slice(0, 2).join(", ")}, {p.year}
+                </span>
+              </span>
+            </TLink>
+          );
+        })}
+      </section>
+
+      <section className="room" data-room="ink" aria-labelledby="room-h">
+        <TitleTab id="room-h" tag="a roblox game i design and build" side={<Link href="/work/fracture">fracture ↗</Link>}>
+          3d &amp; roblox
+        </TitleTab>
+        <div className="wrap room-one">
+          <Sequence frames={[FR.cover, ...FR.blocks.flatMap((b) => (Array.isArray(b.media) ? b.media : [b.media]))]} label="fracture key art · scroll to step through" />
+        </div>
+      </section>
+
+      <section className="about g16" aria-label="about">
+        <div className="about-pic">
+          <Media m={SITE.portrait} ratio="1 / 1" sizes="(min-width: 768px) 25vw, 60vw" />
+        </div>
+        <p className="t-line about-line">
+          {SITE.about}
+        </p>
+      </section>
+
+      <Footer src="home-footer" />
+    </main>
+  );
+}

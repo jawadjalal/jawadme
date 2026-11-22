@@ -80,7 +80,7 @@ export function Theme() {
       type="button"
       onClick={toggle}
       data-cur={dark ? "lights on" : "lights off"}
-      aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
+      aria-label={dark ? "switch to light theme" : "switch to dark theme"}
       className="tap inline-flex size-9 items-center justify-center rounded-[10px] text-muted-foreground transition-colors hover:bg-[var(--soft-hover)] hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
     >
       <svg

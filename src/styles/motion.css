@@ -1,0 +1,116 @@
+/* Motion primitives, one vocabulary for every surface: data-m="press lift pop tilt". The springs (--sp-press, --sp-pop,
+   --sp-soft and their -t settle times) come from src/lib/motion.ts. Transform and opacity only, plus colour fades;
+   :active is the press on touch too (the site layout adds the touchstart listener iOS needs). Reduced motion keeps the
+   colour and opacity feedback and drops every move. */
+
+[data-m] {
+  -webkit-tap-highlight-color: transparent;
+  transition: translate var(--sp-pop-t) var(--sp-pop), scale var(--sp-pop-t) var(--sp-pop), rotate var(--sp-pop-t) var(--sp-pop), opacity var(--t-fast), color var(--t-fast), background-color var(--t-fast);
+}
+[data-m~="press"]:active { scale: 0.95; transition-duration: var(--sp-press-t); transition-timing-function: var(--sp-press); }
+@media (hover: hover) {
+  [data-m~="lift"]:hover { translate: 0 -3px; }
+  [data-m~="pop"]:hover { scale: 1.04; }
+}
+
+/* tilt: Motion.tsx writes the pointer's place over the surface as --rx and --ry (-1..1); the picture leans toward it */
+[data-m~="tilt"] .media {
+  transform: perspective(900px) rotateX(calc(var(--ry, 0) * -4deg)) rotateY(calc(var(--rx, 0) * 5deg));
+  transition: transform var(--sp-pop-t) var(--sp-pop), translate var(--sp-pop-t) var(--sp-pop), scale var(--sp-press-t) var(--sp-press);
+}
+/* the rim and the sheen: a green edge that lights, and one hard-edged band that crosses once */
+[data-m~="tilt"] .media::after { content: ""; position: absolute; inset: 0; z-index: 3; box-shadow: inset 0 0 0 2px var(--accent); opacity: 0; transition: opacity var(--t-fast); pointer-events: none; }
+[data-m~="tilt"] .media::before { content: ""; position: absolute; top: -10%; bottom: -10%; left: 0; z-index: 3; width: 22%; background: rgb(255 255 255 / 0.16); transform: skewX(-16deg); translate: -420% 0; pointer-events: none; }
+@media (hover: hover) {
+  [data-m~="tilt"]:hover .media { translate: 0 -6px; }
+  [data-m~="tilt"]:hover .media::after { opacity: 1; }
+  [data-m~="tilt"]:hover .media::before { translate: 560% 0; transition: translate 720ms var(--ease); }
+}
+[data-m~="tilt"]:active .media { scale: 0.975; }
+[data-m~="tilt"]:active .media::after { opacity: 1; }
+
+/* The work pieces sit on a solid accent-colored mount. Their pointer lean, hard light band and short press all share
+   the same physical read, while the case card lifts as one piece. */
+.hang-i .media,
+.next .media {
+  backface-visibility: hidden;
+  transform-origin: 50% 60%;
+  transform: perspective(850px) rotateX(calc(var(--ry, 0) * -6deg)) rotateY(calc(var(--rx, 0) * 7deg));
+  box-shadow: 0 0 0 var(--accent-paper);
+  transition: transform var(--sp-pop-t) var(--sp-pop), translate var(--sp-pop-t) var(--sp-pop), scale 80ms linear;
+}
+.next .media > img,
+.next .media > video { transition: transform var(--sp-soft-t) var(--sp-soft); }
+.hang-i .media::after,
+.next .media::after {
+  box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 0 4px rgb(255 255 255 / 0.14);
+}
+.hang-i .media::before,
+.next .media::before {
+  background: var(--accent-hi);
+  opacity: 0.2;
+}
+.hang-i .hang-cap,
+.next-head {
+  transition: translate var(--sp-pop-t) var(--sp-pop), color var(--t-fast);
+}
+@media (hover: hover) {
+  .hang-i:hover .media {
+    translate: 0 -10px;
+    box-shadow: 0 8px 0 var(--accent-paper);
+  }
+  .next:hover { translate: 0 -5px; }
+  .next:hover .media {
+    translate: 0 -5px;
+    box-shadow: 0 8px 0 var(--accent-paper);
+  }
+  .hang-i:hover .media > img,
+  .hang-i:hover .media > video,
+  .next:hover .media > img,
+  .next:hover .media > video {
+    transform: scale(1.055);
+    transition: transform var(--sp-soft-t) var(--sp-soft);
+  }
+  .hang-i:hover .hang-cap,
+  .next:hover .next-head { translate: 5px 0; }
+  .hang-i:hover .media::before,
+  .next:hover .media::before {
+    translate: 560% 0;
+    transition: translate 540ms var(--sp-soft);
+  }
+}
+.hang-i:active .media,
+.next:active .media {
+  translate: 0 -2px;
+  scale: 0.965;
+  box-shadow: 0 1px 0 var(--accent-paper);
+  transition-duration: 80ms;
+  transition-timing-function: linear;
+}
+.next:active { translate: 0 0; }
+.hang-i:active .media::after,
+.next:active .media::after {
+  opacity: 1;
+  transition-duration: 60ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-m] { transition-property: opacity, color, background-color; }
+  [data-m]:is(:hover, :active), [data-m~="tilt"] .media { translate: none !important; scale: none !important; transform: none !important; }
+  [data-m~="tilt"] .media::before { display: none; }
+  .hang-i .media, .next .media {
+    box-shadow: none !important;
+    transition-property: opacity, color, background-color;
+  }
+  .hang-i .hang-cap, .next-head {
+    translate: none !important;
+    transition-property: color;
+  }
+  .hang-i:hover .media > img,
+  .hang-i:hover .media > video,
+  .next:hover .media > img,
+  .next:hover .media > video {
+    transform: none !important;
+    transition: none;
+  }
+}

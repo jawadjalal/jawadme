@@ -1,0 +1,975 @@
+{
+ "target_three": [
+  -2.6096999645233154,
+  5.4716477394104,
+  -2.6096999645233154
+ ],
+ "frustum_h": 52.0,
+ "yaw_deg": 45,
+ "pitch_deg": 34,
+ "accent": {
+  "glow": "#8af5c6",
+  "glow_hdr": [
+   0.59,
+   1.9,
+   1.15
+  ],
+  "emissive": "#4dffae",
+  "core": "#5cffb8",
+  "flat": "#73e8b5",
+  "hover": "#c4ffe4"
+ },
+ "gate_top_up": 18.856900453567505,
+ "framing": {
+  "desktop": {
+   "fh": 32.5,
+   "top": 0.19
+  },
+  "phone": {
+   "width": 38.0,
+   "top": 0.3
+  }
+ },
+ "fires": [
+  [
+   -12.570531845092773,
+   4.085,
+   -3.5195658206939697,
+   3.1,
+   0.8
+  ],
+  [
+   -3.5195658206939697,
+   4.085,
+   -12.57053279876709,
+   3.1,
+   0.8
+  ],
+  [
+   -5.0,
+   6.310000190734863,
+   12.0,
+   3.6,
+   1.0
+  ],
+  [
+   12.0,
+   6.310000190734863,
+   -5.0,
+   3.6,
+   1.0
+  ]
+ ],
+ "portal": {
+  "w": 4.6,
+  "h": 7.8999999999999995,
+  "spring": 5.6,
+  "r": 2.2,
+  "centre": 3.4
+ },
+ "banners": [
+  {
+   "name": "banner_0",
+   "ad": "thauma-moon",
+   "default_ad": "thauma-moon",
+   "aspect": [
+    4,
+    5
+   ],
+   "pivot": [
+    5.375,
+    9.35,
+    -12.7
+   ]
+  },
+  {
+   "name": "banner_1",
+   "ad": "nike-runner",
+   "default_ad": "nike-runner",
+   "aspect": [
+    4,
+    5
+   ],
+   "pivot": [
+    -12.7,
+    9.35,
+    5.375
+   ]
+  },
+  {
+   "name": "banner_2",
+   "ad": "sam-embrace",
+   "default_ad": "sam-embrace",
+   "aspect": [
+    4,
+    5
+   ],
+   "pivot": [
+    11.125,
+    9.35,
+    -12.7
+   ]
+  },
+  {
+   "name": "banner_3",
+   "ad": "thauma-construction",
+   "default_ad": "thauma-construction",
+   "aspect": [
+    4,
+    5
+   ],
+   "pivot": [
+    -12.7,
+    9.35,
+    11.125
+   ]
+  }
+ ],
+ "clear_spot": {
+  "centre": [
+   2.0,
+   0,
+   2.0
+  ],
+  "size": 10,
+  "holds": "tree"
+ },
+ "flames": [
+  {
+   "name": "flame_0",
+   "kind": "brazier",
+   "position": [
+    -12.5705,
+    3.0,
+    -3.5196
+   ],
+   "height": 3.1,
+   "quaternion": [
+    0.0,
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "light_radius": 7.44
+  },
+  {
+   "name": "flame_1",
+   "kind": "brazier",
+   "position": [
+    -3.5196,
+    3.0,
+    -12.5705
+   ],
+   "height": 3.1,
+   "quaternion": [
+    0.0,
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "light_radius": 7.44
+  },
+  {
+   "name": "flame_2",
+   "kind": "brazier",
+   "position": [
+    -5.0,
+    5.05,
+    12.0
+   ],
+   "height": 3.6,
+   "quaternion": [
+    0.0,
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "light_radius": 8.64
+  },
+  {
+   "name": "flame_3",
+   "kind": "brazier",
+   "position": [
+    12.0,
+    5.05,
+    -5.0
+   ],
+   "height": 3.6,
+   "quaternion": [
+    0.0,
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "light_radius": 8.64
+  },
+  {
+   "name": "flame_4",
+   "kind": "portal",
+   "position": [
+    -11.0856,
+    1.05,
+    -11.0856
+   ],
+   "height": 7.9,
+   "quaternion": [
+    0.0,
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "light_radius": 20.54
+  },
+  {
+   "name": "flame_5",
+   "kind": "brazier",
+   "position": [
+    2.7238,
+    10.4767,
+    7.4955
+   ],
+   "height": 1.7283,
+   "quaternion": [
+    0.34772,
+    0.0,
+    -0.03052,
+    0.9371
+   ],
+   "light_radius": 4.15
+  },
+  {
+   "name": "flame_6",
+   "kind": "brazier",
+   "position": [
+    3.964,
+    12.13,
+    6.6315
+   ],
+   "height": 2.655,
+   "quaternion": [
+    0.25975,
+    0.0,
+    -0.12155,
+    0.958
+   ],
+   "light_radius": 6.37
+  },
+  {
+   "name": "flame_7",
+   "kind": "brazier",
+   "position": [
+    8.0553,
+    10.2949,
+    2.0058
+   ],
+   "height": 2.2272,
+   "quaternion": [
+    0.0,
+    0.0,
+    -0.28736,
+    0.95782
+   ],
+   "light_radius": 5.35
+  },
+  {
+   "name": "flame_8",
+   "kind": "brazier",
+   "position": [
+    5.3579,
+    10.5223,
+    -2.7004
+   ],
+   "height": 2.0439,
+   "quaternion": [
+    -0.27544,
+    0.0,
+    -0.21117,
+    0.93784
+   ],
+   "light_radius": 4.91
+  },
+  {
+   "name": "flame_9",
+   "kind": "brazier",
+   "position": [
+    7.0684,
+    11.8694,
+    0.3426
+   ],
+   "height": 2.6969,
+   "quaternion": [
+    -0.08956,
+    -0.0,
+    -0.24523,
+    0.96532
+   ],
+   "light_radius": 6.47
+  },
+  {
+   "name": "flame_10",
+   "kind": "brazier",
+   "position": [
+    6.633,
+    11.1326,
+    4.6059
+   ],
+   "height": 2.1361,
+   "quaternion": [
+    0.19966,
+    0.0,
+    -0.31387,
+    0.92823
+   ],
+   "light_radius": 5.13
+  },
+  {
+   "name": "flame_11",
+   "kind": "brazier",
+   "position": [
+    7.0613,
+    12.4724,
+    2.6757
+   ],
+   "height": 2.6127,
+   "quaternion": [
+    0.04805,
+    0.0,
+    -0.21856,
+    0.97464
+   ],
+   "light_radius": 6.27
+  },
+  {
+   "name": "flame_12",
+   "kind": "brazier",
+   "position": [
+    4.539,
+    13.0238,
+    4.3904
+   ],
+   "height": 3.2171,
+   "quaternion": [
+    0.19772,
+    0.0,
+    -0.19869,
+    0.95991
+   ],
+   "light_radius": 7.72
+  },
+  {
+   "name": "flame_13",
+   "kind": "brazier",
+   "position": [
+    -1.8893,
+    10.0371,
+    -2.3257
+   ],
+   "height": 1.3219,
+   "quaternion": [
+    -0.27416,
+    0.0,
+    0.29927,
+    0.91393
+   ],
+   "light_radius": 3.17
+  },
+  {
+   "name": "flame_14",
+   "kind": "brazier",
+   "position": [
+    -3.0287,
+    10.9227,
+    2.744
+   ],
+   "height": 1.3683,
+   "quaternion": [
+    0.04237,
+    0.0,
+    0.23956,
+    0.96996
+   ],
+   "light_radius": 3.28
+  },
+  {
+   "name": "flame_15",
+   "kind": "brazier",
+   "position": [
+    -2.3515,
+    11.6403,
+    -0.2746
+   ],
+   "height": 2.4646,
+   "quaternion": [
+    -0.12451,
+    0.0,
+    0.30164,
+    0.94526
+   ],
+   "light_radius": 5.92
+  },
+  {
+   "name": "flame_16",
+   "kind": "brazier",
+   "position": [
+    -2.3372,
+    12.3169,
+    4.6261
+   ],
+   "height": 2.966,
+   "quaternion": [
+    0.16516,
+    0.0,
+    0.285,
+    0.94419
+   ],
+   "light_radius": 7.12
+  },
+  {
+   "name": "flame_17",
+   "kind": "brazier",
+   "position": [
+    -1.6126,
+    13.0635,
+    1.6939
+   ],
+   "height": 2.5898,
+   "quaternion": [
+    -0.00764,
+    0.0,
+    0.18467,
+    0.98277
+   ],
+   "light_radius": 6.22
+  },
+  {
+   "name": "flame_18",
+   "kind": "brazier",
+   "position": [
+    0.587,
+    11.1074,
+    -2.7722
+   ],
+   "height": 1.9908,
+   "quaternion": [
+    -0.34664,
+    0.0,
+    0.09318,
+    0.93336
+   ],
+   "light_radius": 4.78
+  },
+  {
+   "name": "flame_19",
+   "kind": "brazier",
+   "position": [
+    3.8288,
+    12.3136,
+    -2.9217
+   ],
+   "height": 2.5242,
+   "quaternion": [
+    -0.33742,
+    0.0,
+    -0.10584,
+    0.93538
+   ],
+   "light_radius": 6.06
+  },
+  {
+   "name": "flame_20",
+   "kind": "brazier",
+   "position": [
+    -0.5712,
+    12.7932,
+    -2.0086
+   ],
+   "height": 2.0202,
+   "quaternion": [
+    -0.2399,
+    0.0,
+    0.16866,
+    0.95604
+   ],
+   "light_radius": 4.85
+  },
+  {
+   "name": "flame_21",
+   "kind": "brazier",
+   "position": [
+    2.3267,
+    13.2215,
+    -1.2765
+   ],
+   "height": 2.9977,
+   "quaternion": [
+    -0.10498,
+    0.0,
+    0.00485,
+    0.99446
+   ],
+   "light_radius": 7.19
+  },
+  {
+   "name": "flame_22",
+   "kind": "brazier",
+   "position": [
+    0.1484,
+    13.4911,
+    0.5728
+   ],
+   "height": 3.2495,
+   "quaternion": [
+    -0.04412,
+    0.0,
+    0.06342,
+    0.99701
+   ],
+   "light_radius": 7.8
+  },
+  {
+   "name": "flame_23",
+   "kind": "brazier",
+   "position": [
+    5.1785,
+    13.0995,
+    -0.2948
+   ],
+   "height": 2.1366,
+   "quaternion": [
+    -0.10235,
+    0.0,
+    -0.12145,
+    0.98731
+   ],
+   "light_radius": 5.13
+  },
+  {
+   "name": "flame_24",
+   "kind": "brazier",
+   "position": [
+    3.1747,
+    13.7122,
+    0.1224
+   ],
+   "height": 3.0703,
+   "quaternion": [
+    -0.04854,
+    0.0,
+    -0.02781,
+    0.99843
+   ],
+   "light_radius": 7.37
+  },
+  {
+   "name": "flame_25",
+   "kind": "brazier",
+   "position": [
+    5.0092,
+    13.2923,
+    1.2648
+   ],
+   "height": 3.4209,
+   "quaternion": [
+    -0.00871,
+    0.0,
+    -0.06474,
+    0.99786
+   ],
+   "light_radius": 8.21
+  },
+  {
+   "name": "flame_26",
+   "kind": "brazier",
+   "position": [
+    3.4935,
+    13.9245,
+    0.9387
+   ],
+   "height": 3.4072,
+   "quaternion": [
+    -0.04523,
+    -0.0,
+    -0.08606,
+    0.99526
+   ],
+   "light_radius": 8.18
+  },
+  {
+   "name": "flame_27",
+   "kind": "brazier",
+   "position": [
+    0.0295,
+    13.7453,
+    2.7362
+   ],
+   "height": 2.9224,
+   "quaternion": [
+    0.03309,
+    0.0,
+    0.10371,
+    0.99406
+   ],
+   "light_radius": 7.01
+  },
+  {
+   "name": "flame_28",
+   "kind": "brazier",
+   "position": [
+    1.6878,
+    13.7501,
+    -0.01
+   ],
+   "height": 3.3168,
+   "quaternion": [
+    -0.08601,
+    0.0,
+    0.036,
+    0.99564
+   ],
+   "light_radius": 7.96
+  },
+  {
+   "name": "flame_29",
+   "kind": "brazier",
+   "position": [
+    1.0688,
+    14.3706,
+    1.4614
+   ],
+   "height": 2.3068,
+   "quaternion": [
+    -0.02235,
+    -0.0,
+    0.08478,
+    0.99615
+   ],
+   "light_radius": 5.54
+  },
+  {
+   "name": "flame_30",
+   "kind": "brazier",
+   "position": [
+    1.4811,
+    14.1615,
+    3.4803
+   ],
+   "height": 2.6816,
+   "quaternion": [
+    0.07727,
+    0.0,
+    0.02779,
+    0.99662
+   ],
+   "light_radius": 6.44
+  },
+  {
+   "name": "flame_31",
+   "kind": "brazier",
+   "position": [
+    2.8712,
+    14.4175,
+    2.5106
+   ],
+   "height": 2.983,
+   "quaternion": [
+    0.07917,
+    0.0,
+    -0.05091,
+    0.99556
+   ],
+   "light_radius": 7.16
+  },
+  {
+   "name": "flame_32",
+   "kind": "brazier",
+   "position": [
+    4.3219,
+    13.957,
+    2.6079
+   ],
+   "height": 2.7247,
+   "quaternion": [
+    0.06359,
+    0.0,
+    -0.13763,
+    0.98844
+   ],
+   "light_radius": 6.54
+  },
+  {
+   "name": "flame_33",
+   "kind": "brazier",
+   "position": [
+    2.4085,
+    14.4593,
+    0.9401
+   ],
+   "height": 2.2024,
+   "quaternion": [
+    0.00855,
+    0.0,
+    0.00147,
+    0.99996
+   ],
+   "light_radius": 5.29
+  },
+  {
+   "name": "flame_34",
+   "kind": "brazier",
+   "position": [
+    1.6249,
+    14.1414,
+    1.9493
+   ],
+   "height": 3.2451,
+   "quaternion": [
+    0.01722,
+    0.0,
+    0.02223,
+    0.9996
+   ],
+   "light_radius": 7.79
+  },
+  {
+   "name": "flame_35",
+   "kind": "brazier",
+   "position": [
+    -0.424,
+    11.4984,
+    6.7384
+   ],
+   "height": 2.4537,
+   "quaternion": [
+    0.25976,
+    0.0,
+    0.13491,
+    0.9562
+   ],
+   "light_radius": 5.89
+  },
+  {
+   "name": "flame_36",
+   "kind": "brazier",
+   "position": [
+    2.0055,
+    12.5875,
+    5.6825
+   ],
+   "height": 2.8582,
+   "quaternion": [
+    0.27186,
+    0.0,
+    0.03523,
+    0.96169
+   ],
+   "light_radius": 6.86
+  },
+  {
+   "name": "flame_37",
+   "kind": "brazier",
+   "position": [
+    -0.1278,
+    13.2511,
+    4.0364
+   ],
+   "height": 2.0591,
+   "quaternion": [
+    0.10147,
+    0.0,
+    0.08468,
+    0.99123
+   ],
+   "light_radius": 4.94
+  },
+  {
+   "name": "flame_38",
+   "kind": "brazier",
+   "position": [
+    2.6916,
+    13.9039,
+    4.2626
+   ],
+   "height": 3.0031,
+   "quaternion": [
+    0.20217,
+    0.0,
+    -0.04548,
+    0.97829
+   ],
+   "light_radius": 7.21
+  },
+  {
+   "name": "flame_39",
+   "kind": "brazier",
+   "position": [
+    2.8265,
+    8.3717,
+    6.9916
+   ],
+   "height": 1.5778,
+   "quaternion": [
+    0.30347,
+    0.0,
+    -0.04057,
+    0.95198
+   ],
+   "light_radius": 3.79
+  },
+  {
+   "name": "flame_40",
+   "kind": "brazier",
+   "position": [
+    6.9089,
+    8.9717,
+    0.9944
+   ],
+   "height": 1.4813,
+   "quaternion": [
+    -0.05941,
+    0.0,
+    -0.32718,
+    0.94309
+   ],
+   "light_radius": 3.56
+  },
+  {
+   "name": "flame_41",
+   "kind": "candle",
+   "position": [
+    3.4163,
+    1.7966,
+    1.5619
+   ],
+   "height": 0.7623,
+   "quaternion": [
+    -0.01835,
+    0.0,
+    -0.05932,
+    0.99807
+   ],
+   "light_radius": 1.83
+  },
+  {
+   "name": "flame_42",
+   "kind": "candle",
+   "position": [
+    2.0273,
+    1.7656,
+    0.0738
+   ],
+   "height": 0.8501,
+   "quaternion": [
+    -0.08775,
+    0.0,
+    -0.00124,
+    0.99614
+   ],
+   "light_radius": 2.04
+  },
+  {
+   "name": "flame_43",
+   "kind": "candle",
+   "position": [
+    0.8593,
+    1.8159,
+    1.6114
+   ],
+   "height": 0.7834,
+   "quaternion": [
+    -0.02776,
+    0.0,
+    0.08149,
+    0.99629
+   ],
+   "light_radius": 1.88
+  },
+  {
+   "name": "flame_44",
+   "kind": "candle",
+   "position": [
+    0.9846,
+    1.7818,
+    3.3568
+   ],
+   "height": 0.9006,
+   "quaternion": [
+    0.07661,
+    0.0,
+    0.05734,
+    0.99541
+   ],
+   "light_radius": 2.16
+  },
+  {
+   "name": "flame_45",
+   "kind": "candle",
+   "position": [
+    2.6079,
+    1.8264,
+    2.8622
+   ],
+   "height": 0.7527,
+   "quaternion": [
+    0.03061,
+    0.0,
+    -0.02158,
+    0.9993
+   ],
+   "light_radius": 1.81
+  },
+  {
+   "name": "flame_46",
+   "kind": "lantern",
+   "position": [
+    2.4636,
+    2.7421,
+    4.9742
+   ],
+   "height": 0.8,
+   "quaternion": [
+    0.0,
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "light_radius": 2.4,
+   "parent": "lantern_1"
+  },
+  {
+   "name": "flame_47",
+   "kind": "lantern",
+   "position": [
+    4.6931,
+    3.8121,
+    1.0697
+   ],
+   "height": 0.8,
+   "quaternion": [
+    0.0,
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "light_radius": 2.4,
+   "parent": "lantern_2"
+  },
+  {
+   "name": "flame_48",
+   "kind": "lantern",
+   "position": [
+    2.409,
+    2.9479,
+    4.7587
+   ],
+   "height": 0.8,
+   "quaternion": [
+    0.0,
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "light_radius": 2.4,
+   "parent": "lantern_3"
+  }
+ ]
+}

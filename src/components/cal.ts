@@ -1,11 +1,9 @@
 "use client";
+import { ACCENT } from "@/lib/accent";
 
-// One Cal.com booking for the whole site: the 15 minute call (BOOK in felt/copy). Every CTA is a plain link to
-// /call?src=<tag>, so it works without JavaScript; once the page has loaded, openBooking() opens the same event in
-// Cal's popup instead. The tag rides into the embed config as `src` (prefills the hidden booking question with that
-// identifier) and `metadata[src]` (lands on the booking's metadata), so each booking records where it came from.
 
-import { track } from "@vercel/analytics";
+
+import { track } from "@/lib/track";
 import { BOOK } from "./felt/copy";
 
 type Fn = (...args: unknown[]) => void;
@@ -17,7 +15,10 @@ export const NS = "call";
 export const THEME = {
   theme: "light",
   layout: "month_view",
-  cssVarsPerTheme: { light: { "cal-brand": "#0a0a0a", "cal-brand-emphasis": "#262626", "cal-brand-text": "#ffffff" } },
+  styles: { branding: { brandColor: ACCENT.paper } },
+  cssVarsPerTheme: {
+    light: { "cal-brand": ACCENT.paper, "cal-brand-emphasis": "#0b0b0b", "cal-brand-text": "#f8e3c2", "cal-bg": "#e6e5e1", "cal-bg-muted": "#dcdbd6", "cal-bg-emphasis": "#d6d5d0", "cal-bg-subtle": "#dcdbd6", "cal-border": "#c9c8c2", "cal-border-emphasis": "#0b0b0b", "cal-border-subtle": "#d6d5d0", "cal-border-booker": "#c9c8c2", "cal-text": "#0b0b0b", "cal-text-emphasis": "#0b0b0b", "cal-text-subtle": "#66655f", "cal-text-muted": "#66655f" },
+  },
 } as const;
 
 /** A channel tag from a query string or a caller: lower-case letters, digits and dashes, else "direct". */
@@ -81,13 +82,10 @@ export function calApi(src: string) {
   return Cal.ns[NS];
 }
 
-/** A click handler for a booking link: opens the popup in place, unless the visitor asked for a new tab or window. */
 export const openBooking = (src: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-  e.preventDefault();
   trackBooking("book_open", src);
-  calApi(src)("modal", { calLink: CAL_LINK, config: calConfig(src) });
 };
 
-/** The link every CTA uses: /call with its channel. */
-export const callHref = (src: string) => `/call?src=${src}`;
+/** The link every CTA uses: /cal with its channel. */
+export const callHref = (src: string) => `/cal?src=${src}`;

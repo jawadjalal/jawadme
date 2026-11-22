@@ -1,0 +1,58 @@
+/* /work: a statement, the ads in one rail, then every other piece as an editorial list: the work as the picture and,
+   under it, its name, one line, a fact and the year. Type and air only: no cards, no borders, no chips. */
+.wk-h { display: grid; gap: 22px; padding-top: calc(16 * var(--u)); padding-bottom: calc(14 * var(--u)); }
+.wk-t { margin: 0 0 10px; font: 700 calc(30 * var(--u))/0.8 var(--f-disp); letter-spacing: -0.055em; }
+.wk-stat { display: flex; flex-wrap: wrap; gap: 8px 40px; margin: 0; font: 600 14px/1.3 var(--f-bar); letter-spacing: 0; }
+.wk-stat div { display: flex; gap: 8px; }
+.wk-stat dt { color: var(--dim); }
+.wk-stat dt::after { content: ":"; }
+.wk-stat dd { margin: 0; }
+.wk-own { margin: 0; font: 700 max(26px, calc(9 * var(--u)))/1.02 var(--f-bar); letter-spacing: -0.03em; text-wrap: balance; }
+.wk-n { margin: 0; max-width: 30em; font: 500 17px/1.4 var(--f-sans); color: var(--dim); text-wrap: pretty; }
+
+.ed-t { margin: 0; font: 700 max(24px, calc(8 * var(--u)))/1 var(--f-bar); letter-spacing: -0.03em; }
+.wk-ads > .ed-t { padding-bottom: 18px; }
+.ed { margin-top: calc(34 * var(--u)); }
+.ed-h, .ed-list { width: min(100% - 2 * var(--g), 64vw); margin-inline: auto; padding: 0; }
+.ed-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px; padding-bottom: calc(10 * var(--u)); }
+.ed-note { margin: 0; flex: 1 1 22em; max-width: 36em; font: 400 16px/1.45 var(--f-sans); color: var(--dim); text-wrap: pretty; }
+.ed-case { font: 600 15px/1 var(--f-bar); text-decoration: underline; text-decoration-color: #c39a42; text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
+.ed-case:hover { color: var(--accent-text); }
+.ed-list { display: grid; gap: calc(22 * var(--u)); margin-block: 0; list-style: none; }
+.ed-list > li { content-visibility: auto; contain-intrinsic-size: auto 800px; }
+.ed-a { display: grid; gap: 14px; -webkit-tap-highlight-color: transparent; }
+.ed-i.tall .ed-a { width: min(100%, 36vw); margin-inline: auto; }
+.ed-row { display: grid; grid-template-columns: minmax(8em, 0.6fr) minmax(0, 1.4fr) auto; align-items: baseline; gap: 4px 24px; font: 600 15px/1.35 var(--f-bar); letter-spacing: -0.01em; }
+.ed-l { font-weight: 400; color: var(--dim); text-wrap: pretty; }
+.ed-f { white-space: nowrap; font-variant-numeric: tabular-nums; }
+@media (hover: hover) { .ed-a:hover .ed-n { color: var(--accent-text); } }
+.wk-mo { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; gap: 28px 48px; margin-top: calc(34 * var(--u)); }
+.wk-mo-t { margin: 0; max-width: 11em; font: 700 max(36px, calc(18 * var(--u)))/0.9 var(--f-disp); letter-spacing: -0.045em; text-wrap: balance; }
+.wk-mo-tail { display: block; margin-top: 0.35em; font-size: 0.42em; line-height: 1.1; letter-spacing: -0.03em; color: var(--dim); }
+
+.rail { --h: min(70vh, 52vw); --gap: 16px; }
+.rail-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 16px; }
+.rail-count { font: 600 14px/1 var(--f-bar); font-variant-numeric: tabular-nums; color: var(--dim); }
+.rail-step { display: flex; gap: 18px; }
+.rail-track { display: flex; gap: var(--gap); margin: 0; padding: 0 var(--g) 6px; list-style: none; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--g); scrollbar-width: none; outline-offset: -2px; }
+.rail-track::-webkit-scrollbar { display: none; }
+.rail-i { flex: none; width: calc(var(--h) * var(--ar)); max-width: calc(100vw - 2 * var(--g)); scroll-snap-align: start; }
+.rail-a { display: grid; gap: 12px; -webkit-tap-highlight-color: transparent; }
+.rail-a .media { width: 100%; }
+.rail-cap { display: grid; gap: 4px; min-width: 0; font: 700 15px/1.2 var(--f-bar); letter-spacing: -0.015em; }
+.rail-hl { font-weight: 500; color: var(--dim); text-wrap: pretty; }
+@media (hover: hover) { .rail-a:hover .rail-co { color: var(--accent-text); } }
+@media (max-width: 767px) {
+  .wk-h { padding-top: 32px; padding-bottom: 40px; }
+  .wk-t { font-size: 22vw; }
+  .wk-stat { flex-direction: column; }
+  .ed { margin-top: 88px; }
+  .ed-list { gap: 56px; }
+  .ed-h, .ed-list { width: auto; margin-inline: var(--g); }
+  .ed-i.tall .ed-a { width: 100%; }
+  .ed-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .ed-l { grid-column: 1 / -1; grid-row: 2; }
+  .wk-mo { grid-template-columns: minmax(0, 1fr); margin-top: 88px; }
+  .wk-mo-t { font-size: 11vw; }
+  .rail { --h: min(110vw, 64vh); --gap: 10px; }
+}

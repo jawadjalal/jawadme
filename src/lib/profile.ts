@@ -16,12 +16,12 @@
 
 export const IDENTITY = {
   name: "jawad jalal",
-  properName: "Jawad Jalal",
+  properName: "jawad jalal",
   wordmark: "JAWAD",
   role: "designer & founder",
   location: "london",
-  locality: "London",
-  region: "England",
+  locality: "london",
+  region: "england",
   country: "GB",
   email: "hijawadjalal@gmail.com",
   cv: "/jawad-jalal-cv.pdf",
@@ -86,7 +86,7 @@ export const ABOUT_ROLES: {
   href?: string;
 }[] = [
   { key: "ignura", name: "ignura", role: "founder", stat: "6 figure arr", logo: "/logos/ignura.png", logoTile: "#111111", href: "https://ignura.com" },
-  { key: "menufit", name: "menufit", role: "design", stat: "7 figure arr, 1.5m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
+  { key: "menufit", name: "menufit", role: "design", stat: "1.5m users", logo: "/logos/menufit.png", href: "https://menufit.com" },
   { key: "bevel", name: "bevel", role: "founder", stat: "6 figure arr", logo: "/logos/bevel.png", href: "https://bevel.team" },
   { key: "okara", name: "okara", role: "design", logo: "/logos/okara.png", href: "https://okara.ai" },
   { key: "ignaru", name: "ignaru", role: "founder", stat: "design tool", logo: "/logos/ignaru.svg", href: "https://ignaru.com" },
@@ -94,7 +94,7 @@ export const ABOUT_ROLES: {
 
 export const ABOUT_TAIL = [
   "~the rest of the time it's~ :pen:<3d art and logo work>~, and whatever i can~ ^hl.pink{talk someone into} ~letting me redesign~ :bolt:.",
-  "~find me on~ :x:{twitter|https://x.com/jawadmakes}, :linkedin:{linkedin|https://www.linkedin.com/in/jawad-jalal-designs}, :instagram:{instagram|https://www.instagram.com/j.awadjalal/} ~and~ :youtube:{youtube|https://www.youtube.com/@jawadmake}.",
+  "~find me on~ :x:{twitter|https://x.com/jawadjalal}, :linkedin:{linkedin|https://www.linkedin.com/in/jawad-jalal-designs}, :instagram:{instagram|https://www.instagram.com/j.awadjalal/} ~and~ :youtube:{youtube|https://www.youtube.com/@jawadmakes}.",
   "~got something in mind? say hi:~ :mail:{work with me|mailto:hijawadjalal@gmail.com}",
 ];
 
@@ -125,7 +125,7 @@ export type Item = {
   roleNote?: string;
   period: string;
   blurb: string;
-  status: "Live" | "Building" | "Waitlist" | "Discontinued";
+  status: "Live" | "Building" | "Waitlist" | "Discontinued" | "Past";
   /** The stack, as tags under a project card. */
   tags?: { brand?: import("@/components/Brand").BrandKey; label: string }[];
 };
@@ -163,10 +163,10 @@ export const NOW: Item[] = [
     logo: "/logos/menufit.png",
     shot: "/design/menufit.webp",
     domain: "menufit.com",
-    role: "Design",
-    period: "Since 2026",
-    status: "Live",
-    blurb: "The app for eating out healthy. 7 figure ARR and 1.5 million users. I design the product.",
+    role: "Product designer",
+    period: "2026",
+    status: "Past",
+    blurb: "An 8-figure startup at 7-figure MRR: the app for eating out healthy, used by 1.5 million people. I was its product designer.",
     tags: [
       { brand: "figmacolour", label: "Product design" },
       { label: "iOS" },
@@ -203,10 +203,10 @@ export const NOW: Item[] = [
     logo: "/logos/okara.png",
     shot: "/design/okara-card.webp",
     domain: "okara.ai",
-    role: "Design",
-    period: "Since 2026",
-    status: "Live",
-    blurb: "An AI CMO that drafts and ships marketing work. I design the product. Its launch film did 14M views on X in a day.",
+    role: "Product development intern",
+    period: "2026",
+    status: "Past",
+    blurb: "An 8-figure AI startup, the AI CMO that drafts and ships marketing work. I was a product development intern there.",
     tags: [
       { brand: "figmacolour", label: "Product design" },
       { brand: "nextdotjs", label: "Next.js" },
@@ -379,10 +379,12 @@ export const SOCIALS: {
 }[] = [
   { label: "Email", href: "mailto:hijawadjalal@gmail.com", icon: "mail" },
   { label: "CV", href: "/jawad-jalal-cv.pdf", icon: "doc" },
-  { label: "X", href: "https://x.com/jawadmakes", brand: "x" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/jawad-jalal-designs", brand: "linkedin" },
-  { label: "Instagram", href: "https://www.instagram.com/j.awadjalal/", brand: "instagram" },
-  { label: "YouTube", href: "https://www.youtube.com/@jawadmake", brand: "youtube" },
+  { label: "x", href: "https://x.com/jawadjalal", brand: "x" },
+  { label: "github", href: "https://github.com/jawadjalal" },
+  { label: "instagram", href: "https://www.instagram.com/j.awadjalal/", brand: "instagram" },
+  { label: "tiktok", href: "https://www.tiktok.com/@jawadmakes" },
+  { label: "youtube", href: "https://www.youtube.com/@jawadmakes", brand: "youtube" },
+  { label: "linkedin", href: "https://www.linkedin.com/in/jawad-jalal-designs", brand: "linkedin" },
 ];
 
 /** The four things the work sits inside, drawn as overlapping circles at the
@@ -403,7 +405,8 @@ export const SUMMARY =
   "Jawad Jalal is a designer and founder based in London, England. He runs Ignura (ignura.com), " +
   "a design studio at 6 figure ARR, and builds Ignaru (ignaru.com), an agent-native design tool " +
   "where design and code share one canvas. He also runs bevel, a 3D art team for games at 6 figure ARR, " +
-  "and has designed for Okara and for MenuFit (menufit.com), an app for eating out healthy with 1.5 million users and 7 figure ARR.";
+  "and has worked at two 8-figure startups: as product designer at MenuFit (menufit.com), an app for eating out healthy " +
+  "used by 1.5 million people, and as a product development intern at Okara, an AI CMO.";
 
 /** What he does, in the plain terms an answer engine can quote back. */
 export const SKILLS = [
@@ -484,7 +487,7 @@ export const NAV: {
     icon: "mail",
     items: [
       { label: "Email", href: `mailto:${IDENTITY.email}`, note: "hijawadjalal@" },
-      { label: "X", href: "https://x.com/jawadmakes", note: "@jawadmakes", external: true },
+      { label: "X", href: "https://x.com/jawadjalal", note: "@jawadjalal", external: true },
       {
         label: "LinkedIn",
         href: "https://www.linkedin.com/in/jawad-jalal-designs",

@@ -7,6 +7,7 @@
 // the blog passes none and gets a single link back.
 
 import Link from "next/link";
+import { Gilded } from "./gilded/Gilded";
 import { Face } from "./Obj";
 import { NavEmail } from "./NavEmail";
 import { NavMenu, type NavGroup } from "./NavMenu";
@@ -27,16 +28,17 @@ export function SiteNav({ groups, home = true }: { groups?: NavGroup[]; home?: b
         </Link>
         <div className="flex items-center gap-1.5 md:gap-2">
           {groups ? (
-            <nav aria-label="Main" className="hidden md:block">
+            <nav aria-label="main" className="hidden md:block">
               <NavMenu groups={groups} />
             </nav>
           ) : (
-            <Link href="/blog" className="nv-link">
-              Blog
+            <Link href="/blog" className="nv-link max-sm:hidden">
+              blog
             </Link>
           )}
           <Theme />
           <NavEmail />
+          <Gilded variant="cta" src={home ? "nav" : "blog-nav"} size="dock" />
         </div>
       </div>
     </header>

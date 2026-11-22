@@ -1,0 +1,48 @@
+/* ── Contact, round 2: the heading clear of the cards, and each card one dense band (its words, then its button) ── */
+.ct .ct-h { margin-bottom: max(28px, calc(10 * var(--u))); }
+.ct .ct-c { flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 24px; min-height: 0; padding: calc(5 * var(--u)) calc(6 * var(--u)); }
+@media (max-width: 767px) {
+  .ct .ct-c { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 20px 22px; }
+}
+
+/* ── /contact, round 3: the page's own masthead (the word large, its one line beside it), then the two cards at full height ── */
+.ct-p .ct { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: end; column-gap: calc(10 * var(--u)); padding-top: calc(10 * var(--u)); }
+.ct-p .ct .ct-h { margin: 0; font-size: max(56px, calc(56 * var(--u))); line-height: 0.8; letter-spacing: -0.06em; }
+.ct-p .ct-lede { max-width: 12em; margin: 0 0 0.2em; font: 700 max(24px, calc(14 * var(--u)))/1 var(--f-disp); letter-spacing: -0.035em; text-wrap: balance; }
+.ct-p .ct-two { grid-column: 1 / -1; margin-top: calc(10 * var(--u)); }
+.ct-p .ct .ct-c { flex-direction: column; align-items: flex-start; justify-content: space-between; min-height: clamp(200px, 17vw, 280px); padding: calc(6 * var(--u)) calc(7 * var(--u)) calc(7 * var(--u)); }
+@media (max-width: 767px) {
+  .ct-p .ct { grid-template-columns: minmax(0, 1fr); }
+  .ct-p .ct .ct-h { padding-bottom: 0; font-size: 24vw; line-height: 0.82; }
+  .ct-p .ct-lede { margin: 14px 0 0; font-size: 28px; }
+  .ct-p .ct-two { margin-top: 28px; }
+  .ct-p .ct .ct-c { min-height: 170px; gap: 24px; padding: 22px 22px 24px; }
+}
+
+/* ── /contact, round 4: the cards fill the first screen above the dock, so the footer's pillar (its own call and email
+   signs, and "where to next?") starts below the fold and never shares the opening view with them. Each card is one link:
+   its gilded control is the link, laid out in the card's grid so the control's hit area (::before) and focus ring
+   (::after) stretch over the whole card. Both controls share one size (the card's width on phones, a fixed plate beside the words wider up),
+   and the call reveals its "· jawad + you" inside the plate instead of growing past the card. ── */
+.ct-p .ct { min-height: 100svh; grid-template-rows: auto minmax(0, 1fr); padding-bottom: var(--dock); }
+.ct-p .ct .ct-two { align-self: stretch; grid-auto-rows: 1fr; }
+.ct-p .ct .ct-c { position: relative; cursor: pointer; }
+.ct-p .ct .ct-k { font-size: max(44px, calc(36 * var(--u))); line-height: 0.88; }
+.ct-p .ct-c .gl { --h: 2.8em; --r: 11px; --pad: 1.1em; --R: 0px; --S: 0px; position: static; display: grid; width: 100%; padding: 0; font-size: max(18px, min(24px, calc(7 * var(--u)))); }
+.ct-p .ct-c .gl > * { grid-area: 1 / 1; }
+.ct-p .ct-c .gl-s { position: relative; inset: auto; align-self: stretch; }
+.ct-p .ct-c .gl-t { justify-self: start; align-self: center; margin: 0 var(--pad); }
+.ct-p .ct-c .gl::after { inset: -6px; border-radius: 6px; }
+.ct-p .ct-c .gl > .mail-tag { left: auto; right: calc(7 * var(--u)); top: calc(6 * var(--u)); margin: 0; }
+@media (max-width: 767px) {
+  .ct-p .ct { grid-template-rows: auto auto minmax(0, 1fr); padding-top: 32px; }
+  .ct-p .ct .ct-c { justify-content: center; gap: 28px; }
+  .ct-p .ct .ct-k { font-size: min(52px, 13.5vw); }
+  .ct-p .ct-c .gl > .mail-tag { right: 22px; top: 22px; }
+}
+@media (min-width: 768px) {
+  .ct-p .ct .ct-h { font-size: calc(64 * var(--u)); }
+  .ct-p .ct .ct-two { grid-template-columns: minmax(0, 1fr); }
+  .ct-p .ct .ct-c { flex-direction: row; flex-wrap: wrap; align-items: center; align-content: center; gap: 20px calc(10 * var(--u)); min-height: 0; }
+  .ct-p .ct-c .gl { width: max(300px, calc(120 * var(--u))); }
+}

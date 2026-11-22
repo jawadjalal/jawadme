@@ -1,0 +1,9 @@
+/* ── 404, round 2: the scene is the whole first screen, its exits clear of the dock, so the link row under it (no
+   pillar, no GitHub year) starts below the fold and never sits under the dock; room under the headline's descender;
+   the kicker on an ink chip ── */
+.lost .mo-lost { min-height: 100svh; padding-bottom: calc(var(--dock) + 16px); }
+.lost .lost-h { margin: 12px 0 0; }
+.lost .lost-line { margin: calc(4 * var(--u) + 30px) 0 0; }
+.lost .lost-k { display: inline-block; padding: 7px 10px 6px; background: var(--ink); color: #f1e6d2; font-size: 16px; text-shadow: none; }
+.ds:has(.lost) .foot-cg { display: none; }
+.ds:has(.lost) .foot-row { box-shadow: inset 0 1px 0 rgb(248 227 194 / 0.14); padding-top: 10px; }

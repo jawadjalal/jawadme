@@ -1,6 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Gilded } from "@/components/gilded/Gilded";
+import { kindCount } from "./arrange";
+import { sized } from "./exporters";
 
 export type Asset = {
   id: string;
@@ -81,6 +84,8 @@ function fileName(a: Asset, url = a.original) {
 /** Plays a video only while it is on screen, muted. */
 function useInView<T extends HTMLElement>(on: boolean) {
   const ref = useRef<T>(null);
+  // the poster is fetched only once the clip is within a screen or so, never with the page's first pictures
+  const [near, setNear] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!on || !el || !(el instanceof HTMLVideoElement)) return;
@@ -91,14 +96,28 @@ function useInView<T extends HTMLElement>(on: boolean) {
       },
       { threshold: 0.25 },
     );
+    const pre = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        setNear(true);
+        pre.disconnect();
+      },
+      { rootMargin: "800px 0px" },
+    );
     io.observe(el);
-    return () => io.disconnect();
+    pre.observe(el);
+    return () => {
+      io.disconnect();
+      pre.disconnect();
+    };
   }, [on]);
-  return ref;
+  return [ref, near] as const;
 }
 
-function Media({ a, eager }: { a: Asset; eager?: boolean }) {
-  const video = useInView<HTMLVideoElement>(a.type === "video");
+/** A tile passes `sizes` and gets optimizer copies at 256, 384, 640 and 1080 wide (never past the preview's own width), so
+ *  a phone pulls a few KB a piece instead of the whole preview; the lightbox passes none and shows the preview itself. */
+function Media({ a, eager, sizes }: { a: Asset; eager?: boolean; sizes?: string }) {
+  const [video, near] = useInView<HTMLVideoElement>(a.type === "video");
   const [loaded, setLoaded] = useState(false);
   if (a.type === "video") {
     return (
@@ -106,7 +125,7 @@ function Media({ a, eager }: { a: Asset; eager?: boolean }) {
         ref={video}
         className="cp-media"
         src={a.original}
-        poster={a.preview}
+        poster={!near ? undefined : sizes ? sized(a.preview, 1080, 86) : a.preview}
         width={a.w}
         height={a.h}
         muted
@@ -127,10 +146,13 @@ function Media({ a, eager }: { a: Asset; eager?: boolean }) {
       }}
       onLoad={() => setLoaded(true)}
       src={a.type === "gif" ? a.original : a.preview}
+      srcSet={sizes && a.type !== "gif" ? `${sized(a.preview, 256, 86)} 256w, ${sized(a.preview, 384, 86)} 384w, ${sized(a.preview, 640, 86)} 640w, ${sized(a.preview, 1080, 86)} 1080w` : undefined}
+      sizes={a.type === "gif" ? undefined : sizes}
       width={a.w}
       height={a.h}
       alt={`${a.title}, ${a.size}`}
       loading={eager ? "eager" : "lazy"}
+      fetchPriority={eager ? "high" : undefined}
       decoding="async"
       draggable={false}
     />
@@ -141,33 +163,35 @@ function Actions({ a, big }: { a: Asset; big?: boolean }) {
   const [state, copy] = useCopy(a);
   return (
     <span className="cp-actions" data-big={big || undefined}>
-      <button type="button" className="cp-copy" data-state={state} onClick={copy} aria-live="polite">
-        {LABEL[state]}
-      </button>
-      <a className="cp-dl" href={a.original} download={fileName(a)}>
+      <span className="cp-copy" data-state={state} aria-live="polite">
+        <Gilded variant="pill" onClick={copy}>
+          {LABEL[state]}
+        </Gilded>
+      </span>
+      <Gilded variant="pill" href={a.original} download={fileName(a)}>
         download
-      </a>
+      </Gilded>
       {big && a.pdf ? (
-        <a className="cp-dl" href={a.pdf} download={fileName(a, a.pdf)}>
+        <Gilded variant="pill" href={a.pdf} download={fileName(a, a.pdf)}>
           print pdf
-        </a>
+        </Gilded>
       ) : null}
     </span>
   );
 }
 
 /** One tile. `r` is the box's aspect; very tall pieces (a 33.5 × 80 banner) sit contained in a wider box. */
-function Tile({ a, r, width, onOpen, eager, named }: { a: Asset; r: number; width?: number; onOpen: (a: Asset) => void; eager: boolean; named?: boolean }) {
+function Tile({ a, r, width, onOpen, eager, named, near }: { a: Asset; r: number; width?: number; onOpen: (a: Asset) => void; eager: boolean; named?: boolean; near: boolean }) {
   return (
     <figure className="cp-tile" style={(width ? { width } : { "--r": r }) as React.CSSProperties}>
-      <button type="button" className="cp-frame" onClick={() => onOpen(a)} aria-label={`Open ${a.title}, ${a.size}`}>
+      <button type="button" className="cp-frame" onClick={() => onOpen(a)} aria-label={`open ${a.title}, ${a.size}`}>
         <span className="cp-box" style={{ aspectRatio: `${r}` }}>
-          <Media a={a} eager={eager} />
+          <Media a={a} eager={eager} sizes={width ? `${width}px` : "(max-width: 600px) 50vw, 400px"} />
         </span>
       </button>
       <figcaption className="cp-cap">
         <span className="cp-size" title={named ? `${a.title}, ${a.size}` : a.size}>{named ? a.title : a.size}</span>
-        <Actions a={a} />
+        {near ? <Actions a={a} /> : null}
       </figcaption>
     </figure>
   );
@@ -210,12 +234,26 @@ function partition(rs: number[], k: number): number[][] {
 function Rows({ items, onOpen, eagerFrom, named }: { items: Asset[]; onOpen: (a: Asset) => void; eagerFrom: number; named?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [W, setW] = useState(0);
+  // a set's gilded actions mount once it is within a screen or so, so the page does not hydrate two hundred of them at load
+  const [near, setNear] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const ro = new ResizeObserver(([e]) => setW(Math.floor(e.contentRect.width)));
     ro.observe(el);
-    return () => ro.disconnect();
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        setNear(true);
+        io.disconnect();
+      },
+      { rootMargin: "800px 0px" },
+    );
+    io.observe(el);
+    return () => {
+      ro.disconnect();
+      io.disconnect();
+    };
   }, []);
 
   const phone = W > 0 && W < 600;
@@ -229,7 +267,7 @@ function Rows({ items, onOpen, eagerFrom, named }: { items: Asset[]; onOpen: (a:
     return (
       <div className="cp-rows" ref={ref}>
         {items.map((a, i) => (
-          <Tile key={a.id} a={a} r={rs[i]} onOpen={onOpen} eager={eagerFrom + i < 4} named={named} />
+          <Tile key={a.id} a={a} r={rs[i]} onOpen={onOpen} eager={eagerFrom + i < 4} named={named} near={near} />
         ))}
       </div>
     );
@@ -249,7 +287,7 @@ function Rows({ items, onOpen, eagerFrom, named }: { items: Asset[]; onOpen: (a:
         return (
           <div className="cp-row" key={row[0]} style={{ gap }}>
             {row.map((i) => (
-              <Tile key={items[i].id} a={items[i]} r={rs[i]} width={Math.floor(rs[i] * h)} onOpen={onOpen} eager={eagerFrom + i < 4} named={named} />
+              <Tile key={items[i].id} a={items[i]} r={rs[i]} width={Math.floor(rs[i] * h)} onOpen={onOpen} eager={eagerFrom + i < 4} named={named} near={near} />
             ))}
           </div>
         );
@@ -303,7 +341,7 @@ function Lightbox({ a, sizes, onPick, onClose }: { a: Asset; sizes: Asset[]; onP
       </div>
       <div className="cp-lb-foot">
         {sizes.length > 1 ? (
-          <div className="cp-sizes" role="group" aria-label="Sizes">
+          <div className="cp-sizes" role="group" aria-label="sizes">
             {sizes.map((s) => (
               <button key={s.id} type="button" aria-pressed={s.id === a.id} onClick={() => onPick(s)}>
                 <span className="cp-thumb" style={{ aspectRatio: `${s.w / s.h}` }}>
@@ -311,7 +349,7 @@ function Lightbox({ a, sizes, onPick, onClose }: { a: Asset; sizes: Asset[]; onP
                   <img src={s.preview} alt="" loading="lazy" />
                 </span>
                 {s.size}
-                {s.type === "video" ? " MP4" : s.type === "gif" ? " GIF" : ""}
+                {s.type === "video" ? " mp4" : s.type === "gif" ? " gif" : ""}
               </button>
             ))}
           </div>
@@ -330,19 +368,19 @@ function Lightbox({ a, sizes, onPick, onClose }: { a: Asset; sizes: Asset[]; onP
 }
 
 const KIND_NAME: Record<string, string> = {
-  clean: "Clean text posters",
-  sponsors: "Capy posters v3, with every sponsor",
-  strips: "Manga strips",
-  rebuilds: "Level-up rebuilds",
-  posters: "Posters",
-  banners: "Banners",
-  stickers: "Stickers",
-  wallpapers: "Wallpapers",
-  social: "Social",
-  badges: "Badges",
-  signs: "Signs",
-  slides: "Slides",
-  motion: "Motion",
+  clean: "clean text posters",
+  sponsors: "capy posters v3, with every sponsor",
+  strips: "manga strips",
+  rebuilds: "level-up rebuilds",
+  posters: "posters",
+  banners: "banners",
+  stickers: "stickers",
+  wallpapers: "wallpapers",
+  social: "social",
+  badges: "badges",
+  signs: "signs",
+  slides: "slides",
+  motion: "motion",
 };
 const typeRank = { video: 0, image: 1, gif: 2 } as const;
 /** The pieces of a design worth a tile each: one per aspect, the video first, then the largest. */
@@ -356,7 +394,7 @@ function faces(g: Asset[]): Asset[] {
   return g.filter((a) => [...by.values()].includes(a));
 }
 
-const kindName = (k: string) => KIND_NAME[k] ?? k.charAt(0).toUpperCase() + k.slice(1).replace(/-/g, " ");
+const kindName = (k: string) => KIND_NAME[k] ?? k.replace(/-/g, " ");
 
 export function Gallery({ assets, kinds, total, sets }: { assets: Asset[]; kinds: string[]; total: number; sets: number }) {
   const [kind, setKind] = useState<string>("all");
@@ -388,20 +426,20 @@ export function Gallery({ assets, kinds, total, sets }: { assets: Asset[]; kinds
   let n = 0;
 
   if (!assets.length) {
-    return <p className="cp-empty">The first assets land here tonight.</p>;
+    return <p className="cp-empty">the first assets land here tonight.</p>;
   }
 
   return (
     <main className="cp-main">
-      <nav className="cp-filter" aria-label="Kinds">
+      <nav className="cp-filter" aria-label="kinds">
         <div className="cp-filter-in">
-          <button type="button" aria-pressed={kind === "all"} onClick={() => setKind("all")}>
-            All <span>{total}</span>
-          </button>
+          <Gilded variant="filter" selected={kind === "all"} onClick={() => setKind("all")}>
+            all <span>{total}</span>
+          </Gilded>
           {kinds.map((k) => (
-            <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}>
-              {kindName(k)} <span>{[...(byKind.get(k)?.values() ?? [])].flat().length}</span>
-            </button>
+            <Gilded key={k} variant="filter" selected={kind === k} onClick={() => setKind(k)}>
+              {kindName(k)} <span>{kindCount(assets, k)}</span>
+            </Gilded>
           ))}
           <span className="cp-count">
             {total} files in {sets} designs
@@ -433,7 +471,7 @@ export function Gallery({ assets, kinds, total, sets }: { assets: Asset[]; kinds
             ))}
             {singles.length ? (
               <div className="cp-set">
-                {multi.length ? <h3 className="cp-set-title">More {kindName(k).toLowerCase()}</h3> : null}
+                {multi.length ? <h3 className="cp-set-title">more {kindName(k).toLowerCase()}</h3> : null}
                 <Rows named items={singles} onOpen={setOpen} eagerFrom={(n += singles.length) - singles.length} />
               </div>
             ) : null}

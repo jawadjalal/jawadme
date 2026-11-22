@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { IDENTITY } from "@/lib/profile";
+import { X_HANDLE } from "@/lib/seo";
 import { formatDate, postBySlug, POSTS } from "@/lib/posts";
 
 export const dynamicParams = false;
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       authors: [IDENTITY.properName],
       images: [{ url: `/og/blog-${post.slug}.png`, width: 1200, height: 630, alt: post.title }],
     },
-    twitter: { card: "summary_large_image", creator: "@jawadmakes", images: [`/og/blog-${post.slug}.png`] },
+    twitter: { card: "summary_large_image", creator: X_HANDLE, images: [`/og/blog-${post.slug}.png`] },
   };
 }
 
@@ -79,8 +80,8 @@ export default async function PostPage({ params }: Props) {
     <article>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <header className="screen-line-bottom px-4 py-6 sm:px-6">
-        <p className="text-xs text-muted-foreground">
-          <Link href="/blog" className="rp-link">Blog</Link>
+        <p className="text-[13px] text-muted-foreground sm:text-xs">
+          <Link href="/blog" className="rp-link">blog</Link>
           {" · "}
           <time dateTime={post.date}>{formatDate(post.date)}</time>
           {" · "}
@@ -94,7 +95,7 @@ export default async function PostPage({ params }: Props) {
       <div className="post px-4 py-6 sm:px-6">
         {post.body}
 
-        <h2>FAQ</h2>
+        <h2>faq</h2>
         {post.faq.map((f) => (
           <div key={f.q}>
             <h3>{f.q}</h3>
