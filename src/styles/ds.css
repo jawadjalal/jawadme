@@ -635,43 +635,6 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
 @media (max-width: 767px) { .strip { flex-direction: column; align-items: start; } .strip-cta { font-size: 13vw; } }
 .disclose { margin: 0; padding-block: 28px; font: 600 13px/1.4 var(--f-sans); color: var(--dim); }
 
-/* ── About ── */
-@media (max-width: 767px) {
-  .ab-pic { grid-column: 1 / span 2; }
-  .ab-line { grid-column: 1 / -1; }
-  .faq-r { display: grid; grid-template-columns: 1fr; gap: 10px; }
-  .faq-r dt, .faq-r dd { grid-column: 1; }
-}
-
-/* ── About: the words, set large. A small label, his line as the lead, a few strong paragraphs at a reading measure. ── */
-.ab-text { display: grid; gap: calc(7 * var(--u)); padding: calc(20 * var(--u)) var(--g) calc(12 * var(--u)); }
-.ab-k { margin: 0; font: 700 17px/1 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
-.ab-lead { margin: 0; max-width: 12em; font: 700 max(44px, calc(24 * var(--u)))/0.94 var(--f-disp); letter-spacing: -0.045em; text-wrap: balance; }
-.ab-text p:not(.ab-lead) { margin: 0; max-width: 30em; font: 400 22px/32px var(--f-sans); letter-spacing: -0.012em; text-wrap: pretty; }
-.ab-text p a { font-weight: 700; text-decoration: underline; text-decoration-thickness: 0.06em; text-underline-offset: 0.12em; transition: color var(--t-fast); }
-.ab-text p a:hover { color: var(--accent-text); }
-.ab-text .nw { white-space: nowrap; }
-.ab-face { display: none; margin: 0; mix-blend-mode: multiply; }
-.ab-face img { display: block; width: 100%; height: auto; }
-@media (min-width: 1024px) {
-  .ab-text { grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 28px calc(2 * var(--g)); }
-  .ab-text > * { grid-column: 1; }
-  .ab-text > .ab-faq { grid-column: 1 / -1; }
-  .ab-text > .ab-face { display: block; grid-column: 2; grid-row: 2 / span 4; align-self: start; position: sticky; top: 24px; }
-}
-.ab-faq { margin-top: calc(4 * var(--u)); border-block: 1px solid var(--rule); }
-.ab-faq summary { display: flex; justify-content: space-between; align-items: center; min-height: 56px; cursor: pointer; list-style: none; font: 700 19px/1 var(--f-bar); letter-spacing: -0.02em; }
-.ab-faq summary::-webkit-details-marker { display: none; }
-.ab-faq summary::after { content: "+"; font-size: 26px; transition: rotate var(--sp-pop-t) var(--sp-pop); }
-.ab-faq[open] dl { animation: faq-in var(--sp-soft-t) var(--sp-soft) both; }
-@keyframes faq-in { from { opacity: 0; translate: 0 -10px; } }
-@media (prefers-reduced-motion: reduce) { .ab-faq[open] dl { animation: none; } }
-.ab-faq[open] summary::after { rotate: 45deg; }
-.ab-faq dl { display: grid; gap: 22px; margin: 0; padding: 8px 0 24px; }
-.ab-faq dl > div + div { padding-top: 22px; border-top: 1px solid var(--rule); }
-.ab-faq dt { font: 700 19px/1.25 var(--f-sans); letter-spacing: -0.015em; }
-.ab-faq dd { margin: 6px 0 0; max-width: 40em; font: 500 17px/1.45 var(--f-sans); color: var(--dim); }
-
 /* ── Contact: two equal ways in, a call and an email, side by side. ── */
 .ct { padding: calc(14 * var(--u)) var(--g) calc(18 * var(--u)); }
 .ct-h { margin: 0 0 calc(8 * var(--u)); font: 700 max(56px, calc(30 * var(--u)))/0.9 var(--f-disp); letter-spacing: -0.05em; }
@@ -681,10 +644,6 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
 @media (max-width: 767px) {
   .ct-two { grid-template-columns: minmax(0, 1fr); }
   .ct-c { min-height: 170px; gap: 24px; padding: 22px 22px 24px; }
-  .ab-text { gap: 18px; padding-top: 64px; padding-bottom: 32px; }
-  .ab-lead { max-width: none; margin-bottom: 6px; font-size: 12.2vw; line-height: 0.9; }
-  .ab-text p:not(.ab-lead) { font-size: 20px; line-height: 30px; letter-spacing: -0.012em; }
-  .ab-text .cg { margin-top: 14px; }
   .ct { padding-top: 56px; padding-bottom: 56px; }
   .ct-h { margin-bottom: 20px; }
   .ct-p .ct { padding-top: 32px; padding-bottom: 16px; }

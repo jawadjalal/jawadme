@@ -1,11 +1,45 @@
-/* ── About, round 2: the portrait in a thin gilded frame (the Gilded plate's own flat tones: lip, plate, foot, cut), on
-   the phone too, after the words so it loads lazily below the fold ── */
-.ab-text > .ab-face { display: block; justify-self: start; width: min(100%, 300px); padding: 5px; background: #c39a42; box-shadow: inset 0 1px 0 #fff0b8, inset 0 -1px 0 #5b3f10, 0 0 0 1px #231703; mix-blend-mode: normal; }
-.ab-face img { box-shadow: 0 0 0 1px #5b3f10; }
+/* /about: a name, one line, then the journey and the projects as plain rows. One reading column, type and air only. */
+.ab .ab-in { display: grid; gap: calc(22 * var(--u)); max-width: 760px; padding: calc(28 * var(--u)) var(--g) calc(16 * var(--u)); }
+.ab .ab-name { margin: 0; font: 700 22px/1.1 var(--f-bar); letter-spacing: -0.02em; }
+.ab .ab-id { margin: 10px 0 0; max-width: 26em; font: 400 22px/1.45 var(--f-sans); letter-spacing: -0.012em; color: var(--dim); text-wrap: pretty; }
+.ab .ab-h { margin: 0 0 28px; font: 700 15px/1 var(--f-bar); letter-spacing: -0.01em; color: var(--dim); }
+.ab .ab-sub { margin: 36px 0 8px; font: 600 15px/1 var(--f-bar); color: var(--dim); }
+.ab .ab-sub:first-of-type { margin-top: 0; }
+.ab .ab-tl { display: grid; gap: 64px; margin: 0; padding: 0; list-style: none; }
+.ab .ab-ch { display: grid; gap: 10px; }
+.ab .ab-when { margin: 0 0 6px; font: 600 14px/1 var(--f-bar); color: var(--dim); }
+.ab .ab-org + .ab-org { margin-top: 6px; }
+.ab .ab-on { display: flex; align-items: center; gap: 10px; margin: 0; font: 700 20px/1.2 var(--f-bar); letter-spacing: -0.02em; }
+.ab .ab-on a { text-decoration: none; }
+.ab .ab-on a:hover { color: var(--accent-text); }
+.ab .ab-role { margin: 2px 0 0 30px; font: 400 17px/1.4 var(--f-sans); color: var(--dim); }
+.ab .ab-p { margin: 8px 0 0; max-width: 34em; font: 400 18px/1.6 var(--f-sans); letter-spacing: -0.008em; text-wrap: pretty; }
+.ab .ab-mark { flex: none; width: 20px; height: 20px; object-fit: contain; border-radius: 4px; }
+.ab .ab-mark-x { display: inline-grid; place-items: center; background: var(--fg, var(--ink)); color: var(--bg, var(--ground)); font: 700 11px/1 var(--f-bar); }
+.ab .ab-rows { margin: 10px 0 0; padding: 0; list-style: none; }
+.ab .ab-row { display: grid; grid-template-columns: 20px auto auto minmax(0, 1fr); align-items: baseline; gap: 4px 10px; padding: 11px 0; text-decoration: none; }
+.ab .ab-row .ab-mark { align-self: center; }
+.ab .ab-rn { font: 600 16px/1.3 var(--f-bar); letter-spacing: -0.01em; }
+.ab .ab-rs { font: 500 14px/1.3 var(--f-bar); color: var(--accent-text); white-space: nowrap; }
+.ab .ab-rl { font: 400 15px/1.4 var(--f-sans); color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ab .ab-row:hover .ab-rn { text-decoration: underline; text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+.ab .ab-faq summary { display: flex; justify-content: space-between; align-items: center; min-height: 48px; cursor: pointer; list-style: none; font: 700 15px/1 var(--f-bar); color: var(--dim); }
+.ab .ab-faq summary::-webkit-details-marker { display: none; }
+.ab .ab-faq summary::after { content: "+"; font-size: 20px; transition: rotate var(--sp-pop-t) var(--sp-pop); }
+.ab .ab-faq[open] summary::after { rotate: 45deg; }
+.ab .ab-faq[open] dl { animation: faq-in var(--sp-soft-t) var(--sp-soft) both; }
+@keyframes faq-in { from { opacity: 0; translate: 0 -10px; } }
+@media (prefers-reduced-motion: reduce) { .ab-faq[open] dl { animation: none; } }
+.ab .ab-faq dl { display: grid; gap: 22px; margin: 0; padding: 8px 0 24px; }
+.ab .ab-faq dt { font: 600 17px/1.3 var(--f-sans); letter-spacing: -0.01em; }
+.ab .ab-faq dd { margin: 6px 0 0; max-width: 40em; font: 400 16px/1.5 var(--f-sans); color: var(--dim); }
 @media (min-width: 1024px) {
-  .ab-text > .ab-face { width: 100%; }
+  .ab .ab-in { margin-left: calc(var(--g) + 8vw); }
 }
 @media (max-width: 767px) {
-  .ab-text p:not(.ab-lead) { line-height: 1.5; }
-  .ab-text > .ab-face { margin-top: 8px; }
+  .ab .ab-in { gap: 72px; padding-top: 72px; padding-bottom: 48px; }
+  .ab .ab-id { font-size: 20px; }
+  .ab .ab-tl { gap: 52px; }
+  .ab .ab-row { grid-template-columns: 20px auto minmax(0, 1fr); }
+  .ab .ab-rl { grid-column: 2 / -1; white-space: normal; }
 }
