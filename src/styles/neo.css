@@ -299,17 +299,25 @@ html[data-room="hall"] .ds {
 .orbit-stage {
   position: relative;
   width: 100%;
-  height: clamp(460px, 44vw, 580px);
-  perspective: 1380px;
-  perspective-origin: 50% 48%;
+  height: clamp(460px, 46vw, 600px);
   overflow: hidden;
   cursor: grab;
   user-select: none;
   touch-action: pan-y;
 }
 
+.orbit-stage.is-hovering {
+  cursor: pointer;
+}
+
 .orbit-stage.is-dragging {
   cursor: grabbing;
+}
+
+.orbit-gl canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .orbit-track {

@@ -2,180 +2,312 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
 import type { Ad } from "@/content/ads";
 
 type Props = {
   ads: Ad[];
 };
 
-/** Outpace Studios–style curved 3D rotating hero work carousel.
- *  Pure visual art — zero captions or brand text cluttering the curve. */
+const VERT = /* glsl */ `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+// Crisp anti-aliased rounded-rectangle shader matching Outpace Studios' curved IMAX ribbon cards
+const FRAG = /* glsl */ `
+  uniform sampler2D uMap;
+  uniform vec2 uSize;
+  uniform float uRadius;
+  uniform float uHover;
+  varying vec2 vUv;
+
+  float sdRoundBox(vec2 p, vec2 b, float r) {
+    vec2 q = abs(p) - b + r;
+    return min(max(q.x, q.y), 0.0) + length(max(q, 0.0)) - r;
+  }
+
+  void main() {
+    vec2 p = (vUv - 0.5) * uSize;
+    vec2 halfSize = uSize * 0.5;
+    float d = sdRoundBox(p, halfSize, uRadius);
+    float aa = max(fwidth(d), 0.002);
+    float alpha = 1.0 - smoothstep(-aa, aa, d);
+    if (alpha < 0.01) discard;
+
+    vec4 tex = texture2D(uMap, vUv);
+    vec3 col = tex.rgb * (1.0 + uHover * 0.06);
+    gl_FragColor = vec4(col, alpha);
+  }
+`;
+
+/** True Three.js curved cylindrical ribbon carousel — exact Outpace Studios IMAX-style
+ *  curved plane geometry with rounded corners, drag-to-spin inertia, and click navigation. */
 export function OrbitMarquee({ ads }: Props) {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
-  const offsetRef = useRef(0);
-  const velRef = useRef(0);
-  const hoverRef = useRef(false);
-  const dragRef = useRef<{ active: boolean; startX: number; lastX: number; moved: boolean }>({
-    active: false,
-    startX: 0,
-    lastX: 0,
-    moved: false,
-  });
+  const router = useRouter();
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [fallback, setFallback] = useState(false);
   const [dragging, setDragging] = useState(false);
-  const [reduced, setReduced] = useState(false);
+  const [hovering, setHovering] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const onChange = () => setReduced(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+    const host = hostRef.current;
+    if (!host) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setFallback(true);
+      return;
+    }
 
-  useEffect(() => {
-    if (reduced) return;
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+    } catch {
+      setFallback(true);
+      return;
+    }
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(dpr);
+    renderer.setSize(host.clientWidth, host.clientHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    host.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(34, host.clientWidth / Math.max(host.clientHeight, 1), 0.1, 100);
+    // Camera sits inside the concave cylinder looking out at the sweeping curved ribbon
+    camera.position.set(0, 0, 0);
+
+    const ring = new THREE.Group();
+    scene.add(ring);
+
+    const N = ads.length;
+    // Concave cylinder radius & arc geometry: each 4:5 card bends smoothly along the cylinder wall
+    const R = 9.2;
+    const arcStep = (Math.PI * 2) / N;
+    const cardArc = arcStep * 0.88; // crisp gap between cards
+    const cardW = cardArc * R;
+    const cardH = cardW * 1.25; // exact natural 4:5 portrait ratio — zero stretching!
+
+    const makeCurvedGeo = () => {
+      const segsX = 28;
+      const geo = new THREE.PlaneGeometry(cardW, cardH, segsX, 1);
+      const pos = geo.attributes.position as THREE.BufferAttribute;
+      for (let i = 0; i < pos.count; i++) {
+        const x = pos.getX(i);
+        const theta = x / R;
+        // Bend onto concave cylinder surface at z = -R
+        const cx = Math.sin(theta) * R;
+        const cz = -Math.cos(theta) * R;
+        pos.setXYZ(i, cx, pos.getY(i), cz);
+      }
+      pos.needsUpdate = true;
+      return geo;
+    };
+
+    const sharedGeo = makeCurvedGeo();
+    const loader = new THREE.TextureLoader();
+    const materials: THREE.ShaderMaterial[] = [];
+    const textures: THREE.Texture[] = [];
+    const meshes: THREE.Mesh[] = [];
+
+    ads.forEach((ad, i) => {
+      const tex = loader.load(ad.sm || ad.src);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      textures.push(tex);
+
+      const mat = new THREE.ShaderMaterial({
+        vertexShader: VERT,
+        fragmentShader: FRAG,
+        transparent: true,
+        uniforms: {
+          uMap: { value: tex },
+          uSize: { value: new THREE.Vector2(cardW, cardH) },
+          uRadius: { value: cardW * 0.036 },
+          uHover: { value: 0 },
+        },
+      });
+      materials.push(mat);
+
+      const mesh = new THREE.Mesh(sharedGeo, mat);
+      const pivot = new THREE.Group();
+      pivot.rotation.y = -i * arcStep;
+      mesh.userData = { href: `/w/${ad.id}`, idx: i };
+      pivot.add(mesh);
+      ring.add(pivot);
+      meshes.push(mesh);
+    });
+
+    // Camera distance adjusts cleanly for mobile vs desktop so ~3.5 curved cards fill the viewport
+    const fitCamera = () => {
+      const w = host.clientWidth;
+      const h = Math.max(host.clientHeight, 1);
+      camera.aspect = w / h;
+      const fovRad = (camera.fov * Math.PI) / 180;
+      // Fit card height comfortably inside viewport with breathing room
+      const distFromWall = (cardH / 2) / Math.tan(fovRad / 2) * (w < 768 ? 1.24 : 1.16);
+      camera.position.z = -R + distFromWall;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+    fitCamera();
+    window.addEventListener("resize", fitCamera);
+
+    // Drag-to-spin + hover raycast + click navigation
+    const raycaster = new THREE.Raycaster();
+    const ndc = new THREE.Vector2();
+    let rotY = 0;
+    let vel = 0;
+    let isHover = false;
+    let hoveredIdx = -1;
+    let dragActive = false;
+    let startX = 0;
+    let lastX = 0;
+    let moved = false;
+
+    const updateNdc = (e: PointerEvent) => {
+      const r = renderer.domElement.getBoundingClientRect();
+      ndc.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+      ndc.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+    };
+
+    const onDown = (e: PointerEvent) => {
+      dragActive = true;
+      startX = e.clientX;
+      lastX = e.clientX;
+      moved = false;
+      vel = 0;
+      setDragging(true);
+    };
+
+    const onMove = (e: PointerEvent) => {
+      updateNdc(e);
+      if (dragActive) {
+        const dx = e.clientX - lastX;
+        lastX = e.clientX;
+        if (Math.abs(e.clientX - startX) > 6) moved = true;
+        const delta = -dx * 0.0022;
+        rotY += delta;
+        vel = delta * 36;
+      } else {
+        raycaster.setFromCamera(ndc, camera);
+        const hits = raycaster.intersectObjects(meshes, false);
+        const idx = hits.length ? (hits[0].object.userData.idx as number) : -1;
+        hoveredIdx = idx;
+        setHovering(idx >= 0);
+      }
+    };
+
+    const onUp = (e: PointerEvent) => {
+      if (!dragActive) return;
+      dragActive = false;
+      setDragging(false);
+      if (!moved) {
+        updateNdc(e);
+        raycaster.setFromCamera(ndc, camera);
+        const hits = raycaster.intersectObjects(meshes, false);
+        if (hits.length) {
+          const href = hits[0].object.userData.href as string;
+          if (href) router.push(href);
+        }
+      }
+    };
+
+    const onEnter = () => {
+      isHover = true;
+    };
+    const onLeave = () => {
+      isHover = false;
+      hoveredIdx = -1;
+      setHovering(false);
+      if (dragActive) {
+        dragActive = false;
+        setDragging(false);
+      }
+    };
+
+    const dom = renderer.domElement;
+    dom.addEventListener("pointerdown", onDown);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onUp);
+    dom.addEventListener("pointerenter", onEnter);
+    dom.addEventListener("pointerleave", onLeave);
+
     let raf = 0;
     let last = performance.now();
-
-    const step = (now: number) => {
+    const render = (now: number) => {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
 
-      const stage = stageRef.current;
-      if (stage) {
-        const vw = stage.clientWidth;
-        const cardW = vw < 768 ? Math.min(280, vw * 0.72) : Math.min(400, Math.max(310, vw * 0.275));
-        const cardH = cardW * 1.25; // exact 4:5 portrait ratio, zero stretching
-        const gap = vw < 768 ? 16 : 26;
-        const stride = cardW + gap;
-        const total = ads.length * stride;
-
-        if (!dragRef.current.active) {
-          const baseSpeed = hoverRef.current ? 14 : 46;
-          offsetRef.current += (baseSpeed + velRef.current) * dt;
-          velRef.current *= Math.pow(0.06, dt);
-          if (Math.abs(velRef.current) < 0.5) velRef.current = 0;
-        }
-
-        offsetRef.current = ((offsetRef.current % total) + total) % total;
-
-        const half = total / 2;
-        const radius = Math.max(vw * 1.25, 1300);
-
-        for (let i = 0; i < ads.length; i++) {
-          const el = cardsRef.current[i];
-          if (!el) continue;
-
-          let x = i * stride - offsetRef.current;
-          while (x < -half) x += total;
-          while (x > half) x -= total;
-
-          const visibleLimit = vw * 0.9 + cardW;
-          if (Math.abs(x) > visibleLimit) {
-            el.style.visibility = "hidden";
-            continue;
-          }
-
-          el.style.visibility = "visible";
-          const norm = x / Math.max(vw * 0.52, 380);
-          const angleDeg = Math.max(-30, Math.min(30, norm * 19));
-          const angleRad = (angleDeg * Math.PI) / 180;
-          const z = (Math.cos(angleRad) - 1) * radius * 0.35;
-          const yCurve = Math.abs(norm) * Math.abs(norm) * (vw < 768 ? 10 : 20);
-          const scale = 1 - Math.min(0.08, Math.abs(norm) * 0.03);
-
-          el.style.width = `${cardW}px`;
-          el.style.marginLeft = `${-cardW / 2}px`;
-          el.style.marginTop = `${-cardH / 2}px`;
-          el.style.transform = `translate3d(${x}px, ${yCurve}px, ${z}px) rotateY(${-angleDeg}deg) scale(${scale})`;
-          el.style.zIndex = String(Math.round(100 - Math.abs(norm) * 40));
-          el.style.opacity = String(Math.max(0.35, 1 - Math.max(0, Math.abs(norm) - 1.2) * 0.7));
-        }
+      if (!dragActive) {
+        const baseSpeed = isHover ? 0.032 : 0.095;
+        rotY += (baseSpeed + vel) * dt;
+        vel *= Math.pow(0.05, dt);
+        if (Math.abs(vel) < 0.0005) vel = 0;
       }
 
-      raf = requestAnimationFrame(step);
+      ring.rotation.y = rotY;
+
+      for (let i = 0; i < materials.length; i++) {
+        const target = i === hoveredIdx ? 1 : 0;
+        const cur = materials[i].uniforms.uHover.value as number;
+        materials[i].uniforms.uHover.value = cur + (target - cur) * 0.14;
+      }
+
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(render);
     };
+    raf = requestAnimationFrame(render);
 
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [ads.length, reduced]);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", fitCamera);
+      dom.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      dom.removeEventListener("pointerenter", onEnter);
+      dom.removeEventListener("pointerleave", onLeave);
+      sharedGeo.dispose();
+      materials.forEach((m) => m.dispose());
+      textures.forEach((t) => t.dispose());
+      renderer.dispose();
+      if (dom.parentNode === host) host.removeChild(dom);
+    };
+  }, [ads, router]);
 
-  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (reduced) return;
-    dragRef.current = { active: true, startX: e.clientX, lastX: e.clientX, moved: false };
-    setDragging(true);
-    velRef.current = 0;
-  };
-
-  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current.active) return;
-    const dx = e.clientX - dragRef.current.lastX;
-    dragRef.current.lastX = e.clientX;
-    if (Math.abs(e.clientX - dragRef.current.startX) > 6) {
-      dragRef.current.moved = true;
-    }
-    offsetRef.current -= dx * 1.15;
-    velRef.current = -dx * 18;
-  };
-
-  const endDrag = () => {
-    if (!dragRef.current.active) return;
-    dragRef.current.active = false;
-    setDragging(false);
-    window.setTimeout(() => {
-      dragRef.current.moved = false;
-    }, 60);
-  };
+  if (fallback) {
+    return (
+      <div className="orbit-stage is-reduced" role="region" aria-label="Selected work carousel">
+        <div className="orbit-track">
+          {ads.map((ad) => (
+            <Link key={ad.id} href={`/w/${ad.id}`} className="orbit-card">
+              <div className="orbit-media">
+                <Image src={ad.sm || ad.src} alt={ad.alt} width={ad.w} height={ad.h} sizes="280px" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
-      ref={stageRef}
-      className={"orbit-stage" + (dragging ? " is-dragging" : "") + (reduced ? " is-reduced" : "")}
-      onMouseEnter={() => {
-        hoverRef.current = true;
-      }}
-      onMouseLeave={() => {
-        hoverRef.current = false;
-        endDrag();
-      }}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={endDrag}
-      onPointerCancel={endDrag}
+      ref={hostRef}
+      className={
+        "orbit-stage orbit-gl" +
+        (dragging ? " is-dragging" : "") +
+        (hovering && !dragging ? " is-hovering" : "")
+      }
       role="region"
-      aria-label="Selected work carousel"
-    >
-      <div className="orbit-track">
-        {ads.map((ad, i) => (
-          <Link
-            key={ad.id}
-            href={"/w/" + ad.id}
-            ref={(el) => {
-              cardsRef.current[i] = el;
-            }}
-            className="orbit-card"
-            aria-label={ad.alt}
-            draggable={false}
-            onClick={(e) => {
-              if (dragRef.current.moved) e.preventDefault();
-            }}
-          >
-            <div className="orbit-media">
-              <Image
-                src={ad.sm || ad.src}
-                alt={ad.alt}
-                width={ad.w}
-                height={ad.h}
-                sizes="(max-width: 767px) 72vw, 370px"
-                draggable={false}
-                priority={i < 5}
-              />
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
+      aria-label="Curved rotating work carousel"
+    />
   );
 }
