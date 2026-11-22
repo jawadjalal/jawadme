@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Gilded } from "@/components/gilded/Gilded";
+import { fontVars } from "../fonts";
 import facts from "./facts.json";
 import { Feed, FeedMeta, LatestShipped, getFeed } from "./Feed";
 import { LaunchBoard, getLaunch } from "./Launch";
@@ -50,7 +52,6 @@ const SECTIONS: [string, string][] = [
 ];
 
 const n = (v: number) => v.toLocaleString("en-gb");
-const mainDate = new Intl.DateTimeFormat("en-gb", { timeZone: "Europe/London", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(facts.main.date)).toLowerCase();
 
 function Section({ id, eyebrow, title, children }: { id: string; eyebrow: string; title: string; children: React.ReactNode }) {
   return (
@@ -143,11 +144,10 @@ export default async function MinelightPage() {
   const jb = facts.joinBudget;
   const joinHistory = (facts as { joinHistory?: Point[] }).joinHistory ?? JOIN_SEED;
   return (
-    <div className="ml">
+    <div className={"ml " + fontVars}>
       <div className="ml-wrap">
         <nav className="ml-top" aria-label="site">
-          <Link href="/">← jawadjalal.com</Link>
-          <span>built on main <code>{facts.main.sha}</code>, {mainDate}</span>
+          <Gilded variant="pill" href="/">← jawadjalal.com</Gilded>
         </nav>
 
         <header className="ml-hero">
@@ -163,8 +163,8 @@ export default async function MinelightPage() {
               updates every 3 minutes, and its latest visuals every hour.
             </p>
             <p className="ml-links">
-              <a href="/reading/derelict-depths-book/">read the derelict depths book →</a>
-              <a href="#art">the release art</a>
+              <Gilded variant="pill" href="/reading/derelict-depths-book/">read the derelict depths book →</Gilded>
+              <Gilded variant="pill" href="#art">the release art</Gilded>
             </p>
           </div>
           <figure className="ml-poster">
@@ -181,7 +181,7 @@ export default async function MinelightPage() {
           <div className="ml-stat"><b>{c.ores} ores</b><span>{c.bars} bars, and a pickaxe ladder above them</span></div>
           <div className="ml-stat"><b>{c.classes} classes</b><span>miner, demolitionist, prospector, alchemist</span></div>
           <div className="ml-stat"><b>r6 hero</b><span>your own roblox avatar, over a shoulder camera</span></div>
-          <div className="ml-stat"><b>{n(jb.latestBuildBytes)} bytes</b><span>what a phone downloads to join, measured by joinbudget on main {facts.main.sha}, against the {n(jb.bytesLine)} line</span></div>
+          <div className="ml-stat"><b>{n(jb.latestBuildBytes)} bytes</b><span>what a phone downloads to join, measured by joinbudget, against the {n(jb.bytesLine)} line</span></div>
         </div>
 
         <nav className="ml-toc" aria-label="contents">
@@ -302,7 +302,7 @@ export default async function MinelightPage() {
         <Section id="captures" eyebrow="captures" title="the game, in its own screens">
           <div className="ml-col">
             <p>
-              captured in studio play from the game place on build <code>47ba0d7</code> (17 nov, 08:55), with the game camera and the hud on. the hero is a
+              captured in studio play from the game place (17 nov, 08:55), with the game camera and the hud on. the hero is a
               real roblox avatar. the release capture set replaces these as soon as it lands; until then these are the frames that exist, shown as they were
               taken, and the interface and the look have moved on since.
             </p>
@@ -575,7 +575,7 @@ export default async function MinelightPage() {
           </div>
           <Diagram name="ui" alt="the ui layers from the world up: nametags, the hud, announcements, panels, the results card, then toasts and the tutorial card, all styled by shared tokens." caption={<><b>what draws over what.</b></>} />
           <div className="ml-col">
-            <p>since 17 nov a ui score counts only when it comes from the locked blind check against the best rpg game interfaces, anchored on jawad&apos;s own scores (jaw-156). his scale and scores are under latest visuals.</p>
+            <p>since 17 nov a ui score counts only when it comes from the locked blind check against the best rpg game interfaces, anchored on jawad&apos;s own scores. his scale and scores are under latest visuals.</p>
           </div>
         </Section>
 
@@ -713,7 +713,7 @@ export default async function MinelightPage() {
         </Section>
 
         <footer className="ml-foot">
-          numbers come from the game repo&apos;s main at <code>{facts.main.sha}</code> and the team&apos;s design docs. diagrams are pre-rendered svg, so the page
+          numbers come from the game repo&apos;s main and the team&apos;s design docs. diagrams are pre-rendered svg, so the page
           works with javascript off.{" "}
           <Link href="/">jawadjalal.com</Link>
         </footer>

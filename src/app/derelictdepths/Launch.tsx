@@ -5,6 +5,8 @@
 const LAUNCH_URL = "https://gist.githubusercontent.com/jawadjalal/04eb0fef24e83e3856a51ad0fc3214b9/raw/board.json";
 const TZ = "Europe/London";
 
+import { scrub } from "./ui";
+
 type Status = "red" | "amber" | "green" | "killed";
 type Line = { s: Status; rule: string; where: string | null; owner: string | null };
 type Group = { name: string; lines: Line[] };
@@ -90,11 +92,11 @@ function Burndown({ history }: { history: Point[] }) {
   return (
     <figure className="ml-lb-chart">
       <svg viewBox={"0 0 " + W + " " + H} role="img" aria-label={"open lines over time, from " + (history[0].red + history[0].amber) + " to " + (history[history.length - 1].red + history[history.length - 1].amber)}>
-        <line x1={L} x2={W - 8} y1={y(0)} y2={y(0)} stroke="#3a2f63" />
-        <line x1={L} x2={W - 8} y1={y(top)} y2={y(top)} stroke="#2c2350" strokeDasharray="4 4" />
+        <line x1={L} x2={W - 8} y1={y(0)} y2={y(0)} stroke="#3a332b" />
+        <line x1={L} x2={W - 8} y1={y(top)} y2={y(top)} stroke="#2e2822" strokeDasharray="4 4" />
         <text x={L - 6} y={y(top)} textAnchor="end" dominantBaseline="central">{top}</text>
         <text x={L - 6} y={y(0)} textAnchor="end" dominantBaseline="central">0</text>
-        <path d={area((p) => p.red + p.amber)} fill="#ffc043" opacity="0.9" />
+        <path d={area((p) => p.red + p.amber)} fill="#e6c46c" opacity="0.9" />
         <path d={area((p) => p.red)} fill="#ff6b6b" />
         <text x={L} y={H - 4}>{hm.format(new Date(history[0].t))}</text>
         <text x={W - 8} y={H - 4} textAnchor="end">{hm.format(new Date(history[history.length - 1].t))}</text>
@@ -110,11 +112,10 @@ function Lines({ status, launch, compact = false }: { status: Status; launch: La
     <ul className={"ml-lb-list" + (compact ? " compact" : "")}>
       {lines.map((l, i) => (
         <li key={i} className={"ml-lb-line " + l.s}>
-          <b>{l.rule}</b>
-          {l.where ? <p>{l.where}</p> : null}
+          <b>{scrub(l.rule)}</b>
+          {l.where ? <p>{scrub(l.where)}</p> : null}
           <div className="m">
             <span>{l.group}</span>
-            {l.owner ? <span>owner: {l.owner}</span> : null}
           </div>
         </li>
       ))}
@@ -145,7 +146,7 @@ export function LaunchBoard({ launch, renderedAt }: { launch: LaunchData | null;
           <div className="ml-feed-head">
             <span className="ml-live"><i />live</span>
             <span>refreshed at <b>{hms.format(new Date(launch.generated_at))}</b> london, page built {hms.format(new Date(renderedAt))}</span>
-            {launch.doc.edited_at ? <span>list last regraded {when.format(new Date(launch.doc.edited_at)).toLowerCase()}{launch.doc.edited_sha ? <> (<code>{launch.doc.edited_sha}</code>)</> : null}</span> : null}
+            {launch.doc.edited_at ? <span>list last regraded {when.format(new Date(launch.doc.edited_at)).toLowerCase()}</span> : null}
           </div>
           <div className="ml-lb-counts">
             {(["red", "amber", "green", "killed"] as Status[]).filter((s) => s !== "killed" || c.killed > 0).map((s) => (
@@ -174,7 +175,7 @@ export function LaunchBoard({ launch, renderedAt }: { launch: LaunchData | null;
             </details>
           ) : null}
           <p className="ml-vis-meta">
-            read from the game's launch readiness list on main. store and pricing lines show only their colour and owner until launch.
+            read from the game's launch readiness list on main. store and pricing lines show only their colour until launch.
           </p>
         </>
       )}

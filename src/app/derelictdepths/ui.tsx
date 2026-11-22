@@ -1,12 +1,29 @@
 import sizes from "./diagrams.json";
 
-const AREA: Record<string, string> = {
-  look: "#ffc043", camera: "#7fd4ff", combat: "#ff6b6b", enemies: "#ff8fb1", floors: "#9be37a", ui: "#c5a8ff",
-  audio: "#6ee7d8", heroes: "#ffd59a", loop: "#ffb36b", tools: "#a8b3ff", tests: "#8fd3a8", docs: "#b9addb", perf: "#f5e663",
-};
-
 export function Tag({ area }: { area: string }) {
-  return <span className="ml-tag" style={{ color: AREA[area] ?? "#b9addb" }}>{area}</span>;
+  return <span className="ml-tag">{area}</span>;
+}
+
+// The feed and the launch board come from the game repo's own text, which cites tickets (#421, robl-40, jaw-280 p1) and
+// commits. The page shows the words without them: each id goes, with the preposition or brackets it leaves dangling.
+const ID = String.raw`(?:#\d+|\b(?:robl|jaw)-\d+\b(?:\s+(?:p\d+|items?\s+\d+(?:(?:,\s*|\s+and\s+)\d+)*|polish))?|\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b)`;
+const LEAD_ID = new RegExp(String.raw`\b(?:since|from|on|at|in|per|via|see|supersedes)\s+` + ID, "gi");
+const BARE_ID = new RegExp(ID, "gi");
+
+export function scrub(t: string): string {
+  return t
+    .replace(LEAD_ID, "")
+    .replace(BARE_ID, "")
+    .replace(/\(\s*(?:[,;:]\s*)+/g, "(")
+    .replace(/(?:\s*[,;:])+\s*\)/g, ")")
+    .replace(/\s*\(\s*\)/g, "")
+    .replace(/,\s*(?=[,.;:])/g, "")
+    .replace(/([.;:])\s*,\s*/g, "$1 ")
+    .replace(/\s+([,.;:)])/g, "$1")
+    .replace(/\(\s+/g, "(")
+    .replace(/\s{2,}/g, " ")
+    .replace(/^[\s,.;:]+/, "")
+    .trim();
 }
 
 type Size = { w: number; h: number };
