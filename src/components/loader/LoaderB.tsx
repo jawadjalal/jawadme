@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Gilded } from "@/components/gilded/Gilded";
 import { track } from "@/lib/track";
 import "./loaderB.css";
 
@@ -25,7 +24,7 @@ const FIRST: Beat = {
     { i: 0, at: 200, wide: [0.3, 0.64], tall: [0.38, 0.66], s: 1 },
     { i: 1, at: 450, wide: [0.72, 0.32], tall: [0.64, 0.3], s: 0.8 },
     { i: 2, at: 720, wide: [0.44, 0.52], tall: [0.5, 0.5], s: 1.2 },
-    { i: 3, at: 1160, wide: [0.5, 0.49], tall: [0.5, 0.49], s: 1.5 },
+    { i: 3, at: 1160, wide: [0.5, 0.49], tall: [0.52, 0.49], s: 1.5 },
   ],
   stall: [840, 1060],
   cut: [1080, 1160],
@@ -38,7 +37,7 @@ const FIRST: Beat = {
 const REPEAT: Beat = {
   items: [
     { i: 0, at: 80, wide: [0.3, 0.64], tall: [0.38, 0.66], s: 1 },
-    { i: 3, at: 380, wide: [0.5, 0.49], tall: [0.5, 0.49], s: 1.5 },
+    { i: 3, at: 380, wide: [0.5, 0.49], tall: [0.52, 0.49], s: 1.5 },
   ],
   stall: [-1, -1],
   cut: [300, 370],
@@ -67,7 +66,6 @@ export function LoaderB() {
   const cvRef = useRef<HTMLCanvasElement>(null);
   const grainRef = useRef<HTMLCanvasElement>(null);
   const markRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (document.documentElement.classList.contains("lb-on")) setArmed(true);
@@ -84,7 +82,6 @@ export function LoaderB() {
     const cv = cvRef.current!;
     const grain = grainRef.current!;
     const mark = markRef.current!;
-    const cta = ctaRef.current!;
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let seen = false;
     try {
@@ -122,7 +119,7 @@ export function LoaderB() {
     const src = document.querySelector<HTMLElement>("main h1");
     const B = src?.getBoundingClientRect();
     if (!src || !B || B.width < 40 || scrollY > 10 || B.top > vh * 0.5) {
-      anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" }), cta.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" }));
+      anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" }));
       timers.push(window.setTimeout(finish, 230));
       return finish;
     }
@@ -160,7 +157,6 @@ export function LoaderB() {
       anims.push(
         mark.animate([{ transform: big, filter: GLOW }, { transform: dock(), filter: NOGLOW }], { ...opt, easing: "cubic-bezier(0.65,0,0.2,1)" }),
         ground.animate([{ opacity: 1 }, { opacity: 1, offset: 0.25 }, { opacity: 0 }], { ...opt, duration: dur - 20 }),
-        cta.animate([{ opacity: 1 }, { opacity: 1, offset: 0.55 }, { opacity: 0 }], opt),
       );
       timers.push(window.setTimeout(finish, dur));
     };
@@ -172,7 +168,7 @@ export function LoaderB() {
       handoffAt = t;
       track("loader_skip", { at: Math.round(t) });
       if (reduced || t < cfg.markIn - 200) {
-        anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }), cta.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }));
+        anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }));
         timers.push(window.setTimeout(finish, 210));
         return;
       }
@@ -219,7 +215,7 @@ export function LoaderB() {
       await tick();
       if (dead) return;
 
-      const base = vw < 600 ? vw * 0.2 : Math.min(150, vw * 0.1);
+      const base = vw < 600 ? vw * 0.26 : Math.min(150, vw * 0.1);
       const words: Word[] = [];
       for (const it of cfg.items) {
         await tick();
@@ -476,9 +472,6 @@ export function LoaderB() {
         <span className="lb-hint">click or press any key to skip</span>
       </div>
       <div className="lb-mark" ref={markRef} aria-hidden="true" />
-      <span className="lb-cta" ref={ctaRef}>
-        <Gilded variant="cta" src="loader" size="dock" />
-      </span>
     </div>
   );
 }

@@ -36,15 +36,15 @@ html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor
 .lb-mark { position: absolute; left: 0; top: 0; transform-origin: 0 0; opacity: 0; pointer-events: none; }
 .lb-mark .wm-g { animation: none; }
 
-.lb-cta { position: absolute; right: 16px; bottom: 16px; z-index: 2; display: flex; }
-
 .lb-hint {
   position: absolute;
-  left: 16px;
-  bottom: 33px;
-  font: 600 13px/1 var(--f-bar, system-ui, sans-serif);
+  left: 0;
+  right: 0;
+  bottom: 28px;
+  text-align: center;
+  font: 600 14px/1 var(--f-bar, system-ui, sans-serif);
   letter-spacing: 0.02em;
-  color: #a89f90;
+  color: #e6dccb;
   opacity: 0;
   animation: lb-hint 400ms 500ms forwards;
   pointer-events: none;
@@ -52,8 +52,7 @@ html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor
 @keyframes lb-hint { to { opacity: 1; } }
 
 @media (max-width: 767px) {
-  .lb-cta { right: 12px; bottom: 12px; }
-  .lb-hint { left: 12px; bottom: 29px; }
+  .lb-hint { bottom: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
