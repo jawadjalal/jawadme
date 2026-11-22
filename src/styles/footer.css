@@ -7,7 +7,7 @@
 .pl-stage { width: 100%; aspect-ratio: 1440 / 846; }
 .pl-head { position: absolute; left: 56%; top: 36%; z-index: 3; pointer-events: none; }
 .foot-h { margin: 0; font: 700 max(44px, calc(17 * var(--u)))/0.88 var(--f-disp); letter-spacing: -0.05em; color: var(--ivory); }
-.foot-hint { margin: 12px 0 0; font: 600 max(17px, calc(4.6 * var(--u)))/1.1 var(--f-bar); letter-spacing: -0.02em; color: #b9a184; }
+.pl-head .foot-hint { margin: 14px 0 0; font: 600 max(20px, calc(5.4 * var(--u)))/1.1 var(--f-bar); letter-spacing: -0.02em; color: #c9b498; }
 .pl-ui { position: absolute; inset: 0; z-index: 2; }
 .pl-a { position: absolute; left: calc(var(--dx) * 100%); top: calc(var(--dy) * 100%); width: 10.5%; height: 7%; translate: -50% -50%; }
 .pl-a.main { width: 16%; height: 9%; }
