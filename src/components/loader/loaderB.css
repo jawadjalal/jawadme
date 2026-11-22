@@ -33,7 +33,7 @@ html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor
   100% { opacity: 0; transform: translateY(-40px) scale(0.6); }
 }
 
-html.lb-on:not(.lb-bare) main h1 .wm-w { visibility: hidden; }
+html.lb-on.lb-hand main h1 .wm-w { visibility: hidden; }
 
 .lb-mark { position: absolute; left: 0; top: 0; transform-origin: 0 0; opacity: 0; pointer-events: none; }
 .lb-mark .wm-g { animation: none; }

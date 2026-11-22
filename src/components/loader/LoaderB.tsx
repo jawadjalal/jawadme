@@ -114,7 +114,7 @@ export function LoaderB() {
       try {
         localStorage.setItem(KEY, "1");
       } catch {}
-      root.classList.remove("lb-on", "lb-bare");
+      root.classList.remove("lb-on", "lb-hand");
       el.hidden = true;
       setGone(true);
     };
@@ -122,7 +122,6 @@ export function LoaderB() {
     const src = document.querySelector<HTMLElement>("main h1");
     const B = src?.getBoundingClientRect();
     if (!src || !B || B.width < 40 || scrollY > 10 || B.top > vh * 0.5) {
-      root.classList.add("lb-bare");
       anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" }));
       timers.push(window.setTimeout(finish, 230));
       return finish;
@@ -155,6 +154,7 @@ export function LoaderB() {
 
     const handoff = (dur: number) => {
       const opt = { duration: dur, fill: "forwards" as const };
+      root.classList.add("lb-hand");
       anims.push(
         mark.animate([{ transform: big, filter: GLOW }, { transform: dock(), filter: NOGLOW }], { ...opt, easing: "cubic-bezier(0.65,0,0.2,1)" }),
         ground.animate([{ opacity: 1 }, { opacity: 1, offset: 0.25 }, { opacity: 0 }], { ...opt, duration: dur - 20 }),
@@ -169,7 +169,6 @@ export function LoaderB() {
       handoffAt = t;
       track("loader_skip", { at: Math.round(t) });
       if (reduced || t < cfg.markIn - 200) {
-        root.classList.add("lb-bare");
         anims.push(ground.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }));
         timers.push(window.setTimeout(finish, 210));
         return;
