@@ -9,7 +9,7 @@ import { meta } from "@/lib/seo";
 
 export const metadata: Metadata = meta({ title: "book a call", description: "book a free 15 minute video call with jawad jalal about brands, ads, sites, 3d and roblox games.", path: "/cal" });
 
-// The calendar is the page: one ink bar of facts, then Cal.com's own month view across the grid, themed to the site.
+// The calendar is the page: one ink bar with the facts on one line, then Cal.com's own month view across the grid, themed to the site.
 
 type Props = { searchParams: Promise<{ src?: string }> };
 
@@ -24,21 +24,19 @@ export default async function Cal({ searchParams }: Props) {
           jawad jalal
         </Link>
         <h1 className="cal-h">book a call</h1>
-        <span>15 min</span>
-        <span className="hide-s">video</span>
-        <span>free</span>
+        <p className="cal-meta">15 min · video · free · europe/london</p>
       </header>
-      <p className="cal-mail">
-        calendar not loading?{" "}
-        <a href={"https://cal.com/jawad-jalal-hesqbk/15min?src=" + src} target="_blank" rel="noopener">
-          open on cal.com ↗
-        </a>
-      </p>
       <div className="cal-row">
         <div>
           <div className="cal-embed">
             <CalInline email={SITE.email} theme="light" />
           </div>
+          <p className="cal-mail">
+            calendar not loading?{" "}
+            <a href={"https://cal.com/jawad-jalal-hesqbk/15min?src=" + src} target="_blank" rel="noopener">
+              open on cal.com ↗
+            </a>
+          </p>
           <p className="cal-mail cal-alt">
             rather write? <MailLink src="cal" />
           </p>
