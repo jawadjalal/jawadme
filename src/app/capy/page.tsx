@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
 import { Gilded } from "@/components/gilded/Gilded";
+import { Dock } from "@/components/ds/Dock";
 import { X_HANDLE, X_HREF } from "@/lib/seo";
 import data from "./assets.json";
 import { Gallery, type Asset } from "./Gallery";
 import { Board, BoardLink } from "./Board";
 import { fontVars } from "../fonts";
 import { LEFT_OUT } from "./arrange";
+import "@/styles/ds.css";
 import "./capy.css";
 import "./board.css";
 
@@ -86,6 +88,9 @@ export default function CapyPage() {
         {X_HREF ? <a href={X_HREF}>{X_HANDLE}</a> : null}
       </footer>
       </Board>
+      <div className="ds cp-dock">
+        <Dock />
+      </div>
     </div>
   );
 }

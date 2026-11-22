@@ -147,30 +147,14 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
 @container (max-width: 200px) {
   .cp-size { display: none; }
   .cp-cap { justify-content: flex-start; }
-  .cp-actions { gap: 12px; }
+  .cp-actions { gap: 6px; }
 }
 
-/* the actions: one ink block, one plain word */
-.cp-actions { display: inline-flex; align-items: center; gap: 14px; flex: none; }
-.capy .cp-copy {
-  height: 30px;
-  padding: 0 11px;
-  border-radius: 4px;
-  background: var(--ink) !important;
-  color: #fff !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  letter-spacing: -0.005em;
-  white-space: nowrap;
-  transition: background-color 150ms, transform 120ms var(--ease);
-}
-.cp-copy:hover, .cp-copy:focus-visible { background: #2b2b2b !important; }
-.cp-copy:active { transform: translateY(1px) scale(0.98); }
-.cp-copy[data-state="image"], .cp-copy[data-state="link"] { background: var(--acc) !important; }
-.cp-copy[data-state="busy"] { background: #3a3a3a !important; }
-.cp-copy[data-state="failed"] { background: #b3261e !important; }
-.cp-dl { font-size: 13px; font-weight: 600; color: var(--ink); white-space: nowrap; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color 150ms; }
-.cp-dl:hover, .cp-dl:focus-visible { text-decoration-color: currentColor; }
+/* the actions: two small gilded pills, copy and download; a copy that landed lights its groove */
+.cp-actions { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; flex: 0 1 auto; min-width: 0; }
+.cp-actions .gl { font-size: 12.5px; --h: 32px; --pad: 0.85em; }
+.cp-copy { display: inline-flex; }
+.cp-copy:is([data-state="image"], [data-state="link"]) .gl { --lit: 1; --txt: var(--accent-hi); }
 
 /* ── The large view ───────────────────────────────────────────────────── */
 .cp-lb {
@@ -221,11 +205,15 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
 .cp-sizes button[aria-pressed="true"] .cp-thumb { opacity: 1; }
 .cp-lb-actions { display: flex; align-items: center; gap: 18px; flex: none; }
 .cp-px { font-size: 13px; color: #8a8a8a; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.cp-actions[data-big] { gap: 18px; }
-.capy .cp-actions[data-big] .cp-copy { height: 40px; padding: 0 16px; font-size: 15px !important; background: #f2f2f2 !important; color: var(--ink) !important; }
-.cp-actions[data-big] .cp-copy:hover, .cp-actions[data-big] .cp-copy:focus-visible { background: #fff !important; }
-.cp-actions[data-big] .cp-copy[data-state="image"], .cp-actions[data-big] .cp-copy[data-state="link"] { background: var(--acc) !important; color: #fff !important; }
-.cp-actions[data-big] .cp-dl { color: #f2f2f2; font-size: 15px; }
+.cp-actions[data-big] { gap: 12px; }
+.cp-actions[data-big] .gl { font-size: 14px; --h: 40px; --pad: 1.05em; }
+
+/* the site dock carries the call on a phone; the board has its own call on a wide screen and when a phone asks for it */
+.ds.cp-dock { position: static; min-height: 0; padding: 0; background: none; }
+html:has(.cb-asked) .cp-dock { display: none; }
+@media (min-width: 900px) {
+  .cp-dock { display: none; }
+}
 
 /* ── The foot ─────────────────────────────────────────────────────────── */
 .cp-foot { display: flex; gap: 24px; padding: 0 var(--edge) 32px; font-size: 14px; font-weight: 500; color: var(--ink-2); }
@@ -247,9 +235,11 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
   .cp-intro { max-width: 34em; }
 }
 @media (max-width: 899px) {
-  /* the name, the way to the board and the call share one row */
+  /* the name and the way to the board share one row; the dock carries the call */
   .cp-top { gap: 8px; margin-bottom: 32px; }
   .cp-board { margin-left: auto; }
+  .cp-top > .gl[data-v="cta"] { display: none; }
+  .cp-foot { padding-bottom: 96px; }
 }
 @media (max-width: 479px) {
   .cp-top .gl[data-v="pill"] { font-size: 12.5px; --pad: 0.8em; }
@@ -267,13 +257,10 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
   .cp-tile { min-width: 140px; }
   .cp-lb-foot { flex-direction: column; align-items: stretch; gap: 14px; }
   .cp-lb-actions { justify-content: space-between; }
-  .cp-actions[data-big] .cp-copy { height: 44px; }
   .cp-foot a { display: inline-flex; align-items: center; min-height: 44px; }
-  .cp-foot { flex-wrap: wrap; gap: 0 24px; padding-bottom: 24px; }
-  .cp-copy, .cp-dl { position: relative; }
-  .cp-copy::after, .cp-dl::after { content: ""; position: absolute; inset: -7px -6px; }
+  .cp-foot { flex-wrap: wrap; gap: 0 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cp-media, .cp-copy, .cp-lb { transition: none; animation: none; transform: none !important; }
+  .cp-media, .cp-lb { transition: none; animation: none; transform: none !important; }
 }

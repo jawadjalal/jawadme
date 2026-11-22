@@ -163,16 +163,18 @@ function Actions({ a, big }: { a: Asset; big?: boolean }) {
   const [state, copy] = useCopy(a);
   return (
     <span className="cp-actions" data-big={big || undefined}>
-      <button type="button" className="cp-copy" data-state={state} onClick={copy} aria-live="polite">
-        {LABEL[state]}
-      </button>
-      <a className="cp-dl" href={a.original} download={fileName(a)}>
+      <span className="cp-copy" data-state={state} aria-live="polite">
+        <Gilded variant="pill" onClick={copy}>
+          {LABEL[state]}
+        </Gilded>
+      </span>
+      <Gilded variant="pill" href={a.original} download={fileName(a)}>
         download
-      </a>
+      </Gilded>
       {big && a.pdf ? (
-        <a className="cp-dl" href={a.pdf} download={fileName(a, a.pdf)}>
+        <Gilded variant="pill" href={a.pdf} download={fileName(a, a.pdf)}>
           print pdf
-        </a>
+        </Gilded>
       ) : null}
     </span>
   );
