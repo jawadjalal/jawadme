@@ -114,7 +114,7 @@ export function WorkShowcase({
                     height={item.h}
                     loading="lazy"
                     decoding="async"
-                    quality={78}
+                    quality={86}
                     sizes={
                       spanClass === "ws-full"
                         ? "(min-width: 768px) 96vw, 100vw"
