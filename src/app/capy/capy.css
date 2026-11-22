@@ -247,9 +247,12 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
   .cp-intro { max-width: 34em; }
 }
 @media (max-width: 899px) {
-  /* the way to the board takes its own row under the name and the call, clear of the posters */
-  .cp-top { flex-wrap: wrap; row-gap: 12px; }
-  .cp-board { order: 3; flex-basis: 100%; margin-left: 0; }
+  /* the name, the way to the board and the call share one row */
+  .cp-top { gap: 8px; margin-bottom: 32px; }
+  .cp-board { margin-left: auto; }
+}
+@media (max-width: 479px) {
+  .cp-top .gl { font-size: 12.5px; --pad: 0.8em; }
 }
 @media (max-width: 760px) {
   /* every kind in reach at once: the chips wrap onto rows, and the filter scrolls away with the page */

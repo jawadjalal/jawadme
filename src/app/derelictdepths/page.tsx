@@ -27,10 +27,10 @@ export const metadata: Metadata = {
 };
 
 const SECTIONS: [string, string][] = [
-  ["art", "the release art"],
-  ["today", "the game today"],
-  ["look", "the look"],
   ["captures", "captures"],
+  ["art", "the release art"],
+  ["look", "the look"],
+  ["today", "the game today"],
   ["shipped-now", "just shipped"],
   ["visuals", "latest visuals"],
   ["loop", "the core loop"],
@@ -155,33 +155,59 @@ export default async function MinelightPage() {
             <p className="ml-kicker">a co-op action mining crawler for roblox</p>
             <p className="ml-lede">dig deep with your friends. smash monsters, crack glowing ore, beat the boss, forge better gear.</p>
           </div>
-          <figure className="ml-poster">
-            <img src="/derelictdepths/img/poster-1280.jpg" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-768.jpg 768w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="100vw" width={1280} height={720} loading="lazy" alt="a miner raises a pickaxe in the golden room in front of the mole king" />
-            <figcaption><span className="ml-badge art">in-engine + key art</span>a real in-engine capture of the golden room, graded, with rays and the title added.</figcaption>
-          </figure>
-          <div>
-            <p className="ml-sub">
-              this page is the game as it stands today, and the machine that builds it: the dive a player feels, the systems under it, the look being
-              built, and the numbers behind all of it. it is drawn from the game repo&apos;s main branch and the team&apos;s design docs. its shipped feed
-              updates every 3 minutes, and its latest visuals every hour.
-            </p>
-            <p className="ml-links">
-              <Gilded variant="pill" href="/reading/derelict-depths-book/">read the derelict depths book →</Gilded>
-              <Gilded variant="pill" href="#art">the release art</Gilded>
-            </p>
+          <div className="ml-stats">
+            <div className="ml-stat"><b>2 floors</b><span>topsoil tunnels and iron halls</span></div>
+            <div className="ml-stat"><b>{c.ores} ores</b><span>{c.bars} bars, and a pickaxe ladder above them</span></div>
+            <div className="ml-stat"><b>{c.classes} classes</b><span>miner, demolitionist, prospector, alchemist</span></div>
+            <div className="ml-stat"><b>r6 hero</b><span>your own roblox avatar, over a shoulder camera</span></div>
           </div>
         </header>
 
-        <div className="ml-stats">
-          <div className="ml-stat"><b>2 floors</b><span>topsoil tunnels and iron halls</span></div>
-          <div className="ml-stat"><b>{c.ores} ores</b><span>{c.bars} bars, and a pickaxe ladder above them</span></div>
-          <div className="ml-stat"><b>{c.classes} classes</b><span>miner, demolitionist, prospector, alchemist</span></div>
-          <div className="ml-stat"><b>r6 hero</b><span>your own roblox avatar, over a shoulder camera</span></div>
+        <figure className="ml-poster">
+          <img src="/derelictdepths/img/poster-1280.jpg" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-768.jpg 768w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="100vw" width={1280} height={720} loading="lazy" alt="a miner raises a pickaxe in the golden room in front of the mole king" />
+          <figcaption><span className="ml-badge art">in-engine + key art</span>a real in-engine capture of the golden room, graded, with rays and the title added.</figcaption>
+        </figure>
+
+        <div className="ml-intro">
+          <p className="ml-sub">
+            this page is the game as it stands today, and the machine that builds it: the dive a player feels, the systems under it, the look being
+            built, and the numbers behind all of it. it is drawn from the game repo&apos;s main branch and the team&apos;s design docs. its shipped feed
+            updates every 3 minutes, and its latest visuals every hour.
+          </p>
+          <p className="ml-links">
+            <Gilded variant="pill" href="/reading/derelict-depths-book/">read the derelict depths book →</Gilded>
+            <Gilded variant="pill" href="#art">the release art</Gilded>
+          </p>
         </div>
 
         <nav className="ml-toc" aria-label="contents">
           <ol>{SECTIONS.map(([id, label]) => <li key={id}><a href={"#" + id}>{label}</a></li>)}</ol>
         </nav>
+
+        <Section id="captures" eyebrow="captures" title="the game, in its own screens">
+          <div className="ml-col">
+            <p>
+              captured in studio play from the game place (17 nov, 08:55), with the game camera and the hud on. the hero is a
+              real roblox avatar. the release capture set replaces these as soon as it lands; until then these are the frames that exist, shown as they were
+              taken, and the interface and the look have moved on since.
+            </p>
+          </div>
+          <div className="ml-stills">
+            <Still name="town" title="the town" note="the lift in the middle, the stations and their keepers around it." />
+            <Still name="dive" title="the dive" note="the cage ride down the shaft onto the landing spot." />
+            <Still name="ore-room" title="a topsoil ore room" note="lit tops, mid sides, ink edges, the ability arc bottom right." />
+            <Still name="fight" title="a fight" note="the swing, the tell and the number, on the same frame." />
+            <Still name="dodge" title="a dodge" note="movement values are locked by a test." />
+            <Still name="loot" title="loot" note="drops scatter from broken ore and fallen enemies." />
+            <Still name="mole-king" title="the mole king" note="the boss bar names the phase." />
+            <Still name="mole-king-2" title="the mole king, phase two" note="the guardian at full size under the game camera." />
+            <Still name="results" title="the results card" note="depth, kills, time, best combo and xp, then dive again or town." />
+            <Still name="flip-reveal" title="a rarity reveal" note="the card flips for the rare gets; rarity colours match the loot beams." />
+            <Still name="forge" title="the forge" note="the timing strike: the beat is timed on the server." />
+            <Still name="smeltery" title="the smeltery" note="ore becomes bars, five to one." />
+            <Still name="gear" title="gear" note="what you are wearing, on the same card language as everything else." />
+          </div>
+        </Section>
 
         <Section id="art" eyebrow="visuals · release" title="the release art">
           <div className="ml-col">
@@ -210,6 +236,44 @@ export default async function MinelightPage() {
               <h3>how the capsules were picked</h3>
               <p>each capsule has one default and one or two alternates. the defaults are the ones a store upload reads; the alternates stay as labelled options for jawad&apos;s pick. every file is 1920 × 1080 and carries the same wordmark, and none of them introduces a game, a name or a look that isn&apos;t in the build.</p>
             </div>
+          </div>
+        </Section>
+
+        <Section id="look" eyebrow="the look" title="painted 3d, hard pixels">
+          <div className="ml-col">
+            <p>
+              the look being built is painted 3d with hard pixels on top: block-built rooms with ink edges and a coarse pixel grain, and characters and
+              monsters that keep their pixels at any distance. the second half is the hard part, because roblox only keeps pixels hard on some surfaces,
+              so the crew measured which ones before drawing anything.
+            </p>
+            <ul className="ml-list">
+              <li><strong>hard pixels need the right surface.</strong> an <code>imagelabel</code> on a surfacegui or a billboardgui keeps a 16-pixel sprite crisp at any size with <code>resamplemode = pixelated</code>. a surfaceappearance, a decal or a texture is filtered bilinearly whatever the setting says, so those get drawn small and upscaled nearest-neighbour before upload (the crew&apos;s 8× rule).</li>
+              <li><strong>monsters and heroes are 16-direction sprites.</strong> 16 angles from the front round to the back, so a monster turns like a painted model rather than sliding a flat card. idle runs at 6 frames a second, an attack at 12, and a redraw costs about 3 ms.</li>
+              <li><strong>one billboard, one creature.</strong> a guardian&apos;s sprite is a 12 × 15 stud billboard, and it measures brighter and more colourful than a texture-mapped mesh of the same monster, which is what makes it read on a phone.</li>
+              <li><strong>the cel base underneath.</strong> one workspace attribute switches the cel look on: palettes from each floor&apos;s style kit bake lit, mid and shadow tones, every visible body gets an ink shell and a light band, and a pixel filter swaps the cel masks for a coarse grained version. the ui is never filtered.</li>
+            </ul>
+          </div>
+          <div className="ml-pair">
+            <Shot name="look-king-front" w={1583} h={1080} kind="look study" title="the guardian, two ways" note="left: the textured mesh. right: the same monster as a sprite billboard. photographed in studio on a bare floor, not in the game." />
+            <Shot name="look-king-slash" w={1583} h={1080} kind="look study" title="a sprite mid-slash" note="one frame of the slash, drawn once. idle is 6 frames a second and the slash 12." />
+          </div>
+          <div className="ml-pair">
+            <Shot name="look-pixels-label" w={1354} h={1080} kind="look study" title="pixels that stay hard" note="the same 16-pixel image twice: the left one keeps its pixels on an imagelabel, the right one is blurred by the default filter." />
+            <Shot name="look-pixels-mesh" w={1354} h={1080} kind="look study" title="pixels a mesh blurs" note="on a mesh surface the same setting changes nothing: both halves blur, which is why those textures are upscaled before upload." />
+          </div>
+          <div className="ml-pair">
+            <Shot name="splat-room-before" w={1280} h={667} kind="look study" title="room one, the toggle off" note="a topsoil start room with the new pixel effects switched off. 0.22% of the frame changes when they come on." />
+            <Shot name="splat-room-after" w={1280} h={667} kind="look study" title="room one, the toggle on" note="the same frame with them on: mobs and walls swap live, with no other change." />
+          </div>
+          <div className="ml-pair">
+            <Shot name="splat-halls-before" w={1280} h={667} kind="look study" title="iron halls, off" note="a golem and a miner in room one of iron halls." />
+            <Shot name="splat-halls-after" w={1280} h={667} kind="look study" title="iron halls, on" note="the same frame with the pixel effects on: 1.5% of the pixels change." />
+          </div>
+          <div className="ml-col">
+            <p>
+              every shot above is a studio study from 18 nov, on the game&apos;s own camera but a preview build rather than the shipped place, which is where
+              a look is proved before it lands. the rooms under captures are the game itself.
+            </p>
           </div>
         </Section>
 
@@ -254,69 +318,6 @@ export default async function MinelightPage() {
               ["how hard it is", "gloom 0 to v per floor, and a gloom surge on a clock"],
             ]}
           />
-        </Section>
-
-        <Section id="look" eyebrow="the look" title="painted 3d, hard pixels">
-          <div className="ml-col">
-            <p>
-              the look being built is painted 3d with hard pixels on top: block-built rooms with ink edges and a coarse pixel grain, and characters and
-              monsters that keep their pixels at any distance. the second half is the hard part, because roblox only keeps pixels hard on some surfaces,
-              so the crew measured which ones before drawing anything.
-            </p>
-            <ul className="ml-list">
-              <li><strong>hard pixels need the right surface.</strong> an <code>imagelabel</code> on a surfacegui or a billboardgui keeps a 16-pixel sprite crisp at any size with <code>resamplemode = pixelated</code>. a surfaceappearance, a decal or a texture is filtered bilinearly whatever the setting says, so those get drawn small and upscaled nearest-neighbour before upload (the crew&apos;s 8× rule).</li>
-              <li><strong>monsters and heroes are 16-direction sprites.</strong> 16 angles from the front round to the back, so a monster turns like a painted model rather than sliding a flat card. idle runs at 6 frames a second, an attack at 12, and a redraw costs about 3 ms.</li>
-              <li><strong>one billboard, one creature.</strong> a guardian&apos;s sprite is a 12 × 15 stud billboard, and it measures brighter and more colourful than a texture-mapped mesh of the same monster, which is what makes it read on a phone.</li>
-              <li><strong>the cel base underneath.</strong> one workspace attribute switches the cel look on: palettes from each floor&apos;s style kit bake lit, mid and shadow tones, every visible body gets an ink shell and a light band, and a pixel filter swaps the cel masks for a coarse grained version. the ui is never filtered.</li>
-            </ul>
-          </div>
-          <div className="ml-pair">
-            <Shot name="look-king-front" w={1583} h={1080} kind="look study" title="the guardian, two ways" note="left: the textured mesh. right: the same monster as a sprite billboard. photographed in studio on a bare floor, not in the game." />
-            <Shot name="look-king-slash" w={1583} h={1080} kind="look study" title="a sprite mid-slash" note="one frame of the slash, drawn once. idle is 6 frames a second and the slash 12." />
-          </div>
-          <div className="ml-pair">
-            <Shot name="look-pixels-label" w={1354} h={1080} kind="look study" title="pixels that stay hard" note="the same 16-pixel image twice: the left one keeps its pixels on an imagelabel, the right one is blurred by the default filter." />
-            <Shot name="look-pixels-mesh" w={1354} h={1080} kind="look study" title="pixels a mesh blurs" note="on a mesh surface the same setting changes nothing: both halves blur, which is why those textures are upscaled before upload." />
-          </div>
-          <div className="ml-pair">
-            <Shot name="splat-room-before" w={1280} h={667} kind="look study" title="room one, the toggle off" note="a topsoil start room with the new pixel effects switched off. 0.22% of the frame changes when they come on." />
-            <Shot name="splat-room-after" w={1280} h={667} kind="look study" title="room one, the toggle on" note="the same frame with them on: mobs and walls swap live, with no other change." />
-          </div>
-          <div className="ml-pair">
-            <Shot name="splat-halls-before" w={1280} h={667} kind="look study" title="iron halls, off" note="a golem and a miner in room one of iron halls." />
-            <Shot name="splat-halls-after" w={1280} h={667} kind="look study" title="iron halls, on" note="the same frame with the pixel effects on: 1.5% of the pixels change." />
-          </div>
-          <div className="ml-col">
-            <p>
-              every shot above is a studio study from 18 nov, on the game&apos;s own camera but a preview build rather than the shipped place, which is where
-              a look is proved before it lands. the rooms under captures are the game itself.
-            </p>
-          </div>
-        </Section>
-
-        <Section id="captures" eyebrow="captures" title="the game, in its own screens">
-          <div className="ml-col">
-            <p>
-              captured in studio play from the game place (17 nov, 08:55), with the game camera and the hud on. the hero is a
-              real roblox avatar. the release capture set replaces these as soon as it lands; until then these are the frames that exist, shown as they were
-              taken, and the interface and the look have moved on since.
-            </p>
-          </div>
-          <div className="ml-stills">
-            <Still name="town" title="the town" note="the lift in the middle, the stations and their keepers around it." />
-            <Still name="dive" title="the dive" note="the cage ride down the shaft onto the landing spot." />
-            <Still name="ore-room" title="a topsoil ore room" note="lit tops, mid sides, ink edges, the ability arc bottom right." />
-            <Still name="fight" title="a fight" note="the swing, the tell and the number, on the same frame." />
-            <Still name="dodge" title="a dodge" note="movement values are locked by a test." />
-            <Still name="loot" title="loot" note="drops scatter from broken ore and fallen enemies." />
-            <Still name="mole-king" title="the mole king" note="the boss bar names the phase." />
-            <Still name="mole-king-2" title="the mole king, phase two" note="the guardian at full size under the game camera." />
-            <Still name="results" title="the results card" note="depth, kills, time, best combo and xp, then dive again or town." />
-            <Still name="flip-reveal" title="a rarity reveal" note="the card flips for the rare gets; rarity colours match the loot beams." />
-            <Still name="forge" title="the forge" note="the timing strike: the beat is timed on the server." />
-            <Still name="smeltery" title="the smeltery" note="ore becomes bars, five to one." />
-            <Still name="gear" title="gear" note="what you are wearing, on the same card language as everything else." />
-          </div>
         </Section>
 
         <Section id="shipped-now" eyebrow="live" title="just shipped">
@@ -495,7 +496,8 @@ export default async function MinelightPage() {
             </p>
           </div>
           <figure className="ml-fig ml-wide">
-            <div className="ml-fig-body"><div className="ml-svg-box"><SwingFrames /></div></div>
+            <div className="ml-hint">scroll sideways.</div>
+            <div className="ml-fig-body" tabIndex={0} role="region" aria-label="the miner's moves"><div className="ml-svg-box"><SwingFrames /></div></div>
             <figcaption><span><b>the miner&apos;s moves.</b> every ult winds up exactly 39 frames, so its sound lands on the beat.</span></figcaption>
           </figure>
           <Table
@@ -524,7 +526,8 @@ export default async function MinelightPage() {
             </p>
           </div>
           <figure className="ml-fig ml-wide">
-            <div className="ml-fig-body"><div className="ml-svg-box"><CameraRig cam={cam} /></div></div>
+            <div className="ml-hint">scroll sideways.</div>
+            <div className="ml-fig-body" tabIndex={0} role="region" aria-label="view.forge on main"><div className="ml-svg-box"><CameraRig cam={cam} /></div></div>
             <figcaption><span><b>view.forge on main.</b> the held follow the shoulder style was built from, still selectable.</span></figcaption>
           </figure>
           <h3 className="ml-h3">controls</h3>
@@ -641,7 +644,8 @@ export default async function MinelightPage() {
             </p>
           </div>
           <figure className="ml-fig ml-wide">
-            <div className="ml-fig-body"><div className="ml-svg-box"><JoinBudget history={joinHistory} publishLine={jb.publishLine} /></div></div>
+            <div className="ml-hint">scroll sideways.</div>
+            <div className="ml-fig-body" tabIndex={0} role="region" aria-label="place bytes against the line, main by main"><div className="ml-svg-box"><JoinBudget history={joinHistory} publishLine={jb.publishLine} /></div></div>
             <figcaption><span><b>place bytes against the line, main by main.</b> gold: the latest main, measured by the refresh job the way the test measures it.</span></figcaption>
           </figure>
         </Section>

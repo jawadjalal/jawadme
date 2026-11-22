@@ -32,7 +32,6 @@ export const GROUND = "#ffffff";
 /** the page round the globe: the site's warm ground */
 const PAGE = "#e6e5e1";
 /** the first view's zoom: a poster about 1400 units tall reads at about 340 px */
-const OPEN_Z = 0.24;
 const TILE = "#e2ded3";
 const Z_MAX = 6;
 const HALF_PI = Math.PI / 2;
@@ -344,13 +343,14 @@ export class Engine {
   get zMin() {
     return this.fitView(this.board, 1).z * 0.45;
   }
-  /** The first view: flown into the biggest cluster, centred in the clear part of the screen, at a zoom where its posters
-   *  read. The globe is one fit or one Esc away. */
+  /** The first view: one poster from the middle of the biggest cluster, fitted to the clear part of the screen, so it
+   *  reads at once. Its cluster is one fit away and the globe one Esc away. */
   openView(): View {
     const c = this.board.clusters.reduce((a, b) => (b.count > a.count ? b : a));
-    const r = unionRect(this.board.pieces.slice(c.first, c.last + 1));
-    const z = this.vw < 900 ? OPEN_Z / 2 : OPEN_Z;
-    return { x: r.x + r.w / 2 - (this.inset.l - this.inset.r) / 2 / z, y: r.y + r.h / 2 - (this.inset.t - this.inset.b) / 2 / z, z };
+    const ps = this.board.pieces.slice(c.first, c.last + 1);
+    const r = unionRect(ps);
+    const mid = (p: Rect) => Math.hypot(p.x + p.w / 2 - (r.x + r.w / 2), p.y + p.h / 2 - (r.y + r.h / 2));
+    return this.fitView(ps.reduce((a, b) => (mid(b) < mid(a) ? b : a)), 1);
   }
   /** The view that frames `r` in the clear part of the screen, with `pad` as a share of it left around. */
   fitView(r: Rect, pad = 1, inset = this.inset): View {
