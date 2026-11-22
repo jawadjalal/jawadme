@@ -127,8 +127,8 @@ html:has(.cb-asked) body {
 .cb-bar kbd { font: 600 10.5px/1 var(--f-geist), "Helvetica Neue", Arial, sans-serif; color: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; }
 .cb-bar > .cb-mob { display: inline-block; line-height: 34px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* the hint sits on a plate like the head, so it reads over whatever piece is under it */
-.cb-hint { position: absolute; left: 16px; bottom: 16px; margin: 0; padding: 8px 12px; background: var(--panel); border-radius: 10px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-2); max-width: 330px; line-height: 1.45; pointer-events: none; }
+/* the hint is one line on a plate just over the toolbar, in the band the first view keeps clear under its poster */
+.cb-hint { position: absolute; left: 50%; bottom: 74px; transform: translateX(-50%); margin: 0; padding: 4px 12px; background: var(--panel); border-radius: 8px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-2); white-space: nowrap; line-height: 1.45; pointer-events: none; }
 .cb-tourhint { position: absolute; right: 20px; top: 18px; margin: 0; font-size: 11.5px; color: var(--ink-2); background: var(--panel); padding: 5px 9px; border-radius: 6px; animation: cb-fade 3s 1 forwards; pointer-events: none; }
 @keyframes cb-fade { 0%, 70% { opacity: 1; } 100% { opacity: 0; } }
 
