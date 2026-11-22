@@ -1,4 +1,5 @@
-/* /work: the filter row, each room's opening piece, its captions and the air between rooms */
+/* /work: the filter row, each room's opening piece, its captions and the air between rooms. No piece hangs wider than
+   its file. */
 .work .chips { margin-bottom: 32px; }
 @media (min-width: 768px) {
   .work .chips { margin-bottom: 40px; }
@@ -7,6 +8,7 @@
 .work .rh-c { font: 700 15px/1 var(--f-bar); color: var(--dim); }
 .work .hang-top { display: flex; align-items: flex-start; gap: var(--gap); width: 100%; }
 .work .hang-side { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: flex-start; column-gap: var(--gap); row-gap: 34px; }
+.work .hang-i { max-inline-size: var(--nw); }
 .work .hang-cap { font-size: 16px; }
 .work .hang-hl { color: var(--ivory); white-space: normal; overflow: visible; text-overflow: clip; text-wrap: pretty; }
 .work .hang-i .media { transform: none; }
