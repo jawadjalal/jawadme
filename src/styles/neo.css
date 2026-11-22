@@ -50,49 +50,73 @@ html[data-room="hall"] .ds {
 }
 
 /* ==========================================================================
-   SQUARE GLOSSY INDUSTRIAL ORANGE BUTTON
+   EXACT BRASS HANDS HATCHED CORNER-BRACKETED CTA BUTTON
    ========================================================================== */
 .bh-cta {
   position: relative;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 11px 20px;
+  padding: 13px 24px;
   border-radius: 0;
-  border: 1px solid rgba(255, 178, 125, 0.45);
-  background: linear-gradient(180deg, #ff8833 0%, #ff6200 54%, #d64e00 100%);
-  color: #141414 !important;
+  border: 1px solid rgba(255, 114, 53, 0.36);
+  background-color: rgba(255, 120, 30, 0.16);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(36, 36, 36, 0.72) 0px,
+    rgba(36, 36, 36, 0.72) 2px,
+    rgba(255, 122, 26, 0.18) 2px,
+    rgba(255, 122, 26, 0.18) 4.5px
+  );
+  color: #ff7235 !important;
   font-family: var(--f-mono);
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
-  box-shadow:
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.55),
-    inset 0 -2px 4px rgba(102, 32, 0, 0.35),
-    0 1px 2px rgba(0, 0, 0, 0.45),
-    0 6px 18px rgba(255, 98, 0, 0.18);
-  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1), filter 160ms ease;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, transform 120ms ease;
+}
+
+/* Four crisp Brass Hands L-bracket corner ticks */
+.bh-cta::before,
+.bh-cta::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background-repeat: no-repeat;
 }
 
 .bh-cta::before {
-  content: "";
-  position: absolute;
-  inset: 1px 1px 48% 1px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.36) 0%, rgba(255, 255, 255, 0.02) 100%);
-  pointer-events: none;
+  background-image:
+    linear-gradient(#ff6200, #ff6200),
+    linear-gradient(#ff6200, #ff6200),
+    linear-gradient(#ff6200, #ff6200),
+    linear-gradient(#ff6200, #ff6200);
+  background-size: 8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px;
+  background-position: top left, top left, top right, top right;
+}
+
+.bh-cta::after {
+  background-image:
+    linear-gradient(#ff6200, #ff6200),
+    linear-gradient(#ff6200, #ff6200),
+    linear-gradient(#ff6200, #ff6200),
+    linear-gradient(#ff6200, #ff6200);
+  background-size: 8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px;
+  background-position: bottom left, bottom left, bottom right, bottom right;
 }
 
 .bh-cta:hover {
-  filter: brightness(1.07);
-  transform: translateY(-1px);
+  background-color: #ff6200;
+  background-image: none;
+  color: #1c1c1c !important;
+  border-color: #ff6200;
 }
 
 .bh-cta:active {
-  transform: translateY(0) scale(0.98);
-  filter: brightness(0.96);
+  transform: scale(0.985);
 }
 
 .bh-cta-sm {
@@ -275,9 +299,9 @@ html[data-room="hall"] .ds {
 .orbit-stage {
   position: relative;
   width: 100%;
-  height: clamp(410px, 39vw, 520px);
-  perspective: 1450px;
-  perspective-origin: 50% 45%;
+  height: clamp(440px, 42vw, 560px);
+  perspective: 1320px;
+  perspective-origin: 50% 48%;
   overflow: hidden;
   cursor: grab;
   user-select: none;
@@ -301,7 +325,7 @@ html[data-room="hall"] .ds {
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -220px;
+  margin-top: -210px;
   display: block;
   will-change: transform, opacity;
   transform-style: preserve-3d;
@@ -310,11 +334,11 @@ html[data-room="hall"] .ds {
 
 .orbit-media {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 6 / 5;
   overflow: hidden;
   background: #242424;
   border: 1px solid var(--rule);
-  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.48);
   transition: border-color 180ms ease;
 }
 

@@ -46,13 +46,13 @@ export function OrbitMarquee({ ads }: Props) {
       const stage = stageRef.current;
       if (stage) {
         const vw = stage.clientWidth;
-        const cardW = vw < 768 ? Math.min(270, vw * 0.72) : Math.min(370, Math.max(290, vw * 0.26));
-        const gap = vw < 768 ? 18 : 30;
+        const cardW = vw < 768 ? Math.min(310, vw * 0.8) : Math.min(500, Math.max(360, vw * 0.34));
+        const gap = vw < 768 ? 18 : 28;
         const stride = cardW + gap;
         const total = ads.length * stride;
 
         if (!dragRef.current.active) {
-          const baseSpeed = hoverRef.current ? 12 : 44;
+          const baseSpeed = hoverRef.current ? 14 : 48;
           offsetRef.current += (baseSpeed + velRef.current) * dt;
           velRef.current *= Math.pow(0.06, dt);
           if (Math.abs(velRef.current) < 0.5) velRef.current = 0;
@@ -61,7 +61,7 @@ export function OrbitMarquee({ ads }: Props) {
         offsetRef.current = ((offsetRef.current % total) + total) % total;
 
         const half = total / 2;
-        const radius = Math.max(vw * 1.15, 1150);
+        const radius = Math.max(vw * 1.25, 1300);
 
         for (let i = 0; i < ads.length; i++) {
           const el = cardsRef.current[i];
@@ -71,27 +71,26 @@ export function OrbitMarquee({ ads }: Props) {
           while (x < -half) x += total;
           while (x > half) x -= total;
 
-          const visibleLimit = vw * 0.85 + cardW;
+          const visibleLimit = vw * 0.9 + cardW;
           if (Math.abs(x) > visibleLimit) {
             el.style.visibility = "hidden";
             continue;
           }
 
           el.style.visibility = "visible";
-          const norm = x / Math.max(vw * 0.52, 360);
-          // Graceful concave cylindrical Outpace curve
-          const angleDeg = Math.max(-30, Math.min(30, norm * 18.5));
+          const norm = x / Math.max(vw * 0.52, 380);
+          // Outpace-style sweeping wide cylindrical ribbon
+          const angleDeg = Math.max(-32, Math.min(32, norm * 21));
           const angleRad = (angleDeg * Math.PI) / 180;
-          const z = (Math.cos(angleRad) - 1) * radius * 0.34;
-          const yCurve = Math.abs(norm) * Math.abs(norm) * (vw < 768 ? 12 : 24);
-          const tiltZ = norm * (vw < 768 ? -1.4 : -2.2);
-          const scale = 1 - Math.min(0.1, Math.abs(norm) * 0.04);
+          const z = (Math.cos(angleRad) - 1) * radius * 0.38;
+          const yCurve = Math.abs(norm) * Math.abs(norm) * (vw < 768 ? 10 : 22);
+          const scale = 1 - Math.min(0.08, Math.abs(norm) * 0.03);
 
           el.style.width = `${cardW}px`;
           el.style.marginLeft = `${-cardW / 2}px`;
-          el.style.transform = `translate3d(${x}px, ${yCurve}px, ${z}px) rotateY(${-angleDeg}deg) rotateZ(${tiltZ}deg) scale(${scale})`;
+          el.style.transform = `translate3d(${x}px, ${yCurve}px, ${z}px) rotateY(${-angleDeg}deg) scale(${scale})`;
           el.style.zIndex = String(Math.round(100 - Math.abs(norm) * 40));
-          el.style.opacity = String(Math.max(0.3, 1 - Math.max(0, Math.abs(norm) - 1.15) * 0.75));
+          el.style.opacity = String(Math.max(0.35, 1 - Math.max(0, Math.abs(norm) - 1.2) * 0.7));
         }
       }
 
