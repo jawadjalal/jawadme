@@ -1,9 +1,13 @@
 /* /work: the filter row, each room's opening piece, its captions and the air between rooms. No piece hangs wider than
-   its file. */
-.work .chips { margin-bottom: 32px; }
+   its file. A room's heading and a piece opened by its address stop clear of the stuck filter row. */
+.work .chips { margin-bottom: 32px; border-bottom: 1px solid var(--rule); }
+.work .room-w, .work .hang-i { scroll-margin-top: 80px; }
 @media (min-width: 768px) {
   .work .chips { margin-bottom: 40px; }
   .work .chips-in { flex-wrap: wrap; overflow-x: visible; }
+}
+@media (min-width: 768px) and (max-width: 1099px) {
+  .work .room-w, .work .hang-i { scroll-margin-top: 124px; }
 }
 .work .rh-c { font: 700 15px/1 var(--f-bar); color: var(--dim); }
 .work .hang-top { display: flex; align-items: flex-start; gap: var(--gap); width: 100%; }

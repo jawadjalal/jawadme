@@ -583,10 +583,6 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
 .rh-side { display: grid; gap: 14px; justify-items: end; max-width: 30em; padding-bottom: 4px; text-align: right; }
 .rh-n { font: 600 max(16px, calc(4.6 * var(--u)))/1.25 var(--f-sans); letter-spacing: -0.01em; text-wrap: balance; }
 .rh-m { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 18px; font: 700 15px/1 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
-.rh-case { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px; background: var(--fg); color: var(--bg) !important; }
-.rh-case .arr { display: inline-block; transition: transform var(--t-base) var(--ease); }
-.rh-case:hover { background: var(--accent); color: var(--accent-ink) !important; }
-.rh-case:hover .arr { transform: translate(2px, -2px); }
 .room-w + .room-w { margin-top: calc(26 * var(--u)); }
 .room-w ~ .room-w { content-visibility: auto; contain-intrinsic-size: auto 1400px; }
 .room-sm .rh-t { font-size: max(34px, calc(13 * var(--u))); letter-spacing: -0.04em; }

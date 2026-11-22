@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
 import { Hang } from "@/components/ds/AdGallery";
 import { Ink } from "@/components/ds/display/Ink";
@@ -118,9 +117,9 @@ function RoomView({ room, i, lead }: { room: Room; i: number; lead: boolean }) {
           <p className="rh-m">
             <span className="rh-c">{room.count}</span>
             {room.caseHref ? (
-              <Link href={room.caseHref} className="rh-case" data-m="press lift">
-                case study <span className="arr">↗</span>
-              </Link>
+              <Gilded variant="pill" href={room.caseHref}>
+                case study ↗
+              </Gilded>
             ) : null}
           </p>
         </div>
@@ -150,7 +149,7 @@ export default async function Work({ searchParams }: Props) {
       </header>
       <div className="gal-hall" data-room="hall">
         <nav className="chips" aria-label="rooms">
-          <Chips>
+          <Chips at={pick?.key ?? ""}>
             <Gilded variant="filter" href="/work" selected={!pick}>
               all
             </Gilded>
