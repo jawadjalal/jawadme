@@ -84,6 +84,7 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
   return () => {
     v.stop();
     removeEventListener("pointermove", move);
+    P.dispose();
     drop(b);
   };
 }
