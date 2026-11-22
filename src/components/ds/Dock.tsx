@@ -37,6 +37,10 @@ export function Dock() {
             <span>WORK</span>
             <span aria-hidden="true">↗</span>
           </Link>
+          <Link href="/about" aria-current={isActive("/about") ? "page" : undefined} onClick={() => setOpen(false)}>
+            <span>ABOUT</span>
+            <span aria-hidden="true">↗</span>
+          </Link>
           <a href={SITE.cv} download onClick={() => setOpen(false)}>
             <span>DOWNLOAD CV</span>
             <span aria-hidden="true">↓</span>
@@ -71,6 +75,11 @@ export function Dock() {
             <li>
               <Link href="/work" className={"bh-dock-link" + (isActive("/work") ? " is-active" : "")}>
                 WORK
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className={"bh-dock-link" + (isActive("/about") ? " is-active" : "")}>
+                ABOUT
               </Link>
             </li>
             <li>

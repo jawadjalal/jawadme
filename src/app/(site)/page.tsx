@@ -10,7 +10,12 @@ import { COSMOS, SITES } from "@/lib/design";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-const MARQUEE_ADS = ADS.slice(0, 18);
+// Lead the hero carousel with the ON Running ad + top concepts
+const ON_AD = ADS.find((a) => a.id === "on");
+const MARQUEE_ADS = [
+  ...(ON_AD ? [ON_AD] : []),
+  ...ADS.filter((a) => a.id !== "on").slice(0, 17),
+];
 
 const adCard = (a: (typeof ADS)[number]): ShowcaseItem => ({
   id: `ad-${a.id}`,

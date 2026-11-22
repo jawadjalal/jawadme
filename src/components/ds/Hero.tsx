@@ -54,6 +54,7 @@ export function Hero() {
 
         <nav className="bh-topnav" aria-label="Primary">
           <Link href="/work">WORK</Link>
+          <Link href="/about">ABOUT</Link>
           <a href={SITE.cv} download>
             CV
           </a>

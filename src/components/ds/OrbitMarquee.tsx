@@ -117,7 +117,8 @@ export function OrbitMarquee({ ads }: Props) {
 
     ads.forEach((ad, i) => {
       const tex = loader.load(ad.sm || ad.src);
-      tex.colorSpace = THREE.SRGBColorSpace;
+      // Keep raw sRGB values for ShaderMaterial (avoids 2.2x linear darkening)
+      tex.colorSpace = THREE.NoColorSpace;
       tex.minFilter = THREE.LinearMipmapLinearFilter;
       tex.magFilter = THREE.LinearFilter;
       tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
