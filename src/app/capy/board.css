@@ -74,8 +74,10 @@ html:has(.cb-asked) body {
 }
 .cb-fan { margin: 8px 0 0; font-size: 15px; color: var(--ink-2); max-width: 330px; line-height: 1.4; }
 
-/* ── the cluster list ─────────────────────────────────────────────────── */
-.cb-clusters { position: absolute; left: 16px; top: 204px; width: 196px; }
+/* ── the cluster list: folded into the toolbar, so nothing sits over the pieces until it is asked for ── */
+.cb-clusters { display: none; position: absolute; left: 50%; bottom: 72px; transform: translateX(-50%); width: min(280px, calc(100vw - 32px)); }
+.cb-clusters.cb-open { display: block; }
+.cb-clusters ol { max-height: 50vh; overflow: auto; }
 .cb-clusters ol { list-style: none; margin: 0; padding: 6px; background: var(--panel); border-radius: 10px; box-shadow: var(--shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .cb-clusters button { display: flex; width: 100%; align-items: baseline; justify-content: space-between; gap: 8px; padding: 6px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; letter-spacing: -0.005em; color: var(--ink-2); transition: background 120ms, color 120ms; }
 .cb-clusters button:hover { background: rgba(10, 10, 10, 0.04); color: var(--ink); }
@@ -117,7 +119,7 @@ html:has(.cb-asked) body {
 .cb-bar > i { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
 .cb-zoom { min-width: 58px !important; font-variant-numeric: tabular-nums; }
 .cb-bar kbd { font: 600 10.5px/1 var(--f-geist), "Helvetica Neue", Arial, sans-serif; color: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; }
-.cb-mob { display: none !important; }
+.cb-bar > .cb-mob { display: inline-block; line-height: 34px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .cb-hint { position: absolute; left: 24px; bottom: 24px; margin: 0; font-size: 11.5px; color: var(--ink-3); max-width: 260px; line-height: 1.45; pointer-events: none; }
 .cb-tourhint { position: absolute; right: 20px; top: 18px; margin: 0; font-size: 11.5px; color: var(--ink-2); background: var(--panel); padding: 5px 9px; border-radius: 6px; animation: cb-fade 3s 1 forwards; pointer-events: none; }
@@ -159,10 +161,7 @@ html:has(.cb-asked) body {
   .cb-call { right: 16px; top: 14px; }
   .cb-title { font-size: 26px; }
   .cb-fan { max-width: 260px; }
-  .cb-clusters { display: none; left: 50%; top: auto; bottom: 72px; transform: translateX(-50%); width: min(280px, calc(100vw - 32px)); }
-  .cb-clusters.cb-open { display: block; }
-  .cb-clusters ol { max-height: 50vh; overflow: auto; }
-  .cb-mob { display: inline-block !important; max-width: 96px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cb-bar > .cb-mob { max-width: 96px; }
   .cb-wide { display: none !important; }
   .cb-hint { display: none; }
   .cb-bar { bottom: 14px; }

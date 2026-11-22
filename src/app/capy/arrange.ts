@@ -52,6 +52,8 @@ export const KIND_NAME: Record<string, string> = {
   motion: "motion",
 };
 export const kindName = (k: string) => KIND_NAME[k] ?? k.replace(/-/g, " ");
+/** How many files a kind holds: the one count the board's clusters and the list's filters both show. */
+export const kindCount = (assets: Asset[], kind: string) => assets.filter((a) => a.kind === kind).length;
 
 /** Row height per kind, in world units: the strips lead and are set largest. */
 const ROW: Record<string, number> = {
@@ -161,7 +163,7 @@ export function layoutBoard(assets: Asset[], kinds: string[]): Board {
     const at = scatter(blocks, H * 0.28, rnd);
     const bb = at.length ? bounds(at) : { x: 0, y: 0, w: H, h: H };
     const placed = blocks.map((b, i) => ({ b, x: at[i].x - bb.x, y: at[i].y - bb.y }));
-    return { kind, H, placed, w: bb.w, h: bb.h, count: shown.reduce((s, g) => s + g.length, 0) };
+    return { kind, H, placed, w: bb.w, h: bb.h, count: kindCount(assets, kind) };
   });
 
   // the clusters scattered the same way, as continents, the first kind in the middle. Titles are one world size

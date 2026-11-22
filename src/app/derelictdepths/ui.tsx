@@ -35,10 +35,10 @@ export function Diagram({ name, alt, caption }: { name: string; alt: string; cap
   const src = "/derelictdepths/d/" + name + ".svg";
   return (
     <figure className={"ml-fig" + (wide ? " ml-wide" : "")}>
-      <div className="ml-fig-body">
+      {wide ? <div className="ml-hint">scroll sideways, or open it full size.</div> : null}
+      <div className="ml-fig-body" {...(wide ? { tabIndex: 0, role: "region", "aria-label": alt } : {})}>
         <img src={src} alt={alt} width={size.w} height={size.h} loading="lazy" decoding="async" style={{ maxWidth: size.w }} />
       </div>
-      {wide ? <div className="ml-hint">scroll sideways, or open it full size.</div> : null}
       <figcaption>
         <span>{caption}</span>
         <a href={src} target="_blank" rel="noopener">open full size</a>

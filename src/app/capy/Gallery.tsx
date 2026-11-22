@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Gilded } from "@/components/gilded/Gilded";
+import { kindCount } from "./arrange";
 import { sized } from "./exporters";
 
 export type Asset = {
@@ -421,7 +422,7 @@ export function Gallery({ assets, kinds, total, sets }: { assets: Asset[]; kinds
           </Gilded>
           {kinds.map((k) => (
             <Gilded key={k} variant="filter" selected={kind === k} onClick={() => setKind(k)}>
-              {kindName(k)} <span>{[...(byKind.get(k)?.values() ?? [])].flat().length}</span>
+              {kindName(k)} <span>{kindCount(assets, k)}</span>
             </Gilded>
           ))}
           <span className="cp-count">

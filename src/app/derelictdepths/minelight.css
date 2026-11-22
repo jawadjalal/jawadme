@@ -73,7 +73,6 @@ body:has(.ml) { background: #12100e; }
 .ml-eyebrow { font-size: 12px; letter-spacing: 0.16em; color: var(--amber); font-weight: 700; margin: 0 0 10px; }
 .ml-h3 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 34px 0 8px; color: var(--cream); }
 .ml p { margin: 0 0 14px; }
-.ml-sec > .ml-col > p:first-of-type { font-size: 18px; }
 .ml ul.ml-list { margin: 0 0 14px; padding-left: 20px; }
 .ml ul.ml-list li { margin: 4px 0; }
 .ml strong { color: #fff; }
@@ -88,7 +87,8 @@ body:has(.ml) { background: #12100e; }
 .ml-fig figcaption { padding: 12px 18px 14px; border-top: 1px solid var(--rule); background: var(--panel2); font-size: 15px; color: var(--muted); line-height: 1.45; display: flex; gap: 12px; justify-content: space-between; align-items: baseline; flex-wrap: wrap; }
 .ml-fig figcaption b { color: var(--cream); font-weight: 700; }
 .ml-fig figcaption a { font-size: 15px; white-space: nowrap; }
-.ml-hint { display: none; font-size: 12px; color: var(--dim); padding: 0 18px 10px; }
+.ml-hint { display: none; font-size: 15px; color: var(--muted); padding: 12px 18px 0; }
+.ml-hint::before { content: "⇆"; color: var(--amber); margin-right: 8px; }
 @media (max-width: 640px) { .ml-wide .ml-hint { display: block; } }
 
 /* Tables */
@@ -106,9 +106,9 @@ body:has(.ml) { background: #12100e; }
 @media (min-width: 760px) { .ml-grid.two { grid-template-columns: 1fr 1fr; } .ml-grid.three { grid-template-columns: 1fr 1fr 1fr; } }
 .ml-card { background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 16px 6px; }
 .ml-card h3 { margin: 0 0 6px; font-family: var(--display); font-weight: 700; font-size: 18px; color: var(--cream); }
-.ml-card p, .ml-card li { font-size: 16px; color: var(--muted); }
+.ml-card p, .ml-card li { font-size: 17px; color: var(--muted); }
 .ml-card .ml-tag { margin-bottom: 8px; }
-.ml-note { border-left: 3px solid var(--amber); background: var(--panel); padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 18px 0; font-size: 16px; color: var(--cream); }
+.ml-note { border-left: 3px solid var(--amber); background: var(--panel); padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 18px 0; font-size: 17px; color: var(--cream); }
 
 /* Stills */
 .ml-stills { display: grid; gap: 16px; grid-template-columns: 1fr; margin: 20px 0; }
@@ -135,8 +135,8 @@ body:has(.ml) { background: #12100e; }
 .ml-hour h3 span { color: var(--dim); }
 .ml-pr { display: grid; grid-template-columns: 52px 1fr; gap: 2px 12px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
 .ml-pr time { font-variant-numeric: tabular-nums; color: var(--dim); font-size: 14px; padding-top: 2px; }
-.ml-pr .t { font-weight: 650; color: var(--cream); font-size: 16px; line-height: 1.4; }
-.ml-pr .s { color: var(--muted); font-size: 16px; line-height: 1.5; margin-top: 3px; }
+.ml-pr .t { font-weight: 650; color: var(--cream); font-size: 17px; line-height: 1.4; }
+.ml-pr .s { color: var(--muted); font-size: 17px; line-height: 1.5; margin-top: 3px; }
 .ml-pr .m { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 6px; font-size: 12.5px; color: var(--dim); }
 .ml-pr .m code { font-size: 12px; }
 .ml-older { margin-top: 10px; }
@@ -166,41 +166,27 @@ body:has(.ml) { background: #12100e; }
 .ml-vis-imgs figure { margin: 0; position: relative; min-width: 0; }
 .ml-vis-imgs img { width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid var(--rule); background: var(--bg2); }
 .ml-vis-imgs figcaption { position: absolute; left: 8px; top: 8px; background: rgb(7 6 5 / 0.85); color: var(--cream); font-size: 11.5px; font-weight: 800; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 5px; }
-.ml-vis-verdict { margin: 10px 2px 0; font-size: 16px; color: var(--muted); line-height: 1.45; }
+.ml-vis-verdict { margin: 10px 2px 0; font-size: 17px; color: var(--muted); line-height: 1.45; }
 .ml-vis-meta { font-size: 14px; color: var(--dim); }
 .ml-badge.box { background: var(--violet); }
 .ml-badge.ai { background: var(--accent-hi); }
 .ml-badge.pair { background: var(--cream); }
 
-/* Launch board (Launch.tsx): today's goals and the readiness burndown, refreshed with the feed. */
+/* Launch board (Launch.tsx): today's goals and the readiness lines, refreshed with the feed. */
 .ml-goals { list-style: none; margin: 18px 0 8px; padding: 0; display: grid; gap: 12px; grid-template-columns: 1fr; counter-reset: ml-goal; }
 @media (min-width: 900px) { .ml-goals { grid-template-columns: repeat(3, 1fr); } }
 .ml-goals li { background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; padding: 14px 16px; counter-increment: ml-goal; }
 .ml-goals li::before { content: counter(ml-goal); display: block; font-family: var(--display); font-weight: 700; font-size: 28px; line-height: 1; color: var(--amber); margin-bottom: 6px; }
-.ml-goals b { display: block; color: var(--cream); font-size: 16.5px; line-height: 1.3; margin-bottom: 4px; }
-.ml-goals span { display: block; color: var(--muted); font-size: 16px; line-height: 1.45; }
-.ml-lb-counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 16px 0 10px; }
-.ml-lb-count { border: 1px solid var(--rule); border-radius: 12px; padding: 10px 12px; color: var(--ink); }
-.ml-lb-count b { display: block; font-family: var(--display); font-weight: 700; font-size: 34px; line-height: 1.05; font-variant-numeric: tabular-nums; }
-.ml-lb-count span { font-size: 12.5px; font-weight: 800; letter-spacing: 0.08em; }
-.ml-lb-count.red, .ml-lb-bar i.red { background: var(--red); }
-.ml-lb-count.amber, .ml-lb-bar i.amber { background: var(--amber); }
-.ml-lb-count.green, .ml-lb-bar i.green { background: var(--green); }
-.ml-lb-count.killed, .ml-lb-bar i.killed { background: var(--muted); }
-.ml-lb-bar { display: flex; height: 14px; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; margin: 4px 0 14px; background: var(--panel); }
-.ml-lb-bar i { display: block; height: 100%; }
-.ml-lb-chart { margin: 8px 0 14px; max-width: 760px; }
-.ml-lb-chart svg { width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; }
-.ml-lb-chart text { fill: var(--dim); font-size: 11px; }
-.ml-lb-chart figcaption { font-size: 15px; color: var(--dim); margin-top: 6px; }
+.ml-goals b { display: block; color: var(--cream); font-size: 17px; line-height: 1.3; margin-bottom: 4px; }
+.ml-goals span { display: block; color: var(--muted); font-size: 17px; line-height: 1.45; }
 .ml-lb-list { list-style: none; margin: 10px 0 18px; padding: 0; display: grid; gap: 8px; grid-template-columns: 1fr; }
 @media (min-width: 900px) { .ml-lb-list.compact { grid-template-columns: 1fr 1fr; } }
 .ml-lb-line { background: var(--panel); border: 1px solid var(--rule); border-left: 3px solid var(--red); border-radius: 10px; padding: 10px 12px; min-width: 0; }
 .ml-lb-line.amber { border-left-color: var(--amber); }
 .ml-lb-line.green { border-left-color: var(--green); }
 .ml-lb-line.killed { border-left-color: var(--muted); }
-.ml-lb-line b { display: block; color: var(--cream); font-size: 16px; line-height: 1.35; }
-.ml-lb-line p { margin: 4px 0 0; font-size: 16px; color: var(--muted); line-height: 1.45; }
+.ml-lb-line b { display: block; color: var(--cream); font-size: 17px; line-height: 1.35; }
+.ml-lb-line p { margin: 4px 0 0; font-size: 17px; color: var(--muted); line-height: 1.45; }
 .ml-lb-line .m { margin-top: 6px; font-size: 13px; color: var(--dim); display: flex; flex-wrap: wrap; gap: 2px 12px; }
 
 /* jawad's scale (Visuals.tsx). */
@@ -208,7 +194,7 @@ body:has(.ml) { background: #12100e; }
 @media (min-width: 640px) { .ml-scale { grid-template-columns: 1fr 1fr; } }
 .ml-scale > div { background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; padding: 12px 16px; }
 .ml-scale b { display: block; font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1.1; color: var(--amber); }
-.ml-scale span { display: block; color: var(--muted); font-size: 16px; line-height: 1.45; margin-top: 4px; }
+.ml-scale span { display: block; color: var(--muted); font-size: 17px; line-height: 1.45; margin-top: 4px; }
 
 /* Today: the systems grid, and captures at their own shape. */
 .ml-sys { display: grid; gap: 14px; grid-template-columns: 1fr; margin: 18px 0 22px; }
@@ -235,7 +221,7 @@ body:has(.ml) { background: #12100e; }
 .ml-links { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 0; }
 
 /* The labels are set in lowercase like the rest of the site, so they drop the wide tracking capitals needed. */
-.ml-kicker, .ml-eyebrow, .ml-badge, .ml-tag, .ml-tbl th, .ml-live, .ml-hour h3, .ml-lb-count span, .ml-vis-imgs figcaption { letter-spacing: 0.02em; }
+.ml-kicker, .ml-eyebrow, .ml-badge, .ml-tag, .ml-tbl th, .ml-live, .ml-hour h3, .ml-vis-imgs figcaption { letter-spacing: 0.02em; }
 
 /* Phones: every label at a size you can read without the caps it used to lean on, and every link a thumb can hit. */
 @media (max-width: 640px) {
@@ -253,13 +239,11 @@ body:has(.ml) { background: #12100e; }
   .ml-tbl th { font-size: 13px; letter-spacing: 0.02em; }
   .ml-live { font-size: 13px; letter-spacing: 0.02em; }
   .ml-hour h3 { font-size: 14px; letter-spacing: 0.02em; }
-  .ml-lb-count span { font-size: 13px; letter-spacing: 0.02em; }
   .ml-vis-imgs figcaption { font-size: 12.5px; letter-spacing: 0.02em; }
   .ml-card small { font-size: 13px; letter-spacing: 0; }
   .ml-pr .m, .ml-lb-line .m { font-size: 13px; }
   .ml-svg-box { min-width: 720px; }
-  .ml-lb-chart text { font-size: 20px; }
-  .ml-hint, .ml-vis-when { font-size: 13px; }
+  .ml-vis-when { font-size: 13px; }
   .ml-score small { font-size: 13px; }
   .ml-fig figcaption a { display: inline-flex; align-items: center; min-height: 44px; }
   .ml-older summary { display: flex; align-items: center; min-height: 44px; padding: 0; }
