@@ -100,9 +100,9 @@ export function OrbitMarquee({ ads }: Props) {
       for (let i = 0; i < pos.count; i++) {
         const x = pos.getX(i);
         const theta = x / R;
-        // Bend onto concave cylinder surface at z = -R
+        // Bend onto a CONVEX cylinder so the front cards stretch forward toward the viewer like Outpace
         const cx = Math.sin(theta) * R;
-        const cz = -Math.cos(theta) * R;
+        const cz = Math.cos(theta) * R;
         pos.setXYZ(i, cx, pos.getY(i), cz);
       }
       pos.needsUpdate = true;
@@ -139,22 +139,21 @@ export function OrbitMarquee({ ads }: Props) {
 
       const mesh = new THREE.Mesh(sharedGeo, mat);
       const pivot = new THREE.Group();
-      pivot.rotation.y = -i * arcStep;
+      pivot.rotation.y = i * arcStep;
       mesh.userData = { href: `/w/${ad.id}`, idx: i };
       pivot.add(mesh);
       ring.add(pivot);
       meshes.push(mesh);
     });
 
-    // Camera distance adjusts cleanly for mobile vs desktop so ~3.5 curved cards fill the viewport
+    // Place camera outside the convex drum so the center ad stretches proudly forward
     const fitCamera = () => {
       const w = host.clientWidth;
       const h = Math.max(host.clientHeight, 1);
       camera.aspect = w / h;
       const fovRad = (camera.fov * Math.PI) / 180;
-      // Fit card height comfortably inside viewport with breathing room
-      const distFromWall = (cardH / 2) / Math.tan(fovRad / 2) * (w < 768 ? 1.24 : 1.16);
-      camera.position.z = -R + distFromWall;
+      const distFromFront = (cardH / 2) / Math.tan(fovRad / 2) * (w < 768 ? 1.24 : 1.16);
+      camera.position.z = R + distFromFront;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
@@ -194,7 +193,7 @@ export function OrbitMarquee({ ads }: Props) {
         const dx = e.clientX - lastX;
         lastX = e.clientX;
         if (Math.abs(e.clientX - startX) > 6) moved = true;
-        const delta = -dx * 0.0022;
+        const delta = dx * 0.0022;
         rotY += delta;
         vel = delta * 36;
       } else {
@@ -248,7 +247,7 @@ export function OrbitMarquee({ ads }: Props) {
       last = now;
 
       if (!dragActive) {
-        const baseSpeed = isHover ? 0.032 : 0.095;
+        const baseSpeed = isHover ? -0.032 : -0.095;
         rotY += (baseSpeed + vel) * dt;
         vel *= Math.pow(0.05, dt);
         if (Math.abs(vel) < 0.0005) vel = 0;

@@ -8,8 +8,9 @@ import { LondonClock } from "./LondonClock";
 
 const LAST_DAYS = (gh.levels as number[]).slice(-112);
 
-/** Brass Hands industrial top bar with live London time, GitHub contributions, CV, Email,
- *  and square glossy orange Book a Call CTA. Clean centered bio without age. */
+/** Authentic Brass Hands–scale industrial command header:
+ *  Generous height, tall stacked wordmark, 3-line London telemetry, 2-row stacked orange nav + GitHub commits,
+ *  and tall 4-corner hatched Book a Call CTA. */
 export function Hero() {
   return (
     <section className="nh-bh" data-hero="">
@@ -18,9 +19,9 @@ export function Hero() {
           <Image
             src="/design/jawad-die.webp"
             alt="Jawad Jalal"
-            width={40}
-            height={45}
-            sizes="34px"
+            width={52}
+            height={58}
+            sizes="48px"
             priority
             className="bh-head"
           />
@@ -30,12 +31,26 @@ export function Hero() {
           </span>
         </Link>
 
-        <div className="bh-ops">
-          <div className="bh-ops-line">
-            <span>LONDON, UK</span>
-            <span className="bh-ops-sep">/</span>
-            <LondonClock />
-          </div>
+        <div className="bh-ops-col">
+          <span>ADS / BRANDS / SITES / 3D</span>
+          <span>STATUS: AVAILABLE NOW</span>
+          <span className="bh-ops-time">
+            LONDON, UK <i className="bh-ops-sep">/</i> <LondonClock />
+          </span>
+        </div>
+
+        <div className="bh-nav-col">
+          <nav className="bh-topnav" aria-label="Primary">
+            <Link href="/work">WORK</Link>
+            <Link href="/about">ABOUT</Link>
+            <a href={SITE.cv} download>
+              CV
+            </a>
+            <MailLink src="topbar" className="bh-nav-mail">
+              EMAIL
+            </MailLink>
+          </nav>
+
           <a
             href="https://github.com/jawadjalal"
             target="_blank"
@@ -52,18 +67,7 @@ export function Hero() {
           </a>
         </div>
 
-        <nav className="bh-topnav" aria-label="Primary">
-          <Link href="/work">WORK</Link>
-          <Link href="/about">ABOUT</Link>
-          <a href={SITE.cv} download>
-            CV
-          </a>
-          <MailLink src="topbar" className="bh-nav-mail">
-            EMAIL
-          </MailLink>
-        </nav>
-
-        <BookLink src="home-top" className="bh-cta">
+        <BookLink src="home-top" className="bh-cta bh-cta-tall">
           <span className="bh-cta-in">BOOK A CALL ↗</span>
         </BookLink>
       </header>
