@@ -1,4 +1,4 @@
-import { Tag } from "./ui";
+import { Tag, scrub } from "./ui";
 
 // The "what shipped" feed. A timer on the build box roblox-3 (robl42-feed.timer, every 3 minutes) lists the PRs
 // merged into the game repo's main, gives each a one-line plain summary, scrubs anything that isn't public-safe
@@ -70,13 +70,13 @@ function Pr({ item }: { item: Item }) {
     <li className="ml-pr">
       <time dateTime={item.merged_at}>{hm.format(d)}</time>
       <div>
-        <div className="t">{item.title}</div>
-        {item.summary && item.summary !== item.title ? <div className="s">{item.summary}</div> : null}
-        <div className="m">
-          <span>#{item.n}</span>
-          {item.sha ? <code>{item.sha}</code> : null}
-          {item.area ? <Tag area={item.area} /> : null}
-        </div>
+        <div className="t">{scrub(item.title)}</div>
+        {item.summary && item.summary !== item.title ? <div className="s">{scrub(item.summary)}</div> : null}
+        {item.area ? (
+          <div className="m">
+            <Tag area={item.area} />
+          </div>
+        ) : null}
       </div>
     </li>
   );
@@ -94,7 +94,6 @@ export function FeedMeta({ feed, renderedAt }: { feed: FeedData; renderedAt: num
       </span>
       <span>page built {hms.format(new Date(renderedAt))}</span>
       <span>{feed.merged_24h} merged in the last 24 hours</span>
-      {feed.main ? <span>main <code>{feed.main}</code></span> : null}
     </div>
   );
 }
