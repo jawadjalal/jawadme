@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/ds/Footer";
 import { Hero } from "@/components/ds/Hero";
-import { InlineGlyph } from "@/components/ds/InlineGlyph";
+import { BeatIcon, InlinePill } from "@/components/ds/InlineGlyph";
 import { LogoMarquee } from "@/components/ds/LogoMarquee";
 import { OrbitMarquee } from "@/components/ds/OrbitMarquee";
 import { WorkShowcase, type ShowcaseItem } from "@/components/ds/WorkShowcase";
@@ -132,29 +132,14 @@ export default function Home() {
 
       <LogoMarquee />
 
-      {/* Joyco-inspired ruled editorial statement with tactile inline graphics */}
+      {/* Clean single-column Joyco-style editorial statement */}
       <section className="joy-stmt" aria-label="Statement">
-        <div className="joy-stmt-grid">
-          <div className="joy-stmt-main">
-            <h2 className="joy-stmt-h">
-              Sharp <InlineGlyph kind="brands" tilt={-3} /> brands,{" "}
-              <InlineGlyph kind="bolt" tilt={3} /> scroll-stopping ads, and high-craft{" "}
-              <InlineGlyph kind="sites" tilt={-2} /> sites built from scratch.
-            </h2>
-          </div>
-          <div className="joy-stmt-side">
-            <p className="joy-stmt-p">
-              Founder of Ignura Studio in London. I work directly with founders on launches, brand identities, 3D visuals, and web experiences that convert.
-            </p>
-            <div className="joy-stmt-links">
-              <Link href="/work" className="joy-link">
-                EXPLORE ALL 110+ PIECES ↗
-              </Link>
-              <Link href="/about" className="joy-link joy-link-dim">
-                ABOUT ME ↗
-              </Link>
-            </div>
-          </div>
+        <div className="joy-stmt-single">
+          <h2 className="joy-stmt-h">
+            Sharp <InlinePill kind="brands" /> brands,{" "}
+            <InlinePill kind="campaign" /> scroll-stopping ads, and high-craft{" "}
+            <InlinePill kind="sites" /> sites built from scratch.
+          </h2>
         </div>
       </section>
 
@@ -164,43 +149,29 @@ export default function Home() {
       {/* Short editorial beat breaking up the work */}
       <div className="ed-beat">
         <p className="ed-beat-text">
-          <InlineGlyph kind="ads" size="sm" tilt={-3} />
-          <span>Scroll-stopping campaign art &amp; static ads for tech and consumer brands.</span>
+          <BeatIcon kind="frame" />
+          <span>Campaign art &amp; static ads built for fast-moving teams.</span>
         </p>
         <Link href="/work" className="ed-beat-link">
-          ALL ADS ↗
+          ALL WORK ↗
         </Link>
       </div>
 
       {/* Band 2: 6 Selected Ads (1 tight row) */}
       <WorkShowcase items={ADS_BAND} />
 
-      {/* Short editorial beat about Jawad with icons */}
+      {/* Short editorial beat about Jawad */}
       <div className="ed-beat">
         <p className="ed-beat-text">
-          <InlineGlyph kind="studio" size="sm" tilt={3} />
-          <span>
-            Previously product design at MenuFit (1.5M users) &amp; Okara (14M launch views), plus{" "}
-          </span>
-          <InlineGlyph kind="cube" size="sm" tilt={-3} />
+          <BeatIcon kind="layers" />
+          <span>Product design for MenuFit (1.5M users) &amp; Okara (14M launch views), plus</span>
+          <BeatIcon kind="cube" />
           <span>3D art for Roblox worlds with 11B+ visits.</span>
         </p>
-        <Link href="/about" className="ed-beat-link">
-          MY JOURNEY ↗
-        </Link>
       </div>
 
       {/* Band 3: 3 Studio & Product Builds */}
       <WorkShowcase items={STUDIO_BAND} />
-
-      <div className="ws-archive-strip">
-        <Link href="/work" className="ws-archive-link">
-          <span>
-            <InlineGlyph kind="reach" size="sm" tilt={-2} /> OPEN THE EXPLORABLE WORK WORLD
-          </span>
-          <span className="ws-archive-n">110+ PIECES ↗</span>
-        </Link>
-      </div>
 
       {/* Heavily refined Brass Hands × Signpost footer */}
       <Footer src="home-footer" />

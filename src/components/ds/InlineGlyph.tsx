@@ -1,153 +1,123 @@
 import Image from "next/image";
 
-export type GlyphKind =
-  | "head"
-  | "ads"
-  | "brands"
-  | "sites"
-  | "cube"
-  | "london"
-  | "studio"
-  | "bolt"
-  | "reach";
+export type PillKind = "head" | "ads" | "brands" | "sites" | "3d" | "campaign";
 
-/** Tactile Cal.com-style inline micro-graphics crafted for headlines and editorial breaks. */
-export function InlineGlyph({
-  kind,
-  tilt = 0,
-  size = "md",
-}: {
-  kind: GlyphKind;
-  tilt?: number;
-  size?: "sm" | "md";
-}) {
-  return (
-    <span
-      className={`ig-tile ig-${kind} ig-${size}`}
-      style={{ "--ig-tilt": `${tilt}deg` } as React.CSSProperties}
-      aria-hidden="true"
-    >
-      {kind === "head" && (
+/** Straight, varied-width editorial visual pills embedded inline in display headlines
+ *  using real previews of Jawad's own work (zero tilt, zero generic icon boxes). */
+export function InlinePill({ kind }: { kind: PillKind }) {
+  if (kind === "head") {
+    return (
+      <span className="ip-pill ip-head" aria-hidden="true">
         <Image
           src="/design/jawad-die.webp"
           alt=""
-          width={36}
-          height={40}
-          sizes="36px"
-          className="ig-head-img"
+          width={44}
+          height={48}
+          sizes="44px"
+          className="ip-head-img"
         />
-      )}
+      </span>
+    );
+  }
 
-      {kind === "ads" && (
-        <svg viewBox="0 0 28 28" fill="none" className="ig-svg">
-          {/* Mini campaign poster card with viewfinder corners */}
-          <rect x="4" y="3" width="20" height="22" rx="3.5" fill="url(#igAdsBg)" stroke="rgba(255,255,255,0.28)" strokeWidth="1.2" />
-          <path d="M8 8.5h12M8 12h7" stroke="#181818" strokeWidth="1.8" strokeLinecap="round" opacity="0.85" />
-          <circle cx="17.5" cy="18" r="3.4" fill="#181818" opacity="0.82" />
-          <circle cx="17.5" cy="18" r="1.4" fill="#ff9f5a" />
-          <defs>
-            <linearGradient id="igAdsBg" x1="4" y1="3" x2="24" y2="25" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#ff8833" />
-              <stop offset="1" stopColor="#ff5500" />
-            </linearGradient>
-          </defs>
-        </svg>
-      )}
+  if (kind === "ads") {
+    return (
+      <span className="ip-pill ip-ads" aria-hidden="true">
+        <Image
+          src="/ads/new/on-480.webp"
+          alt=""
+          width={96}
+          height={120}
+          sizes="80px"
+          className="ip-cover"
+        />
+      </span>
+    );
+  }
 
-      {kind === "brands" && (
-        <svg viewBox="0 0 28 28" fill="none" className="ig-svg">
-          {/* Precision 4-point brand spark with registration reticle */}
-          <circle cx="14" cy="14" r="9.5" stroke="rgba(255,255,255,0.16)" strokeWidth="1.2" strokeDasharray="2 2.5" />
-          <path
-            d="M14 4.8L16.35 11.65L23.2 14L16.35 16.35L14 23.2L11.65 16.35L4.8 14L11.65 11.65L14 4.8Z"
-            fill="url(#igBrandGrad)"
-          />
-          <circle cx="14" cy="14" r="1.9" fill="#1e1e1e" />
-          <defs>
-            <linearGradient id="igBrandGrad" x1="5" y1="5" x2="23" y2="23" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#fff4eb" />
-              <stop offset="0.55" stopColor="#ff7b29" />
-              <stop offset="1" stopColor="#ff5500" />
-            </linearGradient>
-          </defs>
-        </svg>
-      )}
+  if (kind === "brands") {
+    return (
+      <span className="ip-pill ip-brands" aria-hidden="true">
+        <Image
+          src="/logos/clean/ignaru.png"
+          alt=""
+          width={32}
+          height={32}
+          unoptimized
+          className="ip-mark"
+        />
+      </span>
+    );
+  }
 
-      {kind === "sites" && (
-        <svg viewBox="0 0 28 28" fill="none" className="ig-svg">
-          {/* Tactile mini browser window */}
-          <rect x="3" y="5" width="22" height="18" rx="3.5" fill="#2c2c2c" stroke="rgba(255,255,255,0.22)" strokeWidth="1.2" />
-          <path d="M3 10.2h22" stroke="rgba(255,255,255,0.14)" strokeWidth="1.1" />
-          <circle cx="6.8" cy="7.6" r="1.15" fill="#ff6200" />
-          <circle cx="10.2" cy="7.6" r="1.15" fill="#adb3b7" opacity="0.65" />
-          <circle cx="13.6" cy="7.6" r="1.15" fill="#adb3b7" opacity="0.35" />
-          <rect x="6" y="13" width="8" height="7" rx="1.5" fill="#ff6200" opacity="0.88" />
-          <rect x="16" y="13" width="6" height="2.8" rx="1" fill="rgba(255,255,255,0.34)" />
-          <rect x="16" y="17.2" width="6" height="2.8" rx="1" fill="rgba(255,255,255,0.18)" />
-        </svg>
-      )}
+  if (kind === "sites") {
+    return (
+      <span className="ip-pill ip-sites" aria-hidden="true">
+        <Image
+          src="/work/ignaru.webp"
+          alt=""
+          width={140}
+          height={88}
+          sizes="100px"
+          className="ip-cover"
+        />
+      </span>
+    );
+  }
 
-      {kind === "cube" && (
-        <svg viewBox="0 0 28 28" fill="none" className="ig-svg">
-          {/* Faceted isometric 3D cube */}
-          <path d="M14 4L23 9.2L14 14.4L5 9.2L14 4Z" fill="#ff8438" />
-          <path d="M5 9.2L14 14.4V24L5 18.8V9.2Z" fill="#d94e00" />
-          <path d="M23 9.2L14 14.4V24L23 18.8V9.2Z" fill="#2d2d2d" />
-          <path
-            d="M14 4L23 9.2V18.8L14 24L5 18.8V9.2L14 4ZM14 14.4V24M14 14.4L5 9.2M14 14.4L23 9.2"
-            stroke="rgba(255,255,255,0.38)"
-            strokeWidth="1.05"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
+  if (kind === "campaign") {
+    return (
+      <span className="ip-pill ip-campaign" aria-hidden="true">
+        <Image
+          src="/ads/new/cisco-480.webp"
+          alt=""
+          width={96}
+          height={120}
+          sizes="80px"
+          className="ip-cover"
+        />
+      </span>
+    );
+  }
 
-      {kind === "london" && (
-        <svg viewBox="0 0 28 28" fill="none" className="ig-svg">
-          {/* Precision radar / meridian target */}
-          <circle cx="14" cy="14" r="9" stroke="rgba(255,255,255,0.22)" strokeWidth="1.3" />
-          <circle cx="14" cy="14" r="4.8" stroke="#ff6200" strokeWidth="1.4" />
-          <circle cx="14" cy="14" r="2" fill="#f2f2f0" />
-          <path d="M14 3v3.2M14 21.8V25M3 14h3.2M21.8 14H25" stroke="rgba(255,255,255,0.3)" strokeWidth="1.2" strokeLinecap="round" />
-        </svg>
-      )}
-
-      {kind === "studio" && (
-        <svg viewBox="0 0 28 28" fill="none" className="ig-svg">
-          {/* Stacked layered architecture planes */}
-          <path d="M14 5L23 9.8L14 14.6L5 9.8L14 5Z" fill="#ff7224" />
-          <path d="M5 14.4L14 19.2L23 14.4" stroke="#f2f2f0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.85" />
-          <path d="M5 18.8L14 23.6L23 18.8" stroke="#ff6200" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
-        </svg>
-      )}
-
-      {kind === "bolt" && (
-        <svg viewBox="0 0 28 28" fill="none" className="ig-svg">
-          <path
-            d="M15.8 4L6.8 15.2H13.4L12.2 24L21.2 12.8H14.6L15.8 4Z"
-            fill="url(#igBoltGrad)"
-            stroke="rgba(255,255,255,0.35)"
-            strokeWidth="1"
-            strokeLinejoin="round"
-          />
-          <defs>
-            <linearGradient id="igBoltGrad" x1="7" y1="4" x2="21" y2="24" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#fff2e6" />
-              <stop offset="0.45" stopColor="#ff7a26" />
-              <stop offset="1" stopColor="#e54d00" />
-            </linearGradient>
-          </defs>
-        </svg>
-      )}
-
-      {kind === "reach" && (
-        <svg viewBox="0 0 28 28" fill="none" className="ig-svg">
-          {/* Signal arcs / scale */}
-          <circle cx="9.5" cy="18.5" r="3.2" fill="#ff6200" />
-          <path d="M9.5 11.2A7.3 7.3 0 0 1 16.8 18.5" stroke="#f2f2f0" strokeWidth="2" strokeLinecap="round" />
-          <path d="M9.5 6.4A12.1 12.1 0 0 1 21.6 18.5" stroke="#ff6200" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
-        </svg>
-      )}
+  // "3d"
+  return (
+    <span className="ip-pill ip-3d" aria-hidden="true">
+      <Image
+        src="/work/fracture/mole-king.webp"
+        alt=""
+        width={120}
+        height={80}
+        sizes="90px"
+        className="ip-cover"
+      />
     </span>
+  );
+}
+
+/** Ultra-clean, straight 1.5px hairline monochrome icons for editorial line breaks. */
+export function BeatIcon({ kind }: { kind: "frame" | "layers" | "cube" }) {
+  if (kind === "frame") {
+    return (
+      <svg className="ed-ico" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <rect x="2.25" y="2.25" width="11.5" height="11.5" rx="2" stroke="currentColor" strokeWidth="1.4" />
+        <path d="M5 6h6M5 9.5h3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  if (kind === "layers") {
+    return (
+      <svg className="ed-ico" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 2.2L14 5.5L8 8.8L2 5.5L8 2.2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+        <path d="M2 8.4L8 11.7L14 8.4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M2 11.1L8 14.4L14 11.1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  return (
+    <svg className="ed-ico" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M8 2L13.5 5.1V11.3L8 14.4L2.5 11.3V5.1L8 2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <path d="M8 8.2V14.4M8 8.2L2.5 5.1M8 8.2L13.5 5.1" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    </svg>
   );
 }

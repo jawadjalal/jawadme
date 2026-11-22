@@ -4,7 +4,7 @@ import { BookLink } from "@/components/BookLink";
 import { MailLink } from "@/components/MailLink";
 import gh from "@/content/github-contributions.json";
 import { SITE } from "@/content/site";
-import { InlineGlyph } from "./InlineGlyph";
+import { InlinePill } from "./InlineGlyph";
 import { LondonClock } from "./LondonClock";
 
 const LAST_DAYS = (gh.levels as number[]).slice(-112);
@@ -75,11 +75,11 @@ export function Hero() {
 
       <div className="bh-hero-center">
         <h1 className="bh-hero-bio">
-          I&apos;m <InlineGlyph kind="head" tilt={-4} /> Jawad. I design and build{" "}
-          <InlineGlyph kind="ads" tilt={3} /> ads,{" "}
-          <InlineGlyph kind="brands" tilt={-3} /> brands,{" "}
-          <InlineGlyph kind="sites" tilt={2} /> sites, and{" "}
-          <InlineGlyph kind="cube" tilt={-3} /> 3D in London.
+          I&apos;m <InlinePill kind="head" /> Jawad. I design and build{" "}
+          <InlinePill kind="ads" /> ads,{" "}
+          <InlinePill kind="brands" /> brands,{" "}
+          <InlinePill kind="sites" /> sites, and{" "}
+          <InlinePill kind="3d" /> 3D in London.
         </h1>
       </div>
     </section>
