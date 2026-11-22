@@ -29,8 +29,8 @@ const mark = () => {
  *  cut into it, a dark enamel face, mint-inlaid rivets and a mint groove under the label that lights on hover and focus.
  *  cta is the book-a-call that opens to "· [jawad] + you": its plate is drawn at the open width and clipped back to the
  *  label, the right cap rides the clip edge, so the label never moves and nothing lays out. A tap holds it open on touch,
- *  then navigates. arm is the call as the footer pillar's sign, email the frame with a warmer face, pill and filter the
- *  small rounded forms with a thin fret rim and a selected state; a pill with no href is a button, and one with `download` a
+ *  then navigates. arm is the call as the footer pillar's sign, email the frame with a warmer face, pill and filter plain
+ *  lowercase text on a gilded underline with a selected state; a pill with no href is a button, and one with `download` a
  *  plain download link. Like BookCallB, a hero cta in view sets
  *  html[data-call-in-view] and the first observation sets html[data-call-seen], which releases a dock cta with `hold`; the
  *  footer pillar's arm and a pill with `call` (the call set as a pill) count the same way. */

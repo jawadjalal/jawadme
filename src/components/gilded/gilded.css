@@ -1,6 +1,6 @@
 /* Gilded buttons. Gold leaf from flat tones only: a mid plate, a lit upper band and a shaded lower band of the frame's
    own depth, a bright lip, a dark foot, a dark cut around the enamel and our own fret cut into the bands (a stepped key on
-   the large forms, a coarse square key at dock size, a thin square rim on pill and filter), each tile drawn on whole
+   the large forms, a coarse square key at dock size, and pill and filter as plain text on a gilded underline), each tile drawn on whole
    pixels so the cuts stay crisp. Every edge is hard; the only soft light is the mint groove's glow. States are numbers on
    the root (--hv hover, --op open, --lit light, --pr press) so each rule is written once. Forced states for the preview:
    a data-state="hover|press|focus|selected" ancestor. */
