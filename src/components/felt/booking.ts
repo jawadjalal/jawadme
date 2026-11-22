@@ -1,10 +1,10 @@
-// The intro call's real state, read from Cal.com's public API when the page is built and every 30 minutes after:
+// The 15 minute call's real state, read from Cal.com's public API when the page is built and every 30 minutes after:
 // its length, where it happens, and the next free slots this week. Falls back to the plain link if Cal is down.
 import { BOOK } from "./copy";
 
 export type Booking = { minutes: number; where: "meet" | "video"; slots: { iso: string; day: string; time: string }[] };
 
-const USER = "jawad-jalal-hesqbk", EVENT = "intro-call-with-ignura";
+const USER = "jawad-jalal-hesqbk", EVENT = "15min";
 const FALLBACK: Booking = { minutes: 15, where: "video", slots: [] };
 
 export async function getBooking(): Promise<Booking> {

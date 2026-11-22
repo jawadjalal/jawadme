@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { IDENTITY, SKILLS, SOCIALS } from "@/lib/profile";
 
 // The same who and what as the home page: a design engineer who makes Ignaru, and designs sites and ads for startups.
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </filter>
         </svg>
         {children}
+        <Analytics />
       </body>
     </html>
   );

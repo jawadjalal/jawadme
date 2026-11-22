@@ -6,6 +6,7 @@
 // over the wall, and a small hire button stays at the bottom of the screen once the header's own has gone.
 
 import { useEffect, useRef, useState } from "react";
+import { openBooking } from "../cal";
 import { Marquee } from "./Marquee";
 import { SquircleButton } from "./SquircleButton";
 import { Sticker, type StickerPic } from "./Sticker";
@@ -115,7 +116,7 @@ export function StoryColumn({
           <b>Jawad Jalal</b> {does.map((d, i) => (i ? d.toLowerCase() : d)).join(", ")}
         </p>
         <div className="col-act" ref={cta}>
-          <SquircleButton href={hire} icon="phone" label="Call me: book a call">
+          <SquircleButton href={`${hire}?src=home`} onClick={openBooking("home")} icon="phone" label="Call me: book a call">
             call me
           </SquircleButton>
           <a className="col-mail" href={second.href} aria-label={`Email me at ${second.address}`}>
@@ -182,7 +183,7 @@ export function StoryColumn({
       </div>
 
       <div className="col-float" data-on={stuck} inert={!stuck}>
-        <SquircleButton href={hire} size="sm" icon="phone" label="Call me: book a call">
+        <SquircleButton href={`${hire}?src=home`} onClick={openBooking("home")} size="sm" icon="phone" label="Call me: book a call">
           call me
         </SquircleButton>
       </div>
