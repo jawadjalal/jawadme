@@ -41,7 +41,7 @@ html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor
 .lb-hint {
   position: absolute;
   left: 16px;
-  bottom: 22px;
+  bottom: 33px;
   font: 600 13px/1 var(--f-bar, system-ui, sans-serif);
   letter-spacing: 0.02em;
   color: #a89f90;
@@ -53,7 +53,7 @@ html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor
 
 @media (max-width: 767px) {
   .lb-cta { right: 12px; bottom: 12px; }
-  .lb-hint { left: 12px; bottom: 26px; }
+  .lb-hint { left: 12px; bottom: 29px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
