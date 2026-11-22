@@ -9,9 +9,7 @@ import "@/styles/footer.css";
 
 const LINKS = SOCIALS.filter((s) => s.href.startsWith("https://") && s.label !== "linkedin");
 
-/** Clean Architectural Wayfinder Footer:
- *  Replaces the broken 3D Pillar signpost with a framed ember-graded Hades wayfinder plate
- *  alongside a structured Brass Hands–style contact matrix and GitHub activity graph. */
+/** Minimal Brass Hands × Hades II Wayfinder Footer — zero filler copy. */
 export function Footer({
   src,
   pillar = true,
@@ -27,13 +25,9 @@ export function Footer({
     <footer className="bh-foot">
       <div className="bh-foot-top">
         <div className="bh-foot-main">
-          <span className="sec-idx">[05] // INITIATE PROJECT</span>
           <h2 className="bh-foot-h">
-            READY TO SHIP SOMETHING <span className="nh-accent">UNFORGETTABLE?</span>
+            LET&apos;S <span className="nh-accent">WORK.</span>
           </h2>
-          <p className="bh-foot-sub">
-            15-minute intro call or direct email. Available for brands, ad campaigns, high-craft websites, and 3D/Roblox work.
-          </p>
           <div className="bh-foot-actions">
             {book ? (
               <BookLink src={src} className="bh-cta bh-cta-lg">
@@ -51,10 +45,6 @@ export function Footer({
 
         {pillar ? (
           <figure className="bh-foot-plate">
-            <div className="bh-foot-plate-head">
-              <span>FIG. 04 // WAYFINDER</span>
-              <span>LONDON · UTC</span>
-            </div>
             <div className="bh-foot-plate-art">
               <Image
                 src="/world/poster/pillar-d.webp"
@@ -81,14 +71,14 @@ export function Footer({
       </div>
 
       <div className="bh-foot-bar">
-        <span>©2026 JAWAD JALAL // ALL RIGHTS RESERVED</span>
+        <span>©2026 JAWAD JALAL</span>
         <span className="bh-foot-nav">
           <Link href="/work">WORK</Link>
           <Link href="/about">ABOUT</Link>
           <Link href="/contact">CONTACT</Link>
           <a href={SITE.cv}>CV</a>
         </span>
-        <span>DESIGNED &amp; ENGINEERED IN LONDON</span>
+        <span>LONDON</span>
       </div>
     </footer>
   );

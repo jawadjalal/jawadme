@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { BookLink } from "@/components/BookLink";
 import { Footer } from "@/components/ds/Footer";
-import { HadesDiagrams } from "@/components/ds/HadesDiagrams";
 import { Hero } from "@/components/ds/Hero";
+import { LogoMarquee } from "@/components/ds/LogoMarquee";
 import { OrbitMarquee } from "@/components/ds/OrbitMarquee";
+import { ScrollMorph } from "@/components/ds/ScrollMorph";
 import { Timeline } from "@/components/ds/Timeline";
 import { WorkShowcase, type ShowcaseItem } from "@/components/ds/WorkShowcase";
 import { LoaderB } from "@/components/loader/LoaderB";
@@ -14,7 +13,6 @@ import { COSMOS, SITES } from "@/lib/design";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-// Curate 18 diverse standout ads for the Outpace-style curved 3D rotating marquee
 const MARQUEE_IDS = [
   "cisco",
   "subaru",
@@ -39,6 +37,22 @@ const MARQUEE_ADS = MARQUEE_IDS.map((id) => ADS.find((a) => a.id === id)).filter
   (a): a is (typeof ADS)[number] => Boolean(a),
 );
 
+const adCard = (id: string, title: string): ShowcaseItem | null => {
+  const a = ADS.find((x) => x.id === id);
+  if (!a) return null;
+  return {
+    id: `ad-${a.id}`,
+    href: `/w/${a.id}`,
+    title,
+    category: "ads",
+    src: a.src,
+    w: a.w,
+    h: a.h,
+    alt: a.alt,
+    span: "third",
+  };
+};
+
 const ignaru = projectBySlug("ignaru")!;
 const ignuraSeo = projectBySlug("ignura-seo")!;
 const ignura = projectBySlug("ignura")!;
@@ -51,16 +65,20 @@ const outpace = projectBySlug("outpace")!;
 const menufit = SITES.find((s) => s.id === "site-menufit");
 const cosmosLead = COSMOS[0];
 
-const SHOWCASE: ShowcaseItem[] = [
+const TOP_WORK: ShowcaseItem[] = [
+  ...[
+    adCard("cisco", "Cisco"),
+    adCard("subaru", "Subaru"),
+    adCard("asana", "Asana"),
+    adCard("tesla", "Tesla"),
+    adCard("spacex", "SpaceX"),
+    adCard("vercel-c", "Vercel"),
+  ].filter((x): x is ShowcaseItem => Boolean(x)),
   {
     id: ignaru.slug,
     href: `/work/${ignaru.slug}`,
-    title: "IGNARU",
-    subtitle: "Design tool: circle what's wrong on canvas, your coding agent fixes it in your files.",
+    title: "Ignaru",
     category: "brand-web",
-    disciplines: "PRODUCT · BRAND · WEB · ENGINEERING",
-    metric: "LIVE PRODUCT",
-    year: "2026",
     src: ignaru.cover.src,
     w: ignaru.cover.w,
     h: ignaru.cover.h,
@@ -71,12 +89,8 @@ const SHOWCASE: ShowcaseItem[] = [
   {
     id: ignuraSeo.slug,
     href: `/work/${ignuraSeo.slug}`,
-    title: "IGNURA STUDIO SEO",
-    subtitle: "AI-native SEO & GEO launch site with custom 3D pipe machinery.",
+    title: "Ignura SEO",
     category: "brand-web",
-    disciplines: "BRAND · WEBSITE · 3D",
-    metric: "SIX-FIGURE ARR",
-    year: "2026",
     src: ignuraSeo.cover.src,
     w: ignuraSeo.cover.w,
     h: ignuraSeo.cover.h,
@@ -87,26 +101,22 @@ const SHOWCASE: ShowcaseItem[] = [
   {
     id: coresrent.slug,
     href: `/work/${coresrent.slug}`,
-    title: "CORESRENT",
-    subtitle: "Fund real GPUs in verified data centres with a live WebGL hero.",
+    title: "Coresrent",
     category: "brand-web",
-    disciplines: "WEBSITE · WEBGL · FRONTEND",
-    year: "2026",
     src: coresrent.cover.src,
     w: coresrent.cover.w,
     h: coresrent.cover.h,
     alt: coresrent.cover.alt,
     span: "half",
   },
+];
+
+const BOTTOM_WORK: ShowcaseItem[] = [
   {
     id: fracture.slug,
     href: `/work/${fracture.slug}`,
-    title: "FRACTURE",
-    subtitle: "Roblox mining game I design & build — 68 ores, six floors, one Mole King.",
+    title: "Fracture",
     category: "3d-roblox",
-    disciplines: "GAME DESIGN · 3D · UI · ENGINEERING",
-    metric: "IN PRODUCTION",
-    year: "2026",
     src: fracture.cover.src,
     w: fracture.cover.w,
     h: fracture.cover.h,
@@ -116,12 +126,8 @@ const SHOWCASE: ShowcaseItem[] = [
   {
     id: palantir.slug,
     href: `/work/${palantir.slug}`,
-    title: "PALANTIR CAMPAIGN",
-    subtitle: "The mark formed by a carrier deck crew and a ship's wake at sea.",
+    title: "Palantir",
     category: "ads",
-    disciplines: "AD CAMPAIGN · ART DIRECTION",
-    metric: "SPEC CONCEPT",
-    year: "2026",
     src: palantir.cover.src,
     w: palantir.cover.w,
     h: palantir.cover.h,
@@ -131,12 +137,8 @@ const SHOWCASE: ShowcaseItem[] = [
   {
     id: whop.slug,
     href: `/work/${whop.slug}`,
-    title: "WHOP CAMPAIGN",
-    subtitle: "The new economy, painted, printed, and flown across outdoor formats.",
+    title: "Whop",
     category: "ads",
-    disciplines: "AD CAMPAIGN · ART DIRECTION",
-    metric: "SPEC CONCEPT",
-    year: "2026",
     src: whop.cover.src,
     w: whop.cover.w,
     h: whop.cover.h,
@@ -146,12 +148,8 @@ const SHOWCASE: ShowcaseItem[] = [
   {
     id: outpace.slug,
     href: `/work/${outpace.slug}`,
-    title: "OUTPACE STUDIOS",
-    subtitle: "Their signature orange reimagined as a running track across every frame.",
+    title: "Outpace",
     category: "ads",
-    disciplines: "AD CAMPAIGN · ART DIRECTION",
-    metric: "SPEC CONCEPT",
-    year: "2026",
     src: outpace.cover.src,
     w: outpace.cover.w,
     h: outpace.cover.h,
@@ -161,12 +159,8 @@ const SHOWCASE: ShowcaseItem[] = [
   {
     id: ignura.slug,
     href: `/work/${ignura.slug}`,
-    title: "IGNURA STUDIO",
-    subtitle: "My ad & brand studio's flagship site — ads and brands people stop for.",
+    title: "Ignura Studio",
     category: "brand-web",
-    disciplines: "BRAND · WEBSITE",
-    metric: "FOUNDER",
-    year: "2026",
     src: ignura.cover.src,
     w: ignura.cover.w,
     h: ignura.cover.h,
@@ -178,12 +172,8 @@ const SHOWCASE: ShowcaseItem[] = [
         {
           id: menufit.id,
           href: `/w/${menufit.id}`,
-          title: "MENUFIT",
-          subtitle: "Product design for the healthy dining app at 7-figure MRR.",
+          title: "MenuFit",
           category: "brand-web" as const,
-          disciplines: "PRODUCT DESIGN · WEB",
-          metric: "1.5M USERS",
-          year: "2026",
           src: menufit.src,
           w: menufit.w,
           h: menufit.h,
@@ -197,12 +187,8 @@ const SHOWCASE: ShowcaseItem[] = [
         {
           id: cosmosLead.id,
           href: `/w/${cosmosLead.id}`,
-          title: "COSMOS MODELS · 3D",
-          subtitle: "3D weapons, creatures & worlds for Blade Ball and Fish It.",
+          title: "Cosmos Models · 3D",
           category: "3d-roblox" as const,
-          disciplines: "3D ART · MODELING · ROBLOX",
-          metric: "11B+ VISITS",
-          year: "2025",
           src: cosmosLead.src,
           w: cosmosLead.w,
           h: cosmosLead.h,
@@ -217,63 +203,31 @@ export default function Home() {
   return (
     <main className="neo-home">
       <LoaderB />
+
+      {/* Centered bio flanked by Joyco-style 3D Hades II gilded pillars */}
       <Hero />
 
-      {/* Outpace Studios–inspired curved 3D perspective rotated marquee */}
-      <section className="om-sec" id="marquee" aria-labelledby="om-heading">
-        <div className="sec-head">
-          <div className="sec-head-l">
-            <span className="sec-idx">[01] // AD CONCEPTS &amp; ART DIRECTION</span>
-            <h2 id="om-heading" className="sec-title">
-              {ADS.length} ADS. DRAG TO SPIN.
-            </h2>
-          </div>
-          <div className="sec-head-r">
-            <span className="sec-note">INDEPENDENT SPEC CONCEPTS &amp; BRAND WORK</span>
-            <Link href="/work" className="sec-all-link">
-              VIEW ALL {ADS.length} ADS ↗
-            </Link>
-          </div>
-        </div>
+      {/* Outpace-style curved 3D rotating ad showcase right above the fold */}
+      <section className="om-sec om-sec-tight" id="marquee" aria-label="Selected ads">
         <OrbitMarquee ads={MARQUEE_ADS} />
-        <p className="om-disclose">
-          INDEPENDENT WORK. NOT COMMISSIONED BY OR AFFILIATED WITH THE BRANDS SHOWN. CLICK ANY CARD TO INSPECT FULL RESOLUTION.
-        </p>
       </section>
 
-      {/* Brass Hands–inspired filterable visual work archive */}
-      <WorkShowcase items={SHOWCASE} totalAds={ADS.length} />
+      {/* Real company & project logos marquee */}
+      <LogoMarquee />
 
-      {/* Mid-page high-conversion call booking strip */}
-      <section className="book-strip" aria-label="Book an intro call">
-        <div className="book-strip-in">
-          <div className="book-strip-copy">
-            <span className="sec-idx">
-              <i className="nh-dot" aria-hidden="true" /> AVAILABLE NOW · 2 SLOTS OPEN THIS MONTH
-            </span>
-            <h2 className="book-strip-h">
-              NEED BRAND, ADS, OR A SITE THAT <span className="nh-gold">ACTUALLY CONVERTS?</span>
-            </h2>
-            <p className="book-strip-p">
-              15-minute video call directly with me. No account managers, no fluff — we scope your project and ship fast.
-            </p>
-          </div>
-          <div className="book-strip-cta">
-            <BookLink src="home-mid-strip" className="bh-cta bh-cta-lg">
-              <span className="bh-cta-in">BOOK A 15-MIN CALL ↗</span>
-            </BookLink>
-            <span className="book-strip-note">INSTANT CAL.COM BOOKING · LONDON GMT</span>
-          </div>
-        </div>
-      </section>
+      {/* Brass Hands–framed pure visual work stream (Ads first + flagship web) */}
+      <WorkShowcase items={TOP_WORK} totalAds={ADS.length} />
 
-      {/* Framed Hades-style isometric architectural diagrams */}
-      <HadesDiagrams />
+      {/* Scroll-morphing 3D Hades II gilded artifact in the middle of the work */}
+      <ScrollMorph />
 
-      {/* Brass Hands–style Experience Field Record */}
+      {/* Second Brass Hands visual block (3D, Roblox, campaigns & products) */}
+      <WorkShowcase items={BOTTOM_WORK} totalAds={ADS.length} showBar={false} />
+
+      {/* Clean 4-line experience */}
       <Timeline />
 
-      {/* Clean Architectural Wayfinder Footer */}
+      {/* Minimal footer with framed Hades II signpost */}
       <Footer src="home-footer" />
     </main>
   );

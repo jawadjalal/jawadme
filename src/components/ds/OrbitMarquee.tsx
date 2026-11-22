@@ -4,15 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Ad } from "@/content/ads";
-import { headline } from "@/lib/gallery";
 
 type Props = {
   ads: Ad[];
 };
 
-/** Outpace Studios–inspired curved 3D perspective rotating marquee.
- *  Cards travel along a subtle concave cylindrical arc with pointer drag-to-scrub,
- *  momentum inertia, and smooth hover deceleration. */
+/** Outpace Studios–inspired curved 3D perspective rotating ad showcase.
+ *  Pure art, drag-to-scrub, smooth hover slowdown. */
 export function OrbitMarquee({ ads }: Props) {
   const stageRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -48,19 +46,18 @@ export function OrbitMarquee({ ads }: Props) {
       const stage = stageRef.current;
       if (stage) {
         const vw = stage.clientWidth;
-        const cardW = vw < 768 ? Math.min(260, vw * 0.68) : Math.min(340, Math.max(260, vw * 0.235));
-        const gap = vw < 768 ? 18 : 28;
+        const cardW = vw < 768 ? Math.min(250, vw * 0.66) : Math.min(330, Math.max(255, vw * 0.23));
+        const gap = vw < 768 ? 16 : 26;
         const stride = cardW + gap;
         const total = ads.length * stride;
 
         if (!dragRef.current.active) {
-          const baseSpeed = hoverRef.current ? 16 : 46;
+          const baseSpeed = hoverRef.current ? 14 : 44;
           offsetRef.current += (baseSpeed + velRef.current) * dt;
           velRef.current *= Math.pow(0.06, dt);
           if (Math.abs(velRef.current) < 0.5) velRef.current = 0;
         }
 
-        // Keep offset wrapped cleanly within [0, total)
         offsetRef.current = ((offsetRef.current % total) + total) % total;
 
         const half = total / 2;
@@ -74,7 +71,6 @@ export function OrbitMarquee({ ads }: Props) {
           while (x < -half) x += total;
           while (x > half) x -= total;
 
-          // Hide cards far outside viewport for performance
           const visibleLimit = vw * 0.85 + cardW;
           if (Math.abs(x) > visibleLimit) {
             el.style.visibility = "hidden";
@@ -82,13 +78,11 @@ export function OrbitMarquee({ ads }: Props) {
           }
 
           el.style.visibility = "visible";
-          // Normalized position across viewport [-1..1]
           const norm = x / Math.max(vw * 0.55, 360);
           const angleDeg = Math.max(-28, Math.min(28, norm * 16.5));
           const angleRad = (angleDeg * Math.PI) / 180;
-          // Curved cylindrical recess: edges curve slightly forward/inward like Outpace
           const z = (Math.cos(angleRad) - 1) * radius * 0.32;
-          const yCurve = Math.abs(norm) * Math.abs(norm) * (vw < 768 ? 12 : 24);
+          const yCurve = Math.abs(norm) * Math.abs(norm) * (vw < 768 ? 10 : 22);
           const tiltZ = norm * (vw < 768 ? -1.4 : -2.2);
           const scale = 1 - Math.min(0.1, Math.abs(norm) * 0.045);
 
@@ -149,7 +143,7 @@ export function OrbitMarquee({ ads }: Props) {
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
       role="region"
-      aria-label="Selected ad concepts rotating showcase"
+      aria-label="Selected ads"
     >
       <div className="orbit-track">
         {ads.map((ad, i) => (
@@ -171,18 +165,12 @@ export function OrbitMarquee({ ads }: Props) {
                 alt={ad.alt}
                 width={ad.w}
                 height={ad.h}
-                sizes="(max-width: 767px) 68vw, 340px"
+                sizes="(max-width: 767px) 66vw, 330px"
                 draggable={false}
-                priority={i < 4}
+                priority={i < 5}
               />
             </div>
-            <div className="orbit-meta">
-              <div className="orbit-meta-l">
-                <span className="orbit-brand">{ad.campaign}</span>
-                <span className="orbit-line">{headline(ad)}</span>
-              </div>
-              <span className="orbit-tag">{ad.spec ? "CONCEPT" : "BRAND"}</span>
-            </div>
+            <span className="orbit-brand-min">{ad.campaign}</span>
           </Link>
         ))}
       </div>

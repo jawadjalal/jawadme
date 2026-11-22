@@ -8,11 +8,7 @@ export type ShowcaseItem = {
   id: string;
   href: string;
   title: string;
-  subtitle: string;
-  category: "brand-web" | "ads" | "3d-roblox";
-  disciplines: string;
-  metric?: string;
-  year: string;
+  category: "ads" | "brand-web" | "3d-roblox";
   src: string;
   w: number;
   h: number;
@@ -21,52 +17,37 @@ export type ShowcaseItem = {
   span: "full" | "half" | "third";
 };
 
-type Filter = "all" | "brand-web" | "ads" | "3d-roblox";
+type Filter = "all" | "ads" | "brand-web" | "3d-roblox";
 
-/** Brass Hands–inspired dense visual work grid with Joyco-style bracketed category filters.
- *  Alternates monumental full-width showcase plates with 2-up and 3-up architectural bento tiles. */
+/** Brass Hands–style pure visual showcase: almost zero chrome, ads & work fill the frame. */
 export function WorkShowcase({
   items,
   totalAds,
+  showBar = true,
 }: {
   items: ShowcaseItem[];
   totalAds: number;
+  showBar?: boolean;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
-
-  const counts = useMemo(
-    () => ({
-      all: items.length,
-      "brand-web": items.filter((i) => i.category === "brand-web").length,
-      ads: totalAds,
-      "3d-roblox": items.filter((i) => i.category === "3d-roblox").length,
-    }),
-    [items, totalAds],
-  );
 
   const visible = useMemo(
     () => (filter === "all" ? items : items.filter((i) => i.category === filter)),
     [items, filter],
   );
 
-  const tabs: { key: Filter; label: string; count: number }[] = [
-    { key: "all", label: "ALL WORK", count: counts.all },
-    { key: "brand-web", label: "BRAND & WEB", count: counts["brand-web"] },
-    { key: "ads", label: "ADS", count: counts.ads },
-    { key: "3d-roblox", label: "3D & ROBLOX", count: counts["3d-roblox"] },
+  const tabs: { key: Filter; label: string }[] = [
+    { key: "all", label: "All" },
+    { key: "ads", label: `Ads (${totalAds})` },
+    { key: "brand-web", label: "Web & Brand" },
+    { key: "3d-roblox", label: "3D & Roblox" },
   ];
 
   return (
-    <section className="ws-sec" id="work" aria-labelledby="ws-heading">
-      <div className="sec-head">
-        <div className="sec-head-l">
-          <span className="sec-idx">[02] // SELECTED ARCHIVE</span>
-          <h2 id="ws-heading" className="sec-title">
-            BUILT TO STOP SCROLLS.
-          </h2>
-        </div>
-        <div className="sec-head-r">
-          <div className="ws-filters" role="tablist" aria-label="Filter work by discipline">
+    <section className="ws-sec" id={showBar ? "work" : undefined} aria-label="Selected work">
+      {showBar ? (
+        <div className="ws-bar">
+          <div className="ws-filters" role="tablist" aria-label="Filter work">
             {tabs.map((t) => (
               <button
                 key={t.key}
@@ -76,19 +57,18 @@ export function WorkShowcase({
                 className={"ws-tab" + (filter === t.key ? " is-active" : "")}
                 onClick={() => setFilter(t.key)}
               >
-                <span>{t.label}</span>
-                <span className="ws-tab-n">[{t.count}]</span>
+                {t.label}
               </button>
             ))}
           </div>
-          <Link href="/work" className="sec-all-link">
-            FULL ARCHIVE ({totalAds + 24}+) ↗
+          <Link href="/work" className="ws-more">
+            All {totalAds + 24}+ pieces ↗
           </Link>
         </div>
-      </div>
+      ) : null}
 
       <div className="ws-grid">
-        {visible.map((item, idx) => {
+        {visible.map((item) => {
           const spanClass =
             filter === "all"
               ? item.span === "full"
@@ -96,12 +76,12 @@ export function WorkShowcase({
                 : item.span === "third"
                   ? "ws-third"
                   : "ws-half"
-              : idx === 0
-                ? "ws-full"
+              : filter === "ads"
+                ? "ws-third"
                 : "ws-half";
 
           return (
-            <Link key={item.id} href={item.href} className={"ws-card " + spanClass}>
+            <Link key={item.id} href={item.href} className={"ws-card ws-card-pure " + spanClass}>
               <div className="ws-media">
                 {item.loop ? (
                   <video
@@ -128,21 +108,8 @@ export function WorkShowcase({
                     }
                   />
                 )}
-                <span className="ws-corner tl" aria-hidden="true" />
-                <span className="ws-corner br" aria-hidden="true" />
               </div>
-              <div className="ws-foot">
-                <div className="ws-foot-l">
-                  <span className="ws-num">{String(idx + 1).padStart(2, "0")}</span>
-                  <span className="ws-name">{item.title}</span>
-                  <span className="ws-sub">{item.subtitle}</span>
-                </div>
-                <div className="ws-foot-r">
-                  <span className="ws-disc">{item.disciplines}</span>
-                  {item.metric ? <span className="ws-metric">{item.metric}</span> : null}
-                  <span className="ws-yr">{item.year} ↗</span>
-                </div>
-              </div>
+              <span className="ws-cap">{item.title}</span>
             </Link>
           );
         })}
