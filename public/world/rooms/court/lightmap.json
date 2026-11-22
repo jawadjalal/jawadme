@@ -1,0 +1,10 @@
+{
+ "file": "lightmap.webp",
+ "uv": "TEXCOORD_1",
+ "encoding": "sRGB 8-bit, WebP q78, 512 px",
+ "scale": 13.2672,
+ "note": "decode as sRGB to linear, multiply by scale = diffuse irradiance (Cycles diffuse light pass). three.js: lightMap.colorSpace = SRGBColorSpace, lightMap.channel = 1, flipY = false, lightMapIntensity = scale * PI",
+ "three_lightMapIntensity": 41.6801,
+ "fires_at": "rest level 0.4",
+ "pool_target_mint": "#8af5c6"
+}
