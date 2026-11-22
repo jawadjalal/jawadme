@@ -82,11 +82,11 @@ export default async function Case({ params }: Props) {
         tag={[laneLabel(p.lane), p.year].join(", ")}
         side={
           p.link ? (
-            <Gilded variant="pill" href={p.link.href}>
+            <Gilded variant="pill" href={p.link.href} prefetch={false}>
               {p.link.label} ↗
             </Gilded>
           ) : (
-            <Gilded variant="pill" href="/work">
+            <Gilded variant="pill" href="/work" prefetch={false}>
               work
             </Gilded>
           )

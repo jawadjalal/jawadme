@@ -12,7 +12,7 @@ type Props =
   | { variant: "cta"; src: string; size: "dock" | "hero"; hold?: boolean }
   | { variant: "arm"; src: string }
   | { variant: "email"; src: string; children?: ReactNode }
-  | { variant: "pill"; href: string; selected?: boolean; onClick?: () => void; call?: boolean; children: ReactNode }
+  | { variant: "pill"; href: string; selected?: boolean; onClick?: () => void; call?: boolean; prefetch?: boolean; children: ReactNode }
   | { variant: "filter"; href: string; selected?: boolean; children: ReactNode }
   | { variant: "filter"; onClick: () => void; selected?: boolean; children: ReactNode };
 
@@ -127,6 +127,7 @@ export function Gilded(p: Props) {
         aria-current={p.selected ? "page" : undefined}
         scroll={p.variant === "filter" ? false : undefined}
         onClick={p.variant === "pill" ? p.onClick : undefined}
+        prefetch={p.variant === "pill" ? p.prefetch : undefined}
       >
         {face(p.children)}
       </Link>
