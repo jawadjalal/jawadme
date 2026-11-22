@@ -1,4 +1,4 @@
-/* Explorable 2D spatial work world (baked.studio-inspired) */
+/* Explorable 2D spatial work world — fast virtualized lazy mounting + rounded cards */
 .ww-page {
   position: relative;
   height: calc(100dvh - var(--dock));
@@ -15,9 +15,9 @@
   user-select: none;
   touch-action: none;
   background:
-    radial-gradient(circle at 50% 50%, rgba(255, 98, 0, 0.04) 0%, transparent 60%),
-    radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 100% 100%, 36px 36px;
+    radial-gradient(circle at 50% 48%, rgba(255, 98, 0, 0.05) 0%, transparent 58%),
+    radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 100% 100%, 34px 34px;
 }
 
 .ww-stage.is-dragging {
@@ -44,8 +44,9 @@
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  background: rgba(36, 36, 36, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(30, 30, 30, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   font-family: var(--f-mono);
   font-size: 11px;
   font-weight: 600;
@@ -54,7 +55,7 @@
 }
 
 .ww-hud-r button {
-  padding: 2px 7px;
+  padding: 2px 8px;
   color: #f2f2f0;
   font-family: var(--f-mono);
   font-size: 12px;
@@ -85,17 +86,27 @@
 .ww-tile {
   position: absolute;
   display: block;
+  border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: #202020;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.48);
-  transition: border-color 160ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.52);
+  animation: ww-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: border-color 160ms ease, transform 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 240ms ease;
+}
+
+@keyframes ww-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
 }
 
 .ww-tile:hover {
   z-index: 10;
   border-color: #ff6200;
-  transform: scale(1.035);
+  transform: scale(1.04);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.68);
 }
 
 .ww-tile img {
@@ -104,6 +115,12 @@
   object-fit: cover;
   display: block;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 280ms ease;
+}
+
+.ww-tile img[data-loaded="1"] {
+  opacity: 1;
 }
 
 @media (max-width: 767px) {
