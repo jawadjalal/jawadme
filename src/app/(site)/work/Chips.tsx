@@ -2,8 +2,8 @@
 
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 
-/** The filter row. When it runs past the screen, the gaps open just enough that the screen's edge falls between two
- *  pills, so no pill sits cut in half before the row is scrolled. */
+/** The filter row. When it runs past the screen, the gaps open just enough that the next pill peeks 24px past the
+ *  screen's edge, so the row reads as one that scrolls on, and no pill sits cut in half. */
 export function Chips({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
@@ -15,10 +15,12 @@ export function Chips({ children }: { children: ReactNode }) {
       let used = 0;
       let gap = 0;
       for (const [k, pill] of [...row.children].entries()) {
+        if (k > 0) {
+          const even = (room - 24 - used) / k;
+          if (even < 8) break;
+          gap = even;
+        }
         used += (pill as HTMLElement).offsetWidth;
-        const even = (room - used) / (k + 1);
-        if (even < 8) break;
-        gap = even;
       }
       if (gap) row.style.setProperty("--cg", gap + "px");
     };

@@ -22,7 +22,7 @@ function warm(p: Near) {
 
 /** The piece full size in a frame cut to its own shape, its name, picture and facts beside it with the rest of its
  *  campaign, previous and next beside the count (under the picture on a phone, or by arrow keys and swipe), Escape back
- *  to the wall, and the call block in the corner. */
+ *  to the wall. The site's dock carries the way round and the call. */
 export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Facts }) {
   const router = useRouter();
   const back = "/work#" + piece.id;
@@ -47,6 +47,7 @@ export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Fact
   return (
     <main
       className="viewer"
+      style={{ ["--ar" as string]: piece.w / piece.h }}
       onTouchStart={(e) => (touch.current = e.touches[0].clientX)}
       onTouchEnd={(e) => {
         if (!at || touch.current === null) return;
@@ -65,7 +66,7 @@ export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Fact
               ← prev
             </Gilded>
             <span className="v-count">
-              {at.n} / {at.of}
+              {at.n} / {at.of} in all work
             </span>
             <Gilded variant="pill" href={`/w/${at.next.id}`}>
               next →
@@ -75,7 +76,7 @@ export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Fact
       </header>
       <div className="v-main">
         <div className="v-pic">
-          <div className="v-stage" style={{ aspectRatio: `${piece.w} / ${piece.h}`, ["--ar" as string]: piece.w / piece.h }}>
+          <div className="v-stage" style={{ aspectRatio: `${piece.w} / ${piece.h}` }}>
             <Image key={piece.id} src={piece.src} width={piece.w} height={piece.h} alt={piece.alt} priority sizes={SIZES} quality={90} style={{ viewTransitionName: "piece" }} />
           </div>
         </div>
@@ -134,11 +135,6 @@ export function Viewer({ piece, at, facts }: { piece: Piece; at: At; facts: Fact
           </nav>
         ) : null}
       </div>
-      <footer className="v-bar">
-        <span className="v-cta">
-          <Gilded variant="cta" src="viewer" size="dock" />
-        </span>
-      </footer>
     </main>
   );
 }

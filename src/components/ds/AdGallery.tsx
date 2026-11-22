@@ -32,7 +32,8 @@ function hang(aspects: number[], first: number, cycle: number[]): Slot[] {
   return out;
 }
 
-const vars = (d: Slot, m: Slot) => ({ "--dw": d.w, "--dn": d.n, "--mw": m.w, "--mn": m.n }) as CSSProperties;
+/** the piece's share of its row on each screen, and its file's own width, which a hang may hold it under */
+const vars = (d: Slot, m: Slot, nw: number) => ({ "--dw": d.w, "--dn": d.n, "--mw": m.w, "--mn": m.n, "--nw": nw + "px" }) as CSSProperties;
 
 /** Height of a hang as a share of its width, each row with room for its captions. */
 const tall = (aspects: number[], slots: Slot[]) => {
@@ -64,7 +65,7 @@ export function Hang({ entries, first = 0.5, cycle = [0.4, 0.3], lead = false, f
   const f = big && entries.length > 1 ? feature(aspects) : null;
   const wide = f ? [{ w: f.l, n: 1 }, ...f.side.map((s) => ({ w: s.w * (1 - f.l), n: s.n })), ...hang(aspects.slice(1 + f.m), cycle[0], cycle)] : hang(aspects, first, cycle);
   const item = (e: Entry, i: number) => (
-    <TLink key={e.key} id={e.key} href={e.href} vt={e.href.startsWith("/w/") ? "piece" : "cover-" + e.href.split("/").pop()} className="hang-i" data-cursor="view" data-m="tilt" style={vars(f && i > 0 && i <= f.m ? f.side[i - 1] : wide[i], phone[i])}>
+    <TLink key={e.key} id={e.key} href={e.href} vt={e.href.startsWith("/w/") ? "piece" : "cover-" + e.href.split("/").pop()} className="hang-i" data-cursor="view" data-m="tilt" style={vars(f && i > 0 && i <= f.m ? f.side[i - 1] : wide[i], phone[i], e.media.w)}>
       <Media m={e.media} sizes={`(min-width: 768px) ${Math.ceil(wide[i].w * 100)}vw, calc(${Math.ceil(phone[i].w * 100)}vw - ${Math.round(24 * phone[i].w)}px)`} priority={lead && i === 0} delay={(i % 4) * 70} quality={75} />
       <span className="hang-cap">
         <span className="hang-co">{e.title}</span>

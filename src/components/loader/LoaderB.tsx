@@ -24,7 +24,7 @@ const FIRST: Beat = {
     { i: 0, at: 200, wide: [0.3, 0.64], tall: [0.38, 0.66], s: 1 },
     { i: 1, at: 450, wide: [0.72, 0.32], tall: [0.64, 0.3], s: 0.8 },
     { i: 2, at: 720, wide: [0.44, 0.52], tall: [0.5, 0.5], s: 1.2 },
-    { i: 3, at: 1160, wide: [0.5, 0.49], tall: [0.52, 0.49], s: 1.5 },
+    { i: 3, at: 1160, wide: [0.5, 0.5], tall: [0.5, 0.5], s: 1.5 },
   ],
   stall: [840, 1060],
   cut: [1080, 1160],
@@ -37,7 +37,7 @@ const FIRST: Beat = {
 const REPEAT: Beat = {
   items: [
     { i: 0, at: 80, wide: [0.3, 0.64], tall: [0.38, 0.66], s: 1 },
-    { i: 3, at: 380, wide: [0.5, 0.49], tall: [0.52, 0.49], s: 1.5 },
+    { i: 3, at: 380, wide: [0.5, 0.5], tall: [0.5, 0.5], s: 1.5 },
   ],
   stall: [-1, -1],
   cut: [300, 370],
@@ -228,7 +228,29 @@ export function LoaderB() {
         probe.font = f;
         probe.direction = "rtl";
         probe.textAlign = "center";
-        const m = probe.measureText(WORD_AR[it.i]);
+        const pad = Math.ceil(size);
+        const sc = document.createElement("canvas");
+        sc.width = Math.ceil(probe.measureText(WORD_AR[it.i]).width) + 2 * pad;
+        sc.height = 3 * pad;
+        const sg0 = sc.getContext("2d", { willReadFrequently: true })!;
+        sg0.font = f;
+        sg0.direction = "rtl";
+        sg0.textAlign = "center";
+        sg0.fillText(WORD_AR[it.i], sc.width / 2, 2 * pad);
+        const sd = sg0.getImageData(0, 0, sc.width, sc.height).data;
+        let x0 = sc.width;
+        let x1 = 0;
+        let y0 = sc.height;
+        let y1 = 0;
+        for (let y = 0; y < sc.height; y++)
+          for (let x = 0; x < sc.width; x++)
+            if (sd[(y * sc.width + x) * 4 + 3] > 8) {
+              x0 = Math.min(x0, x);
+              x1 = Math.max(x1, x + 1);
+              y0 = Math.min(y0, y);
+              y1 = Math.max(y1, y + 1);
+            }
+        const m = { actualBoundingBoxLeft: sc.width / 2 - x0, actualBoundingBoxRight: x1 - sc.width / 2, actualBoundingBoxAscent: 2 * pad - y0, actualBoundingBoxDescent: y1 - 2 * pad };
         const left = Math.ceil(m.actualBoundingBoxLeft);
         const asc = Math.ceil(m.actualBoundingBoxAscent);
         const wd = Math.ceil(m.actualBoundingBoxLeft + m.actualBoundingBoxRight);
@@ -366,7 +388,7 @@ export function LoaderB() {
       const ctx = cv.getContext("2d")!;
       const flying = css(spark);
       const landed = css(mix(glow, ivory, 0.5));
-      const embers: Ember[] = Array.from({ length: Math.round(cfg.embers * (vw < 600 ? 0.4 : 1)) }, () => ({ x: Math.random() * vw, y: vh * (0.55 + Math.random() * 0.6), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
+      const embers: Ember[] = Array.from({ length: Math.round(cfg.embers * (vw < 600 ? 0.4 : 1)) }, () => ({ x: Math.random() * vw, y: vh * (0.08 + Math.random()), vy: 40 + Math.random() * 90, r: 1 + Math.random() * 2.4, ph: Math.random() * 6.28, sw: 0.6 + Math.random() * 1.4, at: Math.random() * cfg.cond * 0.7 }));
 
       t0 = Math.max(T0, performance.now() - 1300);
       let last = t0;
@@ -398,7 +420,7 @@ export function LoaderB() {
             const y = e.y - e.vy * age;
             const x = e.x + Math.sin(age * e.sw + e.ph) * 18;
             if (y < -20) continue;
-            ctx.globalAlpha = Math.min(1, clamp(y / (vh * 0.9)) * 1.1) * (0.55 + 0.45 * Math.sin(simT * 7 + e.ph * 3)) * fadeOut * clamp((t - e.at) / 300);
+            ctx.globalAlpha = clamp(y / (vh * 0.12)) * (0.55 + 0.45 * Math.sin(simT * 7 + e.ph * 3)) * fadeOut * clamp((t - e.at) / 300);
             const s = e.r * 8;
             ctx.drawImage(spr, x - s / 2, y - s / 2, s, s);
           }
@@ -414,9 +436,10 @@ export function LoaderB() {
           if (wd.simAt < 0) wd.simAt = simT;
           const inA = ease(clamp((t - wd.at) / 120));
           const outA = i === words.length - 1 ? 1 - ease(peel) : 1 - clamp((t - wd.out) / 90);
-          const age = simT - wd.simAt;
+          const still = i === words.length - 1;
+          const age = still ? 0 : simT - wd.simAt;
           const py = wd.y - age * 46 + (1 - inA) * 18 + (stalled ? Math.sin(t * 0.09 + i * 2) * 0.8 : 0);
-          const px = wd.x + Math.sin(age * 1.3 + i * 1.7) * 6;
+          const px = still ? wd.x : wd.x + Math.sin(age * 1.3 + i * 1.7) * 6;
           ctx.globalAlpha = Math.min(1, inA * outA * fadeOut);
           ctx.drawImage(wd.cv, px - wd.ox, py - wd.oy, wd.cv.width / dpr, wd.cv.height / dpr);
         });
@@ -469,7 +492,10 @@ export function LoaderB() {
         <canvas className="lb-cv" ref={cvRef} />
         <canvas className="lb-grain" ref={grainRef} />
         <i className="lb-seed" />
-        <span className="lb-hint">click or press any key to skip</span>
+        <span className="lb-hint">
+          <span className="lb-hint-p">click</span>
+          <span className="lb-hint-t">tap</span> or press any key to skip
+        </span>
       </div>
       <div className="lb-mark" ref={markRef} aria-hidden="true" />
     </div>
