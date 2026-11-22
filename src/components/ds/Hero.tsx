@@ -1,10 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
-import { LogoMarquee } from "./LogoMarquee";
+import { MailLink } from "@/components/MailLink";
+import gh from "@/content/github-contributions.json";
+import { SITE } from "@/content/site";
 
-/** Brass Hands top bar + real logo marquee at the top of the hero + clean centered bio.
- *  No em dashes, no 3D pillars, no gold box behind Jawad's head. */
+const LAST_DAYS = (gh.levels as number[]).slice(-112); // 16 weeks x 7 days
+
+/** Brass Hands top bar with inline GitHub contributions, CV download, Email, and square glossy Book a Call.
+ *  Followed by the minimal centered bio so the curved Outpace work marquee leads immediately. */
 export function Hero() {
   return (
     <section className="nh-bh" data-hero="">
@@ -15,7 +19,7 @@ export function Hero() {
             alt="Jawad Jalal"
             width={40}
             height={45}
-            sizes="36px"
+            sizes="34px"
             priority
             className="bh-head"
           />
@@ -25,18 +29,35 @@ export function Hero() {
           </span>
         </Link>
 
+        <a
+          href="https://github.com/jawadjalal"
+          target="_blank"
+          rel="noopener"
+          className="bh-gh"
+          aria-label={`${gh.total.toLocaleString()} GitHub contributions in the past year`}
+        >
+          <span className="bh-gh-grid" aria-hidden="true">
+            {LAST_DAYS.map((lvl, i) => (
+              <i key={i} data-l={lvl} />
+            ))}
+          </span>
+          <span className="bh-gh-num">{gh.total.toLocaleString()}</span>
+        </a>
+
         <nav className="bh-topnav" aria-label="Primary">
           <Link href="/work">WORK</Link>
-          <Link href="/about">ABOUT</Link>
-          <Link href="/contact">CONTACT</Link>
+          <a href={SITE.cv} download>
+            CV
+          </a>
+          <MailLink src="topbar" className="bh-nav-mail">
+            EMAIL
+          </MailLink>
         </nav>
 
         <BookLink src="home-top" className="bh-cta">
           <span className="bh-cta-in">BOOK A CALL ↗</span>
         </BookLink>
       </header>
-
-      <LogoMarquee />
 
       <div className="bh-hero-center">
         <h1 className="bh-hero-bio">

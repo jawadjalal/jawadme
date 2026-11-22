@@ -22,7 +22,7 @@ const SIGNS: readonly Sign[] = ["cal", "email", ...SOCIAL];
 
 /** Where each sign's label sits on the posters, as fractions of the frame: [desktop x, y, phone x, y]. */
 const AT: Record<Sign, [number, number, number, number]> = {
-  cal: [0.4194, 0.2541, 0.6821, 0.2257],
+  cal: [0.368, 0.2541, 0.605, 0.2257],
   email: [0.2597, 0.3097, 0.2641, 0.2743],
   youtube: [0.3993, 0.3593, 0.6282, 0.3157],
   x: [0.2632, 0.5142, 0.2744, 0.4471],

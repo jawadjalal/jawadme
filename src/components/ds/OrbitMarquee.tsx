@@ -4,14 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Ad } from "@/content/ads";
-import { headline } from "@/lib/gallery";
 
 type Props = {
   ads: Ad[];
 };
 
-/** Outpace Studios–style curved rotating work marquee.
- *  Spacious cylindrical arc with clean left-aligned brand + one-line caption beneath each card. */
+/** Outpace Studios–style curved 3D rotating hero work carousel.
+ *  Pure visual art — zero captions or brand text cluttering the curve. */
 export function OrbitMarquee({ ads }: Props) {
   const stageRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -47,13 +46,13 @@ export function OrbitMarquee({ ads }: Props) {
       const stage = stageRef.current;
       if (stage) {
         const vw = stage.clientWidth;
-        const cardW = vw < 768 ? Math.min(270, vw * 0.72) : Math.min(360, Math.max(280, vw * 0.255));
+        const cardW = vw < 768 ? Math.min(270, vw * 0.72) : Math.min(370, Math.max(290, vw * 0.26));
         const gap = vw < 768 ? 18 : 30;
         const stride = cardW + gap;
         const total = ads.length * stride;
 
         if (!dragRef.current.active) {
-          const baseSpeed = hoverRef.current ? 12 : 42;
+          const baseSpeed = hoverRef.current ? 12 : 44;
           offsetRef.current += (baseSpeed + velRef.current) * dt;
           velRef.current *= Math.pow(0.06, dt);
           if (Math.abs(velRef.current) < 0.5) velRef.current = 0;
@@ -62,7 +61,7 @@ export function OrbitMarquee({ ads }: Props) {
         offsetRef.current = ((offsetRef.current % total) + total) % total;
 
         const half = total / 2;
-        const radius = Math.max(vw * 1.35, 1300);
+        const radius = Math.max(vw * 1.15, 1150);
 
         for (let i = 0; i < ads.length; i++) {
           const el = cardsRef.current[i];
@@ -79,19 +78,20 @@ export function OrbitMarquee({ ads }: Props) {
           }
 
           el.style.visibility = "visible";
-          const norm = x / Math.max(vw * 0.58, 380);
-          const angleDeg = Math.max(-24, Math.min(24, norm * 14));
+          const norm = x / Math.max(vw * 0.52, 360);
+          // Graceful concave cylindrical Outpace curve
+          const angleDeg = Math.max(-30, Math.min(30, norm * 18.5));
           const angleRad = (angleDeg * Math.PI) / 180;
-          const z = (Math.cos(angleRad) - 1) * radius * 0.26;
-          const yCurve = Math.abs(norm) * Math.abs(norm) * (vw < 768 ? 8 : 16);
-          const tiltZ = norm * (vw < 768 ? -1.1 : -1.8);
-          const scale = 1 - Math.min(0.08, Math.abs(norm) * 0.035);
+          const z = (Math.cos(angleRad) - 1) * radius * 0.34;
+          const yCurve = Math.abs(norm) * Math.abs(norm) * (vw < 768 ? 12 : 24);
+          const tiltZ = norm * (vw < 768 ? -1.4 : -2.2);
+          const scale = 1 - Math.min(0.1, Math.abs(norm) * 0.04);
 
           el.style.width = `${cardW}px`;
           el.style.marginLeft = `${-cardW / 2}px`;
           el.style.transform = `translate3d(${x}px, ${yCurve}px, ${z}px) rotateY(${-angleDeg}deg) rotateZ(${tiltZ}deg) scale(${scale})`;
           el.style.zIndex = String(Math.round(100 - Math.abs(norm) * 40));
-          el.style.opacity = String(Math.max(0.28, 1 - Math.max(0, Math.abs(norm) - 1.15) * 0.75));
+          el.style.opacity = String(Math.max(0.3, 1 - Math.max(0, Math.abs(norm) - 1.15) * 0.75));
         }
       }
 
@@ -156,6 +156,7 @@ export function OrbitMarquee({ ads }: Props) {
               cardsRef.current[i] = el;
             }}
             className="orbit-card"
+            aria-label={ad.alt}
             draggable={false}
             onClick={(e) => {
               if (dragRef.current.moved) e.preventDefault();
@@ -167,14 +168,10 @@ export function OrbitMarquee({ ads }: Props) {
                 alt={ad.alt}
                 width={ad.w}
                 height={ad.h}
-                sizes="(max-width: 767px) 72vw, 360px"
+                sizes="(max-width: 767px) 72vw, 370px"
                 draggable={false}
                 priority={i < 5}
               />
-            </div>
-            <div className="orbit-cap">
-              <span className="orbit-brand">{ad.campaign}</span>
-              <span className="orbit-line">{headline(ad)}</span>
             </div>
           </Link>
         ))}

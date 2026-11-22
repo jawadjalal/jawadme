@@ -13,7 +13,7 @@ const LOGOS = [
   { name: "BasketEnt", src: "/logos/basketent.png" },
 ] as const;
 
-/** Brass Hands–style dashed logo marquee using real company & project marks from /public/logos. */
+/** Refined, edge-faded real logo marquee positioned cleanly under the hero carousel. */
 export function LogoMarquee() {
   return (
     <div className="logo-bar" aria-label="Companies and projects">

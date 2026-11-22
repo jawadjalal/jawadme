@@ -5,12 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BookLink } from "@/components/BookLink";
-import { NAV } from "@/content/site";
+import { MailLink } from "@/components/MailLink";
+import { SITE } from "@/content/site";
 
-const ITEMS = [{ label: "home", href: "/" }, ...NAV];
-
-/** Brass Hands–style bottom command bar: opaque matte #242424, sharp 0px geometry,
- *  clean head mark without gold background, uppercase mono links, hatched corner-bracketed CTA. */
+/** Brass Hands–style bottom bar: clean head mark on left, centered nav (and centered MENU on mobile),
+ *  CV download + Email, and square glossy Book a Call CTA on right. */
 export function Dock() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
@@ -30,17 +29,22 @@ export function Dock() {
     <>
       <div className="bh-sheet" data-open={open} id="bh-dock-sheet" aria-hidden={!open}>
         <div className="bh-sheet-links">
-          {ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={isActive(item.href) ? "page" : undefined}
-              onClick={() => setOpen(false)}
-            >
-              <span>{item.label.toUpperCase()}</span>
-              <span aria-hidden="true">↗</span>
-            </Link>
-          ))}
+          <Link href="/" aria-current={isActive("/") ? "page" : undefined} onClick={() => setOpen(false)}>
+            <span>HOME</span>
+            <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href="/work" aria-current={isActive("/work") ? "page" : undefined} onClick={() => setOpen(false)}>
+            <span>WORK</span>
+            <span aria-hidden="true">↗</span>
+          </Link>
+          <a href={SITE.cv} download onClick={() => setOpen(false)}>
+            <span>DOWNLOAD CV</span>
+            <span aria-hidden="true">↓</span>
+          </a>
+          <MailLink src="dock-sheet" className="bh-sheet-mail">
+            <span>EMAIL</span>
+            <span aria-hidden="true">↗</span>
+          </MailLink>
         </div>
       </div>
 
@@ -58,23 +62,27 @@ export function Dock() {
             <span>JAWAD</span>
           </Link>
 
-          <span className="bh-dock-div" aria-hidden="true" />
-
           <ul className="bh-dock-nav">
-            {ITEMS.map((item) => {
-              const active = isActive(item.href);
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={"bh-dock-link" + (active ? " is-active" : "")}
-                    aria-current={active ? "page" : undefined}
-                  >
-                    {item.label.toUpperCase()}
-                  </Link>
-                </li>
-              );
-            })}
+            <li>
+              <Link href="/" className={"bh-dock-link" + (isActive("/") ? " is-active" : "")}>
+                HOME
+              </Link>
+            </li>
+            <li>
+              <Link href="/work" className={"bh-dock-link" + (isActive("/work") ? " is-active" : "")}>
+                WORK
+              </Link>
+            </li>
+            <li>
+              <a href={SITE.cv} download className="bh-dock-link">
+                CV
+              </a>
+            </li>
+            <li>
+              <MailLink src="dock" className="bh-dock-link">
+                EMAIL
+              </MailLink>
+            </li>
           </ul>
 
           <button
@@ -89,7 +97,7 @@ export function Dock() {
           </button>
 
           <BookLink src="dock" className="bh-cta bh-cta-sm">
-            BOOK A CALL ↗
+            <span className="bh-cta-in">BOOK A CALL ↗</span>
           </BookLink>
         </div>
       </nav>

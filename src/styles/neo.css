@@ -1,7 +1,6 @@
 /* ==========================================================================
-   BRASS HANDS × OUTPACE × WONDER.DESIGN GLOSSY SYSTEM
-   Ruled matte charcoal (#1f1f1f / #242424), crisp hairlines, heavy on work,
-   tactile glossy buttons, zero clutter.
+   BRASS HANDS × OUTPACE × SQUARE GLOSSY SYSTEM
+   Ruled matte charcoal (#1c1c1c / #242424), pure work, zero clutter.
    ========================================================================== */
 
 html:has(.ds) {
@@ -35,7 +34,7 @@ html:has(.ds) {
   color: var(--fg);
 }
 
-/* Subtle Brass Hands matte film grain */
+/* Subtle matte film grain like Brass Hands */
 .ds::before {
   content: "";
   position: fixed;
@@ -61,7 +60,7 @@ html[data-room="hall"] .ds {
 }
 
 /* ==========================================================================
-   WONDER.DESIGN-INSPIRED TACTILE GLOSSY BUTTON
+   SQUARE TACTILE GLOSSY BUTTON (WONDER.DESIGN SPECULAR × BRASS HANDS SQUARE)
    ========================================================================== */
 .bh-cta {
   position: relative;
@@ -69,51 +68,46 @@ html[data-room="hall"] .ds {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 11px 22px;
-  border-radius: 999px;
+  padding: 11px 20px;
+  border-radius: 0;
   border: 1px solid rgba(255, 232, 175, 0.45);
   background: linear-gradient(180deg, #ebd082 0%, #cfa042 54%, #ab7e28 100%);
   color: #14120c !important;
-  font-family: var(--f-sans);
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   white-space: nowrap;
   box-shadow:
     inset 0 1px 0.5px rgba(255, 255, 255, 0.65),
     inset 0 -2px 4px rgba(82, 54, 10, 0.35),
     0 1px 2px rgba(0, 0, 0, 0.45),
-    0 8px 22px rgba(0, 0, 0, 0.32);
+    0 8px 20px rgba(0, 0, 0, 0.3);
   transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1), filter 160ms ease, box-shadow 160ms ease;
 }
 
 .bh-cta::before {
   content: "";
   position: absolute;
-  inset: 1px 2px 48% 2px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.04) 100%);
+  inset: 1px 1px 48% 1px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.03) 100%);
   pointer-events: none;
 }
 
 .bh-cta:hover {
   filter: brightness(1.06);
   transform: translateY(-1px);
-  box-shadow:
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.78),
-    inset 0 -2px 4px rgba(82, 54, 10, 0.32),
-    0 2px 4px rgba(0, 0, 0, 0.5),
-    0 12px 26px rgba(0, 0, 0, 0.38);
 }
 
 .bh-cta:active {
-  transform: translateY(0) scale(0.975);
+  transform: translateY(0) scale(0.98);
   filter: brightness(0.97);
 }
 
 .bh-cta-sm {
-  padding: 9px 18px;
-  font-size: 12.5px;
+  padding: 10px 16px;
+  font-size: 11.5px;
 }
 
 .bh-cta-in {
@@ -122,7 +116,7 @@ html[data-room="hall"] .ds {
 }
 
 /* ==========================================================================
-   BRASS HANDS TOP BAR + REAL LOGO MARQUEE + CENTERED BIO
+   BRASS HANDS TOP BAR (WITH GITHUB CONTRIBUTIONS, CV, EMAIL, SQUARE CTA)
    ========================================================================== */
 .nh-bh {
   position: relative;
@@ -130,10 +124,10 @@ html[data-room="hall"] .ds {
 
 .bh-topbar {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
-  gap: 16px;
-  padding: 16px var(--g);
+  gap: 16px 28px;
+  padding: 14px var(--g);
   background: #242424;
   border-bottom: 1px solid var(--rule);
 }
@@ -141,20 +135,18 @@ html[data-room="hall"] .ds {
 .bh-brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  justify-self: start;
+  gap: 11px;
 }
 
-/* Clean cutout head — zero gold box behind it */
 .bh-head {
-  width: 36px;
+  width: 34px;
   height: auto;
   object-fit: contain;
   background: transparent;
 }
 
 .bh-head-sm {
-  width: 28px;
+  width: 26px;
   height: auto;
   object-fit: contain;
   background: transparent;
@@ -163,17 +155,62 @@ html[data-room="hall"] .ds {
 .bh-wordmark {
   display: grid;
   font-family: var(--f-mono);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: 0.08em;
   color: var(--fg);
 }
 
+/* Inline GitHub Contributions Sparkline in Top Bar */
+.bh-gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+  padding: 6px 10px;
+  border: 1px solid var(--rule);
+  background: #1c1c1c;
+  transition: border-color 150ms ease;
+}
+
+.bh-gh:hover {
+  border-color: var(--rule-strong);
+}
+
+.bh-gh-grid {
+  display: grid;
+  grid-template-rows: repeat(7, 3px);
+  grid-auto-flow: column;
+  grid-auto-columns: 3px;
+  gap: 1.5px;
+}
+
+.bh-gh-grid i {
+  display: block;
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.bh-gh-grid i[data-l="1"] { background: rgba(95, 227, 184, 0.3); }
+.bh-gh-grid i[data-l="2"] { background: rgba(95, 227, 184, 0.54); }
+.bh-gh-grid i[data-l="3"] { background: rgba(95, 227, 184, 0.78); }
+.bh-gh-grid i[data-l="4"] { background: var(--accent); }
+
+.bh-gh-num {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+}
+
 .bh-topnav {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
   font-family: var(--f-mono);
   font-size: 12px;
   font-weight: 500;
@@ -189,66 +226,12 @@ html[data-room="hall"] .ds {
   color: var(--fg);
 }
 
-.bh-topbar .bh-cta {
-  justify-self: end;
-}
-
-/* Real Logo Marquee at top of Hero (Brass Hands ruled style) */
-.logo-bar {
-  overflow: hidden;
-  border-bottom: 1px dashed rgba(212, 168, 75, 0.35);
-  background: #202020;
-  padding: 13px 0;
-}
-
-.logo-track {
-  display: flex;
-  align-items: center;
-  width: max-content;
-  gap: 52px;
-  animation: nh-marquee 30s linear infinite;
-}
-
-.logo-bar:hover .logo-track {
-  animation-play-state: paused;
-}
-
-@keyframes nh-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.logo-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--f-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(240, 238, 233, 0.68);
-  white-space: nowrap;
-}
-
-.logo-mark {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  filter: grayscale(1) brightness(1.65) contrast(1.1);
-  opacity: 0.82;
-}
-
-/* Centered clean bio — tight padding so the work marquee dominates above the fold */
+/* Centered clean bio — work-forward spacing */
 .bh-hero-center {
   display: grid;
   justify-items: center;
   text-align: center;
-  padding: clamp(22px, 3vw, 34px) var(--g) clamp(10px, 1.5vw, 18px);
+  padding: clamp(24px, 3.2vw, 38px) var(--g) clamp(10px, 1.4vw, 16px);
 }
 
 .bh-hero-bio {
@@ -264,21 +247,20 @@ html[data-room="hall"] .ds {
 }
 
 /* ==========================================================================
-   OUTPACE STUDIOS–STYLE CURVED ROTATING WORK MARQUEE
+   OUTPACE STUDIOS–STYLE CURVED ROTATING WORK MARQUEE (PURE ART)
    ========================================================================== */
 .om-sec {
   position: relative;
   overflow: clip;
-  padding: 8px 0 clamp(28px, 4vw, 48px);
-  border-bottom: 1px solid var(--rule);
+  padding: 6px 0 clamp(14px, 2vw, 24px);
 }
 
 .orbit-stage {
   position: relative;
   width: 100%;
-  height: clamp(440px, 42vw, 560px);
-  perspective: 1600px;
-  perspective-origin: 50% 44%;
+  height: clamp(410px, 39vw, 520px);
+  perspective: 1450px;
+  perspective-origin: 50% 45%;
   overflow: hidden;
   cursor: grab;
   user-select: none;
@@ -302,9 +284,8 @@ html[data-room="hall"] .ds {
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -235px;
-  display: grid;
-  gap: 10px;
+  margin-top: -220px;
+  display: block;
   will-change: transform, opacity;
   transform-style: preserve-3d;
   -webkit-tap-highlight-color: transparent;
@@ -316,7 +297,7 @@ html[data-room="hall"] .ds {
   overflow: hidden;
   background: #242424;
   border: 1px solid var(--rule);
-  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.42);
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.45);
   transition: border-color 180ms ease;
 }
 
@@ -329,30 +310,6 @@ html[data-room="hall"] .ds {
   height: 100%;
   object-fit: cover;
   pointer-events: none;
-}
-
-.orbit-cap {
-  display: grid;
-  gap: 2px;
-  padding-inline: 2px;
-}
-
-.orbit-brand {
-  font-family: var(--f-sans);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  text-transform: capitalize;
-  color: var(--fg);
-}
-
-.orbit-line {
-  font-size: 12.5px;
-  line-height: 1.3;
-  color: var(--dim);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .orbit-stage.is-reduced {
@@ -376,62 +333,68 @@ html[data-room="hall"] .ds {
 }
 
 /* ==========================================================================
-   BRASS HANDS RULED WORK WALL WITH SMOOTH SCROLL-REVEAL
+   REFINED EDGE-FADED REAL LOGO MARQUEE (BELOW HERO CAROUSEL)
+   ========================================================================== */
+.logo-bar {
+  overflow: hidden;
+  padding: clamp(20px, 2.5vw, 30px) 0;
+  border-block: 1px solid var(--rule);
+  background: #1f1f1f;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+}
+
+.logo-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 64px;
+  animation: nh-marquee 32s linear infinite;
+}
+
+.logo-bar:hover .logo-track {
+  animation-play-state: paused;
+}
+
+@keyframes nh-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  font-family: var(--f-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(240, 238, 233, 0.72);
+  white-space: nowrap;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.logo-item:hover {
+  color: #ffffff;
+}
+
+.logo-mark {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: grayscale(1) brightness(1.75) contrast(1.1);
+  opacity: 0.88;
+}
+
+/* ==========================================================================
+   PURE BRASS HANDS WORK WALL (ZERO PILLS, ZERO TEXT OVERLAYS, SMOOTH SCROLL)
    ========================================================================== */
 .ws-sec {
-  padding: clamp(28px, 4vw, 48px) 0 clamp(48px, 6vw, 84px);
-  border-bottom: 1px solid var(--rule);
-}
-
-.ws-bar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 0 var(--g) 20px;
-}
-
-.ws-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.ws-tab {
-  padding: 8px 14px;
-  border: 1px solid var(--rule);
-  background: #242424;
-  font-family: var(--f-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  transition: border-color 150ms ease, color 150ms ease, background-color 150ms ease;
-}
-
-.ws-tab:hover {
-  border-color: var(--rule-strong);
-  color: var(--fg);
-}
-
-.ws-tab.is-active {
-  border-color: var(--fg);
-  background: var(--fg);
-  color: #1c1c1c;
-}
-
-.ws-more {
-  font-family: var(--f-mono);
-  font-size: 11.5px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  transition: color 140ms ease;
-}
-
-.ws-more:hover {
-  color: var(--fg);
+  padding: clamp(24px, 3vw, 40px) 0 clamp(44px, 5vw, 72px);
 }
 
 .ws-grid {
@@ -456,7 +419,6 @@ html[data-room="hall"] .ds {
   }
 }
 
-/* Smooth scroll-reveal refresh */
 .ws-card {
   position: relative;
   display: block;
@@ -464,10 +426,10 @@ html[data-room="hall"] .ds {
   background: #242424;
   overflow: hidden;
   opacity: 0;
-  transform: translateY(26px) scale(0.988);
+  transform: translateY(24px) scale(0.99);
   transition:
-    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms),
-    transform 680ms cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms),
+    opacity 580ms cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms),
+    transform 640ms cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms),
     border-color 180ms ease;
 }
 
@@ -510,156 +472,8 @@ html[data-room="hall"] .ds {
   transform: scale(1.025);
 }
 
-.ws-cap {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  padding: 5px 10px;
-  background: rgba(28, 28, 28, 0.88);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--rule-strong);
-  font-family: var(--f-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--fg);
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-
-.ws-card:hover .ws-cap {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* ==========================================================================
-   CLEAN VERTICAL EDITORIAL TIMELINE (NOT VIBE-CODED)
-   ========================================================================== */
-.tl-clean {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: clamp(56px, 7vw, 96px) var(--g);
-}
-
-.tl-clean-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 36px;
-}
-
-.tl-clean-head h2 {
-  margin: 0;
-  font-family: var(--f-disp);
-  font-size: clamp(24px, 2.4vw, 34px);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--fg);
-}
-
-.tl-cv {
-  font-family: var(--f-mono);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  color: var(--dim);
-  transition: color 140ms ease;
-}
-
-.tl-cv:hover {
-  color: var(--fg);
-}
-
-.tl-track {
-  position: relative;
-  margin: 0;
-  padding: 0 0 0 28px;
-  list-style: none;
-  display: grid;
-  gap: 32px;
-}
-
-.tl-track::before {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 8px;
-  bottom: 8px;
-  width: 1px;
-  background: var(--rule-strong);
-}
-
-.tl-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 140px minmax(0, 1fr);
-  gap: 8px 28px;
-  align-items: baseline;
-}
-
-.tl-node {
-  position: absolute;
-  left: -27px;
-  top: 7px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #242424;
-  border: 1.5px solid var(--dim);
-}
-
-.tl-item.is-now .tl-node {
-  background: var(--accent);
-  border-color: var(--accent);
-}
-
-.tl-date {
-  font-family: var(--f-mono);
-  font-size: 12px;
-  color: var(--dim);
-  font-variant-numeric: tabular-nums;
-}
-
-.tl-body {
-  display: grid;
-  gap: 4px;
-}
-
-.tl-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 12px;
-}
-
-.tl-name {
-  font-family: var(--f-sans);
-  font-size: 17px;
-  font-weight: 600;
-  text-transform: capitalize;
-  color: var(--fg);
-  transition: color 140ms ease;
-}
-
-.tl-body:hover .tl-name {
-  color: var(--gold-hi);
-}
-
-.tl-role {
-  font-size: 14px;
-  color: var(--dim);
-  text-transform: capitalize;
-}
-
-.tl-desc {
-  font-size: 14.5px;
-  line-height: 1.5;
-  color: rgba(240, 238, 233, 0.62);
-}
-
-/* ==========================================================================
-   BRASS HANDS BOTTOM BAR
+   BRASS HANDS BOTTOM BAR (CENTERED NAV / CENTERED MOBILE MENU + SQUARE CTA)
    ========================================================================== */
 .bh-dock {
   position: fixed;
@@ -671,9 +485,9 @@ html[data-room="hall"] .ds {
 }
 
 .bh-dock-shell {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
   height: 56px;
   padding: 6px 8px 6px 14px;
@@ -685,7 +499,8 @@ html[data-room="hall"] .ds {
 .bh-dock-brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
+  justify-self: start;
   font-family: var(--f-mono);
   font-size: 12px;
   font-weight: 600;
@@ -693,15 +508,10 @@ html[data-room="hall"] .ds {
   color: var(--fg);
 }
 
-.bh-dock-div {
-  width: 1px;
-  height: 20px;
-  background: var(--rule-strong);
-}
-
 .bh-dock-nav {
   display: flex;
   align-items: center;
+  justify-self: center;
   gap: 6px;
   margin: 0;
   padding: 0;
@@ -711,7 +521,7 @@ html[data-room="hall"] .ds {
 .bh-dock-link {
   display: inline-flex;
   align-items: center;
-  padding: 8px 11px;
+  padding: 8px 10px;
   font-family: var(--f-mono);
   font-size: 11.5px;
   font-weight: 500;
@@ -734,6 +544,7 @@ html[data-room="hall"] .ds {
 .bh-dock-menu {
   display: none;
   align-items: center;
+  justify-self: center;
   gap: 8px;
   padding: 8px 12px;
   font-family: var(--f-mono);
@@ -748,6 +559,10 @@ html[data-room="hall"] .ds {
   width: 14px;
   height: 7px;
   border-block: 1.5px solid currentColor;
+}
+
+.bh-dock-shell .bh-cta {
+  justify-self: end;
 }
 
 .bh-sheet {
@@ -800,6 +615,15 @@ html[data-room="hall"] .ds {
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
+@media (max-width: 980px) {
+  .bh-topbar {
+    grid-template-columns: 1fr auto auto;
+  }
+  .bh-gh {
+    display: none;
+  }
+}
+
 @media (max-width: 767px) {
   .bh-topbar {
     grid-template-columns: 1fr auto;
@@ -814,12 +638,7 @@ html[data-room="hall"] .ds {
   .ws-third {
     grid-column: span 6;
   }
-  .tl-item {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-  .bh-dock-nav,
-  .bh-dock-div {
+  .bh-dock-nav {
     display: none;
   }
   .bh-dock-menu {

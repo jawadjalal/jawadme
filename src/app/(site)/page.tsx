@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/ds/Footer";
 import { Hero } from "@/components/ds/Hero";
+import { LogoMarquee } from "@/components/ds/LogoMarquee";
 import { OrbitMarquee } from "@/components/ds/OrbitMarquee";
-import { Timeline } from "@/components/ds/Timeline";
 import { WorkShowcase, type ShowcaseItem } from "@/components/ds/WorkShowcase";
 import { LoaderB } from "@/components/loader/LoaderB";
 import { ADS } from "@/content/ads";
@@ -28,11 +28,10 @@ const adCard = (a: (typeof ADS)[number]): ShowcaseItem => ({
 const ignaru = projectBySlug("ignaru")!;
 const ignuraSeo = projectBySlug("ignura-seo")!;
 const ignura = projectBySlug("ignura")!;
-const coresrent = projectBySlug("coresrent")!;
 const fracture = projectBySlug("fracture")!;
 const menufit = SITES.find((s) => s.id === "site-menufit");
 
-// Heavy on work: 50+ pieces right on the home page in crisp multiples of 4 (4-up desktop, 2-up mobile, zero orphans).
+// Pure Brass Hands work stream: 60+ pieces, Coresrent removed, Experience removed.
 const ALL_WORK: ShowcaseItem[] = [
   ...ADS.slice(0, 8).map(adCard),
   {
@@ -61,14 +60,14 @@ const ALL_WORK: ShowcaseItem[] = [
     span: "half",
   },
   {
-    id: coresrent.slug,
-    href: `/work/${coresrent.slug}`,
-    title: "Coresrent",
+    id: ignura.slug,
+    href: `/work/${ignura.slug}`,
+    title: "Ignura Studio",
     category: "brand-web",
-    src: coresrent.cover.src,
-    w: coresrent.cover.w,
-    h: coresrent.cover.h,
-    alt: coresrent.cover.alt,
+    src: ignura.cover.src,
+    w: ignura.cover.w,
+    h: ignura.cover.h,
+    alt: ignura.cover.alt,
     span: "half",
   },
   ...ADS.slice(16, 24).map(adCard),
@@ -84,17 +83,6 @@ const ALL_WORK: ShowcaseItem[] = [
     span: "full",
   },
   ...ADS.slice(24, 32).map(adCard),
-  {
-    id: ignura.slug,
-    href: `/work/${ignura.slug}`,
-    title: "Ignura Studio",
-    category: "brand-web",
-    src: ignura.cover.src,
-    w: ignura.cover.w,
-    h: ignura.cover.h,
-    alt: ignura.cover.alt,
-    span: "half",
-  },
   ...(menufit
     ? [
         {
@@ -106,7 +94,7 @@ const ALL_WORK: ShowcaseItem[] = [
           w: menufit.w,
           h: menufit.h,
           alt: menufit.alt,
-          span: "half" as const,
+          span: "full" as const,
         },
       ]
     : []),
@@ -135,9 +123,9 @@ export default function Home() {
         <OrbitMarquee ads={MARQUEE_ADS} />
       </section>
 
-      <WorkShowcase items={ALL_WORK} totalAds={ADS.length} />
+      <LogoMarquee />
 
-      <Timeline />
+      <WorkShowcase items={ALL_WORK} />
 
       <Footer src="home-footer" />
     </main>
