@@ -252,7 +252,7 @@ video.cp-media, .cp-media[data-loaded], .cp-frame .cp-media[loading="eager"] { o
   .cp-board { margin-left: auto; }
 }
 @media (max-width: 479px) {
-  .cp-top .gl { font-size: 12.5px; --pad: 0.8em; }
+  .cp-top .gl[data-v="pill"] { font-size: 12.5px; --pad: 0.8em; }
 }
 @media (max-width: 760px) {
   /* every kind in reach at once: the chips wrap onto rows, and the filter scrolls away with the page */
