@@ -1,157 +1,167 @@
-/* ── Clean Pillar-Only Contact Footer ── */
-.foot {
+/* ── Heavily Refined Brass Hands × Directional Signpost Footer ── */
+.sf-foot {
   position: relative;
-  background: #141414;
-  color: #f0eee9;
-  border-top: 1px solid var(--rule);
-  padding-bottom: calc(var(--dock) + 20px + env(safe-area-inset-bottom));
+  background: #181818;
+  color: #f2f2f0;
+  border-top: 1px dashed rgba(255, 98, 0, 0.45);
+  padding-bottom: calc(var(--dock) + env(safe-area-inset-bottom));
 }
 
-.ds:has(.foot) {
+.ds:has(.sf-foot) {
   padding-bottom: 0;
 }
 
-.pl {
+.sf-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  border-bottom: 1px solid var(--rule);
+}
+
+.sf-visual {
   position: relative;
+  overflow: hidden;
+  border-right: 1px solid var(--rule);
+  background: #121212;
+  min-height: 420px;
 }
 
-.pl-stage {
+.sf-img {
   width: 100%;
-  aspect-ratio: 1440 / 846;
+  height: 100%;
+  object-fit: cover;
+  object-position: 34% 48%;
+  /* Re-grade old mint lantern glow into warm cohesive industrial orange-amber */
+  filter: hue-rotate(-138deg) saturate(1.15) contrast(1.06) brightness(0.92);
 }
 
-.pl-head {
-  position: absolute;
-  left: 56%;
-  top: 36%;
-  z-index: 3;
-  pointer-events: none;
+.sf-signs {
+  display: grid;
+  align-content: space-between;
+  padding: clamp(32px, 4.5vw, 60px) clamp(20px, 4vw, 56px);
+  gap: 28px;
 }
 
-.foot-h {
+.sf-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px 20px;
+}
+
+.sf-h {
   margin: 0;
   font-family: var(--f-disp);
+  font-size: clamp(32px, 3.6vw, 54px);
   font-weight: 700;
-  font-size: clamp(36px, 4.2vw, 64px);
-  line-height: 0.94;
+  line-height: 0.96;
   letter-spacing: -0.04em;
-  color: #f0eee9;
+  color: #f2f2f0;
 }
 
-.pl-head .foot-hint {
-  margin: 12px 0 0;
-  font-family: var(--f-mono);
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #adb3b7;
-}
-
-.pl-ui {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-}
-
-.pl-a {
-  position: absolute;
-  left: calc(var(--dx) * 100%);
-  top: calc(var(--dy) * 100%);
-  width: 10.5%;
-  height: 7%;
-  translate: -50% -50%;
-}
-
-.pl-a.main {
-  width: 16%;
-  height: 9%;
-}
-
-.pl-a[data-sign="instagram"] {
-  width: 6%;
-  height: 9.5%;
-}
-
-.pl-a > a {
-  position: absolute;
-  inset: 0;
-  border-radius: 6px;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 200ms ease;
-}
-
-.pl-a > a::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: inherit;
-  box-shadow: 0 0 0 1.5px var(--gold);
-  opacity: 0;
-  transition: opacity 150ms ease;
-}
-
-.pl-a > a:focus-visible::after,
-.pl-stage[data-mode="poster"] .pl-a > a:hover::after {
-  opacity: 1;
-}
-
-.vh {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-.pl-gild {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  white-space: nowrap;
-}
-
-.pl-stage[data-mode="live"] .pl-gild,
-.pl-stage[data-mode="poster"] .pl-a.main > a {
-  display: none;
-}
-
-.foot-min-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px var(--g);
-  border-top: 1px solid var(--rule);
+.sf-sub {
   font-family: var(--f-mono);
   font-size: 11px;
   letter-spacing: 0.1em;
   color: #adb3b7;
 }
 
-@media (max-width: 767px) {
-  .pl-head {
-    position: relative;
-    left: auto;
-    top: auto;
-    padding: 40px var(--g) 4px;
+.sf-arm-list {
+  display: grid;
+  border-top: 1px solid var(--rule);
+}
+
+.sf-arm {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 14px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--f-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #f2f2f0;
+  transition: background-color 160ms ease, color 160ms ease, padding-left 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sf-arm:hover {
+  background: rgba(255, 98, 0, 0.12);
+  color: #ff6200;
+  padding-left: 20px;
+}
+
+.sf-arm-idx {
+  font-size: 11px;
+  color: #adb3b7;
+}
+
+.sf-arm:hover .sf-arm-idx {
+  color: #ff6200;
+}
+
+.sf-arm-arr {
+  font-size: 15px;
+  color: #adb3b7;
+  transition: transform 180ms ease, color 160ms ease;
+}
+
+.sf-arm:hover .sf-arm-arr {
+  color: #ff6200;
+  transform: translateX(4px);
+}
+
+/* Primary Book a Call sign arm: Brass Hands hatched orange treatment */
+.sf-arm-main {
+  background-color: rgba(255, 120, 30, 0.14);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(24, 24, 24, 0.65) 0px,
+    rgba(24, 24, 24, 0.65) 2px,
+    rgba(255, 122, 26, 0.16) 2px,
+    rgba(255, 122, 26, 0.16) 4.5px
+  );
+  border-bottom-color: rgba(255, 98, 0, 0.45);
+  color: #ff7235;
+}
+
+.sf-arm-main .sf-arm-idx,
+.sf-arm-main .sf-arm-arr {
+  color: #ff7235;
+}
+
+.sf-arm-main:hover {
+  background-color: #ff6200;
+  background-image: none;
+  color: #181818;
+}
+
+.sf-arm-main:hover .sf-arm-idx,
+.sf-arm-main:hover .sf-arm-arr {
+  color: #181818;
+}
+
+.sf-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px var(--g);
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #adb3b7;
+}
+
+@media (max-width: 960px) {
+  .sf-grid {
+    grid-template-columns: 1fr;
   }
-  .pl-stage {
-    aspect-ratio: 390 / 700;
-  }
-  .pl-a {
-    left: calc(var(--mx) * 100%);
-    top: calc(var(--my) * 100%);
-    width: 27%;
-    height: 7%;
-    min-height: 48px;
-  }
-  .pl-a.main {
-    width: 40%;
-  }
-  .pl-a[data-sign="instagram"] {
-    width: 16%;
-    height: 9.5%;
+  .sf-visual {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    min-height: 280px;
+    max-height: 360px;
   }
 }

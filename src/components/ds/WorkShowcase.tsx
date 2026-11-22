@@ -14,7 +14,7 @@ export type ShowcaseItem = {
   h: number;
   alt: string;
   loop?: string;
-  span: "full" | "half" | "third";
+  span: "full" | "half" | "third" | "sixth";
 };
 
 /** Pure, silent, Brass Hands–framed visual work wall with smooth scroll-reveal refresh.
@@ -73,7 +73,13 @@ export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
       <div ref={gridRef} className="ws-grid">
         {items.map((item, idx) => {
           const spanClass =
-            item.span === "full" ? "ws-full" : item.span === "third" ? "ws-third" : "ws-half";
+            item.span === "full"
+              ? "ws-full"
+              : item.span === "sixth"
+                ? "ws-sixth"
+                : item.span === "third"
+                  ? "ws-third"
+                  : "ws-half";
 
           return (
             <Link
@@ -81,7 +87,7 @@ export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
               href={item.href}
               aria-label={item.title}
               className={"ws-card ws-card-pure " + spanClass}
-              style={{ ["--delay" as string]: `${(idx % 4) * 50}ms` }}
+              style={{ ["--delay" as string]: `${(idx % 6) * 45}ms` }}
             >
               <div className="ws-media">
                 {item.loop ? (
@@ -106,9 +112,11 @@ export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
                     sizes={
                       spanClass === "ws-full"
                         ? "(min-width: 768px) 96vw, 100vw"
-                        : spanClass === "ws-third"
-                          ? "(min-width: 1280px) 24vw, (min-width: 768px) 32vw, 48vw"
-                          : "(min-width: 768px) 48vw, 100vw"
+                        : spanClass === "ws-sixth"
+                          ? "(min-width: 1280px) 16vw, (min-width: 768px) 32vw, 48vw"
+                          : spanClass === "ws-third"
+                            ? "(min-width: 768px) 32vw, 100vw"
+                            : "(min-width: 768px) 48vw, 100vw"
                     }
                   />
                 )}
