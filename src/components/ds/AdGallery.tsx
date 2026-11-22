@@ -44,13 +44,16 @@ const tall = (aspects: number[], slots: Slot[]) => {
 /** A room's opening: the first piece large on the left, and beside it the run of the next pieces whose hang comes
  *  closest to its height (all of them when one or none would be left to hang below). */
 function feature(aspects: number[]) {
-  const l = aspects[0] >= 1 ? 0.62 : 0.45;
-  const room = l / aspects[0] + 0.04;
   const side = (m: number) => hang(aspects.slice(1, 1 + m), 0.6, [0.6]);
-  const off = (m: number) => Math.abs((1 - l) * tall(aspects.slice(1, 1 + m), side(m)) - room);
-  let m = 1;
-  for (let k = 2; k < aspects.length; k++) if (off(k) < off(m)) m = k;
-  if (aspects.length - 1 - m < 2) m = aspects.length - 1;
+  const fit = (l: number) => {
+    const off = (m: number) => Math.abs((1 - l) * tall(aspects.slice(1, 1 + m), side(m)) - l / aspects[0] - 0.04);
+    let m = 1;
+    for (let k = 2; k < aspects.length; k++) if (off(k) < off(m)) m = k;
+    return aspects.length - 1 - m < 2 ? aspects.length - 1 : m;
+  };
+  // a lone piece beside the lead fills the side on its own, so the lead takes the larger share to stay the largest
+  const m = fit(aspects[0] >= 1 ? 0.62 : 0.45);
+  const l = m === 1 ? 0.62 : aspects[0] >= 1 ? 0.62 : 0.45;
   return { m, l, side: side(m) };
 }
 

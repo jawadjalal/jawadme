@@ -75,15 +75,15 @@ const PROJECTS_ALL: Project[] = [
     lines: ["design tool.", "circle what's wrong on the canvas. your coding agent fixes it in your files."],
     cover: { ...m("/work/case/ignaru-live-1.webp", 1920, 1200, "ignaru.com today: agentic design that sells, over a grid of ads made in it", "ink"), loop: "/work/case/ignaru-scroll.mp4", crop: [500, 70, 1390, 782], cropM: [524, 96, 560, 700] },
     blocks: [
-      { kind: "full", media: fd("ignaru-canvas-ads", "the ignaru canvas: an ad set laid out as frames, layers on the left, the composer at the foot") },
+      { kind: "full", media: { ...fd("ignaru-canvas-ads", "the ignaru canvas: an ad set laid out as frames, layers on the left, the composer at the foot"), cropM: [500, 0, 440, 550] } },
       { kind: "grid", media: [
         fd("ignaru-app-composer", "the ignaru composer with its model menu open"),
         { ...fd("ignaru-app-palette", "the ignaru command palette"), crop: [0, 0, 700, 700] },
         fd("ignaru-app-agent", "ignaru's start-an-agent sheet"),
       ] },
-      { kind: "full", media: { ...m("/work/case/ignaru-live-5.webp", 1920, 1200, "ignaru.com: design the brand on one canvas", "ink"), crop: [524, 340, 1338, 430], cropM: [524, 345, 480, 600] } },
+      { kind: "full", media: { ...m("/work/case/ignaru-live-5.webp", 1920, 1200, "ignaru.com: design the brand on one canvas", "ink"), crop: [524, 340, 1338, 430], cropM: [530, 350, 368, 460] } },
       { kind: "pair", media: [fd("ignaru-app-changes", "ignaru's changes panel: two files, a commit message and the diff"), fd("ignaru-app-share", "ignaru's share sheet")] },
-      { kind: "inset", media: fd("ignaru-canvas-zoom", "the ignaru canvas zoomed into one ad") },
+      { kind: "inset", media: { ...fd("ignaru-canvas-zoom", "the ignaru canvas zoomed into one ad"), crop: [420, 165, 760, 490], cropM: [460, 196, 364, 455] } },
     ],
   },
   {

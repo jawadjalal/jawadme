@@ -1,5 +1,6 @@
 /* /work: the filter row, each room's opening piece, its captions and the air between rooms */
 @media (min-width: 768px) {
+  .work .chips { margin-bottom: calc(3 * var(--u)); }
   .work .chips-in { flex-wrap: wrap; overflow-x: visible; }
 }
 .work .rh-c { font: 700 15px/1 var(--f-bar); color: var(--dim); }

@@ -609,3 +609,121 @@ html:is([data-room="hall"], [data-room="ink"]) .mg { --mg: var(--ivory); }
   .wk-h { grid-template-columns: minmax(0, 1fr); padding-top: 28px; padding-bottom: 20px; }
   .wk-t { font-size: 27vw; }
 }
+.brk-side { display: grid; gap: 18px; justify-items: start; max-width: 24em; padding-bottom: 6px; }
+.brk-s { margin: 0; font: 600 max(16px, calc(4.6 * var(--u)))/1.3 var(--f-sans); letter-spacing: -0.01em; color: var(--dim); text-wrap: pretty; }
+@media (max-width: 767px) {
+  .brk { grid-template-columns: minmax(0, 1fr); margin-block: 72px; padding-top: 28px; }
+  .brk-m { gap: 28px; }
+  .brk-t { font-size: 12vw; }
+  .room-sm .rh-t { font-size: 10vw; }
+}
+@media (max-width: 767px) {
+  .hang { --gap: 10px; row-gap: 24px; }
+  .hang-i { --w: var(--mw); --n: var(--mn); }
+  .rh { flex-direction: column; align-items: stretch; gap: 14px; padding-bottom: 18px; }
+  .rh-t { font-size: 13vw; }
+  .rh-side { justify-items: start; text-align: left; }
+  .rh-m { justify-content: space-between; }
+  .room-w + .room-w { margin-top: 72px; }
+}
+
+/* ── Rooms: one row of chips that sticks to the top while you walk the hall, and scrolls sideways on a phone ── */
+.chips { position: sticky; top: 0; z-index: 20; margin-bottom: calc(8 * var(--u)); background: var(--bg); transition: background-color var(--t-room) var(--ease-io); }
+.chips-in { display: flex; gap: 8px; align-items: center; padding: 8px var(--g); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scroll-padding-inline: var(--g); scrollbar-width: none; }
+.chips-in::-webkit-scrollbar { display: none; }
+.chips .gl { flex: none; scroll-snap-align: start; }
+
+/* ── The call strip under the hall ── */
+.strip { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin: calc(14 * var(--u)) 0; padding: calc(8 * var(--u)) var(--g) calc(6 * var(--u)); background: var(--accent); color: var(--accent-ink) !important; transition: background-color var(--t-fast), color var(--t-fast); }
+.strip:hover { background: var(--ink); color: var(--ground) !important; }
+.strip:active { scale: 0.995; }
+.strip-cta { font: 700 calc(16 * var(--u))/0.94 var(--f-disp); letter-spacing: -0.035em; }
+@media (max-width: 767px) { .strip { flex-direction: column; align-items: start; } .strip-cta { font-size: 13vw; } }
+.disclose { margin: 0; padding-block: 28px; font: 600 13px/1.4 var(--f-sans); color: var(--dim); }
+
+/* ── About ── */
+@media (max-width: 767px) {
+  .ab-pic { grid-column: 1 / span 2; }
+  .ab-line { grid-column: 1 / -1; }
+  .faq-r { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .faq-r dt, .faq-r dd { grid-column: 1; }
+}
+
+/* ── About: the words, set large. A small label, his line as the lead, a few strong paragraphs at a reading measure. ── */
+.ab-text { display: grid; gap: calc(7 * var(--u)); padding: calc(20 * var(--u)) var(--g) calc(12 * var(--u)); }
+.ab-k { margin: 0; font: 700 17px/1 var(--f-bar); letter-spacing: -0.02em; color: var(--dim); }
+.ab-lead { margin: 0; max-width: 12em; font: 700 max(44px, calc(24 * var(--u)))/0.94 var(--f-disp); letter-spacing: -0.045em; text-wrap: balance; }
+.ab-text p:not(.ab-lead) { margin: 0; max-width: 22em; font: 600 max(23px, calc(11 * var(--u)))/1.12 var(--f-sans); letter-spacing: -0.028em; text-wrap: pretty; }
+.ab-text p a { text-decoration: underline; text-decoration-thickness: 0.06em; text-underline-offset: 0.12em; transition: color var(--t-fast); }
+.ab-text p a:hover { color: var(--accent-text); }
+.ab-text .nw { white-space: nowrap; }
+.ab-faq { max-width: 64em; margin-top: calc(4 * var(--u)); border-top: 1px solid var(--rule); }
+.ab-faq summary { display: flex; justify-content: space-between; align-items: center; min-height: 56px; cursor: pointer; list-style: none; font: 700 19px/1 var(--f-bar); letter-spacing: -0.02em; }
+.ab-faq summary::-webkit-details-marker { display: none; }
+.ab-faq summary::after { content: "+"; font-size: 26px; transition: rotate var(--sp-pop-t) var(--sp-pop); }
+.ab-faq[open] dl { animation: faq-in var(--sp-soft-t) var(--sp-soft) both; }
+@keyframes faq-in { from { opacity: 0; translate: 0 -10px; } }
+@media (prefers-reduced-motion: reduce) { .ab-faq[open] dl { animation: none; } }
+.ab-faq[open] summary::after { rotate: 45deg; }
+.ab-faq dl { display: grid; gap: 22px; margin: 0; padding: 8px 0 24px; }
+.ab-faq dt { font: 700 19px/1.25 var(--f-sans); letter-spacing: -0.015em; }
+.ab-faq dd { margin: 6px 0 0; max-width: 40em; font: 500 17px/1.45 var(--f-sans); color: var(--dim); }
+
+/* ── Contact: two equal ways in, a call and an email, side by side. ── */
+.ct { padding: calc(14 * var(--u)) var(--g) calc(18 * var(--u)); }
+.ct-h { margin: 0 0 calc(8 * var(--u)); font: 700 max(56px, calc(30 * var(--u)))/0.9 var(--f-disp); letter-spacing: -0.05em; }
+.ct-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ct-c { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 48px; min-height: clamp(240px, 30vw, 440px); padding: calc(6 * var(--u)) calc(7 * var(--u)) calc(7 * var(--u)); background: var(--ink); color: var(--white); }
+.ct-k { font: 700 max(20px, calc(6 * var(--u)))/1.1 var(--f-bar); letter-spacing: -0.02em; color: #a3a29d; }
+.ct-p .ct { min-height: calc(100svh - var(--dock)); display: flex; flex-direction: column; justify-content: flex-end; }
+@media (max-width: 767px) {
+  .ct-two { grid-template-columns: minmax(0, 1fr); }
+  .ct-c { min-height: 200px; padding: 22px 22px 24px; }
+  .ab-text { gap: 18px; padding-top: 64px; padding-bottom: 32px; }
+  .ab-lead { max-width: none; margin-bottom: 6px; font-size: 12.2vw; line-height: 0.9; }
+  .ab-text p:not(.ab-lead) { font-size: 21px; line-height: 1.24; letter-spacing: -0.022em; }
+  .ab-text .cg { margin-top: 14px; }
+  .ct { padding-top: 56px; padding-bottom: 56px; }
+  .ct-h { margin-bottom: 20px; }
+  .ct-p .ct { padding-top: 32px; padding-bottom: 16px; }
+  .ct-p .ct-h { margin-bottom: auto; padding-bottom: 32px; font-size: 24vw; line-height: 0.82; letter-spacing: -0.06em; }
+  .ct-p .ct-c { min-height: max(200px, calc((100svh - var(--dock) - 220px) / 2)); }
+}
+
+/* ── GitHub: a square a day on flat ink, accent levels, the total counting up ── */
+.cg { --c: 10px; --gap: 3px; container-type: inline-size; justify-self: stretch; max-width: 760px; margin: 0; padding: 20px 22px 18px; background: var(--ink); color: var(--ground); }
+.cg[data-size="mini"] { --c: 6px; --gap: 2px; flex: none; width: 230px; max-width: none; padding: 12px; }
+.cg-total { display: inline-block; font: 700 max(22px, calc(8 * var(--u)))/1 var(--f-disp); letter-spacing: -0.035em; font-variant-numeric: tabular-nums; transition: color var(--t-fast); }
+.cg-total:hover { color: var(--accent); }
+.cg[data-size="mini"] .cg-total { display: block; min-height: 44px; font-size: 14px; line-height: 22px; letter-spacing: -0.02em; }
+.cg-box { position: relative; margin-top: 16px; }
+.cg[data-size="mini"] .cg-box { margin-top: 8px; }
+.cg-grid { display: grid; grid-template-rows: repeat(7, var(--c)); grid-auto-flow: column; grid-auto-columns: var(--c); gap: var(--gap); width: max-content; margin: 0; padding: 0; list-style: none; }
+.cg-grid li, .cg-key i { width: var(--c); height: var(--c); border-radius: 2px; background: rgb(230 229 225 / 0.1); }
+.cg [data-l="1"] { background: color-mix(in srgb, var(--accent) 34%, var(--ink)); }
+.cg [data-l="2"] { background: color-mix(in srgb, var(--accent) 56%, var(--ink)); }
+.cg [data-l="3"] { background: color-mix(in srgb, var(--accent) 78%, var(--ink)); }
+.cg [data-l="4"] { background: var(--accent); }
+.cg-grid li { cursor: default; outline: none; transition: scale var(--sp-pop-t) var(--sp-pop); }
+.cg-grid li:is(:hover, :focus) { scale: 1.7; box-shadow: 0 0 0 1px var(--ground); }
+@media (prefers-reduced-motion: reduce) { .cg-grid li:is(:hover, :focus) { scale: none; } }
+.cg[data-arm]:not([data-in]) .cg-grid li { opacity: 0; }
+.cg[data-in] .cg-grid li { animation: cg-in 460ms calc(var(--w) * 12ms) var(--ease) backwards; }
+@keyframes cg-in { from { opacity: 0; scale: 0.3; } }
+.cg-tip { position: absolute; z-index: 1; display: block; margin: 0; padding: 6px 9px; translate: -50% calc(-100% - 8px); background: var(--ground); color: var(--ink); font: 600 13px/1 var(--f-sans); letter-spacing: -0.01em; white-space: nowrap; pointer-events: none; }
+.cg-cap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin-top: 14px; font: 600 13px/1 var(--f-sans); color: rgb(230 229 225 / 0.62); }
+.cg-key { display: inline-flex; align-items: center; gap: 3px; }
+.cg-key i { display: inline-block; }
+.cg-h { display: none; }
+.cg[data-size="mini"] .cg-cap { display: none; }
+.cg[data-size="mini"] .cg-grid li[data-o] { display: none; }
+@container (width < 690px) {
+  .cg-grid li[data-o] { display: none; }
+  .cg-y { display: none; }
+  .cg-h { display: inline; }
+}
+
+/* ── Email: a click copies the address too; the link says so for a moment, and a status line tells screen readers ── */
+a[data-mail] { position: relative; }
+a[data-mail] > .mail-tag { position: absolute; left: 0; top: 100%; margin-top: 8px; padding: 5px 8px; font: 600 12px/1 var(--f-sans); letter-spacing: 0; background: var(--accent-ink); color: var(--accent-glow); white-space: nowrap; pointer-events: none; opacity: 0; translate: 0 -6px; transition: opacity var(--t-fast), translate var(--sp-pop-t) var(--sp-pop); }
+a[data-mail][data-copied] > .mail-tag { opacity: 1; translate: none; }
