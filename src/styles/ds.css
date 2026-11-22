@@ -190,7 +190,8 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
 .dock > .gl { transition: opacity var(--t-base) var(--ease), translate var(--t-base) var(--ease), visibility 0s; }
 html[data-call-in-view] .dock > .gl, html:not([data-call-seen]) .dock > .gl[data-hold] { opacity: 0; translate: 0 14px; visibility: hidden; transition: opacity var(--t-fast) var(--ease), translate var(--t-fast) var(--ease), visibility 0s var(--t-fast); }
 .dock-body { --nx: 100%; display: flex; align-items: stretch; padding-right: 10px; background: var(--ivory); color: var(--ink); border-radius: 3px 0 0 3px; }
-.dock-mark { display: grid; place-items: center; width: 56px; }
+.dock-mark { position: relative; display: grid; place-items: center; width: 56px; }
+.dock-mark::before, .dock-menu::before { content: ""; position: absolute; inset: min(0px, calc(50% - 22px)) 0; }
 .dock-mark img { width: 30px; height: auto; transition: transform var(--sp-pop-t) var(--sp-pop); }
 .dock-mark:hover img { transform: rotate(-10deg) scale(1.08); }
 .dock-nav { position: relative; display: flex; align-items: center; gap: 8px; padding: 0 10px 0 2px; margin: 0; list-style: none; }
@@ -201,7 +202,7 @@ html[data-call-in-view] .dock > .gl, html:not([data-call-seen]) .dock > .gl[data
   .dock { left: 10px; right: 10px; bottom: 10px; height: 56px; }
   .dock-body { flex: 1; }
   .dock-nav { display: none; }
-  .dock-menu { display: flex; align-items: center; gap: 8px; padding: 0 12px 0 4px; background: none; border: 0; font: 700 16px/1 var(--f-bar); letter-spacing: -0.02em; color: inherit; }
+  .dock-menu { position: relative; display: flex; align-items: center; gap: 8px; padding: 0 12px 0 4px; background: none; border: 0; font: 700 16px/1 var(--f-bar); letter-spacing: -0.02em; color: inherit; }
   .dock-menu i { display: block; width: 14px; height: 8px; border-block: 2px solid currentColor; transition: transform var(--t-base) var(--ease); }
   .dock-menu[aria-expanded="true"] i { transform: rotate(90deg); }
   .dock-sheet {

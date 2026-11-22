@@ -156,6 +156,7 @@ html:has(.cb) body {
   .cb-phone { display: block; }
 }
 .cb-back { position: fixed; z-index: 20; right: 16px; bottom: 16px; height: 38px; padding: 0 14px; border-radius: 10px; border: 0; background: #0a0a0a; color: #fff; font: 600 13px var(--cp-sans), ui-sans-serif, system-ui, sans-serif; cursor: pointer; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18); }
+.cb-back::before { content: ""; position: absolute; inset: -3px 0; }
 
 /* ── narrow screens: the cluster list folds into the toolbar ──────────── */
 @media (max-width: 899px) {
