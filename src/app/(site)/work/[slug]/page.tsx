@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { CSSProperties } from "react";
+import { Fragment, type CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import { Gilded } from "@/components/gilded/Gilded";
 import { Footer } from "@/components/ds/Footer";
@@ -45,9 +45,9 @@ function BlockView({ b }: { b: Block }) {
       );
     case "pair":
       return (
-        <div className={"b-pair " + (b.media.some(portrait) ? "" : "b-level")} style={b.media.some(portrait) ? undefined : level(b.media)}>
+        <div className={"b-pair " + (b.media.every(portrait) ? "" : "b-level")} style={b.media.every(portrait) ? undefined : level(b.media)}>
           {b.media.map((m) => (
-            <Media key={m.src} m={m} ratio={b.media.some(portrait) ? "4 / 5" : undefined} fit={portrait(m) && m.h / m.w > 1.6 ? "contain" : "cover"} sizes="(min-width: 768px) 50vw, 100vw" />
+            <Media key={m.src} m={m} ratio={b.media.every(portrait) ? "4 / 5" : undefined} fit={portrait(m) && m.h / m.w > 1.6 ? "contain" : "cover"} sizes="(min-width: 768px) 50vw, 100vw" />
           ))}
         </div>
       );
@@ -95,7 +95,7 @@ export default async function Case({ params }: Props) {
         {p.name}
       </TitleTab>
       {p.lead ? (
-        <div className="wrap case-lead" style={native(p.lead)}>
+        <div className={"wrap case-lead" + (p.lead.tone === "ink" ? " case-lead-ink" : "")} style={native(p.lead)}>
           <Media m={p.lead} vt={"cover-" + p.slug} priority sizes="(min-width: 1440px) 1346px, 100vw" />
         </div>
       ) : (
@@ -106,10 +106,13 @@ export default async function Case({ params }: Props) {
         </CaseMoment>
       )}
       <div className="g16 case-lines">
-        {p.lines.map((l) => (
-          <p key={l} className="t-line" data-lines="">
-            {l}
-          </p>
+        {p.lines.map((l, i) => (
+          <Fragment key={l}>
+            {p.beats?.[i] ? <p className="lbl dim case-beat">{p.beats[i]}</p> : null}
+            <p className="t-line" data-lines="">
+              {l}
+            </p>
+          </Fragment>
         ))}
       </div>
       <dl className="g16 spec case-facts">

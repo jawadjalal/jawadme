@@ -35,7 +35,7 @@ function Nav({ onPick, list }: { onPick?: () => void; list?: boolean }) {
   );
 }
 
-/** The ticket pinned to the corner of every page but /cal and the viewer: the mark and the way round on its body, the
+/** The ticket pinned to the corner of every page but /cal: the mark and the way round on its body, the
  *  call on its accent stub. The call stays on screen at every depth, so it is always one tap away; the body tucks away
  *  while the reader scrolls down, so it never sits over what they are reading, and returns on scroll up or a pause. */
 export function Dock() {
@@ -64,7 +64,7 @@ export function Dock() {
       show();
     };
   }, [path]);
-  if (path === "/cal" || path.startsWith("/w/")) return null;
+  if (path === "/cal") return null;
   return (
     <>
       <div className="dock-sheet" data-open={open} id="dock-sheet" aria-hidden={!open}>

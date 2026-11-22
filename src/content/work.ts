@@ -23,6 +23,7 @@ export type Block =
   | { kind: "grid"; media: Media[] }
   | { kind: "sequence"; media: Media };
 
+export type Beat = "build" | "result";
 export type Project = {
   slug: string;
   name: string;
@@ -33,6 +34,8 @@ export type Project = {
   link?: { href: string; label: string };
   spec?: boolean;
   lines: [string] | [string, string] | [string, string, string];
+  /** the beat each line tells on the case page, in the same order; a line left out carries no label */
+  beats?: Beat[];
   cover: Media;
   /** the case page's first picture when it isn't the cover: a still cut from a screenshot (scripts/case-cuts.mjs) */
   lead?: Media;
@@ -73,6 +76,7 @@ const PROJECTS_ALL: Project[] = [
     disciplines: ["product design", "brand", "website", "engineering"],
     link: { href: "https://ignaru.com", label: "ignaru.com" },
     lines: ["design tool.", "circle what's wrong on the canvas. your coding agent fixes it in your files."],
+    beats: ["build"],
     cover: { ...m("/work/case/ignaru-live-1.webp", 1920, 1200, "ignaru.com today: agentic design that sells, over a grid of ads made in it", "ink"), loop: "/work/case/ignaru-scroll.mp4" },
     lead: m("/work/case/cut/ignaru-lead.webp", 1346, 722, "ignaru.com today: agentic design that sells, over a row of ads made in it", "ink"),
     blocks: [
@@ -90,6 +94,7 @@ const PROJECTS_ALL: Project[] = [
     lane: "brand-web",
     disciplines: ["brand", "website", "illustration"],
     lines: ["the site from the ai-native seo and geo days.", "pipes, balls and one question: does ai name your company?"],
+    beats: ["build"],
     cover: { ...m("/work/case/seo-named.webp", 1920, 1200, "does ai name your company? the seo and geo landing, october 2026"), loop: "/work/case/seo-scroll.mp4" },
     blocks: [
       { kind: "full", media: m("/work/case/seo-climb.webp", 1920, 1200, "climb google and ai chats: the hero with its pipe and ball machine") },
@@ -108,6 +113,7 @@ const PROJECTS_ALL: Project[] = [
     disciplines: ["brand", "website"],
     link: { href: "https://ignura.com", label: "ignura.com" },
     lines: ["my ad and brand studio's site: ads and brands people stop for."],
+    beats: ["build"],
     cover: fd("ignura-home", "the ignura home page beside a wall of its ads"),
     blocks: [{ kind: "inset", media: fd("ignura-phone", "the ignura home page on a phone") }],
   },
@@ -120,6 +126,7 @@ const PROJECTS_ALL: Project[] = [
     disciplines: ["website", "webgl"],
     link: { href: "https://coresrent.vercel.app", label: "coresrent.vercel.app" },
     lines: ["fund real gpus in verified data centres and earn rent every metered hour."],
+    beats: ["build"],
     cover: m("/showcase/coresrent-1440.webp", 1440, 900, "coresrent, the first screen with its webgl scene"),
     blocks: [{ kind: "pair", media: [m("/work/coresrent.webp", 1600, 1000, "coresrent home page"), m("/work/coresrent-m.webp", 780, 1688, "coresrent on a phone")] }],
   },
@@ -135,6 +142,7 @@ const PROJECTS_ALL: Project[] = [
     disciplines: ["game design", "3d", "ui", "engineering"],
     link: { href: "/derelictdepths", label: "jawadjalal.com/derelictdepths" },
     lines: ["a roblox mining game i design and build, formerly derelict depths.", "68 ores, six floors, one mole king."],
+    beats: ["build", "result"],
     cover: m("/work/fracture/mole-king.webp", 1920, 1080, "fracture key art: a miner swings at the armoured mole king in a torchlit hall", "ink"),
     blocks: [
       { kind: "full", media: m("/work/fracture/strike.webp", 1920, 1080, "fracture key art: a miner splits a gold vein, sparks and ore flying", "ink") },
