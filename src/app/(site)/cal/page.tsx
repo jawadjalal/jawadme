@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CalInline } from "@/components/ds/CalInline";
+import { Gilded } from "@/components/gilded/Gilded";
 import { MailLink } from "@/components/MailLink";
 import { CalMoment } from "@/components/moments/cal";
 import { IDENTITY } from "@/lib/profile";
 import { meta } from "@/lib/seo";
+import "./cal.css";
 
 export const metadata: Metadata = meta({ title: "book a call", description: "book a free 15 minute video call with jawad jalal about brands, ads, sites, 3d and roblox games.", path: "/cal" });
 
@@ -28,6 +30,12 @@ export default async function Cal({ searchParams }: Props) {
       </header>
       <div className="cal-row">
         <div>
+          <div className="cal-intro">
+            <Gilded variant="pill" href="/">
+              ← jawad jalal
+            </Gilded>
+            <p className="cal-what">a free 15 minute video call about brands, ads, sites, 3d and roblox games.</p>
+          </div>
           <div className="cal-embed">
             <CalInline email={IDENTITY.email} theme="light" />
           </div>

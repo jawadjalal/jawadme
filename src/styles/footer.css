@@ -22,11 +22,12 @@
 .pl-gild { position: absolute; left: 50%; top: 50%; translate: -50% -50%; white-space: nowrap; }
 .pl-stage[data-mode="live"] .pl-gild, .pl-stage[data-mode="poster"] .pl-a.main > a { display: none; }
 
-.foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 24px; padding: 6px var(--g) calc(var(--dock) + 8px); box-shadow: inset 0 1px 0 rgb(248 227 194 / 0.14); font: 700 18px/1.2 var(--f-bar); letter-spacing: -0.02em; }
+/* the footer reserves the dock's room itself, so the page adds none below it */
+.ds:has(.foot) { padding-bottom: 0; }
+.foot-cg { padding: 20px var(--g) 12px; box-shadow: inset 0 1px 0 rgb(248 227 194 / 0.14); }
+.foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 24px; padding: 6px var(--g) calc(var(--dock) + 16px); font: 700 18px/1.2 var(--f-bar); letter-spacing: -0.02em; }
 .foot-c { color: #b9a184; }
 .foot-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; }
-.foot-gh { display: inline-flex; align-items: center; gap: 10px; }
-.foot-gh .cg { flex: none; width: 230px; max-width: none; }
 .foot-row a { display: inline-flex; align-items: center; min-height: 44px; color: #f4ece1; transition: color var(--t-fast); }
 .foot-row a:hover { color: var(--accent); }
 .foot-row a:not(.gl) { position: relative; }
@@ -42,7 +43,8 @@
   .pl-a.main { width: 40%; }
   .pl-gild .gl { font-size: 15px; --h: 44px; }
   .pl-a[data-sign="instagram"] { width: 16%; height: 9.5%; }
-  .foot-row { display: grid; gap: 4px; padding: 12px var(--g) calc(var(--dock) + 12px); }
+  .foot-cg { padding-top: 16px; }
+  .foot-row { display: grid; gap: 4px; padding: 4px var(--g) calc(var(--dock) + 16px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .pl-a > a { transition: none; }
