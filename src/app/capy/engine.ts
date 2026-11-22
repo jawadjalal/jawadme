@@ -31,8 +31,8 @@ const INK = "#0a0a0a";
 export const GROUND = "#ffffff";
 /** the page round the globe: the site's warm ground */
 const PAGE = "#e6e5e1";
-/** the first view's zoom: a poster about 1400 units tall reads at about 220 px */
-const OPEN_Z = 0.16;
+/** the first view's zoom: a poster about 1400 units tall reads at about 340 px */
+const OPEN_Z = 0.24;
 const TILE = "#e2ded3";
 const Z_MAX = 6;
 const HALF_PI = Math.PI / 2;
@@ -1092,7 +1092,7 @@ export class Engine {
       }
     }
     const sel = new Set(this.selected);
-    ctx.font = `500 11px ${this.fonts.sans}`;
+    ctx.font = `500 14px ${this.fonts.sans}`;
     for (const p of b.pieces) {
       const r = boxes[p.i];
       if (!r || r.w < 70 || r.y < -2 || r.y - 20 > vh) continue;

@@ -138,7 +138,6 @@ const SYSTEMS: { name: string; body: string; code: string }[] = [
 
 export default async function MinelightPage() {
   const [feed, launch] = await Promise.all([getFeed(), getLaunch()]);
-  const renderedAt = Date.now();
   const c = facts.counts;
   const cam = facts.camera;
   const jb = facts.joinBudget;
@@ -157,6 +156,12 @@ export default async function MinelightPage() {
             </h1>
             <p className="ml-kicker">a co-op action mining crawler for roblox</p>
             <p className="ml-lede">dig deep with your friends. smash monsters, crack glowing ore, beat the boss, forge better gear.</p>
+          </div>
+          <figure className="ml-poster">
+            <img src="/derelictdepths/img/poster-1280.jpg" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-768.jpg 768w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="100vw" width={1280} height={720} loading="lazy" alt="a miner raises a pickaxe in the golden room in front of the mole king" />
+            <figcaption><span className="ml-badge art">in-engine + key art</span>a real in-engine capture of the golden room, graded, with rays and the title added.</figcaption>
+          </figure>
+          <div>
             <p className="ml-sub">
               this page is the game as it stands today, and the machine that builds it: the dive a player feels, the systems under it, the look being
               built, and the numbers behind all of it. it is drawn from the game repo&apos;s main branch and the team&apos;s design docs. its shipped feed
@@ -167,10 +172,6 @@ export default async function MinelightPage() {
               <Gilded variant="pill" href="#art">the release art</Gilded>
             </p>
           </div>
-          <figure className="ml-poster">
-            <img src="/derelictdepths/img/poster-1280.jpg" srcSet="/derelictdepths/img/poster-640.jpg 640w, /derelictdepths/img/poster-768.jpg 768w, /derelictdepths/img/poster-1280.jpg 1280w" sizes="100vw" width={1280} height={720} loading="lazy" alt="a miner raises a pickaxe in the golden room in front of the mole king" />
-            <figcaption><span className="ml-badge art">in-engine + key art</span>a real in-engine capture of the golden room, graded, with rays and the title added.</figcaption>
-          </figure>
         </header>
 
         <div className="ml-stats">
@@ -328,7 +329,7 @@ export default async function MinelightPage() {
           <div className="ml-col">
             {feed ? (
               <>
-                <FeedMeta feed={feed} renderedAt={renderedAt} />
+                <FeedMeta feed={feed} />
                 <LatestShipped feed={feed} />
                 <p style={{ marginTop: 14 }}><a href="#shipped">every merged pr, grouped by hour →</a></p>
               </>
@@ -339,7 +340,7 @@ export default async function MinelightPage() {
         </Section>
 
         <Section id="launch" eyebrow="live · today" title="launch board">
-          <LaunchBoard launch={launch} renderedAt={renderedAt} />
+          <LaunchBoard launch={launch} />
         </Section>
 
         <Section id="visuals" eyebrow="live · hourly" title="latest visuals">
@@ -536,20 +537,6 @@ export default async function MinelightPage() {
             <div className="ml-fig-body"><div className="ml-svg-box"><CameraRig cam={cam} /></div></div>
             <figcaption><span><b>view.forge on main.</b> the held follow the shoulder style was built from, still selectable.</span></figcaption>
           </figure>
-          <Table
-            head={["key in view.forge", "value", "what it does"]}
-            rows={[
-              ["fov", String(cam.fov) + "°", "vertical field of view, roblox's default"],
-              ["pitch", String(cam.pitch) + "°", "degrees down, held: the player never tilts it"],
-              ["yaw", String(cam.yaw) + "°", "held in town and in the mine; nothing the hero does turns it"],
-              ["distance", String(cam.distance) + " studs", "eye to look point when nothing is in the way"],
-              ["focusHeight", String(cam.focusHeight) + " studs", "look point above the hero's root, so the hero sits a little low"],
-              ["popmargin, popmin", String(cam.popMargin) + ", " + String(cam.popMin) + " studs", "how the eye pops in front of a wall"],
-              ["popOutSmooth", String(cam.popOutSmooth) + " s", "easing back out once the wall is gone"],
-              ["teleport", String(cam.teleport) + " studs", "a jump this big in one frame (a respawn, the lift) resets the camera"],
-              ["focusease, focuspull", String(cam.focusEase) + " s, " + String(cam.focusPull), "a boss intro eases onto its point and pulls in"],
-            ]}
-          />
           <h3 className="ml-h3">controls</h3>
           <div className="ml-grid three">
             <div className="ml-card"><h3>pc</h3><p>wasd to move, <strong>click to swing</strong>, space to dash, e for a bomb, f for the ability, r for the ult, 1 to 9 for the hotbar.</p></div>
@@ -708,7 +695,7 @@ export default async function MinelightPage() {
               every pull request merged into the game repo&apos;s main, newest first and grouped by the hour (london time), with a one-line plain summary. a job on
               the build box refreshes this list every 3 minutes; store and pricing work is kept private until launch.
             </p>
-            <Feed feed={feed} renderedAt={renderedAt} />
+            <Feed feed={feed} />
           </div>
         </Section>
 

@@ -96,7 +96,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
     if (!e) return;
     const set = () => {
       const wide = window.innerWidth >= 900;
-      e.inset = hidden ? { t: 24, r: 24, b: 24, l: 24 } : { t: wide ? 96 : 250, r: wide ? 24 : 16, b: wide ? 96 : 88, l: wide ? 228 : 16 };
+      e.inset = hidden ? { t: 24, r: 24, b: 24, l: 24 } : { t: wide ? 96 : 250, r: wide ? 24 : 16, b: wide ? 96 : 88, l: wide ? 24 : 16 };
       e.hidden = hidden;
       if (!e.touched) e.view = e.openView();
       e.redraw();
@@ -323,7 +323,7 @@ export function Board({ assets, kinds, children }: { assets: Asset[]; kinds: str
         <button onClick={() => e?.fit()} title="fit the board (1)">
           fit
         </button>
-        <button className="cb-mob" onClick={() => setClustersOpen((v) => !v)}>
+        <button className="cb-mob" onClick={() => setClustersOpen((v) => !v)} aria-expanded={clustersOpen}>
           {c?.name ?? "clusters"}
         </button>
         <button onClick={() => e?.startTour()} title="auto tour (t)">
