@@ -199,6 +199,7 @@ html[data-call-in-view] .dock > .gl, html:not([data-call-seen]) .dock > .gl[data
 .dock-mark:hover img { transform: rotate(-10deg) scale(1.08); }
 .dock-nav { position: relative; display: flex; align-items: center; gap: 8px; padding: 0 10px 0 2px; margin: 0; list-style: none; }
 .dock-nav li { display: flex; align-items: center; }
+.dock-nav { --fg: var(--ink); --accent-text: var(--accent-paper); }
 .dock-menu { display: none; }
 .dock-sheet { display: none; }
 @media (max-width: 767px) {
