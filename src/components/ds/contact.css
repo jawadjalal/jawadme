@@ -36,6 +36,8 @@
 .ct-p .ct-c .gl > .mail-tag { left: auto; right: calc(7 * var(--u)); top: calc(6 * var(--u)); margin: 0; }
 @media (max-width: 767px) {
   .ct-p .ct { grid-template-rows: auto auto minmax(0, 1fr); padding-top: 32px; }
+  .ct-p .ct .ct-c { justify-content: center; gap: 28px; }
+  .ct-p .ct .ct-k { font-size: min(52px, 13.5vw); }
   .ct-p .ct-c .gl > .mail-tag { right: 22px; top: 22px; }
 }
 @media (min-width: 768px) {
