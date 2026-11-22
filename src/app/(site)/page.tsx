@@ -27,15 +27,15 @@ export default function Home() {
       <Timeline />
 
       <section className="ads-home" data-room="hall" aria-labelledby="ads-h">
-        <TitleTab id="ads-h" tag={ADS.length + " ads"} side={<Link href="/work">All work ↗</Link>}>
-          Ads
+        <TitleTab id="ads-h" tag={ADS.length + " ads"} side={<Link href="/work">all work ↗</Link>}>
+          ads
         </TitleTab>
         <AdGallery ads={GALLERY} />
       </section>
 
       <section className="idx" aria-labelledby="idx-h">
-        <TitleTab id="idx-h" tag="Brands, sites and products" side={<Link href="/work">All work ↗</Link>}>
-          Selected work
+        <TitleTab id="idx-h" tag="brands, sites and products" side={<Link href="/work">all work ↗</Link>}>
+          selected work
         </TitleTab>
         {SELECTED.map((p, i) => {
           const tall = p.cover.h > p.cover.w;
@@ -57,15 +57,15 @@ export default function Home() {
       </section>
 
       <section className="room" data-room="ink" aria-labelledby="room-h">
-        <TitleTab id="room-h" tag="A Roblox game I design and build" side={<Link href="/work/derelict-depths">Fracture ↗</Link>}>
-          3D &amp; Roblox
+        <TitleTab id="room-h" tag="a roblox game i design and build" side={<Link href="/work/derelict-depths">fracture ↗</Link>}>
+          3d &amp; roblox
         </TitleTab>
         <div className="wrap room-one">
-          <Sequence frames={[FR.cover, ...FR.blocks.flatMap((b) => (Array.isArray(b.media) ? b.media : [b.media]))]} label="Fracture key art · scroll to step through" />
+          <Sequence frames={[FR.cover, ...FR.blocks.flatMap((b) => (Array.isArray(b.media) ? b.media : [b.media]))]} label="fracture key art · scroll to step through" />
         </div>
       </section>
 
-      <section className="about g16" aria-label="About">
+      <section className="about g16" aria-label="about">
         <div className="about-pic">
           <Media m={SITE.portrait} ratio="1 / 1" sizes="(min-width: 768px) 25vw, 60vw" />
         </div>
