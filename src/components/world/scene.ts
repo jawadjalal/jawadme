@@ -37,8 +37,8 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   const door = world.door;
 
   // light: a cool sky and warm ground for the shadows, one warm key that casts, and the fires (in the shader)
-  scene.add(new THREE.HemisphereLight("#6660a6", "#140c0a", 1.15));
-  const key = new THREE.DirectionalLight("#ffcf9e", 1.1);
+  scene.add(new THREE.HemisphereLight("#6660a6", "#140c0a", 1.9));
+  const key = new THREE.DirectionalLight("#ffcf9e", 2.0);
   const LDIR = new THREE.Vector3(-0.5, 1, 0.12).normalize();
   key.castShadow = true;
   key.shadow.mapSize.set(o.small ? 1024 : 2048, o.small ? 1024 : 2048);
@@ -122,7 +122,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
 
   // camera: the five shots (gate, hall in, hall out, theatre, landing), eased between, with a pull back mid-move
   const shots: Shot[] = [
-    { t: new THREE.Vector3(0, COURT.y + 3, 0).addScaledVector(UP, 2), h: 52, w: 70, floor: COURT.y },
+    { t: new THREE.Vector3(0, COURT.y + 3, 0).addScaledVector(UP, 12), h: 56, w: 70, floor: COURT.y },
     hall.shots[0],
     hall.shots[1],
     { t: THEATRE.c.clone().add(new THREE.Vector3(-1, 1.5, -1)), h: 56, w: 74, floor: THEATRE.c.y },
@@ -274,7 +274,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     const [W, H] = v.size();
     if (W / H < 0.8) {
       wantW = Math.min(wantW, 40) - 10 * (i === 0 ? 1 - f : 0);
-      want.addScaledVector(UP, 6.5 * (i === 0 ? 1 - f : 0));
+      want.addScaledVector(UP, -3.5 * (i === 0 ? 1 - f : 0));
     }
     const intro = Math.min(1, Math.max(0, (ign.value - 0.3) / 3.2));
     wantH -= (1 - Math.pow(1 - intro, 3)) * 3 * Math.max(0, 1 - p * 2);
