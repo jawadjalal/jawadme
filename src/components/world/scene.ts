@@ -37,7 +37,7 @@ export function mount(host: HTMLElement, o: WorldOpts) {
   const door = world.door;
 
   // light: a cool sky and warm ground for the shadows, one warm key that casts, and the fires (in the shader)
-  scene.add(new THREE.HemisphereLight("#6660a6", "#140c0a", 1.9));
+  scene.add(new THREE.HemisphereLight("#7c9088", "#1a110c", 1.9));
   const key = new THREE.DirectionalLight("#ffcf9e", 2.0);
   const LDIR = new THREE.Vector3(-0.5, 1, 0.12).normalize();
   key.castShadow = true;
