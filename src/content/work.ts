@@ -15,9 +15,7 @@ export const LANES: { key: Lane; label: string }[] = [
   { key: "roblox", label: "roblox" },
 ];
 
-/** A rectangle of the picture in its own pixels, [x, y, width, height]: the part shown at reading size. */
-export type Crop = [number, number, number, number];
-export type Media = { src: string; w: number; h: number; alt: string; loop?: string; seq?: { base: string; frames: number }; tone?: "ink" | "paper"; crop?: Crop; cropM?: Crop };
+export type Media = { src: string; w: number; h: number; alt: string; loop?: string; seq?: { base: string; frames: number }; tone?: "ink" | "paper" };
 export type Block =
   | { kind: "full"; media: Media }
   | { kind: "pair"; media: [Media, Media] }
@@ -36,6 +34,8 @@ export type Project = {
   spec?: boolean;
   lines: [string] | [string, string] | [string, string, string];
   cover: Media;
+  /** the case page's first picture when it isn't the cover: a still cut from a screenshot (scripts/case-cuts.mjs) */
+  lead?: Media;
   blocks: Block[];
 };
 
@@ -73,17 +73,14 @@ const PROJECTS_ALL: Project[] = [
     disciplines: ["product design", "brand", "website", "engineering"],
     link: { href: "https://ignaru.com", label: "ignaru.com" },
     lines: ["design tool.", "circle what's wrong on the canvas. your coding agent fixes it in your files."],
-    cover: { ...m("/work/case/ignaru-live-1.webp", 1920, 1200, "ignaru.com today: agentic design that sells, over a grid of ads made in it", "ink"), loop: "/work/case/ignaru-scroll.mp4", crop: [500, 70, 1390, 782], cropM: [524, 96, 560, 700] },
+    cover: { ...m("/work/case/ignaru-live-1.webp", 1920, 1200, "ignaru.com today: agentic design that sells, over a grid of ads made in it", "ink"), loop: "/work/case/ignaru-scroll.mp4" },
+    lead: m("/work/case/cut/ignaru-lead.webp", 1346, 722, "ignaru.com today: agentic design that sells, over a row of ads made in it", "ink"),
     blocks: [
-      { kind: "full", media: { ...fd("ignaru-canvas-ads", "the ignaru canvas: an ad set laid out as frames, layers on the left, the composer at the foot"), cropM: [500, 0, 440, 550] } },
-      { kind: "grid", media: [
-        fd("ignaru-app-composer", "the ignaru composer with its model menu open"),
-        { ...fd("ignaru-app-palette", "the ignaru command palette"), crop: [0, 0, 700, 700] },
-        fd("ignaru-app-agent", "ignaru's start-an-agent sheet"),
-      ] },
-      { kind: "full", media: { ...m("/work/case/ignaru-live-5.webp", 1920, 1200, "ignaru.com: design the brand on one canvas", "ink"), crop: [524, 340, 1338, 430], cropM: [530, 350, 368, 460] } },
-      { kind: "pair", media: [fd("ignaru-app-changes", "ignaru's changes panel: two files, a commit message and the diff"), fd("ignaru-app-share", "ignaru's share sheet")] },
-      { kind: "inset", media: { ...fd("ignaru-canvas-zoom", "the ignaru canvas zoomed into one ad"), crop: [420, 165, 760, 490], cropM: [460, 196, 364, 455] } },
+      { kind: "full", media: fd("ignaru-canvas-ads", "the ignaru canvas: an ad set laid out as frames, layers on the left, the composer at the foot") },
+      { kind: "pair", media: [m("/work/case/cut/ignaru-composer.webp", 742, 685, "the ignaru composer with its model menu open"), m("/work/case/cut/ignaru-palette.webp", 748, 690, "the ignaru command palette")] },
+      { kind: "full", media: m("/work/case/cut/ignaru-board.webp", 1346, 432, "one page in ignaru 0.3.0: the brand, the ads, a part and the reel, each in its own group", "ink") },
+      { kind: "pair", media: [m("/work/case/cut/ignaru-changes.webp", 666, 512, "ignaru's changes panel: two files and a commit message"), m("/work/case/cut/ignaru-share.webp", 596, 463, "ignaru's share sheet")] },
+      { kind: "inset", media: m("/work/case/cut/ignaru-table.webp", 744, 495, "the ignaru canvas zoomed into one frame, the table") },
     ],
   },
   {
