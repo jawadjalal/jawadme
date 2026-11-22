@@ -74,7 +74,7 @@ export function Hero() {
 
       <div className="bh-hero-center">
         <h1 className="bh-hero-bio">
-          I&apos;m Jawad in London. I design and build ads, brands, sites, and 3D.
+          I&apos;m Jawad. I design and build ads, brands, sites, and 3D in London.
         </h1>
       </div>
     </section>

@@ -22,7 +22,7 @@ const adCard = (a: (typeof ADS)[number]): ShowcaseItem => ({
   href: `/w/${a.id}`,
   title: a.campaign,
   category: "ads",
-  src: a.src,
+  src: a.sm || a.src,
   w: a.w,
   h: a.h,
   alt: a.alt,

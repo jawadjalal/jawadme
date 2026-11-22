@@ -26,9 +26,27 @@ export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
     const grid = gridRef.current;
     if (!grid) return;
     const cards = Array.from(grid.querySelectorAll<HTMLElement>(".ws-card"));
+    const videos = Array.from(grid.querySelectorAll<HTMLVideoElement>("video"));
+
+    // Pause offscreen MP4 loops to keep scroll at a locked 60/120fps
+    const vio =
+      "IntersectionObserver" in window
+        ? new IntersectionObserver(
+            (entries) => {
+              entries.forEach((e) => {
+                const v = e.target as HTMLVideoElement;
+                if (e.isIntersecting) v.play().catch(() => {});
+                else v.pause();
+              });
+            },
+            { rootMargin: "200px 0px" },
+          )
+        : null;
+    videos.forEach((v) => vio?.observe(v));
+
     if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
       cards.forEach((c) => c.classList.add("is-in"));
-      return;
+      return () => vio?.disconnect();
     }
 
     const io = new IntersectionObserver(
@@ -44,7 +62,10 @@ export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
     );
 
     cards.forEach((c) => io.observe(c));
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      vio?.disconnect();
+    };
   }, [items]);
 
   return (
@@ -67,7 +88,7 @@ export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
                   <video
                     src={item.loop}
                     poster={item.src}
-                    autoPlay
+                    preload="none"
                     loop
                     muted
                     playsInline
@@ -79,6 +100,9 @@ export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
                     alt={item.alt}
                     width={item.w}
                     height={item.h}
+                    loading="lazy"
+                    decoding="async"
+                    quality={78}
                     sizes={
                       spanClass === "ws-full"
                         ? "(min-width: 768px) 96vw, 100vw"

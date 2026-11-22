@@ -35,16 +35,16 @@ html:has(.ds) {
   color: var(--fg);
 }
 
-/* Sam / Hoka / ON-inspired analog risograph print grain across the whole site */
+/* Ultra-lightweight GPU-friendly print stipple texture (zero SVG feTurbulence scroll lag) */
 .ds::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 94;
   pointer-events: none;
-  opacity: 0.055;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='1.35'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23r)'/%3E%3C/svg%3E");
+  opacity: 0.032;
+  background-image: radial-gradient(rgba(255, 250, 240, 0.9) 0.6px, transparent 0.6px);
+  background-size: 4px 4px;
 }
 
 html[data-room="ink"]:has(.ds),
@@ -507,6 +507,8 @@ html[data-room="hall"] .ds {
   border: 1px solid var(--rule);
   background: #242424;
   overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
   opacity: 0;
   transform-origin: center top;
   transform: translateY(38px) rotateX(6deg) scale(0.965);

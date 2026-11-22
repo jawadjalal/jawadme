@@ -71,7 +71,7 @@ export function OrbitMarquee({ ads }: Props) {
       return;
     }
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     renderer.setPixelRatio(dpr);
     renderer.setSize(host.clientWidth, host.clientHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -241,8 +241,13 @@ export function OrbitMarquee({ ads }: Props) {
     dom.addEventListener("pointerleave", onLeave);
 
     let raf = 0;
+    let inView = true;
     let last = performance.now();
     const render = (now: number) => {
+      if (!inView) {
+        raf = 0;
+        return;
+      }
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
 
@@ -264,9 +269,24 @@ export function OrbitMarquee({ ads }: Props) {
       renderer.render(scene, camera);
       raf = requestAnimationFrame(render);
     };
+
+    // Pause WebGL render loop completely when scrolled past the hero (saves ~90% GPU/CPU)
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries[0]?.isIntersecting ?? true;
+        inView = visible;
+        if (visible && !raf) {
+          last = performance.now();
+          raf = requestAnimationFrame(render);
+        }
+      },
+      { rootMargin: "120px 0px" },
+    );
+    io.observe(host);
     raf = requestAnimationFrame(render);
 
     return () => {
+      io.disconnect();
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", fitCamera);
       dom.removeEventListener("pointerdown", onDown);
