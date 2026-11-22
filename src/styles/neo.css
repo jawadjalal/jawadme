@@ -623,6 +623,12 @@ html[data-room="hall"] .ds {
   width: 14px;
   height: 7px;
   border-block: 1.5px solid currentColor;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), height 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bh-dock-menu[aria-expanded="true"] i {
+  height: 2px;
+  transform: rotate(90deg);
 }
 
 .bh-dock-shell .bh-cta {
@@ -630,7 +636,6 @@ html[data-room="hall"] .ds {
 }
 
 .bh-sheet {
-  display: none;
   position: fixed;
   z-index: 79;
   left: 0;
@@ -640,16 +645,28 @@ html[data-room="hall"] .ds {
   border-top: 1px solid rgba(255, 98, 0, 0.45);
   padding: 12px var(--g);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transform: translateY(8px);
-  transition: opacity 180ms ease, transform 200ms ease;
+  transform: translateY(18px);
+  clip-path: inset(100% 0 0 0);
+  transition:
+    opacity 220ms ease,
+    transform 260ms cubic-bezier(0.4, 0, 1, 1),
+    clip-path 260ms cubic-bezier(0.4, 0, 1, 1),
+    visibility 0s linear 260ms;
 }
 
 .bh-sheet[data-open="true"] {
-  display: block;
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
+  clip-path: inset(0 0 0 0);
+  transition:
+    opacity 240ms ease,
+    transform 340ms cubic-bezier(0.16, 1, 0.3, 1),
+    clip-path 340ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s;
 }
 
 .bh-sheet-links {
@@ -667,7 +684,20 @@ html[data-room="hall"] .ds {
   font-weight: 600;
   letter-spacing: 0.08em;
   color: var(--fg);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 200ms ease, transform 240ms cubic-bezier(0.22, 1, 0.36, 1), color 140ms ease;
 }
+
+.bh-sheet[data-open="true"] .bh-sheet-links a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bh-sheet[data-open="true"] .bh-sheet-links a:nth-child(1) { transition-delay: 40ms; }
+.bh-sheet[data-open="true"] .bh-sheet-links a:nth-child(2) { transition-delay: 80ms; }
+.bh-sheet[data-open="true"] .bh-sheet-links a:nth-child(3) { transition-delay: 120ms; }
+.bh-sheet[data-open="true"] .bh-sheet-links a:nth-child(4) { transition-delay: 160ms; }
 
 .bh-sheet-links a:first-child {
   border-top: 0;
