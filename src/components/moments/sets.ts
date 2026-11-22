@@ -1,6 +1,6 @@
 import { ACCENT } from "@/lib/accent";
 import * as THREE from "three";
-import { BRAZIER, AMPHORA, Batch, COS, M, Q, RV, box, column, lathe, prep, rock, type Bag, type Fire, type Palette } from "@/components/world/kit";
+import { BRAZIER, AMPHORA, Batch, COS, M, Q, RV, UP, box, column, lathe, prep, rock, type Bag, type Fire, type Palette } from "@/components/world/kit";
 
 // The sets each route stands on: one floating platform of the world apiece, built from the kit's pieces and lit by
 // its own fires. Every set faces the iso camera (screen right runs along RV, the near corner is +x +z), returns the
@@ -8,7 +8,8 @@ import { BRAZIER, AMPHORA, Batch, COS, M, Q, RV, box, column, lathe, prep, rock,
 // leaves room for it rather than drawing it.
 
 export type SetCtx = { B: Batch; m: Palette; mk: (color: string, kind: { k: "stone"; rim?: number } | { k: "rock" }, extra?: THREE.MeshToonMaterialParameters) => THREE.MeshToonMaterial; scene: THREE.Scene; b: Bag; time: { value: number }; family: string };
-export type Set = { fires: Fire[]; shot: { t: THREE.Vector3; h: number; w: number }; update?: (dt: number, t: number) => void };
+type Shot = { t: THREE.Vector3; h: number; w: number };
+export type Set = { fires: Fire[]; shot: Shot; tall?: Shot; update?: (dt: number, t: number) => void };
 export type SetName = "break3d" | "niche-ads" | "niche-web" | "niche-game" | "niche-view" | "gate" | "shaft" | "deadend" | "reading";
 
 const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
@@ -231,7 +232,7 @@ function deadend(c: SetCtx): Set {
     B.add(mat, box(2.8, 0.62, 0.16, 0.06), M(post.x + Math.cos(Q + (a as number)) * 1.2, y as number, post.z - Math.sin(Q + (a as number)) * 1.2, Q + (a as number)));
   });
   k.brazier(V(-1.2, 0, 1.2), true);
-  return { fires: k.fires, shot: { t: V(0, 2.8, 0), h: 16, w: 24 } };
+  return { fires: k.fires, shot: { t: V(0, 2.8, 0), h: 16, w: 24 }, tall: { t: V(0, 2.8, 0).addScaledVector(UP, -10), h: 16, w: 20 } };
 }
 
 /** /blog: a lectern with a book open on it, a candle beside it and a fire behind. */

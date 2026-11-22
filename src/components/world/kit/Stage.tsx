@@ -13,7 +13,7 @@ export type Mount = (host: HTMLElement, ctx: { still: boolean; bare: boolean; sm
  * stage comes within `margin` of the screen, mounts, and fades in over the poster; three.js never loads otherwise.
  * Children are the HTML over the scene (links, headings); data-mode is "poster" or "live" for styling them.
  */
-export function Stage({ load, poster, margin = "900px 0px", className, children, ...rest }: { load: () => Promise<Mount>; poster?: { d: string; m?: string }; margin?: string; className?: string; children?: ReactNode } & Omit<HTMLAttributes<HTMLDivElement>, "children">) {
+export function Stage({ load, poster, margin = "900px 0px", className, children, ...rest }: { load: () => Promise<Mount>; poster?: { d: string; m?: string; first?: boolean }; margin?: string; className?: string; children?: ReactNode } & Omit<HTMLAttributes<HTMLDivElement>, "children">) {
   const box = useRef<HTMLDivElement>(null);
   const host = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<"poster" | "live">("poster");
@@ -50,7 +50,7 @@ export function Stage({ load, poster, margin = "900px 0px", className, children,
       {poster ? (
         <picture className="stage-poster" aria-hidden="true">
           {poster.m ? <source media="(max-width: 767px)" srcSet={poster.m} /> : null}
-          <img src={poster.d} alt="" loading="lazy" decoding="async" />
+          <img src={poster.d} alt="" loading={poster.first ? "eager" : "lazy"} fetchPriority={poster.first ? "high" : "auto"} decoding="async" />
         </picture>
       ) : null}
       <div ref={host} className="stage-gl" aria-hidden="true" />

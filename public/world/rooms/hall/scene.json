@@ -95,7 +95,7 @@
    -5.2359
   ],
   "threads": "mesh 'threads' (unlit mint)",
-  "glow": "baked (area light at rest)"
+  "glow": "baked at full (area light; no runtime flame)"
  },
  "banners": [
   {

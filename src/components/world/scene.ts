@@ -273,8 +273,8 @@ export function mount(host: HTMLElement, o: WorldOpts) {
     wantW = A.w + (Z.w - A.w) * f;
     const [W, H] = v.size();
     if (W / H < 0.8) {
-      wantW = Math.min(wantW, 40);
-      want.addScaledVector(UP, 12 * (i === 0 ? 1 - f : 0));
+      wantW = Math.min(wantW, 40) - 10 * (i === 0 ? 1 - f : 0);
+      want.addScaledVector(UP, 6.5 * (i === 0 ? 1 - f : 0));
     }
     const intro = Math.min(1, Math.max(0, (ign.value - 0.3) / 3.2));
     wantH -= (1 - Math.pow(1 - intro, 3)) * 3 * Math.max(0, 1 - p * 2);

@@ -26,6 +26,7 @@
 .foot-c { color: #b9a184; }
 .foot-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; }
 .foot-gh { display: inline-flex; align-items: center; gap: 10px; }
+.foot-gh .cg { flex: none; width: 230px; max-width: none; }
 .foot-row a { display: inline-flex; align-items: center; min-height: 44px; color: #f4ece1; transition: color var(--t-fast); }
 .foot-row a:hover { color: var(--accent); }
 .foot-reach { display: flex; flex-wrap: wrap; gap: 0 24px; }

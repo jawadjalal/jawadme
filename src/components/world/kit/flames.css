@@ -4,7 +4,7 @@
 .pf > i { position: absolute; left: calc(var(--x) * 100%); top: calc(var(--y) * 100%); height: calc(var(--h) * 170%); aspect-ratio: 1 / 2; translate: -50% -89%; overflow: hidden; mix-blend-mode: plus-lighter; }
 .pf > i > b { position: absolute; left: 0; top: 0; width: 400%; height: 400%; background: url("/world/flame/flame-16x96.webp") 0 0 / 100% 100%; animation: pf-x 0.4s steps(4) infinite, pf-y 1.6s steps(4) infinite; animation-delay: calc(var(--d) * -1s); }
 .pf-m { display: none; }
-.stage[data-mode="live"] .pf { display: none; }
+.stage[data-live] .pf { display: none; }
 @keyframes pf-x { to { transform: translateX(-100%); } }
 @keyframes pf-y { to { translate: 0 -100%; } }
 @media (max-width: 767px) {

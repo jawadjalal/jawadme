@@ -2,7 +2,7 @@
    posters are first paint and the fallback, the live scene fades in over them. Type sits on the world's own dark:
    the void under the gate court, ink plates, the theatre's orchestra. Poster layout is the default; the live layout
    applies once World has chosen the live scene (data-mode="live"). ── */
-.hero.world { display: block; min-height: 0; padding-top: 0; overflow: visible; color: #f4ece1; background: #100b09; }
+.hero.world { display: block; min-height: 0; padding-top: 0; overflow: clip; color: #f4ece1; background: #100b09; }
 .world-stage { position: sticky; top: 0; z-index: 0; height: 100svh; margin-bottom: -100svh; overflow: hidden; background: #100b09; container-type: size; }
 .world-poster { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms var(--ease-io); }
 .world-lit { transition-duration: 1600ms; }
@@ -118,8 +118,9 @@
   .w-sound:hover .w-sound-i, .w-sound:hover .w-sound-i i, .w-sound:active, .w-sound:active .w-sound-i { transform: none; }
 }
 
-/* home sections under the world: their dim lines at a legible contrast on the page's ground (4.5:1 and up) */
-.idx .idx-line, .idx .lbl.dim { color: #5c5c59; }
+/* home sections under the world: their dim lines follow the text colour, which flips with the page's ground (light
+   or ink), so they stay at 4.5:1 and up on either */
+.idx .idx-line, .idx .lbl.dim { color: inherit; opacity: 0.74; }
 
 /* ?world=rooms: the banners' anchors (moved onto each banner by ./rooms every frame) and the ad dialog */
 .rooms-ui { position: sticky; top: 0; z-index: 1; height: 100svh; margin-bottom: -100svh; overflow: clip; pointer-events: none; }

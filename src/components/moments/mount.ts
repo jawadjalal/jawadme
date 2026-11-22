@@ -58,10 +58,11 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
       ptr.x += (ptr.tx - ptr.x) * (1 - Math.exp(-dt * 2.5));
       ptr.y += (ptr.ty - ptr.y) * (1 - Math.exp(-dt * 2.5));
     }
-    want.copy(set.shot.t).addScaledVector(RV, ptr.x * 0.35).addScaledVector(UP, ptr.y * 0.2);
-    cur.lerp(want, ctx.still ? 1 : 1 - Math.exp(-dt * 6));
     const [W, H] = v.size();
-    const vh = aim(camera, cur, set.shot.h, set.shot.w, W / H);
+    const shot = (W / H < 0.8 && set.tall) || set.shot;
+    want.copy(shot.t).addScaledVector(RV, ptr.x * 0.35).addScaledVector(UP, ptr.y * 0.2);
+    cur.lerp(want, ctx.still ? 1 : 1 - Math.exp(-dt * 6));
+    const vh = aim(camera, cur, shot.h, shot.w, W / H);
     F.u.center.value.copy(cur);
     F.u.ppu.value = (H * dpr) / vh;
     lightFires(S, set.fires, cur);
