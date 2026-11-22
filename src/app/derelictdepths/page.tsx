@@ -4,7 +4,6 @@ import { Gilded } from "@/components/gilded/Gilded";
 import { fontVars } from "../fonts";
 import facts from "./facts.json";
 import { Feed, FeedMeta, LatestShipped, getFeed } from "./Feed";
-import { LaunchBoard, getLaunch } from "./Launch";
 import { CameraRig, JOIN_SEED, JoinBudget, type Point, SwingFrames } from "./figures";
 import { Diagram, Shot, Still, Table } from "./ui";
 import { LatestVisuals } from "./Visuals";
@@ -33,7 +32,6 @@ const SECTIONS: [string, string][] = [
   ["look", "the look"],
   ["captures", "captures"],
   ["shipped-now", "just shipped"],
-  ["launch", "launch board"],
   ["visuals", "latest visuals"],
   ["loop", "the core loop"],
   ["dive", "a dive, server side"],
@@ -137,7 +135,7 @@ const SYSTEMS: { name: string; body: string; code: string }[] = [
 ];
 
 export default async function MinelightPage() {
-  const [feed, launch] = await Promise.all([getFeed(), getLaunch()]);
+  const feed = await getFeed();
   const c = facts.counts;
   const cam = facts.camera;
   const jb = facts.joinBudget;
@@ -175,14 +173,10 @@ export default async function MinelightPage() {
         </header>
 
         <div className="ml-stats">
-          <div className="ml-stat"><b>{n(c.mergedPRs)}+</b><span>pull requests merged into main</span></div>
-          <div className="ml-stat"><b>{c.testFiles} + {c.engineTestFiles}</b><span>lune test files, plus in-engine test files</span></div>
-          <div className="ml-stat"><b>{c.remotes}</b><span>remotes: the only doors from a client to the server</span></div>
-          <div className="ml-stat"><b>2 floors</b><span>topsoil tunnels and iron halls are the release; {c.floors - 2} more are greyboxed</span></div>
+          <div className="ml-stat"><b>2 floors</b><span>topsoil tunnels and iron halls</span></div>
           <div className="ml-stat"><b>{c.ores} ores</b><span>{c.bars} bars, and a pickaxe ladder above them</span></div>
           <div className="ml-stat"><b>{c.classes} classes</b><span>miner, demolitionist, prospector, alchemist</span></div>
           <div className="ml-stat"><b>r6 hero</b><span>your own roblox avatar, over a shoulder camera</span></div>
-          <div className="ml-stat"><b>{n(jb.latestBuildBytes)} bytes</b><span>what a phone downloads to join, measured by joinbudget, against the {n(jb.bytesLine)} line</span></div>
         </div>
 
         <nav className="ml-toc" aria-label="contents">
@@ -337,10 +331,6 @@ export default async function MinelightPage() {
               <p className="ml-note">the live feed is unavailable right now. it refreshes every 3 minutes.</p>
             )}
           </div>
-        </Section>
-
-        <Section id="launch" eyebrow="live · today" title="launch board">
-          <LaunchBoard launch={launch} />
         </Section>
 
         <Section id="visuals" eyebrow="live · hourly" title="latest visuals">

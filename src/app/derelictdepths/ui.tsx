@@ -4,7 +4,7 @@ export function Tag({ area }: { area: string }) {
   return <span className="ml-tag">{area}</span>;
 }
 
-// The feed and the launch board come from the game repo's own text, which cites tickets (#421, robl-40, jaw-280 p1) and
+// The feed comes from the game repo's own text, which cites tickets (#421, robl-40, jaw-280 p1) and
 // commits. The page shows the words without them: each id goes, with the preposition or brackets it leaves dangling.
 const ID = String.raw`(?:#\d+|\b(?:robl|jaw)-\d+\b(?:\s+(?:p\d+|items?\s+\d+(?:(?:,\s*|\s+and\s+)\d+)*|polish))?|\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b)`;
 const LEAD_ID = new RegExp(String.raw`\b(?:since|from|on|at|in|per|via|see|supersedes)\s+` + ID, "gi");
