@@ -189,7 +189,10 @@ html[data-room="ink"] .bar.ink::before { background: var(--ground); }
 .dock-body, .dock > .gl { align-self: center; }
 .dock > .gl { transition: opacity var(--t-base) var(--ease), translate var(--t-base) var(--ease), visibility 0s; }
 html[data-call-in-view] .dock > .gl, html:not([data-call-seen]) .dock > .gl[data-hold] { opacity: 0; translate: 0 14px; visibility: hidden; transition: opacity var(--t-fast) var(--ease), translate var(--t-fast) var(--ease), visibility 0s var(--t-fast); }
-.dock-body { --nx: 100%; display: flex; align-items: stretch; padding-right: 10px; background: var(--ivory); color: var(--ink); border-radius: 3px 0 0 3px; }
+.dock-body { --nx: 100%; display: flex; align-items: stretch; padding-right: 10px; background: var(--ivory); color: var(--ink); border-radius: 3px 0 0 3px; transition: opacity var(--t-base) var(--ease), translate var(--t-base) var(--ease); }
+@media (prefers-reduced-motion: no-preference) {
+  .dock[data-tuck]:not(:focus-within):not(:has([aria-expanded="true"])) .dock-body { opacity: 0; translate: 0 calc(100% + 28px); pointer-events: none; }
+}
 .dock-mark { position: relative; display: grid; place-items: center; width: 56px; }
 .dock-mark::before, .dock-menu::before { content: ""; position: absolute; inset: min(0px, calc(50% - 22px)) 0; }
 .dock-mark img { width: 30px; height: auto; transition: transform var(--sp-pop-t) var(--sp-pop); }
