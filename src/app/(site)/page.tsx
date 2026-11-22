@@ -6,7 +6,7 @@ import { OrbitMarquee } from "@/components/ds/OrbitMarquee";
 import { WorkShowcase, type ShowcaseItem } from "@/components/ds/WorkShowcase";
 import { ADS } from "@/content/ads";
 import { projectBySlug } from "@/content/work";
-import { COSMOS, SITES } from "@/lib/design";
+import { SITES } from "@/lib/design";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -35,9 +35,9 @@ const ignura = projectBySlug("ignura")!;
 const fracture = projectBySlug("fracture")!;
 const menufit = SITES.find((s) => s.id === "site-menufit");
 
-// Pure Brass Hands work stream: 60+ pieces, Coresrent removed, Experience removed.
+// Pure Brass Hands work stream: ad groups in multiples of 12 (divisible by 4, 3, and 2 = ZERO missing slots at any width).
 const ALL_WORK: ShowcaseItem[] = [
-  ...ADS.slice(0, 8).map(adCard),
+  ...ADS.slice(0, 12).map(adCard),
   {
     id: ignaru.slug,
     href: `/work/${ignaru.slug}`,
@@ -50,7 +50,7 @@ const ALL_WORK: ShowcaseItem[] = [
     loop: ignaru.cover.loop,
     span: "full",
   },
-  ...ADS.slice(8, 16).map(adCard),
+  ...ADS.slice(12, 24).map(adCard),
   {
     id: ignuraSeo.slug,
     href: `/work/${ignuraSeo.slug}`,
@@ -74,7 +74,7 @@ const ALL_WORK: ShowcaseItem[] = [
     alt: ignura.cover.alt,
     span: "half",
   },
-  ...ADS.slice(16, 24).map(adCard),
+  ...ADS.slice(24, 36).map(adCard),
   {
     id: fracture.slug,
     href: `/work/${fracture.slug}`,
@@ -86,7 +86,7 @@ const ALL_WORK: ShowcaseItem[] = [
     alt: fracture.cover.alt,
     span: "full",
   },
-  ...ADS.slice(24, 32).map(adCard),
+  ...ADS.slice(36, 48).map(adCard),
   ...(menufit
     ? [
         {
@@ -102,19 +102,7 @@ const ALL_WORK: ShowcaseItem[] = [
         },
       ]
     : []),
-  ...ADS.slice(32, 40).map(adCard),
-  ...COSMOS.slice(0, 4).map((c) => ({
-    id: c.id,
-    href: `/w/${c.id}`,
-    title: c.group,
-    category: "3d-roblox" as const,
-    src: c.src,
-    w: c.w,
-    h: c.h,
-    alt: c.alt,
-    span: "third" as const,
-  })),
-  ...ADS.slice(40, 52).map(adCard),
+  ...ADS.slice(48, 60).map(adCard),
 ];
 
 export default function Home() {

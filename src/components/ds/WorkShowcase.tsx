@@ -40,7 +40,7 @@ export function WorkShowcase({ items }: { items: ShowcaseItem[] }) {
           }
         });
       },
-      { rootMargin: "0px 0px -6% 0px", threshold: 0.05 },
+      { rootMargin: "120px 0px 80px 0px", threshold: 0.01 },
     );
 
     cards.forEach((c) => io.observe(c));
