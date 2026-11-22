@@ -101,7 +101,7 @@ export default async function Case({ params }: Props) {
       ) : (
         <CaseMoment lane={p.lane} tall={tall}>
           <div className="case-cover-in">
-            <Media m={p.cover} vt={"cover-" + p.slug} priority sizes={tall ? "(min-width: 768px) 30vw, 72vw" : "(min-width: 768px) 58vw, 72vw"} />
+            <Media m={p.cover} vt={"cover-" + p.slug} priority="low" sizes={tall ? "(min-width: 768px) 30vw, 72vw" : "(min-width: 768px) 58vw, 72vw"} />
           </div>
         </CaseMoment>
       )}
