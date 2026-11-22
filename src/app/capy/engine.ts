@@ -31,7 +31,6 @@ const INK = "#0a0a0a";
 export const GROUND = "#ffffff";
 /** the page round the globe: the site's warm ground */
 const PAGE = "#e6e5e1";
-/** the first view's zoom: a poster about 1400 units tall reads at about 340 px */
 const TILE = "#e2ded3";
 const Z_MAX = 6;
 const HALF_PI = Math.PI / 2;
