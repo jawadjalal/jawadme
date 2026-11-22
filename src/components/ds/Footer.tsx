@@ -9,11 +9,11 @@ import "@/styles/footer.css";
 const LINKS = SOCIALS.filter((s) => s.href.startsWith("https://") && s.label !== "linkedin");
 
 /** The page's last word on every page: the waymarker (Pillar), one sign per way out, then his GitHub year on its own
- *  row and a quiet row of every link. */
-export function Footer({ src }: { src: string }) {
+ *  row and a quiet row of every link. A page whose own scene already holds a signpost (the 404) leaves the Pillar out. */
+export function Footer({ src, pillar = true }: { src: string; pillar?: boolean }) {
   return (
     <footer className="foot">
-      <Pillar />
+      {pillar ? <Pillar /> : null}
       <div className="foot-cg">
         <Contributions size="mini" />
       </div>

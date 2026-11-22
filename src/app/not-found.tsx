@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Gilded } from "@/components/gilded/Gilded";
 import { BookPill } from "@/components/ds/BookPill";
 import { Dock } from "@/components/ds/Dock";
+import { Footer } from "@/components/ds/Footer";
 import { LostMoment } from "@/components/moments/notfound";
 import { fontVars } from "./fonts";
 import "@/styles/ds.css";
@@ -29,6 +30,7 @@ export default function NotFound() {
           </nav>
         </LostMoment>
       </main>
+      <Footer src="404" pillar={false} />
       <Dock />
     </div>
   );
