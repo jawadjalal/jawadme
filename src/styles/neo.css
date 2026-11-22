@@ -299,8 +299,8 @@ html[data-room="hall"] .ds {
 .orbit-stage {
   position: relative;
   width: 100%;
-  height: clamp(440px, 42vw, 560px);
-  perspective: 1320px;
+  height: clamp(460px, 44vw, 580px);
+  perspective: 1380px;
   perspective-origin: 50% 48%;
   overflow: hidden;
   cursor: grab;
@@ -325,7 +325,6 @@ html[data-room="hall"] .ds {
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -210px;
   display: block;
   will-change: transform, opacity;
   transform-style: preserve-3d;
@@ -334,7 +333,8 @@ html[data-room="hall"] .ds {
 
 .orbit-media {
   position: relative;
-  aspect-ratio: 6 / 5;
+  aspect-ratio: 4 / 5;
+  border-radius: 10px;
   overflow: hidden;
   background: #242424;
   border: 1px solid var(--rule);
