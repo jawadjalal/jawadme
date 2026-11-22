@@ -2,8 +2,9 @@
 // and src/lib/profile.ts, so the About page, its FAQ data and /llms.txt say the same thing.
 
 import { ADS } from "@/content/ads";
-import { SITE, TIMELINE } from "@/content/site";
+import { TIMELINE } from "@/content/site";
 import { projectBySlug } from "@/content/work";
+import { IDENTITY } from "@/lib/profile";
 import { ENTITY } from "@/lib/seo";
 
 const ignaru = projectBySlug("ignaru");
@@ -19,5 +20,5 @@ export const FAQ: { q: string; a: string }[] = [
   ...(ignaru ? [{ q: "what is ignaru?", a: `ignaru is a design tool jawad designs and builds. ${ignaru.lines.slice(1).join(" ")}` }] : []),
   { q: "where has he worked?", a: past.map((t) => `${t.role} at ${t.co} (${t.years}): ${t.what.charAt(0).toLowerCase() + t.what.slice(1).replace(/\. 14m views at its launch$/i, "")}.`).join(" ") + " both roles are in the past." },
   ...(fracture ? [{ q: "what is fracture?", a: `fracture is a roblox mining game jawad designs and builds, formerly called derelict depths. ${fracture.lines[1] ?? ""}`.trim() }] : []),
-  { q: "how do i work with him?", a: `book a free 15 minute video call at jawadjalal.com/cal, or email ${SITE.email}.` },
+  { q: "how do i work with him?", a: `book a free 15 minute video call at jawadjalal.com/cal, or email ${IDENTITY.email}.` },
 ];

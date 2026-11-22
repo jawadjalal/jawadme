@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CalInline } from "@/components/ds/CalInline";
 import { MailLink } from "@/components/MailLink";
 import { CalMoment } from "@/components/moments/cal";
-import { SITE } from "@/content/site";
+import { IDENTITY } from "@/lib/profile";
 import { meta } from "@/lib/seo";
 
 export const metadata: Metadata = meta({ title: "book a call", description: "book a free 15 minute video call with jawad jalal about brands, ads, sites, 3d and roblox games.", path: "/cal" });
@@ -29,7 +29,7 @@ export default async function Cal({ searchParams }: Props) {
       <div className="cal-row">
         <div>
           <div className="cal-embed">
-            <CalInline email={SITE.email} theme="light" />
+            <CalInline email={IDENTITY.email} theme="light" />
           </div>
           <p className="cal-mail">
             calendar not loading?{" "}
