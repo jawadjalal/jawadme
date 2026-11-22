@@ -1,11 +1,15 @@
 import { ACCENT } from "@/lib/accent";
 import * as THREE from "three";
-import { Batch, INK, NL, RV, UP, aim, bag, drop, fx, isoCamera, lightFires, painter, post, shared, view } from "@/components/world/kit";
+import { Batch, INK, NL, RV, SOUL, UP, aim, bag, drop, fx, isoCamera, lightFires, marks, painter, post, shared, view } from "@/components/world/kit";
+import { flames } from "@/components/world/kit/flame";
+import { flameOf } from "@/components/world/kit/lights";
 import type { Mount } from "@/components/world/kit/Stage";
 import { SETS, type SetName } from "./sets";
 
 // One route moment on the world kit: a set from ./sets on its own floating platform, lit by its fires, on flat ink,
-// with the kit's outline and bloom. The camera holds the set's shot and sways a little with the pointer.
+// with the kit's outline and bloom. The camera holds the set's shot and sways a little with the pointer. Every fire
+// but a lamp carries the world's one flame (kit/flame), as on the home page; with ?bare (posters.mjs) the flames are
+// left out and their places written to data-marks, where ./Moment lays the same flame's flipbook over the poster.
 
 export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetName) {
   const S = shared();
@@ -32,11 +36,12 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
 
   const F = fx(scene, S, b);
   const n = (k: number) => Math.round(k * (ctx.small ? 0.6 : 1));
-  F.flames(set.fires.filter((f) => !f.soul && !f.lamp), false, n(22));
-  F.flames(set.fires.filter((f) => f.soul && !f.lamp), true, n(22));
+  const burning = set.fires.filter((f) => !f.lamp).map(flameOf);
+  flames(scene, ctx.bare ? [] : burning, { lights: false, time: S.time, ppu: F.u.ppu, bag: b, gain: 1.4 });
   F.halos(set.fires.filter((f) => !f.soul && !f.lamp), ACCENT.glow);
   F.drift(n(110), [set.shot.w, 16, set.shot.w], 0.11, 1.1, ACCENT.glow, 1.4, 0);
-  F.drift(n(36), [set.shot.w, 12, set.shot.w], 0.4, 0.35, "#63e6ff", 0.42, 1);
+  F.drift(n(36), [set.shot.w, 12, set.shot.w], 0.4, 0.35, "#" + SOUL.getHexString(THREE.SRGBColorSpace), 0.42, 1);
+  F.drift(n(60), [set.shot.w, 12, set.shot.w], 0.06, 0.08, "#b49a80", 0.35, 1);
 
   const dpr = Math.min(window.devicePixelRatio || 1, ctx.still ? 2 : ctx.small ? 1.25 : 1.75);
   const v = view(host, frame, { dpr });
@@ -72,6 +77,7 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
     P.render(scene, camera, vh);
     if (!shown) {
       shown = true;
+      if (ctx.bare) host.dataset.marks = JSON.stringify(marks(camera, burning));
       ctx.ready();
     }
   }
@@ -79,6 +85,7 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], name: SetNam
   return () => {
     v.stop();
     removeEventListener("pointermove", move);
+    P.dispose();
     drop(b);
   };
 }

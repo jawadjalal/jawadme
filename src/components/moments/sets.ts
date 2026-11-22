@@ -1,13 +1,13 @@
 import { ACCENT } from "@/lib/accent";
 import * as THREE from "three";
-import { BRAZIER, AMPHORA, Batch, COS, M, Q, RV, UP, box, column, lathe, prep, rock, type Bag, type Fire, type Palette } from "@/components/world/kit";
+import { BRAZIER, AMPHORA, Batch, COS, M, Q, RV, UP, box, column, lathe, prep, rock, stone, type Bag, type Fire, type Kind, type Palette } from "@/components/world/kit";
 
 // The sets each route stands on: one floating platform of the world apiece, built from the kit's pieces and lit by
 // its own fires. Every set faces the iso camera (screen right runs along RV, the near corner is +x +z), returns the
 // shot its stage frames, and may animate. The page's HTML (links, the picture itself) sits over the stage, so a set
 // leaves room for it rather than drawing it.
 
-export type SetCtx = { B: Batch; m: Palette; mk: (color: string, kind: { k: "stone"; rim?: number } | { k: "rock" }, extra?: THREE.MeshToonMaterialParameters) => THREE.MeshToonMaterial; scene: THREE.Scene; b: Bag; time: { value: number }; family: string };
+export type SetCtx = { B: Batch; m: Palette; mk: (color: string, kind: Kind, extra?: THREE.MeshToonMaterialParameters) => THREE.MeshToonMaterial; scene: THREE.Scene; b: Bag; time: { value: number }; family: string };
 type Shot = { t: THREE.Vector3; h: number; w: number };
 export type Set = { fires: Fire[]; shot: Shot; tall?: Shot; update?: (dt: number, t: number) => void };
 export type SetName = "break3d" | "niche-ads" | "niche-web" | "niche-game" | "niche-view" | "gate" | "shaft" | "deadend" | "reading";
@@ -19,8 +19,9 @@ const along = (p: THREE.Vector3, d: number) => p.clone().addScaledVector(RV, d);
 function kit(c: SetCtx) {
   const { B, m } = c;
   const fires: Fire[] = [];
+  /** The world's platform: bevelled slab, cornice under its lip, the carved floor (flagstones inside a running-key border) on top, rock below. */
   const platform = (half: number, depth = 9) => {
-    const floor = c.mk("#47413d", { k: "stone" });
+    const floor = c.mk("#4b4541", { k: "floor", rect: [-half, -half, half, half], border: half > 8 ? 1.6 : 1.2, tile: half > 8 ? 2.2 : 1.8 });
     B.add(m.stone, box(half * 2 + 0.4, 2.2, half * 2 + 0.4, 0.18), M(0, -2.2, 0), false);
     B.add(m.dark, box(half * 2 + 1.1, 0.55, half * 2 + 1.1, 0.16), M(0, -2.75, 0), false);
     B.add(floor, new THREE.PlaneGeometry(half * 2, half * 2).rotateX(-Math.PI / 2), M(0, 0.012, 0), false);
@@ -87,7 +88,14 @@ function kit(c: SetCtx) {
     const mat = c.mk(color, { k: "stone", rim: 1.6 }, { emissive: new THREE.Color(color), emissiveIntensity: 0.9 });
     B.add(mat, prep(new THREE.OctahedronGeometry(1, 0).scale(0.55, 1.4, 0.55).translate(0, 1.1, 0), false), M(p.x, p.y, p.z, ry, s, tilt, tilt * 0.6));
   };
-  return { fires, platform, brazier, lamp, col, beam, mesh, words, glow, crystal };
+  /** Fallen stones around a point, as the home world scatters them. */
+  const rubble = (x: number, z: number, n: number, spread: number, seed = 1) => {
+    for (let i = 0; i < n; i++) {
+      const a = seed * 2.4 + i * 2.1, r = spread * (0.3 + ((i * 0.37 + seed * 0.13) % 0.7));
+      B.add(m.stone, stone(seed * 7 + i), M(x + Math.cos(a) * r, 0, z + Math.sin(a) * r, a, [0.35 + (i % 3) * 0.18, 0.3 + (i % 2) * 0.2, 0.35 + ((i + 1) % 3) * 0.15]));
+    }
+  };
+  return { fires, platform, brazier, lamp, col, beam, mesh, words, glow, crystal, rubble };
 }
 
 /** /work, at the 3D break: Blade Ball's ball on a plinth and its pink blade driven into the floor beside it. */
@@ -118,6 +126,7 @@ function break3d(c: SetCtx): Set {
   c.scene.add(sword);
   B.add(m.rock, rock(2.4, 2, 1, 7, true), M(-3.2, 0.5, 2.6, 0.4, [1, 0.6, 1]));
   B.add(m.pale, column(1.6, 0.7, 1, 4), M(-4.2, 0, -2.6));
+  k.rubble(-3, -1.4, 4, 1.3, 2);
   B.add(m.stone, box(1.4, 0.7, 1.4, 0.12), M(3.6, 0, -3.4, 0.5));
   k.brazier(V(-4.4, 0, 1.6));
   k.brazier(V(2.8, 0, -4.4));
@@ -177,6 +186,7 @@ function gate(c: SetCtx): Set {
   k.brazier(V(3.4, 0, 0.8));
   k.brazier(V(0.8, 0, 3.4));
   B.add(m.pale, column(2.2, 0.6, 1, 6), M(-5, 0, 2.4));
+  k.rubble(-4, 3.6, 4, 1.2, 4);
   return { fires: k.fires, shot: { t: V(-1, 4, -1), h: 17, w: 19 }, update: (_, t) => (g.uniforms.uA.value = 1 + 0.12 * Math.sin(t * 1.7)) };
 }
 
@@ -225,6 +235,7 @@ function deadend(c: SetCtx): Set {
   B.add(m.pale, prep(new THREE.CylinderGeometry(0.62, 0.62, 2, 40).rotateZ(Math.PI / 2)), M(-1.4, 0.62, 5, 2.1));
   for (const [x, z, s, r] of [[3.6, 0.6, 1, 0.4], [4.4, 1.8, 0.7, 1.2], [-3.4, 3, 0.8, 0.9], [0.4, -1.4, 0.9, 2.2]]) B.add(m.stone, box(1.3 * s, 0.9 * s, 1.1 * s, 0.1), M(x, 0, z, r));
   B.add(m.rock, rock(3, 3, 1.2, 8, true), M(-5.4, 1.2, -0.6, 0.5, [1, 0.8, 1]));
+  k.rubble(-2.2, -1.6, 5, 1.6, 3);
   const post = V(4.2, 0, 4.2);
   B.add(m.wood, box(0.34, 6, 0.34, 0.06), M(post.x, 0, post.z));
   [[5.1, 0.25, "#efe4d0"], [4.1, -0.35, "#efe4d0"], [3.1, 0.15, ACCENT.accent]].forEach(([y, a, col]) => {
@@ -249,6 +260,7 @@ function reading(c: SetCtx): Set {
   B.add(m.bronze, lathe(AMPHORA, 24), M(-2.8, 0, 2, 0, 1.2));
   k.brazier(V(-2.4, 0, -2.8));
   B.add(m.pale, column(3.4, 0.55, 1, 5), M(2.6, 0, -2.6));
+  k.rubble(3.4, -1.5, 3, 0.9, 5);
   return { fires: k.fires, shot: { t: V(0, 2.4, 0), h: 12, w: 15 } };
 }
 

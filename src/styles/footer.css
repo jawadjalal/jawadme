@@ -29,6 +29,8 @@
 .foot-gh .cg { flex: none; width: 230px; max-width: none; }
 .foot-row a { display: inline-flex; align-items: center; min-height: 44px; color: #f4ece1; transition: color var(--t-fast); }
 .foot-row a:hover { color: var(--accent); }
+.foot-row a:not(.gl) { position: relative; }
+.foot-row a:not(.gl)::before { content: ""; position: absolute; inset: 0 min(0px, calc(100% - 32px)) 0 min(0px, calc(100% - 24px)); }
 .foot-reach { display: flex; flex-wrap: wrap; gap: 0 24px; }
 .foot-row .foot-book { color: var(--accent); }
 .foot-row .foot-book:hover { color: var(--accent-hi); }

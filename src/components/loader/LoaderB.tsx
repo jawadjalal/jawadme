@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { Gilded } from "@/components/gilded/Gilded";
 import { track } from "@/lib/track";
 import "./loaderB.css";
 
@@ -25,7 +25,7 @@ const FIRST: Beat = {
     { i: 0, at: 200, wide: [0.3, 0.64], tall: [0.38, 0.66], s: 1 },
     { i: 1, at: 450, wide: [0.72, 0.32], tall: [0.64, 0.3], s: 0.8 },
     { i: 2, at: 720, wide: [0.44, 0.52], tall: [0.5, 0.5], s: 1.2 },
-    { i: 3, at: 1160, wide: [0.5, 0.5], tall: [0.5, 0.5], s: 1.5 },
+    { i: 3, at: 1160, wide: [0.5, 0.49], tall: [0.5, 0.49], s: 1.5 },
   ],
   stall: [840, 1060],
   cut: [1080, 1160],
@@ -38,7 +38,7 @@ const FIRST: Beat = {
 const REPEAT: Beat = {
   items: [
     { i: 0, at: 80, wide: [0.3, 0.64], tall: [0.38, 0.66], s: 1 },
-    { i: 3, at: 380, wide: [0.5, 0.5], tall: [0.5, 0.5], s: 1.5 },
+    { i: 3, at: 380, wide: [0.5, 0.49], tall: [0.5, 0.49], s: 1.5 },
   ],
   stall: [-1, -1],
   cut: [300, 370],
@@ -67,7 +67,7 @@ export function LoaderB() {
   const cvRef = useRef<HTMLCanvasElement>(null);
   const grainRef = useRef<HTMLCanvasElement>(null);
   const markRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLAnchorElement>(null);
+  const ctaRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (document.documentElement.classList.contains("lb-on")) setArmed(true);
@@ -220,12 +220,13 @@ export function LoaderB() {
       if (dead) return;
 
       const base = vw < 600 ? vw * 0.2 : Math.min(150, vw * 0.1);
-      const P = 40;
       const words: Word[] = [];
       for (const it of cfg.items) {
         await tick();
         if (dead) return;
         const size = base * it.s;
+        const halo = [Math.max(24, size * 0.18), Math.max(8, size * 0.055)];
+        const P = Math.ceil(halo[0] * 1.6);
         const f = font.replace("%s", String(size));
         const probe = document.createElement("canvas").getContext("2d")!;
         probe.font = f;
@@ -248,17 +249,15 @@ export function LoaderB() {
           g.direction = "rtl";
           g.textAlign = "center";
           if (lit) {
-            g.lineJoin = "round";
-            g.strokeStyle = css(glow, 0.1);
-            g.lineWidth = size * 0.26;
-            g.strokeText(WORD_AR[it.i], ox, oy);
-            g.strokeStyle = css(glow, 0.16);
-            g.lineWidth = size * 0.15;
-            g.strokeText(WORD_AR[it.i], ox, oy);
-            g.strokeStyle = css(glow, 0.3);
-            g.lineWidth = size * 0.07;
-            g.strokeText(WORD_AR[it.i], ox, oy);
+            const away = c.width + c.height;
             g.fillStyle = css(glow);
+            g.shadowOffsetX = away * scale;
+            [0.3, 0.7].forEach((a, n) => {
+              g.shadowColor = css(glow, a);
+              g.shadowBlur = halo[n] * scale;
+              g.fillText(WORD_AR[it.i], ox - away, oy);
+            });
+            g.shadowColor = "transparent";
           } else g.fillStyle = "#fff";
           g.fillText(WORD_AR[it.i], ox, oy);
           return { c, g };
@@ -271,7 +270,9 @@ export function LoaderB() {
           for (let y = 0; y < mask.c.height; y += 2) for (let x = 0; x < mask.c.width; x += 2) if (data[(y * mask.c.width + x) * 4 + 3] > 140) pts.push(x - ox, y - oy);
         }
         const [sx, sy] = tall ? it.tall : it.wide;
-        words.push({ cv: lit.c, ox, oy, x: sx * vw, y: sy * vh, at: it.at, out: it.i === 3 ? cfg.cond : it.at + OUT[it.i], simAt: -1, pts });
+        const icx = (m.actualBoundingBoxRight - m.actualBoundingBoxLeft) / 2;
+        const icy = (m.actualBoundingBoxDescent - m.actualBoundingBoxAscent) / 2;
+        words.push({ cv: lit.c, ox, oy, x: sx * vw - icx, y: sy * vh - icy, at: it.at, out: it.i === 3 ? cfg.cond : it.at + OUT[it.i], simAt: -1, pts });
       }
       await tick();
       if (dead) return;
@@ -472,16 +473,11 @@ export function LoaderB() {
         <canvas className="lb-cv" ref={cvRef} />
         <canvas className="lb-grain" ref={grainRef} />
         <i className="lb-seed" />
+        <span className="lb-hint">click or press any key to skip</span>
       </div>
       <div className="lb-mark" ref={markRef} aria-hidden="true" />
-      <Link href="/cal?src=loader" className="lb-cta" ref={ctaRef}>
-        <span>
-          book a call <span aria-hidden="true">↗</span>
-        </span>
-        <small>15 min</small>
-      </Link>
-      <span className="lb-hint" aria-hidden="true">
-        click or press any key to skip
+      <span className="lb-cta" ref={ctaRef}>
+        <Gilded variant="cta" src="loader" size="dock" />
       </span>
     </div>
   );
