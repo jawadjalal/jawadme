@@ -1,0 +1,424 @@
+{
+ "yaw_deg": 45,
+ "pitch_deg": 34,
+ "camera": "camera.json",
+ "accent": {
+  "glow": "#8af5c6",
+  "glow_hdr": [
+   0.59,
+   1.9,
+   1.15
+  ],
+  "emissive": "#4dffae",
+  "core": "#5cffb8",
+  "flat": "#73e8b5",
+  "hover": "#c4ffe4"
+ },
+ "origin": "hall floor top at its west-front corner; place at (HALL.x0, HALL.y, HALL.z1) = (22, 0, 0) in map.ts terms. The walk runs along +x over 0..72, the hall spans z 0..-16, the back wall stands at z -16..-17.4.",
+ "doorway": {
+  "centre": [
+   0.0,
+   0.0,
+   -9.0
+  ],
+  "width": 7.2,
+  "note": "gap in the low west wall where the court's stair (map.ts: 12 treads, x 16..22 at z -9) lands"
+ },
+ "fires": [
+  [
+   15.7627,
+   2.254,
+   -10.7373,
+   1.7249999999999999,
+   8.5,
+   "brazier"
+  ],
+  [
+   24.7627,
+   1.96,
+   -11.1373,
+   1.5,
+   8.5,
+   "brazier"
+  ],
+  [
+   33.7627,
+   1.96,
+   -11.1373,
+   1.5,
+   8.5,
+   "brazier"
+  ],
+  [
+   42.7627,
+   1.96,
+   -11.1373,
+   1.5,
+   8.5,
+   "brazier"
+  ],
+  [
+   51.7627,
+   1.96,
+   -11.1373,
+   1.5,
+   8.5,
+   "brazier"
+  ],
+  [
+   60.7627,
+   1.96,
+   -11.1373,
+   1.5,
+   8.5,
+   "brazier"
+  ],
+  [
+   69.7627,
+   1.96,
+   -11.1373,
+   1.5,
+   8.5,
+   "brazier"
+  ]
+ ],
+ "focal": {
+  "name": "loom",
+  "position": [
+   5.6,
+   0.0,
+   -4.3
+  ],
+  "top": [
+   4.6641,
+   9.4174,
+   -5.2359
+  ],
+  "threads": "mesh 'threads' (unlit mint)",
+  "glow": "baked at full (area light; no runtime flame)"
+ },
+ "banners": [
+  {
+   "name": "banner_0",
+   "rank": 1,
+   "ad": "thauma-moon",
+   "source": "thauma-01",
+   "style": "gilded",
+   "pivot": [
+    13.5,
+    12.2,
+    -13.0
+   ],
+   "ad_centre": [
+    13.5,
+    6.7498,
+    -13.0
+   ],
+   "ad_size_world": [
+    5.2,
+    7.84
+   ],
+   "facing": [
+    0.7071,
+    0.0,
+    0.7071
+   ],
+   "tangent": [
+    0.7071,
+    0.0,
+    -0.7071
+   ],
+   "hem_y": 2.03,
+   "flame": "flame_0",
+   "caption": "thauma: roblox studio brand"
+  },
+  {
+   "name": "banner_1",
+   "rank": 2,
+   "ad": "nike-runner",
+   "source": "nike-runner",
+   "style": "woven",
+   "pivot": [
+    22.5,
+    11.0,
+    -13.4
+   ],
+   "ad_centre": [
+    22.5,
+    6.9037,
+    -13.4
+   ],
+   "ad_size_world": [
+    4.2,
+    6.333
+   ],
+   "facing": [
+    0.7071,
+    0.0,
+    0.7071
+   ],
+   "tangent": [
+    0.7071,
+    0.0,
+    -0.7071
+   ],
+   "hem_y": 1.957,
+   "flame": "flame_1",
+   "concept": true
+  },
+  {
+   "name": "banner_2",
+   "rank": 3,
+   "ad": "sam-embrace",
+   "source": "sam-grandmother-hug",
+   "style": "gilded",
+   "pivot": [
+    31.5,
+    11.0,
+    -13.4
+   ],
+   "ad_centre": [
+    31.5,
+    6.4637,
+    -13.4
+   ],
+   "ad_size_world": [
+    4.2,
+    6.333
+   ],
+   "facing": [
+    0.7071,
+    0.0,
+    0.7071
+   ],
+   "tangent": [
+    0.7071,
+    0.0,
+    -0.7071
+   ],
+   "hem_y": 2.657,
+   "flame": "flame_2"
+  },
+  {
+   "name": "banner_3",
+   "rank": 4,
+   "ad": "thauma-construction",
+   "source": "thauma-04",
+   "style": "woven",
+   "pivot": [
+    40.5,
+    11.0,
+    -13.4
+   ],
+   "ad_centre": [
+    40.5,
+    6.9037,
+    -13.4
+   ],
+   "ad_size_world": [
+    4.2,
+    6.333
+   ],
+   "facing": [
+    0.7071,
+    0.0,
+    0.7071
+   ],
+   "tangent": [
+    0.7071,
+    0.0,
+    -0.7071
+   ],
+   "hem_y": 1.957,
+   "flame": "flame_3",
+   "caption": "thauma: roblox studio brand"
+  },
+  {
+   "name": "banner_4",
+   "rank": 5,
+   "ad": "linear-street",
+   "source": "linear-zoom-street",
+   "style": "gilded",
+   "pivot": [
+    49.5,
+    11.0,
+    -13.4
+   ],
+   "ad_centre": [
+    49.5,
+    6.4637,
+    -13.4
+   ],
+   "ad_size_world": [
+    4.2,
+    6.333
+   ],
+   "facing": [
+    0.7071,
+    0.0,
+    0.7071
+   ],
+   "tangent": [
+    0.7071,
+    0.0,
+    -0.7071
+   ],
+   "hem_y": 2.657,
+   "flame": "flame_4",
+   "concept": true
+  },
+  {
+   "name": "banner_5",
+   "rank": 6,
+   "ad": "sam-running",
+   "source": "sam-running-couple",
+   "style": "woven",
+   "pivot": [
+    58.5,
+    11.0,
+    -13.4
+   ],
+   "ad_centre": [
+    58.5,
+    6.9037,
+    -13.4
+   ],
+   "ad_size_world": [
+    4.2,
+    6.333
+   ],
+   "facing": [
+    0.7071,
+    0.0,
+    0.7071
+   ],
+   "tangent": [
+    0.7071,
+    0.0,
+    -0.7071
+   ],
+   "hem_y": 1.957,
+   "flame": "flame_5"
+  },
+  {
+   "name": "banner_6",
+   "rank": 7,
+   "ad": "thauma-mark",
+   "source": "thauma-03",
+   "style": "gilded",
+   "pivot": [
+    67.5,
+    11.0,
+    -13.4
+   ],
+   "ad_centre": [
+    67.5,
+    6.4637,
+    -13.4
+   ],
+   "ad_size_world": [
+    4.2,
+    6.333
+   ],
+   "facing": [
+    0.7071,
+    0.0,
+    0.7071
+   ],
+   "tangent": [
+    0.7071,
+    0.0,
+    -0.7071
+   ],
+   "hem_y": 2.657,
+   "flame": "flame_6",
+   "caption": "thauma: roblox studio brand"
+  }
+ ],
+ "flames": [
+  {
+   "name": "flame_0",
+   "kind": "brazier",
+   "position": [
+    15.7627,
+    2.254,
+    -10.7373
+   ],
+   "height": 1.725,
+   "light_radius": 8.5,
+   "banner": "banner_0"
+  },
+  {
+   "name": "flame_1",
+   "kind": "brazier",
+   "position": [
+    24.7627,
+    1.96,
+    -11.1373
+   ],
+   "height": 1.5,
+   "light_radius": 8.5,
+   "banner": "banner_1"
+  },
+  {
+   "name": "flame_2",
+   "kind": "brazier",
+   "position": [
+    33.7627,
+    1.96,
+    -11.1373
+   ],
+   "height": 1.5,
+   "light_radius": 8.5,
+   "banner": "banner_2"
+  },
+  {
+   "name": "flame_3",
+   "kind": "brazier",
+   "position": [
+    42.7627,
+    1.96,
+    -11.1373
+   ],
+   "height": 1.5,
+   "light_radius": 8.5,
+   "banner": "banner_3"
+  },
+  {
+   "name": "flame_4",
+   "kind": "brazier",
+   "position": [
+    51.7627,
+    1.96,
+    -11.1373
+   ],
+   "height": 1.5,
+   "light_radius": 8.5,
+   "banner": "banner_4"
+  },
+  {
+   "name": "flame_5",
+   "kind": "brazier",
+   "position": [
+    60.7627,
+    1.96,
+    -11.1373
+   ],
+   "height": 1.5,
+   "light_radius": 8.5,
+   "banner": "banner_5"
+  },
+  {
+   "name": "flame_6",
+   "kind": "brazier",
+   "position": [
+    69.7627,
+    1.96,
+    -11.1373
+   ],
+   "height": 1.5,
+   "light_radius": 8.5,
+   "banner": "banner_6"
+  }
+ ]
+}

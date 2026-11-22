@@ -6,6 +6,7 @@ import { SITE, TIMELINE } from "@/content/site";
 import { REAL, laneLabel } from "@/content/work";
 import { FAQ } from "@/lib/facts";
 import { ROOMS, headline } from "@/lib/gallery";
+import { IDENTITY } from "@/lib/profile";
 import { ENTITY, abs } from "@/lib/seo";
 
 const head = () => [
@@ -43,7 +44,7 @@ export function llms() {
     "## optional",
     "",
     `- [everything, in one file](${abs("/llms-full.txt")}): every case study and every ad with its own address`,
-    `- [email](mailto:${SITE.email})`,
+    `- [email](mailto:${IDENTITY.email})`,
     "",
   ].join("\n");
 }
@@ -91,7 +92,7 @@ export function llmsFull() {
     "## contact",
     "",
     `- book a call: ${abs("/cal")}`,
-    `- email: ${SITE.email}`,
+    `- email: ${IDENTITY.email}`,
     "",
   ].join("\n");
 }

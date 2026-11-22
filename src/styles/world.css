@@ -2,7 +2,7 @@
    posters are first paint and the fallback, the live scene fades in over them. Type sits on the world's own dark:
    the void under the gate court, ink plates, the theatre's orchestra. Poster layout is the default; the live layout
    applies once World has chosen the live scene (data-mode="live"). ── */
-.hero.world { display: block; min-height: 0; padding-top: 0; overflow: visible; color: #f4ece1; background: #100b09; }
+.hero.world { display: block; min-height: 0; padding-top: 0; overflow: clip; color: #f4ece1; background: #100b09; }
 .world-stage { position: sticky; top: 0; z-index: 0; height: 100svh; margin-bottom: -100svh; overflow: hidden; background: #100b09; container-type: size; }
 .world-poster { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms var(--ease-io); }
 .world-lit { transition-duration: 1600ms; }
@@ -118,5 +118,30 @@
   .w-sound:hover .w-sound-i, .w-sound:hover .w-sound-i i, .w-sound:active, .w-sound:active .w-sound-i { transform: none; }
 }
 
-/* home sections under the world: their dim lines at a legible contrast on the page's ground (4.5:1 and up) */
-.idx .idx-line, .idx .lbl.dim { color: #5c5c59; }
+/* home sections under the world: their dim lines follow the text colour, which flips with the page's ground (light
+   or ink), so they stay at 4.5:1 and up on either */
+.idx .idx-line, .idx .lbl.dim { color: inherit; opacity: 0.74; }
+
+/* ?world=rooms: the banners' anchors (moved onto each banner by ./rooms every frame) and the ad dialog */
+.rooms-ui { position: sticky; top: 0; z-index: 1; height: 100svh; margin-bottom: -100svh; overflow: clip; pointer-events: none; }
+.rooms-ui[hidden] { display: block; visibility: hidden; }
+.rooms-a { position: absolute; left: 0; top: 0; width: 0; height: 0; will-change: transform; }
+.rooms-a > a { position: absolute; inset: 0; pointer-events: auto; outline: none; -webkit-tap-highlight-color: transparent; }
+.rooms-a > a::after { content: ""; position: absolute; inset: -4px; box-shadow: 0 0 0 1.5px var(--accent), 0 0 22px var(--accent-glow); opacity: 0; transition: opacity var(--t-fast); }
+.rooms-a > a:focus-visible::after { opacity: 1; }
+html.ad-open { overflow: hidden; }
+.ad-dialog { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #100b09; color: #f4ece1; overscroll-behavior: contain; }
+.ad-dialog[open] { display: grid; place-items: center; }
+.ad-dialog::backdrop { background: #100b09; }
+.ad-dialog-f { display: grid; justify-items: center; gap: 14px; margin: 0; padding: 72px var(--g) 28px; max-width: 100%; max-height: 100%; }
+.ad-dialog-f img { display: block; width: auto; height: auto; max-width: min(100%, 960px); max-height: calc(100dvh - 190px); object-fit: contain; background: #241b15; }
+.ad-dialog-f figcaption { display: grid; gap: 4px; max-width: 62ch; text-align: center; font: 600 16px/1.35 var(--f-bar); color: #e9dccb; }
+.ad-dialog-f figcaption b { font: 700 22px/1.1 var(--f-disp); letter-spacing: -0.02em; color: #f4ece1; }
+.ad-dialog-x { position: fixed; top: 18px; right: var(--g); min-width: 48px; min-height: 48px; padding: 0 18px; border: 0; border-radius: 999px; background: #2b1f18; color: #f4ece1; font: 700 16px/1 var(--f-bar); cursor: pointer; }
+.ad-dialog-x:hover { background: #3a2a20; }
+.ad-dialog-x:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .ad-dialog[open] .ad-dialog-f { animation: ad-rise 360ms var(--ease-io) both; }
+}
+@keyframes ad-rise { from { transform: translateY(14px) scale(0.98); } }
+

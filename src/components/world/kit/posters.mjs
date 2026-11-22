@@ -39,7 +39,7 @@ export async function posters({ base, out, jobs, sizes = SIZES, marks }) {
         for (let i = 0; j.scroll && i < 6; i++) await bring().then(() => page.waitForTimeout(1000));
         await page.waitForSelector(j.stage + "[data-live], " + j.stage + ".live", { timeout: 240000 });
         if (j.scroll) await bring();
-        await page.addStyleTag({ content: `body * { visibility: hidden !important; } ${j.stage}, ${j.stage} canvas { visibility: visible !important; }` });
+        await page.addStyleTag({ content: `body * { visibility: hidden !important; } .dock, .gl-s { display: none !important; } ${j.stage}, ${j.stage} canvas { visibility: visible !important; }` });
         await page.waitForTimeout(j.wait ?? 9000);
         const png = await page.locator(j.stage).screenshot({ animations: "disabled" });
         const file = path.join(out, j.name + "-" + s.tag + ".webp");

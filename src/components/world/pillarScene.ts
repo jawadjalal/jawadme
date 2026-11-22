@@ -35,8 +35,9 @@ const LIGHT: Partial<Record<FlameKind, { r: number; cd: number }>> = {
 };
 /** Bronze reads grey-green at metallic 1 with no environment map; 0.35 matches the Cycles warm brass. */
 const BRONZE_METALNESS = 0.35;
-/** "book a call", the main sign, and everything that sets it apart: it rests half lit and its halo is larger. Restyle that arm here. */
-const LOOK: Partial<Record<Sign, { rest: number; halo: number }>> = { cal: { rest: 0.5, halo: 1.8 } };
+/** "book a call", the main sign, and everything that sets it apart: it rests half lit, its halo is larger, and it is
+ *  gilded like the site's call (src/components/gilded): a gold-leaf frame around a dark enamel face. Restyle that arm here. */
+const LOOK: Partial<Record<Sign, { rest: number; halo: number; frame?: string; face?: string }>> = { cal: { rest: 0.5, halo: 1.8, frame: "#e6c46c", face: "#06140e" } };
 
 type Spring = { x: number; v: number };
 const spring = (s: Spring, to: number, dt: number, k: number, z: number) => {
@@ -146,6 +147,14 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], o: PillarOpt
         scene.add(halo);
         const parentQ = node.parent ? node.parent.getWorldQuaternion(new THREE.Quaternion()) : new THREE.Quaternion();
         const toLocal = parentQ.clone().invert();
+        if (ctx.bare && LOOK[k]?.frame) node.visible = false;
+        const face = LOOK[k]?.face;
+        if (face)
+          own(find("board_" + k), (m) => {
+            const c = Object.assign(m.clone(), { map: null, normalMap: null });
+            c.color.set(face);
+            return c;
+          });
         arms.push({
           k,
           node,
@@ -156,7 +165,11 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], o: PillarOpt
           label,
           icon: own(icon, (m) => new THREE.MeshBasicMaterial({ map: m.map, lightMap: m.lightMap, lightMapIntensity: m.lightMapIntensity })),
           edge: own(find("edge_" + k), () => new THREE.MeshBasicMaterial(), true),
-          frame: own(find("frame_" + k), (m) => m.clone()),
+          frame: own(find("frame_" + k), (m) => {
+            const c = m.clone();
+            if (LOOK[k]?.frame) Object.assign(c, { map: null, metalness: BRONZE_METALNESS, roughness: 0.3 }).color.set(LOOK[k]!.frame!);
+            return c;
+          }),
           halo,
           hot: { x: LOOK[k]?.rest ?? 0, v: 0 },
           knock: { x: 0, v: 0 },
@@ -186,7 +199,7 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], o: PillarOpt
   }
 
   const q = new THREE.Quaternion(), q2 = new THREE.Quaternion(), p = new THREE.Vector3();
-  const white = new THREE.Color(1, 1, 1);
+  const white = new THREE.Color(1, 1, 1), tint = new THREE.Color();
 
   function frame(dt: number) {
     S.time.value += dt;
@@ -212,9 +225,11 @@ export function mount(host: HTMLElement, ctx: Parameters<Mount>[1], o: PillarOpt
       arm.node.position.y = arm.baseY + 0.03 * up;
       for (const m of arm.icon) m.color.copy(white).lerp(glow, up).multiplyScalar(1 + 0.8 * up);
       for (const m of arm.edge) m.color.copy(emit).multiplyScalar(0.15 + 1.6 * h);
+      const gold = LOOK[arm.k]?.frame;
       for (const m of arm.frame) {
-        m.color.copy(white).lerp(accent, 0.45 * up);
-        m.emissive.copy(accent).multiplyScalar(0.25 * up);
+        m.color.set(gold ?? white).lerp(accent, 0.45 * up);
+        if (gold) m.emissive.set(gold).multiplyScalar(0.3 * (1 - up)).add(tint.copy(accent).multiplyScalar(0.25 * up));
+        else m.emissive.copy(accent).multiplyScalar(0.25 * up);
       }
       (arm.halo.material as THREE.ShaderMaterial).uniforms.uA.value = 0.9 * h;
       const el = o.el(arm.k);

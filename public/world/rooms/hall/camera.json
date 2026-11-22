@@ -1,0 +1,62 @@
+{
+ "yaw_deg": 45,
+ "pitch_deg": 34,
+ "d": {
+  "start": {
+   "frustum_h": 22.0,
+   "frustum_w": 35.2,
+   "target_three": [
+    8.9291,
+    3.8136,
+    -12.5669
+   ],
+   "aspect": [
+    1440,
+    900
+   ]
+  },
+  "end": {
+   "frustum_h": 22.0,
+   "frustum_w": 35.2,
+   "target_three": [
+    46.0455,
+    -14.2594,
+    -32.4434
+   ],
+   "aspect": [
+    1440,
+    900
+   ]
+  }
+ },
+ "m": {
+  "start": {
+   "frustum_h": 40.0359,
+   "frustum_w": 18.5,
+   "target_three": [
+    7.7066,
+    2.8187,
+    -10.3954
+   ],
+   "aspect": [
+    390,
+    844
+   ]
+  },
+  "end": {
+   "frustum_h": 40.0359,
+   "frustum_w": 18.5,
+   "target_three": [
+    46.7563,
+    -12.933,
+    -34.4195
+   ],
+   "aspect": [
+    390,
+    844
+   ]
+  }
+ },
+ "walk": "the camera walks from start to end (lerp target_three; frustum is the same at both stops). start frames the loom and banner_0 (thauma-moon); end frames banner_6 and the hall's east end.",
+ "note": "orthographic; camera = target + DIR * 300 looking at target, up = UP (kit/iso.ts). d: keep frustum_h for landscape aspects; m: keep frustum_w for portrait."
+}

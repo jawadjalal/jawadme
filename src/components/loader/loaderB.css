@@ -36,46 +36,24 @@ html.lb-on .lb { display: block; position: fixed; inset: 0; z-index: 100; cursor
 .lb-mark { position: absolute; left: 0; top: 0; transform-origin: 0 0; opacity: 0; pointer-events: none; }
 .lb-mark .wm-g { animation: none; }
 
-.lb-cta {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  z-index: 2;
-  height: 58px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
-  padding: 0 22px 0 24px;
-  border-radius: 3px;
-  background: var(--accent, #73e8b5);
-  color: var(--accent-ink, #06140e);
-  font: 700 17px/1 var(--f-bar, system-ui, sans-serif);
-  letter-spacing: -0.02em;
-  text-decoration: none;
-  cursor: pointer;
-}
-.lb-cta small { font-weight: 600; font-size: 13px; letter-spacing: -0.01em; opacity: 0.72; }
-.lb-cta:hover { background: var(--accent-hi, #c4ffe4); }
-.lb-cta:active { scale: 0.97; }
+.lb-cta { position: absolute; right: 16px; bottom: 16px; z-index: 2; display: flex; }
 
 .lb-hint {
   position: absolute;
   left: 16px;
-  bottom: 22px;
-  font: 600 12px/1 var(--f-bar, system-ui, sans-serif);
+  bottom: 33px;
+  font: 600 13px/1 var(--f-bar, system-ui, sans-serif);
   letter-spacing: 0.02em;
-  color: #f4ead8;
+  color: #a89f90;
   opacity: 0;
   animation: lb-hint 400ms 500ms forwards;
   pointer-events: none;
 }
-@keyframes lb-hint { to { opacity: 0.42; } }
+@keyframes lb-hint { to { opacity: 1; } }
 
 @media (max-width: 767px) {
-  .lb-cta { right: 10px; bottom: 10px; height: 56px; }
-  .lb-cta small { display: none; }
-  .lb-hint { left: 12px; bottom: 24px; }
+  .lb-cta { right: 12px; bottom: 12px; }
+  .lb-hint { left: 12px; bottom: 29px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
