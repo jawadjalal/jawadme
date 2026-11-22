@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/ds/Footer";
 import { Hero } from "@/components/ds/Hero";
-import { LogoMarquee } from "@/components/ds/LogoMarquee";
 import { OrbitMarquee } from "@/components/ds/OrbitMarquee";
-import { ScrollMorph } from "@/components/ds/ScrollMorph";
 import { Timeline } from "@/components/ds/Timeline";
 import { WorkShowcase, type ShowcaseItem } from "@/components/ds/WorkShowcase";
 import { LoaderB } from "@/components/loader/LoaderB";
@@ -13,67 +11,30 @@ import { COSMOS, SITES } from "@/lib/design";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-const MARQUEE_IDS = [
-  "cisco",
-  "subaru",
-  "asana",
-  "tesla",
-  "twilio",
-  "strava",
-  "on",
-  "spacex",
-  "whoop",
-  "vercel-c",
-  "midjourney-a",
-  "mistral-a",
-  "lovable-a",
-  "linear-a",
-  "cursor-a",
-  "perplexity-a",
-  "elevenlabs-a",
-  "palantir-carrier",
-];
-const MARQUEE_ADS = MARQUEE_IDS.map((id) => ADS.find((a) => a.id === id)).filter(
-  (a): a is (typeof ADS)[number] => Boolean(a),
-);
+const MARQUEE_ADS = ADS.slice(0, 18);
 
-const adCard = (id: string, title: string): ShowcaseItem | null => {
-  const a = ADS.find((x) => x.id === id);
-  if (!a) return null;
-  return {
-    id: `ad-${a.id}`,
-    href: `/w/${a.id}`,
-    title,
-    category: "ads",
-    src: a.src,
-    w: a.w,
-    h: a.h,
-    alt: a.alt,
-    span: "third",
-  };
-};
+const adCard = (a: (typeof ADS)[number]): ShowcaseItem => ({
+  id: `ad-${a.id}`,
+  href: `/w/${a.id}`,
+  title: a.campaign,
+  category: "ads",
+  src: a.src,
+  w: a.w,
+  h: a.h,
+  alt: a.alt,
+  span: "third",
+});
 
 const ignaru = projectBySlug("ignaru")!;
 const ignuraSeo = projectBySlug("ignura-seo")!;
 const ignura = projectBySlug("ignura")!;
 const coresrent = projectBySlug("coresrent")!;
 const fracture = projectBySlug("fracture")!;
-const palantir = projectBySlug("palantir")!;
-const whop = projectBySlug("whop")!;
-const outpace = projectBySlug("outpace")!;
-
 const menufit = SITES.find((s) => s.id === "site-menufit");
-const cosmosLead = COSMOS[0];
 
-const TOP_WORK: ShowcaseItem[] = [
-  ...[
-    adCard("cisco", "Cisco"),
-    adCard("subaru", "Subaru"),
-    adCard("asana", "Asana"),
-    adCard("tesla", "Tesla"),
-    adCard("spacex", "SpaceX"),
-    adCard("vercel-c", "Vercel"),
-  ].filter((x): x is ShowcaseItem => Boolean(x)),
+// Heavy on work: 50+ pieces right on the home page in crisp multiples of 4 (4-up desktop, 2-up mobile, zero orphans).
+const ALL_WORK: ShowcaseItem[] = [
+  ...ADS.slice(0, 8).map(adCard),
   {
     id: ignaru.slug,
     href: `/work/${ignaru.slug}`,
@@ -86,6 +47,7 @@ const TOP_WORK: ShowcaseItem[] = [
     loop: ignaru.cover.loop,
     span: "full",
   },
+  ...ADS.slice(8, 16).map(adCard),
   {
     id: ignuraSeo.slug,
     href: `/work/${ignuraSeo.slug}`,
@@ -109,9 +71,7 @@ const TOP_WORK: ShowcaseItem[] = [
     alt: coresrent.cover.alt,
     span: "half",
   },
-];
-
-const BOTTOM_WORK: ShowcaseItem[] = [
+  ...ADS.slice(16, 24).map(adCard),
   {
     id: fracture.slug,
     href: `/work/${fracture.slug}`,
@@ -123,39 +83,7 @@ const BOTTOM_WORK: ShowcaseItem[] = [
     alt: fracture.cover.alt,
     span: "full",
   },
-  {
-    id: palantir.slug,
-    href: `/work/${palantir.slug}`,
-    title: "Palantir",
-    category: "ads",
-    src: palantir.cover.src,
-    w: palantir.cover.w,
-    h: palantir.cover.h,
-    alt: palantir.cover.alt,
-    span: "third",
-  },
-  {
-    id: whop.slug,
-    href: `/work/${whop.slug}`,
-    title: "Whop",
-    category: "ads",
-    src: whop.cover.src,
-    w: whop.cover.w,
-    h: whop.cover.h,
-    alt: whop.cover.alt,
-    span: "third",
-  },
-  {
-    id: outpace.slug,
-    href: `/work/${outpace.slug}`,
-    title: "Outpace",
-    category: "ads",
-    src: outpace.cover.src,
-    w: outpace.cover.w,
-    h: outpace.cover.h,
-    alt: outpace.cover.alt,
-    span: "third",
-  },
+  ...ADS.slice(24, 32).map(adCard),
   {
     id: ignura.slug,
     href: `/work/${ignura.slug}`,
@@ -182,52 +110,35 @@ const BOTTOM_WORK: ShowcaseItem[] = [
         },
       ]
     : []),
-  ...(cosmosLead
-    ? [
-        {
-          id: cosmosLead.id,
-          href: `/w/${cosmosLead.id}`,
-          title: "Cosmos Models · 3D",
-          category: "3d-roblox" as const,
-          src: cosmosLead.src,
-          w: cosmosLead.w,
-          h: cosmosLead.h,
-          alt: cosmosLead.alt,
-          span: "full" as const,
-        },
-      ]
-    : []),
+  ...ADS.slice(32, 40).map(adCard),
+  ...COSMOS.slice(0, 4).map((c) => ({
+    id: c.id,
+    href: `/w/${c.id}`,
+    title: c.group,
+    category: "3d-roblox" as const,
+    src: c.src,
+    w: c.w,
+    h: c.h,
+    alt: c.alt,
+    span: "third" as const,
+  })),
+  ...ADS.slice(40, 52).map(adCard),
 ];
 
 export default function Home() {
   return (
     <main className="neo-home">
       <LoaderB />
-
-      {/* Centered bio flanked by Joyco-style 3D Hades II gilded pillars */}
       <Hero />
 
-      {/* Outpace-style curved 3D rotating ad showcase right above the fold */}
-      <section className="om-sec om-sec-tight" id="marquee" aria-label="Selected ads">
+      <section className="om-sec" id="marquee" aria-label="Selected work">
         <OrbitMarquee ads={MARQUEE_ADS} />
       </section>
 
-      {/* Real company & project logos marquee */}
-      <LogoMarquee />
+      <WorkShowcase items={ALL_WORK} totalAds={ADS.length} />
 
-      {/* Brass Hands–framed pure visual work stream (Ads first + flagship web) */}
-      <WorkShowcase items={TOP_WORK} totalAds={ADS.length} />
-
-      {/* Scroll-morphing 3D Hades II gilded artifact in the middle of the work */}
-      <ScrollMorph />
-
-      {/* Second Brass Hands visual block (3D, Roblox, campaigns & products) */}
-      <WorkShowcase items={BOTTOM_WORK} totalAds={ADS.length} showBar={false} />
-
-      {/* Clean 4-line experience */}
       <Timeline />
 
-      {/* Minimal footer with framed Hades II signpost */}
       <Footer src="home-footer" />
     </main>
   );

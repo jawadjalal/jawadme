@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export type ShowcaseItem = {
   id: string;
@@ -19,56 +19,80 @@ export type ShowcaseItem = {
 
 type Filter = "all" | "ads" | "brand-web" | "3d-roblox";
 
-/** Brass Hands–style pure visual showcase: almost zero chrome, ads & work fill the frame. */
+/** Brass Hands–framed visual work grid with smooth scroll-reveal refresh on every card. */
 export function WorkShowcase({
   items,
   totalAds,
-  showBar = true,
 }: {
   items: ShowcaseItem[];
   totalAds: number;
-  showBar?: boolean;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const visible = useMemo(
     () => (filter === "all" ? items : items.filter((i) => i.category === filter)),
     [items, filter],
   );
 
+  // Smooth scroll-reveal refresh as cards enter the viewport
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>(".ws-card"));
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      cards.forEach((c) => c.classList.add("is-in"));
+      return;
+    }
+
+    cards.forEach((c) => c.classList.remove("is-in"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-in");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0.05 },
+    );
+
+    cards.forEach((c) => io.observe(c));
+    return () => io.disconnect();
+  }, [visible]);
+
   const tabs: { key: Filter; label: string }[] = [
-    { key: "all", label: "All" },
-    { key: "ads", label: `Ads (${totalAds})` },
-    { key: "brand-web", label: "Web & Brand" },
-    { key: "3d-roblox", label: "3D & Roblox" },
+    { key: "all", label: "ALL" },
+    { key: "ads", label: `ADS (${totalAds})` },
+    { key: "brand-web", label: "WEB & BRAND" },
+    { key: "3d-roblox", label: "3D & ROBLOX" },
   ];
 
   return (
-    <section className="ws-sec" id={showBar ? "work" : undefined} aria-label="Selected work">
-      {showBar ? (
-        <div className="ws-bar">
-          <div className="ws-filters" role="tablist" aria-label="Filter work">
-            {tabs.map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                role="tab"
-                aria-selected={filter === t.key}
-                className={"ws-tab" + (filter === t.key ? " is-active" : "")}
-                onClick={() => setFilter(t.key)}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-          <Link href="/work" className="ws-more">
-            All {totalAds + 24}+ pieces ↗
-          </Link>
+    <section className="ws-sec" id="work" aria-label="Selected work">
+      <div className="ws-bar">
+        <div className="ws-filters" role="tablist" aria-label="Filter work">
+          {tabs.map((t) => (
+            <button
+              key={t.key}
+              type="button"
+              role="tab"
+              aria-selected={filter === t.key}
+              className={"ws-tab" + (filter === t.key ? " is-active" : "")}
+              onClick={() => setFilter(t.key)}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
-      ) : null}
+        <Link href="/work" className="ws-more">
+          ALL WORK ({totalAds + 24}+) ↗
+        </Link>
+      </div>
 
-      <div className="ws-grid">
-        {visible.map((item) => {
+      <div ref={gridRef} className="ws-grid">
+        {visible.map((item, idx) => {
           const spanClass =
             filter === "all"
               ? item.span === "full"
@@ -81,7 +105,12 @@ export function WorkShowcase({
                 : "ws-half";
 
           return (
-            <Link key={item.id} href={item.href} className={"ws-card ws-card-pure " + spanClass}>
+            <Link
+              key={item.id}
+              href={item.href}
+              className={"ws-card ws-card-pure " + spanClass}
+              style={{ ["--delay" as string]: `${(idx % 3) * 60}ms` }}
+            >
               <div className="ws-media">
                 {item.loop ? (
                   <video
