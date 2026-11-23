@@ -62,7 +62,7 @@ export function Hero() {
             ads
           </Link>
           <sup>{ADS.length}</sup>
-          , <G src="/logos/clean/ignaru.png" w={32} h={32} /> brands,{" "}
+          , brands,{" "}
           <G src="/work/ignaru.webp" w={140} h={88} />
           <Link href="/work">
             sites
