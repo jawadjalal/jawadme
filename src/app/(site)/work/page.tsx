@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { WorkWorld, type WorldItem } from "@/components/ds/WorkWorld";
+import { WorkSphere, type SphereItem } from "@/components/ds/WorkSphere";
 import { ADS, CAMPAIGNS } from "@/content/ads";
 import { REAL } from "@/content/work";
 import { GALLERY, ROOMS } from "@/lib/gallery";
@@ -21,26 +21,28 @@ const LD = {
   hasPart: [...GALLERY.filter((p) => p.credit.includes("jawad jalal")).map(pieceWork), ...REAL.map(caseWork)],
 };
 
-const ITEMS: WorldItem[] = ROOMS.flatMap((room) =>
+const ITEMS: SphereItem[] = ROOMS.flatMap((room) =>
   room.entries
     .filter((e) => e.key !== "coresrent")
     .map((e) => ({
       key: `${room.key}-${e.key}`,
       href: e.href,
       title: e.title,
-      src: e.piece?.sm || e.media.src,
+      line: e.line,
+      section: room.section,
+      thumb: e.piece?.sm || `/_next/image?url=${encodeURIComponent(e.media.src)}&w=384&q=75`,
+      src: e.piece?.src || e.media.src,
       w: e.media.w,
       h: e.media.h,
       alt: e.media.alt,
-      section: room.section,
     })),
 );
 
 export default function Work() {
   return (
-    <main className="ww-page">
+    <main className="sph-page no-dock">
       <JsonLd data={LD} />
-      <WorkWorld items={ITEMS} />
+      <WorkSphere items={ITEMS} />
     </main>
   );
 }

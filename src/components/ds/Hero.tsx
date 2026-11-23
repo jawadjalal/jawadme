@@ -1,87 +1,85 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
-import { MailLink } from "@/components/MailLink";
-import gh from "@/content/github-contributions.json";
-import { SITE } from "@/content/site";
-import { InlinePill } from "./InlineGlyph";
+import { ADS } from "@/content/ads";
+import { ROOMS, headline } from "@/lib/gallery";
+import { HeroRibbon } from "./HeroRibbon";
+import { LogoRow } from "./LogoRow";
 import { LondonClock } from "./LondonClock";
+import "@/styles/hero.css";
 
-const LAST_DAYS = (gh.levels as number[]).slice(-112);
+const count = (section: string) => ROOMS.filter((r) => r.section === section).reduce((n, r) => n + r.entries.length, 0);
+const ON = ADS.find((a) => a.id === "on");
+const RIBBON = [...(ON ? [ON] : []), ...ADS.filter((a) => a.id !== "on").slice(0, 17)];
+const CAPTIONS = RIBBON.map((a) => a.campaign + " / " + headline(a));
 
-/** Authentic Brass Hands–scale industrial command header:
- *  Generous height, tall stacked wordmark, 3-line London telemetry, 2-row stacked orange nav + GitHub commits,
- *  and tall 4-corner hatched Book a Call CTA. */
+const G = ({ src, w, h }: { src: string; w: number; h: number }) => (
+  <Image src={src} alt="" width={w} height={h} sizes="96px" className="hx-g" aria-hidden="true" />
+);
+
+/** The whole home page: Brass Hands' ruled frame (brand, status, London clock, the call) around Outpace's statement
+ *  and curved ad ribbon, with a status line that names the ad in front. */
 export function Hero() {
   return (
-    <section className="nh-bh" data-hero="">
-      <header className="bh-topbar">
-        <Link href="/" className="bh-brand" aria-label="Jawad Jalal home">
-          <Image
-            src="/design/jawad-die.webp"
-            alt="Jawad Jalal"
-            width={52}
-            height={58}
-            sizes="48px"
-            priority
-            className="bh-head"
-          />
-          <span className="bh-wordmark">
+    <section className="hx" data-hero="">
+      <header className="hx-top">
+        <Link href="/" className="hx-brand" aria-label="jawad jalal, home">
+          <Image src="/design/jawad-die.webp" alt="" width={52} height={58} sizes="44px" priority className="hx-head" />
+          <span className="hx-mark">
             <span>JAWAD</span>
             <span>JALAL</span>
           </span>
         </Link>
-
-        <div className="bh-ops-col">
-          <span>ADS / BRANDS / SITES / 3D</span>
-          <span>STATUS: AVAILABLE NOW</span>
-          <span className="bh-ops-time">
-            LONDON, UK <i className="bh-ops-sep">/</i> <LondonClock />
-          </span>
-        </div>
-
-        <div className="bh-nav-col">
-          <nav className="bh-topnav" aria-label="Primary">
-            <Link href="/work">WORK</Link>
-            <Link href="/about">ABOUT</Link>
-            <a href={SITE.cv} download>
-              CV
-            </a>
-            <MailLink src="topbar" className="bh-nav-mail">
-              EMAIL
-            </MailLink>
-          </nav>
-
-          <a
-            href="https://github.com/jawadjalal"
-            target="_blank"
-            rel="noopener"
-            className="bh-gh"
-            aria-label={`${gh.total.toLocaleString()} GitHub contributions in the past year`}
-          >
-            <span className="bh-gh-grid" aria-hidden="true">
-              {LAST_DAYS.map((lvl, i) => (
-                <i key={i} data-l={lvl} />
-              ))}
-            </span>
-            <span className="bh-gh-num">{gh.total.toLocaleString()} COMMITS</span>
-          </a>
-        </div>
-
-        <BookLink src="home-top" className="bh-cta bh-cta-tall">
+        <dl className="hx-tele">
+          <div>
+            <dt>DISCIPLINE</dt>
+            <dd>ADS / BRANDS / SITES / 3D</dd>
+          </div>
+          <div>
+            <dt>STATUS</dt>
+            <dd>
+              <i className="hx-live" aria-hidden="true" />
+              AVAILABLE NOW
+            </dd>
+          </div>
+          <div>
+            <dt>LONDON, UK</dt>
+            <dd>
+              <LondonClock />
+            </dd>
+          </div>
+        </dl>
+        <BookLink src="home-hero" className="bh-cta hx-cta">
           <span className="bh-cta-in">BOOK A CALL ↗</span>
         </BookLink>
       </header>
 
-      <div className="bh-hero-center">
-        <h1 className="bh-hero-bio">
-          I&apos;m <InlinePill kind="head" /> Jawad. I design and build{" "}
-          <InlinePill kind="ads" /> ads,{" "}
-          <InlinePill kind="brands" /> brands,{" "}
-          <InlinePill kind="sites" /> sites, and{" "}
-          <InlinePill kind="3d" /> 3D in London.
+      <div className="hx-head-row">
+        <h1 className="hx-h1">
+          i&apos;m <G src="/design/jawad-die.webp" w={44} h={48} /> jawad. i design and build{" "}
+          <G src="/ads/new/on-480.webp" w={96} h={120} />
+          <Link href="/work">
+            ads
+          </Link>
+          <sup>{ADS.length}</sup>
+          , brands,{" "}
+          <G src="/work/ignaru.webp" w={140} h={88} />
+          <Link href="/work">
+            sites
+          </Link>
+          <sup>{count("web")}</sup>{" "}
+          and <G src="/work/fracture/mole-king.webp" w={120} h={80} />
+          <Link href="/work">
+            3d
+          </Link>
+          <sup>{count("3d")}</sup>{" "}
+          in london.
         </h1>
       </div>
+
+      <LogoRow />
+
+      <HeroRibbon ads={RIBBON} captions={CAPTIONS} />
     </section>
   );
 }
