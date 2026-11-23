@@ -9,6 +9,7 @@ import type { Ad } from "@/content/ads";
 
 type Props = {
   ads: Ad[];
+  onFront?: (index: number) => void;
 };
 
 const VERT = /* glsl */ `
@@ -48,7 +49,7 @@ const FRAG = /* glsl */ `
 
 /** True Three.js curved cylindrical ribbon carousel — exact Outpace Studios IMAX-style
  *  curved plane geometry with rounded corners, drag-to-spin inertia, and click navigation. */
-export function OrbitMarquee({ ads }: Props) {
+export function OrbitMarquee({ ads, onFront }: Props) {
   const router = useRouter();
   const hostRef = useRef<HTMLDivElement>(null);
   const [fallback, setFallback] = useState(false);
@@ -171,6 +172,7 @@ export function OrbitMarquee({ ads }: Props) {
     let startX = 0;
     let lastX = 0;
     let moved = false;
+    let frontIdx = 0;
 
     const updateNdc = (e: PointerEvent) => {
       const r = renderer.domElement.getBoundingClientRect();
@@ -259,6 +261,11 @@ export function OrbitMarquee({ ads }: Props) {
       }
 
       ring.rotation.y = rotY;
+      const f = (((Math.round(-rotY / arcStep) % N) + N) % N);
+      if (f !== frontIdx) {
+        frontIdx = f;
+        onFront?.(f);
+      }
 
       for (let i = 0; i < materials.length; i++) {
         const target = i === hoveredIdx ? 1 : 0;
@@ -300,7 +307,7 @@ export function OrbitMarquee({ ads }: Props) {
       renderer.dispose();
       if (dom.parentNode === host) host.removeChild(dom);
     };
-  }, [ads, router]);
+  }, [ads, router, onFront]);
 
   if (fallback) {
     return (

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Fragment, type CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import { Gilded } from "@/components/gilded/Gilded";
-import { Footer } from "@/components/ds/Footer";
 import { Media } from "@/components/ds/Media";
 import { TLink } from "@/components/ds/TLink";
 import { TitleTab } from "@/components/ds/TitleTab";
@@ -158,7 +157,6 @@ export default async function Case({ params }: Props) {
         </span>
         <Media m={{ ...next.cover, loop: undefined }} ratio="21 / 9" sizes="100vw" fit={portrait(next.cover) ? "contain" : "cover"} />
       </TLink>
-      <Footer src={"case-" + p.slug} />
     </main>
   );
 }

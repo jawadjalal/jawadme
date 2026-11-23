@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Footer } from "@/components/ds/Footer";
 import { ShaftMoment } from "@/components/moments/fracture";
 import { projectBySlug } from "@/content/work";
 import { JsonLd, PERSON_ID, abs, meta } from "@/lib/seo";
@@ -40,7 +39,6 @@ export default function Fracture() {
           <Link href={"/work/" + FR.slug}>the art, in the case study</Link>
         </p>
       </section>
-      <Footer src="fracture" />
     </main>
   );
 }
