@@ -2,13 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { BookLink } from "@/components/BookLink";
 import { ADS } from "@/content/ads";
-import { ROOMS, headline } from "@/lib/gallery";
+import { headline } from "@/lib/gallery";
 import { HeroRibbon } from "./HeroRibbon";
-import { LogoRow } from "./LogoRow";
 import { LondonClock } from "./LondonClock";
 import "@/styles/hero.css";
 
-const count = (section: string) => ROOMS.filter((r) => r.section === section).reduce((n, r) => n + r.entries.length, 0);
 const ON = ADS.find((a) => a.id === "on");
 const RIBBON = [...(ON ? [ON] : []), ...ADS.filter((a) => a.id !== "on").slice(0, 17)];
 const CAPTIONS = RIBBON.map((a) => a.campaign + " / " + headline(a));
@@ -26,7 +24,7 @@ export function Hero() {
         <Link href="/" className="hx-brand" aria-label="jawad jalal, home">
           <Image src="/design/jawad-die.webp" alt="" width={52} height={58} sizes="44px" priority className="hx-head" />
           <span className="hx-mark">
-            <span>JAWAD</span>
+            <span>JAWAD</span>{" "}
             <span>JALAL</span>
           </span>
         </Link>
@@ -61,23 +59,18 @@ export function Hero() {
           <Link href="/work">
             ads
           </Link>
-          <sup>{ADS.length}</sup>
           , brands,{" "}
           <G src="/work/ignaru.webp" w={140} h={88} />
           <Link href="/work">
             sites
-          </Link>
-          <sup>{count("web")}</sup>{" "}
+          </Link>{" "}
           and <G src="/work/fracture/mole-king.webp" w={120} h={80} />
           <Link href="/work">
             3d
-          </Link>
-          <sup>{count("3d")}</sup>{" "}
+          </Link>{" "}
           in london.
         </h1>
       </div>
-
-      <LogoRow />
 
       <HeroRibbon ads={RIBBON} captions={CAPTIONS} />
     </section>

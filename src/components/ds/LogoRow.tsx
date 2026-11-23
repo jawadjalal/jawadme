@@ -3,13 +3,13 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const LOGOS = [
-  { name: "ignaru", src: "/logos/clean/ignaru.png" },
+const LOGOS: { name: string; src?: string }[] = [
+  { name: "ignaru" },
   { name: "menufit", src: "/logos/clean/menufit.png" },
   { name: "okara", src: "/logos/clean/okara.png" },
-  { name: "ignura", src: "/logos/clean/ignura.png" },
+  { name: "ignura" },
   { name: "bevel", src: "/logos/clean/bevel.png" },
-  { name: "kleoklaw", src: "/logos/clean/kleoklaw.png" },
+  { name: "kleoklaw" },
   { name: "splitting point", src: "/logos/clean/splittingpoint.png" },
   { name: "vizzbees", src: "/logos/clean/vizzbees.png" },
   { name: "acquiblox", src: "/logos/clean/acquiblox.png" },
@@ -18,7 +18,7 @@ const LOGOS = [
 const SLOTS = 6;
 const ORDER = [2, 5, 0, 3, 1, 4];
 
-/** Six still logo slots. Every few seconds one slot, never two at once, swaps in place to a logo that is off the row. */
+/** Six still logo slots, a mark beside the name where a real one exists and the name alone otherwise. Every few seconds one slot, never two at once, swaps in place to a logo that is off the row. */
 export function LogoRow() {
   const [shown, setShown] = useState(() => LOGOS.slice(0, SLOTS).map((_, i) => i));
 
@@ -43,7 +43,7 @@ export function LogoRow() {
       {shown.map((i, slot) => (
         <li key={slot} className="lr-slot">
           <span key={i} className="lr-logo">
-            <Image src={LOGOS[i].src} alt="" width={22} height={22} unoptimized className="lr-mark" />
+            {LOGOS[i].src ? <Image src={LOGOS[i].src} alt="" width={22} height={22} unoptimized className="lr-mark" /> : null}
             <span>{LOGOS[i].name}</span>
           </span>
         </li>

@@ -52,7 +52,7 @@
 .hx-tele dt {
   font: 500 10.5px/1 var(--f-mono);
   letter-spacing: 0.12em;
-  color: #7f8589;
+  color: #9aa0a4;
 }
 
 .hx-tele dd {
@@ -88,11 +88,12 @@
 }
 
 .hx-head-row {
+  text-align: center;
   padding: clamp(18px, 3.6vh, 44px) var(--g) clamp(6px, 1.4vh, 16px);
 }
 
 .hx-h1 {
-  margin: 0;
+  margin: 0 auto;
   max-width: 21em;
   font-family: var(--f-disp);
   font-weight: 700;
@@ -105,27 +106,13 @@
 
 .hx-h1 a {
   color: inherit;
-  text-decoration: underline;
-  text-decoration-thickness: 0.055em;
-  text-underline-offset: 0.12em;
-  text-decoration-color: rgba(255, 98, 0, 0.75);
-  transition: color 150ms ease, text-decoration-color 150ms ease;
+  transition: color 150ms ease;
 }
 
 .hx-h1 a:hover {
   color: var(--orange);
-  text-decoration-color: var(--orange);
 }
 
-.hx-h1 sup {
-  position: relative;
-  top: -1.6em;
-  margin-left: 0.2em;
-  font: 600 max(11px, 0.19em) / 1 var(--f-mono);
-  letter-spacing: 0.04em;
-  vertical-align: baseline;
-  color: var(--orange);
-}
 
 .hx-ribbon {
   position: relative;
@@ -207,6 +194,17 @@
   .hx-status {
     grid-template-columns: minmax(0, 1fr) auto;
   }
+  .hx-head-row {
+    padding-inline: 12px;
+  }
+  .hx-h1 {
+    font-size: min(5.6vw, 34px);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+  }
+  .hx-head-row .hx-h1 .hx-g {
+    display: none;
+  }
   .hx-status-k,
   .hx-status-all {
     display: none;
@@ -222,17 +220,17 @@
 .lr {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  margin: 0;
-  padding: 0 var(--g);
+  width: min(880px, calc(100% - 2 * var(--g)));
+  margin: 0 auto;
+  padding: 0;
   list-style: none;
-  border-top: 1px solid var(--rule);
 }
 
 .lr-slot {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 52px;
+  height: 48px;
   border-left: 1px solid var(--rule);
 }
 
@@ -262,8 +260,7 @@
 
 @keyframes lr-in {
   from {
-    opacity: 0;
-    filter: blur(6px);
+    filter: blur(8px);
     transform: translateY(5px);
   }
 }
@@ -298,6 +295,18 @@
   .lr-mark {
     width: 16px;
     height: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .lr-logo {
+    gap: 5px;
+    font-size: 9.5px;
+    letter-spacing: 0.03em;
+  }
+  .lr-mark {
+    width: 14px;
+    height: 14px;
   }
 }
 
