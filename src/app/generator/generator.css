@@ -1,6 +1,6 @@
-/* jawadjalal.com/generator: the frame fills the window and nothing else is on the page.
-   The canvas owns every pixel it needs, so the wrapper only has to stop the page scrolling
-   around it and keep the paper colour under the frame while it loads. */
+/* jawadjalal.com/generator: the frame fills the window. The canvas owns every pixel it needs,
+   so the wrapper only stops the page scrolling around it and keeps the paper colour under the
+   frame while it loads. */
 html,
 body {
   margin: 0;
@@ -8,53 +8,56 @@ body {
   background: #fdfcf9;
 }
 
+/* The frame, then one paper line under it holding the source link. The line is in the flow
+   rather than floating over the canvas: an overlay at 390 would sit on top of the canvas' own
+   top-bar buttons, and a tap on "Make an ad" would open GitHub instead. */
 .gen {
   position: fixed;
   inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fdfcf9;
 }
 
 .gen-frame {
   display: block;
   width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   border: 0;
 }
 
-/* The one piece of chrome: the source link, a paper tab in the corner. The chip is small
-   because the work is the page; ::after is the tap target, at 44px without drawing one. */
+.gen-foot {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+}
+
 .gen-source {
-  position: fixed;
-  right: 16px;
-  bottom: 14px;
-  z-index: 2;
-  padding: 8px 12px;
-  border-radius: 4px;
-  background: rgb(253 252 249 / 0.9);
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 2px;
   color: #555552;
   font-family: Satoshi, ui-sans-serif, system-ui, sans-serif;
   font-size: 11px;
-  line-height: 1.2;
+  line-height: 1;
   letter-spacing: 0.04em;
   text-decoration: none;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  transition: color 160ms ease, background-color 160ms ease;
-}
-
-.gen-source::after {
-  content: "";
-  position: absolute;
-  inset: -8px;
-  border-radius: 8px;
+  transition: color 160ms ease;
 }
 
 .gen-source:hover,
 .gen-source:focus-visible {
   color: #141414;
-  background: #fdfcf9;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .gen-source:focus-visible {
   outline: 2px solid #141414;
-  outline-offset: 3px;
+  outline-offset: 2px;
 }

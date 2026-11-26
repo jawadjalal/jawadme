@@ -16,9 +16,11 @@ export default function GeneratorPage() {
   return (
     <main className="gen">
       <iframe className="gen-frame" src="/generator/index.html" title="the ad canvas: eight layouts, editable, exported at exact pixels" />
-      <a className="gen-source" href="https://github.com/jawadjalal/generator" target="_blank" rel="noreferrer">
-        source
-      </a>
+      <div className="gen-foot">
+        <a className="gen-source" href="https://github.com/jawadjalal/generator" target="_blank" rel="noreferrer">
+          source
+        </a>
+      </div>
     </main>
   );
 }
