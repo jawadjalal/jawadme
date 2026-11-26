@@ -681,8 +681,6 @@
           node.setAttribute("aria-label", fieldLabel(state.layout, el.key));
           node.addEventListener("input", () => {
             current.fields[el.key] = node.innerText;
-            const side = root.querySelector(`[data-side-field="${CSS.escape(el.key)}"]`);
-            if (side && side.value !== node.innerText) side.value = node.innerText;
           });
         }
         stage.appendChild(node);
@@ -943,88 +941,71 @@
   function shell() {
     root.innerHTML = `
       <header class="ad-topbar">
-        <a class="ad-topbar__brand" href="#gallery" aria-label="ambitious ad canvas">${wordmarkSvg(INK, SUBJECTS.economics.color, false)}</a>
-        <nav class="ad-topbar__nav" aria-label="Ad canvas">
-          <a class="ad-textbutton" href="#gallery" data-nav="gallery">Gallery</a>
-          <button class="ad-button ad-button--quiet" type="button" data-action="open-current">Make an ad</button>
+        <a class="ad-topbar__brand" href="#statement">generator<span class="ad-topbar__by">jawad jalal</span></a>
+        <nav class="ad-topbar__nav" aria-label="Generator">
+          <span class="ad-topbar__hint">click any word on the canvas to edit it</span>
+          <a class="ad-textbutton" href="https://github.com/jawadjalal/generator" target="_blank" rel="noreferrer">source</a>
         </nav>
       </header>
-      <main>
-        <section class="ad-gallery" data-view="gallery" aria-labelledby="gallery-title">
-          <div class="ad-gallery__head">
-            <div>
-              <h1 id="gallery-title">Finished ads, ready to post.</h1>
-              <p class="ad-gallery__intro">Pick a layout, change the words, colour and size, then download a PNG rendered at exact pixels. The question, mark scheme and numbers come from the app’s real course data; empty slots say what they need.</p>
-            </div>
-            <button class="ad-button" type="button" data-action="open-current">Start with Statement</button>
-          </div>
-          <div class="ad-gallery__grid" data-gallery-grid></div>
-        </section>
-        <section class="ad-editor" data-view="editor" aria-label="Ad editor" hidden>
-          <aside class="ad-controls" aria-label="Ad controls">
-            <div class="ad-control-group">
-              <label class="ad-control-label" for="layout-select">Layout</label>
-              <select class="ad-select" id="layout-select" data-control="layout"></select>
-            </div>
-            <div class="ad-control-group">
-              <span class="ad-control-label">Size</span>
+      <main class="ad-studio">
+        <div class="ad-canvasarea" data-workspace>
+          <div class="ad-stage-wrap" data-stage-wrap><div class="ad-stage" data-stage></div></div>
+          <div class="ad-statusline"><span data-stage-meta></span><span>exact pixels &middot; everything stays in this browser</span></div>
+        </div>
+        <aside class="ad-panel" aria-label="Controls">
+          <div class="ad-panel__scroll">
+            <section class="ad-panel-section">
+              <h2 class="ad-panel-label">Layout</h2>
+              <div class="ad-thumbs" data-layout-thumbs></div>
+            </section>
+            <section class="ad-panel-section">
+              <h2 class="ad-panel-label">Size</h2>
               <div class="ad-segmented" role="group" aria-label="Canvas size" data-control="size">
-                <button type="button" data-value="portrait">1080 × 1350</button>
-                <button type="button" data-value="landscape">1600 × 900</button>
+                <button type="button" data-value="portrait">1080 &times; 1350</button>
+                <button type="button" data-value="landscape">1600 &times; 900</button>
               </div>
-            </div>
-            <div class="ad-control-group">
-              <label class="ad-control-label" for="subject-select">Subject colour</label>
-              <select class="ad-select" id="subject-select" data-control="subject"></select>
-            </div>
-            <div class="ad-control-group">
-              <span class="ad-control-label">Ground</span>
+            </section>
+            <section class="ad-panel-section">
+              <h2 class="ad-panel-label">Colour</h2>
+              <div class="ad-swatches" role="group" aria-label="Accent colour" data-control="subject"></div>
+            </section>
+            <section class="ad-panel-section">
+              <h2 class="ad-panel-label">Ground</h2>
               <div class="ad-segmented" role="group" aria-label="Paper or ink ground" data-control="invert">
                 <button type="button" data-value="paper">Paper</button>
                 <button type="button" data-value="ink">Ink</button>
               </div>
-            </div>
-            <div class="ad-control-group">
-              <span class="ad-control-label">Alignment</span>
+            </section>
+            <section class="ad-panel-section">
+              <h2 class="ad-panel-label">Align</h2>
               <div class="ad-segmented" role="group" aria-label="Text alignment" data-control="align">
                 <button type="button" data-value="left">Left</button>
                 <button type="button" data-value="center">Centre</button>
                 <button type="button" data-value="right">Right</button>
               </div>
-            </div>
-            <div class="ad-control-group" data-control="image" hidden>
-              <span class="ad-control-label">Photograph</span>
+            </section>
+            <section class="ad-panel-section" data-control="image" hidden>
+              <h2 class="ad-panel-label">Photograph</h2>
               <button class="ad-drop" type="button" data-action="choose-image">Choose or drop a photograph</button>
               <input class="ad-sr" type="file" accept="image/*" data-image-input>
-            </div>
-            <div class="ad-fieldlist" data-field-list></div>
-            <div class="ad-controls__footer">
-              <button class="ad-button" type="button" data-action="download">Download PNG</button>
-              <button class="ad-button ad-button--quiet" type="button" data-action="copy-caption">Copy caption</button>
-              <a class="ad-textbutton" href="#gallery">Back to gallery</a>
-            </div>
-          </aside>
-          <div class="ad-workspace" data-workspace>
-            <div class="ad-statusline"><span data-stage-meta></span><span>Exact-pixel PNG. Editing is local to this browser.</span></div>
-            <div class="ad-stage-wrap" data-stage-wrap><div class="ad-stage" data-stage></div></div>
+            </section>
           </div>
-        </section>
+          <footer class="ad-panel__footer">
+            <button class="ad-export" type="button" data-action="download">Export PNG</button>
+            <button class="ad-quiet" type="button" data-action="copy-caption">Copy post caption</button>
+          </footer>
+        </aside>
       </main>
       <div class="ad-toast" role="status" aria-live="polite"></div>
     `;
 
-    const layoutSelect = root.querySelector('[data-control="layout"]');
-    layoutSelect.innerHTML = LAYOUTS.map((layout) => `<option value="${layout.id}">${layout.name}</option>`).join("");
-    const subjectSelect = root.querySelector('[data-control="subject"]');
-    subjectSelect.innerHTML = Object.entries(SUBJECTS)
-      .map(([id, subject]) => `<option value="${id}">${subject.name}</option>`)
-      .join("");
+    buildSwatches();
+    buildLayoutThumbs();
 
     root.addEventListener("click", async (event) => {
       const action = event.target.closest("[data-action]");
       if (!action) return;
       const name = action.dataset.action;
-      if (name === "open-current") openEditor("statement");
       if (name === "download") await downloadState(current);
       if (name === "copy-caption") await copyCaption(layoutsById.get(current.layout));
       if (name === "choose-image") root.querySelector("[data-image-input]")?.click();
@@ -1033,22 +1014,7 @@
     root.addEventListener("change", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
-      if (target.matches('[data-control="layout"]')) openEditor(target.value);
-      if (target.matches('[data-control="subject"]')) {
-        current.subject = target.value;
-        renderEditor();
-      }
       if (target.matches("[data-image-input]")) readImageFile(target.files?.[0]);
-    });
-
-    root.addEventListener("input", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
-      const key = target.dataset.sideField;
-      if (!key) return;
-      current.fields[key] = target.value;
-      const stageField = root.querySelector(`[data-field="${CSS.escape(key)}"]`);
-      if (stageField) stageField.textContent = target.value;
     });
 
     for (const group of root.querySelectorAll(".ad-segmented")) {
@@ -1081,8 +1047,49 @@
       readImageFile(file);
     });
 
-    window.addEventListener("resize", () => {
-      if (!root.querySelector('[data-view="editor"]').hidden) renderStage();
+    window.addEventListener("resize", () => renderStage());
+  }
+
+  function buildSwatches() {
+    const wrap = root.querySelector('[data-control="subject"]');
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    for (const [id, subject] of Object.entries(SUBJECTS)) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "ad-swatch";
+      b.dataset.value = id;
+      b.style.setProperty("--sw", subject.color);
+      b.setAttribute("aria-label", subject.name);
+      b.title = subject.name;
+      wrap.appendChild(b);
+    }
+    wrap.addEventListener("click", (event) => {
+      const b = event.target.closest(".ad-swatch");
+      if (!b) return;
+      current.subject = b.dataset.value;
+      renderEditor();
+    });
+  }
+
+  function buildLayoutThumbs() {
+    const wrap = root.querySelector("[data-layout-thumbs]");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    for (const layout of LAYOUTS) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "ad-thumb";
+      b.dataset.layout = layout.id;
+      b.setAttribute("aria-label", `Use the ${layout.name} layout`);
+      b.innerHTML = `<span class="ad-thumb__frame" data-thumb-frame></span><span class="ad-thumb__name">${layout.name}</span>`;
+      wrap.appendChild(b);
+      mountPreview(b.querySelector("[data-thumb-frame]"), freshState(layout.id));
+    }
+    wrap.addEventListener("click", (event) => {
+      const b = event.target.closest(".ad-thumb");
+      if (!b) return;
+      openEditor(b.dataset.layout);
     });
   }
 
@@ -1095,42 +1102,6 @@
       toast("Photograph added to the crop layout");
     };
     reader.readAsDataURL(file);
-  }
-
-  function renderGallery() {
-    const grid = root.querySelector("[data-gallery-grid]");
-    grid.innerHTML = "";
-    for (const observer of previewObservers.values()) observer.disconnect();
-    previewObservers.clear();
-
-    for (const layout of LAYOUTS) {
-      const card = document.createElement("article");
-      card.className = "ad-card";
-      card.innerHTML = `
-        <button class="ad-card__preview" type="button" data-open-layout="${layout.id}" aria-label="Open the ${layout.name} layout">
-          <span class="ad-card__frame" data-preview-frame></span>
-        </button>
-        <div class="ad-card__meta">
-          <h2 class="ad-card__name">${layout.name}</h2>
-          <p class="ad-card__use">${layout.use}</p>
-        </div>
-        <div class="ad-card__actions">
-          <button class="ad-button ad-button--quiet" type="button" data-download-layout="${layout.id}">Download PNG</button>
-          <button class="ad-textbutton" type="button" data-copy-layout="${layout.id}">Copy caption</button>
-        </div>
-      `;
-      grid.appendChild(card);
-      mountPreview(card.querySelector("[data-preview-frame]"), freshState(layout.id));
-    }
-
-    grid.onclick = async (event) => {
-      const open = event.target.closest("[data-open-layout]");
-      const download = event.target.closest("[data-download-layout]");
-      const copy = event.target.closest("[data-copy-layout]");
-      if (open) openEditor(open.dataset.openLayout);
-      if (download) await downloadState(freshState(download.dataset.downloadLayout));
-      if (copy) await copyCaption(layoutsById.get(copy.dataset.copyLayout));
-    };
   }
 
   function mountPreview(frame, state) {
@@ -1151,25 +1122,18 @@
 
   function openEditor(layoutId) {
     current = stateFor(layoutId);
-    location.hash = `make-${layoutId}`;
-    showView("editor");
+    if (location.hash !== `#${layoutId}`) location.hash = layoutId;
     renderEditor();
   }
 
-  function showView(view) {
-    root.querySelector('[data-view="gallery"]').hidden = view !== "gallery";
-    root.querySelector('[data-view="editor"]').hidden = view !== "editor";
-    root.querySelectorAll("[data-nav]").forEach((nav) => {
-      if (nav.dataset.nav === view) nav.setAttribute("aria-current", "page");
-      else nav.removeAttribute("aria-current");
-    });
-  }
-
   function renderEditor() {
-    const layout = layoutsById.get(current.layout);
-    root.querySelector('[data-control="layout"]').value = current.layout;
-    root.querySelector('[data-control="subject"]').value = current.subject;
     root.querySelector('[data-control="image"]').hidden = current.layout !== "crop";
+    for (const sw of root.querySelectorAll(".ad-swatch")) {
+      sw.setAttribute("aria-pressed", String(sw.dataset.value === current.subject));
+    }
+    for (const th of root.querySelectorAll(".ad-thumb")) {
+      th.dataset.active = String(th.dataset.layout === current.layout);
+    }
     for (const group of root.querySelectorAll(".ad-segmented")) {
       const control = group.dataset.control;
       for (const button of group.querySelectorAll("button[data-value]")) {
@@ -1181,20 +1145,6 @@
       }
     }
 
-    const list = root.querySelector("[data-field-list]");
-    list.innerHTML = "";
-    for (const field of layout.fields) {
-      const wrap = document.createElement("label");
-      wrap.className = "ad-field";
-      const input = field.multiline ? document.createElement("textarea") : document.createElement("input");
-      input.className = field.multiline ? "ad-textarea" : "ad-input";
-      input.value = current.fields[field.key] || "";
-      input.dataset.sideField = field.key;
-      input.setAttribute("aria-label", field.label);
-      wrap.innerHTML = `<span>${field.label}</span>`;
-      wrap.appendChild(input);
-      list.appendChild(wrap);
-    }
     renderStage();
   }
 
@@ -1203,8 +1153,9 @@
     const wrap = root.querySelector("[data-stage-wrap]");
     const workspace = root.querySelector("[data-workspace]");
     const size = SIZES[current.size];
-    const available = Math.max(240, workspace.clientWidth - 8);
-    const scale = Math.min(0.5, available / size.w);
+    const availW = Math.max(240, workspace.clientWidth - 64);
+    const availH = Math.max(240, workspace.clientHeight - 120);
+    const scale = Math.min(availW / size.w, availH / size.h);
     wrap.style.width = `${size.w * scale}px`;
     wrap.style.height = `${size.h * scale}px`;
     stage.style.transform = `scale(${scale})`;
@@ -1213,19 +1164,16 @@
   }
 
   function route() {
-    const match = /^#make-([a-z]+)$/.exec(location.hash);
+    const match = /^#(?:make-)?([a-z]+)$/.exec(location.hash);
     if (match && layoutsById.has(match[1])) {
       current = stateFor(match[1]);
-      showView("editor");
       renderEditor();
     } else {
-      showView("gallery");
-      renderGallery();
+      openEditor(current.layout || "statement");
     }
   }
 
   shell();
-  renderGallery();
   route();
   window.addEventListener("hashchange", route);
 
